@@ -169,6 +169,7 @@ return [
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Vinkla\Hashids\HashidsServiceProvider::class
 
     ],
 
@@ -224,6 +225,7 @@ return [
         'UserVerification' => Jrean\UserVerification\Facades\UserVerification::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class
 
     ],
 
