@@ -11,12 +11,18 @@
     },
     "devDependencies": {
         "axios": "^0.18",
-        "bootstrap": "^4.0.0",
+        "bootstrap-sass": "^3.3.7",
         "popper.js": "^1.12",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "vue": "^2.5.7",
+        "animate.css": "^3.6.1",
+        "bootstrap-datepicker": "^1.7.1",
+        "bootstrap-select": "^1.12.2",
+        "font-awesome": "^4.7.0",
+        "pretty-checkbox": "^2.2.1",
+        "toastr": "^2.1.2"
     }
 }
