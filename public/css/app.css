@@ -11403,3 +11403,14 @@ button.close {
   clip: auto;
 }
 
+.text-default {
+  color: white;
+}
+
+.unstyle-link,
+.unstyle-link:hover,
+.unstyle-link:active {
+  text-decoration: none;
+  color: white;
+}
+

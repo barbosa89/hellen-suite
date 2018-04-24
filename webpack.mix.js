@@ -16,21 +16,15 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .styles([
         'public/css/style.css',
-        'public/css/chocolat.css',
-        'public/css/animate.min.css',
         'node_modules/toastr/build/toastr.min.css',
         'node_modules/pretty-checkbox/src/pretty.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
     ], 'public/css/all.css')
     .scripts([
-        'public/js/script.js',
-        'public/js/move-top.js',
-        'public/js/jquery.countup.js',
-        'public/js/jquery.chocolat.js',
-        'public/js/SmoothScroll.min.js',
-        'public/js/jquery.waypoints.min.js',
         'node_modules/toastr/build/toastr.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-    ], 'public/js/all.js');
+    ], 'public/js/all.js')
+    .sourceMaps()
+    .browserSync({ proxy: "welkome.dev" });
