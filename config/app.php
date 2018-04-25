@@ -160,7 +160,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         AlbertCht\InvisibleReCaptcha\InvisibleReCaptchaServiceProvider::class,
-        Barryvdh\Snappy\ServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
         Jrean\UserVerification\UserVerificationServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,

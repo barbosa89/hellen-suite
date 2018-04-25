@@ -15,11 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test', function () {
-
-});
-
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('auth');
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
+    ->middleware('auth');
 
 Auth::routes();
 
