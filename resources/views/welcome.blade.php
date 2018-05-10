@@ -49,9 +49,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>					
                         <div class="clear"></div>
                         <div class="login-agileits-top"> 	
-                            <form action="#" method="post"> 
-                                <input type="text" class="name" name="user name" Placeholder="@lang('login.email')" required=""/>
-                                <input type="password" class="password" name="Password" Placeholder="@lang('login.password')" required=""/>
+                            <form action="{{ route('login') }}" method="post"> 
+                                @csrf
+                                <div class="form-group{{ $errors->has('email') ? ' is-invalid' : '' }}">
+                                    <input type="email" class="name" name="email" Placeholder="@lang('login.email')" required="" value="{{ old("email") }}"/>
+                                    
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group{{ $errors->has('password') ? ' is-invalid' : '' }}">
+                                    <input type="password" class="password" name="password" Placeholder="@lang('login.password')" required=""/>
+                                
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                                 <input type="submit" value="@lang('login.signin')"> 
                             </form> 	
                         </div> 
