@@ -1,0 +1,700 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+
+
+/*-- reset --*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+dl,
+dt,
+dd,
+ol,
+nav ul,
+nav li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+ol,
+ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/*-- start editing from here --*/
+
+a {
+    text-decoration: none;
+}
+
+.txt-rt {
+    text-align: right;
+}
+
+
+/* text align right */
+
+.txt-lt {
+    text-align: left;
+}
+
+
+/* text align left */
+
+.txt-center {
+    text-align: center;
+}
+
+
+/* text align center */
+
+.float-rt {
+    float: right;
+}
+
+
+/* float right */
+
+.float-lt {
+    float: left;
+}
+
+
+/* float left */
+
+.clear {
+    clear: both;
+}
+
+
+/* clear float */
+
+.pos-relative {
+    position: relative;
+}
+
+
+/* Position Relative */
+
+.pos-absolute {
+    position: absolute;
+}
+
+
+/* Position Absolute */
+
+.vertical-base {
+    vertical-align: baseline;
+}
+
+
+/* vertical align baseline */
+
+.vertical-top {
+    vertical-align: top;
+}
+
+
+/* vertical align top */
+
+nav.vertical ul li {
+    display: block;
+}
+
+
+/* vertical menu */
+
+nav.horizontal ul li {
+    display: inline-block;
+}
+
+
+/* horizontal menu */
+
+img {
+    max-width: 100%;
+}
+
+
+/*-- end reset --*/
+
+body {
+    background: url(../images/hotel-1.jpg)repeat 0px 0px;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    font-family: 'Raleway', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 1em;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.head {
+    position: relative;
+    z-index: 1;
+}
+
+.login-form h2 {
+    font-size: 2em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.5em;
+    line-height: 0.7em;
+    letter-spacing: 0px;
+}
+
+span.fa.fa-lock {
+    position: absolute;
+    font-size: 75px;
+    color: #e4eae7;
+    left: 45%;
+    top: -100%;
+    z-index: -1;
+}
+
+
+/*-- main --*/
+
+.main {
+    padding: 3em 0 0;
+    text-align: center;
+}
+
+.main-w3lsrow {
+    margin: 0 auto;
+    background: #fff;
+    max-width: 400px;
+    padding: 3em 2em 2em;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    outline: none;
+    font-size: .9em;
+    letter-spacing: 1px;
+    color: #666;
+    padding: 1em 1em;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    -webkit-appearance: none;
+    display: block;
+    border: 1px solid #dde0df;
+    background: #e4eae7;
+    font-family: 'Raleway', sans-serif;
+}
+
+.login-form p {
+    font-size: 0.9em;
+    color: #fff;
+    margin: 1.5em 0 .8em;
+    font-weight: 200;
+    letter-spacing: 6px;
+    text-align: left;
+}
+
+
+/*-- social-icons --*/
+
+.social_icons.agileinfo {
+    margin: 2% 0%;
+}
+
+ul.top-links li {
+    margin-left: 5px;
+    display: inline-block;
+}
+
+ul.top-links li a i.fa {
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+}
+
+ul.top-links li a {
+    color: #fff;
+    width: 45px;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    letter-spacing: 1px;
+    border: 1px solid #fff;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+}
+
+.top-links li a.facebook:hover {
+    color: #fff;
+    background-color: #46629E;
+    border: 1px solid #46629E;
+}
+
+.top-links li a.twitter:hover {
+    color: #fff;
+    background-color: #00ACEE;
+    border: 1px solid #00ACEE;
+}
+
+.top-links li a.linkedin:hover {
+    color: #fff;
+    background-color: #0077B5;
+    border: 1px solid #0077B5;
+}
+
+.top-links li a.google-plus:hover {
+    color: #fff;
+    background-color: #dd4b39;
+    border: 1px solid #dd4b39;
+}
+
+.top-links li a.vimeo:hover {
+    color: #fff;
+    background-color: #162221;
+    border: 1px solid #162221;
+}
+
+
+/*--placeholder-color--*/
+
+::-webkit-input-placeholder {
+    color: #666;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: #666;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #666;
+}
+
+:-ms-input-placeholder {
+    color: #666;
+}
+
+
+/*--//placeholder-color--*/
+
+.login-form input[type="submit"] {
+    font-size: 1em;
+    color: #ffffff;
+    background: #0f9d58;
+    border: 1px solid #0f9d58;
+    outline: none;
+    cursor: pointer;
+    padding: .8em 1em;
+    letter-spacing: 1px;
+    -webkit-appearance: none;
+    text-transform: uppercase;
+    width: 100%;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    border-radius: 0px;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+    font-family: 'Raleway', sans-serif;
+}
+
+.login-form input[type="submit"]:hover {
+    background: #333;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.login-agileits-bottom {
+    margin-top: 1.6em;
+    text-align: center;
+}
+
+.login-agileits-bottom1 {
+    margin-top: 1.6em;
+    text-align: center;
+}
+
+.login-agileits-bottom1 h3 {
+    color: #fff;
+    font-size: 1em;
+    letter-spacing: 4px;
+}
+
+.login-agileits-bottom h6 {
+    font-size: 1em;
+    letter-spacing: 2px;
+}
+
+.login-agileits-bottom h6 a {
+    color: #333;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+}
+
+.login-agileits-bottom h6 a:hover {
+    color: #0f9d58;
+}
+
+
+/*-- //main --*/
+
+
+/*-- copyright --*/
+
+.copyright {
+    padding: 2.4em 0 2em;
+    text-align: center;
+}
+
+.copyright p {
+    font-size: 1em;
+    color: #fff;
+    line-height: 1.8em;
+    letter-spacing: 2px;
+}
+
+.copyright p a {
+    color: #fff;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+    transition: 0.5s all;
+}
+
+.copyright p a:hover {
+    color: #ff4c4c;
+}
+
+
+/*-- //copyright --*/
+
+
+/*-- responsive-design --*/
+
+@media(max-width:1366px) {}
+
+@media(max-width:1024px) {
+    h1 {
+        font-size: 2.6em;
+        margin-bottom: .8em;
+        letter-spacing: 3px;
+    }
+    .main {
+        padding: 2em 0 0;
+        text-align: center;
+    }
+}
+
+@media(max-width:991px) {
+    .main {
+        padding: 3em 0 0;
+    }
+}
+
+@media(max-width:900px) {
+    .copyright p {
+        font-size: .9em;
+    }
+    ul.top-links li a {
+        font-size: 14px;
+    }
+}
+
+@media(max-width:800px) {
+    .login-agileits-bottom h6 {
+        letter-spacing: 3px;
+    }
+    .login-form h2 {
+        font-size: 2em;
+        margin-bottom: 1.2em;
+    }
+}
+
+@media(max-width:768px) {
+    .login-form h2 {
+        font-size: 1.7em;
+        margin-bottom: 1.2em;
+    }
+}
+
+@media(max-width:640px) {
+    h1 {
+        font-size: 2.4em;
+    }
+    .main-w3lsrow {
+        max-width: 350px;
+    }
+}
+
+@media(max-width:568px) {
+    .login-form p {
+        font-size: 0.8em;
+        margin: 1.2em 0 .8em;
+        letter-spacing: 4px;
+    }
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        padding: .8em 1em;
+    }
+    .login-form input[type="submit"] {
+        padding: .8em 1em;
+        font-size: .9em;
+    }
+    .login-form h2 {
+        font-size: 1.6em;
+    }
+    h1 {
+        font-size: 2.2em;
+    }
+    .login-form h2 {
+        font-size: 1.8em;
+        margin-bottom: 1em;
+    }
+    .copyright p {
+        font-size: 0.9em;
+        padding: 0 1em;
+    }
+    .login-agileits-bottom h6 {
+        font-size: 0.9em;
+        letter-spacing: 3px;
+    }
+}
+
+@media(max-width:480px) {
+    h1 {
+        font-size: 1.9em;
+    }
+    .login-form h2 {
+        font-size: 1.6em;
+        margin-bottom: 1em;
+    }
+    .main-w3lsrow {
+        max-width: 300px;
+    }
+    span.fa.fa-lock {
+        font-size: 55px;
+    }
+}
+
+@media(max-width:414px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    .login-form h2 {
+        font-size: 1.4em;
+    }
+    .login-form p {
+        font-size: 0.75em;
+        margin: 2em 0 .2em;
+        letter-spacing: 2px;
+    }
+    .anim {
+        font-size: 0.75em;
+    }
+    .login-agileits-bottom {
+        margin-top: 1em;
+    }
+    .login-agileits-bottom1 h3 {
+        letter-spacing: 2px;
+    }
+    ul.top-links li a {
+        width: 40px;
+        height: 35px;
+        line-height: 35px;
+    }
+}
+
+@media(max-width:384px) {
+    h1 {
+        letter-spacing: 2px;
+    }
+    .main {
+        padding: 2em 0 0;
+    }
+}
+
+@media(max-width:320px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    .login-form p {
+        font-size: 0.7em;
+    }
+    .login-agileits-bottom h6 {
+        font-size: 0.75em;
+        letter-spacing: 2px;
+    }
+    .login-agileits-bottom {
+        margin-top: 0.8em;
+    }
+    .login-form h2 {
+        font-size: 1.2em;
+    }
+    .copyright p {
+        font-size: 0.8em;
+    }
+    .main {
+        padding: 2em 0 0;
+    }
+    .copyright {
+        padding: 1.4em 0 1em;
+    }
+    ul.top-links li {
+        margin-left: 10px;
+        margin-bottom: 28px;
+    }
+    ul.top-links li:nth-child(3) {
+        margin-left: 10px;
+        margin-bottom: 0px;
+    }
+}
+
+
+/*-- //responsive-design --*/

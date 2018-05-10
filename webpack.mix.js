@@ -15,12 +15,14 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .styles([
-        'public/css/style.css',
         'node_modules/toastr/build/toastr.min.css',
         'node_modules/pretty-checkbox/src/pretty.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
     ], 'public/css/all.css')
+    .styles([
+        'public/css/style.css',
+    ], 'public/css/welkome.css')
     .scripts([
         'node_modules/toastr/build/toastr.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',

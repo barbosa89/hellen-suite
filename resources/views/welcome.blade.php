@@ -26,7 +26,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/all.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/welkome.css') }}" rel="stylesheet">
 
 	<!-- web font --> 
 	<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext" rel="stylesheet">
@@ -108,7 +108,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </div>
     
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/all.js') }}"></script>
 </body>
 
 </html>
