@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Mail;
+use Excel;
 use App\Room;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,28 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        // $pdf = \App::make('dompdf.wrapper');
+        // $pdf->loadHTML('<h1>Test</h1>');
+        // return $pdf->download('invoice.pdf');
+
+        // return \Excel::create('New file', function($excel) {
+
+        //     $excel->sheet('New sheet', function($sheet) {
+        
+        //         $sheet->loadView('invoices.layouts.invoice');
+        
+        //     });
+        
+        // })->download('xlsx');
+
+        Mail::send('emails.test', 
+            [], 
+            function ($m) {
+                $m->to("logianike@gmail.com", "Omar");
+                $m->subject('Hola');
+            }
+        );
+
     }
 
     /**
