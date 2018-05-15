@@ -1,30 +1,40 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-  },
-  "devDependencies": {
-    "animate.css": "^3.6.1",
-    "axios": "^0.18",
-    "bootstrap-datepicker": "^1.7.1",
-    "bootstrap-sass": "^3.3.7",
-    "bootstrap-select": "^1.12.2",
-    "browser-sync": "^2.23.7",
-    "browser-sync-webpack-plugin": "^2.0.1",
-    "cross-env": "^5.1",
-    "font-awesome": "^4.7.0",
-    "jquery": "^3.2",
-    "laravel-mix": "^2.0",
-    "lodash": "^4.17.4",
-    "popper.js": "^1.12",
-    "pretty-checkbox": "^2.2.1",
-    "toastr": "^2.1.2",
-    "vue": "^2.5.7"
-  }
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "animate.css": "^3.6.1",
+        "axios": "^0.18",
+        "bootstrap-datepicker": "^1.7.1",
+        "bootstrap-sass": "^3.3.7",
+        "bootstrap-select": "^1.12.2",
+        "browser-sync": "^2.23.7",
+        "browser-sync-webpack-plugin": "^2.0.1",
+        "cross-env": "^5.1",
+        "font-awesome": "^4.7.0",
+        "jquery": "^3.2",
+        "laravel-mix": "^2.0",
+        "lodash": "^4.17.4",
+        "popper.js": "^1.12",
+        "pretty-checkbox": "^2.2.1",
+        "toastr": "^2.1.2",
+        "vue": "^2.5.7",
+        "datatables": "~1.10.4",
+        "datatables.net-plugins": "1.10.15",
+        "flot": "0.8.0-alpha",
+        "holderjs": "^2.4.1",
+        "metismenu": "~1.1.3",
+        "morris.js": "0.5.0",
+        "datatables-responsive": "1.0.7",
+        "bootstrap-social": "~4.8.0",
+        "jquery.flot.tooltip": "0.9.0",
+        "raphael": "2.2.7"
+    }
 }

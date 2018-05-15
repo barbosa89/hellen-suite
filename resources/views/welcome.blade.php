@@ -25,6 +25,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         }
     </script>
 
+    <!-- Icon -->
+    <link href="{{ asset('images/icon.png') }}" rel="shortcut icon" type="image/x-icon">
+
+    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/welkome.css') }}" rel="stylesheet">
 
