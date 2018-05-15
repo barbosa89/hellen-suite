@@ -47,39 +47,51 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <!-- login form -->
                 <div class="login-form login-form-left"> 
                     <div class="agile-row">
-                        <div class="head">
-                            <h2>@lang('login.identification')</h2>
-                            <span class="fa fa-lock"></span>
-                        </div>					
-                        <div class="clear"></div>
-                        <div class="login-agileits-top"> 	
-                            <form action="{{ route('login') }}" method="post"> 
-                                @csrf
-                                <div class="form-group{{ $errors->has('email') ? ' is-invalid' : '' }}">
-                                    <input type="email" class="name" name="email" Placeholder="@lang('login.email')" required="" value="{{ old("email") }}"/>
+                        @if(Auth::guest())
+                            <div class="head">
+                                <h2>@lang('login.identification')</h2>
+                                <span class="fa fa-lock"></span>
+                            </div>					
+                            <div class="clear"></div>
+                            <div class="login-agileits-top"> 	   
+                                <form action="{{ route('login') }}" method="post"> 
+                                    @csrf
+                                    <div class="form-group{{ $errors->has('email') ? ' is-invalid' : '' }}">
+                                        <input type="email" class="name" name="email" Placeholder="@lang('login.email')" required="" value="{{ old("email") }}"/>
+                                        
+                                        @if ($errors->has('email'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group{{ $errors->has('password') ? ' is-invalid' : '' }}">
+                                        <input type="password" class="password" name="password" Placeholder="@lang('login.password')" required=""/>
                                     
-                                    @if ($errors->has('email'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="form-group{{ $errors->has('password') ? ' is-invalid' : '' }}">
-                                    <input type="password" class="password" name="password" Placeholder="@lang('login.password')" required=""/>
-                                
-                                    @if ($errors->has('password'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                                <input type="submit" value="@lang('login.signin')"> 
-                            </form> 	
-                        </div> 
-                        <div class="login-agileits-bottom"> 
-                            <h6><a href="#">@lang('login.reset')</a></h6>
-                        </div> 
-
+                                        @if ($errors->has('password'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('password') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <input type="submit" value="@lang('login.signin')"> 
+                                </form> 	
+                            </div> 
+                            <div class="login-agileits-bottom"> 
+                                <h6><a href="#">@lang('login.reset')</a></h6>
+                            </div> 
+                        @else
+                            <div class="head">
+                                <h2>@lang('login.hi'), {{ auth()->user()->name }}</h2>
+                                <span class="fa fa-lock"></span>
+                            </div>
+                            <p class="active-session-msn text-center">
+                                @lang('login.active')
+                            </p>
+                            <div class="login-agileits-bottom">
+                                <a href="{{ route('home') }}" class="w-btn unstyle-link">@lang('login.back')</a>
+                            </div>
+                        @endif
                     </div>  
                 </div>  
             </div>

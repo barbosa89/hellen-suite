@@ -11414,3 +11414,38 @@ button.close {
   color: white;
 }
 
+.w-btn {
+  font-size: 1em;
+  color: #ffffff;
+  background: #0f9d58;
+  border: 1px solid #0f9d58;
+  outline: none;
+  cursor: pointer;
+  padding: .8em 1em;
+  letter-spacing: 1px;
+  -webkit-appearance: none;
+  text-transform: uppercase;
+  width: 100%;
+  border-radius: 0px;
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  -ms-transition: 0.5s all;
+  font-family: 'Raleway', sans-serif;
+}
+
+.w-btn:hover {
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.active-session-msn {
+  color: #333 !important;
+  text-align: justify !important;
+  margin-bottom: 50px !important;
+  letter-spacing: 2px !important;
+  font-size: 1em !important;
+}
+

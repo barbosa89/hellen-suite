@@ -1,15 +1,17 @@
 <?php
 
-return [
-
-    'identification' => 'Iniciar Sesión',
-    'email' => 'Correo electrónico',
-    'password' => 'Contraseña',
-    'signin' => 'Continuar',
-    'reset' => 'Olvidé mi contraseña',
-    'support' => 'Soporte técnico',
-    'license' => 'Licencia MIT',
-    'design' => 'Diseñado por',
-    'designer' => 'W3layouts'
-
-];
+return array (
+  'logout' => 'Salir',
+  'email' => 'Correo electrónico',
+  'password' => 'Contraseña',
+  'signin' => 'Continuar',
+  'license' => 'Licencia MIT',
+  'design' => 'Diseñado por',
+  'identification' => 'Iniciar Sesión',
+  'reset' => 'Olvidé mi contraseña',
+  'support' => 'Soporte técnico',
+  'designer' => 'W3layouts',
+  'hi' => 'Hola',
+  'active' => 'Tienes una sesión activa, para regresar al panel de control pulsa en el siguiente botón',
+  'back' => 'Volver',
+);
