@@ -12,6 +12,10 @@
 */
 
 Route::get('/', function () {
+    if (config('welkome.env') == 'desktop') {
+        return redirect(route('login'));
+    }
+
     return view('welcome');
 });
 

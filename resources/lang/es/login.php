@@ -14,4 +14,5 @@ return array (
   'hi' => 'Hola',
   'active' => 'Tienes una sesión activa, para regresar al panel de control pulsa en el siguiente botón',
   'back' => 'Volver',
+  'register' => 'Crear cuenta',
 );

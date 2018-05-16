@@ -2,6 +2,8 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/all.css": "/css/all.css",
+    "/css/form.css": "/css/form.css",
     "/css/welkome.css": "/css/welkome.css",
-    "/js/all.js": "/js/all.js"
+    "/js/all.js": "/js/all.js",
+    "/js/welkome.js": "/js/welkome.js"
 }
