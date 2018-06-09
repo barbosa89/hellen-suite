@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Welkome;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class VehicleType extends Model
 {
     //
 }

@@ -27,3 +27,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('habitaciones', 'RoomController');
+
+Route::get('language/{locale}', 'LanguageController@locale');
+
+
