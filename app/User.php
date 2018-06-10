@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'token', 'status', 'confirmed'
+        'name', 'email', 'password', 'status', 
     ];
 
     /**
@@ -28,4 +28,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function entities()
+    {
+        return $this->hasMany(Welkome\Entity::class);
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(Welkome\Shift::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Welkome\Invoice::class);
+    }
 }
