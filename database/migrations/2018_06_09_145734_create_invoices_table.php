@@ -14,14 +14,15 @@ class CreateInvoicesTable extends Migration
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('number')->unique();
             $table->decimal('discount', 10, 2);
             $table->decimal('subvalue', 10, 2);
-            $table->decimal('taxes', 10, 2);
+            $table->decimal('taxes', 10, 2)->default(0.0);
             $table->decimal('value', 10, 2);
             $table->boolean('open')->default(true);
-            $table->enum('status', [0, 1, 2]); # 0: loss, 1: paid, 2: credit
+            $table->enum('status', [0, 1, 2, 3]); # 0: loss, 1: paid, 2: credit, 3: credit
+            
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

@@ -43,4 +43,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Welkome\Invoice::class);
     }
+
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent');
+    }
 }

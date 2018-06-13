@@ -14,8 +14,16 @@ class CreateGuestInvoiceTable extends Migration
     public function up()
     {
         Schema::create('guest_invoice', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->bigInteger('guest_id')->unsigned();
+            $table->bigInteger('invoice_id')->unsigned();
+            $table->boolean('main')->default(false);
+
+            $table->foreign('guest_id')->references('id')->on('guests')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('invoice_id')->references('id')->on('invoices')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            // $table->primary(['guest_id', 'invoice_id']);
         });
     }
 

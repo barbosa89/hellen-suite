@@ -14,8 +14,15 @@ class CreateAssetRoomTable extends Migration
     public function up()
     {
         Schema::create('asset_room', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->integer('asset_id')->unsigned();
+            $table->integer('room_id')->unsigned();
+
+            $table->foreign('asset_id')->references('id')->on('assets')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->primary(['asset_id', 'room_id']);
         });
     }
 

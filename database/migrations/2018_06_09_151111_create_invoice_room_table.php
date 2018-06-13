@@ -14,8 +14,18 @@ class CreateInvoiceRoomTable extends Migration
     public function up()
     {
         Schema::create('invoice_room', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->bigInteger('invoice_id')->unsigned();
+            $table->bigInteger('room_id')->unsigned();
+            $table->decimal('value', 10, 2);
+            $table->datetime('created_at');
+            $table->boolean('status')->default(true);
+
+            $table->foreign('invoice_id')->references('id')->on('invoices')
+            ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            // $table->primary(['room_id', 'invoice_id']);
         });
     }
 

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             // $table->string('token')->nullable();
             $table->boolean('status')->default(true);
             // $table->boolean('confirmed')->default(false);
+            $table->bigInteger('parent')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

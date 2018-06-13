@@ -10,4 +10,9 @@ class Shift extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function invoices()
+    {
+        return $this->belongsToMany(Welkome\Invoice::class);
+    }
 }

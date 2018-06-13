@@ -14,8 +14,15 @@ class CreateInvoiceShiftTable extends Migration
     public function up()
     {
         Schema::create('invoice_shift', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->bigInteger('invoice_id')->unsigned();
+            $table->bigInteger('shift_id')->unsigned();
+
+            $table->foreign('invoice_id')->references('id')->on('invoices')
+            ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('shift_id')->references('id')->on('shifts')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            // $table->primary(['shift_id', 'invoice_id']);
         });
     }
 

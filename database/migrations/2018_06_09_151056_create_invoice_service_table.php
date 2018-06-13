@@ -14,8 +14,17 @@ class CreateInvoiceServiceTable extends Migration
     public function up()
     {
         Schema::create('invoice_service', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->bigInteger('invoice_id')->unsigned();
+            $table->integer('service_id')->unsigned();
+            $table->integer('quantity');
+            $table->decimal('value', 10, 2);
+
+            $table->foreign('invoice_id')->references('id')->on('invoices')
+            ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('service_id')->references('id')->on('services')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            // $table->primary(['service_id', 'invoice_id']);
         });
     }
 

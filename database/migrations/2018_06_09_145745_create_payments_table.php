@@ -15,6 +15,10 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
+            $table->decimal('value', 10, 2);
+            $table->bigInteger('invoice_id')->unsigned();
+            $table->foreign('invoice_id')->references('id')
+                ->on('invoices')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
