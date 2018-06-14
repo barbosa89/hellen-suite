@@ -15,7 +15,7 @@ class CreateInvoiceRoomTable extends Migration
     {
         Schema::create('invoice_room', function (Blueprint $table) {
             $table->bigInteger('invoice_id')->unsigned();
-            $table->bigInteger('room_id')->unsigned();
+            $table->integer('room_id')->unsigned();
             $table->decimal('value', 10, 2);
             $table->datetime('created_at');
             $table->boolean('status')->default(true);

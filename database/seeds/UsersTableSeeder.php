@@ -16,7 +16,6 @@ class UsersTableSeeder extends Seeder
             'email' => 'root@welkome.com', 
             'password' => bcrypt('root'), 
             'status' => true, 
-            'confirmed' => true,
         ]);
     }
 }

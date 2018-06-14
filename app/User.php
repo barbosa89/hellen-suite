@@ -2,14 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
+
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use EntrustUserTrait;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.

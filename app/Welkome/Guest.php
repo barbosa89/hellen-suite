@@ -3,9 +3,12 @@
 namespace App\Welkome;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Guest extends Model
 {
+    use LogsActivity;
+    
     public function children()
     {
         return $this->hasMany(Welkome\Guest::class, 'responsible_of');
