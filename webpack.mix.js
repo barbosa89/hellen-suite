@@ -32,6 +32,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/css/chocolat.css',
     ], 'public/css/welkome.css')
     .scripts([
+        'public/js/common.js',
         'public/js/sb-admin-2.js',
         'node_modules/raphael/raphael.min.js',
         'node_modules/morris.js/morris.min.js',

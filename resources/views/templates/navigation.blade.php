@@ -242,13 +242,13 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a class="active" href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                <a href="{{ route('users.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios - root</a>
+                    <a href="{{ route('users.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios - root</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-address-book fa-fw"></i> Registros - recep</a>
+                    <a href="{{ route('users.index') }}"><i class="fa fa-address-book fa-fw"></i> Registros - recep</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-building fa-fw"></i> Empresas - recep</a>
