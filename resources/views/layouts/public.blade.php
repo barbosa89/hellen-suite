@@ -40,12 +40,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <body>
     <div id="app">
+        @include('flash::message')
+        
         <!-- main -->
         @yield('content')
         <!-- //main -->
     </div>
     
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">
+        $('#flash-overlay-modal').modal();
+    </script>
 </body>
 
 </html>

@@ -15,4 +15,6 @@ return array (
   'active' => 'You have an active session, to return to the control panel click on the following button',
   'back' => 'Back',
   'register' => 'Register',
+  'activate' => 'Activate',
+  'activateTitle' => 'Activate account',
 );

@@ -32,7 +32,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/css/chocolat.css',
     ], 'public/css/welkome.css')
     .scripts([
-        'public/js/common.js',
         'public/js/sb-admin-2.js',
         'node_modules/raphael/raphael.min.js',
         'node_modules/morris.js/morris.min.js',
@@ -40,6 +39,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'node_modules/metismenu/dist/metisMenu.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+        'public/js/common.js',
     ], 'public/js/all.js')
     .scripts([
         'public/js/easing.js',

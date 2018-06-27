@@ -206,9 +206,9 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                <li><a href="#"><i class="fa fa-user fa-fw"></i> @lang('common.profile')</a>
                 </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li><a href="#"><i class="fa fa-gear fa-fw"></i> @lang('common.settings')</a>
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -245,7 +245,7 @@
                     <a class="active" href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="{{ route('users.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios - root</a>
+                    <a href="{{ route('users.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios - root|admin</a>
                 </li>
                 <li>
                     <a href="{{ route('users.index') }}"><i class="fa fa-address-book fa-fw"></i> Registros - recep</a>

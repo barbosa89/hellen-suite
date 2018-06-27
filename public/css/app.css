@@ -11441,6 +11441,24 @@ button.close {
   border: 1px solid #333;
 }
 
+.w-input {
+  outline: none;
+  font-size: .9em;
+  letter-spacing: 1px;
+  color: #666;
+  padding: 1em 1em;
+  margin: 0;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-bottom: 1em;
+  -webkit-appearance: none;
+  display: block;
+  border: 1px solid #dde0df;
+  background: #e4eae7;
+  font-family: 'Raleway', sans-serif;
+}
+
 .active-session-msn {
   color: #333 !important;
   text-align: justify !important;
@@ -11477,6 +11495,32 @@ button.close {
   border-color: inherit !important;
   margin-bottom: 0px !important;
   border: none !important;
+}
+
+.crud-list .crud-list-heading {
+  padding: 5px 0;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.crud-list .crud-list-heading h5 {
+  font-weight: 600;
+}
+
+.crud-list .crud-list-items .crud-list-row {
+  padding: 10px 0;
+  border-top: solid 1px #ddd;
+}
+
+.crud-list .crud-list-items .crud-list-row p {
+  font-size: 13px;
+}
+
+.crud-list .crud-list-items > div:nth-child(odd) {
+  background-color: #fff;
+}
+
+.crud-list .crud-list-items > div:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
 /*==========  Mobile First Method  ==========*/

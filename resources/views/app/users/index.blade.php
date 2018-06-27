@@ -4,11 +4,11 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Usuarios',
+            'title' => trans('users.title'),
             'url' => route('users.index'),
             'options' => [
                 [
-                    'option' => 'Nuevo',
+                    'option' => trans('common.new'),
                     'url' => route('users.create')
                 ],
                 [
@@ -37,7 +37,24 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Other content</h2>
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#active" data-toggle="tab">
+                            @lang('users.active')
+                        </a>
+                    </li>
+                    <li><a href="#inactive" data-toggle="tab">@lang('users.inactive')</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    @include('app.users.list', [
+                        'id' => 'active',
+                        'active' => true
+                    ])
+                    @include('app.users.list', [
+                        'id' => 'inactive',
+                        'active' => false
+                    ])
+                </div>
             </div>
         </div>
     </div>

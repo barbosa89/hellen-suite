@@ -6,10 +6,9 @@
 // @import '~bootstrap/scss/bootstrap';
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import 'node_modules/font-awesome/scss/font-awesome.scss';
-// .navbar-laravel {
-//     background-color: #fff;
-//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-// }
+$greyBackground: #f8f8f8;
+$greyBorder: #e7e7e7;
+$borderTable: #ddd;
 $text-default: white;
 .text-default {
     color: $text-default;
@@ -52,6 +51,23 @@ $text-default: white;
     }
 }
 
+.w-input {
+    outline: none;
+    font-size: .9em;
+    letter-spacing: 1px;
+    color: #666;
+    padding: 1em 1em;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    -webkit-appearance: none;
+    display: block;
+    border: 1px solid #dde0df;
+    background: #e4eae7;
+    font-family: 'Raleway', sans-serif;
+}
+
 .active-session-msn {
     color: #333 !important;
     text-align: justify !important;
@@ -78,6 +94,31 @@ $text-default: white;
     border-color: inherit !important;
     margin-bottom: 0px !important;
     border: none !important;
+}
+
+.crud-list {
+    .crud-list-heading {
+        padding: 5px 0;
+        border-bottom: 1px solid $greyBorder;
+        h5 {
+            font-weight: 600;
+        }
+    }
+    .crud-list-items {
+        .crud-list-row {
+            padding: 10px 0;
+            border-top: solid 1px $borderTable;
+            p {
+                font-size: 13px;
+            }
+        }
+        &>div:nth-child(odd) {
+            background-color: #fff;
+        }
+        &>div:nth-child(even) {
+            background-color: $greyBackground;
+        }
+    }
 }
 
 

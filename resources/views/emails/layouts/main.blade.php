@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="x-apple-disable-message-reformatting">
-	<title>Notificación | Welkome</title> 
+    <title>{{ trans('email.notification') }} | {{ config('app.name') }}</title> 
     <style>
         body {
 	        margin: 0 auto !important;
@@ -133,7 +133,7 @@
         <table role="presentation" aria-hidden="true" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
 			<tr>
 				<td style="padding: 20px 0; text-align: center">
-					<img src="#" aria-hidden="true" width="200" height="50" alt="Cotizate" border="0" style="height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+					
 				</td>
 			</tr>
         </table>
@@ -142,40 +142,7 @@
         <!-- Email Body : BEGIN -->
         <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
 
-            <!-- Hero Image, Flush : BEGIN -->
-            <tr>
-				<td bgcolor="#ffffff">
-                        <img src="#" aria-hidden="true" width="600" height="" alt="Cotizate" border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;" class="g-img">
-				</td>
-            </tr>
-            <!-- Hero Image, Flush : END -->
-
-            <!-- 1 Column Text + Button : BEGIN -->
-            <tr>
-                <td bgcolor="#ffffff" style="padding: 40px 40px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-family: sans-serif; font-size: 24px; line-height: 27px; color: #333333; font-weight: normal;">¡Hola, viejo!</h1>
-                </td>
-            </tr>
-            <tr>
-                <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: justify;">
-                    <p style="margin: 0;">Hola</p><br>
-                </td>
-            </tr>
-            <tr>
-                <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
-                    <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: auto">
-                        <tr>
-                            <td style="border-radius: 3px; background: #222222; text-align: center;" class="button-td">
-                                <a href="#" style="background: #222222; border: 15px solid #222222; font-family: sans-serif; font-size: 13px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" class="button-a">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">Hola</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- Button : END -->
-                </td>
-            </tr>
-            <!-- 1 Column Text + Button : END -->
+            @yield('content')
 
             <!-- Clear Spacer : BEGIN -->
             <tr>
@@ -191,7 +158,7 @@
                     <table role="presentation" aria-hidden="true" cellspacing="0" cellpadding="0" border="0" width="100%">
                     	<tr>
                             <td style="padding: 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: justify;">
-                                <small>Al activar tu cuenta, das por aceptados los términos y condiciones del sitio. <b>Cotízate</b> se compromete con la protección de los datos personales suministrados, los cuales no serán vendidos, ni cedidos a terceros; todo se realiza en cumplimiento del marco legal de Protección de Datos de Colombia, ley 1581 de 2012.</small> 
+                                <small>@lang('email.terms')</small> 
                             </td>
 							</tr>
                     </table>
@@ -207,9 +174,9 @@
             <tr>
                 <td style="padding: 40px 10px;width: 100%;font-size: 12px; font-family: sans-serif; line-height:18px; text-align: center; color: #888888;" class="x-gmail-data-detectors">
                     <br>
-                    Cotizate<br>Calle 49 # 32 - 75 Barrio Antiguo, Bucaramanga - Santander <br>(+57) 6431612 - 312 3784911
+                    {{ config('app.name') }}<br>@lang('common.sentence')<br><a style="color:#888888" href="https://www.omarbarbosa.com">www.omarbarbosa.com</a>
                     <br><br>
-                    <unsubscribe><a style="color:#888888; text-decoration:underline;" href="#" title="Cancelar suscripción">Cancelar suscripción</a></unsubscribe>
+                <unsubscribe><a style="color:#888888; text-decoration:underline;" href="{{ url('account/delete') }}" title="{{ trans('common.deleteAccount') }}">@lang('common.deleteAccount')</a></unsubscribe>
                 </td>
             </tr>
         </table>

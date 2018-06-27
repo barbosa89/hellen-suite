@@ -4,14 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
-use App\Mail\Welcome;
-use App\Helpers\Random;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreUser;
-use Vinkla\Hashids\Facades\Hashids;
-use Illuminate\Support\Facades\Mail;
 
-class UserController extends Controller
+class ReceptionistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,14 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with([
-            'children' => function ($query) {
-                $query->select('id', 'name', 'parent');
-            }
-        ])->get(['id', 'name', 'email']);
-        // dd($users);
-
-        return view('app.users.index', compact('users'));
+        //
     }
 
     /**
@@ -37,9 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereIn('id', [1, 2])->get(['id', 'name', 'display_name']);
-
-        return view('app.users.create', compact('roles'));
+        //
     }
 
     /**
@@ -48,30 +34,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUser $request)
+    public function store(Request $request)
     {
-        $password = str_random(8);
-        $token = Random::token(40);
-
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->token = $token;
-        $user->password = bcrypt($password);
-
-        if ($user->save()) {
-            $user->attachRole(Hashids::decode($request->role)[0]);
-
-            Mail::to($user->email)->send(new Welcome($user, $password));
-
-            flash(trans('users.successful'))->success();
-
-            return redirect()->route('users.index');
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('users.index');
+        //
     }
 
     /**

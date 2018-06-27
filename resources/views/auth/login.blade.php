@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="main">
-        <h1>{{ config('app.name', 'Welkome') }}</h1>
+        <a class="unstyle-link" href="{{ url('/') }}"><h1>{{ config('app.name', 'Welkome') }}</h1></a>
         <div class="main-w3lsrow">
             <!-- login form -->
             <div class="login-form login-form-left"> 
@@ -38,7 +38,10 @@
                             </form> 	
                         </div> 
                         <div class="login-agileits-bottom"> 
-                            <h6><a href="#">@lang('login.reset')</a></h6>
+                            <h6><a href="{{ route('password.request') }}">@lang('login.reset')</a></h6>
+                        </div> 
+                        <div class="login-agileits-bottom"> 
+                            <h6><a href="{{ route('accounts.activation.form') }}">@lang('login.activateTitle')</a></h6>
                         </div> 
                     @else
                         <div class="head">

@@ -10,7 +10,11 @@
         <ul class="nav navbar-nav pull-right">
             @foreach($options as $option)
                 @if(is_string($option['url']))
-                    <li><a href="{{ $option['url'] }}">{{ $option['option'] }}</a></li>
+                    @if(isset($option['active']) and $option['active'] == true)
+                        <li class="active"><a href="{{ $option['url'] }}">{{ $option['option'] }}</a></li>
+                    @else
+                        <li><a href="{{ $option['url'] }}">{{ $option['option'] }}</a></li>
+                    @endif
                 @else
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">

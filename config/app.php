@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Bogota', // UTC
 
     /*
     |--------------------------------------------------------------------------
@@ -161,7 +161,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         AlbertCht\InvisibleReCaptcha\InvisibleReCaptchaServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
-        Jrean\UserVerification\UserVerificationServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
@@ -225,7 +224,6 @@ return [
         // 'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'Date' => Jenssegers\Date\Date::class,
-        'UserVerification' => Jrean\UserVerification\Facades\UserVerification::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
