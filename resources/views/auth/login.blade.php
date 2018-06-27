@@ -38,7 +38,7 @@
                             </form> 	
                         </div> 
                         <div class="login-agileits-bottom"> 
-                            <h6><a href="{{ route('password.request') }}">@lang('login.reset')</a></h6>
+                            <h6><a href="{{ route('password.request') }}">@lang('login.forgotten')</a></h6>
                         </div> 
                         <div class="login-agileits-bottom"> 
                             <h6><a href="{{ route('accounts.activation.form') }}">@lang('login.activateTitle')</a></h6>

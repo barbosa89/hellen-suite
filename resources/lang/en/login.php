@@ -5,7 +5,7 @@ return array (
   'email' => 'Email',
   'password' => 'Password',
   'signin' => 'Continue',
-  'reset' => 'Forgotten my password',
+  'reset' => 'Reset',
   'support' => 'Technical support',
   'license' => 'MIT license',
   'design' => 'Design by',
@@ -17,4 +17,8 @@ return array (
   'register' => 'Register',
   'activate' => 'Activate',
   'activateTitle' => 'Activate account',
+  'resetPassword' => 'Reset password',
+  'sendLink' => 'Send link',
+  'forgotten' => 'Forgotten my password',
+  'confirmPassword' => 'Confirm password',
 );

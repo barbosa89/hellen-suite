@@ -31,4 +31,5 @@ return array (
   'accountWasActivated' => 'The account was activated.',
   'great' => 'Great',
   'close' => 'Close',
+  'noRecords' => 'No records',
 );

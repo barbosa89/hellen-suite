@@ -40,19 +40,21 @@
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active">
                         <a href="#active" data-toggle="tab">
-                            @lang('users.active')
+                            @lang('users.actives')
                         </a>
                     </li>
-                    <li><a href="#inactive" data-toggle="tab">@lang('users.inactive')</a></li>
+                    <li><a href="#inactive" data-toggle="tab">@lang('users.inactives')</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     @include('app.users.list', [
                         'id' => 'active',
-                        'active' => true
+                        'active' => true,
+                        'status' => true
                     ])
                     @include('app.users.list', [
                         'id' => 'inactive',
-                        'active' => false
+                        'active' => false,
+                        'status' => false
                     ])
                 </div>
             </div>

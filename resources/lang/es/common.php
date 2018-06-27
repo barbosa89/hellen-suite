@@ -31,4 +31,5 @@ return array (
   'accountWasActivated' => 'La cuenta fue activada.',
   'great' => 'Genial',
   'close' => 'Cerrar',
+  'noRecords' => 'No hay registros',
 );

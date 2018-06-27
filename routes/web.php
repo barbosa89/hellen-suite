@@ -26,9 +26,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
-    ->middleware('auth');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

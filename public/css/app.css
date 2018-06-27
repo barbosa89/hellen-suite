@@ -11459,6 +11459,10 @@ button.close {
   font-family: 'Raleway', sans-serif;
 }
 
+.w-well {
+  margin: 20px 0;
+}
+
 .active-session-msn {
   color: #333 !important;
   text-align: justify !important;

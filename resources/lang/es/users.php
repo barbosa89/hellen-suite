@@ -3,10 +3,14 @@
 return array (
   'title' => 'Usuarios',
   'verification' => 'Verificación',
-  'active' => 'Activos',
-  'inactive' => 'Inactivos',
+  'active' => 'Activo',
+  'inactive' => 'Inactivo',
   'root' => 'Root',
   'admin' => 'Administrador',
   'receptionist' => 'Recepcionista',
   'successful' => 'El usuario fue creado con éxito',
+  'actives' => 'Activos',
+  'inactives' => 'Inactivos',
+  'verified' => 'Verificado',
+  'notVerified' => 'No verificado',
 );

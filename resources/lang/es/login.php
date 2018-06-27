@@ -8,7 +8,7 @@ return array (
   'license' => 'Licencia MIT',
   'design' => 'Diseñado por',
   'identification' => 'Iniciar Sesión',
-  'reset' => 'Olvidé mi contraseña',
+  'reset' => 'Restablecer',
   'support' => 'Soporte técnico',
   'designer' => 'W3layouts',
   'hi' => 'Hola',
@@ -17,4 +17,8 @@ return array (
   'register' => 'Crear cuenta',
   'activateTitle' => 'Activar cuenta',
   'activate' => 'Activar',
+  'resetPassword' => 'Restablecer contraseña',
+  'sendLink' => 'Enviar enlace',
+  'forgotten' => 'Olvidé mi contraseña',
+  'confirmPassword' => 'Confirmar contraseña',
 );

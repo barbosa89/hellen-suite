@@ -24,7 +24,7 @@ class UserController extends Controller
             'children' => function ($query) {
                 $query->select('id', 'name', 'parent');
             }
-        ])->get(['id', 'name', 'email']);
+        ])->get(['id', 'name', 'email', 'status', 'verified']);
         // dd($users);
 
         return view('app.users.index', compact('users'));
