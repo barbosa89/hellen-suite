@@ -13,7 +13,7 @@
     <tr>
         <td bgcolor="#ffffff" style="padding: 0 40px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: justify;">
             <p style="margin: 0;">
-                @lang('email.welcome') {{ $user->parent->name }} @lang('email.asCollaborator')
+                @lang('email.welcome') {{ $user->father->name }} @lang('email.asCollaborator')
                 <br><br>
                 @lang('common.accountData'): <br><br>
 

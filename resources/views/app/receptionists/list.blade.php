@@ -25,10 +25,10 @@
                     <div class="crud-list-row">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                <a href="{{ route('users.show', ['id' => Hashids::encode($user->id)]) }}"><p>{{ $user->name }}</p></a>
+                                <p>{{ $user->name }}</p>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-                                <a href="{{ route('users.show', ['id' => Hashids::encode($user->id)]) }}"><p>{{ $user->email }}</p></a>
+                                <p>{{ $user->email }}</p>
                             </div>
                             <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
                                 @if($user->status)
@@ -52,29 +52,20 @@
                                     ],
                                     'options' => [
                                         [
-                                            'option' => 'Test1',
-                                            'url' => '#'
+                                            'type' => 'post',
+                                            'option' => trans('common.delete'),
+                                            'url' => route('receptionists.destroy', [
+                                                'id' => Hashids::encode($user->id)
+                                            ]),
+                                            'id' => 'delete-form-' . $loop->iteration,
+                                            'confirm' => trans('common.confirm')
                                         ],
                                         [
-                                            'option' => 'Test1',
-                                            'url' => '#'
-                                        ],
-                                        [
-                                            'option' => 'Test1',
-                                            'url' => '#'
+                                            'type' => 'divider'
                                         ],
                                         [
                                             'option' => 'Test1',
                                             'url' => '#',
-                                            'divider' => true
-                                        ],
-                                        [
-                                            'option' => 'Test1',
-                                            'url' => '#'
-                                        ],
-                                        [
-                                            'option' => 'Test1',
-                                            'url' => '#'
                                         ],
                                     ]
                                 ])

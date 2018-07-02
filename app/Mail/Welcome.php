@@ -48,7 +48,7 @@ class Welcome extends Mailable implements ShouldQueue
             'roles' => function ($query) {
                 $query->select('id', 'name');
             },
-            'parent' => function ($query) {
+            'father' => function ($query) {
                 $query->select('id', 'name');
             }
         ]);

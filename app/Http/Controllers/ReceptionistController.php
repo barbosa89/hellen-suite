@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
+use App\Mail\Welcome;
+use App\Helpers\Random;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUser;
+use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Mail;
 
 class ReceptionistController extends Controller
 {
@@ -15,7 +20,14 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::whereHas('roles', function ($query)
+        {
+            $query->where('name', 'receptionist');
+        })->where('parent', auth()->user()->id)->get([
+            'id', 'name', 'email', 'status', 'verified'
+        ]);
+
+        return view('app.receptionists.index', compact('users'));
     }
 
     /**
@@ -25,7 +37,9 @@ class ReceptionistController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::where('id', 3)->get(['id', 'name', 'display_name']);
+
+        return view('app.receptionists.create', compact('roles'));
     }
 
     /**
@@ -34,9 +48,31 @@ class ReceptionistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
-        //
+        $password = str_random(8);
+        $token = Random::token(40);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->token = $token;
+        $user->password = bcrypt($password);
+        $user->father()->associate(auth()->user()->id);
+
+        if ($user->save()) {
+            $user->attachRole(Hashids::decode($request->role)[0]);
+
+            Mail::to($user->email)->send(new Welcome($user, $password));
+
+            flash(trans('users.successful'))->success();
+
+            return redirect()->route('receptionists.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('receptionists.index');
     }
 
     /**
@@ -47,7 +83,7 @@ class ReceptionistController extends Controller
      */
     public function show($id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -58,7 +94,7 @@ class ReceptionistController extends Controller
      */
     public function edit($id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -70,7 +106,7 @@ class ReceptionistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -81,6 +117,9 @@ class ReceptionistController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $id = htmlentities($id, ENT_QUOTES);
+        $user = User::where('id', Hashids::decode($id)[0])
+            ->first(['id', 'name']);
+        dd($user);
     }
 }

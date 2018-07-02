@@ -66,7 +66,7 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'parent');
     }
 
-    public function parent()
+    public function father()
     {
         return $this->belongsTo(User::class, 'parent');
     }

@@ -32,4 +32,5 @@ return array (
   'great' => 'Genial',
   'close' => 'Cerrar',
   'noRecords' => 'No hay registros',
+  'confirm' => 'Confirma esta acción',
 );

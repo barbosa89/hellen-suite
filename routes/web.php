@@ -12,10 +12,10 @@
 */
 
 Route::get('/test', function () {
-    $user = \App\User::where('id', 5)->with(['parent', 'roles'])->first();
+    $user = \App\User::where('id', 4)->with(['father', 'roles'])->first();
     $password = str_random(8);
-
-    return view('emails.welkome.admin', compact('user', 'password'));
+    // dd($user->father);
+    return view('emails.welkome.receptionist', compact('user', 'password'));
 });
 
 Route::get('/', function () {
@@ -33,7 +33,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('language/{locale}', 'LanguageController@locale');
 
 require __DIR__ . '/root.php';
-// require __DIR__ . '/admin.php';
+require __DIR__ . '/admin.php';
 require __DIR__ . '/common.php'; 
 
 

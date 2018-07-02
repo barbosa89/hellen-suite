@@ -172,6 +172,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Laraveles\Spanish\SpanishServiceProvider::class,
         Barryvdh\TranslationManager\ManagerServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 
     ],
 

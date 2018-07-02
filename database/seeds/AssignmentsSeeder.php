@@ -14,8 +14,12 @@ class AssignmentsSeeder extends Seeder
     public function run()
     {
         $root = Role::where('name', '=', 'root')->first(['id', 'name']);
+        $admin = Role::where('name', '=', 'admin')->first(['id', 'name']);
 
         $welkome = User::where('name', '=', 'Welkome')->first(['id', 'name']);
-        $welkome->attachRole($root);;
+        $welkome->attachRole($root);
+
+        $adminUser = User::where('name', '=', 'Admin')->first(['id', 'name']);
+        $adminUser->attachRole($admin);
     }
 }

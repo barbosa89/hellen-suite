@@ -32,4 +32,5 @@ return array (
   'great' => 'Great',
   'close' => 'Close',
   'noRecords' => 'No records',
+  'confirm' => 'Confirm this action',
 );

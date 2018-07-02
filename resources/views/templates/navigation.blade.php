@@ -244,42 +244,8 @@
                 <li>
                     <a class="active" href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
-                <li>
-                    <a href="{{ route('users.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios - root|admin</a>
-                </li>
-                <li>
-                    <a href="{{ route('users.index') }}"><i class="fa fa-address-book fa-fw"></i> Registros - recep</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-building fa-fw"></i> Empresas - recep</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-toggle-on fa-fw"></i> Turnos - recep/admin</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-bed fa-fw"></i> Habitaciones - admin/recep</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-car fa-fw"></i> Vehícles - admin/recep</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-product-hunt fa-fw"></i> Products - admin/recep</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-users fa-fw"></i> Huéspedes - admin</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-industry fa-fw"></i> Activos - admin</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-list fa-fw"></i> Servicios - admin</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-file fa-fw"></i> Informes - admin</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estadísticas - admin</a>
-                </li>
+
+                @include('templates.navbar.' . $user->roles->first()->name)
             </ul>
         </div>
         <!-- /.sidebar-collapse -->
