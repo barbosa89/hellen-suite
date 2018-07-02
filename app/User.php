@@ -102,4 +102,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Welkome\Product::class);
     }
+
+    public function companies()
+    {
+        return $this->hasMany(Welkome\Company::class);
+    }
 }

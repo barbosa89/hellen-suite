@@ -13,4 +13,6 @@ return array (
   'inactives' => 'Inactivos',
   'verified' => 'Verificado',
   'notVerified' => 'No verificado',
+  'wasDeleted' => 'El usuario fue eliminado',
+  'wasDisabled' => 'El usuario fue deshabilitado porque tiene registros en el sistema',
 );

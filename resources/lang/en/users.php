@@ -13,4 +13,6 @@ return array (
   'inactives' => 'Inactives',
   'notVerified' => 'Not verified',
   'verified' => 'Verified',
+  'wasDeleted' => 'User was deleted',
+  'wasDisabled' => 'User was disabled because he has records in the system',
 );

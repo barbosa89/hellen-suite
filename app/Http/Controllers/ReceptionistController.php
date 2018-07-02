@@ -119,7 +119,43 @@ class ReceptionistController extends Controller
     {
         $id = htmlentities($id, ENT_QUOTES);
         $user = User::where('id', Hashids::decode($id)[0])
-            ->first(['id', 'name']);
-        dd($user);
+            ->with([
+                'guests' => function ($query)
+                {
+                    $query->select('id', 'user_id');
+                },
+                'vehicles' => function ($query)
+                {
+                    $query->select('id', 'user_id');
+                },
+                'companies' => function ($query)
+                {
+                    $query->select('id', 'user_id');
+                },
+            ])->first(['id', 'name']);
+        
+        $records = $user->guests->count();
+        $records += $user->vehicles->count();
+        $records += $user->companies->count();
+
+        if ($records > 0) {
+            $user->status = false;
+
+            if ($user->update()) {
+                flash(trans('users.wasDisabled'))->success();
+
+                return back();
+            }
+        } else {
+            if ($user->delete()) {
+                flash(trans('users.wasDeleted'))->success();
+
+                return back();
+            }    
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 }

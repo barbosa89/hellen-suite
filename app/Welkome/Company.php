@@ -13,4 +13,9 @@ class Company extends Model
     {
         return $this->belongsToMany(Welkome\Guest::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
