@@ -33,4 +33,6 @@ return array (
   'close' => 'Close',
   'noRecords' => 'No records',
   'confirm' => 'Confirm this action',
+  'attention' => 'Attention',
+  'cancel' => 'Cancel',
 );

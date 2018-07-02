@@ -21,10 +21,12 @@ class CreateEntitiesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
+
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamps();
+            
+                $table->timestamps();
         });
     }
 

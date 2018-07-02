@@ -11,6 +11,6 @@ class Company extends Model
     
     public function guest()
     {
-        return $this->hasMany(Welkome\Guest::class);
+        return $this->belongsToMany(Welkome\Guest::class);
     }
 }

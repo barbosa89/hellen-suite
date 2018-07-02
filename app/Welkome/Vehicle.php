@@ -32,4 +32,9 @@ class Vehicle extends Model
     {
         return $this->belongsTo(Welkome\Guest::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

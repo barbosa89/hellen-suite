@@ -57,8 +57,6 @@
                                             'url' => route('receptionists.destroy', [
                                                 'id' => Hashids::encode($user->id)
                                             ]),
-                                            'id' => 'delete-form-' . $loop->iteration,
-                                            'confirm' => trans('common.confirm')
                                         ],
                                         [
                                             'type' => 'divider'
@@ -80,4 +78,6 @@
             <h2>@lang('common.noRecords')</h2>
         </div>
     @endif
+
+    @include('partials.modal-delete')
 </div>

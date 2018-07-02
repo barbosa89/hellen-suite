@@ -70,4 +70,36 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'parent');
     }
+    
+    #####################################
+    
+    public function guests()
+    {
+        return $this->hasMany(Welkome\Guest::class);
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Welkome\Service::class);
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Welkome\Room::class);
+    }
+
+    public function vehicles()
+    {
+        return $this->hasMany(Welkome\Vehicle::class);
+    }
+
+    public function assets()
+    {
+        return $this->hasMany(Welkome\Asset::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Welkome\Product::class);
+    }
 }

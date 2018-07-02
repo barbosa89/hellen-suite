@@ -35,7 +35,7 @@ class Guest extends Model
 
     public function company()
     {
-        return $this->belongsTo(Welkome\Company::class);
+        return $this->belongsToMany(Welkome\Company::class);
     }
 
     public function invoices()
@@ -51,5 +51,10 @@ class Guest extends Model
     public function vehicle()
     {
         return $this->hasMany(Welkome\Vehicle::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

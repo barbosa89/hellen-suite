@@ -1966,3 +1966,17 @@ function changeIcon(el, e, first, second) {
 function sendFormByConfirmation() {
 
 }
+
+function deleteResource(el, e) {
+    var data = {
+        '{url}': el.getAttribute('data-url'),
+    }
+
+    var modal = $('div.hide > div#modal-delete').prop('outerHTML');
+
+    $.each(data, function(key, value) {
+        modal = modal.replace(new RegExp(key, 'g'), value);
+    });
+
+    $(modal).modal('show');
+}

@@ -11,11 +11,6 @@ class Asset extends Model
     use Searchable;
     use LogsActivity;
     
-    public function rooms()
-    {
-        return $this->belongsToMany(Welkome\Room::class);
-    }
-
     /**
      * Get the indexable data array for the model.
      *
@@ -26,5 +21,15 @@ class Asset extends Model
         $array = $this->toArray();
 
         return $array;
+    }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Welkome\Room::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -32,4 +32,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Welkome\Room::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

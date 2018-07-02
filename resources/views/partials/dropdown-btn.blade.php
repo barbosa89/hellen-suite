@@ -12,14 +12,10 @@
                 
                     @case('post')
                         <li>
-                            <a href="{{ $option['url'] }}" onclick="event.preventDefault(); {{ isset($option['confirm']) ? 'return confirm(\''. $option['confirm'] .'\');' : '' }} document.getElementById('{{ $option['id'] }}').submit();">
-                                {{ $option['option'] }}
-                            </a>
-        
-                            <form id="{{ $option['id'] }}" action="{{ $option['url'] }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
+                            @include('partials.modal-btn', [
+                                'url' => $option['url'],
+                                'option' => $option['option']
+                            ])
                         </li>
                         @break
                 

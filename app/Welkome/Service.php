@@ -13,4 +13,9 @@ class Service extends Model
     {
         return $this->belongsToMany(Welkome\Invoice::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
