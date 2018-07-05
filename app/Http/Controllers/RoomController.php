@@ -14,7 +14,10 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $rooms = Room::where('user_id', auth()->user()->id)
+            ->paginate(20, ['id', 'number', 'description', 'value', 'status']);
+        
+        return view('app.rooms.index', compact('rooms'));
     }
 
     /**

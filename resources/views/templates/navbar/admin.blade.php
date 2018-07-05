@@ -1,11 +1,11 @@
 <li>
-    <a href="{{ route('receptionists.index') }}"><i class="fa fa-user fa-fw"></i> Usuarios</a>
+    <a href="{{ route('receptionists.index') }}"><i class="fa fa-user fa-fw"></i> @lang('users.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-toggle-on fa-fw"></i> Turnos</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-bed fa-fw"></i> Habitaciones</a>
+    <a href="{{ route('rooms.index') }}"><i class="fa fa-bed fa-fw"></i> @lang('rooms.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-car fa-fw"></i> Vehícles</a>

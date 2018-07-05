@@ -35,4 +35,5 @@ return array (
   'confirm' => 'Confirm this action',
   'attention' => 'Attention',
   'cancel' => 'Cancel',
+  'all' => 'All',
 );

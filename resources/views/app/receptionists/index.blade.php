@@ -11,27 +11,6 @@
                     'option' => trans('common.new'),
                     'url' => route('receptionists.create')
                 ],
-                [
-                    'option' => 'Test',
-                    'url' => '#'
-                ],
-                [
-                    'option' => 'Test 1 y otro',
-                    'url' => [
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ], 
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ],  
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ], 
-                    ]
-                ]
             ]
         ])
 
