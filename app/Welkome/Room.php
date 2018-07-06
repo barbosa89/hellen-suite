@@ -11,16 +11,21 @@ class Room extends Model
 
     public function invoices()
     {
-        return $this->belongsToMany(Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Invoice::class);
     }
 
     public function assets()
     {
-        return $this->belongsToMany(Welkome\Asset::class);
+        return $this->belongsToMany(\App\Welkome\Asset::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(\App\Welkome\Product::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

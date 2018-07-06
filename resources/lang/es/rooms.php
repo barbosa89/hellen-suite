@@ -6,4 +6,6 @@ return array (
   'free' => 'Libre',
   'maintenance' => 'Mantenimiento',
   'disabled' => 'Deshabilitado',
+  'successful' => 'La habitación fue creada satisfactoriamente',
+  'room' => 'Rooms',
 );

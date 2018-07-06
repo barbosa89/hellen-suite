@@ -1,3 +1,3 @@
-<a href="#" data-url="{{ $url }}" id="modal-delete" onclick="deleteResource(this, event)">
+<a href="#" data-url="{{ $url }}" data-method="{{ $method }}" id="modal-confirm" onclick="confirmAction(this, event)">
     {{ $option }}
 </a>

@@ -11,6 +11,6 @@ class VehicleType extends Model
 
     public function vehicle()
     {
-        return $this->hasMany(Welkome\Vehicle::class, 'vehicle_type_id');
+        return $this->hasMany(\App\Welkome\Vehicle::class, 'vehicle_type_id');
     }
 }

@@ -25,16 +25,16 @@ class Vehicle extends Model
 
     public function type()
     {
-        return $this->belongsTo(Welkome\VehicleType::class, 'vehicle_type_id');
+        return $this->belongsTo(\App\Welkome\VehicleType::class, 'vehicle_type_id');
     }
 
     public function guest()
     {
-        return $this->belongsTo(Welkome\Guest::class);
+        return $this->belongsTo(\App\Welkome\Guest::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

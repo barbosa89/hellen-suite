@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        @include('partials.modal-delete')
+        @include('partials.modal-confirm')
     </div>
 
 @endsection

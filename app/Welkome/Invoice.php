@@ -25,31 +25,31 @@ class Invoice extends Model
 
     public function guests()
     {
-        return $this->belongsToMany(Welkome\Guest::class);
+        return $this->belongsToMany(\App\Welkome\Guest::class);
     }
 
     public function rooms()
     {
-        return $this->belongsToMany(Welkome\Room::class);
+        return $this->belongsToMany(\App\Welkome\Room::class);
     }
 
     public function payments()
     {
-        return $this->hasMany(Welkome\Payment::class);
+        return $this->hasMany(\App\Welkome\Payment::class);
     }
 
     public function products()
     {
-        return $this->belongsToMany(Welkome\Product::class);
+        return $this->belongsToMany(\App\Welkome\Product::class);
     }
 
     public function services()
     {
-        return $this->belongsToMany(Welkome\Service::class);
+        return $this->belongsToMany(\App\Welkome\Service::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

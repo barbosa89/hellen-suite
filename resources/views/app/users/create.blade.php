@@ -22,7 +22,7 @@
                     
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">@lang('common.name'):</label>
-                        <input type="text" class="form-control" name="name" id="name">
+                        <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required>
 
                         @if ($errors->has('name'))
                             <span class="help-block">
@@ -33,7 +33,7 @@
                     
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email">@lang('common.email'):</label>
-                        <input type="email" class="form-control" name="email" id="email">
+                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" required>
 
                         @if ($errors->has('email'))
                             <span class="help-block">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                         <label for="pwd">Rol:</label>
-                        <select class="form-control selectpicker" title="Elige un rol" name="role" id="role">
+                        <select class="form-control selectpicker" title="Elige un rol" name="role" id="role" required>
                             @foreach($roles as $role)
                                 @if($loop->first)
                                     <option selected value="{{ Hashids::encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>

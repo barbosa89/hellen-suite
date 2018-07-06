@@ -11,11 +11,11 @@ class Company extends Model
     
     public function guest()
     {
-        return $this->belongsToMany(Welkome\Guest::class);
+        return $this->belongsToMany(\App\Welkome\Guest::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

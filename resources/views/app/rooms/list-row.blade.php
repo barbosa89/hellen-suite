@@ -1,45 +1,43 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p>{{ $row->name }}</p>
+            <p><a href="{{ route('rooms.show', ['room' => $row->id]) }}">{{ $row->number }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-            <p>{{ $row->email }}</p>
+            <p><a href="{{ route('rooms.show', ['room' => $row->id]) }}">{{ number_format($row->value, 2, ',', '.') }}</a></p>
         </div>
-        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
-            @if($row->status)
-                <p>@lang('users.active')</p>
-            @else
-                <p>@lang('users.inactive')</p>
-            @endif
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
+            <p>
+                <a href="{{ route('rooms.show', ['room' => $row->id]) }}">
+                    @include('partials.room-status', ['status' => $row->status])
+                </a>
+            </p>            
         </div>
-        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
-            @if($row->verified)
-                <p>@lang('users.verified')</p>
-            @else
-                <p>@lang('users.notVerified')</p>
-            @endif
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
             @include('partials.dropdown-btn', [
-                'icons' => [
-                    'first' => 'fa-caret-down', 
-                    'second' => 'fa-caret-up', 
-                ],
                 'options' => [
                     [
-                        'type' => 'post',
-                        'option' => trans('common.delete'),
-                        'url' => route('receptionists.destroy', [
-                            'id' => Hashids::encode($row->id)
-                        ]),
+                        'option' => trans('common.seeMore'),
+                        'url' => route('rooms.show', ['room' => $row->id]),
+                    ],
+                    [
+                        'option' => trans('assets.add'),
+                        'url' => '#',
+                    ],
+                    [
+                        'option' => trans('products.add'),
+                        'url' => '#',
                     ],
                     [
                         'type' => 'divider'
                     ],
                     [
-                        'option' => 'Test1',
-                        'url' => '#',
+                        'type' => 'confirm',
+                        'option' => trans('common.delete'),
+                        'url' => route('rooms.destroy', [
+                            'id' => Hashids::encode($row->id)
+                        ]),
+                        'method' => 'DELETE'
                     ],
                 ]
             ])

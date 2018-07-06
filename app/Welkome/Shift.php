@@ -25,11 +25,11 @@ class Shift extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
     public function invoices()
     {
-        return $this->belongsToMany(Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Invoice::class);
     }
 }

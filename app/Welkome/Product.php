@@ -25,16 +25,16 @@ class Product extends Model
     
     public function invoices()
     {
-        return $this->belongsToMany(Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Invoice::class);
     }
 
     public function rooms()
     {
-        return $this->belongsToMany(Welkome\Room::class);
+        return $this->belongsToMany(\App\Welkome\Room::class);
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\User::class);
     }
 }

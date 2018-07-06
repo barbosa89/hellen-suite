@@ -19,12 +19,13 @@ function sendFormByConfirmation() {
 
 }
 
-function deleteResource(el, e) {
+function confirmAction(el, e) {
     var data = {
         '{url}': el.getAttribute('data-url'),
+        '{method}': el.getAttribute('data-method'),
     }
 
-    var modal = $('div.hide > div#modal-delete').prop('outerHTML');
+    var modal = $('div.hide > div#modal-confirm').prop('outerHTML');
 
     $.each(data, function(key, value) {
         modal = modal.replace(new RegExp(key, 'g'), value);

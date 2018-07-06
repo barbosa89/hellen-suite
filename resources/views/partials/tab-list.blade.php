@@ -21,8 +21,8 @@
             <div class="tab-pane fade in active" id="{{ $tab['id'] }}">
                 @include('partials.list', [
                     'data' => $data,
-                    'listHeading' => 'rooms.list-heading',
-                    'listRow' => 'rooms.list-row',
+                    'listHeading' => $listHeading,
+                    'listRow' => $listRow,
                     'where' => isset($tab['where']) ? $tab['where'] : null,
                 ])
             </div>
@@ -30,8 +30,8 @@
             <div class="tab-pane fade in" id="{{ $tab['id'] }}">
                 @include('partials.list', [
                     'data' => $data,
-                    'listHeading' => 'rooms.list-heading',
-                    'listRow' => 'rooms.list-row',
+                    'listHeading' => $listHeading,
+                    'listRow' => $listRow,
                     'where' => isset($tab['where']) ? $tab['where'] : null,
                 ])
             </div>

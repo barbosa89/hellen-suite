@@ -16,7 +16,7 @@ class CreateRoomsTable extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('number')->unique();
-            $table->string('description');
+            $table->text('description');
             $table->decimal('value', 10, 2);
 
             /**
@@ -25,7 +25,7 @@ class CreateRoomsTable extends Migration
              * 2: Maintenance
              * 3: Disabled
              */
-            $table->enum('status', [0, 1, 2, 3]);
+            $table->enum('status', [0, 1, 2, 3])->default(1);
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')

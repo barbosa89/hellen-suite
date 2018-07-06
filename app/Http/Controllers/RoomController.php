@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Welkome\Room;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoom;
 
 class RoomController extends Controller
 {
@@ -27,7 +28,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.rooms.create');
     }
 
     /**
@@ -36,9 +37,24 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoom $request)
     {
-        //
+        $room = new Room();
+        $room->number = $request->number;
+        $room->value = $request->value;
+        $room->description = $request->description;
+        $room->status = '1';
+        $room->user()->associate(auth()->user()->id);
+
+        if ($room->save()) {
+            flash(trans('rooms.successful'))->success();
+
+            return redirect()->route('rooms.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -49,7 +65,18 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        $room->load([
+            'assets' => function ($query)
+            {
+                $query->select('id', 'number', 'description', 'brand', 'model', 'reference');
+            },
+            'products' => function ($query)
+            {
+                $query->select('id', 'description', 'brand', 'reference', 'price');
+            },
+        ]);
+
+        return view('app.rooms.show', compact('room'));
     }
 
     /**
