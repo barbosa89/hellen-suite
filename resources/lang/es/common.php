@@ -47,4 +47,12 @@ return array (
   'createdSuccessfully' => 'El registro fue creado exitosamente',
   'updatedSuccessfully' => 'El registro fue actualizado exitosamente',
   'deletedSuccessfully' => 'El registro fue eliminado exitosamente',
+  'brand' => 'Marca',
+  'reference' => 'Referencia',
+  'price' => 'Precio',
+  'quantity' => 'Cantidad',
+  'noData' => 'Sin datos',
+  'required' => 'Requerido',
+  'stats' => 'Estadísticas',
+  'chart' => 'Gráfica',
 );

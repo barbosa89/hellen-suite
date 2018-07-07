@@ -47,4 +47,12 @@ return array (
   'createdSuccessfully' => 'The record was created successfully',
   'updatedSuccessfully' => 'The registry was successfully updated',
   'deletedSuccessfully' => 'The record was successfully deleted',
+  'brand' => 'Brand',
+  'price' => 'Price',
+  'reference' => 'Reference',
+  'quantity' => 'Quantity',
+  'noData' => 'No data',
+  'required' => 'Required',
+  'stats' => 'Stats',
+  'chart' => 'Chart',
 );

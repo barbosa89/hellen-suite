@@ -19,6 +19,8 @@ class CreateProductsTable extends Migration
             $table->string('brand', 100)->nullable();
             $table->string('reference', 100)->nullable();
             $table->decimal('price', 10, 2);
+            $table->integer('quantity');
+            $table->boolean('status')->default(true);
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')

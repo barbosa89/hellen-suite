@@ -129,6 +129,30 @@ $text-default: white;
     }
 }
 
+.spacer-xs {
+    width: 100%;
+    height: 15px;
+    @include clearfix;
+}
+
+.spacer-sm {
+    width: 100%;
+    height: 30px;
+    @include clearfix;
+}
+
+.spacer-md {
+    width: 100%;
+    height: 45px;
+    @include clearfix;
+}
+
+.spacer-lg {
+    width: 100%;
+    height: 60px;
+    @include clearfix;
+}
+
 
 /*==========  Mobile First Method  ==========*/
 

@@ -11531,6 +11531,66 @@ button.close {
   background-color: #f8f8f8;
 }
 
+.spacer-xs {
+  width: 100%;
+  height: 15px;
+}
+
+.spacer-xs:before,
+.spacer-xs:after {
+  content: " ";
+  display: table;
+}
+
+.spacer-xs:after {
+  clear: both;
+}
+
+.spacer-sm {
+  width: 100%;
+  height: 30px;
+}
+
+.spacer-sm:before,
+.spacer-sm:after {
+  content: " ";
+  display: table;
+}
+
+.spacer-sm:after {
+  clear: both;
+}
+
+.spacer-md {
+  width: 100%;
+  height: 45px;
+}
+
+.spacer-md:before,
+.spacer-md:after {
+  content: " ";
+  display: table;
+}
+
+.spacer-md:after {
+  clear: both;
+}
+
+.spacer-lg {
+  width: 100%;
+  height: 60px;
+}
+
+.spacer-lg:before,
+.spacer-lg:after {
+  content: " ";
+  display: table;
+}
+
+.spacer-lg:after {
+  clear: both;
+}
+
 /*==========  Mobile First Method  ==========*/
 
 /* Custom, iPhone Retina */

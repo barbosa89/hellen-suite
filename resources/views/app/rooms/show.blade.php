@@ -92,6 +92,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>@lang('products.title')</h3>
+                
                 @include('partials.list', [
                     'data' => $room->assets,
                     'listHeading' => 'app.assets.list-heading',

@@ -121,7 +121,7 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoom $request, $id)
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
