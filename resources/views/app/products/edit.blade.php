@@ -69,6 +69,12 @@
                 </form> 
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spacer-md"></div>
+            </div>
+        </div>
     </div>
 
 @endsection

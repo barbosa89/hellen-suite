@@ -60,19 +60,20 @@
         ])
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
                 <h2>@lang('rooms.room') No. {{ $room->number }}</h2>
             </div>
-            <div class="col-md-6">
-                <h2>@lang('common.value'): {{ number_format($room->value, 2, ',', '.') }}</h2>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
+                <h2>@lang('common.value'):</h2>
+                <p>{{ number_format($room->value, 2, ',', '.') }}</p>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
                 <h3>@lang('common.description')</h3>
                 <p>{{ $room->description }}</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
                 <h3>@lang('common.status')</h3>
                 <p>@include('partials.room-status', ['status' => $room->status])</p>
             </div>
