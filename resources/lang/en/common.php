@@ -42,4 +42,9 @@ return array (
   'seeMore' => 'See more',
   'confirmAction' => 'Confirm this action',
   'continue' => 'Continue',
+  'edit' => 'Edit',
+  'editionOf' => 'Edition of',
+  'createdSuccessfully' => 'The record was created successfully',
+  'updatedSuccessfully' => 'The registry was successfully updated',
+  'deletedSuccessfully' => 'The record was successfully deleted',
 );

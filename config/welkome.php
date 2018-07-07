@@ -16,6 +16,8 @@ return [
     |
     */
 
-    'env' => env('ENVIRONMENT', 'web')
+    'env' => env('ENVIRONMENT', 'web'),
+
+    'paginate' => 20
 
 ];

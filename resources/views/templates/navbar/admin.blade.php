@@ -11,7 +11,7 @@
     <a href="#"><i class="fa fa-car fa-fw"></i> Vehícles</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-product-hunt fa-fw"></i> Products</a>
+    <a href="{{ route('products.index') }}"><i class="fa fa-product-hunt fa-fw"></i> @lang('products.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-users fa-fw"></i> Huéspedes</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
+use App\Helpers\Id;
 use App\Mail\Welcome;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
@@ -117,42 +118,15 @@ class ReceptionistController extends Controller
      */
     public function destroy($id)
     {
-        $id = htmlentities($id, ENT_QUOTES);
-        $user = User::where('id', Hashids::decode($id)[0])
-            ->with([
-                'guests' => function ($query)
-                {
-                    $query->select('id', 'user_id');
-                },
-                'vehicles' => function ($query)
-                {
-                    $query->select('id', 'user_id');
-                },
-                'companies' => function ($query)
-                {
-                    $query->select('id', 'user_id');
-                },
-            ])->first(['id', 'name']);
-        
-        $records = $user->guests->count();
-        $records += $user->vehicles->count();
-        $records += $user->companies->count();
+        $user = User::where('id', Id::get($id))
+            ->where('parent', auth()->user()->id)
+            ->first(['id', 'name']);
 
-        if ($records > 0) {
-            $user->status = false;
+        if ($user->delete()) {
+            flash(trans('users.wasDeleted'))->success();
 
-            if ($user->update()) {
-                flash(trans('users.wasDisabled'))->success();
-
-                return back();
-            }
-        } else {
-            if ($user->delete()) {
-                flash(trans('users.wasDeleted'))->success();
-
-                return back();
-            }    
-        }
+            return back();
+        }    
 
         flash(trans('common.error'))->error();
 

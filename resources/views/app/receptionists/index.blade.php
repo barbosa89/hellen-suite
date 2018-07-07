@@ -16,28 +16,16 @@
 
         <div class="row">
             <div class="col-md-12">
-                <ul id="myTab" class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#active" data-toggle="tab">
-                            @lang('users.actives')
-                        </a>
-                    </li>
-                    <li><a href="#inactive" data-toggle="tab">@lang('users.inactives')</a></li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                    @include('app.receptionists.list', [
-                        'id' => 'active',
-                        'active' => true,
-                        'status' => true
-                    ])
-                    @include('app.receptionists.list', [
-                        'id' => 'inactive',
-                        'active' => false,
-                        'status' => false
-                    ])
-                </div>
+                @include('partials.list', [
+                    'data' => $users,
+                    'listHeading' => 'app.receptionists.list-heading',
+                    'listRow' => 'app.receptionists.list-row',
+                    'where' => null
+                ])
             </div>
         </div>
     </div>
+
+    @include('partials.modal-confirm')
 
 @endsection

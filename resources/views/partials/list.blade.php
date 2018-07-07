@@ -10,6 +10,16 @@
                 @endforeach
             </div>
         </div>
+
+        @if($data->count() >= config('welkome.paginate'))
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        {{ $data->render() }}
+                    </div>
+                </div>
+            </div>
+        @endif
     @else
         @include('partials.no-records')
     @endif

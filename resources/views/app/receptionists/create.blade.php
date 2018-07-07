@@ -9,7 +9,7 @@
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => route('users.index')
+                    'url' => route('receptionists.index')
                 ],
             ]
         ])

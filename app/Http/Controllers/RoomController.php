@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use App\Helpers\Id;
 use App\Welkome\Room;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreRoom;
+use App\Http\Requests\{StoreRoom, UpdateRoom};
 
 class RoomController extends Controller
 {
@@ -16,7 +18,9 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::where('user_id', auth()->user()->id)
-            ->paginate(20, ['id', 'number', 'description', 'value', 'status']);
+            ->paginate(config('welkome.paginate'), [
+                'id', 'number', 'description', 'value', 'status', 'user_id'
+            ])->sort();
         
         return view('app.rooms.index', compact('rooms'));
     }
@@ -47,7 +51,7 @@ class RoomController extends Controller
         $room->user()->associate(auth()->user()->id);
 
         if ($room->save()) {
-            flash(trans('rooms.successful'))->success();
+            flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('rooms.index');
         }
@@ -60,11 +64,21 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Room  $room
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Room $room)
+    public function show($id)
     {
+        $room = User::find(auth()->user()->id)->rooms()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'number', 'description', 'value', 'status', 'user_id'
+            ]);
+        
+        if (empty($room)) {
+            abort(404);
+        }
+
         $room->load([
             'assets' => function ($query)
             {
@@ -82,34 +96,105 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Room  $room
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Room $room)
+    public function edit($id)
     {
-        //
+        $room = User::find(auth()->user()->id)->rooms()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'number', 'description', 'value', 'status', 'user_id'
+            ]);
+
+        if (empty($room)) {
+            abort(404);
+        }
+
+        return view('app.rooms.edit', compact('room'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Room  $room
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(Request $request, $id)
     {
-        //
+        $room = User::find(auth()->user()->id)->rooms()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'number', 'description', 'value', 'status', 'user_id'
+            ]);
+
+        if (empty($room)) {
+            abort(404);
+        }
+
+        $room->number = $request->number;
+        $room->value = $request->value;
+        $room->description = $request->description;
+
+        if ($room->update()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('rooms.show', [
+                'room' => Hashids::encode($room->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('rooms.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Room  $room
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Room $room)
+    public function destroy($id)
     {
-        //
+        $room = User::find(auth()->user()->id)->rooms()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'number', 'description', 'value', 'status', 'user_id'
+            ]);
+
+        if (empty($room)) {
+            abort(404);
+        }
+
+        $room->load([
+            'invoices' => function ($query)
+            {
+                $query->select('id');
+            },
+        ]);
+
+        if ($room->invoices->count() > 0) {
+            $room->status = '3';
+
+            if ($room->update()) {
+                flash(trans('rooms.wasDisabled'))->success();
+
+                return redirect()->route('rooms.show', [
+                    'room' => Hashids::encode($room->id)
+                ]);
+            }
+        } else {
+            if ($room->delete()) {
+                flash(trans('common.deletedSuccessfully'))->success();
+
+                return redirect()->route('rooms.index');
+            }
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('rooms.index');
     }
 }

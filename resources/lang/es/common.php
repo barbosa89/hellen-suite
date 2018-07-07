@@ -42,4 +42,9 @@ return array (
   'seeMore' => 'Ver más',
   'confirmAction' => 'Confirma esta acción',
   'continue' => 'Continuar',
+  'edit' => 'Editar',
+  'editionOf' => 'Edición de',
+  'createdSuccessfully' => 'El registro fue creado exitosamente',
+  'updatedSuccessfully' => 'El registro fue actualizado exitosamente',
+  'deletedSuccessfully' => 'El registro fue eliminado exitosamente',
 );

@@ -8,4 +8,6 @@ return array (
   'disabled' => 'Deshabilitado',
   'successful' => 'La habitación fue creada satisfactoriamente',
   'room' => 'Rooms',
+  'wasDisabled' => 'La habitación fue deshabilitada',
+  'intoMaintenance' => 'La habitación entro a mantenimiento',
 );

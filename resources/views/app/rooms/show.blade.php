@@ -37,6 +37,12 @@
                             'type' => 'divider'
                         ],
                         [
+                            'option' => trans('common.edit'),
+                            'url' => route('rooms.edit', [
+                                'room' => Hashids::encode($room->id)
+                            ]),
+                        ],
+                        [
                             'type' => 'confirm',
                             'option' => trans('common.delete'),
                             'url' => route('rooms.destroy', [
@@ -48,7 +54,7 @@
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => route('rooms.index')
+                    'url' => url()->previous()
                 ],
             ]
         ])
