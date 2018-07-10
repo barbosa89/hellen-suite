@@ -20,7 +20,7 @@
     <a href="#"><i class="fa fa-industry fa-fw"></i> Activos</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-list fa-fw"></i> Servicios</a>
+    <a href="{{ route('services.index') }}"><i class="fa fa-list fa-fw"></i> @lang('services.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-file fa-fw"></i> Informes</a>

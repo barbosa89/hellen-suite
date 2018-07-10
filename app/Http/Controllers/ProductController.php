@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
 use App\Helpers\Id;
 use App\Welkome\Product;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('user_id', auth()->user()->id)
+        $products = User::find(auth()->user()->id)->products()
             ->paginate(config('welkome.paginate'), [
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
             ])->sort();
@@ -165,6 +166,10 @@ class ProductController extends Controller
         ]);
 
         if ($product->invoices->count() > 0) {
+            $now = Carbon::now()->toDateTimeString();
+            $description = $product->description . ' (' . trans('common.disabled') . '-' . $now . ')';
+
+            $product->description = $description;
             $product->status = 0;
 
             if ($product->update()) {

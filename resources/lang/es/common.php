@@ -55,4 +55,5 @@ return array (
   'required' => 'Requerido',
   'stats' => 'Estadísticas',
   'chart' => 'Gráfica',
+  'disabled' => 'Deshabilitado',
 );

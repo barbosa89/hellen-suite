@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Carbon\Carbon;
+use App\Helpers\Id;
 use App\Welkome\Service;
 use Illuminate\Http\Request;
+use App\Http\Requests\{StoreService, UpdateService};
 
 class ServiceController extends Controller
 {
@@ -14,7 +18,12 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = User::find(auth()->user()->id)->services()
+            ->paginate(config('welkome.paginate'), [
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ])->sortByDesc('created_at');
+
+        return view('app.services.index', compact('services'));
     }
 
     /**
@@ -24,7 +33,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.services.create');
     }
 
     /**
@@ -33,53 +42,199 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreService $request)
     {
-        //
+        $service = new service();
+        $service->description = $request->description;
+        $service->price = (float) $request->price;
+        $service->user()->associate(auth()->user()->id);
+
+        if ($service->save()) {
+            flash(trans('common.createdSuccessfully'))->success();
+
+            return redirect()->route('services.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('services.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Service  $service
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Service $service)
+    public function show($id)
     {
-        //
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        return view('app.services.show', compact('service'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Service  $service
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Service $service)
+    public function edit($id)
     {
-        //
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        return view('app.services.edit', compact('service'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Service  $service
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Service $service)
+    public function update(UpdateService $request, $id)
     {
-        //
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id',
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->description = $request->description;
+        $service->price = (float) $request->price;
+
+        if ($service->update()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('services.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('services.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Service  $service
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Service $service)
+    public function destroy($id)
     {
-        //
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->load([
+            'invoices' => function ($query)
+            {
+                $query->select('id');
+            },
+        ]);
+
+        if ($service->invoices->count() > 0) {
+            $now = Carbon::now()->toDateTimeString();
+            $description = $service->description . ' (' . trans('common.disabled') . '-' . $now . ')';
+
+            $service->description = $description;
+            $service->status = 0;
+
+            if ($service->update()) {
+                flash(trans('services.wasDisabled'))->success();
+
+                return redirect()->route('services.index');
+            }
+        } else {
+            if ($service->delete()) {
+                flash(trans('common.deletedSuccessfully'))->success();
+
+                return redirect()->route('services.index');
+            }
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('services.index');
+    }
+
+    /**
+     * Increase service existence or quantity.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showIncreaseForm($id)
+    {
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        return view('app.services.increase', compact('service'));
+    }
+
+    /**
+     * Increase the service's quantity in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function increase(Increaseservice $request, $id)
+    {
+        $service = User::find(auth()->user()->id)->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->quantity += $request->quantity;
+
+        if ($service->update()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('services.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('services.index');
     }
 }

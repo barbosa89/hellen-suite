@@ -55,4 +55,5 @@ return array (
   'required' => 'Required',
   'stats' => 'Stats',
   'chart' => 'Chart',
+  'disabled' => 'Disabled',
 );

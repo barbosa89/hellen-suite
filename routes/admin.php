@@ -1,7 +1,6 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'role:admin']], function() {
-    Route::resource('rooms', 'RoomController');
 
     Route::post('products/{id}/increase', 'ProductController@increase')
         ->name('products.increase');
@@ -10,4 +9,8 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
     Route::resource('products', 'ProductController');
     
     Route::resource('receptionists', 'ReceptionistController');
+
+    Route::resource('services', 'ServiceController');
+
+    Route::resource('rooms', 'RoomController');
 });
