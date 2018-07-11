@@ -48,9 +48,9 @@ class Guest extends Model
         return $this->belongsTo(\App\Welkome\IdentificationType::class, 'identification_type_id');
     }
 
-    public function vehicle()
+    public function vehicles()
     {
-        return $this->hasMany(\App\Welkome\Vehicle::class);
+        return $this->belongsToMany(\App\Welkome\Vehicle::class);
     }
 
     public function user()

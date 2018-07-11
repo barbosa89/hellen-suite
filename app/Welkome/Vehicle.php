@@ -28,9 +28,9 @@ class Vehicle extends Model
         return $this->belongsTo(\App\Welkome\VehicleType::class, 'vehicle_type_id');
     }
 
-    public function guest()
+    public function guests()
     {
-        return $this->belongsTo(\App\Welkome\Guest::class);
+        return $this->belongsToMany(\App\Welkome\Guest::class);
     }
 
     public function user()

@@ -26,5 +26,14 @@ class UsersTableSeeder extends Seeder
             'status' => true, 
             'verified' => true
         ]);
+
+        User::create([
+            'name' => 'Recep', 
+            'email' => 'recep@welkome.com', 
+            'password' => bcrypt('recep'), 
+            'status' => true, 
+            'verified' => true,
+            'parent' => 2
+        ]);
     }
 }

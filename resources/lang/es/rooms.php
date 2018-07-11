@@ -10,4 +10,5 @@ return array (
   'room' => 'Rooms',
   'wasDisabled' => 'La habitación fue deshabilitada',
   'intoMaintenance' => 'La habitación entro a mantenimiento',
+  'reserve' => 'Reservar',
 );

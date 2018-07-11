@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompanyGuestTable extends Migration
+class CreateGuestVehicleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateCompanyGuestTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_guest', function (Blueprint $table) {
-            $table->integer('company_id')->unsigned();
+        Schema::create('guest_vehicle', function (Blueprint $table) {
             $table->bigInteger('guest_id')->unsigned();
+            $table->integer('vehicle_id')->unsigned();
+            $table->datetime('created_at')->nullable();
             $table->integer('invoice')->nullable();
             
-
-            $table->foreign('company_id')->references('id')->on('companies')
-                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('guest_id')->references('id')->on('guests')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -33,6 +33,6 @@ class CreateCompanyGuestTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_guest');
+        Schema::dropIfExists('guest_vehicle');
     }
 }

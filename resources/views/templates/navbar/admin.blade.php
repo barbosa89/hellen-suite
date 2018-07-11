@@ -2,6 +2,9 @@
     <a href="{{ route('receptionists.index') }}"><i class="fa fa-user fa-fw"></i> @lang('users.title')</a>
 </li>
 <li>
+    <a href="#"><i class="fa fa-credit-card fa-fw"></i> @lang('invoices.title')</a>
+</li>
+<li>
     <a href="#"><i class="fa fa-toggle-on fa-fw"></i> Turnos</a>
 </li>
 <li>
