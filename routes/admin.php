@@ -1,6 +1,9 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'role:admin']], function() {
+    Route::get('assets/{id}/assign', 'AssetController@assign')
+        ->name('assets.assign');
+    Route::resource('assets', 'AssetController');
 
     Route::post('products/{id}/increase', 'ProductController@increase')
         ->name('products.increase');

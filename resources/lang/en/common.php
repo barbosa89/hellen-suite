@@ -56,4 +56,8 @@ return array (
   'stats' => 'Stats',
   'chart' => 'Chart',
   'disabled' => 'Disabled',
+  'location' => 'Location',
+  'model' => 'Model',
+  'assignedTo' => 'Assigned to',
+  'assign' => 'Assign',
 );

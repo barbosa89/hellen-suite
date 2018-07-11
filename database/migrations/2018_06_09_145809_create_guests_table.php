@@ -18,6 +18,8 @@ class CreateGuestsTable extends Migration
             $table->string('dni', 15)->unique();
             $table->string('name', 150);
             $table->string('last_name', 150);
+            $table->enum('gender', ['m', 'f']);
+            $table->date('birthdate')->nullable();
             
             $table->bigInteger('responsible_of')->default(0);
             

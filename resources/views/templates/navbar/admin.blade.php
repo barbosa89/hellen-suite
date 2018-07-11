@@ -17,7 +17,7 @@
     <a href="#"><i class="fa fa-users fa-fw"></i> Huéspedes</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-industry fa-fw"></i> Activos</a>
+    <a href="{{ route('assets.index') }}"><i class="fa fa-industry fa-fw"></i> @lang('assets.title')</a>
 </li>
 <li>
     <a href="{{ route('services.index') }}"><i class="fa fa-list fa-fw"></i> @lang('services.title')</a>

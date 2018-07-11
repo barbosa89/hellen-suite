@@ -15,7 +15,7 @@ class CreateAssetsTable extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('number', 20)->nullable();
+            $table->string('number', 20)->unique();
             $table->string('description');
             $table->string('brand', 100)->nullable();
             $table->string('model', 100)->nullable();
