@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\IdentificationType;
+use App\Welkome\IdentificationType;
 use Illuminate\Http\Request;
 
 class IdentificationTypeController extends Controller
@@ -14,7 +14,9 @@ class IdentificationTypeController extends Controller
      */
     public function index()
     {
-        //
+        $identifications = IdentificationType::all(['id', 'type']);
+
+        return view('app.identification_types.index', compact('identifications'));
     }
 
     /**

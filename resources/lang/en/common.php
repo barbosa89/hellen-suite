@@ -68,4 +68,9 @@ return array (
   'tp' => 'Passport Card',
   'ec' => 'Foreigner Certificate',
   'it' => 'Identity Card',
+  'idType' => 'ID type',
+  'idTypes' => 'ID types',
+  'vehicleTypes' => 'Vehicle types',
+  'vehicleType' => 'Vehicle type',
+  'type' => 'Type',
 );

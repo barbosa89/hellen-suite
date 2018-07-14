@@ -14,7 +14,9 @@ class VehicleTypeController extends Controller
      */
     public function index()
     {
-        //
+        $vehicles = VehicleType::all(['id', 'type']);
+
+        return view('app.vehicle_types.index', compact('vehicles'));
     }
 
     /**

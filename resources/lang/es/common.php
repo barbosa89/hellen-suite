@@ -68,4 +68,9 @@ return array (
   'dui' => 'Documento único de identidad',
   'ec' => 'Cédula de extranjería',
   'it' => 'Tarjeta de identidad',
+  'idTypes' => 'Tipos de identificación',
+  'idType' => 'Tipo de identificación',
+  'vehicleTypes' => 'Tipos de vehículos',
+  'vehicleType' => 'Tipo de vehículo',
+  'type' => 'Tipo',
 );
