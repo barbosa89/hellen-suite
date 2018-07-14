@@ -60,4 +60,12 @@ return array (
   'location' => 'Ubicación',
   'assignedTo' => 'Asignado a',
   'assign' => 'Asignar',
+  'ci' => 'Tarjeta de identidad',
+  'cc' => 'Cédula de ciudadanía',
+  'tp' => 'Tarjeta de pasaporte',
+  'rc' => 'Registro civil',
+  'dni' => 'Documento nacional de identidad',
+  'dui' => 'Documento único de identidad',
+  'ec' => 'Cédula de extranjería',
+  'it' => 'Tarjeta de identidad',
 );

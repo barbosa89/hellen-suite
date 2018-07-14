@@ -60,4 +60,12 @@ return array (
   'model' => 'Model',
   'assignedTo' => 'Assigned to',
   'assign' => 'Assign',
+  'cc' => 'Citizenship Certificate',
+  'ci' => 'Identity Card',
+  'dni' => 'National Identification Document Identity',
+  'dui' => 'Unique Identity Document',
+  'rc' => 'Civil Registry',
+  'tp' => 'Passport Card',
+  'ec' => 'Foreigner Certificate',
+  'it' => 'Identity Card',
 );

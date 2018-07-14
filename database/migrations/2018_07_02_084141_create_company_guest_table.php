@@ -16,7 +16,7 @@ class CreateCompanyGuestTable extends Migration
         Schema::create('company_guest', function (Blueprint $table) {
             $table->integer('company_id')->unsigned();
             $table->bigInteger('guest_id')->unsigned();
-            $table->integer('invoice')->nullable();
+            $table->integer('invoice_id')->nullable();
             
 
             $table->foreign('company_id')->references('id')->on('companies')
