@@ -18,6 +18,29 @@ return [
 
     'env' => env('ENVIRONMENT', 'web'),
 
-    'paginate' => 20
+    'paginate' => 20, 
 
+    'fields' => [
+        'invoices' => [
+            'id', 
+            'number', 
+            'discount', 
+            'subvalue', 
+            'taxes', 
+            'value', 
+            'open', 
+            'status',
+            'for_company',
+            'are_tourists',
+            'user_id'
+        ],
+        'rooms' => [
+            'id', 
+            'number', 
+            'description', 
+            'value', 
+            'status', 
+            'user_id'
+        ]
+    ],
 ];

@@ -14,6 +14,18 @@
             </li>
             @break
 
+        @case('post')
+            <li>
+                <a href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">
+                    {{ $option['option'] }}
+                </a>
+
+                <form id="post-form" action="{{ $option['url'] }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </li>
+            @break
+
         @default
             @if(is_string($option['url']))
                 @if(isset($option['active']) and $option['active'] == true)

@@ -2,7 +2,7 @@
     <a href="{{ route('users.index') }}"><i class="fa fa-address-book fa-fw"></i> Registros</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-credit-card fa-fw"></i> @lang('invoices.title')</a>
+    <a href="{{ route('invoices.index') }}"><i class="fa fa-credit-card fa-fw"></i> @lang('invoices.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-building fa-fw"></i> Empresas</a>

@@ -21,12 +21,11 @@ class CreateInvoicesTable extends Migration
             $table->decimal('taxes', 10, 2)->default(0.0);
             $table->decimal('value', 10, 2);
             $table->boolean('open')->default(true);
+            # 0: inactive, 1: active
+            $table->boolean('status')->dafault(true); 
 
-            # 0: loss, 1: paid, 2: credit, 3: credit
-            $table->enum('status', [0, 1, 2, 3]); 
-
-            $table->boolean('for_company')->default(false);
-            $table->boolean('are_tourists')->default(false);
+            $table->boolean('for_company')->default(false)->nullable();
+            $table->boolean('are_tourists')->default(false)->nullable();
             
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')

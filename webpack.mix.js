@@ -20,7 +20,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'node_modules/morris.js/morris.css',
         'node_modules/toastr/build/toastr.min.css',
         'node_modules/metismenu/dist/metisMenu.min.css',
-        'node_modules/pretty-checkbox/src/pretty.min.css',
+        'node_modules/pretty-checkbox/dist/pretty-checkbox.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
     ], 'public/css/all.css')

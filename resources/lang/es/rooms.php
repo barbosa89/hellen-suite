@@ -7,7 +7,7 @@ return array (
   'maintenance' => 'Mantenimiento',
   'disabled' => 'Deshabilitado',
   'successful' => 'La habitación fue creada satisfactoriamente',
-  'room' => 'Rooms',
+  'room' => 'Habitación',
   'wasDisabled' => 'La habitación fue deshabilitada',
   'intoMaintenance' => 'La habitación entro a mantenimiento',
   'reserve' => 'Reservar',
