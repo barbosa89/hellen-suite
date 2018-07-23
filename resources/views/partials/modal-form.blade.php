@@ -1,7 +1,10 @@
 <div class="modal fade modal-slide-in-right" id="{{ $id }}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
 	<form action="{{ $action }}" method="POST">
 		@csrf 
-		<input type="hidden" name="_method" value="{{ $method or 'PUT' }}">
+
+		@if(isset($method) and !empty($method))
+			<input type="hidden" name="_method" value="{{ $method }}">
+		@endif
 
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -10,7 +13,7 @@
 						&times;
 					</button>
 					<h4 class="modal-title" id="modal-form">
-						@lang('common.attention')
+						{{ $title }}
 					</h4>
 				</div>
 				<div class="modal-body">

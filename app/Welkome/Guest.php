@@ -57,4 +57,9 @@ class Guest extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(\App\Welkome\Room::class);
+    }
 }

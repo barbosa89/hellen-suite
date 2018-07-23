@@ -23,6 +23,7 @@ class CreateInvoicesTable extends Migration
             $table->boolean('open')->default(true);
             # 0: inactive, 1: active
             $table->boolean('status')->dafault(true); 
+            $table->boolean('reservation')->default(false);
 
             $table->boolean('for_company')->default(false)->nullable();
             $table->boolean('are_tourists')->default(false)->nullable();

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Helpers\Id;
 use App\Welkome\Room;
 use App\Helpers\Random;
 use App\Welkome\Invoice;
+use App\Helpers\Boolean;
 use Illuminate\Http\Request;
+use App\Http\Requests\AddRooms;
 use Vinkla\Hashids\Facades\Hashids;
 
 class InvoiceController extends Controller
@@ -49,10 +53,13 @@ class InvoiceController extends Controller
         $invoice->taxes = 0.0;
         $invoice->discount = 0.0;
         $invoice->value = 0.0;
+        $invoice->reservation = Boolean::get($request->get('reservation'));
+        $invoice->for_company = Boolean::get($request->get('for_company'));
+        $invoice->are_tourists = Boolean::get($request->get('are_tourists'));
         $invoice->user()->associate(auth()->user()->parent);
 
         if ($invoice->save()) {
-            return redirect()->route('invoices.add.rooms', [
+            return redirect()->route('invoices.rooms.add', [
                 'id' => Hashids::encode($invoice->id)
             ]);
         }
@@ -116,6 +123,7 @@ class InvoiceController extends Controller
     public function addRooms($id = '')
     {
         $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
             ->first(config('welkome.fields.invoices'));
@@ -134,8 +142,56 @@ class InvoiceController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function attachRooms(Request $request, $id)
+    public function storeRooms(AddRooms $request, $id)
     {
-        # code...
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $request, $id) {
+            try {
+                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(config('welkome.fields.invoices'));
+    
+                $room = Room::where('user_id', auth()->user()->parent)
+                    ->where('id', Id::get($request->room))
+                    ->where('status', '1')
+                    ->first(config('welkome.fields.rooms'));
+    
+                $start = Carbon::createFromFormat('Y-m-d', $request->start);
+                $end = Carbon::createFromFormat('Y-m-d', $request->end);
+                $quantity = $start->diffInDays($end);
+                $value = $quantity * $room->value;
+    
+                $invoice->rooms()->attach(
+                    $room->id,
+                    [
+                        'quantity' => $quantity,
+                        'value' => $value,
+                        'start' => $request->start,
+                        'end' => $request->end
+                    ]
+                );
+
+                $invoice->subvalue += $value;
+                $invoice->value += $value;
+                $invoice->update();
+
+                $room->status = '0';
+                $room->update();
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
     }
 }

@@ -73,4 +73,11 @@ return array (
   'vehicleTypes' => 'Vehicle types',
   'vehicleType' => 'Vehicle type',
   'type' => 'Type',
+  'no' => 'No',
+  'yes' => 'Yes',
+  'reservation' => 'Reservation',
+  'endDate' => 'End date',
+  'startDate' => 'Start date',
+  'successful' => 'The process was successful',
+  'add' => 'Add',
 );

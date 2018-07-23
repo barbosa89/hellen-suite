@@ -15,4 +15,5 @@ return array (
   'notVerified' => 'No verificado',
   'wasDeleted' => 'El usuario fue eliminado',
   'wasDisabled' => 'El usuario fue deshabilitado porque tiene registros en el sistema',
+  'chooseRole' => 'Elige un rol',
 );

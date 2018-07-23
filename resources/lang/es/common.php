@@ -73,4 +73,11 @@ return array (
   'vehicleTypes' => 'Tipos de vehículos',
   'vehicleType' => 'Tipo de vehículo',
   'type' => 'Tipo',
+  'yes' => 'Si',
+  'no' => 'No',
+  'reservation' => 'Reservación',
+  'startDate' => 'Fecha inicial',
+  'endDate' => 'Fecha final',
+  'successful' => 'El proceso fue exitoso',
+  'add' => 'Agregar',
 );

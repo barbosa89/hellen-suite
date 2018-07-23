@@ -8,9 +8,9 @@
             'url' => route('invoices.index'),
             'options' => [
                 [
-                    'type' => 'post',
+                    'type' => 'modal',
                     'option' => trans('common.new'),
-                    'url' => route('invoices.store')
+                    'id' => 'new-invoice'
                 ],
             ]
         ])
@@ -27,6 +27,12 @@
         </div>
 
         @include('partials.modal-confirm')
+        @include('partials.modal-form', [
+            'title' => trans('common.creationOf') . ' ' . trans('invoices.title'),
+            'id' => 'new-invoice',
+            'action' => route('invoices.store'),
+            'form' => 'app.invoices.new'
+        ])
     </div>
 
 @endsection

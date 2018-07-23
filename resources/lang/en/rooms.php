@@ -11,4 +11,6 @@ return array (
   'wasDisabled' => 'The room was disabled',
   'intoMaintenance' => 'The room went into maintenance',
   'reserve' => 'Reserve',
+  'addRoom' => 'Add room',
+  'chooseRoom' => 'Choose a room',
 );

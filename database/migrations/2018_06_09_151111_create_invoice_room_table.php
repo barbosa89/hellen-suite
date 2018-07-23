@@ -20,8 +20,6 @@ class CreateInvoiceRoomTable extends Migration
             $table->decimal('value', 10, 2);
             $table->date('start')->nullable();
             $table->date('end')->nullable();
-            $table->datetime('created_at');
-            $table->boolean('status')->default(true);
 
             $table->foreign('invoice_id')->references('id')->on('invoices')
             ->onUpdate('cascade')->onDelete('cascade');

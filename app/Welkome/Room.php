@@ -28,4 +28,9 @@ class Room extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
+    public function guests()
+    {
+        return $this->belongsToMany(\App\Welkome\Guest::class);
+    }
 }

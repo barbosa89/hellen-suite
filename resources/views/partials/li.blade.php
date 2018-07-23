@@ -14,6 +14,15 @@
             </li>
             @break
 
+        @case('modal')
+            <li>
+                @include('partials.modal-form-btn', [
+                    'option' => $option['option'],
+                    'id' => $option['id']
+                ])
+            </li>
+            @break
+
         @case('post')
             <li>
                 <a href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">

@@ -30,6 +30,7 @@ return [
             'value', 
             'open', 
             'status',
+            'reservation',
             'for_company',
             'are_tourists',
             'user_id'
