@@ -80,4 +80,12 @@ return array (
   'startDate' => 'Start date',
   'successful' => 'The process was successful',
   'add' => 'Add',
+  'search' => 'Search',
+  'm' => 'Male',
+  'f' => 'Female',
+  'gender' => 'Gender',
+  'other' => 'Other',
+  'birthdate' => 'Birthdate',
+  'onlyFor' => 'Only for',
+  'register' => 'Register',
 );

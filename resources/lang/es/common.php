@@ -80,4 +80,12 @@ return array (
   'endDate' => 'Fecha final',
   'successful' => 'El proceso fue exitoso',
   'add' => 'Agregar',
+  'search' => 'Buscar',
+  'gender' => 'Género',
+  'f' => 'Femenino',
+  'm' => 'Masculino',
+  'other' => 'Otro',
+  'birthdate' => 'Fecha de nacimiento',
+  'onlyFor' => 'Sólo para',
+  'register' => 'Registrar',
 );

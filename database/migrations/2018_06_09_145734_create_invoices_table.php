@@ -28,6 +28,14 @@ class CreateInvoicesTable extends Migration
             $table->boolean('for_company')->default(false)->nullable();
             $table->boolean('are_tourists')->default(false)->nullable();
             
+            $table->integer('company_id')->nullable()->unsigned();
+            $table->foreign('company_id')->references('id')
+                ->on('companies')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->bigInteger('guest_id')->nullable()->unsigned();
+            $table->foreign('guest_id')->references('id')
+                    ->on('guests')->onDelete('cascade')->onUpdate('cascade');
+
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

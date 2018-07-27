@@ -5,4 +5,11 @@ return array (
   'invoice' => 'Recibo',
   'forCompany' => 'Para empresa',
   'tourism' => 'Turismo',
+  'registerGuests' => 'Registrar huéspedes',
+  'minors' => 'Menores de edad',
+  'responsibleAdult' => 'Adulto responsable',
+  'registerCustomerGuest' => 'Registrar huésped cliente',
+  'registerCustomerCompany' => 'Registrar empresa cliente',
+  'customerCompany' => 'Empresa cliente',
+  'customerGuest' => 'Huésped cliente',
 );

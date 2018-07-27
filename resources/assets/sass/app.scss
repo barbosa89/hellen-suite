@@ -15,10 +15,14 @@ $text-default: white;
     color: $text-default;
 }
 
+@mixin no-decoration {
+    text-decoration: none;
+}
+
 .unstyle-link,
 .unstyle-link:hover,
 .unstyle-link:active {
-    text-decoration: none;
+    @include no-decoration;
     color: $text-default;
 }
 

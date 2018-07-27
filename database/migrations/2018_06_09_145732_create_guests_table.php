@@ -18,22 +18,22 @@ class CreateGuestsTable extends Migration
             $table->string('dni', 15)->unique();
             $table->string('name', 150);
             $table->string('last_name', 150);
-            $table->enum('gender', ['m', 'f']);
+            $table->string('email', 120)->nullable();
+            $table->enum('gender', ['m', 'f', 'x'])->nullable();
             $table->date('birthdate')->nullable();
             
-            $table->bigInteger('responsible_of')->default(0);
+            $table->bigInteger('responsible_adult')->default(0);
+            $table->boolean('status')->default(0);
             
             $table->integer('identification_type_id')->unsigned();
             $table->foreign('identification_type_id')->references('id')
-                ->on('identification_types')->onDelete('cascade')->onUpdate('cascade');
+                ->on('identification_types')
+                ->onDelete('cascade')->onUpdate('cascade');
             
-            $table->integer('company_id')->unsigned()->default(0);
-            $table->foreign('company_id')->references('id')
-                ->on('companies')->onDelete('cascade')->onUpdate('cascade');
-
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
-                ->on('users')->onDelete('cascade')->onUpdate('cascade');
+                ->on('users')->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->timestamps();
         });

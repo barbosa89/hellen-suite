@@ -33,7 +33,9 @@ return [
             'reservation',
             'for_company',
             'are_tourists',
-            'user_id'
+            'company_id',
+            'guest_id',
+            'user_id',
         ],
         'rooms' => [
             'id', 
@@ -42,6 +44,17 @@ return [
             'value', 
             'status', 
             'user_id'
+        ],
+        'guests' => [
+            'id',
+            'dni',
+            'name',
+            'last_name',
+            'gender',
+            'birthdate',
+            'responsible_adult',
+            'identification_type_id',
+            'user_id',
         ]
     ],
 ];

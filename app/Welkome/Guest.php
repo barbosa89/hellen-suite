@@ -11,6 +11,8 @@ class Guest extends Model
     use Searchable;
     use LogsActivity;
 
+    public $asYouType = true;
+
     /**
      * Get the indexable data array for the model.
      *
@@ -25,12 +27,12 @@ class Guest extends Model
 
     public function children()
     {
-        return $this->hasMany(\App\Welkome\Guest::class, 'responsible_of');
+        return $this->hasMany(\App\Welkome\Guest::class, 'responsible_adult');
     }
 
     public function parent()
     {
-        return $this->belongsTo(\App\Welkome\Guest::class, 'responsible_of');
+        return $this->belongsTo(\App\Welkome\Guest::class, 'responsible_adult');
     }
 
     public function company()
@@ -40,7 +42,7 @@ class Guest extends Model
 
     public function invoices()
     {
-        return $this->belongsToMany(\App\Welkome\Invoice::class);
+        return $this->hasMany(\App\Welkome\Invoice::class);
     }
 
     public function identificationType()

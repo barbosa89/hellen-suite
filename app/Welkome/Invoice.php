@@ -23,11 +23,6 @@ class Invoice extends Model
         return $array;
     }
 
-    public function guests()
-    {
-        return $this->belongsToMany(\App\Welkome\Guest::class);
-    }
-
     public function rooms()
     {
         return $this->belongsToMany(\App\Welkome\Room::class);
@@ -51,5 +46,15 @@ class Invoice extends Model
     public function user()
     {
         return $this->belongsTo(\App\User::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(\App\Welkome\Company::class);
+    }
+
+    public function guest()
+    {
+        return $this->belongsTo(\App\Welkome\Guest::class);
     }
 }

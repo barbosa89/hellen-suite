@@ -8,3 +8,7 @@ Route::get('account/activation', 'AccountController@showFormActivation')
 
 Route::post('account/activation', 'AccountController@activation')
     ->name('accounts.activation');
+
+Route::get('guests/search', 'GuestController@search')
+    ->name('guests.search')
+    ->middleware(['auth', 'role:admin|receptionist']);
