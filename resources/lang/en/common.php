@@ -88,4 +88,10 @@ return array (
   'birthdate' => 'Birthdate',
   'onlyFor' => 'Only for',
   'register' => 'Register',
+  'idNumber' => 'Id number',
+  'recently' => 'Recently',
+  'active' => 'Active',
+  'actives' => 'Actives',
+  'inactive' => 'Inactive',
+  'inactives' => 'Inactives',
 );

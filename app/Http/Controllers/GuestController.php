@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\Guest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Helpers\{Input, Fields};
+use Illuminate\Support\Collection;
+use Vinkla\Hashids\Facades\Hashids;
+use App\Helpers\{Id, Input, Fields};
+use App\Welkome\{Guest, IdentificationType};
 
 class GuestController extends Controller
 {
@@ -14,8 +17,32 @@ class GuestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {   
+        $start = new Carbon(date('Y') . '-' . date('m') . '-' . '01' . '00:00:00');
+        $end = new Carbon(date('Y-m-t') . '23:59:59');
+        $month = Carbon::now()->subDays(31);
+
+        $registered = Guest::where('status', false) # Not in hotel
+            ->where('created_at', '>=', $month->toDateTimeString())
+            ->paginate(config('welkome.paginate'), Fields::get('guests'))
+            ->sortBy('created_at');
+
+        $in = Guest::where('status', true) # In hotel
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'));
+                },
+                'invoices' => function ($query) {
+                    $query->select('id', 'number')
+                        ->where('open', true);
+                },
+            ])->paginate(config('welkome.paginate'), Fields::get('guests'))
+            ->sortBy('created_at');
+
+        $guests = $registered->merge($in);
+        $guests->all();
+
+        return view('app.guests.index', compact('guests'));
     }
 
     /**
@@ -25,7 +52,9 @@ class GuestController extends Controller
      */
     public function create()
     {
-        //
+        $types = IdentificationType::all(['id', 'type']);
+
+        return view('app.guests.create', compact('types'));
     }
 
     /**
@@ -36,27 +65,36 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $guest = new Guest();
+        $guest->name = $request->name;
+        $guest->last_name = $request->last_name;
+        $guest->dni = $request->dni;
+        $guest->email = $request->get('email', null);
+        $guest->gender = $request->get('gender', null);
+        $guest->birthdate = $request->get('birthdate', null);
+        $guest->name = $request->get('name', null);
+        $guest->status = false; # Not in hotel
+        $guest->identificationType()->associate(Id::get($request->type));
+        $guest->user()->associate(auth()->user()->parent);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \App\Welkome\Guest
-     */
-    private function new(Request $request)
-    {
-        //
+        if ($guest->save()) {
+            return redirect()->route('guests.show', [
+                'id' => Hashids::encode($guest->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Guest  $guest
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Guest $guest)
+    public function show($id)
     {
         //
     }
@@ -64,10 +102,10 @@ class GuestController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Guest  $guest
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Guest $guest)
+    public function edit($id)
     {
         //
     }
@@ -76,10 +114,10 @@ class GuestController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Guest  $guest
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guest $guest)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -87,10 +125,10 @@ class GuestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Guest  $guest
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Guest $guest)
+    public function destroy($id)
     {
         //
     }
@@ -98,21 +136,105 @@ class GuestController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  \App\Welkome\Guest  $guest
+     * @param  Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
-    {
-        $guests = Guest::search(Input::get($request, 'query'))
+    {   
+        $status = Input::bool($request->get('status', null));
+        $guests = Guest::search(Input::clean($request->get('query')))
             ->where('user_id', auth()->user()->parent)
             ->get(config('welkome.fields.guests'));
 
+        if (!is_null($status)) {
+            $guests = $this->filterByStatus($guests, $status);
+        }
+
         if ($request->ajax()) {
             return response()->json([
-                'guests' => $guests->toArray()
+                'guests' => $this->parseFormat($request, $guests)
             ]);
         } else {
-            # code...
+            return response()->json([
+                'guests' => empty($guests) ? [] : $guests->toArray()
+            ]);
         }
+    }
+
+    /**
+     * Filter the Guest collection by status.
+     *
+     * @param Illuminate\Support\Collection  $results
+     * @param boolean $status
+     * @return Illuminate\Support\Collection
+     */
+    private function filterByStatus(Collection $results, $status)
+    {
+        $filtered = $results->filter(function ($result, $key) use ($status) {
+            return $result->status == $status;
+        });
+        
+        return collect($filtered->all());
+    }
+
+    /**
+     * Parse data results by format request.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param Illuminate\Support\Collection  $results
+     * @return array
+     */
+    private function parseFormat(Request $request, Collection $results)
+    {
+        $format = Input::clean($request->get('format', null));
+        $template = Input::clean($request->get('template', null));
+
+        if (empty($format)) {
+            return $results->toArray();
+        }
+
+        if ($format == 'json') {
+            return $results->toArray();
+        }
+
+        if ($format == 'rendered' and $this->validateTemplate($template)) {
+            return $this->renderToTemplate($results, $template);
+        }
+
+        return $results->toArray();
+    }
+
+    /**
+     * Validate if template exists.
+     * 
+     * @param  string  $template
+     * @return boolean 
+     */
+    private function validateTemplate($template)
+    {   
+        $templates = [
+            'invoices',
+        ];
+
+        return in_array($template, $templates);
+    }
+
+    /**
+     * Render data collection in array.
+     * 
+     * @param Illuminate\Support\Collection  $results
+     * @return array 
+     */
+    private function renderToTemplate(Collection $results, $template)
+    {   
+        $rendered = collect();
+        $template = 'app.guests.search.' . $template;
+
+        $results->each(function ($guest, $index) use (&$rendered, $template) {
+            $render = view($template, compact('guest'))->render();
+            $rendered->push($render);
+        });
+
+        return $rendered;
     }
 }

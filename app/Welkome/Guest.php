@@ -35,14 +35,9 @@ class Guest extends Model
         return $this->belongsTo(\App\Welkome\Guest::class, 'responsible_adult');
     }
 
-    public function company()
-    {
-        return $this->belongsToMany(\App\Welkome\Company::class);
-    }
-
     public function invoices()
     {
-        return $this->hasMany(\App\Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Invoice::class);
     }
 
     public function identificationType()

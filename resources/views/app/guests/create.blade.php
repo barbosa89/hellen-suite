@@ -4,13 +4,9 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('invoices.title'),
-            'url' => route('invoices.index'),
+            'title' => trans('guests.title'),
+            'url' => route('guests.index'),
             'options' => [
-                [
-                    'option' => trans('invoices.registerGuests'),
-                    'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
-                ],
                 [
                     'option' => trans('common.back'),
                     'url' => url()->previous()
@@ -25,10 +21,9 @@
                         'title' => trans('common.creationOf') . ' ' . trans('guests.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.guests.store', ['id' => Hashids::encode($invoice->id)]),
+                    'url' => route('guests.store'),
                     'fields' => [
                         'app.guests.create-fields',
-                        'app.invoices.guests.create-fields'
                     ],
                     'btn' => trans('common.create')
                 ])

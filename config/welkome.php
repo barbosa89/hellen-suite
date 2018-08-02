@@ -34,8 +34,8 @@ return [
             'for_company',
             'are_tourists',
             'company_id',
-            'guest_id',
             'user_id',
+            'created_at'
         ],
         'rooms' => [
             'id', 
@@ -55,6 +55,8 @@ return [
             'responsible_adult',
             'identification_type_id',
             'user_id',
+            'status',
+            'created_at'
         ]
     ],
 ];

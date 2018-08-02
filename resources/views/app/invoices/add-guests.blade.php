@@ -18,22 +18,25 @@
             ]
         ])
 
+        @include('app.invoices.info')
+
+        @include('partials.spacer', ['size' => 'xs'])
+
         <div class="row">
-            <div class="col-md-12">
-                @include('partials.form', [
-                    'title' => [
-                        'title' => trans('common.creationOf') . ' ' . trans('guests.title'),
-                        'align' => 'text-center'
-                    ],
-                    'url' => route('invoices.guests.store', ['id' => Hashids::encode($invoice->id)]),
-                    'fields' => [
-                        'app.guests.create-fields',
-                        'app.invoices.guests.create-fields'
-                    ],
-                    'btn' => trans('common.create')
-                ])
+                <div class="col-md-12">
+                    @include('partials.form', [
+                        'title' => [
+                            'title' => trans('guests.guest'),
+                        ],
+                        'url' => route('invoices.guests.add', ['id' => Hashids::encode($invoice->id)]),
+                        'fields' => [
+                            'app.invoices.guests.info',
+                            'app.invoices.guests.create-fields'
+                        ],
+                        'btn' => trans('common.register')
+                    ])
+                </div>
             </div>
-        </div>
 
         @include('partials.spacer', ['size' => 'md'])
     </div>

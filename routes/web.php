@@ -12,18 +12,10 @@
 */
 
 Route::get('/test', function () {
-    $consecutive = '';
-		
-    while (empty($consecutive)) {
-        $temp = date('y') . date('m') . date('d') . random_int(0, 99999);
-        $nvoice = \App\Welkome\Invoice::where('number', $temp)->first(['id', 'number']);
 
-        if (empty($nvoice)) {
-            $consecutive = $temp;
-        }
-    }
-
-    dd($consecutive);
+    $birthdate = new \Carbon\Carbon('1989-11-20');
+    $now = \Carbon\Carbon::now();
+    dd($now->diffInYears($birthdate));
 });
 
 Route::get('/', function () {
@@ -40,9 +32,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('language/{locale}', 'LanguageController@locale');
 
+require __DIR__ . '/common.php'; 
 require __DIR__ . '/root.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/receptionist.php';
-require __DIR__ . '/common.php'; 
 
 

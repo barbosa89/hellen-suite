@@ -30,7 +30,7 @@
                         'align' => 'text-center',
                         'size' => 'h3'
                     ],
-                    'url' => route('invoices.rooms.store', ['id' => Hashids::encode($invoice->id)]),
+                    'url' => route('invoices.rooms.add', ['id' => Hashids::encode($invoice->id)]),
                     'fields' => [
                         'app.invoices.rooms.add-fields',
                     ],

@@ -6,8 +6,29 @@ use Illuminate\Http\Request;
 
 class Input
 {
-	public static function get(Request $request, $parameter)
+	public static function clean($value)
 	{
-		return htmlentities($request->get($parameter), ENT_QUOTES);
+		if (empty($value)) {
+			return null;
+		}
+		
+		return htmlentities($value, ENT_QUOTES);
+	}
+
+	public static function bool($field = null)
+	{
+		if (is_null($field)) {
+			return false;
+		}
+
+		if ((int) $field) {
+			return true;
+		}
+
+		if ($field == 'on') {
+			return true;
+		}
+
+		return false;
 	}
 }

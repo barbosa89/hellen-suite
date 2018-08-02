@@ -18,9 +18,23 @@ class Invoice extends Model
      */
     public function toSearchableArray()
     {
-        $array = $this->toArray();
+        $company = empty($this->company) ? null : $this->company->name;
+        $tin = empty($this->company) ? null : $this->company->tin;
+        $names = empty($this->guests) ? null : $this->guests->implode('name', ', ');
+        $last_names = empty($this->guests) ? null : $this->guests->implode('last_name', ', ');
+        $dni = empty($this->guests) ? null : $this->guests->implode('dni', ', ');
+        $emails = empty($this->guests) ? null : $this->guests->implode('email', ', ');
 
-        return $array;
+        return [
+            'id' => $this->id,
+            'number' => $this->number,
+            'company' => $company,
+            'company_tin' => $tin,
+            'names' => $names,
+            'last_names' => $last_names,
+            'dni' => $dni,
+            'emails' => $emails,
+        ];
     }
 
     public function rooms()
@@ -53,8 +67,8 @@ class Invoice extends Model
         return $this->belongsTo(\App\Welkome\Company::class);
     }
 
-    public function guest()
+    public function guests()
     {
-        return $this->belongsTo(\App\Welkome\Guest::class);
+        return $this->belongsToMany(\App\Welkome\Guest::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGuest extends FormRequest
+class StoreInvoiceGuest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +31,8 @@ class StoreGuest extends FormRequest
             'email' => 'nullable|email|unique:guests,email',
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
+            'room' => 'required|string',
+            'responsible_adult' => 'nullable|string'
         ];
     }
 }

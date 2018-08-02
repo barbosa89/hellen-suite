@@ -9,7 +9,7 @@ class Company extends Model
 {
     use LogsActivity;
     
-    public function guest()
+    public function invoices()
     {
         return $this->hasMany(\App\Welkome\Invoice::class);
     }

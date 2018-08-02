@@ -1,15 +1,15 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p><a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->number }}</a></p>
+            <p><a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->name . ' ' . $row->last_name }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-            <p><a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->value, 2, ',', '.') }}</a></p>
+            <p><a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->dni }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
-                    @include('partials.room-status', ['status' => $row->status])
+                <a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">
+                    @include('partials.guest-status', ['status' => $row->status])
                 </a>
             </p>            
         </div>
@@ -18,27 +18,33 @@
                 'options' => [
                     [
                         'option' => trans('common.seeMore'),
-                        'url' => route('invoices.show', ['room' => Hashids::encode($row->id)]),
+                        'url' => route('guests.show', ['room' => Hashids::encode($row->id)]),
                     ],
                     [
-                        'option' => trans('rooms.addRoom'),
-                        'url' => route('invoices.rooms', ['room' => Hashids::encode($row->id)]),
+                        'option' => trans('guests.reserve'),
+                        'url' => '#',
                     ],
                     [
-                        'option' => trans('invoices.registerGuests'),
-                        'url' => route('invoices.guests.search', ['room' => Hashids::encode($row->id)]),
+                        'option' => trans('assets.add'),
+                        'url' => '#',
+                    ],
+                    [
+                        'option' => trans('products.add'),
+                        'url' => '#',
                     ],
                     [
                         'type' => 'divider'
                     ],
                     [
-                        'option' => trans('common.close'),
-                        'url' => "#"
+                        'option' => trans('common.edit'),
+                        'url' => route('guests.edit', [
+                            'room' => Hashids::encode($row->id)
+                        ]),
                     ],
                     [
                         'type' => 'confirm',
                         'option' => trans('common.delete'),
-                        'url' => route('invoices.destroy', [
+                        'url' => route('guests.destroy', [
                             'room' => Hashids::encode($row->id)
                         ]),
                         'method' => 'DELETE'

@@ -1,5 +1,5 @@
 <li>
-    <a href="{{ route('users.index') }}"><i class="fa fa-address-book fa-fw"></i> Registros</a>
+    <a href="{{ route('guests.index') }}"><i class="fa fa-address-book fa-fw"></i> @lang('guests.title')</a>
 </li>
 <li>
     <a href="{{ route('invoices.index') }}"><i class="fa fa-credit-card fa-fw"></i> @lang('invoices.title')</a>
