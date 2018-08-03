@@ -242,4 +242,28 @@ class ProductController extends Controller
 
         return redirect()->route('products.index');
     }
+
+    /**
+     * Return price of resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function total(Request $request)
+    {
+        if ($request->ajax()) {
+            $product = Product::find(Id::get($request->product), ['id', 'price']);
+
+            if (empty($product)) {
+                return response()->json(['value' => null]);
+            } else {
+                $value = (int) $request->quantity * $product->price;
+                $value = number_format($value, 2, ',', '.');
+
+                return response()->json(['value' => $value]);
+            }
+        }
+
+        abort(404);
+    }
 }

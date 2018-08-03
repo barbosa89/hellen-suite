@@ -35,6 +35,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/js/sb-admin-2.js',
         'node_modules/raphael/raphael.min.js',
         'node_modules/morris.js/morris.min.js',
+        'node_modules/moment/min/moment.min.js',
         'node_modules/toastr/build/toastr.min.js',
         'node_modules/metismenu/dist/metisMenu.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',

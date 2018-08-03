@@ -94,4 +94,10 @@ return array (
   'actives' => 'Actives',
   'inactive' => 'Inactive',
   'inactives' => 'Inactives',
+  'discount' => 'Discount',
+  'subtotal' => 'Subtotal',
+  'tax' => 'Tax',
+  'total' => 'Total',
+  'taxes' => 'Taxes',
+  'optional' => 'Optional',
 );

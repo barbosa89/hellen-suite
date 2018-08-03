@@ -9,7 +9,7 @@
             'options' => [
                 [
                     'option' => trans('invoices.registerGuests'),
-                    'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
+                    'url' => route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)])
                 ],
                 [
                     'option' => trans('common.back'),

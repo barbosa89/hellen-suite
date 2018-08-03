@@ -12,4 +12,7 @@ return array (
   'registerCustomerGuest' => 'Register customer guest',
   'customerCompany' => 'Customer company',
   'customerGuest' => 'Customer guest',
+  'see' => 'See the invoice',
+  'loadProducts' => 'Load products',
+  'loadServices' => 'Load services',
 );

@@ -37,6 +37,12 @@ $('.selectpicker').selectpicker();
 
 $('div.alert').not('.alert-important').delay(7000).fadeOut(350);
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 function changeIcon(el, e, first, second) {
     e.preventDefault();
     var ico = $(el).find('span').first();
@@ -64,9 +70,3 @@ function confirmAction(el, e) {
 
     $(modal).modal('show');
 }
-
-// function validateInputChecked(selector) {
-//     var checked = document.querySelectorAll(selector);
-
-//     return checked.length > 0;
-// }

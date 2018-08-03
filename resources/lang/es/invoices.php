@@ -12,4 +12,7 @@ return array (
   'registerCustomerCompany' => 'Registrar empresa cliente',
   'customerCompany' => 'Empresa cliente',
   'customerGuest' => 'Huésped cliente',
+  'see' => 'Ver el recibo',
+  'loadProducts' => 'Cargar productos',
+  'loadServices' => 'Cargar servicios',
 );

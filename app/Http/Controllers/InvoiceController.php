@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Fields, Id, Random};
-use App\Http\Requests\{AddRooms, StoreInvoiceGuest};
-use App\Welkome\{Guest, IdentificationType, Invoice, Room};
+use App\Http\Requests\{AddGuests, AddProducts, AddRooms, StoreInvoiceGuest};
+use App\Welkome\{Guest, IdentificationType, Invoice, Product, Room, Service};
 
 class InvoiceController extends Controller
 {
@@ -81,7 +81,8 @@ class InvoiceController extends Controller
                     $query->select(['id', 'name', 'tin']);
                 },
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
+                    $query->select(Fields::parsed('rooms'))
+                        ->withPivot('quantity', 'value');
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select(Fields::get('guests'))
@@ -93,6 +94,10 @@ class InvoiceController extends Controller
                 'rooms.guests.identificationType' => function ($query) {
                     $query->select('id', 'type');
                 },
+                'products' => function ($query) {
+                    $query->select(Fields::parsed('products'))
+                        ->withPivot('quantity', 'value');
+                }
             ])->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
@@ -105,8 +110,6 @@ class InvoiceController extends Controller
                 return $guest->pivot->main == true;
             });
         }
-        
-        // dd($invoice, $customer);
 
         return view('app.invoices.show', compact('invoice', 'customer'));
     }
@@ -161,7 +164,7 @@ class InvoiceController extends Controller
         }
 
         $rooms = Room::where('user_id', auth()->user()->parent)
-            ->where('status', '1') # It is free
+            ->where('status', '1') // It is free
             ->get(Fields::get('rooms'));
 
         return view('app.invoices.add-rooms', compact('invoice', 'rooms'));
@@ -325,7 +328,7 @@ class InvoiceController extends Controller
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
         $guest->name = $request->get('name', null);
-        $guest->status = true; # In hotel
+        $guest->status = true; // In hotel
         $guest->identificationType()->associate(Id::get($request->type));
         $guest->user()->associate(auth()->user()->parent);
 
@@ -400,7 +403,7 @@ class InvoiceController extends Controller
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function addGuests(Request $request, $id)
+    public function addGuests(AddGuests $request, $id)
     {
         $invoice = Invoice::where('user_id', auth()->user()->parent)
             ->where('id', Id::get($id))
@@ -454,7 +457,7 @@ class InvoiceController extends Controller
         }
 
         $age = Age::get($birthdate);
-
+        // TODO: Pensar en crear una tabla de atributos de los invoice
         // TODO: Crear tabla de configuraciones
         // Agregar edad limite para ser adulto
         // Agregar Hora hotele
@@ -463,5 +466,97 @@ class InvoiceController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * Show the form for adding products to invoice.
+     * 
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function products($id = '')
+    {
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id', 'number');
+                },
+            ])->first(Fields::get('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $products = Product::where('user_id', auth()->user()->parent)
+            ->where('quantity', '>', 0)
+            ->where('status', true) 
+            ->get(Fields::get('products'));
+
+        return view('app.invoices.add-products', compact('invoice', 'products'));
+    }
+
+    /**
+     * Store the product values to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addProducts(AddProducts $request, $id)
+    {
+        // TODO: Implementar el descuento de productos por habitación
+        $status = false;
+        \DB::transaction(function () use (&$status, $request, $id) {
+            try {
+                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(Fields::parsed('invoices'));
+    
+                $product = Product::where('user_id', auth()->user()->parent)
+                    ->where('id', Id::get($request->product))
+                    ->where('quantity', '>', 0)
+                    ->where('status', true) 
+                    ->first(Fields::get('products'));
+
+                $value = (int) $request->quantity * $product->price;
+    
+                $invoice->products()->attach(
+                    $product->id,
+                    [
+                        'quantity' => $request->quantity,
+                        'value' => $value,
+                    ]
+                );
+
+                $invoice->subvalue += $value;
+                $invoice->value += $value;
+                $invoice->update();
+
+                $product->quantity -= $request->quantity;
+
+                if (($product->quantity - $request->quantity) == 0) {
+                    $product->status = false;
+                }
+
+                $product->update();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
     }
 }

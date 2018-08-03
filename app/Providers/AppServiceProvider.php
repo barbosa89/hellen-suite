@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
+            $data = $validator->getData();
+            $product = Hashids::decode($data['product']);
+            $product = \DB::table('products')->where('id', $product)
+                ->select('id', 'quantity')->first();
+            // dd($value <= $product->quantity);
+            return (int) $value <= $product->quantity;
+        });
     }
 
     /**

@@ -18,15 +18,23 @@
                 'options' => [
                     [
                         'option' => trans('common.seeMore'),
-                        'url' => route('invoices.show', ['room' => Hashids::encode($row->id)]),
+                        'url' => route('invoices.show', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
                         'option' => trans('rooms.addRoom'),
-                        'url' => route('invoices.rooms', ['room' => Hashids::encode($row->id)]),
+                        'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
                         'option' => trans('invoices.registerGuests'),
-                        'url' => route('invoices.guests.search', ['room' => Hashids::encode($row->id)]),
+                        'url' => route('invoices.guests.search', ['id' => Hashids::encode($row->id)]),
+                    ],
+                    [
+                        'option' => trans('invoices.loadProducts'),
+                        'url' => route('invoices.products', ['id' => Hashids::encode($row->id)]),
+                    ],
+                    [
+                        'option' => trans('invoices.loadServices'),
+                        'url' => route('invoices.services', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
                         'type' => 'divider'

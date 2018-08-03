@@ -57,6 +57,16 @@ return [
             'user_id',
             'status',
             'created_at'
+        ],
+        'products' => [
+            'id',
+            'description',
+            'brand',
+            'reference',
+            'price',
+            'quantity',
+            'status',
+            'user_id'
         ]
     ],
 ];

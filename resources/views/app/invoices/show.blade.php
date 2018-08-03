@@ -23,7 +23,19 @@
                             ])
                         ],
                         [
+                            'option' => trans('invoices.loadProducts'),
+                            'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
+                        ],
+                        [
+                            'option' => trans('invoices.loadServices'),
+                            'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
+                        ],
+                        [
                             'type' => 'divider'
+                        ],
+                        [
+                        'option' => trans('common.close'),
+                            'url' => "#"
                         ],
                         [
                             'type' => 'confirm',
@@ -66,7 +78,7 @@
             </div>
         @endif
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <h3 class="page-header">@lang('invoices.customerGuest')</h3>
                 @if(empty($customer))
@@ -113,12 +125,73 @@
                     </div>
                 @endif
             </div>
-        </div>
+        </div> --}}
 
+        <!-- Rooms -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="page-header">@lang('rooms.title')</h3>
+                @if(!$invoice->rooms->isEmpty())
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('rooms.room')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.quantity')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.total')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->rooms as $room)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                    <p>
+                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
+                                                            {{ $room->number }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>
+                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
+                                                            {{ number_format($room->value, 2, ',', '.') }}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{ $room->pivot->quantity }}</p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <!-- Rooms -->
+
+        <!-- Guests -->
         <div class="row">
             <div class="col-md-12">
                 <h3 class="page-header">@lang('guests.title')</h3>
-                @if($invoice->rooms->isEmpty())
+                @if($invoice->guests->isEmpty())
                     <a href="{{ route('invoices.rooms', ['room' => Hashids::encode($invoice->id)]) }}">
                         <div class="well">
                             <i class="fa fa-plus-circle"></i> @lang('rooms.addRoom')
@@ -194,6 +267,67 @@
                 @endif
             </div>
         </div>
+        <!-- Guests -->
+
+        <!-- Products -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="page-header">@lang('products.title')</h3>
+                @if(!$invoice->products->isEmpty())
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('products.product')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.quantity')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.total')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->products as $product)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                    <p>
+                                                        <a href="{{ route('products.show', ['id' => Hashids::encode($product->id)]) }}">
+                                                            {{ $product->description }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>
+                                                        <a href="{{ route('products.show', ['id' => Hashids::encode($product->id)]) }}">
+                                                            {{ number_format($product->price, 2, ',', '.') }}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{ $product->pivot->quantity }}</p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{ number_format($product->pivot->value, 2, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <!-- Products -->
 
         @include('partials.spacer', ['size' => 'md'])
         @include('partials.modal-confirm')

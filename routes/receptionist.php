@@ -35,6 +35,21 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
 
     Route::post('invoices/{id}/guests', 'InvoiceController@addguests')
         ->name('invoices.guests.add');
+
+    Route::get('invoices/{id}/products', 'InvoiceController@products')
+        ->name('invoices.products');
+
+    Route::post('invoices/{id}/products', 'InvoiceController@addProducts')
+        ->name('invoices.products.add');
+
+    Route::get('invoices/{id}/services', 'InvoiceController@services')
+        ->name('invoices.services');
+
+    Route::post('invoices/{id}/services', 'InvoiceController@addServices')
+        ->name('invoices.services.add');
     
     Route::resource('guests', 'GuestController');
+
+    Route::post('products/calculate/total', 'ProductController@total')
+        ->name('products.total');
 });

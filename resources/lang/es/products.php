@@ -5,4 +5,6 @@ return array (
   'add' => 'Agregar productos',
   'increase' => 'Incrementar stock',
   'losses' => 'Registrar pérdidas',
+  'chooseProduct' => 'Elije un producto',
+  'product' => 'Producto',
 );

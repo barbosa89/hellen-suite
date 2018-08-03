@@ -17,6 +17,7 @@ class RoomController extends Controller
      */
     public function index()
     {
+        // TODO: Cambiar value a price
         $rooms = Room::where('user_id', auth()->user()->id)
             ->paginate(config('welkome.paginate'), [
                 'id', 'number', 'description', 'value', 'status', 'user_id'
