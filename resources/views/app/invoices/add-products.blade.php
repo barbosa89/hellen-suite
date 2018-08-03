@@ -85,38 +85,15 @@
 
 @section('scripts')
     <script type="text/javascript">
-        function getProductPrice () {
-
-        }
-
-        function showTotal (value) {
+        function showTotal () {
             const product = $('#product').val();
             const quantity = $('#quantity').val();
             const max = $('#product').find(':selected').data('max');
+            const url = '{{ route('products.total') }}';
 
-            if (!empty(product) && validate(quantity, max)) {
-                $.post('{{ route('products.total') }}', 
-                    {
-                        product: product,
-                        quantity: quantity
-                    },
-                    function(data, status){
-                        $('#total').removeAttr('value').attr('value', data.value);
-                        $('#total-input').show();
-                    }
-                );
-            } else {
-                $('#total').removeAttr('value');
-                $('#total-input').hide();
+            if (validate(quantity, max)) {
+                calculateTotal(url, product, quantity);
             }
-        }
-
-        function empty (variable) {
-            if (variable.length > 0) {
-                return false;
-            }
-
-            return true;
         }
 
         function validate (value, max) {
@@ -124,7 +101,7 @@
                 return false;
             }
 
-            if (value == 0) {
+            if (value == 0 || value == null) {
                 return false;
             }
 

@@ -58,7 +58,7 @@
 
         @include('app.invoices.info')
 
-        @include('partials.spacer', ['size' => 'md'])
+        @include('partials.spacer', ['size' => 'xs'])
 
         <div class="row">
             <div class="col-md-12">
@@ -68,16 +68,29 @@
                         'align' => 'text-center',
                         'size' => 'h3'
                     ],
-                    'url' => route('invoices.rooms.add', ['id' => Hashids::encode($invoice->id)]),
+                    'url' => route('invoices.services.add', ['id' => Hashids::encode($invoice->id)]),
                     'fields' => [
-                        'app.invoices.rooms.add-fields',
+                        'app.invoices.services.add-fields',
+                        'app.invoices.total'
                     ],
                     'btn' => trans('common.add')
                 ])
             </div>
         </div>
 
-        @include('partials.spacer', ['size' => 'md'])
+        @include('partials.spacer', ['size' => 'xs'])
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        function showTotal () {
+            const product = $('#service').val();
+            const quantity = $('#quantity').val();
+            const url = '{{ route('services.total') }}';
+
+            calculateTotal(url, product, quantity);
+        }
+    </script>
 @endsection

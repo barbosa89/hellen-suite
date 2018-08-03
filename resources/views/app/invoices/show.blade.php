@@ -128,10 +128,10 @@
         </div> --}}
 
         <!-- Rooms -->
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="page-header">@lang('rooms.title')</h3>
-                @if(!$invoice->rooms->isEmpty())
+        @if(!$invoice->rooms->isEmpty())
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="page-header">@lang('rooms.title')</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="crud-list">
@@ -165,7 +165,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
                                                     <p>
                                                         <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
-                                                            {{ number_format($room->value, 2, ',', '.') }}
+                                                            {{ number_format($room->price, 2, ',', '.') }}
                                                         </a>
                                                     </p>            
                                                 </div>
@@ -182,9 +182,9 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             </div>
-        </div>
+        @endif
         <!-- Rooms -->
 
         <!-- Guests -->
@@ -270,10 +270,10 @@
         <!-- Guests -->
 
         <!-- Products -->
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="page-header">@lang('products.title')</h3>
-                @if(!$invoice->products->isEmpty())
+        @if(!$invoice->products->isEmpty())
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="page-header">@lang('products.title')</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="crud-list">
@@ -324,10 +324,68 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             </div>
-        </div>
+        @endif
         <!-- Products -->
+
+            <!-- Services -->
+            @if(!$invoice->services->isEmpty())
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="page-header">@lang('services.title')</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="crud-list">
+                                    <div class="crud-list-heading">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                <h5>@lang('services.service')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                <h5>@lang('common.value')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                <h5>@lang('common.quantity')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                <h5>@lang('common.total')</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="crud-list-items">
+                                        @foreach($invoice->services as $service)
+                                            <div class="crud-list-row">
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                        <p>
+                                                            <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
+                                                                {{ $service->description }}
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                        <p>
+                                                            {{ number_format($service->price, 2, ',', '.') }}
+                                                        </p>            
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                        <p>{{ $service->pivot->quantity }}</p>            
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                        <p>{{ number_format($service->pivot->value, 2, ',', '.') }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            <!-- Services -->
 
         @include('partials.spacer', ['size' => 'md'])
         @include('partials.modal-confirm')

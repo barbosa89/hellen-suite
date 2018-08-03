@@ -17,7 +17,7 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
             $table->string('number')->unique();
             $table->text('description');
-            $table->decimal('value', 10, 2);
+            $table->decimal('price', 10, 2);
 
             /**
              * 0: Occupied

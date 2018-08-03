@@ -4,7 +4,7 @@
             <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->number }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-            <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->value, 2, ',', '.') }}</a></p>
+            <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->price, 2, ',', '.') }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
             <p>

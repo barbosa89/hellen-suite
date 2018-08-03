@@ -70,3 +70,43 @@ function confirmAction(el, e) {
 
     $(modal).modal('show');
 }
+
+function calculateTotal(url, element, quantity) {
+    if (!empty(element) && !empty(quantity)) {
+        $.post(url, {
+                element: element,
+                quantity: quantity
+            },
+            function(data, status) {
+                $('#total').removeAttr('value').attr('value', data.value);
+                $('#total-input').show();
+            }
+        );
+    } else {
+        $('#total').removeAttr('value');
+        $('#total-input').hide();
+    }
+}
+
+function empty(data) {
+    if (typeof(data) == 'number' || typeof(data) == 'boolean') {
+        return false;
+    }
+
+    if (typeof(data) == 'undefined' || data === null) {
+        return true;
+    }
+
+    if (typeof(data.length) != 'undefined') {
+        return data.length == 0;
+    }
+
+    var count = 0;
+    for (var i in data) {
+        if (data.hasOwnProperty(i)) {
+            count++;
+        }
+    }
+
+    return count == 0;
+}

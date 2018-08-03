@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Age, Fields, Id, Random};
-use App\Http\Requests\{AddGuests, AddProducts, AddRooms, StoreInvoiceGuest};
+use App\Helpers\{Age, Fields, Id, Input, Random};
 use App\Welkome\{Guest, IdentificationType, Invoice, Product, Room, Service};
+use App\Http\Requests\{AddGuests, AddProducts, AddRooms, AddServices, StoreInvoiceGuest};
 
 class InvoiceController extends Controller
 {
@@ -97,7 +97,11 @@ class InvoiceController extends Controller
                 'products' => function ($query) {
                     $query->select(Fields::parsed('products'))
                         ->withPivot('quantity', 'value');
-                }
+                },
+                'services' => function ($query) {
+                    $query->select(Fields::parsed('services'))
+                        ->withPivot('quantity', 'value');
+                },
             ])->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
@@ -204,7 +208,7 @@ class InvoiceController extends Controller
                 
                 // TODO: Crear procedimiento para incrementar el valor diario para END null
 
-                $value = $quantity * $room->value;
+                $value = $quantity * $room->price;
     
                 $invoice->rooms()->attach(
                     $room->id,
@@ -507,8 +511,9 @@ class InvoiceController extends Controller
      */
     public function addProducts(AddProducts $request, $id)
     {
-        // TODO: Implementar el descuento de productos por habitación
+        // TODO: Implementar el descuento (productos vendidos) de productos por habitación
         $status = false;
+
         \DB::transaction(function () use (&$status, $request, $id) {
             try {
                 $invoice = Invoice::where('user_id', auth()->user()->parent)
@@ -544,6 +549,81 @@ class InvoiceController extends Controller
                 }
 
                 $product->update();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
+    }
+
+    /**
+     * Show the form for adding services to invoice.
+     * 
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function services($id = '')
+    {
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::get('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $services = Service::where('user_id', auth()->user()->parent)
+            ->get(Fields::get('services'));
+
+        return view('app.invoices.add-services', compact('invoice', 'services'));
+    }
+
+    /**
+     * Store the product values to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addServices(AddServices $request, $id)
+    {
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $request, $id) {
+            try {
+                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(Fields::parsed('invoices'));
+    
+                $service = Service::where('user_id', auth()->user()->parent)
+                    ->first(Fields::get('services'));
+
+                $value = (int) $request->quantity * $service->price;
+    
+                $invoice->services()->attach(
+                    $service->id,
+                    [
+                        'quantity' => $request->quantity,
+                        'value' => $value,
+                    ]
+                );
+
+                $invoice->subvalue += $value;
+                $invoice->value += $value;
+                $invoice->update();
 
                 $status = true;
             } catch (\Throwable $e) {

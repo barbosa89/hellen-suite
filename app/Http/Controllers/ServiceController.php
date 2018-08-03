@@ -237,4 +237,28 @@ class ServiceController extends Controller
 
         return redirect()->route('services.index');
     }
+
+    /**
+     * Return price of resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function total(Request $request)
+    {
+        if ($request->ajax()) {
+            $service = Service::find(Id::get($request->element), ['id', 'price']);
+
+            if (empty($service)) {
+                return response()->json(['value' => null]);
+            } else {
+                $value = (int) $request->quantity * $service->price;
+                $value = number_format($value, 2, ',', '.');
+
+                return response()->json(['value' => $value]);
+            }
+        }
+
+        abort(404);
+    }
 }

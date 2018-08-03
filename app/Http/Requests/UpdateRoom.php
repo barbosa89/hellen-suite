@@ -26,7 +26,7 @@ class UpdateRoom extends FormRequest
         return [
             'number' => 'required|string|unique:rooms,number, ' . $this->route('room'),
             'description' => 'required|string|max:500',
-            'value' => 'required|integer|min:1|max:999999'
+            'price' => 'required|integer|min:1|max:999999'
         ];
     }
 }

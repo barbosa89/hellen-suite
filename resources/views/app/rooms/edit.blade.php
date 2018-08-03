@@ -43,13 +43,13 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('value') ? ' has-error' : '' }}">
-                        <label for="value">@lang('common.value'):</label>
-                        <input type="number" class="form-control" name="value" id="value" value="{{ $room->value }}" min="1" max="999999" required>
+                    <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+                        <label for="price">@lang('common.price'):</label>
+                        <input type="number" class="form-control" name="price" id="price" value="{{ $room->price }}" min="1" max="999999" required>
 
-                        @if ($errors->has('value'))
+                        @if ($errors->has('price'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('value') }}</strong>
+                                <strong>{{ $errors->first('price') }}</strong>
                             </span>
                         @endif
                     </div>

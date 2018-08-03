@@ -41,7 +41,7 @@ return [
             'id', 
             'number', 
             'description', 
-            'value', 
+            'price', 
             'status', 
             'user_id'
         ],
@@ -65,6 +65,13 @@ return [
             'reference',
             'price',
             'quantity',
+            'status',
+            'user_id'
+        ],
+        'services' => [
+            'id',
+            'description',
+            'price',
             'status',
             'user_id'
         ]

@@ -64,8 +64,8 @@
                 <h2>@lang('rooms.room') No. {{ $room->number }}</h2>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-                <h2>@lang('common.value'):</h2>
-                <p>{{ number_format($room->value, 2, ',', '.') }}</p>
+                <h2>@lang('common.price'):</h2>
+                <p>{{ number_format($room->price, 2, ',', '.') }}</p>
             </div>
         </div>
         <div class="row">

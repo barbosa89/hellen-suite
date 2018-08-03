@@ -3,7 +3,7 @@
         <h5>@lang('common.number')</h5>
     </div>
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-        <h5>@lang('common.value')</h5>
+        <h5>@lang('common.price')</h5>
     </div>
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
         <h5>@lang('common.status')</h5>

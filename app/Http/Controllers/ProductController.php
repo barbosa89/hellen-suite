@@ -252,7 +252,7 @@ class ProductController extends Controller
     public function total(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::find(Id::get($request->product), ['id', 'price']);
+            $product = Product::find(Id::get($request->element), ['id', 'price']);
 
             if (empty($product)) {
                 return response()->json(['value' => null]);

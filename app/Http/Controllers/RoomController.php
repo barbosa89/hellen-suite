@@ -17,10 +17,9 @@ class RoomController extends Controller
      */
     public function index()
     {
-        // TODO: Cambiar value a price
         $rooms = Room::where('user_id', auth()->user()->id)
             ->paginate(config('welkome.paginate'), [
-                'id', 'number', 'description', 'value', 'status', 'user_id'
+                'id', 'number', 'description', 'price', 'status', 'user_id'
             ])->sort();
         
         return view('app.rooms.index', compact('rooms'));
@@ -46,7 +45,7 @@ class RoomController extends Controller
     {
         $room = new Room();
         $room->number = $request->number;
-        $room->value = $request->value;
+        $room->price = $request->price;
         $room->description = $request->description;
         $room->status = '1';
         $room->user()->associate(auth()->user()->id);
@@ -73,7 +72,7 @@ class RoomController extends Controller
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
             ->first([
-                'id', 'number', 'description', 'value', 'status', 'user_id'
+                'id', 'number', 'description', 'price', 'status', 'user_id'
             ]);
         
         if (empty($room)) {
@@ -105,7 +104,7 @@ class RoomController extends Controller
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
             ->first([
-                'id', 'number', 'description', 'value', 'status', 'user_id'
+                'id', 'number', 'description', 'price', 'status', 'user_id'
             ]);
 
         if (empty($room)) {
@@ -127,7 +126,7 @@ class RoomController extends Controller
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
             ->first([
-                'id', 'number', 'description', 'value', 'status', 'user_id'
+                'id', 'number', 'description', 'price', 'status', 'user_id'
             ]);
 
         if (empty($room)) {
@@ -135,7 +134,7 @@ class RoomController extends Controller
         }
 
         $room->number = $request->number;
-        $room->value = $request->value;
+        $room->price = $request->price;
         $room->description = $request->description;
 
         if ($room->update()) {
@@ -162,7 +161,7 @@ class RoomController extends Controller
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
             ->first([
-                'id', 'number', 'description', 'value', 'status', 'user_id'
+                'id', 'number', 'description', 'price', 'status', 'user_id'
             ]);
 
         if (empty($room)) {

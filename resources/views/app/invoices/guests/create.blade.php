@@ -12,6 +12,12 @@
                     'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
                 ],
                 [
+                    'option' => trans('invoices.see'),
+                    'url' => route('invoices.show', [
+                        'id' => Hashids::encode($invoice->id)
+                    ])
+                ],
+                [
                     'option' => trans('common.back'),
                     'url' => url()->previous()
                 ],
