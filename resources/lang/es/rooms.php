@@ -13,4 +13,6 @@ return array (
   'reserve' => 'Reservar',
   'addRoom' => 'Agregar habitación',
   'chooseRoom' => 'Elije una habitación',
+  'available' => 'Disponible',
+  'cleaning' => 'Limpieza',
 );

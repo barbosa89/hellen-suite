@@ -35,6 +35,16 @@
             </li>
             @break
 
+        @case('hideable')
+            @if($option['show'])
+                <li>
+                    <a href="{{ $option['url'] }}">
+                        {{ $option['option'] }}
+                    </a>
+                </li>
+            @endif
+            @break
+
         @default
             @if(is_string($option['url']))
                 @if(isset($option['active']) and $option['active'] == true)

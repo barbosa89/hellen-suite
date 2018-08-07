@@ -22,4 +22,8 @@
         <h3>@lang('invoices.tourism'):</h3>
         <p>{{ $invoice->are_tourists ? trans('common.yes') : trans('common.no') }}</p>
     </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+        <h3>@lang('invoices.job'):</h3>
+        <p>{{ $invoice->for_job ? trans('common.yes') : trans('common.no') }}</p>
+    </div>
 </div>

@@ -21,11 +21,12 @@ class CreateRoomsTable extends Migration
 
             /**
              * 0: Occupied
-             * 1: Free
+             * 1: Available
              * 2: Maintenance
              * 3: Disabled
+             * 4: Cleaning
              */
-            $table->enum('status', [0, 1, 2, 3])->default(1);
+            $table->enum('status', [0, 1, 2, 3, 4])->default(1);
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')

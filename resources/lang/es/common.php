@@ -100,4 +100,5 @@ return array (
   'discount' => 'Descuento',
   'taxes' => 'Impuestos',
   'optional' => 'Opcional',
+  'mobile' => 'Teléfono móvil',
 );

@@ -18,16 +18,16 @@ class GuestController extends Controller
      */
     public function index()
     {   
-        $start = new Carbon(date('Y') . '-' . date('m') . '-' . '01' . '00:00:00');
-        $end = new Carbon(date('Y-m-t') . '23:59:59');
         $month = Carbon::now()->subDays(31);
 
-        $registered = Guest::where('status', false) # Not in hotel
+        $registered = Guest::where('user_id', auth()->user()->parent)
+            ->where('status', false) # Not in hotel
             ->where('created_at', '>=', $month->toDateTimeString())
             ->paginate(config('welkome.paginate'), Fields::get('guests'))
             ->sortBy('created_at');
 
-        $in = Guest::where('status', true) # In hotel
+        $in = Guest::where('user_id', auth()->user()->parent)
+            ->where('status', true) # In hotel
             ->with([
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'));
@@ -96,7 +96,7 @@ class GuestController extends Controller
      */
     public function show($id)
     {
-        //
+        return redirect()->route('guests.index');
     }
 
     /**

@@ -21,7 +21,8 @@ class InvoiceController extends Controller
         $invoices = Invoice::where('user_id', auth()->user()->parent)
             ->where('open', true)
             ->where('status', true)
-            ->get(Fields::get('invoices'));
+            ->get(Fields::get('invoices'))
+            ->sortByDesc('created_at');
 
         return view('app.invoices.index', compact('invoices'));
     }
@@ -46,12 +47,21 @@ class InvoiceController extends Controller
         $invoice->reservation = Input::bool($request->get('reservation'));
         $invoice->for_company = Input::bool($request->get('for_company'));
         $invoice->are_tourists = Input::bool($request->get('are_tourists'));
+        $invoice->for_job = Input::bool($request->get('for_job'));
         $invoice->user()->associate(auth()->user()->parent);
 
         if ($invoice->save()) {
-            return redirect()->route('invoices.rooms', [
-                'id' => Hashids::encode($invoice->id)
-            ]);
+            if ($invoice->for_companny) {
+                $route = route('invoices.companies.search', [
+                    'id' => Hashids::encode($invoice->id)
+                ]);
+            } else {
+                $route = route('invoices.rooms', [
+                    'id' => Hashids::encode($invoice->id)
+                ]);
+            }
+
+            return redirect($route);
         }
 
         flash(trans('common.error'))->error();
@@ -78,7 +88,7 @@ class InvoiceController extends Controller
                         ->withPivot('main');
                 },
                 'company' => function ($query) {
-                    $query->select(['id', 'name', 'tin']);
+                    $query->select(Fields::get('companies'));
                 },
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'))
@@ -107,7 +117,7 @@ class InvoiceController extends Controller
         if (empty($invoice)) {
             abort(404);
         }
-
+        
         $customer = null;
         if (!$invoice->guests->isEmpty()) {
             $customer = $invoice->guests->first(function ($guest, $index) {
@@ -244,7 +254,7 @@ class InvoiceController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  \App\Welkome\Guest  $guest
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function searchGuests($id)
@@ -431,7 +441,6 @@ class InvoiceController extends Controller
 
         if ($this->isMinor($guest->birthdate) and !empty($responsible)) {
             $guest->responsible_adult = $responsible;
-            $guest->update();
         }
 
         $main = $invoice->guests->isEmpty() ? true : false;
@@ -440,6 +449,9 @@ class InvoiceController extends Controller
         $guest->rooms()->attach(Id::get($request->room), [
             'invoice_id' => $invoice->id
         ]);
+
+        $guest->status = true;
+        $guest->update();
 
         flash(trans('common.successful'))->success();
 
@@ -636,6 +648,129 @@ class InvoiceController extends Controller
         } else {
             flash(trans('common.error'))->error();
         }
+
+        return back();
+    }
+
+    /**
+     * Display a listing of searched records.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function searchCompanies($id)
+    {   
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                },
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        if (!empty($invoice->company)) {
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+        
+        return view('app.invoices.search-companies', compact('invoice'));
+    }
+
+    /**
+     * Show the form for creating a new invoice company.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createCompanies($id)
+    {   
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id', 'number');
+                },
+                'rooms.guests' => function ($query) use ($id) {
+                    $query->select('id', 'name', 'last_name')
+                        ->wherePivot('invoice_id', $id);
+                }
+            ])->first(['id']);
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $types = IdentificationType::all(['id', 'type']);
+        
+        return view('app.invoices.guests.create', compact('invoice', 'types'));
+    }
+
+    /**
+     * Store a newly created company in storage and attaching to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeCompanies(StoreInvoiceGuest $request, $id)
+    {
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select('id');
+                },
+            ])->first(['id']);
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $guest = new Guest();
+        $guest->name = $request->name;
+        $guest->last_name = $request->last_name;
+        $guest->dni = $request->dni;
+        $guest->email = $request->get('email', null);
+        $guest->gender = $request->get('gender', null);
+        $guest->birthdate = $request->get('birthdate', null);
+        $guest->name = $request->get('name', null);
+        $guest->status = true; // In hotel
+        $guest->identificationType()->associate(Id::get($request->type));
+        $guest->user()->associate(auth()->user()->parent);
+
+        $isMinor = $this->isMinor($request->get('birthdate', null));
+        $responsible = Id::get($request->get('responsible_adult', null));
+
+        if ($isMinor and !empty($responsible)) {
+            $guest->responsible_adult = $responsible;
+        }
+
+        if ($guest->save()) {
+            $main = $invoice->guests->isEmpty() ? true : false;
+            $invoice->guests()->attach($guest->id, ['main' => $main]);
+
+            $guest->rooms()->attach(Id::get($request->room), [
+                'invoice_id' => $invoice->id
+            ]);
+
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
 
         return back();
     }

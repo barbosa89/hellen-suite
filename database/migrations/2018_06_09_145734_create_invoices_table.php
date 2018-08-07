@@ -27,6 +27,7 @@ class CreateInvoicesTable extends Migration
 
             $table->boolean('for_company')->default(false)->nullable();
             $table->boolean('are_tourists')->default(false)->nullable();
+            $table->boolean('for_job')->default(false)->nullable();
             
             $table->integer('company_id')->nullable()->unsigned();
             $table->foreign('company_id')->references('id')

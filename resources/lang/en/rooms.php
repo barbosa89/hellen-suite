@@ -13,4 +13,6 @@ return array (
   'reserve' => 'Reserve',
   'addRoom' => 'Add room',
   'chooseRoom' => 'Choose a room',
+  'available' => 'Available',
+  'cleaning' => 'Cleaning',
 );

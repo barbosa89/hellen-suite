@@ -17,6 +17,14 @@
                             ])
                         ],
                         [
+                            'type' => 'hideable',
+                            'option' => trans('invoices.registerCompany'),
+                            'url' => route('invoices.companies.search', [
+                                'id' => Hashids::encode($invoice->id)
+                            ]),
+                            'show' => empty($invoice->company) ? true : false
+                        ],
+                        [
                             'option' => trans('invoices.registerGuests'),
                             'url' => route('invoices.guests.search', [
                                 'id' => Hashids::encode($invoice->id)
@@ -61,7 +69,7 @@
                 <div class="col-md-12">
                     <h3 class="page-header">@lang('invoices.customerCompany')</h3>
                     @if(empty($invoice->company))
-                        <a href="#">
+                        <a href="{{ route('invoices.companies.search', ['id' => Hashids::encode($invoice->id)]) }}">
                             <div class="well">
                                 <i class="fa fa-plus-circle"></i> @lang('common.register') {{ strtolower(trans('invoices.customerCompany')) }}
                             </div>
@@ -144,7 +152,7 @@
                                             <h5>@lang('common.value')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                            <h5>@lang('common.quantity')</h5>
+                                            <h5>@lang('invoices.nights')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                                             <h5>@lang('common.total')</h5>
@@ -329,63 +337,63 @@
         @endif
         <!-- Products -->
 
-            <!-- Services -->
-            @if(!$invoice->services->isEmpty())
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="page-header">@lang('services.title')</h3>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="crud-list">
-                                    <div class="crud-list-heading">
-                                        <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                                <h5>@lang('services.service')</h5>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                                <h5>@lang('common.value')</h5>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                                <h5>@lang('common.quantity')</h5>
-                                            </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                                <h5>@lang('common.total')</h5>
-                                            </div>
+        <!-- Services -->
+        @if(!$invoice->services->isEmpty())
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="page-header">@lang('services.title')</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('services.service')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.quantity')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                            <h5>@lang('common.total')</h5>
                                         </div>
                                     </div>
-                                    <div class="crud-list-items">
-                                        @foreach($invoice->services as $service)
-                                            <div class="crud-list-row">
-                                                <div class="row">
-                                                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                                        <p>
-                                                            <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
-                                                                {{ $service->description }}
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                        <p>
-                                                            {{ number_format($service->price, 2, ',', '.') }}
-                                                        </p>            
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                        <p>{{ $service->pivot->quantity }}</p>            
-                                                    </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                        <p>{{ number_format($service->pivot->value, 2, ',', '.') }}</p>
-                                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->services as $service)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                    <p>
+                                                        <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
+                                                            {{ $service->description }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>
+                                                        {{ number_format($service->price, 2, ',', '.') }}
+                                                    </p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{ $service->pivot->quantity }}</p>            
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <p>{{ number_format($service->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endif
-            <!-- Services -->
+            </div>
+        @endif
+        <!-- Services -->
 
         @include('partials.spacer', ['size' => 'md'])
         @include('partials.modal-confirm')

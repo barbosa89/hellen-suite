@@ -26,8 +26,8 @@
                             'title' => trans('common.all')
                         ],
                         [
-                            'id' => ucfirst(trans('rooms.free')),
-                            'title' => trans('rooms.free'),
+                            'id' => ucfirst(trans('rooms.available')),
+                            'title' => trans('rooms.available'),
                             'where' => [
                                 'field' => 'status',
                                 'values' => [1]
@@ -39,6 +39,14 @@
                             'where' => [
                                 'field' => 'status',
                                 'values' => [0]
+                            ]
+                        ],
+                        [
+                            'id' => ucfirst(trans('rooms.cleaning')),
+                            'title' => trans('rooms.cleaning'),
+                            'where' => [
+                                'field' => 'status',
+                                'values' => [4]
                             ]
                         ],
                         [

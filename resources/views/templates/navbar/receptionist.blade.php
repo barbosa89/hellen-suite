@@ -5,7 +5,7 @@
     <a href="{{ route('invoices.index') }}"><i class="fa fa-credit-card fa-fw"></i> @lang('invoices.title')</a>
 </li>
 <li>
-    <a href="#"><i class="fa fa-building fa-fw"></i> Empresas</a>
+    <a href="{{ route('companies.index') }}"><i class="fa fa-building fa-fw"></i> @lang('companies.title')</a>
 </li>
 <li>
     <a href="#"><i class="fa fa-toggle-on fa-fw"></i> Turnos</a>

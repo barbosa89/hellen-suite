@@ -100,4 +100,5 @@ return array (
   'total' => 'Total',
   'taxes' => 'Taxes',
   'optional' => 'Optional',
+  'mobile' => 'Mobile phone',
 );

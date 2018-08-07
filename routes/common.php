@@ -12,3 +12,7 @@ Route::post('account/activation', 'AccountController@activation')
 Route::get('guests/search', 'GuestController@search')
     ->name('guests.search')
     ->middleware(['auth', 'role:admin|receptionist']);
+
+Route::get('companies/search', 'CompanyController@search')
+    ->name('companies.search')
+    ->middleware(['auth', 'role:admin|receptionist']);

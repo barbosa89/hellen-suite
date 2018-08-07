@@ -2,7 +2,6 @@
 
 return array (
   'title' => 'Recibos',
-  'invoice' => 'Recibo',
   'forCompany' => 'Para empresa',
   'tourism' => 'Turismo',
   'registerGuests' => 'Registrar huéspedes',
@@ -15,4 +14,14 @@ return array (
   'see' => 'Ver el recibo',
   'loadProducts' => 'Cargar productos',
   'loadServices' => 'Cargar servicios',
+  'nights' => 'Noches',
+  'invoice' => 'Recibo',
+  'reason' => 'Motivo de la visita',
+  'data' => 'Datos',
+  'statisticalData' => 'Datos estadísticos',
+  'selectIfApplicable' => 'Seleccionar sólo si aplica',
+  'registry' => 'Registro',
+  'reservation' => 'Reservación',
+  'job' => 'Trabajo',
+  'registerCompany' => 'Registrar empresa',
 );

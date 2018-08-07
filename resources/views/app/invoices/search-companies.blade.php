@@ -8,8 +8,10 @@
             'url' => route('invoices.index'),
             'options' => [
                 [
-                    'option' => trans('common.new') . ' ' . trans('guests.guest'),
-                    'url' => route('invoices.guests.create', ['id' => Hashids::encode($invoice->id)])
+                    'option' => trans('common.create') . ' ' . trans('companies.company'),
+                    'url' => route('invoices.companies.create', [
+                        'id' => Hashids::encode($invoice->id)
+                    ])
                 ],
                 [
                     'option' => trans('invoices.see'),
@@ -34,7 +36,7 @@
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
-                        'title' => trans('common.search') . ' ' . trans('guests.title'),
+                        'title' => trans('common.search') . ' ' . trans('companies.title'),
                         'align' => 'text-center',
                         'size' => 'h3'
                     ],
@@ -74,7 +76,7 @@
 @section('scripts')
     <script type="text/javascript">
         function search (str) {
-            const url = '{{ url('guests/search') }}';
+            const url = '{{ url('companies/search') }}';
             const uri = "?query=" + str + "&status=0&format=rendered&template=invoices";
 
             if (str.length == 0) {

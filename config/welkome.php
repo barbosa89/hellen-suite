@@ -33,6 +33,7 @@ return [
             'reservation',
             'for_company',
             'are_tourists',
+            'for_job',
             'company_id',
             'user_id',
             'created_at'
@@ -74,6 +75,13 @@ return [
             'price',
             'status',
             'user_id'
+        ],
+        'companies' => [
+            'id',
+            'tin',
+            'business_name',
+            'user_id',
+            'created_at'
         ]
     ],
 ];

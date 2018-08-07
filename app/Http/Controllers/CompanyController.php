@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use Carbon\Carbon;
+use App\Welkome\Company;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
+use App\Helpers\{Id, Input, Fields};
 
 class CompanyController extends Controller
 {
@@ -14,7 +17,14 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $month = Carbon::now()->subDays(31);
+
+        $companies = Company::where('user_id', auth()->user()->parent)
+            ->where('created_at', '>=', $month->toDateTimeString())
+            ->paginate(config('welkome.paginate'), Fields::get('companies'))
+            ->sortByDesc('created_at');
+        
+        return view('app.companies.index', compact('companies'));
     }
 
     /**
@@ -24,7 +34,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.companies.create');
     }
 
     /**

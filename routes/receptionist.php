@@ -2,6 +2,7 @@
 
 Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
     Route::resource('guests', 'GuestController');
+    Route::resource('companies', 'CompanyController');
 
     Route::get('invoices', 'InvoiceController@index')
         ->name('invoices.index');
@@ -48,8 +49,18 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
     Route::post('invoices/{id}/services', 'InvoiceController@addServices')
         ->name('invoices.services.add');
 
+    Route::get('invoices/{id}/companies/search', 'InvoiceController@searchCompanies')
+        ->name('invoices.companies.search');
+
+    Route::post('invoices/{id}/companies', 'InvoiceController@storecompanies')
+        ->name('invoices.companies.store');
+
+    Route::get('invoices/{id}/companies/create', 'InvoiceController@createcompanies')
+        ->name('invoices.companies.create');  
+
     Route::post('products/calculate/total', 'ProductController@total')
         ->name('products.total');
+
     Route::post('services/calculate/total', 'ServiceController@total')
         ->name('services.total');
 });
