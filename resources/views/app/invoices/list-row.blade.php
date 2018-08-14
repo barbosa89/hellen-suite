@@ -47,7 +47,7 @@
                         'type' => 'confirm',
                         'option' => trans('common.delete'),
                         'url' => route('invoices.destroy', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                         'method' => 'DELETE'
                     ],

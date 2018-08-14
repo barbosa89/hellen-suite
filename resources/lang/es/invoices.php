@@ -24,4 +24,5 @@ return array (
   'reservation' => 'Reservación',
   'job' => 'Trabajo',
   'registerCompany' => 'Registrar empresa',
+  'firstStep' => 'Primero debes agregar habitaciones',
 );

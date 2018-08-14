@@ -12,6 +12,14 @@
                     'url' => route('invoices.guests.create', ['id' => Hashids::encode($invoice->id)])
                 ],
                 [
+                    'type' => 'hideable',
+                    'option' => trans('invoices.registerCompany'),
+                    'url' => route('invoices.companies.search', [
+                        'id' => Hashids::encode($invoice->id)
+                    ]),
+                    'show' => empty($invoice->company) ? true : false
+                ],
+                [
                     'option' => trans('invoices.see'),
                     'url' => route('invoices.show', [
                         'id' => Hashids::encode($invoice->id)
@@ -39,6 +47,7 @@
                         'size' => 'h3'
                     ],
                     'url' => '#',
+                    'method' => 'GET',
                     'fields' => [
                         'app.invoices.search-field',
                     ],
@@ -73,7 +82,9 @@
 
 @section('scripts')
     <script type="text/javascript">
-        function search (str) {
+        function search (str, e) {
+            e.preventDefault();
+
             const url = '{{ url('guests/search') }}';
             const uri = "?query=" + str + "&status=0&format=rendered&template=invoices";
 
@@ -84,14 +95,18 @@
 
             if (str.length >= 3) {
                 $.get(url + uri, function (data, status) {
+                    console.log(data);
                     let guests = data.guests;
-                    $('#item-search').empty();
                     
-                    for (let index = 0; index < guests.length; index++) {
-                        $('#item-search').append($(guests[index]));           
-                    }
+                    if (guests.length) {
+                        $('#item-search').empty();
+                    
+                        for (let index = 0; index < guests.length; index++) {
+                            $('#item-search').append($(guests[index]));           
+                        }
 
-                    $('#list').show();
+                        $('#list').show();
+                    }
                 });
             }
         }

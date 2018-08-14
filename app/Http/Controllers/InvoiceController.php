@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Fields, Id, Input, Random};
-use App\Welkome\{Guest, IdentificationType, Invoice, Product, Room, Service};
+use App\Welkome\{Company, Guest, IdentificationType, Invoice, Product, Room, Service};
 use App\Http\Requests\{AddGuests, AddProducts, AddRooms, AddServices, StoreInvoiceGuest};
 
 class InvoiceController extends Controller
@@ -124,7 +124,7 @@ class InvoiceController extends Controller
                 return $guest->pivot->main == true;
             });
         }
-
+        
         return view('app.invoices.show', compact('invoice', 'customer'));
     }
 
@@ -140,15 +140,52 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::get('invoices'));
-
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'));
+                },
+                'rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'));
+                },
+            ])->first(Fields::get('invoices'));
+        
         if (empty($invoice)) {
             abort(404);
         }
 
-        if ($invoice->open) {
-            $invoice->delete();
+        $status = false;
 
+        \DB::transaction(function () use (&$status, $invoice) {
+            try {
+                $invoice->rooms->each(function ($room, $index) use ($invoice) {
+                    $room->number = $room->number;
+                    $room->description = $room->description;
+                    $room->status = '1';
+                    $room->save(); 
+                });
+
+                $invoice->guests->each(function ($guest, $index) {
+                    $guest->dni = $guest->dni;
+                    $guest->name = $guest->name;
+                    $guest->last_name = $guest->last_name;
+                    $guest->email = $guest->email;
+                    $guest->status = false;
+                    $guest->save();
+                });
+
+                \DB::table('guest_room')
+                    ->where('invoice_id', $invoice->id)
+                    ->delete();
+                
+                if ($invoice->delete()) {
+                    $status = true;
+                }
+            } catch (\Throwable $e) {
+                \Storage::append('invoice.log', $e->getMessage());
+            }
+        });
+
+        if ($status) {
             flash(trans('common.successful'))->success();
 
             return redirect()->route('invoices.index');
@@ -232,10 +269,10 @@ class InvoiceController extends Controller
 
                 $invoice->subvalue += $value;
                 $invoice->value += $value;
-                $invoice->update();
+                $invoice->save();
 
                 $room->status = '0';
-                $room->update();
+                $room->save();
                 $status = true;
             } catch (\Throwable $e) {
                 // ..
@@ -274,6 +311,14 @@ class InvoiceController extends Controller
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->rooms->count() == 0) {
+            flash(trans('invoices.firstStep'))->info();
+
+            return redirect()->route('invoices.rooms.add', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
         }
         
         return view('app.invoices.search-guests', compact('invoice'));
@@ -450,8 +495,12 @@ class InvoiceController extends Controller
             'invoice_id' => $invoice->id
         ]);
 
+        $guest->dni = $guest->dni;
+        $guest->name = $guest->name;
+        $guest->last_name = $guest->last_name;
+        $guest->email = $guest->email;
         $guest->status = true;
-        $guest->update();
+        $guest->save();
 
         flash(trans('common.successful'))->success();
 
@@ -556,9 +605,9 @@ class InvoiceController extends Controller
 
                 $product->quantity -= $request->quantity;
 
-                if (($product->quantity - $request->quantity) == 0) {
-                    $product->status = false;
-                }
+                // if (($product->quantity - $request->quantity) == 0) {
+                //     $product->status = false;
+                // }
 
                 $product->update();
 
@@ -681,6 +730,47 @@ class InvoiceController extends Controller
         }
         
         return view('app.invoices.search-companies', compact('invoice'));
+    }
+
+    /**
+     * Store a newly created company in storage and attaching to invoice.
+     *
+     * @param $id
+     * @param $company
+     * @return \Illuminate\Http\Response
+     */
+    public function addCompanies($id, $company)
+    {
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->where('company_id', null)
+            ->first(['id']);
+        
+        $company = Company::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($company))
+            ->first(Fields::get('companies'));
+
+        if (empty($invoice) or empty($company)) {
+            abort(404);
+        }
+
+        $invoice->company_id = $company->id;
+
+        if ($invoice->update()) {
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.show', [
+                'id' => $id
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+        
+        return redirect()->route('invoices.show', [
+            'id' => $id
+        ]);
     }
 
     /**

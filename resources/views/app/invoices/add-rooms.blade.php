@@ -12,6 +12,14 @@
                     'url' => route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)])
                 ],
                 [
+                    'type' => 'hideable',
+                    'option' => trans('invoices.registerCompany'),
+                    'url' => route('invoices.companies.search', [
+                        'id' => Hashids::encode($invoice->id)
+                    ]),
+                    'show' => empty($invoice->company) ? true : false
+                ],
+                [
                     'option' => trans('invoices.see'),
                     'url' => route('invoices.show', [
                         'id' => Hashids::encode($invoice->id)

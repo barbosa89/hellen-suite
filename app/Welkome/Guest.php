@@ -11,7 +11,17 @@ class Guest extends Model
     use Searchable;
     use LogsActivity;
 
-    public $asYouType = true;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'dni', 'name', 'last_name', 'gender', 'birthdate', 'responsible_adult', 
+        'identification_type_id', 'user_id', 'status', 'created_at'
+    ];
+
+    public $asYouType = true;    
 
     /**
      * Get the indexable data array for the model.
@@ -20,9 +30,13 @@ class Guest extends Model
      */
     public function toSearchableArray()
     {
-        $array = $this->toArray();
-
-        return $array;
+        return [
+            'id' => $this->id,
+            'dni' => $this->dni, 
+            'name' => $this->name, 
+            'last_name' => $this->last_name, 
+            'email' => $this->email
+        ];
     }
 
     public function children()

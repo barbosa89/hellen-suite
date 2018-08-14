@@ -1,5 +1,5 @@
 <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
-    <label for="tin">@lang('companies.number'):</label>
+    <label for="tin">@lang('companies.tin'):</label>
     <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" placeholder="{{ trans('common.required') }}" required>
 
     @if ($errors->has('tin'))
@@ -10,7 +10,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('business_name') ? ' has-error' : '' }}">
-    <label for="business_name">@lang('companies.businessName')(s):</label>
+    <label for="business_name">@lang('companies.businessName'):</label>
     <input type="text" class="form-control" name="business_name" id="business_name" value="{{ old('business_name') }}" placeholder="{{ trans('common.required') }}" required>
 
     @if ($errors->has('business_name'))
@@ -32,7 +32,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-    <label for="address">@lang('common.address')</label>
+    <label for="address">@lang('common.address'):</label>
     <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('address'))
@@ -43,7 +43,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-    <label for="phone">@lang('common.phone')</label>
+    <label for="phone">@lang('common.phone'):</label>
     <input type="text" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('phone'))
@@ -54,7 +54,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
-    <label for="mobile">@lang('common.mobile')</label>
+    <label for="mobile">@lang('common.mobile'):</label>
     <input type="text" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('mobile'))

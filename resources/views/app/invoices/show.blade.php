@@ -49,7 +49,7 @@
                             'type' => 'confirm',
                             'option' => trans('common.delete'),
                             'url' => route('invoices.destroy', [
-                                'room' => Hashids::encode($invoice->id)
+                                'id' => Hashids::encode($invoice->id)
                             ]),
                             'method' => 'DELETE'
                         ],
@@ -75,11 +75,41 @@
                             </div>
                         </a>
                     @else
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <p>{{ $invoice->company->dni }}</p>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <p>{{ $invoice->company->name }}</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="crud-list">
+                                    <div class="crud-list-heading">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <h5>@lang('companies.company')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <h5>@lang('companies.tin')</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="crud-list-items">
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                    <p>
+                                                        <a href="{{ route('companies.show', ['id' => Hashids::encode($invoice->company->id)]) }}">
+                                                            {{ $invoice->company->business_name }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 visible-md visible-lg">
+                                                    <p>
+                                                        <a href="{{ route('companies.show', ['id' => Hashids::encode($invoice->company->id)]) }}">
+                                                            {{ $invoice->company->tin }}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -200,9 +230,9 @@
             <div class="col-md-12">
                 <h3 class="page-header">@lang('guests.title')</h3>
                 @if($invoice->guests->isEmpty())
-                    <a href="{{ route('invoices.rooms', ['room' => Hashids::encode($invoice->id)]) }}">
+                    <a href="{{ route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)]) }}">
                         <div class="well">
-                            <i class="fa fa-plus-circle"></i> @lang('rooms.addRoom')
+                            <i class="fa fa-plus-circle"></i> @lang('invoices.registerGuests')
                         </div>
                     </a>
                 @else

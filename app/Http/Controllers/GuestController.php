@@ -78,6 +78,8 @@ class GuestController extends Controller
         $guest->user()->associate(auth()->user()->parent);
 
         if ($guest->save()) {
+            flash(trans('common.createdSuccessfully'))->success();
+            
             return redirect()->route('guests.show', [
                 'id' => Hashids::encode($guest->id)
             ]);
@@ -144,7 +146,7 @@ class GuestController extends Controller
         $status = Input::bool($request->get('status', null));
         $guests = Guest::search(Input::clean($request->get('query')))
             ->where('user_id', auth()->user()->parent)
-            ->get(config('welkome.fields.guests'));
+            ->get(Fields::get('guests'));
 
         if (!is_null($status)) {
             $guests = $this->filterByStatus($guests, $status);

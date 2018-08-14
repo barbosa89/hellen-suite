@@ -2,12 +2,39 @@
 
 namespace App\Welkome;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Room extends Model
 {
+    use Searchable;
     use LogsActivity;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'number', 'description', 'price', 'status', 'user_id'
+    ];
+
+    public $asYouType = true;    
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'number' => $this->number, 
+            'description' => $this->description, 
+        ];
+    }
 
     public function invoices()
     {

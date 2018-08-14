@@ -16,26 +16,19 @@ class Invoice extends Model
      *
      * @return array
      */
-    public function toSearchableArray()
-    {
-        $company = empty($this->company) ? null : $this->company->name;
-        $tin = empty($this->company) ? null : $this->company->tin;
-        $names = empty($this->guests) ? null : $this->guests->implode('name', ', ');
-        $last_names = empty($this->guests) ? null : $this->guests->implode('last_name', ', ');
-        $dni = empty($this->guests) ? null : $this->guests->implode('dni', ', ');
-        $emails = empty($this->guests) ? null : $this->guests->implode('email', ', ');
+    // public function toSearchableArray()
+    // {
+    //     // $company = empty($this->company) ? null : $this->company->name;
+    //     // $tin = empty($this->company) ? null : $this->company->tin;
+    //     // $names = empty($this->guests) ? null : $this->guests->implode('name', ', ');
+    //     // $last_names = empty($this->guests) ? null : $this->guests->implode('last_name', ', ');
+    //     // $dni = empty($this->guests) ? null : $this->guests->implode('dni', ', ');
+    //     // $emails = empty($this->guests) ? null : $this->guests->implode('email', ', ');
 
-        return [
-            'id' => $this->id,
-            'number' => $this->number,
-            'company' => $company,
-            'company_tin' => $tin,
-            'names' => $names,
-            'last_names' => $last_names,
-            'dni' => $dni,
-            'emails' => $emails,
-        ];
-    }
+    //     $array = $this->toArray();
+
+    //     return $array;
+    // }
 
     public function rooms()
     {

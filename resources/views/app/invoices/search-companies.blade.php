@@ -52,14 +52,11 @@
         <div class="crud-list" id="list" style="display:none;">
             <div class="crud-list-heading">
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <h5>@lang('common.name')</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-                        <h5>@lang('common.idNumber')</h5>
-                    </div>
-                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 visible-md visible-lg">
-                        <h5>@lang('common.status')</h5>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <h5>@lang('companies.tin')</h5>
                     </div>
                 </div>
             </div>
@@ -77,7 +74,7 @@
     <script type="text/javascript">
         function search (str) {
             const url = '{{ url('companies/search') }}';
-            const uri = "?query=" + str + "&status=0&format=rendered&template=invoices";
+            const uri = "?query=" + str + "&format=rendered&template=invoices";
 
             if (str.length == 0) {
                 $('#list').hide();
@@ -86,26 +83,33 @@
 
             if (str.length >= 3) {
                 $.get(url + uri, function (data, status) {
-                    let guests = data.guests;
-                    $('#item-search').empty();
+                    console.log(data);
+                    let companies = data.companies;
+                    if (companies.length) {
+                        $('#item-search').empty();
                     
-                    for (let index = 0; index < guests.length; index++) {
-                        $('#item-search').append($(guests[index]));           
-                    }
+                        for (let index = 0; index < companies.length; index++) {
+                            $('#item-search').append($(companies[index]));           
+                        }
 
-                    $('#list').show();
+                        $('#list').show();
+                    }
                 });
             }
         }
 
 
-        function addGuest(el, e) {
+        function add(el, e) {
             e.preventDefault();
-            const invoice = $('#invoice').data('id');
-            const guest = el.dataset.guest;
-            const url = '/invoices/'+ invoice +'/guests/' + guest;
+            var confirmed = confirm('{{ trans('common.confirmAction') }}');
             
-            window.location.replace(url);
+            if (confirmed) {
+                const invoice = $('#invoice').data('id');
+                const company = el.dataset.value;
+                const url = '/invoices/'+ invoice +'/companies/' + company;
+                
+                window.location.replace(url);
+            }
         }
     </script>
 @endsection

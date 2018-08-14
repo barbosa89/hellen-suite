@@ -52,6 +52,9 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
     Route::get('invoices/{id}/companies/search', 'InvoiceController@searchCompanies')
         ->name('invoices.companies.search');
 
+    Route::get('invoices/{id}/companies/{company}', 'InvoiceController@addCompanies')
+        ->name('invoices.companies.add');
+
     Route::post('invoices/{id}/companies', 'InvoiceController@storecompanies')
         ->name('invoices.companies.store');
 

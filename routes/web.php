@@ -12,10 +12,9 @@
 */
 
 Route::get('/test', function () {
+    $g = \App\Welkome\Room::where('status', '0')->get();
 
-    $birthdate = new \Carbon\Carbon('1989-11-20');
-    $now = \Carbon\Carbon::now();
-    dd($now->diffInYears($birthdate));
+    dd($g->pluck('id')->toArray());
 });
 
 Route::get('/', function () {
