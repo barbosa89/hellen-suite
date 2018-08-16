@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class Input
 {
-	public static function clean($value)
+	public static function clean($value = null)
 	{
 		if (empty($value)) {
 			return null;
