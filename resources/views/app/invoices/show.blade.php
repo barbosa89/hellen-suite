@@ -64,6 +64,7 @@
 
         @include('app.invoices.info')
 
+        <!-- Company -->
         @if($invoice->for_company)
             <div class="row">
                 <div class="col-md-12">
@@ -115,55 +116,7 @@
                 </div>
             </div>
         @endif
-
-        {{-- <div class="row">
-            <div class="col-md-12">
-                <h3 class="page-header">@lang('invoices.customerGuest')</h3>
-                @if(empty($customer))
-                <a href="{{ route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)]) }}">
-                        <div class="well">
-                            <i class="fa fa-plus-circle"></i> @lang('common.register') {{ strtolower(trans('invoices.customerGuest')) }}
-                        </div>
-                    </a>
-                @else
-                    <div class="crud-list">
-                        <div class="crud-list-heading">
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                    <h5>@lang('common.idNumber')</h5>
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9">
-                                    <h5>@lang('common.name')</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="crud-list-items">
-                            <div class="crud-list-row">
-                                <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1"> 
-                                        <p>{{ strtoupper($customer->identificationType->type) }}</p>
-                                    </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                        <p>
-                                            <a href="{{ route('guests.show', ['id' => Hashids::encode($customer->id)]) }}">
-                                                {{ number_format($customer->dni, 0, ',', '.') }}
-                                            </a>
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 visible-md visible-lg">
-                                        <p>
-                                            <a href="{{ route('guests.show', ['id' => Hashids::encode($customer->id)]) }}">
-                                                {{ $customer->name . ' ' . $customer->last_name }}
-                                            </a>
-                                        </p>            
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div> --}}
+        <!-- Company -->
 
         <!-- Rooms -->
         @if(!$invoice->rooms->isEmpty())
@@ -247,11 +200,14 @@
                                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                                             <h5>@lang('common.name')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('rooms.room')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('invoices.responsibleAdult')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -280,10 +236,10 @@
                                                             </a>
                                                         </p>            
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
                                                         <p>{{ $room->number }}</p>            
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
                                                         @if(empty($guest->parent))
                                                             <p>-</p>
                                                         @else
@@ -293,6 +249,12 @@
                                                                 </a>
                                                             </p>
                                                         @endif
+                                                    </div>
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                        <a class="btn btn-link" href="#" data-room="{{ Hashids::encode($room->id) }}" data-guest="{{ Hashids::encode($guest->id) }}" data-invoice="{{ Hashids::encode($invoice->id) }}">
+                                                            <i class="fa fa-close"></i>
+                                                        </a>
+                                                        <a class="btn btn-link" href="#"><i class="fa fa-pencil"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

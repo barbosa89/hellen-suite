@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Fields, Id, Input, Random};
 use App\Welkome\{Company, Guest, IdentificationType, Invoice, Product, Room, Service};
-use App\Http\Requests\{AddGuests, AddProducts, AddRooms, AddServices, StoreInvoiceGuest};
+use App\Http\Requests\{AddGuests, AddProducts, AddRooms, AddServices, RemoveGuests, StoreInvoiceGuest};
 
 class InvoiceController extends Controller
 {
@@ -140,14 +140,6 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            // ->with([
-            //     'guests' => function ($query) {
-            //         $query->select(Fields::get('guests'));
-            //     },
-            //     'rooms' => function ($query) {
-            //         $query->select(Fields::parsed('rooms'));
-            //     },
-            // ])
             ->first(Fields::get('invoices'));
         
         if (empty($invoice)) {
@@ -491,6 +483,70 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Remove guests to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function removeGuests(RemoveGuests $request, $id)
+    {
+        $invoice = Invoice::where('user_id', auth()->user()->parent)
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select('id');
+                },
+            ])->first(['id']);
+
+        $guest = Guest::where('id', Id::get($request->guest))
+            ->where('status', true) // In hotel
+            ->first(Fields::get('guests'));
+        
+        if (empty($invoice) or empty($guest)) {
+            abort(404);
+        }
+
+        if ($invoice->guests->count() == 1) {
+            flash(trans('invoices.onlyOne'))->error();
+
+            return back();
+        }
+
+        $invoice->guests()->detach($guest->id);
+        $invoice->load([
+            'guests' => function ($query) {
+                $query->select('id')
+                    ->where('responsible_adult', false);
+            }
+        ]);
+
+        $invoice->guests()->updateExistingPivot(
+            $invoice->guests->first(),
+            ['main' => true]
+        );
+
+        $guest->rooms()
+            ->wherePivot('invoice_id', $invoice->id)
+            ->detach(Id::get($request->room));
+
+        $guest->dni = $guest->dni;
+        $guest->name = $guest->name;
+        $guest->last_name = $guest->last_name;
+        $guest->email = $guest->email;
+        $guest->status = false;
+        $guest->save();
+
+        flash(trans('common.successful'))->success();
+
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
+    }
+
+    /**
      * Check if the guest is a minor.
      *
      * @param string $birthdate
@@ -506,7 +562,7 @@ class InvoiceController extends Controller
         // TODO: Pensar en crear una tabla de atributos de los invoice
         // TODO: Crear tabla de configuraciones
         // Agregar edad limite para ser adulto
-        // Agregar Hora hotele
+        // Agregar Hora hotelera
         if ($age < 18) {
             return true;
         }

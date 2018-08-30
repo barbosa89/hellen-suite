@@ -25,4 +25,5 @@ return array (
   'job' => 'Trabajo',
   'registerCompany' => 'Registrar empresa',
   'firstStep' => 'Primero debes agregar habitaciones',
+  'onlyOne' => 'Sólo hay un huesped',
 );

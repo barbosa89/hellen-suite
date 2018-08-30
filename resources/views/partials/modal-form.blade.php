@@ -17,7 +17,17 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					@include($form)
+					<div id="modal-fields">
+						@if(!empty($fields))
+							@if(is_array($fields))
+								@foreach($fields as $field)
+									@include($field)
+								@endforeach
+							@else
+								@include($fields)
+							@endif
+						@endif
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-link" data-dismiss="modal">

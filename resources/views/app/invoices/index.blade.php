@@ -31,7 +31,7 @@
             'title' => trans('common.creationOf') . ' ' . trans('invoices.title'),
             'id' => 'new-invoice',
             'action' => route('invoices.store'),
-            'form' => 'app.invoices.new'
+            'fields' => 'app.invoices.new'
         ])
     </div>
 

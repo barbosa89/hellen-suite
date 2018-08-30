@@ -25,4 +25,5 @@ return array (
   'job' => 'Job',
   'registerCompany' => 'Register company',
   'firstStep' => 'First you must add rooms',
+  'onlyOne' => 'There is only one guest',
 );
