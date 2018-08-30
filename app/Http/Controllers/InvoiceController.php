@@ -140,14 +140,15 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select(Fields::get('guests'));
-                },
-                'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
-                },
-            ])->first(Fields::get('invoices'));
+            // ->with([
+            //     'guests' => function ($query) {
+            //         $query->select(Fields::get('guests'));
+            //     },
+            //     'rooms' => function ($query) {
+            //         $query->select(Fields::parsed('rooms'));
+            //     },
+            // ])
+            ->first(Fields::get('invoices'));
         
         if (empty($invoice)) {
             abort(404);
@@ -156,27 +157,7 @@ class InvoiceController extends Controller
         $status = false;
 
         \DB::transaction(function () use (&$status, $invoice) {
-            try {
-                $invoice->rooms->each(function ($room, $index) use ($invoice) {
-                    $room->number = $room->number;
-                    $room->description = $room->description;
-                    $room->status = '1';
-                    $room->save(); 
-                });
-
-                $invoice->guests->each(function ($guest, $index) {
-                    $guest->dni = $guest->dni;
-                    $guest->name = $guest->name;
-                    $guest->last_name = $guest->last_name;
-                    $guest->email = $guest->email;
-                    $guest->status = false;
-                    $guest->save();
-                });
-
-                \DB::table('guest_room')
-                    ->where('invoice_id', $invoice->id)
-                    ->delete();
-                
+            try {             
                 if ($invoice->delete()) {
                     $status = true;
                 }
@@ -476,7 +457,7 @@ class InvoiceController extends Controller
 
         $guest = Guest::where('id', Id::get($request->guest))
             ->where('status', false) // Not in hotel
-            ->first(['id', 'birthdate']);
+            ->first(Fields::get('guests'));
         
         if (empty($invoice) or empty($guest)) {
             abort(404);

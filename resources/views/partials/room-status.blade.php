@@ -11,15 +11,19 @@
         @break
 
     @case(1)
-        @lang('rooms.free')
+        @lang('rooms.available')
         @break
 
     @case(2)
         @lang('rooms.maintenance')
         @break
 
-    @case(2)
+    @case(3)
         @lang('rooms.disabled')
+        @break
+
+    @case(4)
+        @lang('rooms.cleaning')
         @break
 
 @endswitch

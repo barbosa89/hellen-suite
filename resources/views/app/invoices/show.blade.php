@@ -22,7 +22,7 @@
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => empty($invoice->company) ? true : false
+                            'show' => $invoice->for_company
                         ],
                         [
                             'option' => trans('invoices.registerGuests'),
