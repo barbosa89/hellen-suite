@@ -17,7 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
     .styles([
         'public/css/timeline.css',
         'public/css/sb-admin-2.css',
-        'node_modules/morris.js/morris.css',
+        // 'node_modules/morris.js/morris.css',
         'node_modules/toastr/build/toastr.min.css',
         'node_modules/metismenu/dist/metisMenu.min.css',
         'node_modules/pretty-checkbox/dist/pretty-checkbox.min.css',
@@ -34,7 +34,7 @@ mix.js('resources/js/app.js', 'public/js')
     .scripts([
         'public/js/sb-admin-2.js',
         'node_modules/raphael/raphael.min.js',
-        'node_modules/morris.js/morris.min.js',
+        // 'node_modules/morris.js/morris.min.js',
         'node_modules/moment/min/moment.min.js',
         'node_modules/toastr/build/toastr.min.js',
         'node_modules/metismenu/dist/metisMenu.min.js',
