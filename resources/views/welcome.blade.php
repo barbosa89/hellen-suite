@@ -4,7 +4,7 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
 <head>
@@ -44,34 +44,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div id="app">
         <!-- banner -->
         <div class="banner_nav_w3layouts">
-            <nav class="navbar navbar-default">
-                <div class="navbar-header navbar-left">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    <h1><a class="navbar-brand" href="{{ url('/') }}"><i class="fa fa-bed" aria-hidden="true"></i> {{ config('app.name') }}</a></h1>
-
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-                    <nav>
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ url('/') }}" class="hvr-underline-from-center">Home</a></li>
-                            <li><a href="#about" class="hvr-underline-from-center scroll">About</a></li>
-                            <li><a href="#services" class="hvr-underline-from-center scroll">Services</a></li>
-                            <li><a href="#clients" class="hvr-underline-from-center scroll">Clients</a></li>
-                            <li><a href="#portfolio" class="hvr-underline-from-center scroll">Projects</a></li>
-                            <li><a href="#contact" class="hvr-underline-from-center scroll">Contact</a></li>
-                        </ul>
-                    </nav>
-
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#"><i class="fa fa-bed"></i> {{ config('app.name') }}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link hvr-underline-from-center" href="{{ url('/') }}">Inicio <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hvr-underline-from-center" href="#about">
+                                About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hvr-underline-from-center" href="#services">
+                                Services
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hvr-underline-from-center" href="#clients">
+                                Clients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hvr-underline-from-center" href="#portfolio">
+                                Projects
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hvr-underline-from-center" href="#contact">
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
-
-            <div class="clearfix"> </div>
         </div>
 
         <div class="banner" id="home">
@@ -124,7 +134,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container">
                 <h3 class="tittle_w3layouts two">My Services</h3>
                 <p class="sub_para two yellow">What I Love to Do</p>
-                <div class="skill_info_wthree_agile">
+                <div class="skill_info_wthree_agile row">
                     <div class="col-md-4 banner_bottom_left">
                         <div class="banner_bottom_pos_w3ls">
                             <div class="banner_bottom_pos_grid">
@@ -188,7 +198,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container">
                 <h3 class="tittle_w3layouts two">Satisfied Clients</h3>
                 <p class="sub_para two ">What I Love to Do</p>
-                <div class="skill_info_wthree_agile">
+                <div class="skill_info_wthree_agile row">
                     <div class="col-md-4 stats_left counter_grid">
                         <div class="icon">
                             <i class="fa fa-laptop" aria-hidden="true"></i>
@@ -245,7 +255,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                             <div class="item active">
                                 <div class="testimonials_grid_wthree">
-                                    <img src="{{ asset('images/test1.jpg') }}" alt=" " class="img-responsive" />
+                                    <img src="{{ asset('images/men_2.jpg') }}" alt=" " class="img-responsive" />
                                     <h4><i class="fa fa-quote-left" aria-hidden="true"></i> Nam libero tempore, cum soluta nobis est eligendi optio cumque
                                         nihil impedit quo minus id quod maxime placeat facere possimus,Morbi viverra congue nisi vel pulvinar posuere sapien
                                         eros. omnis voluptas.</h4>
@@ -257,7 +267,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <!--.item-->
                             <div class="item">
                                 <div class="testimonials_grid_wthree">
-                                    <img src="{{ asset('images/test2.jpg') }}" alt=" " class="img-responsive" />
+                                    <img src="{{ asset('images/men_2.jpg') }}" alt=" " class="img-responsive" />
                                     <h4><i class="fa fa-quote-left" aria-hidden="true"></i> Nam libero tempore, cum soluta nobis est eligendi optio cumque
                                         nihil impedit quo minus id quod maxime placeat facere possimus,Morbi viverra congue nisi vel pulvinar posuere sapien
                                         eros. omnis voluptas.</h4>
@@ -269,7 +279,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                             <div class="item">
                                 <div class="testimonials_grid_wthree">
-                                    <img src="{{ asset('images/test3.jpg') }}" alt=" " class="img-responsive" />
+                                    <img src="{{ asset('images/men_2.jpg') }}" alt=" " class="img-responsive" />
                                     <h4><i class="fa fa-quote-left" aria-hidden="true"></i> Nam libero tempore, cum soluta nobis est eligendi optio cumque
                                         nihil impedit quo minus id quod maxime placeat facere possimus,Morbi viverra congue nisi vel pulvinar posuere sapien
                                         eros. omnis voluptas.</h4>
@@ -291,39 +301,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //testimonials -->
         
         <!-- /portfolio-->
-        <div class="portfolio-project" id="portfolio">
+{{--         <div class="portfolio-project" id="portfolio">
             <div class="container">
                 <h3 class="tittle_w3layouts two con">My Projects</h3>
                 <p class="sub_para two con">What I Love to Do</p>
                 <div class="skill_info_wthree_agile">
-                    <div class="agile_port_w3ls_info">
+                    <div class="agile_port_w3ls_info row">
                         <div class="col-md-6 portfolio-grids_left">
-                            <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
-                                <a href="{{ asset('images/g1.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
-                                    <img src="{{ asset('images/g1.jpg') }}" class="img-responsive" alt=" " />
-                                    <div class="b-wrapper two">
+                            <div class="row">
+                                <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
+                                    <a href="{{ asset('images/g1.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
+                                        <img src="{{ asset('images/g1.jpg') }}" class="img-responsive" alt=" " />
+                                        <div class="b-wrapper two">
+                                            
+                                            
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
+                                    <a href="{{ asset('images/g2.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
+                                        <img src="{{ asset('images/g2.jpg') }}" class="img-responsive" alt=" " />
+                                        <div class="b-wrapper">
                                         
-                                        
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
-                                <a href="{{ asset('images/g2.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
-                                    <img src="{{ asset('images/g2.jpg') }}" class="img-responsive" alt=" " />
-                                    <div class="b-wrapper">
-                                    
-                                        
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
-                                <a href="{{ asset('images/g3.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
-                                    <img src="{{ asset('images/g3.jpg') }}" class="img-responsive" alt=" " />
-                                    <div class="b-wrapper">
-                                        
-                                        
-                                    </div>
-                                </a>
+                                            
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
+                                    <a href="{{ asset('images/g3.jpg') }}" class="b-link-stripe b-animate-go lightninBox" data-lb-group="1">
+                                        <img src="{{ asset('images/g3.jpg') }}" class="img-responsive" alt=" " />
+                                        <div class="b-wrapper">
+                                            
+                                            
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 portfolio-grids" data-aos="zoom-in">
@@ -377,7 +389,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         
         <!-- /contact -->
         <div class="contact_sec" id="contact">
@@ -419,9 +431,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script type="text/javascript">
         $('.counter').countUp();
 
-		$(function () {
-			$('.portfolio-grids a').Chocolat();
-        });
+		// $(function () {
+		// 	$('.portfolio-grids a').Chocolat();
+  //       });
 
 		jQuery(document).ready(function ($) {
 			$(".scroll").click(function (event) {

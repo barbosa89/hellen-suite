@@ -104,10 +104,6 @@ label {
     font-size: 0.9em;
 }
 
-.navbar-nav>li>a {
-    text-transform: uppercase;
-}
-
 .navbar-default .navbar-nav>li>a:hover {
     color: #ff2d37;
 }
@@ -140,7 +136,7 @@ nav.navbar.navbar-default {
 
 a.navbar-brand {
     padding: 0;
-    font-size: 1em;
+    font-size: 2.2em;
     font-weight: 400;
     line-height: 50px;
     font-family: 'Pacifico', cursive;
@@ -329,7 +325,6 @@ ul.agile_forms li {
     }
     .navbar-nav {
         margin: 0;
-        text-align: center;
     }
     .navbar-nav>li>a {
         padding: 5px 25px;
@@ -466,7 +461,6 @@ h1 {
     color: #fff;
     letter-spacing: 1px;
     border: 2px solid #ff2d37;
-    box-shadow: 0 -4px 27px 0 rgba(0, 0, 0, 0.2), 0 4px 7px 0 rgba(0, 0, 0, 0.19);
 }
 
 .banner_info_w3ls_agile ul li a:hover {
@@ -898,7 +892,6 @@ p.sub_cap {
     text-align: center;
     padding: 40px 10px;
     width: 32%;
-    margin-right: 1%;
 }
 
 .stats_left p {

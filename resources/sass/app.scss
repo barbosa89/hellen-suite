@@ -1,12 +1,15 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
 // Variables
 @import "variables";
+
 // Bootstrap
-// @import '~bootstrap/scss/bootstrap';
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import '~bootstrap/scss/bootstrap';
+
 // Font awesome
 @import 'node_modules/font-awesome/scss/font-awesome.scss';
+
 $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;
@@ -158,6 +161,15 @@ $text-default: white;
     @include clearfix;
 }
 
+.navbar-light .navbar-nav .nav-link {
+    font-size: 1.2em !important;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+.agile_port_w3ls_info {
+    margin: 0 !important;
+}
 
 /*==========  Mobile First Method  ==========*/
 

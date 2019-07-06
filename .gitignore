@@ -13,6 +13,4 @@ yarn-error.log
 .env
 /.phpintel
 /storage/indexes/*.index
-composer.lock
-package-lock.json
 

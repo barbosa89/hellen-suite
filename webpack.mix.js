@@ -11,8 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .styles([
         'public/css/timeline.css',
@@ -47,7 +47,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/js/move-top.js',
         'public/js/jquery.countup.js',
         'public/js/jquery.chocolat.js',
-        'public/js/SmoothScroll.min.js',
+        // 'public/js/SmoothScroll.min.js',
         'public/js/jquery.waypoints.min.js',
     ], 'public/js/welkome.js')
     .sourceMaps()

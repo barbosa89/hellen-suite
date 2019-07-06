@@ -37,3 +37,7 @@ require __DIR__ . '/admin.php';
 require __DIR__ . '/receptionist.php';
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
