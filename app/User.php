@@ -14,8 +14,6 @@ class User extends Authenticatable
     use Notifiable;
     use EntrustUserTrait;
     use LogsActivity;
-    use Searchable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -33,18 +31,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        return $array;
-    }
 
     public function entities()
     {

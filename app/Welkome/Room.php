@@ -2,13 +2,11 @@
 
 namespace App\Welkome;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Room extends Model
 {
-    use Searchable;
     use LogsActivity;
 
     /**

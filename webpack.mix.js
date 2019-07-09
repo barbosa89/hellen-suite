@@ -15,40 +15,27 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .styles([
-        'public/css/timeline.css',
-        'public/css/sb-admin-2.css',
-        // 'node_modules/morris.js/morris.css',
+        'public/css/sb-admin.css',
         'node_modules/toastr/build/toastr.min.css',
-        'node_modules/metismenu/dist/metisMenu.min.css',
         'node_modules/pretty-checkbox/dist/pretty-checkbox.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
-    ], 'public/css/all.css')
-    .styles([
-        'public/css/style.css',
-    ], 'public/css/form.css')
-    .styles([
-        'public/css/landing.css',
-        'public/css/chocolat.css',
     ], 'public/css/welkome.css')
     .scripts([
-        'public/js/sb-admin-2.js',
-        'node_modules/raphael/raphael.min.js',
-        // 'node_modules/morris.js/morris.min.js',
         'node_modules/moment/min/moment.min.js',
         'node_modules/toastr/build/toastr.min.js',
-        'node_modules/metismenu/dist/metisMenu.min.js',
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
-        'public/js/common.js',
-    ], 'public/js/all.js')
-    .scripts([
-        'public/js/easing.js',
-        'public/js/move-top.js',
-        'public/js/jquery.countup.js',
-        'public/js/jquery.chocolat.js',
-        // 'public/js/SmoothScroll.min.js',
-        'public/js/jquery.waypoints.min.js',
+        'node_modules/jquery.easing/jquery.easing.js',
+        'public/js/sb-admin.js',
+        'public/js/common.js'
     ], 'public/js/welkome.js')
+    .styles([
+        'public/css/grayscale.css',
+    ], 'public/css/index.css')
+    .scripts([
+        'public/js/grayscale.js',
+        'node_modules/jquery.easing/jquery.easing.js'
+    ], 'public/js/index.js')
     .sourceMaps()
     .browserSync({ proxy: "welkome.dev" });

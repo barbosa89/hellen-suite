@@ -2,9 +2,8 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/app.js.map": "/js/app.js.map",
-    "/css/all.css": "/css/all.css",
-    "/css/form.css": "/css/form.css",
     "/css/welkome.css": "/css/welkome.css",
-    "/js/all.js": "/js/all.js",
-    "/js/welkome.js": "/js/welkome.js"
+    "/js/welkome.js": "/js/welkome.js",
+    "/css/index.css": "/css/index.css",
+    "/js/index.js": "/js/index.js"
 }
