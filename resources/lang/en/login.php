@@ -14,11 +14,11 @@ return array (
   'hi' => 'Hi',
   'active' => 'You have an active session, to return to the control panel click on the following button',
   'back' => 'Back',
-  'register' => 'Register',
   'activate' => 'Activate',
   'activateTitle' => 'Activate account',
   'resetPassword' => 'Reset password',
   'sendLink' => 'Send link',
   'forgotten' => 'Forgotten my password',
   'confirmPassword' => 'Confirm password',
+  'signup' => 'Sign up',
 );
