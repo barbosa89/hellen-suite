@@ -2,6 +2,7 @@
 
 Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
     Route::resource('guests', 'GuestController');
+
     Route::resource('companies', 'CompanyController');
 
     Route::get('invoices', 'InvoiceController@index')
@@ -9,7 +10,7 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
 
     Route::post('invoices', 'InvoiceController@store')
         ->name('invoices.store');
-    
+
     Route::get('invoices/{id}', 'InvoiceController@show')
         ->name('invoices.show');
 
@@ -29,7 +30,7 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
         ->name('invoices.guests.store');
 
     Route::get('invoices/{id}/guests/create', 'InvoiceController@createGuests')
-        ->name('invoices.guests.create');  
+        ->name('invoices.guests.create');
 
     Route::get('invoices/{id}/guests/{guest}', 'InvoiceController@guests')
         ->name('invoices.guests');
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
         ->name('invoices.companies.store');
 
     Route::get('invoices/{id}/companies/create', 'InvoiceController@createcompanies')
-        ->name('invoices.companies.create');  
+        ->name('invoices.companies.create');
 
     Route::post('products/calculate/total', 'ProductController@total')
         ->name('products.total');

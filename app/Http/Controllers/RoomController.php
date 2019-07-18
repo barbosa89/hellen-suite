@@ -21,7 +21,7 @@ class RoomController extends Controller
             ->paginate(config('welkome.paginate'), [
                 'id', 'number', 'description', 'price', 'status', 'user_id'
             ])->sort();
-        
+
         return view('app.rooms.index', compact('rooms'));
     }
 
@@ -74,7 +74,7 @@ class RoomController extends Controller
             ->first([
                 'id', 'number', 'description', 'price', 'status', 'user_id'
             ]);
-        
+
         if (empty($room)) {
             abort(404);
         }

@@ -22,9 +22,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/index.css') }}" rel="stylesheet">
 
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -35,7 +35,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <a class="navbar-brand js-scroll-trigger" href="#page-top">
                     {{ config('app.name') }}
                 </a>
-                
+
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fa fa-bars"></i>
@@ -57,16 +57,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 @lang('landing.contact')
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ route('login') }}">
-                                @lang('login.identification')
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">
-                                @lang('login.signup')
-                            </a>
-                        </li>
+
+                        @if (Auth::guest())
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ route('login') }}">
+                                    @lang('login.identification')
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">
+                                    @lang('login.signup')
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{{ route('home') }}">
+                                    Panel
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
