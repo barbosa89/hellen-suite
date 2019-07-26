@@ -10888,7 +10888,7 @@ footer.sticky-footer {
   right: 0;
   bottom: 0;
   width: calc(100% - 90px);
-  height: 80px;
+  height: 50px;
   background-color: #e9ecef;
 }
 

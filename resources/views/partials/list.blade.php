@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        @if($data->count() >= config('welkome.paginate'))
+        @if($data->count() >= config('welkome.paginate') and method_exists($data, 'render'))
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-center">
