@@ -18,5 +18,26 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
 
     Route::resource('services', 'ServiceController');
 
-    Route::resource('rooms', 'RoomController');
+    # Rooms module
+
+	Route::get('rooms/search', 'RoomController@search')
+		->name('rooms.search');
+
+	Route::delete('rooms/{id}', 'RoomController@destroy')
+		->name('rooms.destroy');
+
+	Route::put('rooms/{id}', 'RoomController@update')
+		->name('rooms.update');
+
+	Route::get('rooms/{id}/edit', 'RoomController@edit')
+		->name('rooms.edit');
+
+	Route::post('rooms', 'RoomController@store')
+		->name('rooms.store');
+
+	Route::get('rooms/create', 'RoomController@create')
+		->name('rooms.create');
+
+	Route::get('rooms', 'RoomController@index')
+		->name('rooms.index');
 });

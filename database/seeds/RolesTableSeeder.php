@@ -20,7 +20,7 @@ class RolesTableSeeder extends Seeder
     /**
      * Default roles in application
      *
-     * @return array 
+     * @return array
      */
     public function getRoles()
     {

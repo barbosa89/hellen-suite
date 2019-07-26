@@ -70,4 +70,7 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
 
     Route::post('services/calculate/total', 'ServiceController@total')
         ->name('services.total');
+
+    Route::get('rooms', 'RoomController@list')
+        ->name('rooms.list');
 });

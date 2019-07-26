@@ -11,7 +11,7 @@ use App\Http\Requests\{StoreRoom, UpdateRoom};
 class RoomController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource for admin users.
      *
      * @return \Illuminate\Http\Response
      */
@@ -196,5 +196,20 @@ class RoomController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('rooms.index');
+    }
+
+    /**
+     * Display a listing of the resource for receptionists users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        $rooms = Room::where('user_id', auth()->user()->parent)
+            ->paginate(config('welkome.paginate'), [
+                'id', 'number', 'description', 'price', 'status', 'user_id', 'parent'
+            ])->sort();
+
+        return view('app.rooms.index', compact('rooms'));
     }
 }
