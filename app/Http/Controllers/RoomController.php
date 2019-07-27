@@ -210,6 +210,6 @@ class RoomController extends Controller
                 'id', 'number', 'description', 'price', 'status', 'user_id', 'parent'
             ])->sort();
 
-        return view('app.rooms.index', compact('rooms'));
+        return view('app.rooms.receptionist.index', compact('rooms'));
     }
 }

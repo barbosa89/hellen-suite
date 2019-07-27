@@ -1,6 +1,6 @@
 <div class="modal fade modal-slide-in-right" id="{{ $id }}" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
 	<form action="{{ $action }}" method="POST">
-		@csrf 
+		@csrf
 
 		@if(isset($method) and !empty($method))
 			<input type="hidden" name="_method" value="{{ $method }}">
@@ -9,12 +9,10 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						&times;
+					<h5 class="modal-title">{{ $title }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="modal-form">
-						{{ $title }}
-					</h4>
 				</div>
 				<div class="modal-body">
 					<div id="modal-fields">

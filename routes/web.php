@@ -12,9 +12,7 @@
 */
 
 Route::get('/test', function () {
-    $g = \App\Welkome\Room::where('status', '0')->get();
-
-    dd($g->pluck('id')->toArray());
+    dd(implode('/', \Request::segments()));
 });
 
 Route::get('/', function () {

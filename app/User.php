@@ -14,13 +14,14 @@ class User extends Authenticatable
     use Notifiable;
     use EntrustUserTrait;
     use LogsActivity;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status', 
+        'name', 'email', 'password', 'status'
     ];
 
     /**

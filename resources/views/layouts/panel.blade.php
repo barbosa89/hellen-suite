@@ -34,7 +34,9 @@
                                         @lang('dashboard.dashboard')
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active">Overview</li>
+                                <li class="breadcrumb-item active">
+                                    <a href="{{ url(breadcrumb()->url) }}">{{ breadcrumb()->text }}</a>
+                                </li>
                             </ol>
 
                             @yield('content')
