@@ -35,6 +35,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
 	Route::post('rooms', 'RoomController@store')
 		->name('rooms.store');
 
+	Route::get('rooms/{id}', 'RoomController@show')
+		->name('rooms.show');
+
 	Route::get('rooms/create', 'RoomController@create')
 		->name('rooms.create');
 

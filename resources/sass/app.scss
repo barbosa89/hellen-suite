@@ -18,6 +18,10 @@ $text-default: white;
     color: $text-default;
 }
 
+.navbar-nav .nav-item.dropdown .normalize-toggle::after{
+    float: none !important;
+}
+
 @mixin no-decoration {
     text-decoration: none;
 }
