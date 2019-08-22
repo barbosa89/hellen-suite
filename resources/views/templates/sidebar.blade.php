@@ -60,12 +60,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('rooms.index') }}">
                 <i class="fa fa-fw fa-bed"></i>
-                <span>Rooms</span></a>
+                <span>@lang('rooms.title')</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('invoices.index') }}">
                 <i class="fa fa-fw fa-file"></i>
-                <span>Invoices</span></a>
+                <span>@lang('invoices.title')</span></a>
             </li>
             @break
         @case('receptionist')

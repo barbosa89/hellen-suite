@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 @section('content')
 
@@ -9,6 +9,7 @@
             'options' => [
                 [
                     'option' => trans('common.options'),
+                    'type' => 'dropdown',
                     'url' => [
                         [
                             'option' => trans('assets.add'),

@@ -38,6 +38,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
 	Route::get('rooms/create', 'RoomController@create')
 		->name('rooms.create');
 
+	Route::get('rooms/{id}', 'RoomController@show')
+		->name('rooms.show');
+
 	Route::get('rooms', 'RoomController@index')
 		->name('rooms.index');
 });

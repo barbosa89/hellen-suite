@@ -47,39 +47,26 @@
             @endif
             @break
 
+        @case('dropdown')
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ $option['option'] }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    @foreach($option['url'] as $suboption)
+                        @include('partials.li-dropdown', ['option' => $suboption])
+                    @endforeach
+                </div>
+            </li>
+            @break
+
         @default
-            @if(is_string($option['url']))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
-                </li>
-            @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ $option['option'] }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @foreach($option['url'] as $suboption)
-                            @include('partials.li', ['option' => $suboption])
-                        @endforeach
-                    </div>
-                </li>
-            @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+            </li>
     @endswitch
 @else
-    @if(is_string($option['url']))
-        <li class="nav-item">
-            <a class="nav-link" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
-        </li>
-    @else
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ $option['option'] }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                @foreach($option['url'] as $suboption)
-                    @include('partials.li', ['option' => $suboption])
-                @endforeach
-            </div>
-        </li>
-    @endif
+    <li class="nav-item">
+        <a class="nav-link" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+    </li>
 @endif

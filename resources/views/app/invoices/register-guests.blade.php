@@ -102,7 +102,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.add')</button>
-                </form> 
+                </form>
             </div>
         </div>
 

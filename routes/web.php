@@ -12,7 +12,7 @@
 */
 
 Route::get('/test', function () {
-    dd(implode('/', \Request::segments()));
+    abort(403);
 });
 
 Route::get('/', function () {
