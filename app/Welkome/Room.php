@@ -15,24 +15,8 @@ class Room extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'description', 'price', 'status', 'user_id'
+        'id', 'number', 'description', 'price', 'status', 'user_id', 'tax_included', 'is_suite', 'capacity', 'floors'
     ];
-
-    public $asYouType = true;    
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'id' => $this->id,
-            'number' => $this->number, 
-            'description' => $this->description, 
-        ];
-    }
 
     public function invoices()
     {

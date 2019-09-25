@@ -18,6 +18,19 @@ class CreateRoomsTable extends Migration
             $table->string('number')->unique();
             $table->text('description');
             $table->decimal('price', 10, 2);
+            $table->decimal('min_price', 10, 2);
+
+            # TODO: Verificar si aplica impuesto
+            $table->decimal('tax', 8, 4)->default(0.0);
+            /**
+             * 0: Does not apply
+             * 1: Apply, included
+             * 2: Apply, not included
+             */
+            $table->enum('tax_status', [0, 1, 2])->default(0);
+            $table->boolean('is_suite')->default(false);
+            $table->mediumInteger('capacity');
+            $table->mediumInteger('floor');
 
             /**
              * 0: Occupied
@@ -31,7 +44,6 @@ class CreateRoomsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
-                
             $table->timestamps();
         });
     }

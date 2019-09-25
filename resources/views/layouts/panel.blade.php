@@ -12,10 +12,11 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/welkome.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/welkome.css') }}" rel="stylesheet">
 </head>
 <body id="page-top">
     <div id="app">
@@ -63,7 +64,8 @@
     </div>
 
         <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/welkome.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/welkome.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>

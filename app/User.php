@@ -57,9 +57,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'parent');
     }
-    
+
     #####################################
-    
+
     public function guests()
     {
         return $this->hasMany(Welkome\Guest::class);

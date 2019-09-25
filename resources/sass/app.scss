@@ -1,15 +1,11 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-
 // Variables
 @import "variables";
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 // Font awesome
 @import 'node_modules/font-awesome/scss/font-awesome.scss';
-
 $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;
@@ -18,7 +14,12 @@ $text-default: white;
     color: $text-default;
 }
 
-.navbar-nav .nav-item.dropdown .normalize-toggle::after{
+.app-nav {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.navbar-nav .nav-item.dropdown .normalize-toggle::after {
     float: none !important;
 }
 
@@ -31,6 +32,10 @@ $text-default: white;
 .unstyle-link:active {
     @include no-decoration;
     color: $text-default;
+}
+
+.bootstrap-select {
+    border: 1px solid #ced4da !important;
 }
 
 .active-session-msn {
@@ -64,9 +69,8 @@ $text-default: white;
 .crud-list {
     .crud-list-heading {
         padding: 5px 0;
-        border-bottom: 1px solid $greyBorder;
         h5 {
-            font-weight: 600;
+            font-size: 1rem;
         }
     }
     .crud-list-items {
@@ -109,6 +113,45 @@ $text-default: white;
     height: 60px;
     @include clearfix;
 }
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    // padding: 6px 0px;
+    border-radius: 50% !important;
+    // text-align: center;
+    font-size: 12px;
+    line-height: 1 !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.room {
+    font-family: 'Raleway', sans-serif;
+    height: 100%;
+    border: 1px solid lighten($greyBorder, 5%);
+    padding: 5px;
+    background-color: lighten(#e9ecef, 10%);
+    &>h3 {
+        font-weight: lighter !important;
+        font-size: 2.8em;
+        margin-bottom: 0;
+    }
+    & p {
+        margin-bottom: 0;
+        & span {
+            padding: 1px 6px;
+            color: #fff;
+            background-color: #6c757d;
+            border-radius: 50%;
+        }
+    }
+}
+
+.room:hover {
+    background-color: lighten(#e9ecef, 2%);
+}
+
 
 /*==========  Mobile First Method  ==========*/
 
@@ -153,9 +196,7 @@ $text-default: white;
 
 /* Small Devices, Tablets */
 
-@media only screen and (max-width: 768px) {
-
-}
+@media only screen and (max-width: 768px) {}
 
 
 /* Extra Small Devices, Phones */

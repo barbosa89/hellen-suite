@@ -1,7 +1,15 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->number }}</a></p>
+            <p>
+                <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ $row->number }}
+
+                    @if ($row->is_suite)
+                        <i class="fa fa-star"></i>
+                    @endif
+                </a>
+            </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
             <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->price, 2, ',', '.') }}</a></p>
@@ -11,7 +19,7 @@
                 <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
                     @include('partials.room-status', ['status' => $row->status])
                 </a>
-            </p>            
+            </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
             @include('partials.dropdown-btn', [

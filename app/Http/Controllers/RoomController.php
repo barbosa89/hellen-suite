@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Room;
+use App\Helpers\Input;
+use App\Welkome\RoomType;
 use Illuminate\Http\Request;
-use App\Http\Requests\{StoreRoom, UpdateRoom};
+use App\Http\Requests\StoreRoom;
+use App\Http\Requests\UpdateRoom;
 
 class RoomController extends Controller
 {
@@ -44,11 +47,21 @@ class RoomController extends Controller
     public function store(StoreRoom $request)
     {
         $room = new Room();
+        $room->floor = (int) $request->floor;
         $room->number = $request->number;
-        $room->price = $request->price;
+        $room->price = (float) $request->price;
+        $room->min_price = (float) $request->min_price;
         $room->description = $request->description;
         $room->status = '1';
+        $room->capacity = (int) $request->capacity;
+
+        if (in_array((int) $request->tax_status, [1,2])) {
+            $room->tax_status = $request->tax_status;
+            $room->tax = (float) $request->tax;
+        }
+
         $room->user()->associate(auth()->user()->id);
+        $room->is_suite = (int) $request->type;
 
         if ($room->save()) {
             flash(trans('common.createdSuccessfully'))->success();
@@ -196,6 +209,27 @@ class RoomController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('rooms.index');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $query = Input::clean($request->get('query', null));
+
+        if (empty($query)) {
+            return redirect()->route('rooms.index');
+        }
+
+        $rooms = Room::whereLike(['number', 'description', 'type.type', 'type.description'], $query)
+            ->paginate(20, Fields::get('rooms'));
+
+        return view('rooms.search', compact('rooms'));
     }
 
     /**

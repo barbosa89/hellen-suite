@@ -101,4 +101,8 @@ return array (
   'taxes' => 'Taxes',
   'optional' => 'Optional',
   'mobile' => 'Mobile phone',
+  'min_price' => 'Minimal price',
+  'capacity' => 'Capacity',
+  'floor' => 'Floor',
+  'tax_status' => 'Tax status',
 );

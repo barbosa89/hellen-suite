@@ -11,6 +11,9 @@
                     'option' => trans('common.new'),
                     'url' => route('rooms.create')
                 ],
+            ],
+            'search' => [
+                'action' => route('rooms.search')
             ]
         ])
 

@@ -9,18 +9,6 @@ class Vehicle extends Model
 {
     use LogsActivity;
 
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        return $array;
-    }
-
     public function type()
     {
         return $this->belongsTo(\App\Welkome\VehicleType::class, 'vehicle_type_id');

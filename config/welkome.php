@@ -8,27 +8,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Execution environment
+    | General parameters
     |--------------------------------------------------------------------------
     |
-    | The application can be executed in two environments, in the web 
+    | The application can be executed in two environments, in the web
     | environment it will execute some additional functionalities.
     |
     */
 
     'env' => env('ENVIRONMENT', 'web'),
 
-    'paginate' => 20, 
+    'paginate' => 20,
 
     'fields' => [
         'invoices' => [
-            'id', 
-            'number', 
-            'discount', 
-            'subvalue', 
-            'taxes', 
-            'value', 
-            'open', 
+            'id',
+            'number',
+            'discount',
+            'subvalue',
+            'taxes',
+            'value',
+            'open',
             'status',
             'reservation',
             'for_company',
@@ -39,12 +39,17 @@ return [
             'created_at'
         ],
         'rooms' => [
-            'id', 
-            'number', 
-            'description', 
-            'price', 
-            'status', 
-            'user_id'
+            'id',
+            'number',
+            'description',
+            'price',
+            'status',
+            'user_id',
+            'tax_included',
+            'is_suite',
+            'capacity',
+            'floors',
+            'min_price'
         ],
         'guests' => [
             'id',

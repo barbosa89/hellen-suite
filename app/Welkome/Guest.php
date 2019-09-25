@@ -19,24 +19,6 @@ class Guest extends Model
         'identification_type_id', 'user_id', 'status', 'created_at'
     ];
 
-    public $asYouType = true;    
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'id' => $this->id,
-            'dni' => $this->dni, 
-            'name' => $this->name, 
-            'last_name' => $this->last_name, 
-            'email' => $this->email
-        ];
-    }
-
     public function children()
     {
         return $this->hasMany(\App\Welkome\Guest::class, 'responsible_adult');

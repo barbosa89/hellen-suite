@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Http\Request;
 
+# TODO: Documentar
 class Input
 {
 	public static function clean($value = null)
@@ -11,7 +12,7 @@ class Input
 		if (empty($value)) {
 			return null;
 		}
-		
+
 		return htmlentities($value, ENT_QUOTES);
 	}
 

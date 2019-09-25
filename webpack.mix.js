@@ -38,4 +38,4 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/jquery.easing/jquery.easing.js'
     ], 'public/js/index.js')
     .sourceMaps()
-    .browserSync({ proxy: "welkome.dev" });
+    .browserSync({ proxy: "welkome.app" });

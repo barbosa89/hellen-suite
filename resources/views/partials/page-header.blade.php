@@ -5,6 +5,6 @@
     'search' => isset($search) ? $search : null
 ])
 
-<div class="col mt-4">
+<div class="mt-4">
     @include('flash::message')
 </div>

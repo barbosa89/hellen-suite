@@ -101,4 +101,8 @@ return array (
   'taxes' => 'Impuestos',
   'optional' => 'Opcional',
   'mobile' => 'Teléfono móvil',
+  'capacity' => 'Capacidad',
+  'floor' => 'Piso',
+  'min_price' => 'Precio mínimo',
+  'tax_status' => 'Estado de impuestos',
 );

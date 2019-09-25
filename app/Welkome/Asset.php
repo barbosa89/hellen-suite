@@ -8,18 +8,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Asset extends Model
 {
     use LogsActivity;
-    
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        return $array;
-    }
 
     public function rooms()
     {

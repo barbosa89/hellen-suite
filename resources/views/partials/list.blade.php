@@ -1,7 +1,7 @@
 @if(is_null($where))
     @if($data->count() > 0)
         <div class="crud-list">
-            <div class="crud-list-heading">
+            <div class="crud-list-heading mt-2">
                 @include($listHeading)
             </div>
             <div class="crud-list-items">
