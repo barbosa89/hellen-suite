@@ -246,10 +246,38 @@ class RoomController extends Controller
     public function list()
     {
         $rooms = Room::where('user_id', auth()->user()->parent)
-            ->paginate(config('welkome.paginate'), [
-                'id', 'number', 'description', 'price', 'status', 'user_id', 'parent'
-            ])->sort();
+            ->paginate(config('welkome.paginate'), Fields::get('rooms'))->sort();
 
         return view('app.rooms.receptionist.index', compact('rooms'));
+    }
+
+    /**
+     * Display the specified resource for receptionist.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function display($id)
+    {
+        $room = User::find(auth()->user()->parent)->rooms()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('rooms'));
+
+        if (empty($room)) {
+            abort(404);
+        }
+
+        $room->load([
+            'assets' => function ($query)
+            {
+                $query->select('id', 'number', 'description', 'brand', 'model', 'reference');
+            },
+            'products' => function ($query)
+            {
+                $query->select('id', 'description', 'brand', 'reference', 'price');
+            },
+        ]);
+
+        return view('app.rooms.receptionist.show', compact('room'));
     }
 }

@@ -38,43 +38,7 @@
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-            @include('partials.dropdown-btn', [
-                'options' => [
-                    [
-                        'option' => trans('common.seeMore'),
-                        'url' => route('rooms.show', ['room' => Hashids::encode($row->id)]),
-                    ],
-                    [
-                        'option' => trans('rooms.reserve'),
-                        'url' => '#',
-                    ],
-                    [
-                        'option' => trans('assets.add'),
-                        'url' => '#',
-                    ],
-                    [
-                        'option' => trans('products.add'),
-                        'url' => '#',
-                    ],
-                    [
-                        'type' => 'divider'
-                    ],
-                    [
-                        'option' => trans('common.edit'),
-                        'url' => route('rooms.edit', [
-                            'room' => Hashids::encode($row->id)
-                        ]),
-                    ],
-                    [
-                        'type' => 'confirm',
-                        'option' => trans('common.delete'),
-                        'url' => route('rooms.destroy', [
-                            'room' => Hashids::encode($row->id)
-                        ]),
-                        'method' => 'DELETE'
-                    ],
-                ]
-            ])
+            @include('app.rooms.admin.item-menu')
         </div>
     </div>
 </div>

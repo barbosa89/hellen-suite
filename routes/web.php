@@ -30,9 +30,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('language/{locale}', 'LanguageController@locale');
 
 require __DIR__ . '/common.php';
+require __DIR__ . '/receptionist.php';
 require __DIR__ . '/root.php';
 require __DIR__ . '/admin.php';
-require __DIR__ . '/receptionist.php';
 
 Auth::routes();
 
