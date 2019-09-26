@@ -12,9 +12,9 @@ class Id
 		if (empty($id)) {
 			return null;
 		}
-		
+
 		$id = htmlentities($id, ENT_QUOTES);
-		
+
 		return Hashids::decode($id)[0];
 	}
 }

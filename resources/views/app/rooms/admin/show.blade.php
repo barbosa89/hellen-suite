@@ -6,6 +6,9 @@
         @include('partials.page-header', [
             'title' => trans('rooms.title'),
             'url' => route('rooms.index'),
+            'search' => [
+                'action' => route('rooms.search')
+            ],
             'options' => [
                 [
                     'option' => trans('common.options'),

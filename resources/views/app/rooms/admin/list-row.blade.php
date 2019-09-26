@@ -1,6 +1,6 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
             <p>
                 <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
                     {{ $row->number }}
@@ -11,17 +11,33 @@
                 </a>
             </p>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
-            <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->price, 2, ',', '.') }}</a></p>
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+            <p>
+                {{ $row->capacity }}
+            </p>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 visible-md visible-lg">
+            <p>
+                <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ number_format($row->price, 2, ',', '.') }}
+                </a>
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 visible-md visible-lg">
+            <p>
+                <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ number_format($row->min_price, 2, ',', '.') }}
+                </a>
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 visible-md visible-lg">
             <p>
                 <a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">
                     @include('partials.room-status', ['status' => $row->status])
                 </a>
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
             @include('partials.dropdown-btn', [
                 'options' => [
                     [

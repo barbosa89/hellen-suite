@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.creationOf') @lang('rooms.title')</h2>
-                <form action="{{ route('rooms.store') }}" method="POST" id="room-create">
+                <form action="{{ route('rooms.store') }}" method="POST" id="room-form">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('floor') ? ' has-error' : '' }}">
@@ -126,7 +126,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <button type="submit" id="room-store" class="btn btn-primary">@lang('common.create')</button>
+                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">Volver</a>
                 </form>
             </div>
         </div>
@@ -138,54 +139,4 @@
         </div>
     </div>
 
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        var min_price = document.querySelector("#min_price");
-
-        min_price.addEventListener('keyup', function(e) {
-            var price = document.querySelector("#price");
-
-            if (parseFloat(this.value) > parseFloat(price.value)) {
-                toastr.error('El precio mínimo es mayor al valor de la habitación', 'Error');
-                this.value = price.value;
-            }
-        });
-
-        var tax_status = document.querySelector("#tax_status");
-
-        tax_status.addEventListener('change', function (e) {
-            if (parseInt(this.value) > 0) {
-                if ($('#tax-input').is(':hidden')) {
-                    $('#tax-input').fadeIn();
-                }
-            } else {
-                if ($('#tax-input').is(':visible')) {
-                    $('#tax-input').fadeOut();
-                    $('#tax').value = '';
-                }
-            }
-        });
-
-        $('#room-create').on('submit', function (e) {
-            return false;
-            e.preventDefault();
-
-            var price = parseFloat($('#price').value);
-            var min_price = parseFloat($('#min_price').value);
-
-            if (min_price < (price/2)) {
-                var confirmed = confirm("El precio mínimo es muy bajo, ¿desea continuar?");
-
-                if (confirmed) {
-                    this.submit();
-                } else {
-                    return false;
-                }
-            } else {
-                this.submit();
-            }
-        })
-    </script>
 @endsection

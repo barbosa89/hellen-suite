@@ -26,7 +26,7 @@
 @else
     @if($data->whereIn($where['field'], $where['values'])->count() > 0)
         <div class="crud-list">
-            <div class="crud-list-heading">
+            <div class="crud-list-heading mt-2">
                 @include($listHeading)
             </div>
             <div class="crud-list-items">

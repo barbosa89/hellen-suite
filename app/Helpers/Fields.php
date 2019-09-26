@@ -19,7 +19,7 @@ class Fields
 		foreach ($fields as $field) {
 			$parsed[] = $model . '.' . $field;
 		}
-		
+
 		return $parsed;
 	}
 }

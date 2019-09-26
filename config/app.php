@@ -221,7 +221,7 @@ return [
         // 'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         // 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        // 'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],

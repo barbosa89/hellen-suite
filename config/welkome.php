@@ -45,10 +45,11 @@ return [
             'price',
             'status',
             'user_id',
-            'tax_included',
+            'tax_status',
+            'tax',
             'is_suite',
             'capacity',
-            'floors',
+            'floor',
             'min_price'
         ],
         'guests' => [

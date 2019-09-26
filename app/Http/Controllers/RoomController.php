@@ -6,10 +6,11 @@ use App\User;
 use App\Helpers\Id;
 use App\Welkome\Room;
 use App\Helpers\Input;
-use App\Welkome\RoomType;
+use App\Helpers\Fields;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
+use Vinkla\Hashids\Facades\Hashids;
 
 class RoomController extends Controller
 {
@@ -21,11 +22,9 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::where('user_id', auth()->user()->id)
-            ->paginate(config('welkome.paginate'), [
-                'id', 'number', 'description', 'price', 'status', 'user_id'
-            ])->sort();
+            ->paginate(config('welkome.paginate', Fields::get('rooms')))->sort();
 
-        return view('app.rooms.index', compact('rooms'));
+        return view('app.rooms.admin.index', compact('rooms'));
     }
 
     /**
@@ -35,7 +34,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('app.rooms.create');
+        return view('app.rooms.admin.create');
     }
 
     /**
@@ -84,9 +83,7 @@ class RoomController extends Controller
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'price', 'status', 'user_id'
-            ]);
+            ->first(Fields::get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -103,7 +100,7 @@ class RoomController extends Controller
             },
         ]);
 
-        return view('app.rooms.show', compact('room'));
+        return view('app.rooms.admin.show', compact('room'));
     }
 
     /**
@@ -116,15 +113,13 @@ class RoomController extends Controller
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'price', 'status', 'user_id'
-            ]);
+            ->first(Fields::get('rooms'));
 
         if (empty($room)) {
             abort(404);
         }
 
-        return view('app.rooms.edit', compact('room'));
+        return view('app.rooms.admin.edit', compact('room'));
     }
 
     /**
@@ -138,9 +133,7 @@ class RoomController extends Controller
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'price', 'status', 'user_id'
-            ]);
+            ->first(Fields::get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -149,6 +142,20 @@ class RoomController extends Controller
         $room->number = $request->number;
         $room->price = $request->price;
         $room->description = $request->description;
+        $room->min_price = (float) $request->min_price;
+        $room->description = $request->description;
+        $room->status = '1';
+        $room->capacity = (int) $request->capacity;
+
+        if (in_array((int) $request->tax_status, [1,2])) {
+            $room->tax_status = $request->tax_status;
+            $room->tax = (float) $request->tax;
+        } else {
+            $room->tax_status = "0";
+            $room->tax = 0.0;
+        }
+
+        $room->is_suite = (int) $request->type;
 
         if ($room->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
@@ -173,9 +180,7 @@ class RoomController extends Controller
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'price', 'status', 'user_id'
-            ]);
+            ->first(Fields::get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -226,10 +231,11 @@ class RoomController extends Controller
             return redirect()->route('rooms.index');
         }
 
-        $rooms = Room::whereLike(['number', 'description', 'type.type', 'type.description'], $query)
+        $rooms = User::find(auth()->user()->id)->rooms()
+            ->whereLike(['number', 'description'], $query)
             ->paginate(20, Fields::get('rooms'));
 
-        return view('rooms.search', compact('rooms'));
+        return view('app.rooms.admin.search', compact('rooms', 'query'));
     }
 
     /**

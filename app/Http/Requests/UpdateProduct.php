@@ -25,7 +25,7 @@ class UpdateProduct extends FormRequest
     public function rules()
     {
         $id = Id::get($this->route('product'));
-        
+
         return [
             'description' => 'required|string|max:191|unique:products,description, ' . $id,
             'brand' => 'nullable|string|max:50',

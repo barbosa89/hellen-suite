@@ -75,10 +75,11 @@ $text-default: white;
     }
     .crud-list-items {
         .crud-list-row {
-            padding: 10px 0;
+            padding: 10px 0 0 0;
             border-top: solid 1px $borderTable;
             p {
                 font-size: 13px;
+                margin: 0;
             }
         }
         &>div:nth-child(odd) {

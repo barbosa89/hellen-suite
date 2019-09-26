@@ -20,6 +20,7 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/pretty-checkbox/dist/pretty-checkbox.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+        'node_modules/sweetalert2/dist/sweetalert2.css'
     ], 'public/css/welkome.css')
     .scripts([
         'node_modules/moment/min/moment.min.js',
@@ -27,6 +28,7 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/bootstrap-select/dist/js/bootstrap-select.js',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
         'node_modules/jquery.easing/jquery.easing.js',
+        'node_modules/sweetalert2/dist/sweetalert2.all.js',
         'public/js/sb-admin.js',
         'public/js/common.js'
     ], 'public/js/welkome.js')

@@ -36,6 +36,7 @@
         "resolve-url-loader": "^2.3.2",
         "sass": "^1.22.12",
         "sass-loader": "^7.3.1",
+        "sweetalert2": "^8.17.6",
         "toastr": "^2.1.2",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"

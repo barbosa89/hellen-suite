@@ -1,9 +1,10 @@
 <div class="dropdown">
-    <button class="btn btn-link dropdown-toggle w-btn-dropdown" id="dropdownMenuButton" type="button" data-toggle="dropdown">
+    <button class="btn btn-link" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-chevron-down"></i>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
         @foreach($options as $option)
-            @include('partials.li', ['option' => $option])
+            @include('partials.li-dropdown', ['option' => $option])
         @endforeach
-    </ul>
+    </div>
 </div>

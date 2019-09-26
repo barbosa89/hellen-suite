@@ -110,3 +110,75 @@ function empty(data) {
 
     return count == 0;
 }
+
+$("#min_price").on('keyup', function(e) {
+    var price = $("#price").val();
+
+    if (parseFloat($("#min_price").val()) > parseFloat(price)) {
+        toastr.info(
+            'El precio mínimo es mayor al valor de la habitación',
+            'Ciudado'
+        );
+
+        $("#min_price").val(price * 0.75);
+    }
+});
+
+$("#min_price").on('focusout', function(e) {
+    var price = parseFloat($("#price").val());
+    var min_price = parseFloat($("#min_price").val());
+
+    if (min_price < (price * 0.75)) {
+        toastr.info(
+            'El precio mínimo es muy bajo',
+            'Ciudado'
+        );
+
+        $("#min_price").val(price * 0.75);
+    }
+});
+
+$("#tax_status").on('change', function(e) {
+    if (parseInt(this.value) > 0) {
+        if ($('#tax-input').is(':hidden')) {
+            $('#tax-input').fadeIn();
+        }
+    } else {
+        if ($('#tax-input').is(':visible')) {
+            $('#tax-input').fadeOut();
+            $('#tax').value = '';
+        }
+    }
+});
+
+// $(document).ready(function() {
+//     $('#room-store').on('click', function(e) {
+//         e.preventDefault();
+
+//         $("#room-form").submit(function(e) {
+//             e.preventDefault();
+//         });
+
+//         var price = $('#price').val();
+//         var min_price = $('#min_price').val();
+
+//         if (min_price <= (price * 0.75)) {
+//             Swal.fire({
+//                 title: 'Estás seguro?',
+//                 text: "El precio mínimo es muy bajo, ¿desea continuar?",
+//                 type: 'warning',
+//                 showCancelButton: true,
+//                 confirmButtonColor: '#3085d6',
+//                 cancelButtonColor: '#d33',
+//                 confirmButtonText: 'Continuar!',
+//                 cancelButtonText: 'Cancelar'
+//             }).then(function(result) {
+//                 if (result.value) {
+//                     $('#room-form').submit();
+//                 }
+//             });
+//         } else {
+//             $('#room-form').submit();
+//         }
+//     });
+// });
