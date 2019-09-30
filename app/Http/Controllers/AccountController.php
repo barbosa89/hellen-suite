@@ -12,7 +12,7 @@ class AccountController extends Controller
     {
         $email = htmlentities($email, ENT_QUOTES);
         $token = htmlentities($token, ENT_QUOTES);
-        
+
         $user = User::where('email', $email)
             ->where('token', $token)
             ->where('verified', false)
@@ -38,15 +38,15 @@ class AccountController extends Controller
         flash()->overlay(trans('common.error'), 'Error');
 
         return back();
-    }  
-    
+    }
+
     public function showFormActivation()
     {
         return view('auth.activation');
     }
 
     public function activation(Activate $request)
-    {       
+    {
         $user = User::where('email', $request->email)
             ->where('token', $request->token)
             ->where('verified', false)

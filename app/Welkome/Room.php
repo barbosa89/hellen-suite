@@ -4,10 +4,13 @@ namespace App\Welkome;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Mtvs\EloquentHashids\HasHashid;
+use Mtvs\EloquentHashids\HashidRouting;
 
 class Room extends Model
 {
     use LogsActivity;
+    use HasHashid, HashidRouting;
 
     /**
      * The attributes that are mass assignable.

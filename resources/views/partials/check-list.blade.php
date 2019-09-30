@@ -1,5 +1,5 @@
 <form id="{{ $id }}" action="{{ $url }}" method="POST">
-    @csrf 
+    @csrf
 
     @if(is_null($where))
         @if($data->count() > 0)

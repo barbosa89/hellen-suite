@@ -35,7 +35,7 @@ class AssetController extends Controller
     {
         $rooms = Room::doesntHave('assets')
             ->get(['id', 'number', 'description']);
-        
+
         return view('app.assets.create', compact('rooms'));
     }
 

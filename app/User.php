@@ -94,4 +94,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Welkome\Company::class);
     }
+
+    // public function matchRole(string $role = '')
+    // {
+    //     $this->whereHas('roles', function ($query) use ($role)
+    //     {
+    //         $query->where('name', $role);
+    //     })->first(['id']);
+    // }
 }

@@ -20,6 +20,7 @@
         "laravel/tinker": "^1.0",
         "laraveles/spanish": "^1.2",
         "maatwebsite/excel": "^3.1",
+        "mtvs/eloquent-hashids": "^1.1",
         "rap2hpoutre/laravel-log-viewer": "^1.2",
         "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-backup": "^5.12",

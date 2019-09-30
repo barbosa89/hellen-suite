@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "177e37d9bf360f4cc20ddcd35167f190",
+    "content-hash": "eb82f1bdd9c9411443b19550122f428d",
     "packages": [
         {
             "name": "albertcht/invisible-recaptcha",
@@ -1838,6 +1838,48 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
+        },
+        {
+            "name": "mtvs/eloquent-hashids",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mtvs/eloquent-hashids.git",
+                "reference": "61f735a6523b93e631d09241e7dbf93f14d8a5d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mtvs/eloquent-hashids/zipball/61f735a6523b93e631d09241e7dbf93f14d8a5d4",
+                "reference": "61f735a6523b93e631d09241e7dbf93f14d8a5d4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "vinkla/hashids": "^3.2|^4.0|^5.0|^6.0|^7.0"
+            },
+            "require-dev": {
+                "orchestra/database": "^3.5|^4.0",
+                "orchestra/testbench": "^3.5|^4.0",
+                "phpunit/phpunit": "~6.0|~7.0|~8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mtvs\\EloquentHashids\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammad Ali Tavassoli",
+                    "email": "mtvs.dev@gmail.com"
+                }
+            ],
+            "description": "On-the-fly hashids for Laravel Eloquent models.",
+            "time": "2019-09-15T07:57:05+00:00"
         },
         {
             "name": "nesbot/carbon",

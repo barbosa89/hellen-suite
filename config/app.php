@@ -168,7 +168,7 @@ return [
         // Maatwebsite\Excel\ExcelServiceProvider::class,
         // Laraveles\Spanish\SpanishServiceProvider::class,
         // Barryvdh\TranslationManager\ManagerServiceProvider::class,
-        // App\Providers\ComposerServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
     ],
 
     /*

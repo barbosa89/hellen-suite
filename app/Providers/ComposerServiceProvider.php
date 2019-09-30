@@ -14,7 +14,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         \View::composer([
-            'templates.navigation'
+            'templates.sidebar'
         ], 'App\Http\ViewComposers\UserComposer');
     }
 

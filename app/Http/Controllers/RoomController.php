@@ -248,7 +248,7 @@ class RoomController extends Controller
         $rooms = Room::where('user_id', auth()->user()->parent)
             ->paginate(config('welkome.paginate'), Fields::get('rooms'))->sort();
 
-        return view('app.rooms.receptionist.index', compact('rooms'));
+        return view('app.rooms.test', compact('rooms'));
     }
 
     /**

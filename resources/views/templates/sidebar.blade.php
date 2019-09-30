@@ -1,6 +1,6 @@
-@php
+{{-- @php
     $roles = auth()->user()->roles;
-@endphp
+@endphp --}}
 
 <!-- Sidebar -->
 <ul class="sidebar navbar-nav">
@@ -11,7 +11,7 @@
         </a>
     </li>
 
-    @switch($roles->first()->name)
+    @switch($user->roles->first()->name)
         @case('root')
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

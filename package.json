@@ -39,7 +39,9 @@
         "sweetalert2": "^8.17.6",
         "toastr": "^2.1.2",
         "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        "vue-context": "^4.0.3",
+        "vue-template-compiler": "^2.6.10",
+        "vue-touch": "^2.0.0-beta.4"
     },
     "dependencies": {
         "jquery.easing": "^1.4.1"

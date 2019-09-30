@@ -1,17 +1,17 @@
-<?php 
+<?php
 
 namespace App\Http\ViewComposers;
 
 use App\User;
 use Illuminate\Contracts\View\View;
- 
+
 class UserComposer {
 
     public $user;
 
     public function __construct()
     {
-        $this->user = \App\User::where('id', auth()->user()->id)
+        $this->user = User::where('id', auth()->user()->id)
             ->with([
                 'roles' => function ($query) {
                     $query->select('id', 'name');

@@ -14,6 +14,10 @@ $text-default: white;
     color: $text-default;
 }
 
+.without-padding {
+    padding: 0 !important;
+}
+
 .app-nav {
     padding-right: 0 !important;
     padding-left: 0 !important;
@@ -21,6 +25,10 @@ $text-default: white;
 
 .navbar-nav .nav-item.dropdown .normalize-toggle::after {
     float: none !important;
+}
+
+.btn-default {
+    border: 1px solid #ccc !important;
 }
 
 @mixin no-decoration {
@@ -135,7 +143,7 @@ $text-default: white;
     background-color: lighten(#e9ecef, 10%);
     &>h3 {
         font-weight: lighter !important;
-        font-size: 2.8em;
+        font-size: 2em;
         margin-bottom: 0;
     }
     & p {
@@ -146,6 +154,9 @@ $text-default: white;
             background-color: #6c757d;
             border-radius: 50%;
         }
+    }
+    & .context-option {
+        padding: 5px 10px;
     }
 }
 
