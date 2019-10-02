@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\Entity;
+use App\Welkome\Hotel;
+use App\Helpers\Id;
+use App\Helpers\Input;
+use App\Helpers\Fields;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoom;
 
-class EntityController extends Controller
+class HotelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +18,10 @@ class EntityController extends Controller
      */
     public function index()
     {
-        //
+        $hotels = Hotel::where('user_id', auth()->user()->id)
+            ->paginate(config('welkome.paginate', Fields::get('hotels')))->sort();
+
+        return view('app.hotels.index', compact('hotels'));
     }
 
     /**
@@ -24,7 +31,7 @@ class EntityController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.hotels.create');
     }
 
     /**
@@ -35,16 +42,16 @@ class EntityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->toArray());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Entity  $entity
+     * @param  \App\Hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function show(Entity $entity)
+    public function show(Hotel $hotel)
     {
         //
     }
@@ -52,10 +59,10 @@ class EntityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Entity  $entity
+     * @param  \App\Hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function edit(Entity $entity)
+    public function edit(Hotel $hotel)
     {
         //
     }
@@ -64,10 +71,10 @@ class EntityController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Entity  $entity
+     * @param  \App\Hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Entity $entity)
+    public function update(Request $request, Hotel $hotel)
     {
         //
     }
@@ -75,10 +82,10 @@ class EntityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Entity  $entity
+     * @param  \App\Hotel  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Entity $entity)
+    public function destroy(Hotel $hotel)
     {
         //
     }

@@ -1,28 +1,37 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mb-4">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-default" @click.prevent="showAll">Todo</button>
-                <button type="button" class="btn btn-default" @click.prevent="showAvailable">Disponible</button>
-                <button type="button" class="btn btn-default" @click.prevent="showOccupied">Ocupado</button>
-                <button type="button" class="btn btn-default" @click.prevent="showMaintenance">Mantenimiento</button>
-                <button type="button" class="btn btn-default" @click.prevent="showCleaning">Remodelación</button>
-                <button type="button" class="btn btn-default" @click.prevent="showDisabled">Inhabilitada</button>
+            <div class="col-6 without-padding">
+                <div class="btn-group pull-left" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-paint-brush"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento"><i class="fa fa-wrench"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
+                </div>
+            </div>
+            <div class="col-6 without-padding" v-show="selected.length > 0">
+                <div class="btn-group pull-right" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-default" title="Asignar" @click.prevent="pool">{{ selected.length }} <i class="fa fa-key"></i></button>
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="filtered.length != 0">
             <div class="col-12" v-for="(chunk, index) in chunkedItems" :key="index">
                 <div class="row">
                     <div class="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 room"
                         v-for="room in chunk" :key="room.id"
                         @contextmenu.prevent="$refs.menu.open($event, { room })"
-                        @dblclick="pushSelected(room)"
-                        @pressup="pushSelected">
+                        @dblclick="pushSelected(room)">
                         <div class="row">
                             <div class="col-12 without-padding">
                                 <p class="text-right">
-                                    <a href="#" class="text-info context-option" @click.stop="$refs.menu.open($event, { room })">
+                                    <a href="#" class="text-info context-option d-none d-md-inline d-lg-inline d-xl-inline" @click.stop="$refs.menu.open($event, { room })">
                                         <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <a href="#" class="text-info context-option d-inline d-md-none d-lg-none d-xl-none" @click.prevent="pushSelected(room)">
+                                        <i class="fa fa-plus"></i>
                                     </a>
                                 </p>
                             </div>
@@ -40,16 +49,31 @@
             </div>
         </div>
 
+        <div class="row" v-else>
+            <div class="col-12">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        Sin registros.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <vue-context ref="menu">
             <template slot-scope="child">
                 <li>
-                    <a href="#" @click.prevent="onClick($event.target.innerText, child.data)">
-                        Option 1
+                    <a href="#" @click.prevent="assign($event.target.innerText, child.data)">
+                        Asignar
                     </a>
                 </li>
                 <li>
-                    <a href="#" @click.prevent="onClick($event.target.innerText, child.data)">
-                        Option 2
+                    <a href="#" @click.prevent="select($event.target.innerText, child.data)">
+                        Seleccionar
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="show($event.target.innerText, child.data)">
+                        Ver detalles
                     </a>
                 </li>
             </template>
@@ -83,10 +107,6 @@
             VueContext
         },
         methods: {
-            onClick (text, data) {
-                alert(`You clicked ${text}!`);
-                console.log(data.room);
-            },
             showAll() {
                 this.filtered = this.rooms
             },
@@ -121,9 +141,30 @@
                 if (!contains) {
                     this.selected.push(room)
                 }
-                console.log(this.selected)
+            },
+            select(text, data) {
+                this.pushSelected(data.room);
+            },
+            show(text, data) {
+                let url = '/rooms/list/' + data.room.id;
+                window.location.href = url;
+            },
+            assign(text, data) {
+                let url = '/rooms/list/assign/' + data.room.id;
+                window.location.href = url;
+            },
+            pool() {
+                axios.post('/rooms/pool', {
+                    rooms: this.selected
+                }).then(response => {
+                    console.log(response);
+                    // let id = responde.id;
+                    // let url = window.location.host + '/invoices/' + id;
+                    // window.location.href = url;
+                }).catch(e => {
+                    console.log(e);
+                });
             }
-
         },
     }
 </script>

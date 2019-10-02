@@ -260,7 +260,7 @@ class RoomController extends Controller
     public function display($id)
     {
         $room = User::find(auth()->user()->parent)->rooms()
-            ->where('id', Id::get($id))
+            ->where('id', Input::clean($id))
             ->first(Fields::get('rooms'));
 
         if (empty($room)) {
@@ -279,5 +279,27 @@ class RoomController extends Controller
         ]);
 
         return view('app.rooms.receptionist.show', compact('room'));
+    }
+
+    /**
+     * Single assignment for rooms.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function assign($id)
+    {
+        dd($id);
+    }
+
+    /**
+     * Create a new invoice with many rooms.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pool(Request $request)
+    {
+        return response()->json($request->toArray());
     }
 }

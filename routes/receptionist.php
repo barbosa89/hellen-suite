@@ -71,6 +71,11 @@ Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
     Route::post('services/calculate/total', 'ServiceController@total')
         ->name('services.total');
 
+    Route::get('rooms/list/assign/{id}', 'RoomController@assign')
+        ->name('rooms.assign');
+
+    Route::post('rooms/pool', 'RoomController@pool')
+        ->name('rooms.pool');
 
 	Route::get('rooms/list/{id}', 'RoomController@display')
         ->name('rooms.display');

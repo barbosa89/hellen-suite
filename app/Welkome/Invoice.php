@@ -44,4 +44,9 @@ class Invoice extends Model
     {
         return $this->belongsToMany(\App\Welkome\Guest::class);
     }
+
+    public function hotel()
+    {
+        return $this->belongsTo(\App\Welkome\Hotel::class);
+    }
 }

@@ -21,6 +21,17 @@ return [
     'paginate' => 20,
 
     'fields' => [
+        'rooms' => [
+            'id',
+            'bussines_name',
+            'tin',
+            'address',
+            'phone',
+            'mobile',
+            'email',
+            'tax',
+            'user_id'
+        ],
         'invoices' => [
             'id',
             'number',

@@ -17,10 +17,15 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('room-list', require('./components/Room/RoomList.vue').default);
 
-var VueTouch = require('vue-touch');
+import VueRouter from 'vue-router';
 
-Vue.use(VueTouch, { name: 'v-touch' });
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+    mode: 'history'
+});
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router: router
 });

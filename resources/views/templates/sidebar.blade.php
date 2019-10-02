@@ -1,7 +1,3 @@
-{{-- @php
-    $roles = auth()->user()->roles;
-@endphp --}}
-
 <!-- Sidebar -->
 <ul class="sidebar navbar-nav">
     <li class="nav-item active">
@@ -58,14 +54,19 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('rooms.index') }}">
-                <i class="fa fa-fw fa-bed"></i>
-                <span>@lang('rooms.title')</span></a>
+                <a class="nav-link" href="{{ route('hotels.index') }}">
+                <i class="fa fa-fw fa-file"></i>
+                <span>Hoteles</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('invoices.index') }}">
                 <i class="fa fa-fw fa-file"></i>
                 <span>@lang('invoices.title')</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('rooms.index') }}">
+                <i class="fa fa-fw fa-bed"></i>
+                <span>@lang('rooms.title')</span></a>
             </li>
             @break
         @case('receptionist')

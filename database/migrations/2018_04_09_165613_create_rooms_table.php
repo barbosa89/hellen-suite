@@ -41,6 +41,10 @@ class CreateRoomsTable extends Migration
              */
             $table->enum('status', [0, 1, 2, 3, 4])->default(1);
 
+            $table->integer('hotel_id')->unsigned();
+            $table->foreign('hotel_id')->references('id')
+                ->on('users')->onDelete('cascade')->onUpdate('cascade');
+
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

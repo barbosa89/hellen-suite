@@ -33,9 +33,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function entities()
+    public function hotels()
     {
-        return $this->hasMany(Welkome\Entity::class);
+        return $this->hasMany(Welkome\Hotel::class);
     }
 
     public function shifts()
