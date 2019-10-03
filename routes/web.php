@@ -21,7 +21,7 @@ Route::get('/', function () {
         return redirect(route('login'));
     }
 
-    return view('welcome');
+    return view('landing');
 });
 
 Auth::routes();
