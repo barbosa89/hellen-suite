@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\User;
+use App\Helpers\Id;
 use App\Welkome\Invoice;
 use App\Observers\InvoiceObserver;
 use Vinkla\Hashids\Facades\Hashids;
@@ -21,11 +23,44 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            $product = Hashids::decode($data['product']);
+            $product = Id::get($data['product']);
             $product = \DB::table('products')->where('id', $product)
                 ->select('id', 'quantity')->first();
 
             return (int) $value <= $product->quantity;
+        });
+
+        Validator::extend('headquarter', function ($attribute, $value, $parameters, $validator) {
+            $data = $validator->getData();
+
+            if (isset($data['type'])) {
+                $hotel = User::find(auth()->user()->id)->hotels()
+                    ->where('tin', $value)
+                    ->where('main_hotel', null)
+                    ->get(['id', 'business_name', 'main_hotel']);
+
+                // Is a standalone hotel
+                if ($data['type'] == 'main') {
+                    return $hotel->count() === 0;
+                }
+
+                // Hotel is a headquarter
+                if ($data['type'] == 'headquarter') {
+                    return $hotel->count() === 1;
+                }
+            }
+
+            // Only must be exist the current object
+            // $id = $parameters[0];
+            // $hotel = User::find(auth()->user()->id)->hotels()
+            //     ->where('id', $id)
+            //     ->where('business_name', $data['business_name'])
+            //     ->where('tin', $value)
+            //     ->firstP(['id', 'business_name', 'main_hotel']);
+
+            // return $hotel->count() === 1;
+            return false;
+
         });
 
         // Observers

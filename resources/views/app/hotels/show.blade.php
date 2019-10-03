@@ -1,71 +1,45 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 @section('content')
-
+    <!-- TODO: Reparar la generación de dropdown menu por modulo"-->
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('products.title'),
-            'url' => route('products.index'),
+            'title' => 'Hoteles',
+            'url' => route('hotels.index'),
             'options' => [
                 [
-                    'option' => trans('common.options'),
-                    'url' => [
-                        [
-                            'option' => trans('products.increase'),
-                            'url' => route('products.increase.form', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'type' => 'divider'
-                        ],
-                        [
-                            'option' => trans('common.edit'),
-                            'url' => route('products.edit', [
-                                'room' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'type' => 'confirm',
-                            'option' => trans('common.delete'),
-                            'url' => route('products.destroy', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                            'method' => 'DELETE'
-                        ],
-                    ]
+                    'option' => trans('common.edit'),
+                    'url' => route('hotels.edit', [
+                        'room' => Hashids::encode($hotel->id)
+                    ]),
                 ],
                 [
-                    'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'option' => $hotel->status ? 'Deshabilitar' : 'Habilitar',
+                    'url' => route('hotels.toggle', [
+                        'room' => Hashids::encode($hotel->id)
+                    ]),
+                ],
+                [
+                    'type' => 'confirm',
+                    'option' => trans('common.delete'),
+                    'url' => route('hotels.destroy', [
+                        'room' => Hashids::encode($hotel->id)
+                    ]),
+                    'method' => 'DELETE'
                 ],
             ]
         ])
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.description'):</h2>
-                <p>{{ $product->description }}</p>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.brand'):</h2>
-                {{ $product->brand }}
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
-            </div>
-        </div>
+        <div class="row mb-4">
+            <div class="col-2"><b>Hotel</b></div>
+            <div class="col-10">{{ $hotel->business_name }}</div>
+            <div class="col-2"><b>NIT</b></div>
+            <div class="col-10">{{ $hotel->tin }}</div>
 
-        <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.quantity'):</h3>
-                <p>{{ $product->quantity }}</p>
-            </div>
+            @if (!empty($hotel->main))
+                <div class="col-2"><b>Hotel principal</b></div>
+                <div class="col-10">{{ $hotel->main->business_name }}</div>
+            @endif
         </div>
 
         <div class="row">
@@ -81,7 +55,6 @@
                 <div class="well">
                     <h4>Gráfica aquí</h4>
                 </div>
-                
             </div>
         </div>
 

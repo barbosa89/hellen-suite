@@ -20,4 +20,14 @@ class Hotel extends Model
     {
         return $this->hasMany(\App\Welkome\Room::class);
     }
+
+    public function main()
+    {
+        return $this->belongsTo(Hotel::class, 'main_hotel');
+    }
+
+    public function headquarters()
+    {
+        return $this->hasMany(Hotel::class, 'main_hotel');
+    }
 }

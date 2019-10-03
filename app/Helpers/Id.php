@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use Illuminate\Http\Request;
+use App\Helpers\Input;
 use Vinkla\Hashids\Facades\Hashids;
 
 class Id
@@ -13,7 +13,7 @@ class Id
 			return null;
 		}
 
-		$id = htmlentities($id, ENT_QUOTES);
+		$id = Input::clean($id);
 
 		return Hashids::decode($id)[0];
 	}

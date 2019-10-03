@@ -21,6 +21,13 @@ class CreateHotelsTable extends Migration
             $table->string('phone', 10)->nullable();
             $table->string('mobile', 10)->nullable();
             $table->string('email', 100)->nullable();
+            $table->string('image', 100)->nullable();
+            $table->boolean('status')->default(true);
+
+            $table->integer('main_hotel')->unsigned()->nullable();
+            $table->foreign('main_hotel')->references('id')
+                ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
+
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

@@ -12,20 +12,8 @@
 */
 
 Route::get('/test', function () {
-
-    function point($s1, $s2) {
-        $p1 = $s1;
-        $p2 = $s2;
-
-        while ($p1 != $p2) {
-            $p1 += array_sum(str_split($p1));
-            $p2 += array_sum(str_split($p2));
-        }
-
-        return [$p1, $p2];
-    }
-
-    dd(point(471, 480), str_split(480));
+    $b = false;
+    dd(!$b);
 });
 
 Route::get('/', function () {

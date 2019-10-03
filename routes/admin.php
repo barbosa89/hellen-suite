@@ -29,6 +29,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
 	Route::put('hotels/{id}', 'HotelController@update')
 		->name('hotels.update');
 
+	Route::get('hotels/{id}/toggle', 'HotelController@toggle')
+		->name('hotels.toggle');
+
 	Route::get('hotels/{id}/edit', 'HotelController@edit')
 		->name('hotels.edit');
 
