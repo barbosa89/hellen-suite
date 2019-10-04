@@ -351,11 +351,12 @@ section {
     }
     ul.nav-agile {
         display: inline-block;
-        width: 94%;
+        width: 92vw;
         height: 0vw;
         background: transparent;
         position: absolute;
         top: 65px !important;
+        right: 4vw;
         -webkit-transition: all 0.3s;
         transition: all 0.3s;
     }
@@ -380,7 +381,7 @@ section {
         padding: 1em 1.35em;
     }
     .nav-agile li {
-        width: 15%;
+        width: 92vw;
         float: left;
         padding-left: 40px;
         opacity: 0;
@@ -1658,7 +1659,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         padding: 1em 1.2em;
-        width: 240px;
+        width: 92vw;
     }
 }
 
@@ -1676,7 +1677,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         padding: 1em 1.05em;
-        width: 230px;
+        width: 92vw;
     }
 }
 
@@ -1704,7 +1705,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         padding: 1em .75em;
-        width: 210px;
+        width: 92vw;
     }
 }
 
@@ -1720,7 +1721,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         padding: 1em .45em;
-        width: 180px;
+        width: 92vw;
     }
 }
 
@@ -1731,7 +1732,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         height: 40px;
-        width: auto;
+        width: 92vw;
     }
     ul.showMenu>li:nth-child(7) {
         height: 80px;
@@ -1794,7 +1795,7 @@ ul.d-flex li i {
     }
     ul.showMenu>li {
         height: 40px;
-        width: auto;
+        width: 92vw;
     }
 }
 
