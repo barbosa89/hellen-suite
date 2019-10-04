@@ -83,8 +83,7 @@ a.btn.w3ls-btn {
     color: #eee;
     font-weight: 500;
     border: none;
-    font-size: 17px;
-    letter-spacing: 1px;
+    font-size: 18px;
     border-radius: 3px;
 }
 
@@ -424,9 +423,9 @@ section {
     color: #fff;
     display: inline-block;
     font-size: 3.5em;
-    text-transform: capitalize;
     font-weight: 400;
     line-height: 80px;
+    text-shadow: 1px 1px 1px #463d3d;
 }
 
 .agileinfo-logo h2 span {
@@ -458,8 +457,8 @@ section {
 h3.txt-w3_agile {
     font-size: 3.2em;
     color: #fff;
-    text-transform: capitalize;
     font-weight: 100;
+    text-shadow: 1px 1px 1px #463d3d;
 }
 
 .banner-text {
@@ -659,11 +658,11 @@ ul.partners-icon li i {
 }
 
 .clr1 {
-    color: #30c39e;
+    color: darkslategrey;
 }
 
 .clr2 {
-    color: #ffc168;
+    color: red;
 }
 
 .clr3 {
@@ -692,7 +691,6 @@ h3.heading {
     font-size: 45px;
     font-weight: 600;
     color: #333;
-    text-transform: capitalize;
     letter-spacing: 0;
 }
 
@@ -746,7 +744,6 @@ h3.heading {
     font-size: 34px;
     font-weight: 600;
     color: #333;
-    text-transform: capitalize;
     display: inline-block;
     letter-spacing: 0;
     line-height: 50px;
@@ -1646,6 +1643,9 @@ ul.d-flex li i {
 @media(max-width:800px) {
     .nav-agile li:nth-child(2) {
         display: block;
+    }
+    h3.txt-w3_agile {
+        font-weight: 300;
     }
 }
 

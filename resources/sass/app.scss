@@ -5,7 +5,12 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 // Font awesome
-@import 'node_modules/font-awesome/scss/font-awesome.scss';
+// @import 'node_modules/font-awesome/scss/font-awesome.scss';
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
 $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;

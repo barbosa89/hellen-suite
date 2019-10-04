@@ -66,7 +66,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <div class="bar"></div>
                                     </div>
                                 </div>
-                                <ul id="menu-list" class="text-center text-capitalize nav-agile">
+                                <ul id="menu-list" class="text-center nav-agile">
                                     <li>
                                         <a href="{{ url('/') }}" class="active">Inicio</a>
                                     </li>
@@ -86,7 +86,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <a href="#contact" class="scroll">Contacto</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">Login</a>
+                                        <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">Iniciar sesión</a>
                                     </li>
                                 </ul>
                             </div>
@@ -102,15 +102,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="slider-info col-lg-8">
                         <div class="agileinfo-logo mt-5">
                             <h2>
-                                Administración de hoteles
+                                La suite más completa
                             </h2>
                         </div>
-                        <h3 class="txt-w3_agile">Una suite completa para administrar fácil.</h3>
-                        <a class="btn mt-4 mr-2 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModalCenter1" role="button">read more</a>
-                        <a class="btn mt-4 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModal" role="button">watch video <i class="fa fa-play-circle"></i></a>
+                        <h3 class="txt-w3_agile">para administrar tu hotel de manera fácil.</h3>
+                        <a class="btn mt-4 mr-2 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModalCenter1" role="button">Leer más</a>
+                        <a class="btn mt-4 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModal" role="button">Ver vídeo<i class="fa fa-play-circle"></i></a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
-                        <h5><i class="fa mr-2 fa-laptop"></i> Regístrate</h5>
+                        <h5><i class="fas mr-2 fa-laptop"></i> Regístrate</h5>
                         <form action="#" class="mt-4" method="post">
                             <input class="form-control" type="text" name="Name" placeholder="Nombre" required="" />
                             <input class="form-control" type="email" name="Email" placeholder="Correo electrónico" required="" />
@@ -128,25 +128,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- banner bottom -->
         <section class="banner-bottom py-5">
             <div class="container py-md-3">
-                <h4 class="text-center">Con el respaldo de las mejores empresas en tecnología</h4>
+                <h4 class="text-center">Con el respaldo de las mejores tecnologías</h4>
                 <ul class="list-unstyled pt-5 partners-icon text-center">
                     <li>
-                        <i class="fa fa-google clr1"></i>
+                        <i class="fab fa-laravel clr2"></i>
                     </li>
                     <li>
-                        <i class="fa fa-facebook clr2"></i>
+                        <i class="fab fa-vuejs clr5"></i>
                     </li>
                     <li>
-                        <i class="fa fa-twitter clr3"></i>
+                        <i class="fab fa-html5 clr4"></i>
                     </li>
                     <li>
-                        <i class="fa fa-instagram clr4"></i>
+                        <i class="fab fa-css3-alt clr3"></i>
                     </li>
                     <li>
-                        <i class="fa fa-linkedin clr5"></i>
+                        <i class="fab fa-bootstrap clr6"></i>
                     </li>
                     <li>
-                        <i class="fa fa-windows clr6"></i>
+                        <i class="fab fa-linux clr1"></i>
                     </li>
                 </ul>
             </div>
@@ -159,23 +159,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="feature-grids row">
                     <div class="col-lg-4 col-md-6">
                         <div class="f1 icon1 p-4">
-                            <i class="fa fa-bandcamp"></i>
-                            <h3 class="my-3">Design & Branding</h3>
-                            <p>Excepteur sint occaecat non proident, sunt in culpa quis. Phasellus lacinia id erat eu ullamcorper. Nunc id ipsum.</p>
+                            <i class="fas fa-cubes"></i>
+                            <h3 class="my-3">Componentes</h3>
+                            <p>Puedes administrar inventarios de productos, activos, utilería, asignación y reservación de habitaciones, sedes, empleados, vehículos y más.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="f1 icon2 p-4">
-                            <i class="fa fa-codepen"></i>
-                            <h3 class="my-3">Safe & Secure</h3>
-                            <p>Excepteur sint occaecat non proident, sunt in culpa quis. Phasellus lacinia id erat eu ullamcorper. Nunc id ipsum.</p>
+                            <i class="fas fa-shield-alt"></i>
+                            <h3 class="my-3">Velocidad & seguridad</h3>
+                            <p>La estructura de la aplicación es simple y potente. Toda la información está asegurada por múltiples capas para garantizar su disponibilidad.</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
                         <div class="f1 icon3 p-4">
-                            <i class="fa fa-bitcoin"></i>
-                            <h3 class="my-3">Fresh Interfaces</h3>
-                            <p>Excepteur sint occaecat non proident, sunt in culpa quis. Phasellus lacinia id erat eu ullamcorper. Nunc id ipsum.</p>
+                            <i class="fas fa-palette"></i>
+                            <h3 class="my-3">Diseño moderno</h3>
+                            <p>Adaptable a cualquier dispositivo, interfaz elegante e intuitiva, integra un panel de control, gráficas e informes, para que tomes decisiones basadas en datos.</p>
                         </div>
                     </div>
                 </div>
@@ -185,9 +185,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- quote -->
         <section class="quote bg-light py-5">
             <div class="container py-md-3">
-                <h4>Todas las ventajas de la web en una sola suite para apoyar la tarea de administrar desde cualquier lugar.</h4>
+                <h4>Todas las ventajas de la web en una sola suite, para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.</h4>
                 <div class="start text-right mt-4">
-                    <a href="#contact" class="scroll">Inicia ya</a>
+                    <a href="#contact" class="scroll">Contacto</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -198,23 +198,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-5">
                 <div class="row process-grids">
                     <div class="col-lg-6">
-                        <h4 class="mb-4">Excepteur sint occaecat non lorem proident, sunt in culpa quis.</h4>
-                        <p class="mb-3">Morbi tincidunt nisi tortor, iaculis maximus eros vestibulum at. Ut pulvinar tortor non augue fringilla, fermentum consequat
-                            nisi rutrum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur. Nullam luctus hendrerit sapien, sed dictum est.
-                            mattis egestas.
-                        </p>
-                        <p>Morbi tincidunt nisi tortor, iaculis maximus eros vestibulum at. Ut pulvinar tortor non augue fringilla, fermentum consequat
-                            nisi rutrum. Orci varius natoque penatibus et magnis dis parturient montes.
+                        <h4 class="mb-4">¿Qué es Welkome?</h4>
+                        <p class="mb-3">Welkome es una aplicación web para la administración de hoteles y modelos de negocio similares,
+                            la cual facilita controles operativos y de gerencia. Está compuesta por diferentes módulos especializados y
+                            también comunes de la empresa, como lo son facturación, inventarios y demás. Entre los módulos especializados,
+                            se encuentran el potente paquete de bitácora y el de utilería, con los cuales tendrás información valiosa,
+                            y en tiempo real, de los acontecimientos del día a día.
                         </p>
                     </div>
                     <div class="col-md-6">
-                        <img src="images/b1.jpg" alt="" class="img-fluid"/>
+                        <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                     <div class="col-md-6 px-5 mt-5">
-                        <img src="images/b2.jpg" alt="" class="img-fluid"/>
+                        <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                     <div class="col-lg-6 mt-5">
-                        <h4 class="mb-4">Excepteur sint occaecat non lorem proident, sunt in culpa quis.</h4>
+                        <h4 class="mb-4">La filosofía</h4>
                         <p class="mb-3">Morbi tincidunt nisi tortor, iaculis maximus eros vestibulum at. Ut pulvinar tortor non augue fringilla, fermentum consequat
                             nisi rutrum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur. Nullam luctus hendrerit sapien, sed dictum est.
                             mattis egestas.
@@ -231,175 +230,82 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <section class="pricing bg-light py-5" id="pricing">
             <div class="container py-lg-3">
                 <div class="inner-sec">
-                    <h3 class="heading mb-5 text-center"> Pricing plans</h3>
+                    <h3 class="heading mb-5 text-center"> Precios de los planes</h3>
                     <div class="price-right">
                         <div class="tabs">
                             <ul class="nav nav-pills my-md-5 my-3 justify-content-center" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Weekly</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Monthly</a>
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Anuales</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <div class="menu-grids">
                                         <div class="row t-in">
-                                            <div class="col-lg-3 col-sm-6 price-main-info">
+                                            <div class="col-lg-4 col-sm-6 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
-                                                        <h4 class="">Basic</h4>
+                                                        <h4 class="">Básico</h4>
                                                         <h5 class="card-title pricing-card-title">
-                                                            <span class=""></span>Free
+                                                            <span class=""></span>Gratis
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
+                                                            <li>1 hotel, sede principal</li>
+                                                            <li>5 colaboladores</li>
+                                                            <li>30 habitaciones</li>
+                                                            <li>Sin contabilidad</li>
+                                                            <li>Sin control de comedor</li>
+                                                            <li>Soporte por email</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
+                                            <div class="col-lg-4 col-sm-6 mt-md-0 mt-5 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
-                                                        <h4 class="">Satandard</h4>
+                                                        <h4 class="">Estándar</h4>
                                                         <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>30<span>/mon</span>
+                                                            <span class="">$</span>120.000<span>/anual</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
+                                                            <li>Hoteles y sedes ilimitadas</li>
+                                                            <li>Colaboradores ilimitados</li>
+                                                            <li>Habitaciones ilimitadas</li>
+                                                            <li>Sin contabilidad</li>
+                                                            <li>Sin control de comedor</li>
+                                                            <li>24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
+                                            <div class="col-lg-4 col-sm-6 mt-lg-0 mt-5 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
-                                                        <h4 class="">Business</h4>
+                                                        <h4 class="">Completo</h4>
                                                         <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>90<span>/mon</span>
+                                                            <span class="">$</span>240.000<span>/anual</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
+                                                            <li>Hoteles y sedes ilimitadas</li>
+                                                            <li>Colaboradores ilimitados</li>
+                                                            <li>Habitaciones ilimitadas</li>
+                                                            <li>Paquete contable</li>
+                                                            <li>
+                                                                Control de comedor
+                                                                <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="No incluye hardware requerido">
+                                                                    <i class="fa fa-info"></i>
+                                                                </span>
+                                                            </li>
+                                                            <li>24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Basic</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>120<span>/mon</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <div class="menu-grids mt-4">
-                                        <div class="row t-in">
-                                            <div class="col-lg-3 col-sm-6 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Standard</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>60
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Business</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>80
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Business</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>90
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Advance</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>90
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>100 MB Disk Space</li>
-                                                            <li>2 Sub domains</li>
-                                                            <li>5 Email Accounts</li>
-                                                            <li>24/7 support</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Select</a>
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -417,26 +323,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- faqs -->
         <section class="faq-w3l py-5" id="faq">
             <div class="container py-lg-3">
-                <h3 class="heading mb-5 text-center"> Frequently Asked Questions</h3>
+                <h3 class="heading mb-5 text-center"> Preguntas frecuentes</h3>
                 <div class="row faq-info">
                     <div class=" col-md-6 faq-w3agile">
                         <ul class="faq pl-sm-4 pl-3">
                             <li class="item1 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>Cuál es el soporte del plan básico? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> Se proporciona un correo de soporte ténico, a través del cual se solventan los inconvenientes en la plataforma.
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item2 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>Cuáles medios de pago están soportados? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> Tarjetas de crédito, débito, Efecty, Baloto, consignación, PSE.
                                         </p>
                                     </li>
                                 </ul>
@@ -494,10 +398,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- testimonials -->
         <section class="testimonials bg-light py-5" id="testimonials">
             <div class="container py-lg-3">
-                <h3 class="heading mb-5 text-center"> Honorable Clients</h3>
+                <h3 class="heading mb-5 text-center"> Nuestros clientes</h3>
                 <div class="row test-grids">
                     <div class="col-md-4 col-sm-7 col-9">
-                        <img src="images/b3.png" alt="" class="img-fluid" />
+                        <img src="{{ asset('images/b3.png') }}" alt="" class="img-fluid" />
                     </div>
                     <div class="col-md-8">
                         <div class="callbacks_container">
@@ -507,11 +411,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>john watson</h4>
                                         <span class="">- congue leo</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
                                     <div class="testi-agile">
@@ -537,7 +441,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     </div>
                                     <div class="testi-agile">
                                         <p>
-                                            <i class="fa fa-quote-left pr-3"></i>Donec rutrum congue leo eget consectetur sed, convallis at tellus. Nulla quis
+                                            <i class="fas fa-quote-left pr-3"></i>Donec rutrum congue leo eget consectetur sed, convallis at tellus. Nulla quis
                                             lorem ut libero malesuada feugiat.Nulla quis lorem ut libero malesuada feugiat. Donec
                                             rutrum congue leo eget malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing
                                             elit
@@ -549,16 +453,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>Anderson</h4>
                                         <span class="">- Donec rutru</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
                                     <div class="testi-agile">
                                         <p>
-                                            <i class="fa fa-quote-left pr-3"></i>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla
+                                            <i class="fas fa-quote-left pr-3"></i>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla
                                             quis lorem ut libero malesuada feugiat.Nulla quis lorem ut libero malesuada feugiat.
                                             Donec rutrum congue leo eget malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing
                                             elit
@@ -575,29 +479,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- contact -->
         <section class="contact py-5" id="contact">
             <div class="container py-lg-3">
-                <h3 class="heading mb-5 text-center"> Get in touch</h3>
+                <h3 class="heading mb-5 text-center"> Contacto</h3>
                 <form action="#" method="post">
                     <div class="row">
                         <div class="col-md-6 styled-input mt-0">
-                            <input type="text" name="Name" placeholder="First Name" required="">
+                            <input type="text" name="Name" placeholder="Nombre" required="">
                         </div>
                         <div class="col-md-6 styled-input mt-md-0">
-                            <input type="text" name="Name" placeholder="Last Name" required="">
+                            <input type="text" name="Name" placeholder="Apellido" required="">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 styled-input">
-                            <input type="email" name="Email" placeholder="Email" required=""> 
+                            <input type="email" name="Email" placeholder="Correo electrónico" required="">
                         </div>
                         <div class="col-md-6 styled-input">
-                            <input type="text" name="phone" placeholder="Phone Number" required="">
+                            <input type="text" name="phone" placeholder="Número telefónico" required="">
                         </div>
                     </div>
                     <div class="styled-input">
-                        <textarea name="Message" placeholder="Message" required=""></textarea>
+                        <textarea name="Message" placeholder="Mensaje" required=""></textarea>
                     </div>
                     <div class="click text-center mt-3">
-                        <input type="submit" value="Submit">
+                        <input type="submit" value="Enviar">
                     </div>
                 </form>
             </div>
@@ -617,10 +521,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                         <ul class="social_section_1info">
-                            <li class="mb-2 facebook"><a href="#"><i class="fa mr-1 fa-facebook-f"></i>facebook</a></li>
-                            <li class="mb-2 twitter"><a href="#"><i class="fa mr-1 fa-twitter"></i>twitter</a></li>
-                            <li class="google"><a href="#"><i class="fa mr-1 fa-google-plus-g"></i>google</a></li>
-                            <li class="linkedin"><a href="#"><i class="fa mr-1 fa-linkedin-in"></i>linkedin</a></li>
+                            <li class="mb-2 facebook"><a href="#"><i class="fab mr-1 fa-facebook-f"></i>facebook</a></li>
+                            <li class="mb-2 twitter"><a href="#"><i class="fab mr-1 fa-twitter"></i>twitter</a></li>
+                            <li class="google"><a href="#"><i class="fab mr-1 fa-google-plus-g"></i>google</a></li>
+                            <li class="linkedin"><a href="#"><i class="fab mr-1 fa-linkedin-in"></i>linkedin</a></li>
                         </ul>
                     </div>
                     <div class="row footer-top mt-md-5 mt-4">
@@ -659,12 +563,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="col-lg-4 col-md-12 mt-lg-0 mt-4 col-sm-12 footer-grid_section_1its_w3"  style="max-width: 100%;">
                             <div class="footer-title">
-                                <h3>Newsletter</h3>
+                                <h3>Boletines</h3>
                             </div>
                             <div class="footer-text">
-                                <p>By subscribing to our mailing list you will always get latest news and updates from us.</p>
+                                <p>Recibe por correo electrónico, todas las novedades del sitio.</p>
                                 <form action="#" method="post">
-                                    <input type="email" name="Email" placeholder="Enter your email..." required="">
+                                    <input type="email" name="Email" placeholder="Ingresa tu correo.." required="">
                                     <button class="btn1"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                     <div class="clearfix"> </div>
                                 </form>
@@ -677,7 +581,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //footer -->
         <!-- copyright -->
         <div class="cpy-right text-center py-3">
-            <p class="">© {{ date('Y') }} {{ config('app.name') }}. All rights reserved | Design by
+            <p class="">© {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados | Design by
                 <a href="http://w3layouts.com"> W3layouts.</a>
             </p>
         </div>
@@ -693,7 +597,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </button>
                     </div>
                     <div class="modal-body">
-                        <img src="images/banner.jpg" class="img-fluid mb-3" alt="Modal Image" />
+                        <img src="{{ asset('images/banner.jpg') }}" class="img-fluid mb-3" alt="Modal Image" />
                         Vivamus eget est in odio tempor interdum. Mauris maximus fermentum arcu, ac finibus ante. Sed mattis risus at ipsum elementum,
                         ut auctor turpis cursus. Sed sed odio pharetra, aliquet velit cursus, vehicula enim. Mauris porta aliquet magna, eget laoreet ligula.
                         Sed mattis risus at ipsum elementum, ut auctor turpis cursus. Sed sed odio pharetra, aliquet.
@@ -717,7 +621,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </button>
                     </div>
                     <div class="modal-body video">
-                        {{-- <iframe src="https://player.vimeo.com/video/43982091"></iframe> --}}
+                        <iframe src="https://player.vimeo.com/video/43982091"></iframe>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary">Save Changes</button>
