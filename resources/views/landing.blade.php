@@ -185,7 +185,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- quote -->
         <section class="quote bg-light py-5">
             <div class="container py-md-3">
-                <h4>Todas las ventajas de la web en una sola suite, para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.</h4>
+                <h4>Todas las ventajas de la web en una suite para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.</h4>
                 <div class="start text-right mt-4">
                     <a href="#contact" class="scroll">Contacto</a>
                 </div>
@@ -242,7 +242,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <div class="menu-grids">
                                         <div class="row t-in">
-                                            <div class="col-lg-4 col-sm-6 price-main-info">
+                                            <div class="col-lg-3 col-sm-6 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Básico</h4>
@@ -251,7 +251,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
                                                             <li>1 hotel, sede principal</li>
-                                                            <li>5 colaboladores</li>
+                                                            <li>5 usuarios</li>
                                                             <li>30 habitaciones</li>
                                                             <li>Sin contabilidad</li>
                                                             <li>Sin control de comedor</li>
@@ -263,16 +263,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 col-sm-6 mt-md-0 mt-5 price-main-info">
+                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
-                                                        <h4 class="">Estándar</h4>
+                                                        <h4 class="">Intermedio</h4>
                                                         <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>120.000<span>/anual</span>
+                                                            <span class="">$</span>80.000<span>/semestre</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>Hoteles y sedes ilimitadas</li>
-                                                            <li>Colaboradores ilimitados</li>
+                                                            <li>Sedes ilimitadas</li>
+                                                            <li>Usuarios ilimitados</li>
                                                             <li>Habitaciones ilimitadas</li>
                                                             <li>Sin contabilidad</li>
                                                             <li>Sin control de comedor</li>
@@ -284,7 +284,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 col-sm-6 mt-lg-0 mt-5 price-main-info">
+                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
+                                                <div class="price-inner card box-shadow p-4">
+                                                    <div class="card-body">
+                                                        <h4 class="">Estándar</h4>
+                                                        <h5 class="card-title pricing-card-title">
+                                                            <span class="">$</span>120.000<span>/anual</span>
+                                                        </h5>
+                                                        <ul class="list-unstyled mt-3 mb-4">
+                                                            <li>Sedes ilimitadas</li>
+                                                            <li>Usuarios ilimitados</li>
+                                                            <li>Habitaciones ilimitadas</li>
+                                                            <li>Sin contabilidad</li>
+                                                            <li>Sin control de comedor</li>
+                                                            <li>24/7 soporte</li>
+                                                        </ul>
+                                                        <div class="log-in mt-md-3 mt-2">
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Completo</h4>
@@ -292,8 +313,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <span class="">$</span>240.000<span>/anual</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>Hoteles y sedes ilimitadas</li>
-                                                            <li>Colaboradores ilimitados</li>
+                                                            <li>Sedes ilimitadas</li>
+                                                            <li>Usuarios ilimitados</li>
                                                             <li>Habitaciones ilimitadas</li>
                                                             <li>Paquete contable</li>
                                                             <li>
@@ -516,8 +537,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <a href="{{ url('/') }}"><i class="fa fa-bed mr-2"></i> {{ config('app.name') }}</a>
                         </div>
                         <div class="footer-text">
-                            <p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla quis lorem ipnut libero malesuada feugiat.
-                                Lorem ipsum dolor sit amet, consectetur elit.
+                            <p>
+                                La suite para que la administración de tu hotel sea fácil
                             </p>
                         </div>
                         <ul class="social_section_1info">
@@ -530,13 +551,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="row footer-top mt-md-5 mt-4">
                         <div class="col-lg-4 col-md-6 footer-grid_section_1its_w3">
                             <div class="footer-title">
-                                <h3>Address</h3>
+                                <h3>Dirección</h3>
                             </div>
                             <div class="footer-text">
-                                <p>Address : 1234 lock, Charlotte, North Carolina, United States</p>
-                                <p>Phone : +12 534894364</p>
-                                <p>Email : <a href="mailto:info@example.com">info@example.com</a></p>
-                                <p>Fax : +12 534894364</p>
+                                <p>Dirección : Bucaramanga - Santander</p>
+                                <p>Móvil : <i class="fab fa-whatsapp"></i> +57 310 650 2285</p>
+                                <p>Correo : <a href="mailto:contacto@omarbarbosa.com">contacto@omarbarbosa.com</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 mt-md-0 mt-4 footer-grid_section_1its_w3">
@@ -545,19 +565,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                             <div class="row">
                                 <ul class="col-6 links">
-                                    <li><a href="#choose" class="scroll">Why Choose Us </a></li>
-                                    <li><a href="#overview" class="scroll">Overview </a></li>
-                                    <li><a href="#pricing" class="scroll">Pricing Plans</a></li>
-                                    <li><a href="#faq" class="scroll">Faq's </a></li>
-                                    <li><a href="#testimonials" class="scroll">Testimonial </a></li>
-                                    <li><a href="#contact" class="scroll">Contact </a></li>
+                                    <li><a href="#choose" class="scroll">Por qué elergirnos</a></li>
+                                    <li><a href="#overview" class="scroll">Vista previa </a></li>
+                                    <li><a href="#pricing" class="scroll">Precios</a></li>
+                                    <li><a href="#faq" class="scroll">Preguntas</a></li>
+                                    <li><a href="#testimonials" class="scroll">Testimonios </a></li>
+                                    <li><a href="#contact" class="scroll">Contacto </a></li>
                                 </ul>
                                 <ul class="col-6 links">
-                                    <li><a href="#">Privacy Policy </a></li>
-                                    <li><a href="#">General Terms </a></li>
-                                    <li><a href="#faq" class="scroll">Faq's </a></li>
-                                    <li><a href="#">Knowledge </a></li>
-                                    <li><a href="#">Forum </a></li>
+                                    <li><a href="#">Políticas de privacidad </a></li>
+                                    <li><a href="#">Términos de uso </a></li>
+                                    <li><a href="#faq" class="scroll">Preguntas</a></li>
+                                    <li><a href="#">Tutoriales </a></li>
                                 </ul>
                             </div>
                         </div>
@@ -581,7 +600,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //footer -->
         <!-- copyright -->
         <div class="cpy-right text-center py-3">
-            <p class="">© {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados | Design by
+            <p class="">© {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados | Diseñado por
                 <a href="http://w3layouts.com"> W3layouts.</a>
             </p>
         </div>
