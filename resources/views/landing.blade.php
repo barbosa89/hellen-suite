@@ -74,7 +74,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <a href="#choose" class="scroll">Por qué elegirnos</a>
                                     </li>
                                     <li>
-                                        <a href="#overview" class="scroll">Vista previa</a>
+                                        <a href="#overview" class="scroll">La aplicación</a>
                                     </li>
                                     <li>
                                         <a href="#pricing" class="scroll">Precios</a>
@@ -106,7 +106,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </h2>
                         </div>
                         <h3 class="txt-w3_agile">para administrar tu hotel de manera fácil.</h3>
-                        <a class="btn mt-4 mr-2 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModalCenter1" role="button">Leer más</a>
+                        <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">Leer más</a>
                         <a class="btn mt-4 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModal" role="button">Ver vídeo<i class="fa fa-play-circle"></i></a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
@@ -197,29 +197,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <section class="process py-5" id="overview">
             <div class="container py-md-5">
                 <div class="row process-grids">
-                    <div class="col-lg-6">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <h4 class="mb-4">¿Qué es Welkome?</h4>
                         <p class="mb-3">Welkome es una aplicación web para la administración de hoteles y modelos de negocio similares,
-                            la cual facilita controles operativos y de gerencia. Está compuesta por diferentes módulos especializados y
-                            también comunes de la empresa, como lo son facturación, inventarios y demás. Entre los módulos especializados,
-                            se encuentran el potente paquete de bitácora y el de utilería, con los cuales tendrás información valiosa,
-                            y en tiempo real, de los acontecimientos del día a día.
+                            está orientada a facilitar controles operativos, y desarrollo de funciones administrativas y de gerencia.
+                        </p>
+                        <p>
+                            Está compuesta por diferentes módulos especializados y también comunes de la empresa, como lo son facturación,
+                            inventarios y demás. Entre los módulos especializados, se encuentran el potente paquete de bitácora y el de utilería,
+                            con los cuales tendrás información valiosa, y en tiempo real, de los acontecimientos del día a día.
                         </p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
                         <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
-                    <div class="col-md-6 px-5 mt-5">
+                </div>
+                <div class="row process-grids mt-5">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
                         <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
-                    <div class="col-lg-6 mt-5">
-                        <h4 class="mb-4">La filosofía</h4>
-                        <p class="mb-3">Morbi tincidunt nisi tortor, iaculis maximus eros vestibulum at. Ut pulvinar tortor non augue fringilla, fermentum consequat
-                            nisi rutrum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur. Nullam luctus hendrerit sapien, sed dictum est.
-                            mattis egestas.
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <h4 class="mb-4">Filosofía</h4>
+                        <p class="mb-3">
+                                La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado
+                                de satisfacción en sus clientes; Welkome, permite la optimización de todos los procesos, y asegura la
+                                continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
                         </p>
-                        <p>Morbi tincidunt nisi tortor, iaculis maximus eros vestibulum at. Ut pulvinar tortor non augue fringilla, fermentum consequat
-                            nisi rutrum. Orci varius natoque penatibus et magnis dis parturient montes.
+                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan básico y después
+                            abonarte a un mejor plan con todas las funcionalidades.
                         </p>
                     </div>
                 </div>
@@ -235,27 +240,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="tabs">
                             <ul class="nav nav-pills my-md-5 my-3 justify-content-center" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Anuales</a>
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fas fa-infinity"></i> Sin límite</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <div class="menu-grids">
                                         <div class="row t-in">
-                                            <div class="col-lg-3 col-sm-6 price-main-info">
+                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Básico</h4>
                                                         <h5 class="card-title pricing-card-title">
-                                                            <span class=""></span>Gratis
+                                                            <span class=""></span>Gratis<span>/siempre</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>1 hotel, sede principal</li>
-                                                            <li>5 usuarios</li>
-                                                            <li>30 habitaciones</li>
-                                                            <li>Sin contabilidad</li>
-                                                            <li>Sin control de comedor</li>
-                                                            <li>Soporte por email</li>
+                                                            <li><i class="fas fa-check"></i> 1 hotel</li>
+                                                            <li><i class="fas fa-check"></i> 5 usuarios</li>
+                                                            <li><i class="fas fa-check"></i> 30 habitaciones</li>
+                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
+                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-check"></i> Soporte por email</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
                                                             <a class="btn scroll" href="#contact">Seleccionar</a>
@@ -263,7 +268,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
+                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Intermedio</h4>
@@ -271,12 +276,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <span class="">$</span>80.000<span>/semestre</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>Sedes ilimitadas</li>
-                                                            <li>Usuarios ilimitados</li>
-                                                            <li>Habitaciones ilimitadas</li>
-                                                            <li>Sin contabilidad</li>
-                                                            <li>Sin control de comedor</li>
-                                                            <li>24/7 soporte</li>
+                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
+                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
+                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
+                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
+                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
                                                             <a class="btn scroll" href="#contact">Seleccionar</a>
@@ -284,7 +289,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-sm-6 mt-md-0 mt-5 price-main-info">
+                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Estándar</h4>
@@ -292,12 +297,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <span class="">$</span>120.000<span>/anual</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>Sedes ilimitadas</li>
-                                                            <li>Usuarios ilimitados</li>
-                                                            <li>Habitaciones ilimitadas</li>
-                                                            <li>Sin contabilidad</li>
-                                                            <li>Sin control de comedor</li>
-                                                            <li>24/7 soporte</li>
+                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
+                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
+                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
+                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
+                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
                                                             <a class="btn scroll" href="#contact">Seleccionar</a>
@@ -305,7 +310,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5 price-main-info">
+                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
                                                 <div class="price-inner card box-shadow p-4">
                                                     <div class="card-body">
                                                         <h4 class="">Completo</h4>
@@ -313,17 +318,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <span class="">$</span>240.000<span>/anual</span>
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
-                                                            <li>Sedes ilimitadas</li>
-                                                            <li>Usuarios ilimitados</li>
-                                                            <li>Habitaciones ilimitadas</li>
-                                                            <li>Paquete contable</li>
+                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
+                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
+                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
                                                             <li>
-                                                                Control de comedor
+                                                                <i class="fas fa-check"></i> Contabilidad
+                                                                <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="En construcción">
+                                                                    <i class="fa fa-info"></i>
+                                                                </span>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fas fa-check"></i> Comedor
                                                                 <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="No incluye hardware requerido">
                                                                     <i class="fa fa-info"></i>
                                                                 </span>
                                                             </li>
-                                                            <li>24/7 soporte</li>
+                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
                                                             <a class="btn scroll" href="#contact">Seleccionar</a>
@@ -352,7 +362,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <h4>Cuál es el soporte del plan básico? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Se proporciona un correo de soporte ténico, a través del cual se solventan los inconvenientes en la plataforma.
+                                        <p> Se proporciona un correo de soporte técnico, a través del cual se solventan los inconvenientes en la plataforma.
+                                            Las respuestas se darán en un plazo no mayor a 24 horas.
                                         </p>
                                     </li>
                                 </ul>
@@ -361,17 +372,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <h4>Cuáles medios de pago están soportados? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Tarjetas de crédito, débito, Efecty, Baloto, consignación, PSE.
+                                        <p> Tarjetas de crédito, débito, Efecty, Baloto, consignación, PSE, Daviplata, Puntored. Estos medios son los más comunes que ofrece el botón de pago de Epayco.
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item3 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>Puedo administrar desde el teléfono o tableta? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> El diseño de sistema está orientado a funcionar en cualquer dispositivo, un característica conocida como diseño web responsivo.
                                         </p>
                                     </li>
                                 </ul>
@@ -381,31 +391,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class=" col-md-6 faq-w3agile">
                         <ul class="faq pl-sm-4 pl-3">
                             <li class="item5 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>Como puedo iniciar? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> Puedes registrarte con algún plan, el correo usado será el de la cuenta principal, luego puedes crear hoteles y sedes, agregar colaboradores. Haz click aquí para <a href="#">ver el tutorial de registro</a>.
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item6 item mt-sm-4 mt-3 pt-3 pl-2"></li>
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>De qué se trata el servicio de comedor? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> Los hoteles pueden tener servicios de comedor o restaurante, puedes asociar los consumos de tus clientes a través de este módulo con una simple huella o un pin.
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item7 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Lorem ipsum dolor sit amet? </h4>
+                                <h4>De que se trara el paquete contable? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                                            laoreet dolore.
+                                        <p> Es un módulo contable que cumple con las actuales normas, el cual se integra con los demás módulos para registrar toda el ejercicio comercial automáticamente.
                                         </p>
                                     </li>
                                 </ul>
@@ -566,7 +573,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="row">
                                 <ul class="col-6 links">
                                     <li><a href="#choose" class="scroll">Por qué elergirnos</a></li>
-                                    <li><a href="#overview" class="scroll">Vista previa </a></li>
+                                    <li><a href="#overview" class="scroll">La aplicación </a></li>
                                     <li><a href="#pricing" class="scroll">Precios</a></li>
                                     <li><a href="#faq" class="scroll">Preguntas</a></li>
                                     <li><a href="#testimonials" class="scroll">Testimonios </a></li>
@@ -605,36 +612,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </p>
         </div>
         <!-- //copyright -->
-        <!-- Vertically centered Modal -->
-        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-capitalize text-center" id="exampleModalLongTitle"> <i class="fa fa-bed"></i> {{ config('app.name') }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="{{ asset('images/banner.jpg') }}" class="img-fluid mb-3" alt="Modal Image" />
-                        Vivamus eget est in odio tempor interdum. Mauris maximus fermentum arcu, ac finibus ante. Sed mattis risus at ipsum elementum,
-                        ut auctor turpis cursus. Sed sed odio pharetra, aliquet velit cursus, vehicula enim. Mauris porta aliquet magna, eget laoreet ligula.
-                        Sed mattis risus at ipsum elementum, ut auctor turpis cursus. Sed sed odio pharetra, aliquet.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- //Vertically centered Modal -->
         <!-- video Modal Popup -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Video Overview</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Aprende sobre Welkome</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -643,8 +626,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <iframe src="https://player.vimeo.com/video/43982091"></iframe>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save Changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
