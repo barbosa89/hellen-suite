@@ -64,7 +64,8 @@ return [
             'is_suite',
             'capacity',
             'floor',
-            'min_price'
+            'min_price',
+            'hotel_id'
         ],
         'guests' => [
             'id',
@@ -102,6 +103,18 @@ return [
             'business_name',
             'user_id',
             'created_at'
+        ],
+        'users' => [
+            'id',
+            'name',
+            'email',
+            'password',
+            'token',
+            'status',
+            'verified',
+            'parent',
+            'created_at',
+            'updated_at'
         ]
     ],
 ];

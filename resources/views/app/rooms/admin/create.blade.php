@@ -20,6 +20,21 @@
                 <form action="{{ route('rooms.store') }}" method="POST" id="room-form">
                     @csrf()
 
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">Hotel:</label>
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="form-group{{ $errors->has('floor') ? ' has-error' : '' }}">
                         <label for="floor">@lang('common.floor'):</label>
                         <input type="number" class="form-control" name="floor" id="floor" value="{{ old('floor') }}" min="1" max="500" required>

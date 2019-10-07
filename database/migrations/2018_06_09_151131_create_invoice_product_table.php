@@ -15,7 +15,7 @@ class CreateInvoiceProductTable extends Migration
     {
         Schema::create('invoice_product', function (Blueprint $table) {
             $table->bigInteger('invoice_id')->unsigned();
-            $table->integer('product_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
 

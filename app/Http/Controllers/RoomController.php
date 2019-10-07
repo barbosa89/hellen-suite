@@ -12,6 +12,8 @@ use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use Vinkla\Hashids\Facades\Hashids;
 
+# TODO: Mejorar la visualización en admin y recep
+# TODO: Habilitar y deshabilitar habitaciones
 class RoomController extends Controller
 {
     /**
@@ -34,7 +36,10 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('app.rooms.admin.create');
+        $hotels = User::find(auth()->user()->id)->hotels()
+            ->get(Fields::get('hotels'));
+
+        return view('app.rooms.admin.create', compact('hotels'));
     }
 
     /**
@@ -53,6 +58,7 @@ class RoomController extends Controller
         $room->description = $request->description;
         $room->status = '1';
         $room->capacity = (int) $request->capacity;
+        $room->hotel()->associate(Id::get($request->hotel));
 
         if (in_array((int) $request->tax_status, [1,2])) {
             $room->tax_status = $request->tax_status;
@@ -113,7 +119,12 @@ class RoomController extends Controller
     {
         $room = User::find(auth()->user()->id)->rooms()
             ->where('id', Id::get($id))
-            ->first(Fields::get('rooms'));
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id', 'business_name']);
+                }
+            ])->first(Fields::get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -139,7 +150,6 @@ class RoomController extends Controller
             abort(404);
         }
 
-        $room->number = $request->number;
         $room->price = $request->price;
         $room->description = $request->description;
         $room->min_price = (float) $request->min_price;

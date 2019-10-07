@@ -12,6 +12,7 @@ use App\Http\Requests\StoreHotel;
 use App\Http\Requests\UpdateHotel;
 use Illuminate\Support\Facades\Storage;
 
+# TODO: Completar el método show
 class HotelController extends Controller
 {
     /**
@@ -57,7 +58,7 @@ class HotelController extends Controller
         $hotel->phone = $request->phone;
         $hotel->mobile = $request->mobile;
         $hotel->email = $request->email;
-        $hotel->user()->associate(auth()->user()->id);
+        $hotel->owner()->associate(auth()->user()->id);
 
         if (!empty($request->main_hotel)) {
             $hotel->main_hotel = Id::get($request->main_hotel);
@@ -84,7 +85,7 @@ class HotelController extends Controller
 
     /**
      * Display the specified resource.
-     * TODO: Completar este método
+     *
      *
      * @param  string   $id
      * @return \Illuminate\Http\Response

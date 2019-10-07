@@ -2,14 +2,14 @@
 
 namespace App;
 
-use Laravel\Scout\Searchable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use EntrustUserTrait;
@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany(Welkome\Hotel::class);
     }
 
+    public function headquarters()
+    {
+        return $this->belongsToMany(Welkome\Hotel::class);
+    }
+
     public function shifts()
     {
         return $this->hasMany(Welkome\Shift::class);
@@ -48,12 +53,12 @@ class User extends Authenticatable
         return $this->hasMany(Welkome\Invoice::class);
     }
 
-    public function children()
+    public function employees()
     {
         return $this->hasMany(User::class, 'parent');
     }
 
-    public function father()
+    public function boss()
     {
         return $this->belongsTo(User::class, 'parent');
     }

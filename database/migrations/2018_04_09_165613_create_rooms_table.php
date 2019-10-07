@@ -14,7 +14,7 @@ class CreateRoomsTable extends Migration
     public function up()
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('number')->unique();
             $table->text('description');
             $table->decimal('price', 10, 2);
@@ -41,11 +41,11 @@ class CreateRoomsTable extends Migration
              */
             $table->enum('status', [0, 1, 2, 3, 4])->default(1);
 
-            $table->integer('hotel_id')->unsigned();
+            $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

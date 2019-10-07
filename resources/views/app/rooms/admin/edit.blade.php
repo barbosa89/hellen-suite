@@ -17,31 +17,31 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('rooms.title')</h2>
+
+                <div class="row mb-4">
+                    <div class="col-12">Hotel:</div>
+                    <div class="col-12 mt-2">
+                        <h4>{{ $room->hotel->business_name }}</h4>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12">Piso:</div>
+                    <div class="col-12 mt-2">
+                        <h4>Número {{ $room->floor }}</h4>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12">Número:</div>
+                    <div class="col-12 mt-2">
+                        <h4>{{ $room->number }}</h4>
+                    </div>
+                </div>
+
                 <form action="{{ route('rooms.update', ['room' => Hashids::encode($room->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
-
-                    <div class="form-group{{ $errors->has('floor') ? ' has-error' : '' }}">
-                        <label for="floor">@lang('common.floor'):</label>
-                        <input type="number" class="form-control" name="floor" id="floor" value="{{ $room->floor }}" min="1" max="500" required>
-
-                        @if ($errors->has('floor'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('floor') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
-                        <label for="number">@lang('common.number'):</label>
-                        <input type="text" class="form-control" name="number" id="number" value="{{ $room->number }}" required>
-
-                        @if ($errors->has('number'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('number') }}</strong>
-                            </span>
-                        @endif
-                    </div>
 
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>

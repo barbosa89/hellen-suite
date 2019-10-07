@@ -47,6 +47,35 @@ Route::group(['middleware' => ['auth', 'role:admin']], function() {
 	Route::get('hotels', 'HotelController@index')
 		->name('hotels.index');
 
+    # Team module
+
+	Route::get('team/search', 'TeamController@search')
+		->name('team.search');
+
+	Route::delete('team/{id}', 'TeamController@destroy')
+		->name('team.destroy');
+
+	Route::put('team/{id}', 'TeamController@update')
+		->name('team.update');
+
+	Route::get('team/{id}/toggle', 'TeamController@toggle')
+		->name('team.toggle');
+
+	Route::get('team/{id}/edit', 'TeamController@edit')
+		->name('team.edit');
+
+	Route::post('team', 'TeamController@store')
+		->name('team.store');
+
+	Route::get('team/create', 'TeamController@create')
+		->name('team.create');
+
+	Route::get('team/{id}', 'TeamController@show')
+		->name('team.show');
+
+	Route::get('team', 'TeamController@index')
+		->name('team.index');
+
     # Rooms module
 
 	Route::get('rooms/search', 'RoomController@search')

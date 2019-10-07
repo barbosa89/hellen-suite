@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('description');
             $table->string('brand', 100)->nullable();
             $table->string('reference', 100)->nullable();
@@ -22,10 +22,10 @@ class CreateProductsTable extends Migration
             $table->integer('quantity');
             $table->boolean('status')->default(true);
 
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
-                
+
             $table->timestamps();
         });
     }

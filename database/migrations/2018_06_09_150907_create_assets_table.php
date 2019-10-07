@@ -14,7 +14,7 @@ class CreateAssetsTable extends Migration
     public function up()
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('number', 20)->unique();
             $table->string('description');
             $table->string('brand', 100)->nullable();
@@ -22,10 +22,10 @@ class CreateAssetsTable extends Migration
             $table->string('reference', 100)->nullable();
             $table->string('location')->nullable();
 
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
-                
+
             $table->timestamps();
         });
     }

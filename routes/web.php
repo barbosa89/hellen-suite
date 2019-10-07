@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -34,6 +34,10 @@ require __DIR__ . '/common.php';
 require __DIR__ . '/receptionist.php';
 require __DIR__ . '/root.php';
 require __DIR__ . '/admin.php';
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

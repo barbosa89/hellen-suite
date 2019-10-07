@@ -14,7 +14,7 @@ class CreateHotelsTable extends Migration
     public function up()
     {
         Schema::create('hotels', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('business_name');
             $table->string('tin', 30);
             $table->string('address', 100)->nullable();
@@ -24,11 +24,11 @@ class CreateHotelsTable extends Migration
             $table->string('image', 100)->nullable();
             $table->boolean('status')->default(true);
 
-            $table->integer('main_hotel')->unsigned()->nullable();
+            $table->bigInteger('main_hotel')->unsigned()->nullable();
             $table->foreign('main_hotel')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

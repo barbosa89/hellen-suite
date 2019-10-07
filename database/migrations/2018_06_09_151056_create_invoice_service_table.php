@@ -15,7 +15,7 @@ class CreateInvoiceServiceTable extends Migration
     {
         Schema::create('invoice_service', function (Blueprint $table) {
             $table->bigInteger('invoice_id')->unsigned();
-            $table->integer('service_id')->unsigned();
+            $table->bigInteger('service_id')->unsigned();
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
 

@@ -86,7 +86,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <a href="#contact" class="scroll">Contacto</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">Iniciar sesión</a>
+                                        @if (auth()->check())
+                                            <a href="{{ url('/home') }}" class="btn w3ls-btn" href="#contact" class="scroll">Panel</a>
+                                        @else
+                                            <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">Iniciar sesión</a>
+                                        @endif
                                     </li>
                                 </ul>
                             </div>

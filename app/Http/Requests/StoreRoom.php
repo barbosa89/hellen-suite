@@ -32,7 +32,8 @@ class StoreRoom extends FormRequest
             'capacity' => 'required|integer|min:1|max:12',
             'floor' => 'required|integer|min:1|max:500',
             'tax_status' => 'required|in:0,1,2',
-            'tax' => 'nullable|numeric|min:0.01|max:0.5'
+            'tax' => 'nullable|numeric|min:0.01|max:0.5',
+            'hotel' => 'required|string|hashed_exists:hotels,id'
         ];
     }
 }

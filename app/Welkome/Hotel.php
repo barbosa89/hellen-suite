@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
-    public function user()
+    // The hotel owner
+    public function owner()
     {
         return $this->belongsTo(\App\User::class);
+    }
+
+    // Employees assigned to one or more hotels
+    public function employees()
+    {
+        return $this->belongsToMany(\App\User::class);
     }
 
     public function invoices()

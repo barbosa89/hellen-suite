@@ -21,16 +21,16 @@ class CreateGuestsTable extends Migration
             $table->string('email', 120)->nullable();
             $table->enum('gender', ['m', 'f', 'x'])->nullable();
             $table->date('birthdate')->nullable();
-            
+
             $table->bigInteger('responsible_adult')->default(0);
             $table->boolean('status')->default(0);
-            
+
             $table->integer('identification_type_id')->unsigned();
             $table->foreign('identification_type_id')->references('id')
                 ->on('identification_types')
                 ->onDelete('cascade')->onUpdate('cascade');
-            
-            $table->integer('user_id')->unsigned();
+
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');

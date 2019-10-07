@@ -12,6 +12,7 @@
         "albertcht/invisible-recaptcha": "^1.9",
         "barryvdh/laravel-translation-manager": "^0.5.3",
         "cviebrock/eloquent-sluggable": "^4.8",
+        "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "kwn/number-to-words": "^1.6",

@@ -30,6 +30,16 @@ class AppServiceProvider extends ServiceProvider
             return (int) $value <= $product->quantity;
         });
 
+        Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
+            $value = Id::get($value);
+            $table = $parameters[0];
+            $field = $parameters[1];
+            $result = \DB::table($table)->where($field, $value)
+                ->select('id')->get();
+
+            return $result->count() === 1;
+        });
+
         Validator::extend('headquarter', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
