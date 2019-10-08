@@ -115,11 +115,36 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
                         <h5><i class="fas mr-2 fa-laptop"></i> Regístrate</h5>
-                        <form action="#" class="mt-4" method="post">
-                            <input class="form-control" type="text" name="Name" placeholder="Nombre" required="" />
-                            <input class="form-control" type="email" name="Email" placeholder="Correo electrónico" required="" />
-                            <input class="form-control" type="text" name="Number" placeholder="Teléfono" required="" />
-                            <input class="form-control" type="password" name="Number" placeholder="Contraseña" required="" />
+                        <form action="{{ route('register') }}" class="mt-4" method="post">
+                            @csrf
+                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="Nombre" required="" />
+                            @error('name')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Correo electrónico" required="" />
+                            @error('email')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" placeholder="Contraseña" required="" />
+                            @error('password')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirma contraseña" required="" />
+                            @error('password_confirmation')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
                             <input class="form-control text-capitalize" type="submit" value="Registrar cuenta">
                         </form>
                     </div>
