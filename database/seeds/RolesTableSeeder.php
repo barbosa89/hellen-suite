@@ -39,7 +39,17 @@ class RolesTableSeeder extends Seeder
                 'name' => 'receptionist',
                 'display_name' => 'Receptionist',
                 'description' => 'Receptionist of the registered entity'
-            ]
+            ],
+            [
+                'name' => 'accountant',
+                'display_name' => 'Public accountant',
+                'description' => 'Public accountant'
+            ],
+            [
+                'name' => 'manager',
+                'display_name' => 'Manager',
+                'description' => 'General manager'
+            ],
         ];
     }
 }

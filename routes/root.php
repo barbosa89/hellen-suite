@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth', 'role:root']], function() {
+Route::group(['middleware' => ['auth', 'role:root', 'verified']], function() {
     Route::resource('users', 'UserController');
 
     Route::resource('identifications', 'IdentificationTypeController');

@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth', 'role:admin']], function() {
+Route::group(['middleware' => ['auth', 'role:manager', 'verified']], function() {
     Route::get('assets/{id}/assign', 'AssetController@assign')
         ->name('assets.assign');
 

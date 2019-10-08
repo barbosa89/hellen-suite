@@ -6,7 +6,7 @@ use App\User;
 use App\Helpers\Id;
 use App\Welkome\Invoice;
 use App\Observers\InvoiceObserver;
-use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
             $product = Id::get($data['product']);
-            $product = \DB::table('products')->where('id', $product)
+            $product = DB::table('products')->where('id', $product)
                 ->select('id', 'quantity')->first();
 
             return (int) $value <= $product->quantity;
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             $value = Id::get($value);
             $table = $parameters[0];
             $field = $parameters[1];
-            $result = \DB::table($table)->where($field, $value)
+            $result = DB::table($table)->where($field, $value)
                 ->select('id')->get();
 
             return $result->count() === 1;
@@ -60,17 +60,18 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            // Only must be exist the current object
-            // $id = $parameters[0];
-            // $hotel = User::find(auth()->user()->id)->hotels()
-            //     ->where('id', $id)
-            //     ->where('business_name', $data['business_name'])
-            //     ->where('tin', $value)
-            //     ->firstP(['id', 'business_name', 'main_hotel']);
-
-            // return $hotel->count() === 1;
             return false;
+        });
 
+        Validator::extend('verified', function($attribute, $value, $parameters, $validator)
+        {
+            $users = DB::table('users')
+                ->where($attribute, $value)
+                ->where('email_verified_at', '!=', null)
+                ->select('id', 'email', 'email_verified_at')
+                ->get();
+
+            return $users->count() === 1;
         });
 
         // Observers

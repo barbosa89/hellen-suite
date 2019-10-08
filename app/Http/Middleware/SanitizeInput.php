@@ -18,7 +18,7 @@ class SanitizeInput
         if (!in_array(strtolower($request->method()), ['put', 'post'])) {
             return $next($request);
         }
-        
+
         $input = $request->all();
 
         array_walk_recursive($input, function(&$input){
@@ -26,7 +26,7 @@ class SanitizeInput
         });
 
         $request->merge($input);
-        
+
         return $next($request);
     }
 }

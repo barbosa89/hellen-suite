@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth', 'role:receptionist']], function() {
+Route::group(['middleware' => ['auth', 'role:receptionist', 'verified']], function() {
     Route::resource('guests', 'GuestController');
 
     Route::resource('companies', 'CompanyController');
