@@ -36,7 +36,7 @@
                 <span>Invoices</span></a>
             </li>
             @break
-        @case('admin')
+        @case('manager')
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-folder"></i>

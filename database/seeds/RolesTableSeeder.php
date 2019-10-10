@@ -1,7 +1,7 @@
 <?php
 
-use App\Role;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class RolesTableSeeder extends Seeder
 {
@@ -26,29 +26,19 @@ class RolesTableSeeder extends Seeder
     {
         return [
             [
-                'name' => 'root',
-                'display_name' => 'Root',
-                'description' => 'Root user'
+                'name' => 'root'
             ],
             [
-                'name' => 'admin',
-                'display_name' => 'Administrator',
-                'description' => 'Administrator of a registered entity'
+                'name' => 'manager'
             ],
             [
-                'name' => 'receptionist',
-                'display_name' => 'Receptionist',
-                'description' => 'Receptionist of the registered entity'
+                'name' => 'admin'
             ],
             [
-                'name' => 'accountant',
-                'display_name' => 'Public accountant',
-                'description' => 'Public accountant'
+                'name' => 'receptionist'
             ],
             [
-                'name' => 'manager',
-                'display_name' => 'Manager',
-                'description' => 'General manager'
+                'name' => 'accountant'
             ],
         ];
     }

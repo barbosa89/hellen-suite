@@ -2,18 +2,16 @@
 
 namespace App;
 
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
-    use EntrustUserTrait;
-    use LogsActivity;
+    use Notifiable, LogsActivity, HasRoles;
 
     /**
      * The attributes that are mass assignable.

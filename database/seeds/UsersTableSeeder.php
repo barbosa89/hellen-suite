@@ -1,6 +1,7 @@
 <?php
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,24 +16,21 @@ class UsersTableSeeder extends Seeder
             'name' => 'Welkome',
             'email' => 'root@welkome.com',
             'password' => bcrypt('root'),
-            'status' => true,
-            'verified' => true
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
 
         User::create([
             'name' => 'Manager',
             'email' => 'manager@welkome.com',
             'password' => bcrypt('manager'),
-            'status' => true,
-            'verified' => true
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
 
         User::create([
             'name' => 'Recep',
             'email' => 'recep@welkome.com',
             'password' => bcrypt('recep'),
-            'status' => true,
-            'verified' => true,
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
         ]);
     }

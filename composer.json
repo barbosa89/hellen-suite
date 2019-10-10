@@ -25,8 +25,8 @@
         "rap2hpoutre/laravel-log-viewer": "^1.2",
         "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-backup": "^5.12",
-        "vinkla/hashids": "^5.2",
-        "zizaco/entrust": "^1.9"
+        "spatie/laravel-permission": "^3.0",
+        "vinkla/hashids": "^5.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

@@ -1,9 +1,8 @@
 <?php
 
-use App\Role;
 use App\User;
 use Illuminate\Database\Seeder;
-
+use Spatie\Permission\Models\Role;
 class AssignmentsSeeder extends Seeder
 {
     /**
@@ -18,12 +17,12 @@ class AssignmentsSeeder extends Seeder
         $receptionist = Role::where('name', '=', 'receptionist')->first(['id', 'name']);
 
         $welkome = User::where('name', '=', 'Welkome')->first(['id', 'name']);
-        $welkome->attachRole($root);
+        $welkome->assignRole($root->name);
 
         $managerUser = User::where('name', '=', 'Manager')->first(['id', 'name']);
-        $managerUser->attachRole($manager);
+        $managerUser->assignRole($manager->name);
 
         $recepUser = User::where('name', '=', 'Recep')->first(['id', 'name']);
-        $recepUser->attachRole($receptionist);
+        $recepUser->assignRole($receptionist->name);
     }
 }
