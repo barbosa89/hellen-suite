@@ -44,7 +44,7 @@
 
                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                         <label for="address">@lang('common.address'):</label>
-                        <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}" maxlength="100">
+                        <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}" maxlength="100" required>
 
                         @if ($errors->has('address'))
                             <span class="help-block">
@@ -55,7 +55,7 @@
 
                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                         <label for="phone">@lang('common.phone'):</label>
-                        <input type="string" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" maxlength="10" pattern="\d{7,10}" title="1230987, 0371230987">
+                        <input type="string" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" maxlength="10" pattern="\d{7,10}" title="1230987, 0371230987" required>
 
                         @if ($errors->has('phone'))
                             <span class="help-block">
@@ -66,7 +66,7 @@
 
                     <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                         <label for="mobile">@lang('common.mobile'):</label>
-                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" maxlength="10" pattern="\d{10}" title="3151230987">
+                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" maxlength="10" pattern="\d{10}" title="3151230987" required>
 
                         @if ($errors->has('mobile'))
                             <span class="help-block">
@@ -77,7 +77,7 @@
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email">@lang('common.email'):</label>
-                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" maxlength="100">
+                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" maxlength="100" required>
 
                         @if ($errors->has('email'))
                             <span class="help-block">

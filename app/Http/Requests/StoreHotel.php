@@ -27,10 +27,10 @@ class StoreHotel extends FormRequest
         return [
             'business_name' => 'required|string|max:191|unique:hotels,business_name',
             'tin' => 'required|string|max:30|headquarter',
-            'address' => 'nullable|string|max:100',
-            'phone' => 'nullable|string|max:10',
-            'mobile' => 'nullable|string|max:10',
-            'email' => 'nullable|email|max:100|unique:hotels,email',
+            'address' => 'required|string|max:100',
+            'phone' => 'required|string|max:10',
+            'mobile' => 'required|string|max:10',
+            'email' => 'required|email|max:100|unique:hotels,email',
             'image' => 'nullable|file|max:200|mimes:jpeg,png',
             'type' => 'required|string|in:main,headquarter',
             'main_hotel' => 'required_if:type,headquarter|hashed_exists:hotels,id'

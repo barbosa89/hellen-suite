@@ -45,7 +45,6 @@ return [
             'open',
             'status',
             'reservation',
-            'for_company',
             'are_tourists',
             'for_job',
             'company_id',

@@ -16,4 +16,6 @@ return array (
   'wasDeleted' => 'El usuario fue eliminado',
   'wasDisabled' => 'El usuario fue deshabilitado porque tiene registros en el sistema',
   'chooseRole' => 'Elige un rol',
+  'manager' => 'Gerente',
+  'accountant' => 'Contador',
 );

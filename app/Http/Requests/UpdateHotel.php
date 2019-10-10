@@ -24,10 +24,10 @@ class UpdateHotel extends FormRequest
     public function rules()
     {
         return [
-            'address' => 'nullable|string|max:100',
-            'phone' => 'nullable|string|max:10',
-            'mobile' => 'nullable|string|max:10',
-            'email' => 'nullable|email|max:100|unique:hotels,email',
+            'address' => 'required|string|max:100',
+            'phone' => 'required|string|max:10',
+            'mobile' => 'required|string|max:10',
+            'email' => 'required|email|max:100|unique:hotels,email',
             'image' => 'nullable|file|max:200|mimes:jpeg,png'
         ];
     }

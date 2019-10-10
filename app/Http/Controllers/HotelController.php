@@ -141,7 +141,7 @@ class HotelController extends Controller
      */
     public function update(UpdateHotel $request, $id)
     {
-        $hotel = User::find(auth()->user()->id)->hotels()
+        $hotel = User::find(auth()->user()->id, ['id'])->hotels()
             ->where('id', Id::get($id))
             ->first(Fields::get('hotels'));
 

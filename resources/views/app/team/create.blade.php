@@ -61,7 +61,7 @@
                             <label for="role">Rol:</label>
                             <select class="form-control selectpicker" name="role" id="role" required>
                                 @foreach ($roles as $role)
-                                    <option value="{{ Hashids::encode($role->id) }}">{{ trans('users.' . $role->name) }}</option>
+                                    <option value="{{ ($role->name }}">{{ trans('users.' . $role->name) }}</option>
                                 @endforeach
                             </select>
 

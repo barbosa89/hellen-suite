@@ -7,6 +7,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -71,18 +72,12 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
 
         if ($user->save()) {
-            // $user->sendEmailVerificationNotification();
-
-            $manager = Role::where('name', 'manager')->first(['id', 'name']);
-
-            $user->attachRole($manager);
+            $user->assignRole('manager');
 
             return $user;
         }
 
-        flash('Ha ocurrido un error al intentar crear el registro')->error();
-
-        return redirect()->route('register');
+        throw new Exception("Error to create a new User", 1);
     }
 
     /**

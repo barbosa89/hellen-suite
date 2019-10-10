@@ -13,7 +13,7 @@
 
 Route::get('/test', function () {
     $b = false;
-    dd(!$b);
+    dd(now()->addDay(1));
 });
 
 Route::get('/', function () {
@@ -23,6 +23,10 @@ Route::get('/', function () {
 
     return view('landing');
 });
+
+Route::get('/account/verify/{email}/{token}', 'AccountController@verify')
+    ->name('account.verify')
+    ->middleware(['guest', 'signed']);
 
 Auth::routes(['verify' => true]);
 

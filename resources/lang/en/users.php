@@ -16,4 +16,6 @@ return array (
   'wasDeleted' => 'User was deleted',
   'wasDisabled' => 'User was disabled because he has records in the system',
   'chooseRole' => 'Choose a role',
+  'accountant' => 'Accountant',
+  'manager' => 'Manager',
 );

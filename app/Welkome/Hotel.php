@@ -9,7 +9,7 @@ class Hotel extends Model
     // The hotel owner
     public function owner()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\User::class, 'user_id');
     }
 
     // Employees assigned to one or more hotels

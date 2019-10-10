@@ -15,7 +15,7 @@
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 <a href="{{ route('hotels.show', ['room' => Hashids::encode($row->id)]) }}">
-                    {{ $row->hotels()->count() > 0 ? $row->hotels()->first()->business_name : 'No asignado' }}
+                    {{ $row->headquarters()->count() > 0 ? $row->headquarters()->first()->business_name : 'No asignado' }}
                 </a>
             </p>
         </div>

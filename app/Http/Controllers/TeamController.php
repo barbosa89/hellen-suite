@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Role;
+use App\Helpers\Id;
+use App\Welkome\Hotel;
 use App\Helpers\Fields;
+use App\Helpers\Random;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
+use App\Notifications\VerifyTeamMemberEmail;
 
 class TeamController extends Controller
 {
@@ -19,7 +24,7 @@ class TeamController extends Controller
     public function index()
     {
         $team = User::find(auth()->user()->id)->employees()
-            ->with('hotels')
+            ->with('headquarters')
             ->get(Fields::get('users'));
 
         return view('app.team.index', compact('team'));
@@ -36,7 +41,9 @@ class TeamController extends Controller
             ->where('status', true)
             ->get(Fields::get('hotels'));
 
-        $roles = Role::where('name', '!=', 'root')->get(['id', 'name', 'display_name']);
+        $roles = Role::where('name', '!=', 'root')
+            ->where('name', '!=', 'manager')
+            ->get(['id', 'name']);
 
         return view('app.team.create', compact('hotels', 'roles'));
     }
@@ -49,10 +56,38 @@ class TeamController extends Controller
      */
     public function store(StoreTeamMember $request)
     {
+        // Create temporary password and token
+        $password = Str::random(12);
+        $token = Random::token(48);
+
         $member = new User();
         $member->name = $request->name;
         $member->email = $request->email;
-        $member->password = Str::random(12);
+        $member->token = $token;
+        $member->password = Hash::make($password);
+        $member->boss()->associate(auth()->user()->id);
+
+        if ($member->save()) {
+            // Assign the team member to work in a headquarter
+            $member->headquarters()->attach(Id::get($request->hotel));
+
+            // The hotel
+            $hotel = Hotel::find(Id::get($request->hotel), ['id', 'business_name']);
+
+            //Assign role
+            $member->assignRole($request->role);
+
+            // Send notification
+            $member->notify(new VerifyTeamMemberEmail($member, $hotel, $password));
+
+            flash(trans('common.createdSuccessfully') . '. El usuario debe verificar su correo electrónico.')->success();
+
+            return redirect()->route('team.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('team.index');
     }
 
     /**

@@ -27,7 +27,7 @@ class StoreTeamMember extends FormRequest
             'hotel' => 'required|string|max:50|hashed_exists:hotels,id',
             'name' => 'required|string|max:191',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|string|max:50|hashed_exists:roles,id'
+            'role' => 'required|string|max:50|exists:roles,name'
         ];
     }
 }
