@@ -36,8 +36,6 @@ class PermissionsTableSeeder extends Seeder
                 ],
             ]);
         }
-
-        Permission::create(['name' => 'users.toggle']);
     }
 
     /**

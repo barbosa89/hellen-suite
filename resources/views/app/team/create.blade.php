@@ -58,19 +58,19 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
-                            <label for="role">Rol:</label>
-                            <select class="form-control selectpicker" name="role" id="role" required>
-                                @foreach ($roles as $role)
-                                    <option value="{{ ($role->name }}">{{ trans('users.' . $role->name) }}</option>
-                                @endforeach
-                            </select>
+                        <label for="role">Rol:</label>
+                        <select class="form-control selectpicker" name="role" id="role" required>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->name }}">{{ trans('users.' . $role->name) }}</option>
+                            @endforeach
+                        </select>
 
-                            @if ($errors->has('role'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('role') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                        @if ($errors->has('role'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('role') }}</strong>
+                            </span>
+                        @endif
+                    </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>

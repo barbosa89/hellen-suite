@@ -7,6 +7,7 @@ use App\Helpers\Id;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
 use App\Helpers\Random;
+use App\Http\Requests\AssignTeamMember;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
 use App\Notifications\VerifyTeamMemberEmail;
 
+// TODO: Implementar la asignación de permisos directos a usuarios, con los roles se cargan módulos exclusivos
 class TeamController extends Controller
 {
     /**
@@ -23,8 +25,12 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $team = User::find(auth()->user()->id)->employees()
-            ->with('headquarters')
+        $team = User::where('parent', auth()->user()->id)
+            ->with([
+                'headquarters' => function($query) {
+                    $query->select(['id', 'business_name']);
+                }
+            ])
             ->get(Fields::get('users'));
 
         return view('app.team.index', compact('team'));
@@ -98,7 +104,10 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
+        //TODO: Implementar el show del team member
+        flash('Característica en construcción')->info();
+
+        return redirect()->route('team.index');
     }
 
     /**
@@ -132,6 +141,75 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $member = User::find(auth()->user()->id, ['id'])->employees()
+            ->where('id', Id::get($id))
+            ->with([
+                'roles' => function($query) {
+                    $query->select(['id', 'name']);
+                }
+            ])->first(Fields::get('users'));
+
+        $member->removeRole($member->roles()->first()->name);
+
+        if ($member->delete()) {
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return redirect()->route('team.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('team.index');
+    }
+
+    /**
+     * Show the form for assign a the team member to headquarte.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function assign($id)
+    {
+        $member = User::find(auth()->user()->id, ['id'])->employees()
+            ->where('id', Id::get($id))
+            ->with([
+                'headquarters' => function($query) {
+                    $query->select(['id', 'business_name']);
+                }
+            ])->first(Fields::get('users'));
+
+        // Check if is empty
+        $headquarter = $member->headquarters()->count() > 0;
+
+        $hotels = User::find(auth()->user()->id, ['id'])->hotels()
+            ->when($headquarter, function ($query) use ($member)
+            {
+                $query->where('id', '!=', $member->headquarters()->first()->id);
+            })->get(Fields::get('hotels'));
+
+        return view('app.team.assign', compact('member', 'hotels'));
+    }
+
+    /**
+     * Attach hotel headquarter to the team member.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function attach(AssignTeamMember $request, $id)
+    {
+        $member = User::find(auth()->user()->id, ['id'])->employees()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('users'));
+
+        // Delete the old relationship
+        $member->headquarters()->sync([]);
+
+        $member->headquarters()->attach(Id::get($request->hotel));
+
+        flash(trans('common.updatedSuccessfully'))->success();
+
+        return back();
     }
 }

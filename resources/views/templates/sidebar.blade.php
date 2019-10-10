@@ -37,7 +37,7 @@
             </li>
             @break
         @case('manager')
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-folder"></i>
                 <span>Pages</span>
@@ -52,7 +52,7 @@
                     <a class="dropdown-item" href="404.html">404 Page</a>
                     <a class="dropdown-item" href="blank.html">Blank Page</a>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('hotels.index') }}">
                 <i class="fas fa-hotel"></i>
@@ -68,11 +68,11 @@
                 <i class="fa fa-fw fa-bed"></i>
                 <span>@lang('rooms.title')</span></a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('invoices.index') }}">
                 <i class="fa fa-fw fa-file"></i>
                 <span>@lang('invoices.title')</span></a>
-            </li>
+            </li> --}}
             @break
         @case('receptionist')
             <li class="nav-item dropdown">

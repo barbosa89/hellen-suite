@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Recep',
+            'name' => 'Recepcionista',
             'email' => 'recep@welkome.com',
             'password' => bcrypt('recep'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
