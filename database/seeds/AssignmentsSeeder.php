@@ -22,7 +22,7 @@ class AssignmentsSeeder extends Seeder
         $managerUser = User::where('name', '=', 'Manager')->first(['id', 'name']);
         $managerUser->assignRole($manager->name);
 
-        $recepUser = User::where('name', '=', 'Recep')->first(['id', 'name']);
+        $recepUser = User::where('name', '=', 'Recepcionista')->first(['id', 'name']);
         $recepUser->assignRole($receptionist->name);
     }
 }
