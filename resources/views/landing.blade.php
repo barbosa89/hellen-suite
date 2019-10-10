@@ -458,7 +458,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <h3 class="heading mb-5 text-center"> Nuestros clientes</h3>
                 <div class="row test-grids">
                     <div class="col-md-4 col-sm-7 col-9">
-                        <img src="{{ asset('images/b3.png') }}" alt="" class="img-fluid" />
+                        <img src="{{ asset('images/b3.jpg') }}" alt="" class="img-fluid rounded one-edge-shadow" />
                     </div>
                     <div class="col-md-8">
                         <div class="callbacks_container">

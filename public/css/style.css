@@ -246,7 +246,7 @@ div#word-mark h1 a {
 
 #hero-section {
     width: 100vw;
-    background: url(../images/banner.jpg) no-repeat center;
+    background: url(../images/banner-1.jpg) no-repeat center;
     background-size: cover;
     position: relative;
     z-index: 0;
@@ -396,7 +396,7 @@ section {
 }
 
 .banner {
-    background: url(../images/banner.jpg)no-repeat center;
+    background: url(../images/banner-1.jpg)no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
