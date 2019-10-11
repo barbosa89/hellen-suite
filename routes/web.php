@@ -14,12 +14,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 Route::get('/test', function () {
-    $te = Permission::where('name', 'companies.index')
-        ->orwhere('name', 'companies.create')
-        ->orwhere('name', 'companies.show')
-        ->orwhere('name', 'companies.edit')
-        ->get(['id', 'name', 'guard_name']);
-    dd($te);
+    abort(403);
 });
 
 Route::get('/', function () {
