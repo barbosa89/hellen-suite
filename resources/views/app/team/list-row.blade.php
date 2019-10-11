@@ -45,13 +45,19 @@
                         ]),
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'option' => 'Asignaciones',
                         'url' => route('team.assign', [
                             'room' => Hashids::encode($row->id)
                         ]),
+                    ],
+                    [
+                        'option' => 'Permisos',
+                        'url' => route('team.permissions', [
+                            'room' => Hashids::encode($row->id)
+                        ]),
+                    ],
+                    [
+                        'type' => 'divider'
                     ],
                     [
                         'type' => 'confirm',

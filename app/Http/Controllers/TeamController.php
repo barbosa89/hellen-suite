@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
 use App\Notifications\VerifyTeamMemberEmail;
+use Spatie\Permission\Models\Permission;
 
 // TODO: Implementar la asignación de permisos directos a usuarios, con los roles se cargan módulos exclusivos
 class TeamController extends Controller
@@ -207,6 +208,71 @@ class TeamController extends Controller
         $member->headquarters()->sync([]);
 
         $member->headquarters()->attach(Id::get($request->hotel));
+
+        flash(trans('common.updatedSuccessfully'))->success();
+
+        return back();
+    }
+
+    /**
+     * Show the form for assign a the team member to headquarte.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function permissions($id)
+    {
+        // Team member receiving permissions
+        $member = User::find(auth()->user()->id, ['id'])->employees()
+            ->where('id', Id::get($id))
+            ->with([
+                'roles' => function($query) {
+                    $query->select(['id', 'name', 'guard_name']);
+                },
+                'permissions' => function($query) {
+                    $query->select(['id', 'name', 'guard_name']);
+                }
+            ])->first(Fields::get('users'));
+
+        // All permissions from database
+        $allPermissions = Permission::get(['id', 'name', 'guard_name']);
+
+        // Grouping by modules
+        $permissions = $allPermissions->groupBy(function ($permission) {
+            return explode('.', $permission->name)[0];
+        });
+
+        // Remove root permissions
+        $permissions->forget('users');
+        $permissions->forget('subscriptions');
+        $permissions->forget('identification_types');
+
+        return view('app.team.permissions', compact('member', 'permissions'));
+    }
+
+    /**
+     * Attach hotel headquarter to the team member.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storePermissions(Request $request, $id)
+    {
+        // Team member receiving permissions
+        $member = User::find(auth()->user()->id, ['id'])->employees()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('users'));
+
+        // Checked permissions from database
+        $permissions = Permission::whereIn('id', Id::get($request->permissions))
+            ->get(['id', 'name', 'guard_name']);
+
+        // Delete all old permissions
+        $member->syncPermissions([]);
+
+        // Assign checked permissions
+        $member->syncPermissions($permissions);
 
         flash(trans('common.updatedSuccessfully'))->success();
 

@@ -48,6 +48,11 @@ Route::group(['middleware' => ['auth', 'role:manager', 'verified']], function() 
 		->name('hotels.index');
 
     # Team module
+	Route::post('team/members/{id}/permissions', 'TeamController@storePermissions')
+		->name('team.permissions.store');
+
+	Route::get('team/members/{id}/permissions', 'TeamController@permissions')
+		->name('team.permissions');
 
 	Route::get('team/members/search', 'TeamController@search')
 		->name('team.search');

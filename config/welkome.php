@@ -115,4 +115,95 @@ return [
             'email_verified_at'
         ]
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | System modules
+    |--------------------------------------------------------------------------
+    |
+    | All modules to create automatically all restful permissions
+    |
+    */
+    'modules' => [
+        'users',
+        'team',
+        'assets',
+        'companies',
+        'guests',
+        'hotels',
+        'identification_types',
+        'invoices',
+        'payments',
+        'products',
+        'rooms',
+        'services',
+        'shifts',
+        'subscriptions',
+        'vehicles',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | System roles
+    |--------------------------------------------------------------------------
+    |
+    | Basic system roles
+    |
+    */
+    'roles' => [
+        'root',
+        'manager',
+        'admin',
+        'receptionist',
+        'accountant'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions assignment to roles
+    |--------------------------------------------------------------------------
+    |
+    | ONLY FOR GUIDE
+    | Basic system roles
+    |
+    */
+    'permissions' => [
+        'root' => [
+            'users'                 => '*',
+            'subscriptions'         => '*',
+            'identification_types'  => '*'
+        ],
+        'manager' => [
+            'members'   => '*',
+            'assets'    => '*',
+            'companies' => '*',
+            'guests'    => '*',
+            'hotels'    => '*',
+            'invoices'  => '*',
+            'payments'  => '*',
+            'products'  => '*',
+            'rooms'     => '*',
+            'services'  => '*',
+            'shifts'    => '*',
+            'vehicles'  => '*',
+        ],
+        'admin' => [
+            'assets'    => '*',
+            'invoices'  => '*',
+            'payments'  => '*',
+            'products'  => '*',
+            'services'  => '*',
+        ],
+        'receptionist'  => [
+            'companies' => ['index', 'create', 'show', 'edit'],
+            'guests'    => ['index', 'create', 'show', 'edit'],
+            'invoices'  => ['index', 'create', 'show'],
+            'payments'  => ['index', 'create'],
+            'products'  => ['index'],
+            'rooms'     => ['index'],
+            'shifts'    => ['index', 'create', 'show', 'edit'],
+            'vehicles'  => ['index', 'create', 'show', 'edit'],
+        ],
+        // 'accountant'
+    ]
 ];

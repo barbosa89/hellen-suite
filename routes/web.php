@@ -10,10 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 Route::get('/test', function () {
-    $b = false;
-    dd(now()->addDay(1));
+    $te = Permission::where('name', 'companies.index')
+        ->orwhere('name', 'companies.create')
+        ->orwhere('name', 'companies.show')
+        ->orwhere('name', 'companies.edit')
+        ->get(['id', 'name', 'guard_name']);
+    dd($te);
 });
 
 Route::get('/', function () {

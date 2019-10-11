@@ -12,34 +12,11 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->getRoles() as $rol) {
-            Role::create($rol);
+        foreach (config('welkome.roles') as $role) {
+            Role::create([
+                'name' => $role,
+                'guard_name' => config('auth.defaults.guard')
+            ]);
         }
-    }
-
-    /**
-     * Default roles in application
-     *
-     * @return array
-     */
-    public function getRoles()
-    {
-        return [
-            [
-                'name' => 'root'
-            ],
-            [
-                'name' => 'manager'
-            ],
-            [
-                'name' => 'admin'
-            ],
-            [
-                'name' => 'receptionist'
-            ],
-            [
-                'name' => 'accountant'
-            ],
-        ];
     }
 }

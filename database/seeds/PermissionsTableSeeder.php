@@ -12,7 +12,7 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->getModules() as $module) {
+        foreach (config('welkome.modules') as $module) {
             Permission::insert([
                 [
                     'name' => $module . '.index',
@@ -36,31 +36,5 @@ class PermissionsTableSeeder extends Seeder
                 ],
             ]);
         }
-    }
-
-    /**
-     * List of modules name
-     *
-     * @return array
-     */
-    public function getModules()
-    {
-        return [
-            'users',
-            'members',
-            'assets',
-            'companies',
-            'guests',
-            'hotels',
-            'identification_types',
-            'invoices',
-            'payments',
-            'products',
-            'rooms',
-            'services',
-            'shifts',
-            'subscriptions',
-            'vehicles',
-        ];
     }
 }

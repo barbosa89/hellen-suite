@@ -7,14 +7,42 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class Id
 {
-	public static function get($id)
+	/**
+     * Unhash an ID.
+     *
+     * @param  string  		$ids
+     * @return int|array
+     */
+	public static function get($ids)
 	{
-		if (empty($id)) {
+		if (empty($ids)) {
 			return null;
 		}
 
-		$id = Input::clean($id);
+		if (is_array($ids)) {
+			return self::pool($ids);
+		}
 
-		return Hashids::decode($id)[0];
+		$id = Input::clean($ids);
+
+		return Hashids::decode($ids)[0];
+	}
+
+	/**
+     * Unhash an ID collection.
+     *
+     * @param  array	$ids
+     * @return array
+     */
+	public static function pool($ids)
+	{
+		$collection = [];
+
+		array_walk($ids, function ($id) use (&$collection)
+		{
+			array_push($collection, Hashids::decode($id)[0]);
+		});
+
+		return $collection;
 	}
 }
