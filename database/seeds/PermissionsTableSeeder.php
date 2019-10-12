@@ -36,5 +36,15 @@ class PermissionsTableSeeder extends Seeder
                 ],
             ]);
         }
+
+        // Permission::create([
+        //     'name' => 'rooms.pool',
+        //     'guard_name' => config('auth.defaults.guard')
+        // ]);
+
+        // Permission::create([
+        //     'name' => 'rooms.assign',
+        //     'guard_name' => config('auth.defaults.guard')
+        // ]);
     }
 }
