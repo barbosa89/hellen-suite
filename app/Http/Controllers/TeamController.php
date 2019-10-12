@@ -242,11 +242,6 @@ class TeamController extends Controller
             return explode('.', $permission->name)[0];
         });
 
-        // Remove root permissions
-        $permissions->forget('users');
-        $permissions->forget('subscriptions');
-        $permissions->forget('identification_types');
-
         return view('app.team.permissions', compact('member', 'permissions'));
     }
 

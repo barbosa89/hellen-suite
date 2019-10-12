@@ -50,7 +50,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Asignar</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>
+                    <a href="{{ route('team.index') }}" class="btn btn-secondary">Volver</a>
                 </form>
             </div>
         </div>

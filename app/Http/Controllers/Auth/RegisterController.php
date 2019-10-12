@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Spatie\Permission\Models\Permission;
 
 class RegisterController extends Controller
 {
@@ -72,7 +73,10 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
 
         if ($user->save()) {
+            $permissions = Permission::all(['id', 'name', 'guard_name']);
+
             $user->assignRole('manager');
+            $user->syncPermissions($permissions);
 
             return $user;
         }

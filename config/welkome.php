@@ -125,20 +125,17 @@ return [
     |
     */
     'modules' => [
-        'users',
         'team',
         'assets',
         'companies',
         'guests',
         'hotels',
-        'identification_types',
         'invoices',
         'payments',
         'products',
         'rooms',
         'services',
         'shifts',
-        'subscriptions',
         'vehicles',
     ],
 
@@ -168,6 +165,7 @@ return [
     |
     */
     'permissions' => [
+        // Root permissions do not apply, only with role
         'root' => [
             'users'                 => '*',
             'subscriptions'         => '*',
