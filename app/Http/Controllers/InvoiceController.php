@@ -18,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::where('user_id', auth()->user()->parent)
+        $invoices = Invoice::where('user_id', Id::parent())
             ->where('open', true)
             ->where('status', true)
             ->get(Fields::get('invoices'))

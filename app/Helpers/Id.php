@@ -45,4 +45,18 @@ class Id
 
 		return $collection;
 	}
+
+	/**
+     * Return de parent ID of User.
+     *
+     * @return integer
+     */
+	public static function parent()
+	{
+		if (empty(auth()->user()->parent)) {
+			return auth()->user()->id;
+		}
+
+		return auth()->user()->parent;
+	}
 }

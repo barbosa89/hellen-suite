@@ -1,9 +1,11 @@
 <?php
 
+use Vinkla\Hashids\Facades\Hashids;
+
 // Home
-// Breadcrumbs::for('home', function ($trail) {
-//     $trail->push('Home', route('home'));
-// });
+Breadcrumbs::for('home', function ($trail) {
+    $trail->push(trans('dashboard.dashboard'), route('home'));
+});
 
 // // Home > About
 // Breadcrumbs::for('about', function ($trail) {
@@ -28,3 +30,13 @@
 //     $trail->parent('category', $post->category);
 //     $trail->push($post->title, route('post', $post->id));
 // });
+
+Breadcrumbs::for('rooms', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('rooms.title'), route('rooms.index'));
+});
+
+Breadcrumbs::for('room', function ($trail, $room) {
+    $trail->parent('rooms');
+    $trail->push($room->number, route('rooms.show', ['id' => Hashids::encode($room->id)]));
+});

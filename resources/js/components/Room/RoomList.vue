@@ -12,7 +12,7 @@
                     <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
                 </div>
             </div>
-            <div class="col-6 without-padding" v-show="selected.length > 0">
+            <div class="col-6 without-padding text-right" v-show="selected.length > 0">
                 <div class="btn-group pull-right" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-default" title="Asignar" @click.prevent="pool">{{ selected.length }} <i class="fa fa-key"></i></button>
                 </div>
@@ -147,11 +147,11 @@
                 this.pushSelected(data.room);
             },
             show(text, data) {
-                let url = '/rooms/list/' + data.room.id;
+                let url = '/rooms/' + data.room.hash;
                 window.location.href = url;
             },
             assign(text, data) {
-                let url = '/rooms/list/assign/' + data.room.id;
+                let url = '/rooms/list/assign/' + data.room.hash;
                 window.location.href = url;
             },
             pool() {

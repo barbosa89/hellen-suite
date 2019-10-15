@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Room;
-use App\Helpers\Input;
-use App\Helpers\Fields;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Helpers\{Id, Input, Fields};
 
 # TODO: Mejorar la visualización en admin y recep
 # TODO: Habilitar y deshabilitar habitaciones
@@ -23,10 +21,19 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::where('user_id', auth()->user()->id)
-            ->paginate(config('welkome.paginate', Fields::get('rooms')))->sort();
+        $rooms = Room::where('user_id', Id::parent())
+            ->paginate(config('welkome.paginate', Fields::get('rooms')))
+            ->sort();
 
-        return view('app.rooms.admin.index', compact('rooms'));
+        $rooms = $rooms->map(function ($room, $index)
+        {
+            $room->hotel_id = Hashids::encode($room->hotel_id);
+            $room->user_id = Hashids::encode($room->user_id);
+
+            return $room;
+        });
+
+        return view('app.rooms.index', compact('rooms'));
     }
 
     /**
@@ -87,7 +94,7 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        $room = User::find(auth()->user()->id)->rooms()
+        $room = User::find(Id::parent(), ['id'])->rooms()
             ->where('id', Id::get($id))
             ->first(Fields::get('rooms'));
 
@@ -106,7 +113,7 @@ class RoomController extends Controller
             },
         ]);
 
-        return view('app.rooms.admin.show', compact('room'));
+        return view('app.rooms.show', compact('room'));
     }
 
     /**

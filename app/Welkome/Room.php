@@ -2,15 +2,13 @@
 
 namespace App\Welkome;
 
+use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Mtvs\EloquentHashids\HasHashid;
-use Mtvs\EloquentHashids\HashidRouting;
 
 class Room extends Model
 {
     use LogsActivity;
-    use HasHashid, HashidRouting;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +18,20 @@ class Room extends Model
     protected $fillable = [
         'id', 'number', 'description', 'price', 'status', 'user_id', 'tax_included', 'is_suite', 'capacity', 'floors'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hash'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['id'];
 
     public function invoices()
     {
@@ -49,5 +61,16 @@ class Room extends Model
     public function hotel()
     {
         return $this->belongsTo(\App\Welkome\Hotel::class);
+    }
+
+    /**
+     * Hashing Room ID.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getHashAttribute()
+    {
+        return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
     }
 }

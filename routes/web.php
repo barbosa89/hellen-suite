@@ -44,3 +44,4 @@ require __DIR__ . '/admin.php';
 require __DIR__ . '/modules/hotels.php';
 require __DIR__ . '/modules/rooms.php';
 require __DIR__ . '/modules/team.php';
+require __DIR__ . '/modules/invoices.php';

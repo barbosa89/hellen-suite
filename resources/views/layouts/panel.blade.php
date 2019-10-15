@@ -29,16 +29,7 @@
                     <div id="content-wrapper">
                         <div class="container-fluid">
                             <!-- Breadcrumbs-->
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('home') }}">
-                                        @lang('dashboard.dashboard')
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item active">
-                                    <a href="{{ url(breadcrumb()->url) }}">{{ breadcrumb()->text }}</a>
-                                </li>
-                            </ol>
+                            @yield('breadcrumbs')
 
                             @yield('content')
                         </div>
