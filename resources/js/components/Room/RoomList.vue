@@ -7,7 +7,7 @@
                     <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-paint-brush"></i></button>
+                    <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-broom"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento"><i class="fa fa-wrench"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
                 </div>
@@ -42,7 +42,7 @@
                             <small>$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
                         </p>
                         <p class="text-center mb-2">
-                            <i class="fa fa-check text-info"></i>
+                            <i class="fa text-info" :class="room.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
                             <span>{{ room.capacity }} </span>
                         </p>
                     </div>
@@ -151,11 +151,11 @@
                 window.location.href = url;
             },
             assign(text, data) {
-                let url = '/rooms/list/assign/' + data.room.hash;
+                let url = '/invoices/room/' + data.room.hash + '/assign';
                 window.location.href = url;
             },
             pool() {
-                axios.post('/rooms/pool', {
+                axios.post('/invoices/multiple', {
                     rooms: this.selected
                 }).then(response => {
                     console.log(response);

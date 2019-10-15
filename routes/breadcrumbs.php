@@ -40,3 +40,33 @@ Breadcrumbs::for('room', function ($trail, $room) {
     $trail->parent('rooms');
     $trail->push($room->number, route('rooms.show', ['id' => Hashids::encode($room->id)]));
 });
+
+Breadcrumbs::for('hotels', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('hotels.title'), route('hotels.index'));
+});
+
+Breadcrumbs::for('hotel', function ($trail, $hotel) {
+    $trail->parent('hotels');
+    $trail->push($hotel->business_name, route('hotels.show', ['id' => Hashids::encode($hotel->id)]));
+});
+
+Breadcrumbs::for('team', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('team.title'), route('team.index'));
+});
+
+Breadcrumbs::for('member', function ($trail, $member) {
+    $trail->parent('team');
+    $trail->push($member->name, route('hotels.show', ['id' => Hashids::encode($member->id)]));
+});
+
+Breadcrumbs::for('invoices', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('invoices.title'), route('invoices.index'));
+});
+
+Breadcrumbs::for('invoice', function ($trail, $invoice) {
+    $trail->parent('invoices');
+    $trail->push($invoice->number, route('invoices.show', ['id' => Hashids::encode($invoice->id)]));
+});

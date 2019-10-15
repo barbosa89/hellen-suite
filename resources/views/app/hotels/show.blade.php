@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('hotel', $hotel) }}
+@endsection
+
 @section('content')
     <!-- TODO: Reparar la generación de dropdown menu por modulo"-->
     <div id="page-wrapper">

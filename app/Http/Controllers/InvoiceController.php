@@ -35,19 +35,8 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: Eliminar todos los registros vacios
-        $invoice = new Invoice();
-        $invoice->number = Random::consecutive();
-        $invoice->subvalue = 0.0;
-        $invoice->taxes = 0.0;
-        $invoice->discount = 0.0;
-        $invoice->value = 0.0;
-        $invoice->status = true;
-        $invoice->reservation = Input::bool($request->get('reservation'));
-        $invoice->for_company = Input::bool($request->get('for_company'));
-        $invoice->are_tourists = Input::bool($request->get('are_tourists'));
-        $invoice->for_job = Input::bool($request->get('for_job'));
-        $invoice->user()->associate(auth()->user()->parent);
+        // TODO: Eliminar todos los registros vacios / botón cancelar
+        $invoice = $this->new();
 
         if ($invoice->save()) {
             if ($invoice->for_companny) {
@@ -69,6 +58,25 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Return a newly Invoice instance.
+     *
+     * @return \App\Welkome\Invoice
+     */
+    private function new()
+    {
+        $invoice = new Invoice();
+        $invoice->number = Random::consecutive();
+        $invoice->subvalue = 0.0;
+        $invoice->taxes = 0.0;
+        $invoice->discount = 0.0;
+        $invoice->value = 0.0;
+        $invoice->status = true;
+        $invoice->user()->associate(Id::parent());
+
+        return $invoice;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  $id
@@ -76,9 +84,8 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $id = Id::get($id);
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
-            ->where('id', $id)
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -135,7 +142,7 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -176,7 +183,7 @@ class InvoiceController extends Controller
      */
     public function rooms($id = '')
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -186,7 +193,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $rooms = Room::where('user_id', auth()->user()->parent)
+        $rooms = Room::where('user_id', Id::parent())
             ->where('status', '1') // It is free
             ->get(Fields::get('rooms'));
 
@@ -206,13 +213,13 @@ class InvoiceController extends Controller
 
         \DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->first(Fields::parsed('invoices'));
 
-                $room = Room::where('user_id', auth()->user()->parent)
+                $room = Room::where('user_id', Id::parent())
                     ->where('id', Id::get($request->room))
                     ->where('status', '1')
                     ->first(Fields::get('rooms'));
@@ -267,7 +274,7 @@ class InvoiceController extends Controller
      */
     public function searchGuests($id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -304,7 +311,7 @@ class InvoiceController extends Controller
     public function createGuests($id)
     {
         $id = Id::get($id);
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -336,7 +343,7 @@ class InvoiceController extends Controller
      */
     public function storeGuests(StoreInvoiceGuest $request, $id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -360,7 +367,7 @@ class InvoiceController extends Controller
         $guest->name = $request->get('name', null);
         $guest->status = true; // In hotel
         $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(auth()->user()->parent);
+        $guest->user()->associate(Id::parent());
 
         $isMinor = $this->isMinor($request->get('birthdate', null));
         $responsible = Id::get($request->get('responsible_adult', null));
@@ -397,7 +404,7 @@ class InvoiceController extends Controller
     public function guests($id, $guest)
     {
         $id = Id::get($id);
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -435,7 +442,7 @@ class InvoiceController extends Controller
      */
     public function addGuests(AddGuests $request, $id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -489,7 +496,7 @@ class InvoiceController extends Controller
      */
     public function removeGuests(RemoveGuests $request, $id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -576,7 +583,7 @@ class InvoiceController extends Controller
      */
     public function products($id = '')
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -590,7 +597,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $products = Product::where('user_id', auth()->user()->parent)
+        $products = Product::where('user_id', Id::parent())
             ->where('quantity', '>', 0)
             ->where('status', true)
             ->get(Fields::get('products'));
@@ -612,13 +619,13 @@ class InvoiceController extends Controller
 
         \DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->first(Fields::parsed('invoices'));
 
-                $product = Product::where('user_id', auth()->user()->parent)
+                $product = Product::where('user_id', Id::parent())
                     ->where('id', Id::get($request->product))
                     ->where('quantity', '>', 0)
                     ->where('status', true)
@@ -669,7 +676,7 @@ class InvoiceController extends Controller
      */
     public function services($id = '')
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -679,7 +686,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $services = Service::where('user_id', auth()->user()->parent)
+        $services = Service::where('user_id', Id::parent())
             ->get(Fields::get('services'));
 
         return view('app.invoices.add-services', compact('invoice', 'services'));
@@ -698,13 +705,13 @@ class InvoiceController extends Controller
 
         \DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $invoice = Invoice::where('user_id', auth()->user()->parent)
+                $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->first(Fields::parsed('invoices'));
 
-                $service = Service::where('user_id', auth()->user()->parent)
+                $service = Service::where('user_id', Id::parent())
                     ->first(Fields::get('services'));
 
                 $value = (int) $request->quantity * $service->price;
@@ -744,7 +751,7 @@ class InvoiceController extends Controller
      */
     public function searchCompanies($id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -776,14 +783,14 @@ class InvoiceController extends Controller
      */
     public function addCompanies($id, $company)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
             ->where('company_id', null)
             ->first(['id']);
 
-        $company = Company::where('user_id', auth()->user()->parent)
+        $company = Company::where('user_id', Id::parent())
             ->where('id', Id::get($company))
             ->first(Fields::get('companies'));
 
@@ -817,7 +824,7 @@ class InvoiceController extends Controller
     public function createCompanies($id)
     {
         $id = Id::get($id);
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -849,7 +856,7 @@ class InvoiceController extends Controller
      */
     public function storeCompanies(StoreInvoiceGuest $request, $id)
     {
-        $invoice = Invoice::where('user_id', auth()->user()->parent)
+        $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -873,7 +880,7 @@ class InvoiceController extends Controller
         $guest->name = $request->get('name', null);
         $guest->status = true; // In hotel
         $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(auth()->user()->parent);
+        $guest->user()->associate(Id::parent());
 
         $isMinor = $this->isMinor($request->get('birthdate', null));
         $responsible = Id::get($request->get('responsible_adult', null));
@@ -898,5 +905,49 @@ class InvoiceController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
+
+    /**
+     * Single assignment for rooms.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function assign($id)
+    {
+        $invoice = $this->new();
+
+        $room = Room::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('status', '1')
+            ->first(Fields::get('rooms'));
+
+        if ($invoice->save()) {
+            $invoice->rooms()->attach($room->id, [
+                'quantity' => 1,
+                'value' => $room->price
+            ]);
+
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('invoices.index');
+    }
+
+    /**
+     * Create a new invoice with many rooms.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiple(Request $request)
+    {
+        return response()->json($request->toArray());
     }
 }

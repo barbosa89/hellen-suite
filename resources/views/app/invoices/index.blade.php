@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('invoices') }}
+@endsection
+
 @section('content')
 
     @include('partials.page-header', [

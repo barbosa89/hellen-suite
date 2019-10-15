@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('token')->nullable();
+            $table->boolean('status')->default(true);
             $table->bigInteger('parent')->unsigned()->nullable();
             $table->foreign('parent')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

@@ -16,17 +16,17 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('number')->unique();
-            $table->decimal('discount', 10, 2);
-            $table->decimal('subvalue', 10, 2);
+            $table->decimal('discount', 10, 2)->default(0.0);
+            $table->decimal('subvalue', 10, 2)->default(0.0);
             $table->decimal('taxes', 10, 2)->default(0.0);
-            $table->decimal('value', 10, 2);
+            $table->decimal('value', 10, 2)->default(0.0);
             $table->boolean('open')->default(true);
             # 0: inactive, 1: active
             $table->boolean('status')->dafault(true);
             $table->boolean('reservation')->default(false);
 
-            $table->boolean('are_tourists')->default(false)->nullable();
-            $table->boolean('for_job')->default(false)->nullable();
+            $table->boolean('are_tourists')->nullable();
+            $table->boolean('for_job')->nullable();
 
             $table->bigInteger('hotel_id')->nullable()->unsigned();
             $table->foreign('hotel_id')->references('id')

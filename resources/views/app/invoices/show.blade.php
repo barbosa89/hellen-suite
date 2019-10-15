@@ -1,9 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('invoice', $invoice) }}
+@endsection
 
 @section('content')
 
     <div id="page-wrapper">
-        @include('partials.page-header', [
+        {{-- @include('partials.page-header', [
             'title' => trans('invoices.title'),
             'url' => route('invoices.index'),
             'options' => [
@@ -58,6 +62,21 @@
                 [
                     'option' => trans('common.back'),
                     'url' => url()->previous()
+                ],
+            ]
+        ]) --}}
+
+        @include('partials.page-header', [
+            'title' => trans('invoices.title'),
+            'url' => route('invoices.index'),
+            'search' => [
+                'action' => '#'
+            ],
+            'options' => [
+                [
+                    'type' => 'modal',
+                    'option' => trans('common.new'),
+                    'id' => 'new-invoice'
                 ],
             ]
         ])

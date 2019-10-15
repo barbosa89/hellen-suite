@@ -39,17 +39,17 @@ class Random
      */
 	public static function consecutive()
 	{
-		// $consecutive = '';
+		$consecutive = '';
 
-		// while (empty($consecutive)) {
-		// 	$temp = date('y') . date('m') . date('d') . random_int(0, 99999);
-		// 	$invoice = Invoice::where('number', $temp)->first(['id', 'number']);
+		while (empty($consecutive)) {
+			$temp = date('y') . date('m') . date('d') . random_int(0, 99999);
+			$invoice = Invoice::where('number', $temp)->first(['id', 'number']);
 
-		// 	if (empty($invoice)) {
-		// 		$consecutive = $temp;
-		// 	}
-		// }
+			if (empty($invoice)) {
+				$consecutive = $temp;
+			}
+		}
 
-		// return $consecutive;
+		return $consecutive;
 	}
 }

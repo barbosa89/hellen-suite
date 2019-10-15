@@ -1,20 +1,6 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	// TODO: Analizar el nombre de las siguientes rutas
-	Route::get('rooms/list/assign/{id}', 'RoomController@assign')
-		->name('rooms.assign');
-
-	Route::post('rooms/pool', 'RoomController@pool')
-		->name('rooms.pool');
-
-	// TODO: Anular las siguientes dos rutas
-	Route::get('rooms/list/{id}', 'RoomController@display')
-		->name('rooms.display');
-
-	Route::get('rooms/list', 'RoomController@list')
-		->name('rooms.list');
-
 	Route::get('rooms/search', 'RoomController@search')
 		->name('rooms.search')
 		->middleware('permission:rooms.index');

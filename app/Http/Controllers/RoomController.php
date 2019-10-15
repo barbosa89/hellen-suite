@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateRoom;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
 
-# TODO: Mejorar la visualización en admin y recep
 # TODO: Habilitar y deshabilitar habitaciones
 class RoomController extends Controller
 {
@@ -43,7 +42,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-        $hotels = User::find(auth()->user()->id)->hotels()
+        $hotels = User::find(Id::parent(), ['id'])
+            ->hotels()
             ->get(Fields::get('hotels'));
 
         return view('app.rooms.admin.create', compact('hotels'));
@@ -72,7 +72,7 @@ class RoomController extends Controller
             $room->tax = (float) $request->tax;
         }
 
-        $room->user()->associate(auth()->user()->id);
+        $room->user()->associate(Id::parent());
         $room->is_suite = (int) $request->type;
 
         if ($room->save()) {
@@ -124,7 +124,7 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        $room = User::find(auth()->user()->id)->rooms()
+        $room = User::find(Id::parent(), ['id'])->rooms()
             ->where('id', Id::get($id))
             ->with([
                 'hotel' => function ($query)
@@ -149,7 +149,7 @@ class RoomController extends Controller
      */
     public function update(UpdateRoom $request, $id)
     {
-        $room = User::find(auth()->user()->id)->rooms()
+        $room = User::find(Id::parent(), ['id'])->rooms()
             ->where('id', Id::get($id))
             ->first(Fields::get('rooms'));
 
@@ -195,7 +195,7 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        $room = User::find(auth()->user()->id)->rooms()
+        $room = User::find(Id::parent(), ['id'])->rooms()
             ->where('id', Id::get($id))
             ->first(Fields::get('rooms'));
 
@@ -248,75 +248,10 @@ class RoomController extends Controller
             return redirect()->route('rooms.index');
         }
 
-        $rooms = User::find(auth()->user()->id)->rooms()
+        $rooms = User::find(Id::parent(), ['id'])->rooms()
             ->whereLike(['number', 'description'], $query)
             ->paginate(20, Fields::get('rooms'));
 
         return view('app.rooms.admin.search', compact('rooms', 'query'));
-    }
-
-    /**
-     * Display a listing of the resource for receptionists users.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list()
-    {
-        $rooms = Room::where('user_id', auth()->user()->parent)
-            ->paginate(config('welkome.paginate'), Fields::get('rooms'))->sort();
-
-        return view('app.rooms.test', compact('rooms'));
-    }
-
-    /**
-     * Display the specified resource for receptionist.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function display($id)
-    {
-        $room = User::find(auth()->user()->parent)->rooms()
-            ->where('id', Input::clean($id))
-            ->first(Fields::get('rooms'));
-
-        if (empty($room)) {
-            abort(404);
-        }
-
-        $room->load([
-            'assets' => function ($query)
-            {
-                $query->select('id', 'number', 'description', 'brand', 'model', 'reference');
-            },
-            'products' => function ($query)
-            {
-                $query->select('id', 'description', 'brand', 'reference', 'price');
-            },
-        ]);
-
-        return view('app.rooms.receptionist.show', compact('room'));
-    }
-
-    /**
-     * Single assignment for rooms.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function assign($id)
-    {
-        dd($id);
-    }
-
-    /**
-     * Create a new invoice with many rooms.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function pool(Request $request)
-    {
-        return response()->json($request->toArray());
     }
 }

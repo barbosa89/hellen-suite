@@ -89,7 +89,7 @@ class TeamController extends Controller
 
             flash(trans('common.createdSuccessfully') . '. El usuario debe verificar su correo electrónico.')->success();
 
-            return redirect()->route('team.index');
+            return redirect()->route('team.permissions', ['id' => Hashids::encode($member->id)]);
         }
 
         flash(trans('common.error'))->error();
