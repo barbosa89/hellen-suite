@@ -67,5 +67,12 @@
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/welkome.js') }}"></script>
     @yield('scripts')
+    <script>
+        @auth
+            window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
+        @else
+            window.Permissions = [];
+        @endauth
+    </script>
 </body>
 </html>

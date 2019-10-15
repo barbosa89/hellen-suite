@@ -39,3 +39,8 @@ require __DIR__ . '/common.php';
 require __DIR__ . '/receptionist.php';
 require __DIR__ . '/root.php';
 require __DIR__ . '/admin.php';
+
+// Modules
+require __DIR__ . '/modules/hotels.php';
+require __DIR__ . '/modules/rooms.php';
+require __DIR__ . '/modules/team.php';

@@ -3,6 +3,7 @@
         <div class="row mb-4">
             <div class="col-6 without-padding">
                 <div class="btn-group pull-left" role="group" aria-label="Basic example">
+                    <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
                     <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
                     <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>

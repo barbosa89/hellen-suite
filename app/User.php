@@ -114,4 +114,29 @@ class User extends Authenticatable implements MustVerifyEmail
     //         $query->where('name', $role);
     //     })->first(['id']);
     // }
+
+	/**
+     * Unhash an ID collection.
+     *
+     * @param  array	$ids
+     * @return array
+     */
+    public function getAllPermissionsAttribute() {
+        $permissions = [];
+
+        $user = $this->where('id', auth()->user()->id)
+            ->with([
+                'permissions' => function ($query)
+                {
+                    $query->select(['id', 'name', 'guard_name']);
+                }
+            ])->first(['id']);
+
+        $user->permissions->each(function ($permission) use (&$permissions)
+        {
+            $permissions[] = $permission->name;
+        });
+
+        return $permissions;
+    }
 }
