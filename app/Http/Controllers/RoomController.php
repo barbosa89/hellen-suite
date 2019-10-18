@@ -21,13 +21,19 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::where('user_id', Id::parent())
-            ->paginate(config('welkome.paginate', Fields::get('rooms')))
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id', 'business_name']);
+                }
+            ])->paginate(config('welkome.paginate', Fields::get('rooms')))
             ->sort();
 
         $rooms = $rooms->map(function ($room, $index)
         {
             $room->hotel_id = Hashids::encode($room->hotel_id);
             $room->user_id = Hashids::encode($room->user_id);
+            $room->hotel->id = Hashids::encode($room->hotel->id);
 
             return $room;
         });

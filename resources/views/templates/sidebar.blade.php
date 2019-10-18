@@ -60,8 +60,32 @@
     @can('invoices.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('invoices.index') }}">
-            <i class="fa fa-fw fa-file"></i>
+            <i class="fas fa-file-invoice"></i>
             <span>@lang('invoices.title')</span></a>
         </li>
     @endcan
+
+    @can('guests.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('guests.index') }}">
+            <i class="fa fa-fw fa-users"></i>
+            <span>@lang('guests.title')</span></a>
+        </li>
+    @endcan
+
+    @can('companies.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('companies.index') }}">
+            <i class="fa fa-fw fa-building"></i>
+            <span>@lang('companies.title')</span></a>
+        </li>
+    @endcan
+
+    @role('manager')
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+            <i class="fas fa-cogs"></i>
+            <span>Configuración</span></a>
+        </li>
+    @endrole
 </ul>

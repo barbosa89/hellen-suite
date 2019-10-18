@@ -70,3 +70,23 @@ Breadcrumbs::for('invoice', function ($trail, $invoice) {
     $trail->parent('invoices');
     $trail->push($invoice->number, route('invoices.show', ['id' => Hashids::encode($invoice->id)]));
 });
+
+Breadcrumbs::for('companies', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('companies.title'), route('companies.index'));
+});
+
+Breadcrumbs::for('company', function ($trail, $company) {
+    $trail->parent('companies');
+    $trail->push($company->business_name, route('company.show', ['id' => Hashids::encode($company->id)]));
+});
+
+Breadcrumbs::for('guests', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('guests.title'), route('guests.index'));
+});
+
+Breadcrumbs::for('guest', function ($trail, $guest) {
+    $trail->parent('guests');
+    $trail->push($guest->business_name, route('guest.show', ['id' => Hashids::encode($guest->id)]));
+});

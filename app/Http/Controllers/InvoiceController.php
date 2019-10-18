@@ -6,8 +6,16 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Fields, Id, Input, Random};
-use App\Welkome\{Company, Guest, IdentificationType, Invoice, Product, Room, Service};
-use App\Http\Requests\{AddGuests, AddProducts, AddRooms, AddServices, RemoveGuests, StoreInvoiceGuest};
+use App\Welkome\{Company, Guest, Hotel, IdentificationType, Invoice, Product, Room, Service};
+use App\Http\Requests\{
+    AddGuests,
+    AddProducts,
+    AddRooms,
+    AddServices,
+    RemoveGuests,
+    StoreInvoice,
+    StoreInvoiceGuest
+};
 
 class InvoiceController extends Controller
 {
@@ -18,11 +26,23 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::where('user_id', Id::parent())
+        $query = Invoice::query();
+        $query->where('user_id', Id::parent())
             ->where('open', true)
             ->where('status', true)
-            ->get(Fields::get('invoices'))
-            ->sortByDesc('created_at');
+            ->with([
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ]);
+
+        if (auth()->user()->hasRole('receptionist')) {
+            $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
+        }
+
+        $invoices = $query->get(Fields::get('invoices'));
+
+        $invoices->sortByDesc('created_at');
 
         return view('app.invoices.index', compact('invoices'));
     }
@@ -33,23 +53,19 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreInvoice $request)
     {
         // TODO: Eliminar todos los registros vacios / botón cancelar
         $invoice = $this->new();
 
-        if ($invoice->save()) {
-            if ($invoice->for_companny) {
-                $route = route('invoices.companies.search', [
-                    'id' => Hashids::encode($invoice->id)
-                ]);
-            } else {
-                $route = route('invoices.rooms', [
-                    'id' => Hashids::encode($invoice->id)
-                ]);
-            }
+        if ($request->registry == 'reservation') {
+            $invoice->reservation = true;
+        }
 
-            return redirect($route);
+        if ($invoice->save()) {
+            return redirect()->route('invoices.rooms', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -84,8 +100,9 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
+        $id = Id::get($id);
         $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+            ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -98,7 +115,7 @@ class InvoiceController extends Controller
                 },
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'))
-                        ->withPivot('quantity', 'value');
+                        ->withPivot('quantity', 'value', 'start', 'end');
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select(Fields::get('guests'))
@@ -187,17 +204,56 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::get('invoices'));
+            ->with([
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
+        $hotels = $this->getHotels($invoice);
+
+        // TODO: Listar habitaciones al cambiar el hotel
         $rooms = Room::where('user_id', Id::parent())
             ->where('status', '1') // It is free
             ->get(Fields::get('rooms'));
 
-        return view('app.invoices.add-rooms', compact('invoice', 'rooms'));
+        return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'hotels'));
+    }
+
+    /**
+     * Return hotel list to attach to invoice.
+     *
+     * @param   \App\Welkome\Invoice $invoice
+     * @return  \Illuminate\Support\Collection
+     */
+    private function getHotels(Invoice $invoice)
+    {
+        if (!empty($invoice->hotel)) {
+            $hotels = collect();
+            $hotels->push($invoice->hotel);
+        } else {
+            if (auth()->user()->hasRole('manager')) {
+                $hotels = Hotel::where('user_id', Id::parent())
+                    ->where('status', true)
+                    ->get(Fields::get('hotels'));
+            } else {
+                $user = auth()->user()->load([
+                    'hotels' => function ($query)
+                    {
+                        $query->select(Fields::get('hotels'))
+                            ->where('status', true);
+                    }
+                ]);
+
+                $hotels = $user->hotels;
+            }
+        }
+
+        return $hotels;
     }
 
     /**

@@ -39,7 +39,8 @@
                         </div>
                         <h3 class="text-center">{{ room.number }}</h3>
                         <p class="text-center">
-                            <small>$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
+                            <small class="d-block">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
+                            <small class="d-block">{{ room.hotel.business_name }}</small>
                         </p>
                         <p class="text-center mb-2">
                             <i class="fa text-info" :class="room.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
@@ -137,10 +138,17 @@
                 })
             },
             pushSelected(room) {
-                let contains = _.includes(this.selected, room)
+                if (room.status == '1') {
+                    let contains = _.includes(this.selected, room)
 
-                if (!contains) {
-                    this.selected.push(room)
+                    if (!contains) {
+                        this.selected.push(room)
+                    }
+                } else {
+                    toastr.info(
+                        'No puedes agregar esta habitación',
+                        'Acción no permitida'
+                    );
                 }
             },
             select(text, data) {

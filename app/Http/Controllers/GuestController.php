@@ -17,30 +17,31 @@ class GuestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $month = Carbon::now()->subDays(31);
+    {
+        $guests = Guest::paginate();
+        // $month = Carbon::now()->subDays(31);
 
-        $registered = Guest::where('user_id', auth()->user()->parent)
-            ->where('status', false) # Not in hotel
-            ->where('created_at', '>=', $month->toDateTimeString())
-            ->paginate(config('welkome.paginate'), Fields::get('guests'))
-            ->sortBy('created_at');
+        // $registered = Guest::where('user_id', Id::parent())
+        //     ->where('status', false) # Not in hotel
+        //     ->where('created_at', '>=', $month->toDateTimeString())
+        //     ->paginate(config('welkome.paginate'), Fields::get('guests'))
+        //     ->sortBy('created_at');
 
-        $in = Guest::where('user_id', auth()->user()->parent)
-            ->where('status', true) # In hotel
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
-                },
-                'invoices' => function ($query) {
-                    $query->select('id', 'number')
-                        ->where('open', true);
-                },
-            ])->paginate(config('welkome.paginate'), Fields::get('guests'))
-            ->sortBy('created_at');
+        // $in = Guest::where('user_id', Id::parent())
+        //     ->where('status', true) # In hotel
+        //     ->with([
+        //         'rooms' => function ($query) {
+        //             $query->select(Fields::parsed('rooms'));
+        //         },
+        //         'invoices' => function ($query) {
+        //             $query->select('id', 'number')
+        //                 ->where('open', true);
+        //         },
+        //     ])->paginate(config('welkome.paginate'), Fields::get('guests'))
+        //     ->sortBy('created_at');
 
-        $guests = $registered->merge($in);
-        $guests->all();
+        // $guests = $registered->merge($in);
+        // $guests->all();
 
         return view('app.guests.index', compact('guests'));
     }
@@ -75,11 +76,11 @@ class GuestController extends Controller
         $guest->name = $request->get('name', null);
         $guest->status = false; # Not in hotel
         $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(auth()->user()->parent);
+        $guest->user()->associate(Id::parent());
 
         if ($guest->save()) {
             flash(trans('common.createdSuccessfully'))->success();
-            
+
             return redirect()->route('guests.show', [
                 'id' => Hashids::encode($guest->id)
             ]);
@@ -142,10 +143,10 @@ class GuestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
-    {   
+    {
         $status = Input::bool($request->get('status', null));
         $guests = Guest::search(Input::clean($request->get('query')))
-            ->where('user_id', auth()->user()->parent)
+            ->where('user_id', Id::parent())
             ->get(Fields::get('guests'));
 
         if (!is_null($status)) {
@@ -175,13 +176,13 @@ class GuestController extends Controller
         $filtered = $results->filter(function ($result, $key) use ($status) {
             return $result->status == $status;
         });
-        
+
         return collect($filtered->all());
     }
 
     /**
      * Parse data results by format request.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param Illuminate\Support\Collection  $results
      * @return array
@@ -208,12 +209,12 @@ class GuestController extends Controller
 
     /**
      * Validate if template exists.
-     * 
+     *
      * @param  string  $template
-     * @return boolean 
+     * @return boolean
      */
     private function validateTemplate($template)
-    {   
+    {
         $templates = [
             'invoices',
         ];
@@ -223,12 +224,12 @@ class GuestController extends Controller
 
     /**
      * Render data collection in array.
-     * 
+     *
      * @param Illuminate\Support\Collection  $results
-     * @return array 
+     * @return array
      */
     private function renderToTemplate(Collection $results, $template)
-    {   
+    {
         $rendered = collect();
         $template = 'app.guests.search.' . $template;
 

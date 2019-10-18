@@ -25,9 +25,6 @@ class CreateInvoicesTable extends Migration
             $table->boolean('status')->dafault(true);
             $table->boolean('reservation')->default(false);
 
-            $table->boolean('are_tourists')->nullable();
-            $table->boolean('for_job')->nullable();
-
             $table->bigInteger('hotel_id')->nullable()->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('companies')->onDelete('cascade')->onUpdate('cascade');
@@ -36,6 +33,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('company_id')->references('id')
                 ->on('companies')->onDelete('cascade')->onUpdate('cascade');
 
+            // Invoice owner
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

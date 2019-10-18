@@ -20,11 +20,11 @@ class CompanyController extends Controller
     {
         $month = Carbon::now()->subDays(31);
 
-        $companies = Company::where('user_id', auth()->user()->parent)
+        $companies = Company::where('user_id', Id::parent())
             ->where('created_at', '>=', $month->toDateTimeString())
             ->paginate(config('welkome.paginate'), Fields::get('companies'))
             ->sortByDesc('created_at');
-        
+
         return view('app.companies.index', compact('companies'));
     }
 
@@ -53,11 +53,11 @@ class CompanyController extends Controller
         $company->address = $request->get('address', null);
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
-        $company->user()->associate(auth()->user()->parent);
+        $company->user()->associate(Id::parent());
 
         if ($company->save()) {
             flash(trans('common.createdSuccessfully'))->success();
-            
+
             return redirect()->route('companies.show', [
                 'id' => Hashids::encode($company->id)
             ]);
@@ -121,11 +121,11 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
-    {   
-        $companies = Company::search(Input::clean($request->get('query')))
-            ->where('user_id', auth()->user()->parent)
+    {
+        $query = Input::clean($request->get('query'));
+        $companies = Company::whereLike(['business_name'], $query)
+            ->where('user_id', Id::parent())
             ->get(Fields::get('companies'));
-            // dd($companies);
 
         $format = Input::clean($request->get('format'));
         $template = 'app.companies.search.' . Input::clean($request->get('template'));

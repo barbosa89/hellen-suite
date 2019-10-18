@@ -7,12 +7,13 @@
 @section('content')
 
     <div id="page-wrapper">
-        {{-- @include('partials.page-header', [
+        @include('partials.page-header', [
             'title' => trans('invoices.title'),
             'url' => route('invoices.index'),
             'options' => [
                 [
                     'option' => trans('common.options'),
+                    'type' => 'dropdown',
                     'url' => [
                         [
                             'option' => trans('rooms.addRoom'),
@@ -22,11 +23,11 @@
                         ],
                         [
                             'type' => 'hideable',
-                            'option' => trans('invoices.registerCompany'),
+                            'option' => 'Agregar empresa',
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => $invoice->for_company
+                            'show' => empty($invoice->company) ? true : false
                         ],
                         [
                             'option' => trans('invoices.registerGuests'),
@@ -41,6 +42,10 @@
                         [
                             'option' => trans('invoices.loadServices'),
                             'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
+                        ],
+                        [
+                            'option' => 'Agregar servicios de terceros',
+                            'url' => '#',
                         ],
                         [
                             'type' => 'divider'
@@ -64,30 +69,17 @@
                     'url' => url()->previous()
                 ],
             ]
-        ]) --}}
-
-        @include('partials.page-header', [
-            'title' => trans('invoices.title'),
-            'url' => route('invoices.index'),
-            'search' => [
-                'action' => '#'
-            ],
-            'options' => [
-                [
-                    'type' => 'modal',
-                    'option' => trans('common.new'),
-                    'id' => 'new-invoice'
-                ],
-            ]
         ])
 
         @include('app.invoices.info')
 
         <!-- Company -->
-        @if($invoice->for_company)
-            <div class="row">
+        @if($invoice->company)
+            <div class="row mb-4">
                 <div class="col-md-12">
-                    <h3 class="page-header">@lang('invoices.customerCompany')</h3>
+                    <h3 class="page-header">
+                        <small><i class="fas fa-building"></i></small> Empresa
+                    </h3>
                     @if(empty($invoice->company))
                         <a href="{{ route('invoices.companies.search', ['id' => Hashids::encode($invoice->id)]) }}">
                             <div class="well">
@@ -123,7 +115,7 @@
                                                         <a href="{{ route('companies.show', ['id' => Hashids::encode($invoice->company->id)]) }}">
                                                             {{ $invoice->company->tin }}
                                                         </a>
-                                                    </p>            
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,25 +130,33 @@
         <!-- Company -->
 
         <!-- Rooms -->
-        @if(!$invoice->rooms->isEmpty())
-            <div class="row">
+        @if($invoice->rooms->isNotEmpty())
+            <div class="row mb-4">
                 <div class="col-md-12">
-                    <h3 class="page-header">@lang('rooms.title')</h3>
+                    <h4 class="page-header">
+                        <small><i class="fas fa-bed"></i></small> @lang('rooms.title')
+                    </h4>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="crud-list">
                                 <div class="crud-list-heading">
                                     <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                                            <h5>@lang('rooms.room')</h5>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5><i class="fas fa-hashtag"></i></h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('common.value')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>Inicio</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>Finaliza</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('invoices.nights')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('common.total')</h5>
                                         </div>
                                     </div>
@@ -165,24 +165,30 @@
                                     @foreach($invoice->rooms as $room)
                                         <div class="crud-list-row">
                                             <div class="row">
-                                                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                                <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                                     <p>
                                                         <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
                                                             {{ $room->number }}
                                                         </a>
                                                     </p>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>
                                                         <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
                                                             {{ number_format($room->price, 2, ',', '.') }}
                                                         </a>
-                                                    </p>            
+                                                    </p>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                    <p>{{ $room->pivot->quantity }}</p>            
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <p>{{ $room->pivot->start }}</p>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <p>{{ $room->pivot->end }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <p>{{ $room->pivot->quantity }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                             </div>
@@ -198,12 +204,14 @@
         <!-- Rooms -->
 
         <!-- Guests -->
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-12">
-                <h3 class="page-header">@lang('guests.title')</h3>
+                <h4 class="page-header">
+                    <small><i class="fas fa-users"></i></small> @lang('guests.title')
+                </h4>
                 @if($invoice->guests->isEmpty())
                     <a href="{{ route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)]) }}">
-                        <div class="well">
+                        <div class="alert alert-info alert-important">
                             <i class="fa fa-plus-circle"></i> @lang('invoices.registerGuests')
                         </div>
                     </a>
@@ -231,11 +239,11 @@
                                     </div>
                                 </div>
                                 <div class="crud-list-items">
-                                    @foreach($invoice->rooms as $room)
-                                        @foreach($room->guests as $guest)
+                                    @foreach($invoice->rooms as $assigned_room)
+                                        @foreach($assigned_room->guests as $guest)
                                             <div class="crud-list-row">
                                                 <div class="row">
-                                                    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1"> 
+                                                    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
                                                         <p>{{ strtoupper($guest->identificationType->type) }}</p>
                                                     </div>
                                                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
@@ -253,10 +261,10 @@
                                                                     <i class="fa fa-street-view"></i>
                                                                 @endif
                                                             </a>
-                                                        </p>            
+                                                        </p>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
-                                                        <p>{{ $room->number }}</p>            
+                                                        <p>{{ $room->number }}</p>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
                                                         @if(empty($guest->parent))
@@ -289,10 +297,12 @@
         <!-- Guests -->
 
         <!-- Products -->
-        @if(!$invoice->products->isEmpty())
+        @if($invoice->products->isNotEmpty())
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="page-header">@lang('products.title')</h3>
+                    <h4 class="page-header">
+                        <small><i class="fas fa-boxes"></i></small> @lang('products.title')
+                    </h4>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="crud-list">
@@ -328,10 +338,10 @@
                                                         <a href="{{ route('products.show', ['id' => Hashids::encode($product->id)]) }}">
                                                             {{ number_format($product->price, 2, ',', '.') }}
                                                         </a>
-                                                    </p>            
+                                                    </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                    <p>{{ $product->pivot->quantity }}</p>            
+                                                    <p>{{ $product->pivot->quantity }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
                                                     <p>{{ number_format($product->pivot->value, 2, ',', '.') }}</p>
@@ -349,10 +359,12 @@
         <!-- Products -->
 
         <!-- Services -->
-        @if(!$invoice->services->isEmpty())
+        @if($invoice->services->isNotEmpty())
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="page-header">@lang('services.title')</h3>
+                    <h4 class="page-header">
+                        <small><i class="fas fa-washer"></i></small> @lang('services.title')
+                    </h4>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="crud-list">
@@ -386,10 +398,10 @@
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
                                                     <p>
                                                         {{ number_format($service->price, 2, ',', '.') }}
-                                                    </p>            
+                                                    </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
-                                                    <p>{{ $service->pivot->quantity }}</p>            
+                                                    <p>{{ $service->pivot->quantity }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
                                                     <p>{{ number_format($service->pivot->value, 2, ',', '.') }}</p>

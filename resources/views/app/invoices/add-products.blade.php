@@ -8,6 +8,7 @@
         'options' => [
             [
                 'option' => trans('common.options'),
+                'type' => 'dropdown',
                 'url' => [
                     [
                         'option' => trans('rooms.addRoom'),
