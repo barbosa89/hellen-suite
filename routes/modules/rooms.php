@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::post('rooms/list', 'RoomController@listByHotel')
+		->name('rooms.list')
+		->middleware('permission:rooms.index');
+
 	Route::get('rooms/search', 'RoomController@search')
 		->name('rooms.search')
 		->middleware('permission:rooms.index');

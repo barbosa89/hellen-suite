@@ -45,10 +45,9 @@ return [
             'open',
             'status',
             'reservation',
-            'are_tourists',
-            'for_job',
             'company_id',
             'user_id',
+            'hotel_id',
             'created_at'
         ],
         'rooms' => [

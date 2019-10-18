@@ -38,7 +38,7 @@
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">@lang('hotels.title'):</label>
-            <select class="form-control selectpicker" title="Elige un hotel" name="hotel" id="hotel" required>
+            <select class="form-control" title="Elige un hotel" name="hotel" id="hotel" required>
                 @foreach($hotels as $hotel)
                     <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                 @endforeach
@@ -53,7 +53,7 @@
 
         <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
             <label for="room">@lang('rooms.title'):</label>
-            <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
+            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
                 @foreach($rooms as $room)
                     <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
                 @endforeach
@@ -93,4 +93,33 @@
 
     @include('partials.spacer', ['size' => 'md'])
 
+@endsection
+
+@section('scripts')
+    <script>
+        $("#hotel").change(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/rooms/list',
+                data: {
+                    hotel: this.value
+                },
+                success: function(result) {
+                    var select = $("#room");
+                    select.empty();
+
+                    $.each(JSON.parse(result.rooms), function(key, value) {
+                        select.append($("<option></option>")
+                            .attr("value", value.hash).text(value.number));
+                    });
+                },
+                error: function(xhr){
+                    toastr.error(
+                        'Ha ocurrido un error',
+                        'Error'
+                    );
+                }
+            })
+        });
+    </script>
 @endsection

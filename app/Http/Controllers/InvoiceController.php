@@ -216,10 +216,18 @@ class InvoiceController extends Controller
 
         $hotels = $this->getHotels($invoice);
 
-        // TODO: Listar habitaciones al cambiar el hotel
         $rooms = Room::where('user_id', Id::parent())
+            ->where('hotel_id', $hotels->first()->id)
             ->where('status', '1') // It is free
             ->get(Fields::get('rooms'));
+
+        if ($rooms->isEmpty()) {
+            flash('No hay habitaciones disponibles')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
 
         return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'hotels'));
     }
@@ -273,10 +281,15 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
-                    ->first(Fields::parsed('invoices'));
+                    ->with([
+                        'hotel' => function ($query) {
+                            $query->select(Fields::get('hotels'));
+                        }
+                    ])->first(Fields::parsed('invoices'));
 
                 $room = Room::where('user_id', Id::parent())
                     ->where('id', Id::get($request->room))
+                    ->where('hotel_id', Id::get($request->hotel))
                     ->where('status', '1')
                     ->first(Fields::get('rooms'));
 
@@ -300,6 +313,10 @@ class InvoiceController extends Controller
                         'end' => $request->get('end', null)
                     ]
                 );
+
+                if (empty($invoice->hotel)) {
+                    $invoice->hotel()->associate(Id::get($request->hotel));
+                }
 
                 $invoice->subvalue += $value;
                 $invoice->value += $value;

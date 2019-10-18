@@ -260,4 +260,34 @@ class RoomController extends Controller
 
         return view('app.rooms.admin.search', compact('rooms', 'query'));
     }
+
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function listByHotel(Request $request)
+    {
+        if ($request->ajax()) {
+            $rooms = Room::where('hotel_id', Id::get($request->hotel))
+                ->where('status', '1') // It is free
+                ->get(Fields::get('rooms'));
+
+            $rooms = $rooms->map(function ($room, $index)
+            {
+                $room->hotel_id = Hashids::encode($room->hotel_id);
+                $room->user_id = Hashids::encode($room->user_id);
+
+                return $room;
+            });
+
+            return response()->json([
+                'rooms' => $rooms->toJson()
+            ]);
+        }
+
+        abort(404);
+    }
 }

@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('room', $room) }}
+@endsection
+
 @section('content')
 
     <div id="page-wrapper">

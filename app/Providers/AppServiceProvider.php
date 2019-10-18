@@ -63,6 +63,22 @@ class AppServiceProvider extends ServiceProvider
             return false;
         });
 
+        /**
+         * $parameters[0]   Table name
+         * $parameters[1]   Field to comparison in the table
+         * $parameters[2]   The field name in the form
+         */
+        Validator::extend('unique_with', function ($attribute, $value, $parameters, $validator) {
+            $data = $validator->getData();
+            $parent = Id::get($data[$parameters[2]]);
+
+            $rooms = DB::table($parameters[0])->where($attribute, $value)
+                ->where($parameters[1], $parent)
+                ->get(['id']);
+
+            return $rooms->count() === 0;
+        });
+
         Validator::extend('verified', function($attribute, $value, $parameters, $validator)
         {
             $users = DB::table('users')
