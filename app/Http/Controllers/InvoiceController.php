@@ -48,6 +48,45 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $hotels = $this->getHotels();
+
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('invoices.index');
+        }
+
+        $hotel = null;
+        $hotels->each(function ($item) use (&$hotel) {
+            if (empty($hotel) and $item->rooms->count() > 0) {
+                $hotel = $item;
+            }
+        });
+
+        if (empty($hotel)) {
+            flash('No hay habitaciones creadas')->info();
+
+            return redirect()->route('invoices.index');
+        }
+
+        $rooms = $hotel->rooms->where('status', '1');
+
+        if ($rooms->isEmpty()) {
+            flash('No hay habitaciones disponibles')->info();
+
+            return redirect()->route('invoices.index');
+        }
+
+        return view('app.invoices.create', compact('rooms', 'hotels', 'hotel'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -207,6 +246,10 @@ class InvoiceController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'hotel.rooms' => function ($query) {
+                    $query->select(Fields::get('rooms'))
+                        ->where('status', '1');
                 }
             ])->first(Fields::get('invoices'));
 
@@ -216,10 +259,14 @@ class InvoiceController extends Controller
 
         $hotels = $this->getHotels($invoice);
 
-        $rooms = Room::where('user_id', Id::parent())
-            ->where('hotel_id', $hotels->first()->id)
-            ->where('status', '1') // It is free
-            ->get(Fields::get('rooms'));
+        $hotel = null;
+        $hotels->each(function ($item) use (&$hotel) {
+            if (empty($hotel) and $item->rooms->count() > 0) {
+                $hotel = $item;
+            }
+        });
+
+        $rooms = $hotel->rooms;
 
         if ($rooms->isEmpty()) {
             flash('No hay habitaciones disponibles')->info();
@@ -229,39 +276,40 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'hotels'));
+        return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'hotels', 'hotel'));
     }
 
     /**
      * Return hotel list to attach to invoice.
      *
-     * @param   \App\Welkome\Invoice $invoice
      * @return  \Illuminate\Support\Collection
      */
-    private function getHotels(Invoice $invoice)
+    private function getHotels()
     {
-        if (!empty($invoice->hotel)) {
-            $hotels = collect();
-            $hotels->push($invoice->hotel);
-        } else {
-            if (auth()->user()->hasRole('manager')) {
-                $hotels = Hotel::where('user_id', Id::parent())
-                    ->where('status', true)
-                    ->get(Fields::get('hotels'));
-            } else {
-                $user = auth()->user()->load([
-                    'hotels' => function ($query)
-                    {
-                        $query->select(Fields::get('hotels'))
-                            ->where('status', true);
+        if (auth()->user()->hasRole('manager')) {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->where('status', true)
+                ->with([
+                    'rooms' => function ($query) {
+                        $query->select(Fields::get('rooms'));
                     }
-                ]);
+                ])->get(Fields::get('hotels'));
 
-                $hotels = $user->hotels;
-            }
+            return $hotels;
         }
 
-        return $hotels;
+        $user = auth()->user()->load([
+            'headquarters' => function ($query)
+            {
+                $query->select(Fields::parsed('hotels'))
+                    ->where('status', true);
+            },
+            'headquarters.rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'));
+            }
+        ]);
+
+        return $user->headquarters;
     }
 
     /**
@@ -275,8 +323,8 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $request, $id) {
-            try {
+        // \DB::transaction(function () use (&$status, $request, $id) {
+            // try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
                     ->where('open', true)
@@ -325,10 +373,10 @@ class InvoiceController extends Controller
                 $room->status = '0';
                 $room->save();
                 $status = true;
-            } catch (\Throwable $e) {
+            // } catch (\Throwable $e) {
                 // ..
-            }
-        });
+            // }
+        // });
 
         if ($status) {
             flash(trans('common.successful'))->success();

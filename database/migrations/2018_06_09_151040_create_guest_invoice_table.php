@@ -23,7 +23,7 @@ class CreateGuestInvoiceTable extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            // $table->primary(['guest_id', 'invoice_id']);
+            $table->primary(['guest_id', 'invoice_id']);
         });
     }
 

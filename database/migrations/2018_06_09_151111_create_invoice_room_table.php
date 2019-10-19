@@ -26,7 +26,7 @@ class CreateInvoiceRoomTable extends Migration
             $table->foreign('room_id')->references('id')->on('rooms')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            // $table->primary(['room_id', 'invoice_id']);
+            $table->primary(['room_id', 'invoice_id']);
         });
     }
 

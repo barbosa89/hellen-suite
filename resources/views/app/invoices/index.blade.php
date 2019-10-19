@@ -14,9 +14,8 @@
         ],
         'options' => [
             [
-                'type' => 'modal',
                 'option' => trans('common.new'),
-                'id' => 'new-invoice'
+                'url' => route('invoices.create')
             ],
         ]
     ])

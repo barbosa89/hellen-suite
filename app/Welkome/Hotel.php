@@ -2,10 +2,26 @@
 
 namespace App\Welkome;
 
+use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hash'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['id'];
+
     // The hotel owner
     public function owner()
     {
@@ -36,5 +52,10 @@ class Hotel extends Model
     public function headquarters()
     {
         return $this->hasMany(Hotel::class, 'main_hotel');
+    }
+
+    public function getHashAttribute()
+    {
+        return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
     }
 }

@@ -22,7 +22,7 @@ class CreateInvoiceShiftTable extends Migration
             $table->foreign('shift_id')->references('id')->on('shifts')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            // $table->primary(['shift_id', 'invoice_id']);
+            $table->primary(['shift_id', 'invoice_id']);
         });
     }
 

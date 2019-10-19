@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Welkome\Room;
+use App\Welkome\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
@@ -20,25 +21,57 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::where('user_id', Id::parent())
-            ->with([
-                'hotel' => function ($query)
-                {
-                    $query->select(['id', 'business_name']);
-                }
-            ])->paginate(config('welkome.paginate', Fields::get('rooms')))
-            ->sort();
+        $hotels = $this->getHotels();
 
-        $rooms = $rooms->map(function ($room, $index)
+
+        $hotels = $hotels->map(function ($hotel, $index)
         {
-            $room->hotel_id = Hashids::encode($room->hotel_id);
-            $room->user_id = Hashids::encode($room->user_id);
-            $room->hotel->id = Hashids::encode($room->hotel->id);
+            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->rooms = $hotel->rooms->map(function ($room)
+            {
+                $room->hotel_id = Hashids::encode($room->hotel_id);
+                $room->user_id = Hashids::encode($room->user_id);
 
-            return $room;
+                return $room;
+            });
+
+            return $hotel;
         });
+        // TODO: Agregar desplegable de hoteles al index de rooms
+        return view('app.rooms.index', compact('hotel'));
+    }
 
-        return view('app.rooms.index', compact('rooms'));
+    /**
+     * Return hotel list to attach to invoice.
+     *
+     * @return  \Illuminate\Support\Collection
+     */
+    private function getHotels()
+    {
+        if (auth()->user()->hasRole('manager')) {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->where('status', true)
+                ->with([
+                    'rooms' => function ($query) {
+                        $query->select(Fields::get('rooms'));
+                    }
+                ])->get(Fields::get('hotels'));
+
+            return $hotels;
+        }
+
+        $user = auth()->user()->load([
+            'headquarters' => function ($query)
+            {
+                $query->select(Fields::parsed('hotels'))
+                    ->where('status', true);
+            },
+            'headquarters.rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'));
+            }
+        ]);
+
+        return $user->headquarters;
     }
 
     /**

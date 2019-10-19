@@ -27,7 +27,7 @@ class CreateInvoicesTable extends Migration
 
             $table->bigInteger('hotel_id')->nullable()->unsigned();
             $table->foreign('hotel_id')->references('id')
-                ->on('companies')->onDelete('cascade')->onUpdate('cascade');
+                ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
             $table->bigInteger('company_id')->nullable()->unsigned();
             $table->foreign('company_id')->references('id')

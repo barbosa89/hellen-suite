@@ -7,34 +7,14 @@
         'url' => route('invoices.index'),
         'options' => [
             [
-                'option' => trans('invoices.registerGuests'),
-                'url' => route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)])
-            ],
-            [
-                'type' => 'hideable',
-                'option' => trans('invoices.registerCompany'),
-                'url' => route('invoices.companies.search', [
-                    'id' => Hashids::encode($invoice->id)
-                ]),
-                'show' => $invoice->for_company
-            ],
-            [
-                'option' => trans('invoices.see'),
-                'url' => route('invoices.show', [
-                    'id' => Hashids::encode($invoice->id)
-                ])
-            ],
-            [
                 'option' => trans('common.back'),
                 'url' => url()->previous()
             ],
         ]
     ])
 
-    @include('app.invoices.info')
-
     <h3 class="text-center">Agregar habitación</h3>
-    <form class="mt-4" action="{{ route('invoices.rooms.add', ['id' => Hashids::encode($invoice->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('invoices.store') }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">@lang('hotels.title'):</label>
@@ -70,7 +50,7 @@
         <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
             <label for="start">@lang('common.startDate'):</label>
             <input type="string" class="form-control datepicker" name="start" id="start" value="{{ old('start') }}" required>
-        
+
             @if ($errors->has('start'))
                 <span class="help-block">
                     <strong>{{ $errors->first('start') }}</strong>
@@ -89,7 +69,7 @@
             @endif
         </div>
         <button type="submit" class="btn btn-primary">Agregar</button>
-        <a href="{{ route('invoices.show', ['id' => Hashids::encode($invoice->id)]) }}" class="btn btn-link">Finalizar</a>
+        <a href="{{ route('invoices.index') }}" class="btn btn-link">Volver</a>
     </form>
 
     @include('partials.spacer', ['size' => 'md'])
