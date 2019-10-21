@@ -38,7 +38,7 @@ class RoomController extends Controller
             return $hotel;
         });
         // TODO: Agregar desplegable de hoteles al index de rooms
-        return view('app.rooms.index', compact('hotel'));
+        return view('app.rooms.index', compact('hotels'));
     }
 
     /**

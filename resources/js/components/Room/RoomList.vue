@@ -1,24 +1,38 @@
 <template>
     <div class="container-fluid">
         <div class="row mb-4">
-            <div class="col-6 without-padding">
-                <div class="btn-group pull-left" role="group" aria-label="Basic example">
-                    <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
-                    <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-broom"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento"><i class="fa fa-wrench"></i></button>
-                    <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
-                </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 without-padding">
+                    <div class="form-group">
+                        <select name="hotel" id="hotel" class="form-control" v-model="selectedHotel" @change="updateRoomList">
+                            <option v-for="(hotel, index) in hotels" :key="hotel.hash" :selected="index === 0" :value="hotel.hash">
+                                {{ hotel.business_name }}
+                            </option>
+                        </select>
+                    </div>
             </div>
-            <div class="col-6 without-padding text-right" v-show="selected.length > 0">
-                <div class="btn-group pull-right" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-default" title="Asignar" @click.prevent="pool">{{ selected.length }} <i class="fa fa-key"></i></button>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="row">
+                    <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                        <div class="btn-group pull-left" role="group" aria-label="Basic example">
+                            <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
+                            <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-broom"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento"><i class="fa fa-wrench"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-right">
+                        <div v-show="selectedRooms.length > 0" class="btn-group pull-right" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-default" title="Asignar" @click.prevent="pool">{{ selectedRooms.length }} <i class="fa fa-key"></i></button>
+                            <button type="button" class="btn btn-default" title="Vaciar" @click.prevent="clear"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row" v-if="filtered.length != 0">
+        <div class="row" v-if="filteredRooms.length != 0">
             <div class="col-12" v-for="(chunk, index) in chunkedItems" :key="index">
                 <div class="row">
                     <div class="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 room"
@@ -40,7 +54,6 @@
                         <h3 class="text-center">{{ room.number }}</h3>
                         <p class="text-center">
                             <small class="d-block">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
-                            <small class="d-block">{{ room.hotel.business_name }}</small>
                         </p>
                         <p class="text-center mb-2">
                             <i class="fa text-info" :class="room.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
@@ -89,60 +102,70 @@
     export default {
         mounted() {
             // console.log('Component mounted.')
-            // console.log(this.rooms)
-            this.filtered = this.rooms;
+            this.selectedHotel = _.first(this.hotels).hash
+            this.filteredRooms = _.first(this.hotels).rooms;
         },
         data() {
             return {
-                filtered: [],
-                selected: [],
+                selectedHotel: '',
+                rooms: [],
+                filteredRooms: [],
+                selectedRooms: [],
                 showStatus: false
             }
         },
-        props: ['rooms'],
+        props: ['hotels'],
         computed: {
             chunkedItems() {
-                return _.chunk(this.filtered, 6)
+                return _.chunk(this.filteredRooms, 6)
             }
         },
         components: {
             VueContext
         },
         methods: {
+            updateRoomList() {
+                _.map(this.hotels, (hotel) => {
+                    if (hotel.hash == this.selectedHotel) {
+                        this.filteredRooms = hotel.rooms
+                        this.rooms = hotel.rooms
+                    }
+                })
+            },
             showAll() {
-                this.filtered = this.rooms
+                this.filteredRooms = this.rooms
             },
             showAvailable() {
-                this.filtered = _.filter(this.rooms, (room) => {
+                this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '1'
                 })
             },
             showOccupied() {
-                this.filtered = _.filter(this.rooms, (room) => {
+                this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '0'
                 })
             },
             showMaintenance() {
-                this.filtered = _.filter(this.rooms, (room) => {
+                this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '2'
                 })
             },
             showDisabled() {
-                this.filtered = _.filter(this.rooms, (room) => {
+                this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '3'
                 })
             },
             showCleaning() {
-                this.filtered = _.filter(this.rooms, (room) => {
+                this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '4'
                 })
             },
             pushSelected(room) {
                 if (room.status == '1') {
-                    let contains = _.includes(this.selected, room)
+                    let contains = _.includes(this.selectedRooms, room)
 
                     if (!contains) {
-                        this.selected.push(room)
+                        this.selectedRooms.push(room)
                     }
                 } else {
                     toastr.info(
@@ -154,18 +177,26 @@
             select(text, data) {
                 this.pushSelected(data.room);
             },
+            clear() {
+                this.selectedRooms = []
+            },
             show(text, data) {
                 let url = '/rooms/' + data.room.hash;
                 window.location.href = url;
             },
             assign(text, data) {
-                let url = '/invoices/room/' + data.room.hash + '/assign';
-                window.location.href = url;
+                this.pushSelected(data.room);
+                this.send(this.selectedHotel, [data.room])
             },
             pool() {
+                this.send(this.selectedHotel, this.selectedRooms)
+            },
+            send(hotel, rooms) {
                 axios.post('/invoices/multiple', {
-                    rooms: this.selected
+                    hotel: hotel,
+                    rooms: rooms
                 }).then(response => {
+                    this.selectedRooms = []
                     console.log(response);
                     // let id = responde.id;
                     // let url = window.location.host + '/invoices/' + id;
