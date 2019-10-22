@@ -11,7 +11,7 @@
                 <a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">
                     @include('partials.guest-status', ['status' => $row->status])
                 </a>
-            </p>            
+            </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
             @include('partials.dropdown-btn', [

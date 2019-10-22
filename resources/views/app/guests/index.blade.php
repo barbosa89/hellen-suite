@@ -31,20 +31,12 @@
                         ],
                         [
                             'id' => ucfirst(trans('common.actives')),
-                            'title' => trans('common.actives'),
+                            'title' => 'Hospedados',
                             'where' => [
                                 'field' => 'status',
                                 'values' => [1]
                             ]
-                        ],
-                        [
-                            'id' => ucfirst(trans('common.inactives')),
-                            'title' => trans('common.inactives'),
-                            'where' => [
-                                'field' => 'status',
-                                'values' => [0]
-                            ]
-                        ],
+                        ]
                     ]
                 ])
             </div>

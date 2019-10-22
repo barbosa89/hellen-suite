@@ -1,10 +1,10 @@
 @switch($status)
     @case(0)
-        No registrado
+        Sin ingreso
         @break
 
     @case(1)
-        Registrado
+        Hospedado
         @break
 
 
