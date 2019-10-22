@@ -294,11 +294,10 @@ class RoomController extends Controller
         return view('app.rooms.admin.search', compact('rooms', 'query'));
     }
 
-        /**
-     * Update the specified resource in storage.
+    /**
+     * Return a rooms list by hotel ID.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function listByHotel(Request $request)
@@ -318,6 +317,29 @@ class RoomController extends Controller
 
             return response()->json([
                 'rooms' => $rooms->toJson()
+            ]);
+        }
+
+        abort(404);
+    }
+
+    /**
+     * Return the price and min price of a room.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function price(Request $request)
+    {
+        if ($request->ajax()) {
+            $room = Room::where('hotel_id', Id::get($request->hotel))
+                ->where('number', $request->number)
+                ->where('status', '1') // It is free
+                ->first(Fields::get('rooms'));
+
+            return response()->json([
+                'price' => $room->price,
+                'min_price' => $room->min_price
             ]);
         }
 

@@ -78,15 +78,69 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoice $request)
     {
-        dd($request->toArray());
-        $invoice = $this->new();
+        $status = false;
+        $numbers = collect($request->room);
 
-        if ($request->registry == 'reservation') {
-            $invoice->reservation = true;
-        }
+        // \DB::transaction(function () use (&$status, $request, $id) {
+            // try {
+                $invoice = $this->new();
+                $invoice->hotel()->associate(Id::get($request->hotel));
 
-        if ($invoice->save()) {
-            return redirect()->route('invoices.rooms', [
+                if ($request->registry == 'reservation') {
+                    $invoice->reservation = true;
+                }
+
+                $rooms = Room::where('user_id', Id::parent())
+                    ->whereIn('number', $numbers->pluck('number')->toArray())
+                    ->where('hotel_id', Id::get($request->hotel))
+                    ->where('status', '1')
+                    ->get(Fields::get('rooms'));
+
+                foreach ($rooms as $room) {
+                    $selected = $numbers->where('number', $room->number)->first();
+                    $start = Carbon::createFromFormat('Y-m-d', $selected['start']);
+
+                    if (empty($selected['end'])) {
+                        $end = $start->copy()->addDay();
+                    } else {
+                        $end = Carbon::createFromFormat('Y-m-d', $selected['end']);
+                    }
+
+                    $quantity = $start->diffInDays($end);
+                    $value = $quantity * $selected['price'];
+
+                    $attach[$room->id] = [
+                        'quantity' => $quantity,
+                        'value' => $value,
+                        'start' => $start->toDateString(),
+                        'end' => $end->toDateString()
+                    ];
+                }
+
+                foreach ($attach as $key => $item) {
+                    $invoice->subvalue += $item['value'];
+                    $invoice->value += $item['value'];
+                }
+                // TODO: Crear procedimiento para incrementar el valor diario para END null
+                if ($invoice->save()) {
+                    Room::where('user_id', Id::parent())
+                        ->whereIn('number', $numbers->pluck('number')->toArray())
+                        ->where('hotel_id', Id::get($request->hotel))
+                        ->update(['status' => '0']);
+
+                    $invoice->rooms()->sync($attach);
+
+                    $status = true;
+                }
+            // } catch (\Throwable $e) {
+                // ..
+            // }
+        // });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.guests.search', [
                 'id' => Hashids::encode($invoice->id)
             ]);
         }
@@ -186,7 +240,11 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::get('invoices'));
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(Fields::get('rooms'));
+                }
+            ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
             abort(404);
@@ -197,6 +255,8 @@ class InvoiceController extends Controller
         \DB::transaction(function () use (&$status, $invoice) {
             try {
                 if ($invoice->delete()) {
+                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '1']);
+
                     $status = true;
                 }
             } catch (\Throwable $e) {
@@ -230,10 +290,6 @@ class InvoiceController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
-                },
-                'hotel.rooms' => function ($query) {
-                    $query->select(Fields::get('rooms'))
-                        ->where('status', '1');
                 }
             ])->first(Fields::get('invoices'));
 
@@ -241,16 +297,9 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $hotels = $this->getHotels($invoice);
-
-        $hotel = null;
-        $hotels->each(function ($item) use (&$hotel) {
-            if (empty($hotel) and $item->rooms->count() > 0) {
-                $hotel = $item;
-            }
-        });
-
-        $rooms = $hotel->rooms;
+        $rooms = Room::where('hotel_id', $invoice->hotel_id)
+            ->where('status', '1') // It is free
+            ->get(Fields::get('rooms'));
 
         if ($rooms->isEmpty()) {
             flash('No hay habitaciones disponibles')->info();
@@ -260,40 +309,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'hotels', 'hotel'));
-    }
-
-    /**
-     * Return hotel list to attach to invoice.
-     *
-     * @return  \Illuminate\Support\Collection
-     */
-    private function getHotels()
-    {
-        if (auth()->user()->hasRole('manager')) {
-            $hotels = Hotel::where('user_id', Id::parent())
-                ->where('status', true)
-                ->with([
-                    'rooms' => function ($query) {
-                        $query->select(Fields::get('rooms'));
-                    }
-                ])->get(Fields::get('hotels'));
-
-            return $hotels;
-        }
-
-        $user = auth()->user()->load([
-            'headquarters' => function ($query)
-            {
-                $query->select(Fields::parsed('hotels'))
-                    ->where('status', true);
-            },
-            'headquarters.rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'));
-            }
-        ]);
-
-        return $user->headquarters;
+        return view('app.invoices.add-rooms', compact('invoice', 'rooms'));
     }
 
     /**
@@ -320,22 +336,22 @@ class InvoiceController extends Controller
                     ])->first(Fields::parsed('invoices'));
 
                 $room = Room::where('user_id', Id::parent())
-                    ->where('id', Id::get($request->room))
-                    ->where('hotel_id', Id::get($request->hotel))
+                    ->where('number', $request->number)
+                    ->where('hotel_id', $invoice->hotel->id)
                     ->where('status', '1')
                     ->first(Fields::get('rooms'));
 
-                if (!empty($request->get('end', null))) {
-                    $start = Carbon::createFromFormat('Y-m-d', $request->start);
-                    $end = Carbon::createFromFormat('Y-m-d', $request->end);
-                    $quantity = $start->diffInDays($end);
+                $start = Carbon::createFromFormat('Y-m-d', $request->start);
+
+                if (empty($request->end)) {
+                    $end = $start->copy()->addDay();
                 } else {
-                    $quantity = 1;
+                    $end = Carbon::createFromFormat('Y-m-d', $request->end);
                 }
 
-                // TODO: Crear procedimiento para incrementar el valor diario para END null
-
+                $quantity = $start->diffInDays($end);
                 $value = $quantity * $room->price;
+
                 $invoice->rooms()->attach(
                     $room->id,
                     [
@@ -345,10 +361,6 @@ class InvoiceController extends Controller
                         'end' => $request->get('end', null)
                     ]
                 );
-
-                if (empty($invoice->hotel)) {
-                    $invoice->hotel()->associate(Id::get($request->hotel));
-                }
 
                 $invoice->subvalue += $value;
                 $invoice->value += $value;

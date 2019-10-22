@@ -39,10 +39,7 @@
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">@lang('hotels.title'):</label>
             <select class="form-control" title="Elige un hotel" name="hotel" id="hotel" required>
-                <option value="{{ Hashids::encode($hotel->id) }}" selected>{{ $hotel->business_name }}</option>
-                @foreach($hotels->where('id', '!=', $hotel->id) as $headquarter)
-                    <option value="{{ Hashids::encode($headquarter->id) }}">{{ $headquarter->business_name }}</option>
-                @endforeach
+                <option value="{{ Hashids::encode($invoice->hotel->id) }}" selected>{{ $invoice->hotel->business_name }}</option>
             </select>
 
             @if ($errors->has('hotel'))
@@ -52,17 +49,28 @@
             @endif
         </div>
 
-        <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
-            <label for="room">@lang('rooms.title'):</label>
-            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
+        <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
+            <label for="number">@lang('rooms.title'):</label>
+            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required>
                 @foreach($rooms as $room)
-                    <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
+                    <option value="{{ $room->number }}" {{ $loop->first ? 'selected' : '' }} >{{ $room->number }}</option>
                 @endforeach
             </select>
 
-            @if ($errors->has('room'))
+            @if ($errors->has('number'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('room') }}</strong>
+                    <strong>{{ $errors->first('number') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+            <label for="room">Precio:</label>
+            <input type="number" name="price" id="price" class="form-control" value="{{ round($rooms->first()->price, 0) }}" min="{{ round($rooms->first()->min_price, 0) }}" max="{{ round($rooms->first()->price, 0) }}" required>
+
+            @if ($errors->has('price'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('price') }}</strong>
                 </span>
             @endif
         </div>
@@ -70,7 +78,7 @@
         <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
             <label for="start">@lang('common.startDate'):</label>
             <input type="string" class="form-control datepicker" name="start" id="start" value="{{ old('start') }}" required>
-        
+
             @if ($errors->has('start'))
                 <span class="help-block">
                     <strong>{{ $errors->first('start') }}</strong>
@@ -98,34 +106,18 @@
 
 @section('scripts')
     <script>
-        $("#hotel").change(function() {
+        $("#number").change(function() {
             $.ajax({
                 type: 'POST',
-                url: '/rooms/list',
+                url: '/rooms/price',
                 data: {
-                    hotel: this.value
+                    hotel: '{{ Hashids::encode($invoice->hotel->id) }}',
+                    number: this.value
                 },
                 success: function(result) {
-                    if (Object.keys(JSON.parse(result.rooms)).length > 0) {
-                        var select = $("#room");
-
-                        if (!select.is(":visible")) {
-                            $("#room").parent().fadeIn();
-                        }
-                        select.empty();
-
-                        $.each(JSON.parse(result.rooms), function(key, value) {
-                            select.append($("<option></option>")
-                                .attr("value", value.hash).text(value.number));
-                        });
-                    } else {
-                        $("#room").parent().fadeOut();
-
-                        toastr.info(
-                            'No hay habitaciones disponibles en el hotel seleccionado',
-                            'Lleno total'
-                        );
-                    }
+                    $('#price').attr('value', Math.round(parseInt(result.price)))
+                        .attr('min', Math.round(parseInt(result.min_price)))
+                        .attr('max', Math.round(parseInt(result.price)));
                 },
                 error: function(xhr){
                     toastr.error(

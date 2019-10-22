@@ -24,7 +24,9 @@ class AddRooms extends FormRequest
     public function rules()
     {
         return [
-            'room' => 'required|string',
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'number' => 'required|string|exists:rooms,number',
+            'price' => 'required|numeric|price:rooms,number',
             'start' => 'required|date|after_or_equal:today',
             'end' => 'nullable|date|after:start'
         ];

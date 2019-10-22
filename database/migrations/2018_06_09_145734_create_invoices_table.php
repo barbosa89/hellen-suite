@@ -25,7 +25,7 @@ class CreateInvoicesTable extends Migration
             $table->boolean('status')->dafault(true);
             $table->boolean('reservation')->default(false);
 
-            $table->bigInteger('hotel_id')->nullable()->unsigned();
+            $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 

@@ -7,3 +7,7 @@
         <small>(Reservación)</small>
     @endif
 </h3>
+
+<p>
+    <i class="fas fa-dollar-sign"></i> {{ number_format($invoice->value, 0, ',', '.') }}
+</p>

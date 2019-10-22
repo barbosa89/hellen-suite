@@ -8,26 +8,27 @@
         'options' => [
             [
                 'option' => trans('common.back'),
-                'url' => url()->previous()
+                'url' => route('rooms.index')
             ],
         ]
     ])
 
     <h3 class="text-center">Agregar habitaciones</h3>
+
+    <div class="row mt-4 mb-4">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
+            <span>Hotel:</span>
+            <h4>{{ $hotel->business_name }}</h4>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
+            <span>NIT:</span>
+            <h4>{{ $hotel->tin }}</h4>
+        </div>
+    </div>
+
     <form class="mt-4" action="{{ route('invoices.store') }}" method="POST" accept-charset="utf-8">
         @csrf
         <input type="hidden" name="hotel" value="{{ Hashids::encode($hotel->id) }}" required>
-
-        <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
-            <label for="hotel">@lang('hotels.title'):</label>
-            <input type="text" class="form-control" name="headquarter" id="headquarter" readonly value="{{ $hotel->business_name }}">
-
-            @if ($errors->has('hotel'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('hotel') }}</strong>
-                </span>
-            @endif
-        </div>
 
         @foreach ($hotel->rooms as $room)
             <div class="row mt-4">
@@ -36,7 +37,15 @@
                         @if ($loop->first)
                             <label for="number">Habitación:</label>
                         @endif
-                        <input type="text" name="room[{{ $loop->index }}][number]" class="form-control" value="{{ $room->number }}" required readonly>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                            </div>
+                            <input type="text" name="room[{{ $loop->index }}][number]" class="form-control" value="{{ $room->number }}" required readonly>
+                        </div>
 
                         @if ($errors->has('number'))
                             <span class="help-block">
@@ -45,12 +54,21 @@
                         @endif
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
                         @if ($loop->first)
                             <label for="room">Precio:</label>
                         @endif
-                        <input type="number" name="room[{{ $loop->index }}][price]" class="form-control" value="{{ round($room->price, 0) }}" required min="{{ $room->min_price }}" max="{{ $room->price }}">
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                            </div>
+                            <input type="number" name="room[{{ $loop->index }}][price]" class="form-control" value="{{ round($room->price, 0) }}" required min="{{ $room->min_price }}" max="{{ $room->price }}">
+                        </div>
 
                         @if ($errors->has('room.' . $loop->index. '.price'))
                             <span class="help-block">
@@ -59,12 +77,21 @@
                         @endif
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <div class="form-group{{ $errors->has('room.' . $loop->index . '.start') ? ' has-error' : '' }}">
                         @if ($loop->first)
                             <label for="start">@lang('common.startDate'):</label>
                         @endif
-                        <input type="string" class="form-control datepicker date-start" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </div>
+                            </div>
+                            <input type="string" class="form-control datepicker start-date" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
+                        </div>
 
                         @if ($errors->has('room.' . $loop->index. '.start'))
                             <span class="help-block">
@@ -73,12 +100,21 @@
                         @endif
                     </div>
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <div class="form-group{{ $errors->has('room.' . $loop->index . '.end') ? ' has-error' : '' }}">
                         @if ($loop->first)
                             <label for="start">@lang('common.endDate'):</label>
                         @endif
-                        <input type="string" class="form-control datepicker" name="room[{{ $loop->index }}][end]" value="{{ old('room.' . $loop->index . '.end') }}">
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                            </div>
+                            <input type="string" class="form-control datepicker{{ !$loop->first ? ' end-date' : '' }}" name="room[{{ $loop->index }}][end]" {{ $loop->first ? 'id=common-date' : '' }} value="{{ old('room.' . $loop->index . '.end') }}" placeholder="Campo no obligatorio">
+                        </div>
 
                         @if ($errors->has('room.' . $loop->index . '.end'))
                             <span class="help-block">
@@ -116,7 +152,7 @@
 
 @section('scripts')
     <script>
-        $(".date-start").each(function (index, item) {
+        $(".start-date").each(function (index, item) {
             var date = new Date()
             var year = date.getFullYear()
 
@@ -133,6 +169,12 @@
             }
 
             item.setAttribute('value', year + '-' + month + '-' + day)
+        });
+
+        $("#common-date").change(function () {
+            $(".end-date").each((index, item) => {
+                item.setAttribute('value', this.value)
+            });
         });
     </script>
 @endsection
