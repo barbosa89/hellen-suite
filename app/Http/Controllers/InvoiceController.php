@@ -81,7 +81,7 @@ class InvoiceController extends Controller
         $status = false;
         $numbers = collect($request->room);
 
-        // \DB::transaction(function () use (&$status, $request, $id) {
+        // \DB::transaction(function () use (&$status, $request, $numbers) {
             // try {
                 $invoice = $this->new();
                 $invoice->hotel()->associate(Id::get($request->hotel));
@@ -131,6 +131,9 @@ class InvoiceController extends Controller
                     $invoice->rooms()->sync($attach);
 
                     $status = true;
+
+                    session()->forget('hotel');
+                    session()->forget('rooms');
                 }
             // } catch (\Throwable $e) {
                 // ..
@@ -218,11 +221,22 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $customer = null;
-        if (!$invoice->guests->isEmpty()) {
-            $customer = $invoice->guests->first(function ($guest, $index) {
-                return $guest->pivot->main == true;
-            });
+        $customer = [];
+
+        if (empty($invoice->company)) {
+            if ($invoice->guests->isNotEmpty()) {
+                $main = $invoice->guests->first(function ($guest, $index) {
+                    return $guest->pivot->main == true;
+                });
+
+                $customer['name'] = $main->full_name;
+                $customer['tin'] = $main->dni;
+                $customer['route'] = route('guests.show', ['id' => Hashids::encode($main->id)]);
+            }
+        } else {
+            $customer['name'] = $invoice->company->business_name;
+            $customer['tin'] = $invoice->company->tin;
+            $customer['route'] = route('guests.show', ['id' => Hashids::encode($invoice->company->id)]);
         }
 
         return view('app.invoices.show', compact('invoice', 'customer'));
@@ -447,8 +461,9 @@ class InvoiceController extends Controller
         }
 
         $types = IdentificationType::all(['id', 'type']);
+        $guests = $this->countGuestsPerRoom($invoice);
 
-        return view('app.invoices.guests.create', compact('invoice', 'types'));
+        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests'));
     }
 
     /**
@@ -547,7 +562,27 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        return view('app.invoices.add-guests', compact('invoice', 'guest'));
+        $guests = $this->countGuestsPerRoom($invoice);
+
+        return view('app.invoices.add-guests', compact('invoice', 'guest', 'guests'));
+    }
+
+    /**
+     * Return number of guests in all rooms.
+     *
+     * @param  \App\Welkome\Invoice  $invoice
+     * @return int
+     */
+    private function countGuestsPerRoom(Invoice $invoice): int
+    {
+        $guests = 0;
+
+        $invoice->rooms->each(function ($room) use (&$guests)
+        {
+            $guests += $room->guests()->count();
+        });
+
+        return $guests;
     }
 
     /**
@@ -590,10 +625,6 @@ class InvoiceController extends Controller
             'invoice_id' => $invoice->id
         ]);
 
-        $guest->dni = $guest->dni;
-        $guest->name = $guest->name;
-        $guest->last_name = $guest->last_name;
-        $guest->email = $guest->email;
         $guest->status = true;
         $guest->save();
 
@@ -654,10 +685,6 @@ class InvoiceController extends Controller
             ->wherePivot('invoice_id', $invoice->id)
             ->detach(Id::get($request->room));
 
-        $guest->dni = $guest->dni;
-        $guest->name = $guest->name;
-        $guest->last_name = $guest->last_name;
-        $guest->email = $guest->email;
         $guest->status = false;
         $guest->save();
 

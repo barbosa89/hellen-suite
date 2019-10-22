@@ -1,10 +1,10 @@
 @switch($status)
     @case(0)
-        @lang('common.inactive')
+        No registrado
         @break
 
     @case(1)
-        @lang('common.active')
+        Registrado
         @break
 
 

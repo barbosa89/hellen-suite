@@ -53,4 +53,15 @@ class Guest extends Model
     {
         return $this->belongsToMany(\App\Welkome\Room::class);
     }
+
+    /**
+     * Get the guest's full name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->last_name}";
+    }
 }

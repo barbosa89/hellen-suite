@@ -10,7 +10,7 @@
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 visible-md visible-lg">
                 <p>
                     @include('partials.guest-status', ['status' => $guest->status])
-                </p>            
+                </p>
             </div>
         </div>
     </div>

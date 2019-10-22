@@ -256,10 +256,7 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 visible-md visible-lg">
                                                         <p>
                                                             <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
-                                                                {{ $guest->name . ' ' . $guest->last_name }}
-                                                                @if($guest->id === $customer->id)
-                                                                    <i class="fa fa-street-view"></i>
-                                                                @endif
+                                                                {{ $guest->full_name }}
                                                             </a>
                                                         </p>
                                                     </div>
@@ -272,16 +269,16 @@
                                                         @else
                                                             <p>
                                                                 <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->parent->id)]) }}">
-                                                                    {{ $guest->parent->name . ' ' . $guest->parent->last_name }}
+                                                                    {{ $guest->parent->full_name }}
                                                                 </a>
                                                             </p>
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                                         <a class="btn btn-link" href="#" data-room="{{ Hashids::encode($room->id) }}" data-guest="{{ Hashids::encode($guest->id) }}" data-invoice="{{ Hashids::encode($invoice->id) }}">
-                                                            <i class="fa fa-close"></i>
+                                                            <i class="fas fa-times-circle"></i>
                                                         </a>
-                                                        <a class="btn btn-link" href="#"><i class="fa fa-pencil"></i></a>
+                                                        <a class="btn btn-link" href="#"><i class="fas fa-user-edit"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

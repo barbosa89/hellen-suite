@@ -145,8 +145,11 @@ class GuestController extends Controller
     public function search(Request $request)
     {
         $status = Input::bool($request->get('status', null));
-        $guests = Guest::search(Input::clean($request->get('query')))
-            ->where('user_id', Id::parent())
+        $query = Input::clean($request->get('query'));
+
+        $guests = Guest::where('user_id', Id::parent())
+            ->where('status', false)
+            ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
             ->get(Fields::get('guests'));
 
         if (!is_null($status)) {

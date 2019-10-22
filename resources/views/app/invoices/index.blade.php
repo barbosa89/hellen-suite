@@ -15,7 +15,7 @@
         'options' => [
             [
                 'option' => trans('common.new'),
-                'url' => route('invoices.create')
+                'url' => route('rooms.index')
             ],
         ]
     ])

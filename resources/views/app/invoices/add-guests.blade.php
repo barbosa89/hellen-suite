@@ -7,27 +7,15 @@
         'url' => route('invoices.index'),
         'options' => [
             [
-                'option' => trans('invoices.registerGuests'),
+                'option' => 'Buscar huéspedes',
                 'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
             ],
             [
-                'type' => 'hideable',
-                'option' => trans('invoices.registerCompany'),
-                'url' => route('invoices.companies.search', [
-                    'id' => Hashids::encode($invoice->id)
-                ]),
-                'show' => $invoice->for_company
-            ],
-            [
-                'option' => trans('invoices.see'),
+                'option' => 'Volver al recibo',
                 'url' => route('invoices.show', [
                     'id' => Hashids::encode($invoice->id)
                 ])
-            ],
-            [
-                'option' => trans('common.back'),
-                'url' => url()->previous()
-            ],
+            ]
         ]
     ])
 
