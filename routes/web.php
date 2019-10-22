@@ -14,7 +14,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 Route::get('/test', function () {
-    abort(403);
+    // abort(403);
+    session('hola', 'Hi');
 });
 
 Route::get('/', function () {

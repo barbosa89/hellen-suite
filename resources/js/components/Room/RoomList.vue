@@ -103,7 +103,8 @@
         mounted() {
             // console.log('Component mounted.')
             this.selectedHotel = _.first(this.hotels).hash
-            this.filteredRooms = _.first(this.hotels).rooms;
+            this.rooms = _.first(this.hotels).rooms
+            this.filteredRooms = _.first(this.hotels).rooms
         },
         data() {
             return {
@@ -197,12 +198,14 @@
                     rooms: rooms
                 }).then(response => {
                     this.selectedRooms = []
-                    console.log(response);
-                    // let id = responde.id;
-                    // let url = window.location.host + '/invoices/' + id;
-                    // window.location.href = url;
+
+                    window.location.href = response.data.redirect;
                 }).catch(e => {
                     console.log(e);
+                    toastr.error(
+                        'Intenta más tarde otra vez',
+                        'Error'
+                    );
                 });
             }
         },

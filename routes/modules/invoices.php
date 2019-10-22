@@ -1,9 +1,9 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::get('invoices/room/{id}/assign', 'InvoiceController@assign')
-        ->name('invoices.room.assign')
-        ->middleware(['permission:invoices.create']);
+	// Route::get('invoices/rooms/assign', 'InvoiceController@assign')
+    //     ->name('invoices.rooms.assign')
+    //     ->middleware(['permission:invoices.create']);
 
 	Route::post('invoices/multiple', 'InvoiceController@multiple')
         ->name('invoices.room.multiple')

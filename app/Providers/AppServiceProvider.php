@@ -90,6 +90,29 @@ class AppServiceProvider extends ServiceProvider
             return $users->count() === 1;
         });
 
+        Validator::extend('price', function($attribute, $value, $parameters, $validator)
+        {
+            $data = $validator->getData();
+
+            if (isset($data[$parameters[1]])) {
+                $id = $data[$parameters[1]];
+            } else {
+                $keys = explode(".", $attribute);
+                $id = $data[$keys[0]][$keys[1]][$parameters[1]];
+            }
+
+            $room = DB::table($parameters[0])
+                ->where($parameters[1], $id)
+                ->where('hotel_id', Id::get($data['hotel']))
+                ->first(['id', 'price', 'min_price']);
+
+            if ($value >= $room->min_price && $value <= $room->price) {
+                return true;
+            }
+
+            return false;
+        });
+
         // Observers
 
         Invoice::observe(InvoiceObserver::class);

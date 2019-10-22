@@ -12,6 +12,7 @@ use App\Http\Requests\{
     AddProducts,
     AddRooms,
     AddServices,
+    Multiple,
     RemoveGuests,
     StoreInvoice,
     StoreInvoiceGuest
@@ -54,36 +55,19 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $hotels = $this->getHotels();
+        $hotel = Hotel::where('user_id', Id::parent())
+            ->where('id', Id::get(session('hotel')))
+            ->with([
+                'rooms' => function ($query)
+                {
+                    $ids = explode(',', session('rooms'));
+                    $query->whereIn('id', Id::pool($ids))
+                        ->select(Fields::get('rooms'));
+                }
+            ])->first(Fields::get('hotels'));
 
-        if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
 
-            return redirect()->route('invoices.index');
-        }
-
-        $hotel = null;
-        $hotels->each(function ($item) use (&$hotel) {
-            if (empty($hotel) and $item->rooms->count() > 0) {
-                $hotel = $item;
-            }
-        });
-
-        if (empty($hotel)) {
-            flash('No hay habitaciones creadas')->info();
-
-            return redirect()->route('invoices.index');
-        }
-
-        $rooms = $hotel->rooms->where('status', '1');
-
-        if ($rooms->isEmpty()) {
-            flash('No hay habitaciones disponibles')->info();
-
-            return redirect()->route('invoices.index');
-        }
-
-        return view('app.invoices.create', compact('rooms', 'hotels', 'hotel'));
+        return view('app.invoices.create', compact('hotel'));
     }
 
     /**
@@ -94,7 +78,7 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoice $request)
     {
-        // TODO: Eliminar todos los registros vacios / botón cancelar
+        dd($request->toArray());
         $invoice = $this->new();
 
         if ($request->registry == 'reservation') {
@@ -1031,34 +1015,11 @@ class InvoiceController extends Controller
     /**
      * Single assignment for rooms.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function assign($id)
+    public function assign()
     {
-        $invoice = $this->new();
 
-        $room = Room::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
-            ->where('status', '1')
-            ->first(Fields::get('rooms'));
-
-        if ($invoice->save()) {
-            $invoice->rooms()->attach($room->id, [
-                'quantity' => 1,
-                'value' => $room->price
-            ]);
-
-            flash(trans('common.successful'))->success();
-
-            return redirect()->route('invoices.show', [
-                'id' => Hashids::encode($invoice->id)
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('invoices.index');
     }
 
     /**
@@ -1067,8 +1028,15 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function multiple(Request $request)
+    public function multiple(Multiple $request)
     {
-        return response()->json($request->toArray());
+        $rooms = collect($request->rooms);
+
+        session()->put('hotel', $request->hotel);
+        session()->put('rooms', $rooms->implode('hash', ','));
+
+        return response()->json([
+            'redirect' => '/invoices/create'
+        ]);
     }
 }
