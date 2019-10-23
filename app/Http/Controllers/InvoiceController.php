@@ -988,7 +988,7 @@ class InvoiceController extends Controller
 
         $types = IdentificationType::all(['id', 'type']);
 
-        return view('app.invoices.guests.create', compact('invoice', 'types'));
+        return view('app.invoices.companies.create', compact('invoice', 'types'));
     }
 
     /**
@@ -1049,16 +1049,6 @@ class InvoiceController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
-    }
-
-    /**
-     * Single assignment for rooms.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function assign()
-    {
-
     }
 
     /**

@@ -186,8 +186,15 @@
                 window.location.href = url;
             },
             assign(text, data) {
-                this.pushSelected(data.room);
-                this.send(this.selectedHotel, [data.room])
+                if (data.room.status == '1') {
+                    this.pushSelected(data.room);
+                    this.send(this.selectedHotel, [data.room])
+                } else {
+                    toastr.info(
+                        'No puedes agregar esta habitación',
+                        'Acción no permitida'
+                    );
+                }
             },
             pool() {
                 this.send(this.selectedHotel, this.selectedRooms)

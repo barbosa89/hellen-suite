@@ -69,12 +69,12 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('invoices/{id}/companies/search', 'InvoiceController@searchCompanies')
         ->name('invoices.companies.search');
 
+    Route::get('invoices/{id}/companies/create', 'InvoiceController@createcompanies')
+        ->name('invoices.companies.create');
+
     Route::get('invoices/{id}/companies/{company}', 'InvoiceController@addCompanies')
         ->name('invoices.companies.add');
 
     Route::post('invoices/{id}/companies', 'InvoiceController@storecompanies')
         ->name('invoices.companies.store');
-
-    Route::get('invoices/{id}/companies/create', 'InvoiceController@createcompanies')
-        ->name('invoices.companies.create');
 });
