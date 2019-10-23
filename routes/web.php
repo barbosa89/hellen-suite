@@ -10,12 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 Route::get('/test', function () {
-    // abort(403);
-    session('hola', 'Hi');
+    abort(403);
 });
 
 Route::get('/', function () {
