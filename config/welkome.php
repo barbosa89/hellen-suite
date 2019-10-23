@@ -74,6 +74,7 @@ return [
             'birthdate',
             'responsible_adult',
             'identification_type_id',
+            'country_id',
             'user_id',
             'status',
             'created_at'

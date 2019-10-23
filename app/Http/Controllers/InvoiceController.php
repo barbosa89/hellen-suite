@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Fields, Id, Input, Random};
-use App\Welkome\{Company, Guest, Hotel, IdentificationType, Invoice, Product, Room, Service};
+use App\Welkome\{Company, Country, Guest, Hotel, IdentificationType, Invoice, Product, Room, Service};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -84,6 +84,8 @@ class InvoiceController extends Controller
         // \DB::transaction(function () use (&$status, $request, $numbers) {
             // try {
                 $invoice = $this->new();
+                $invoice->origin = $request->get('origin', null);
+                $invoice->destination = $request->get('destination', null);
                 $invoice->hotel()->associate(Id::get($request->hotel));
 
                 if ($request->registry == 'reservation') {
@@ -461,9 +463,10 @@ class InvoiceController extends Controller
         }
 
         $types = IdentificationType::all(['id', 'type']);
+        $countries = Country::all(['id', 'name']);
         $guests = $this->countGuestsPerRoom($invoice);
 
-        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests'));
+        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests', 'countries'));
     }
 
     /**
@@ -496,10 +499,12 @@ class InvoiceController extends Controller
         $guest->email = $request->get('email', null);
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
+        $guest->profession = $request->get('profession', null);
         $guest->name = $request->get('name', null);
         $guest->status = true; // In hotel
         $guest->identificationType()->associate(Id::get($request->type));
         $guest->user()->associate(Id::parent());
+        $guest->country()->associate(Id::get($request->nationality));
 
         $isMinor = $this->isMinor($request->get('birthdate', null));
         $responsible = Id::get($request->get('responsible_adult', null));

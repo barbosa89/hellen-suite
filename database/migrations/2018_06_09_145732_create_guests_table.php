@@ -21,6 +21,12 @@ class CreateGuestsTable extends Migration
             $table->string('email', 120)->nullable();
             $table->enum('gender', ['m', 'f', 'x'])->nullable();
             $table->date('birthdate')->nullable();
+            $table->string('profession', 100)->nullable();
+
+            $table->integer('country_id')->unsigned();
+            $table->foreign('country_id')
+                ->references('id')
+                ->on('countries');
 
             $table->bigInteger('responsible_adult')->default(0);
             $table->boolean('status')->default(0);

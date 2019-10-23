@@ -53,7 +53,8 @@ class RoomController extends Controller
                 ->where('status', true)
                 ->with([
                     'rooms' => function ($query) {
-                        $query->select(Fields::get('rooms'));
+                        $query->select(Fields::get('rooms'))
+                            ->orderBy('number');
                     }
                 ])->get(Fields::get('hotels'));
 
@@ -64,7 +65,8 @@ class RoomController extends Controller
             'headquarters' => function ($query)
             {
                 $query->select(Fields::parsed('hotels'))
-                    ->where('status', true);
+                    ->where('status', true)
+                    ->orderBy('number');
             },
             'headquarters.rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'));
@@ -84,6 +86,13 @@ class RoomController extends Controller
         $hotels = User::find(Id::parent(), ['id'])
             ->hotels()
             ->get(Fields::get('hotels'));
+
+        // Check if is empty
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados.')->info();
+
+            return back();
+        }
 
         return view('app.rooms.admin.create', compact('hotels'));
     }

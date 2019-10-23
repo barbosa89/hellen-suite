@@ -54,6 +54,11 @@ class Guest extends Model
         return $this->belongsToMany(\App\Welkome\Room::class);
     }
 
+    public function country()
+    {
+        return $this->belongsTo(\App\Welkome\Country::class);
+    }
+
     /**
      * Get the guest's full name.
      *

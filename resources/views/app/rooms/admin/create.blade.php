@@ -106,7 +106,7 @@
 
                     <div class="form-group{{ $errors->has('capacity') ? ' has-error' : '' }}">
                         <label for="capacity">@lang('common.capacity'):</label>
-                        <input type="number" class="form-control" name="capacity" id="capacity" value="{{ old('capacity') }}" min="1" max="12" required>
+                        <input type="number" class="form-control" name="capacity" id="capacity" value="{{ old('capacity') }}" min="1" max="12" placeholder="Cantidad de personas" required>
 
                         @if ($errors->has('capacity'))
                             <span class="help-block">

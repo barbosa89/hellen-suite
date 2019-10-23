@@ -48,6 +48,13 @@ class TeamController extends Controller
             ->where('status', true)
             ->get(Fields::get('hotels'));
 
+        // Check if is empty
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados.')->info();
+
+            return back();
+        }
+
         $roles = Role::where('name', '!=', 'root')
             ->where('name', '!=', 'manager')
             ->get(['id', 'name']);
@@ -187,6 +194,13 @@ class TeamController extends Controller
             {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
             })->get(Fields::get('hotels'));
+
+        // Check if is empty
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados.')->info();
+
+            return back();
+        }
 
         return view('app.team.assign', compact('member', 'hotels'));
     }

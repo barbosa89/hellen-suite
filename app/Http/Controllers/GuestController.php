@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
-use App\Welkome\{Guest, IdentificationType};
+use App\Welkome\{Country, Guest, IdentificationType};
 
 class GuestController extends Controller
 {
@@ -18,30 +17,10 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $guests = Guest::paginate();
-        // $month = Carbon::now()->subDays(31);
-
-        // $registered = Guest::where('user_id', Id::parent())
-        //     ->where('status', false) # Not in hotel
-        //     ->where('created_at', '>=', $month->toDateTimeString())
-        //     ->paginate(config('welkome.paginate'), Fields::get('guests'))
-        //     ->sortBy('created_at');
-
-        // $in = Guest::where('user_id', Id::parent())
-        //     ->where('status', true) # In hotel
-        //     ->with([
-        //         'rooms' => function ($query) {
-        //             $query->select(Fields::parsed('rooms'));
-        //         },
-        //         'invoices' => function ($query) {
-        //             $query->select('id', 'number')
-        //                 ->where('open', true);
-        //         },
-        //     ])->paginate(config('welkome.paginate'), Fields::get('guests'))
-        //     ->sortBy('created_at');
-
-        // $guests = $registered->merge($in);
-        // $guests->all();
+        $guests = Guest::paginate(
+            config('welkome.paginate'),
+            Fields::get('guests')
+        );
 
         return view('app.guests.index', compact('guests'));
     }
@@ -54,8 +33,9 @@ class GuestController extends Controller
     public function create()
     {
         $types = IdentificationType::all(['id', 'type']);
+        $countries = Country::all(['id', 'name']);
 
-        return view('app.guests.create', compact('types'));
+        return view('app.guests.create', compact('types', 'countries'));
     }
 
     /**
@@ -73,10 +53,11 @@ class GuestController extends Controller
         $guest->email = $request->get('email', null);
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
-        $guest->name = $request->get('name', null);
+        $guest->profession = $request->get('profession', null);
         $guest->status = false; # Not in hotel
         $guest->identificationType()->associate(Id::get($request->type));
         $guest->user()->associate(Id::parent());
+        $guest->country()->associate(Id::get($request->nationality));
 
         if ($guest->save()) {
             flash(trans('common.createdSuccessfully'))->success();

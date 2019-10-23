@@ -29,7 +29,9 @@ class StoreInvoice extends FormRequest
             'room.*.price' => 'required|numeric|price:rooms,number',
             'room.*.start' => 'required|date|after_or_equal:today',
             'room.*.end' => 'nullable|date|after:room.*.start',
-            'registry' => 'required|string|in:checkin,reservation'
+            'registry' => 'required|string|in:checkin,reservation',
+            'origin' => 'nullable|string|max:120',
+            'destination' => 'nullable|string|max:120'
         ];
     }
 

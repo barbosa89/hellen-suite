@@ -140,7 +140,29 @@
             @endif
         </div>
 
-        @include('partials.spacer', ['size' => 'md'])
+        <div id="route" style="display:none;">
+            <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">
+                <label for="origin">Origen:</label>
+                <input type="text" class="form-control" name="origin" id="origin" value="{{ old('origin') }}">
+
+                @if ($errors->has('origin'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('origin') }}</strong>
+                    </span>
+                @endif
+            </div>
+
+            <div class="form-group{{ $errors->has('destination') ? ' has-error' : '' }}">
+                <label for="destination">Profesión:</label>
+                <input type="text" class="form-control" name="destination" id="destination" value="{{ old('destination') }}">
+
+                @if ($errors->has('destination'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('destination') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-primary">Agregar</button>
         <a href="{{ route('rooms.index') }}" class="btn btn-link">Cancelar</a>
@@ -152,6 +174,14 @@
 
 @section('scripts')
     <script>
+        $("#registry").change(function () {
+            if (this.value == 'checkin') {
+                $("#route:hidden").fadeIn();
+            } else {
+                $("#route:visible").fadeOut();
+            }
+        })
+
         $(".start-date").each(function (index, item) {
             var date = new Date()
             var year = date.getFullYear()
@@ -174,7 +204,7 @@
         $("#common-date").change(function () {
             $(".end-date").each((index, item) => {
                 item.setAttribute('value', this.value)
-            });
-        });
+            })
+        })
     </script>
 @endsection

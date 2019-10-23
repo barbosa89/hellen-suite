@@ -38,7 +38,8 @@
                     <div class="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 room"
                         v-for="room in chunk" :key="room.id"
                         @contextmenu.prevent="$refs.menu.open($event, { room })"
-                        @dblclick="pushSelected(room)">
+                        @dblclick="pushSelected(room)"
+                        :class="room.selected == true ? 'selected-room' : ''">
                         <div class="row">
                             <div class="col-12 without-padding">
                                 <p class="text-right">
@@ -51,9 +52,9 @@
                                 </p>
                             </div>
                         </div>
-                        <h3 class="text-center">{{ room.number }}</h3>
+                        <h3 class="text-center noselect">{{ room.number }}</h3>
                         <p class="text-center">
-                            <small class="d-block">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
+                            <small class="d-block noselect">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
                         </p>
                         <p class="text-center mb-2">
                             <i class="fa text-info" :class="room.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
@@ -104,7 +105,13 @@
             // console.log('Component mounted.')
             this.selectedHotel = _.first(this.hotels).hash
             this.rooms = _.first(this.hotels).rooms
-            this.filteredRooms = _.first(this.hotels).rooms
+
+            // Add custom property selected
+            this.rooms = _.each(this.rooms, function (room) {
+                room.selected = false
+            })
+
+            this.filteredRooms = this.rooms
         },
         data() {
             return {
@@ -165,8 +172,15 @@
                 if (room.status == '1') {
                     let contains = _.includes(this.selectedRooms, room)
 
-                    if (!contains) {
+                    if (contains) {
+                        this.selectedRooms = _.filter(this.selectedRooms, (selected) => {
+                            return selected.hash != room.hash
+                        })
+
+                        room.selected = false
+                    } else {
                         this.selectedRooms.push(room)
+                        room.selected = true
                     }
                 } else {
                     toastr.info(
@@ -179,6 +193,10 @@
                 this.pushSelected(data.room);
             },
             clear() {
+                _.each(this.selectedRooms, function (room) {
+                    room.selected = false
+                })
+
                 this.selectedRooms = []
             },
             show(text, data) {

@@ -61,6 +61,17 @@
     @endif
 </div>
 
+<div class="form-group{{ $errors->has('profession') ? ' has-error' : '' }}">
+    <label for="profession">Profesión:</label>
+    <input type="text" class="form-control" name="profession" id="profession" value="{{ old('profession') }}">
+
+    @if ($errors->has('profession'))
+        <span class="help-block">
+            <strong>{{ $errors->first('profession') }}</strong>
+        </span>
+    @endif
+</div>
+
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
     <select class="form-control selectpicker" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
@@ -72,6 +83,21 @@
     @if ($errors->has('gender'))
         <span class="help-block">
             <strong>{{ $errors->first('gender') }}</strong>
+        </span>
+    @endif
+</div>
+
+<div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
+    <label for="nationality">Pais de nacimiento:</label>
+    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required>
+        @foreach ($countries as $country)
+        <option value="{{ Hashids::encode($country->id) }}" {{ $country->name == 'Colombia' ? 'selected' : '' }}>{{ $country->name }}</option>
+        @endforeach
+    </select>
+
+    @if ($errors->has('nationality'))
+        <span class="help-block">
+            <strong>{{ $errors->first('nationality') }}</strong>
         </span>
     @endif
 </div>
