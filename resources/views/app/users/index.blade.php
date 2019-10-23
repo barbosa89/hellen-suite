@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 @section('content')
 
@@ -6,57 +6,38 @@
         @include('partials.page-header', [
             'title' => trans('users.title'),
             'url' => route('users.index'),
-            'options' => [
-                [
-                    'option' => trans('common.new'),
-                    'url' => route('users.create')
-                ],
-                [
-                    'option' => 'Test',
-                    'url' => '#'
-                ],
-                [
-                    'option' => 'Test 1 y otro',
-                    'url' => [
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ], 
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ],  
-                        [
-                            'option' => 'Page 1',
-                            'url' => '#'
-                        ], 
-                    ]
-                ]
-            ]
+            'options' => []
         ])
 
         <div class="row">
             <div class="col-md-12">
-                <ul id="myTab" class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#active" data-toggle="tab">
-                            @lang('users.actives')
-                        </a>
-                    </li>
-                    <li><a href="#inactive" data-toggle="tab">@lang('users.inactives')</a></li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                    @include('app.users.list', [
-                        'id' => 'active',
-                        'active' => true,
-                        'status' => true
-                    ])
-                    @include('app.users.list', [
-                        'id' => 'inactive',
-                        'active' => false,
-                        'status' => false
-                    ])
-                </div>
+                @include('partials.tab-list', [
+                    'data' => $users,
+                    'listHeading' => 'app.users.list-heading',
+                    'listRow' => 'app.users.list-row',
+                    'tabs' => [
+                        [
+                            'id' => ucfirst(trans('common.all')),
+                            'title' => trans('common.all')
+                        ],
+                        [
+                            'id' => ucfirst(trans('common.actives')),
+                            'title' => 'Activos',
+                            'where' => [
+                                'field' => 'status',
+                                'values' => [1]
+                            ]
+                        ],
+                        [
+                            'id' => ucfirst(trans('common.inactives')),
+                            'title' => 'Inactivos',
+                            'where' => [
+                                'field' => 'status',
+                                'values' => [0]
+                            ]
+                        ]
+                    ]
+                ])
             </div>
         </div>
     </div>

@@ -25,14 +25,9 @@
             </div>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('rooms.index') }}">
-            <i class="fa fa-fw fa-bed"></i>
-            <span>Rooms</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('invoices.index') }}">
-            <i class="fa fa-fw fa-file"></i>
-            <span>Invoices</span></a>
+            <a class="nav-link" href="{{ route('users.index') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Usuarios</span></a>
         </li>
     @endrole
 

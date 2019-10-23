@@ -20,12 +20,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with([
-            'children' => function ($query) {
-                $query->select('id', 'name', 'parent');
-            }
-        ])->get(['id', 'name', 'email', 'status', 'verified']);
-        // dd($users);
+        $users = User::whereHas('roles', function($query) {
+                $query->where('name', 'manager');
+            })->with([
+                'employees' => function ($query) {
+                    $query->select('id', 'name', 'parent');
+                }
+            ])->get(['id', 'name', 'email', 'status', 'created_at', 'email_verified_at']);
 
         return view('app.users.index', compact('users'));
     }

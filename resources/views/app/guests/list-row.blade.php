@@ -1,7 +1,7 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p><a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->name . ' ' . $row->last_name }}</a></p>
+            <p><a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->full_name }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 visible-md visible-lg">
             <p><a href="{{ route('guests.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->dni }}</a></p>
