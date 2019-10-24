@@ -1,21 +1,19 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('companies') }}
+@endsection
+
 @section('content')
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('invoices.title'),
-            'url' => route('invoices.index'),
+            'title' => trans('companies.title'),
+            'url' => route('companies.index'),
             'options' => [
                 [
-                    'option' => 'Buscar huéspedes',
-                    'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
-                ],
-                [
-                    'option' => 'Agregar empresa',
-                    'url' => route('invoices.companies.search', [
-                        'id' => Hashids::encode($invoice->id)
-                    ])
+                    'option' => 'Buscar empresas',
+                    'url' => route('invoices.companies.search', ['room' => Hashids::encode($invoice->id)])
                 ],
                 [
                     'option' => 'Volver al recibo',
@@ -30,13 +28,14 @@
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
-                        'title' => trans('common.creationOf') . ' ' . trans('guests.title'),
+                        'title' => trans('common.creationOf') . ' ' . trans('companies.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.guests.store', ['id' => Hashids::encode($invoice->id)]),
+                    'url' => route('invoices.companies.store', [
+                        'id' => Hashids::encode($invoice->id)
+                    ]),
                     'fields' => [
-                        'app.guests.create-fields',
-                        'app.invoices.guests.create-fields'
+                        'app.companies.create-fields',
                     ],
                     'btn' => trans('common.create')
                 ])

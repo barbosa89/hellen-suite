@@ -22,12 +22,10 @@
                             ])
                         ],
                         [
-                            'type' => 'hideable',
-                            'option' => 'Agregar empresa',
+                            'option' => 'Vincular empresa',
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => empty($invoice->company) ? true : false
                         ],
                         [
                             'option' => trans('invoices.registerGuests'),

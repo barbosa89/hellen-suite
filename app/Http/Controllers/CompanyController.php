@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
+use App\Welkome\IdentificationType;
+use App\Welkome\Invoice;
 
 class CompanyController extends Controller
 {
@@ -66,7 +68,71 @@ class CompanyController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
 
+    /**
+     * Show the form for creating a new invoice company.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createForInvoice($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $types = IdentificationType::all(['id', 'type']);
+
+        return view('app.companies.create-for-invoice', compact('invoice', 'types'));
+    }
+
+    /**
+     * Store a newly created company in storage and attaching to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeForInvoice(StoreCompany $request, $id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $company = new Company();
+        $company->tin = $request->tin;
+        $company->business_name = $request->business_name;
+        $company->email = $request->get('email', null);
+        $company->address = $request->get('address', null);
+        $company->phone = $request->get('phone', null);
+        $company->mobile = $request->get('mobile', null);
+        $company->user()->associate(Id::parent());
+
+        if ($company->save()) {
+            $invoice->company()->associate($company->id);
+            $invoice->save();
+
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 
     /**

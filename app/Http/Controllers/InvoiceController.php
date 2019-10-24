@@ -935,20 +935,10 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->with([
-                'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
-                },
-            ])->first(Fields::parsed('invoices'));
+            ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
-        }
-
-        if (!empty($invoice->company)) {
-            return redirect()->route('invoices.show', [
-                'id' => Hashids::encode($invoice->id)
-            ]);
         }
 
         return view('app.invoices.search-companies', compact('invoice'));
@@ -967,7 +957,6 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->where('company_id', null)
             ->first(['id']);
 
         $company = Company::where('user_id', Id::parent())
@@ -978,7 +967,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $invoice->company_id = $company->id;
+        $invoice->company()->associate($company->id);
 
         if ($invoice->update()) {
             flash(trans('common.successful'))->success();
@@ -993,98 +982,6 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.show', [
             'id' => $id
         ]);
-    }
-
-    /**
-     * Show the form for creating a new invoice company.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function createCompanies($id)
-    {
-        $id = Id::get($id);
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', $id)
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select('id', 'number');
-                },
-                'rooms.guests' => function ($query) use ($id) {
-                    $query->select('id', 'name', 'last_name')
-                        ->wherePivot('invoice_id', $id);
-                }
-            ])->first(['id']);
-
-        if (empty($invoice)) {
-            abort(404);
-        }
-
-        $types = IdentificationType::all(['id', 'type']);
-
-        return view('app.invoices.companies.create', compact('invoice', 'types'));
-    }
-
-    /**
-     * Store a newly created company in storage and attaching to invoice.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function storeCompanies(StoreInvoiceGuest $request, $id)
-    {
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select('id');
-                },
-            ])->first(['id']);
-
-        if (empty($invoice)) {
-            abort(404);
-        }
-
-        $guest = new Guest();
-        $guest->name = $request->name;
-        $guest->last_name = $request->last_name;
-        $guest->dni = $request->dni;
-        $guest->email = $request->get('email', null);
-        $guest->gender = $request->get('gender', null);
-        $guest->birthdate = $request->get('birthdate', null);
-        $guest->name = $request->get('name', null);
-        $guest->status = true; // In hotel
-        $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(Id::parent());
-
-        $isMinor = $this->isMinor($request->get('birthdate', null));
-        $responsible = Id::get($request->get('responsible_adult', null));
-
-        if ($isMinor and !empty($responsible)) {
-            $guest->responsible_adult = $responsible;
-        }
-
-        if ($guest->save()) {
-            $main = $invoice->guests->isEmpty() ? true : false;
-            $invoice->guests()->attach($guest->id, ['main' => $main]);
-
-            $guest->rooms()->attach(Id::get($request->room), [
-                'invoice_id' => $invoice->id
-            ]);
-
-            flash(trans('common.successful'))->success();
-
-            return back();
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
     }
 
     /**

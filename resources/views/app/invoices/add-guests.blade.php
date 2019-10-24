@@ -11,6 +11,12 @@
                 'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
             ],
             [
+                'option' => 'Agregar empresa',
+                'url' => route('invoices.companies.search', [
+                    'id' => Hashids::encode($invoice->id)
+                ])
+            ],
+            [
                 'option' => 'Volver al recibo',
                 'url' => route('invoices.show', [
                     'id' => Hashids::encode($invoice->id)

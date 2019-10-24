@@ -18,11 +18,7 @@
                     'url' => route('invoices.show', [
                         'id' => Hashids::encode($invoice->id)
                     ])
-                ],
-                [
-                    'option' => trans('common.back'),
-                    'url' => url()->previous()
-                ],
+                ]
             ]
         ])
 
