@@ -25,12 +25,14 @@ class StoreGuest extends FormRequest
     {
         return [
             'type' => 'required|string',
-            'dni' => 'required|string|unique:guests,dni',
+            'dni' => 'required|numeric|unique:guests,dni',
             'name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'nullable|email',
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
+            'profession' => 'nullable|string',
+            'nationality' => 'required|string|hashed_exists:countries,id'
         ];
     }
 }

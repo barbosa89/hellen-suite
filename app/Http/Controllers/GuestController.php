@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
+use App\Http\Requests\StoreGuest;
 use App\Welkome\{Country, Guest, IdentificationType};
 
 class GuestController extends Controller
@@ -44,7 +45,7 @@ class GuestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGuest $request)
     {
         $guest = new Guest();
         $guest->name = $request->name;
