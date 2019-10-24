@@ -15,12 +15,24 @@
                     <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
                         <div class="btn-group pull-left" role="group" aria-label="Basic example">
                             <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
-                            <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo"><i class="fa fa-align-justify"></i></button>
-                            <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible"><i class="fa fa-check-circle"></i></button>
-                            <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado"><i class="fa fa-tags"></i></button>
-                            <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza"><i class="fa fa-broom"></i></button>
-                            <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento"><i class="fa fa-wrench"></i></button>
-                            <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado"><i class="fa fa-lock"></i></button>
+                            <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo">
+                                <i class="fa fa-align-justify"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible">
+                                <i class="fa fa-check-circle"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado">
+                                <i class="fa fa-tags"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza">
+                                <i class="fa fa-broom"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento">
+                                <i class="fa fa-wrench"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado">
+                                <i class="fa fa-lock"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-right">
@@ -57,7 +69,11 @@
                             <small class="d-block noselect">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
                         </p>
                         <p class="text-center mb-2">
-                            <i class="fa text-info" :class="room.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
+                            <i class="text-info fa" v-if="room.status == '0'" :class="room.status == '0' ? 'fa-tags' : ''"></i>
+                            <i class="text-info fa" v-else-if="room.status == '1'" :class="room.status == '1' ? 'fa-check' : ''"></i>
+                            <i class="text-info fa" v-else-if="room.status == '2'" :class="room.status == '2' ? 'fa-broom' : ''"></i>
+                            <i class="text-info fa" v-else-if="room.status == '4'" :class="room.status == '4' ? 'fa-wrench' : ''"></i>
+                            <i class="text-info fa" v-else :class="room.status == '3' ? 'fa-lock' : ''"></i>
                             <span>{{ room.capacity }} </span>
                         </p>
                     </div>
@@ -236,3 +252,10 @@
         },
     }
 </script>
+
+<style scoped>
+    #id {
+        position:fixed;
+        z-index: 2;
+    }
+</style>

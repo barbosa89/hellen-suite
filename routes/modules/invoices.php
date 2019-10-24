@@ -13,6 +13,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.index')
         ->middleware(['permission:invoices.index']);
 
+    Route::get('invoices/search', 'InvoiceController@search')
+        ->name('invoices.search')
+        ->middleware(['permission:invoices.index']);
+
     Route::get('invoices/create', 'InvoiceController@create')
         ->name('invoices.create')
         ->middleware(['permission:invoices.create']);

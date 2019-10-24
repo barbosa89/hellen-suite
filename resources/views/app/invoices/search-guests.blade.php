@@ -73,39 +73,40 @@
         function search (str, e) {
             e.preventDefault();
 
-            const url = '{{ url('guests/search') }}';
-            const uri = "?query=" + str + "&status=0&format=rendered&template=invoices";
-
             if (str.length == 0) {
                 $('#list').hide();
                 $('#item-search').empty();
             }
 
             if (str.length >= 3) {
-                $.get(url + uri, function (data, status) {
-                    let guests = data.guests;
+                $.ajax({
+                    type: 'POST',
+                    url: '/guests/search/unregistered',
+                    data: {
+                        query: str,
+                        invoice: '{{ Hashids::encode($invoice->id) }}'
+                    },
+                    success: function(result) {
+                        let guests = result.guests;
 
-                    if (guests.length) {
-                        $('#item-search').empty();
+                        if (guests.length) {
+                            $('#item-search').empty();
 
-                        for (let index = 0; index < guests.length; index++) {
-                            $('#item-search').append($(guests[index]));
+                            for (let index = 0; index < guests.length; index++) {
+                                $('#item-search').append($(guests[index]));
+                            }
+
+                            $('#list').show();
                         }
-
-                        $('#list').show();
+                    },
+                    error: function(xhr){
+                        toastr.error(
+                            'Ha ocurrido un error',
+                            'Error'
+                        );
                     }
-                });
+                })
             }
-        }
-
-
-        function addGuest(el, e) {
-            e.preventDefault();
-            const invoice = $('#invoice').data('id');
-            const guest = el.dataset.guest;
-            const url = '/invoices/'+ invoice +'/guests/' + guest;
-
-            window.location.replace(url);
         }
     </script>
 @endsection

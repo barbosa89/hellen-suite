@@ -80,6 +80,8 @@ class GuestController extends Controller
      */
     public function show($id)
     {
+        flash('Característica en proceso de construcción')->info();
+
         return redirect()->route('guests.index');
     }
 
@@ -125,103 +127,66 @@ class GuestController extends Controller
      */
     public function search(Request $request)
     {
-        $status = Input::bool($request->get('status', null));
-        $query = Input::clean($request->get('query'));
+        $query = Input::clean($request->get('query', null));
+
+        if (empty($query)) {
+            return back();
+        }
 
         $guests = Guest::where('user_id', Id::parent())
-            ->where('status', false)
             ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
             ->get(Fields::get('guests'));
 
-        if (!is_null($status)) {
-            $guests = $this->filterByStatus($guests, $status);
-        }
+        return view('app.guests.search', compact('guests', 'query'));
+    }
 
+    /**
+     * Display a JSON list with searched records.
+     *
+     * @param  Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function searchUnregistered(Request $request)
+    {
         if ($request->ajax()) {
+            $query = Input::clean($request->get('query', null));
+
+            $guests = Guest::where('user_id', Id::parent())
+                ->where('status', false)
+                ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
+                ->get(Fields::get('guests'));
+
             return response()->json([
-                'guests' => $this->parseFormat($request, $guests)
+                'guests' => $this->renderToTemplate(
+                    $guests,
+                    'app.invoices.guests.search',
+                    $request->invoice
+                    )
             ]);
-        } else {
-            return response()->json([
-                'guests' => empty($guests) ? [] : $guests->toArray()
-            ]);
         }
+
+        abort(403);
     }
 
     /**
-     * Filter the Guest collection by status.
-     *
-     * @param Illuminate\Support\Collection  $results
-     * @param boolean $status
-     * @return Illuminate\Support\Collection
-     */
-    private function filterByStatus(Collection $results, $status)
-    {
-        $filtered = $results->filter(function ($result, $key) use ($status) {
-            return $result->status == $status;
-        });
-
-        return collect($filtered->all());
-    }
-
-    /**
-     * Parse data results by format request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param Illuminate\Support\Collection  $results
-     * @return array
-     */
-    private function parseFormat(Request $request, Collection $results)
-    {
-        $format = Input::clean($request->get('format', null));
-        $template = Input::clean($request->get('template', null));
-
-        if (empty($format)) {
-            return $results->toArray();
-        }
-
-        if ($format == 'json') {
-            return $results->toArray();
-        }
-
-        if ($format == 'rendered' and $this->validateTemplate($template)) {
-            return $this->renderToTemplate($results, $template);
-        }
-
-        return $results->toArray();
-    }
-
-    /**
-     * Validate if template exists.
-     *
-     * @param  string  $template
-     * @return boolean
-     */
-    private function validateTemplate($template)
-    {
-        $templates = [
-            'invoices',
-        ];
-
-        return in_array($template, $templates);
-    }
-
-    /**
-     * Render data collection in array.
+     * Render data collection in a view.
      *
      * @param Illuminate\Support\Collection  $results
      * @return array
      */
-    private function renderToTemplate(Collection $results, $template)
+    private function renderToTemplate(Collection $results, $template, $invoice)
     {
         $rendered = collect();
-        $template = 'app.guests.search.' . $template;
 
-        $results->each(function ($guest, $index) use (&$rendered, $template) {
-            $render = view($template, compact('guest'))->render();
+        $results->each(function ($guest, $index) use (&$rendered, $template, $invoice) {
+            $render = view($template, [
+                'guest' => $guest,
+                'invoice' => $invoice
+            ])->render();
+
             $rendered->push($render);
         });
 
-        return $rendered;
+        return $rendered->toArray();
     }
 }

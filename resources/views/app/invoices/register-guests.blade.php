@@ -48,14 +48,14 @@
                 <div class="spacer-md"></div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <h3 class="text-center">@lang('rooms.addRoom')</h3>
 
                 <form action="{{ route('invoices.rooms.store', ['id' => Hashids::encode($invoice->id)]) }}" method="POST">
                     @csrf()
-                    
+
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
                         <label for="room">@lang('rooms.title'):</label>
                         <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
@@ -70,7 +70,7 @@
                             </span>
                         @endif
                     </div>
-                    
+
                     <div class="rooms-description">
                         @foreach($rooms as $room)
                             <div class="alert alert-info" id="description-{{ Hashids::encode($room->id) }}" style="display:none">

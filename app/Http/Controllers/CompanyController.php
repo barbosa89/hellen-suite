@@ -123,22 +123,20 @@ class CompanyController extends Controller
     public function search(Request $request)
     {
         $query = Input::clean($request->get('query'));
-        $companies = Company::whereLike(['business_name'], $query)
+        $companies = Company::whereLike(['business_name', 'tin'], $query)
             ->where('user_id', Id::parent())
             ->get(Fields::get('companies'));
 
-        $format = Input::clean($request->get('format'));
-        $template = 'app.companies.search.' . Input::clean($request->get('template'));
-        $response = new Response($format, $template, $companies);
-
         if ($request->ajax()) {
-            return response()->json([
-                'companies' => $response->get()
-            ]);
-        } else {
+            $format = Input::clean($request->get('format'));
+            $template = 'app.companies.search.' . Input::clean($request->get('template'));
+            $response = new Response($format, $template, $companies);
+
             return response()->json([
                 'companies' => $response->get()
             ]);
         }
+
+        return view('app.companies.search', compact('companies', 'query'));
     }
 }

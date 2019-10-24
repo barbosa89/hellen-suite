@@ -21,10 +21,6 @@
                         'url' => route('guests.show', ['room' => Hashids::encode($row->id)]),
                     ],
                     [
-                        'option' => trans('guests.reserve'),
-                        'url' => '#',
-                    ],
-                    [
                         'option' => trans('assets.add'),
                         'url' => '#',
                     ],

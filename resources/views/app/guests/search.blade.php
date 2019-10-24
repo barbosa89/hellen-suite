@@ -11,36 +11,27 @@
             'title' => trans('guests.title'),
             'url' => route('guests.index'),
             'search' => [
-                'action' => route('guests.search')
+                'action' => route('guests.search'),
+                'query' => $query
             ],
             'options' => [
                 [
                     'option' => trans('common.new'),
                     'url' => route('guests.create')
                 ],
+                [
+                    'option' => trans('common.back'),
+                    'url' => route('guests.index')
+                ],
             ]
         ])
 
         <div class="row">
             <div class="col-md-12">
-                @include('partials.tab-list', [
+                @include('partials.list', [
                     'data' => $guests,
                     'listHeading' => 'app.guests.list-heading',
-                    'listRow' => 'app.guests.list-row',
-                    'tabs' => [
-                        [
-                            'id' => ucfirst(trans('common.all')),
-                            'title' => trans('common.all')
-                        ],
-                        [
-                            'id' => ucfirst(trans('common.actives')),
-                            'title' => 'Hospedados',
-                            'where' => [
-                                'field' => 'status',
-                                'values' => [1]
-                            ]
-                        ]
-                    ]
+                    'listRow' => 'app.guests.list-row'
                 ])
             </div>
         </div>

@@ -10,12 +10,17 @@
         'title' => trans('invoices.title'),
         'url' => route('invoices.index'),
         'search' => [
-            'action' => route('invoices.search')
+            'action' => route('invoices.search'),
+            'query' => $query
         ],
         'options' => [
             [
                 'option' => trans('common.new'),
                 'url' => route('rooms.index')
+            ],
+            [
+                'option' => trans('common.back'),
+                'url' => route('invoices.index')
             ],
         ]
     ])
@@ -25,8 +30,7 @@
             @include('partials.list', [
                 'data' => $invoices,
                 'listHeading' => 'app.invoices.list-heading',
-                'listRow' => 'app.invoices.list-row',
-                'where' => null
+                'listRow' => 'app.invoices.list-row'
             ])
         </div>
     </div>

@@ -59,7 +59,7 @@
 
         <div class="row">
             @if (!empty($customer))
-                <div class="col-6 col-sx-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                     <span class="d-block font-weight-light">Cliente</span>
                     <span class="d-block">
                         <a href="{{ $customer['route'] }}">
@@ -67,12 +67,24 @@
                         </a>
                     </span>
                 </div>
-                <div class="col-6 col-sx-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                     <span class="d-block font-weight-light">NIT / Documento</span>
                     <span class="d-block">
                         <a href="{{ $customer['route'] }}">
                             {{ $customer['tin'] }}
                         </a>
+                    </span>
+                </div>
+                <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                    <span class="d-block font-weight-light">Origen</span>
+                    <span class="d-block">
+                        {{ $invoice->origin ?? 'No definido' }}
+                    </span>
+                </div>
+                <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                    <span class="d-block font-weight-light">Destino</span>
+                    <span class="d-block">
+                        {{ $invoice->destination ?? 'No definido' }}
                     </span>
                 </div>
             @endif

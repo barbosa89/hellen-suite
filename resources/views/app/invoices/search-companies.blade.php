@@ -87,9 +87,9 @@
                     let companies = data.companies;
                     if (companies.length) {
                         $('#item-search').empty();
-                    
+
                         for (let index = 0; index < companies.length; index++) {
-                            $('#item-search').append($(companies[index]));           
+                            $('#item-search').append($(companies[index]));
                         }
 
                         $('#list').show();
@@ -101,15 +101,12 @@
 
         function add(el, e) {
             e.preventDefault();
-            var confirmed = confirm('{{ trans('common.confirmAction') }}');
-            
-            if (confirmed) {
-                const invoice = $('#invoice').data('id');
-                const company = el.dataset.value;
-                const url = '/invoices/'+ invoice +'/companies/' + company;
-                
-                window.location.replace(url);
-            }
+
+            const invoice = $('#invoice').data('id');
+            const company = el.dataset.value;
+            const url = '/invoices/'+ invoice +'/companies/' + company;
+
+            window.location.replace(url);
         }
     </script>
 @endsection

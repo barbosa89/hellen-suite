@@ -38,6 +38,8 @@ return [
         'invoices' => [
             'id',
             'number',
+            'origin',
+            'destination',
             'discount',
             'subvalue',
             'taxes',
@@ -70,6 +72,7 @@ return [
             'dni',
             'name',
             'last_name',
+            'profession',
             'gender',
             'birthdate',
             'responsible_adult',

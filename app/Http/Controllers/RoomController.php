@@ -338,7 +338,7 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function price(Request $request)
+    public function getPrice(Request $request)
     {
         if ($request->ajax()) {
             $room = Room::where('hotel_id', Id::get($request->hotel))

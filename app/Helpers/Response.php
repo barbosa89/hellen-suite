@@ -9,7 +9,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Response
 {
 	/**
-     * The response format 
+     * The response format
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class Response
      * @var array
      */
 	private $template;
-	
+
     /**
      * A data collection.
      *
@@ -31,7 +31,7 @@ class Response
 
 	/**
      * Construct method.
-     * 
+     *
 	 * @param string $format
 	 * @param string $template
 	 * @param \Illuminate\Support\Collection $collection
@@ -46,7 +46,7 @@ class Response
 
     /**
      * Parse data results by format request.
-     * 
+     *
      * @return array
      */
     public function get()
@@ -60,11 +60,11 @@ class Response
 
     /**
      * Render data collection in array.
-     * 
-     * @return array 
+     *
+     * @return array
      */
     private function render()
-    {   
+    {
         $rendered = collect();
 
 		foreach ($this->collection as $key => $value) {

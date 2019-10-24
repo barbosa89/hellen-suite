@@ -1,4 +1,4 @@
-@if(is_null($where))
+@if(!isset($where))
     @if($data->count() > 0)
         <div class="crud-list">
             <div class="crud-list-heading mt-2">

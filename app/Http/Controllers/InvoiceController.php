@@ -43,7 +43,7 @@ class InvoiceController extends Controller
 
         $invoices = $query->get(Fields::get('invoices'));
 
-        $invoices->sortByDesc('created_at');
+        $invoices = $invoices->sortByDesc('created_at');
 
         return view('app.invoices.index', compact('invoices'));
     }
@@ -289,6 +289,37 @@ class InvoiceController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $query = Input::clean($request->get('query', null));
+
+        if (empty($query)) {
+            return back();
+        }
+
+        $invoices = Invoice::where('user_id', Id::parent())
+            ->whereLike([
+                'number',
+                'guests.name',
+                'guests.last_name',
+                'guests.dni',
+                'company.business_name',
+                'hotel.business_name'
+            ], $query)->paginate(
+                config('welkome.paginate'),
+                Fields::get('invoices')
+            );
+
+        return view('app.invoices.search', compact('invoices', 'query'));
     }
 
     /**

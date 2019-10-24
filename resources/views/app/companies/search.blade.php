@@ -11,13 +11,18 @@
             'title' => trans('companies.title'),
             'url' => route('companies.index'),
             'search' => [
-                'action' => route('companies.search')
+                'action' => route('companies.search'),
+                'query' => $query
             ],
             'options' => [
                 [
                     'option' => trans('common.new'),
                     'url' => route('companies.create')
                 ],
+                [
+                    'option' => trans('common.back'),
+                    'url' => route('companies.index')
+                ]
             ]
         ])
 
