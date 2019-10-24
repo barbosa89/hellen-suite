@@ -37,9 +37,14 @@ class AssignmentsSeeder extends Seeder
         $recepUser = User::where('name', '=', 'Recep')->first(['id', 'name']);
         $recepUser->assignRole($receptionist);
 
+        $tachira = User::where('name', '=', 'Táchiras')->first(['id', 'name']);
+        $tachira->assignRole($manager);
+
         // Assign permissions to roles
         $permissions = Permission::all(['id', 'name', 'guard_name']);
         $managerUser->syncPermissions($permissions);
+
+        $tachira->syncPermissions($permissions);
         // Companies - reception
         // $permissions_companies_recep = Permission::where('name', 'companies.index')
         //     ->orwhere('name', 'companies.create')

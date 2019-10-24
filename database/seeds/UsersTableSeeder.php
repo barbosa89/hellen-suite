@@ -49,5 +49,12 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
         ]);
+
+        User::create([
+            'name' => 'Táchiras',
+            'email' => 'tachira@welkome.com',
+            'password' => bcrypt('tachira'),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+        ]);
     }
 }
