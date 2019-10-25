@@ -38,7 +38,6 @@
         "sass-loader": "^7.3.1",
         "sweetalert2": "^8.17.6",
         "toastr": "^2.1.2",
-        "v-tooltip": "^2.0.2",
         "vue": "^2.5.17",
         "vue-context": "^4.0.3",
         "vue-router": "^3.1.3",
@@ -47,6 +46,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.11.2",
+        "bootstrap-vue": "^2.0.4",
         "jquery.easing": "^1.4.1"
     }
 }

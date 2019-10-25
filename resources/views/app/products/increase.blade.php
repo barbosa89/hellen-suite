@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('increase', $product) }}
+@endsection
 
 @section('content')
 
@@ -8,6 +12,7 @@
             'url' => route('products.index'),
             'options' => [
                 [
+                    'type' => 'dropdown',
                     'option' => trans('common.options'),
                     'url' => [
                         [
@@ -81,7 +86,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>@lang('products.increase')</h3>
-                
+
                 <form action="{{ route('products.increase', ['id' => Hashids::encode($product->id)]) }}" method="POST">
                     @csrf()
 
@@ -95,8 +100,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                </form> 
+                    <button type="submit" class="btn btn-primary">@lang('products.increase')</button>
+                </form>
             </div>
         </div>
 

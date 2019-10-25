@@ -18,9 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = User::find(auth()->user()->id)->products()
+        $products = User::find(Id::parent(), ['id'])
+            ->products()
             ->paginate(config('welkome.paginate'), [
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
+                'id', 'description', 'brand', 'status', 'reference', 'price', 'user_id', 'quantity'
             ])->sort();
 
         return view('app.products.index', compact('products'));
@@ -50,7 +51,7 @@ class ProductController extends Controller
         $product->reference = $request->reference;
         $product->price = (float) $request->price;
         $product->quantity = $request->quantity;
-        $product->user()->associate(auth()->user()->id);
+        $product->user()->associate(Id::parent(), ['id']);
 
         if ($product->save()) {
             flash(trans('common.createdSuccessfully'))->success();
@@ -71,7 +72,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
@@ -92,7 +94,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
@@ -114,7 +117,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProduct $request, $id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id',
@@ -148,7 +152,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
@@ -166,10 +170,6 @@ class ProductController extends Controller
         ]);
 
         if ($product->invoices->count() > 0) {
-            $now = Carbon::now()->toDateTimeString();
-            $description = $product->description . ' (' . trans('common.disabled') . '-' . $now . ')';
-
-            $product->description = $description;
             $product->status = 0;
 
             if ($product->update()) {
@@ -198,7 +198,8 @@ class ProductController extends Controller
      */
     public function showIncreaseForm($id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
@@ -220,7 +221,8 @@ class ProductController extends Controller
      */
     public function increase(IncreaseProduct $request, $id)
     {
-        $product = User::find(auth()->user()->id)->products()
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
@@ -265,5 +267,37 @@ class ProductController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * Toggle status for the specified resource from storage.
+     *
+     * @param  string   $id
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle($id)
+    {
+        $product = User::find(Id::parent(), ['id'])
+            ->products()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'brand', 'status', 'reference', 'price', 'user_id',
+            ]);
+
+        if (empty($product)) {
+            return abort(404);
+        }
+
+        $product->status = !$product->status;
+
+        if ($product->save()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect(url()->previous());
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect(url()->previous());
     }
 }

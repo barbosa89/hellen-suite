@@ -1,6 +1,6 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center dont-break-out">
             <p>
                 <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
                     {{ $row->description }}
@@ -35,7 +35,12 @@
                 </a>
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+            <p class="text-primary">
+                <i class="fas fa-{{ $row->status ? 'check' : 'times-circle' }}"></i>
+            </p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
             @include('partials.dropdown-btn', [
                 'options' => [
                     [
@@ -56,6 +61,10 @@
                         'url' => route('products.edit', [
                             'room' => Hashids::encode($row->id)
                         ]),
+                    ],
+                    [
+                        'option' => $row->status ? 'Deshabilitar' : 'Habilitar',
+                        'url' => route('products.toggle', ['id' => Hashids::encode($row->id)])
                     ],
                     [
                         'type' => 'confirm',

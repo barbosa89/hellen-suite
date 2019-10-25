@@ -18,9 +18,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = User::find(auth()->user()->id)->services()
+        $services = User::find(Id::parent(), ['id'])->services()
             ->paginate(config('welkome.paginate'), [
-                'id', 'description', 'price', 'user_id', 'created_at'
+                'id', 'description', 'price', 'status', 'user_id', 'created_at'
             ])->sortByDesc('created_at');
 
         return view('app.services.index', compact('services'));
@@ -68,7 +68,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = User::find(auth()->user()->id)->services()
+        $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'price', 'user_id', 'created_at'
@@ -89,7 +89,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = User::find(auth()->user()->id)->services()
+        $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'price', 'user_id', 'created_at'
@@ -111,7 +111,7 @@ class ServiceController extends Controller
      */
     public function update(UpdateService $request, $id)
     {
-        $service = User::find(auth()->user()->id)->services()
+        $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'price', 'user_id',
@@ -143,7 +143,7 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        $service = User::find(auth()->user()->id)->services()
+        $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'price', 'user_id', 'created_at'
@@ -161,13 +161,9 @@ class ServiceController extends Controller
         ]);
 
         if ($service->invoices->count() > 0) {
-            $now = Carbon::now()->toDateTimeString();
-            $description = $service->description . ' (' . trans('common.disabled') . '-' . $now . ')';
-
-            $service->description = $description;
             $service->status = 0;
 
-            if ($service->update()) {
+            if ($service->save()) {
                 flash(trans('services.wasDisabled'))->success();
 
                 return redirect()->route('services.index');
@@ -193,7 +189,7 @@ class ServiceController extends Controller
      */
     public function showIncreaseForm($id)
     {
-        $service = User::find(auth()->user()->id)->services()
+        $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'description', 'price', 'user_id', 'created_at'
@@ -213,30 +209,30 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function increase(Increaseservice $request, $id)
-    {
-        $service = User::find(auth()->user()->id)->services()
-            ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id', 'created_at'
-            ]);
+    // public function increase(Increaseservice $request, $id)
+    // {
+    //     $service = User::find(Id::parent(), ['id'])->services()
+    //         ->where('id', Id::get($id))
+    //         ->first([
+    //             'id', 'description', 'price', 'user_id', 'created_at'
+    //         ]);
 
-        if (empty($service)) {
-            abort(404);
-        }
+    //     if (empty($service)) {
+    //         abort(404);
+    //     }
 
-        $service->quantity += $request->quantity;
+    //     $service->quantity += $request->quantity;
 
-        if ($service->update()) {
-            flash(trans('common.updatedSuccessfully'))->success();
+    //     if ($service->update()) {
+    //         flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('services.index');
-        }
+    //         return redirect()->route('services.index');
+    //     }
 
-        flash(trans('common.error'))->error();
+    //     flash(trans('common.error'))->error();
 
-        return redirect()->route('services.index');
-    }
+    //     return redirect()->route('services.index');
+    // }
 
     /**
      * Return price of resource.
@@ -260,5 +256,36 @@ class ServiceController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * Toggle status for the specified resource from storage.
+     *
+     * @param  string   $id
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle($id)
+    {
+        $service = User::find(Id::parent(), ['id'])->services()
+            ->where('id', Id::get($id))
+            ->first([
+                'id', 'description', 'price', 'status', 'user_id', 'created_at'
+            ]);
+
+        if (empty($service)) {
+            return abort(404);
+        }
+
+        $service->status = !$service->status;
+
+        if ($service->save()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect(url()->previous());
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect(url()->previous());
     }
 }

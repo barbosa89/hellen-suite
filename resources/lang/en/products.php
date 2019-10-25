@@ -7,4 +7,5 @@ return array (
   'losses' => 'Record losses',
   'chooseProduct' => 'Choose a product',
   'product' => 'Product',
+  'wasDisabled' => 'The product cannot be deleted and was disabled',
 );

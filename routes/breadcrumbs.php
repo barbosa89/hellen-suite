@@ -7,7 +7,6 @@ Breadcrumbs::for('home', function ($trail) {
     $trail->push(trans('dashboard.dashboard'), route('home'));
 });
 
-
 Breadcrumbs::for('rooms', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('rooms.title'), route('rooms.index'));
@@ -73,7 +72,22 @@ Breadcrumbs::for('products', function ($trail) {
     $trail->push(trans('products.title'), route('products.index'));
 });
 
+Breadcrumbs::for('product', function ($trail, $product) {
+    $trail->parent('products');
+    $trail->push($product->description, route('products.show', ['id' => Hashids::encode($product->id)]));
+});
+
+Breadcrumbs::for('increase', function ($trail, $product) {
+    $trail->parent('product', $product);
+    $trail->push(trans('products.increase'), route('products.increase.form', ['id' => Hashids::encode($product->id)]));
+});
+
 Breadcrumbs::for('services', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('services.title'), route('services.index'));
+});
+
+Breadcrumbs::for('service', function ($trail, $service) {
+    $trail->parent('services');
+    $trail->push($service->description, route('services.show', ['id' => Hashids::encode($service->id)]));
 });

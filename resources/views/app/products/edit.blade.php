@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('product', $product) }}
+@endsection
 
 @section('content')
 
@@ -20,7 +24,7 @@
                 <form action="{{ route('products.update', ['product' => Hashids::encode($product->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
-                    
+
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>
                         <input type="text" class="form-control" name="description" id="description" value="{{ $product->description }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
@@ -52,11 +56,11 @@
                                 <strong>{{ $errors->first('reference') }}</strong>
                             </span>
                         @endif
-                    </div>                
+                    </div>
 
                     <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
                         <label for="price">@lang('common.price'):</label>
-                        <input type="number" class="form-control" name="price" id="price" value="{{ $product->price }}" min="1" required placeholder="{{ trans('common.required') }}">
+                        <input type="number" class="form-control" name="price" id="price" value="{{ round($product->price, 0) }}" min="1" required placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('price'))
                             <span class="help-block">
@@ -66,7 +70,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                </form> 
+                </form>
             </div>
         </div>
 

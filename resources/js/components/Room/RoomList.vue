@@ -51,7 +51,8 @@
                         v-for="room in chunk" :key="room.id"
                         @contextmenu.prevent="$refs.menu.open($event, { room })"
                         @dblclick="pushSelected(room)"
-                        :class="room.selected == true ? 'selected-room' : ''">
+                        :class="room.selected == true ? 'selected-room' : ''"
+                        data-toggle="tooltip" data-placement="top" :title="room.description">
                         <div class="row">
                             <div class="col-12 without-padding">
                                 <p class="text-right">
@@ -74,7 +75,7 @@
                             <i class="text-info fa" v-else-if="room.status == '2'" :class="room.status == '2' ? 'fa-broom' : ''"></i>
                             <i class="text-info fa" v-else-if="room.status == '4'" :class="room.status == '4' ? 'fa-wrench' : ''"></i>
                             <i class="text-info fa" v-else :class="room.status == '3' ? 'fa-lock' : ''"></i>
-                            <span>{{ room.capacity }} </span>
+                            <span class="d-inline-block">{{ room.capacity }}</span>
                         </p>
                     </div>
                 </div>

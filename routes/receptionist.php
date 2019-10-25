@@ -1,8 +1,6 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'role:receptionist|manager', 'verified']], function() {
-    Route::resource('guests', 'GuestController');
-
     Route::get('invoices/{id}/companies/create', 'InvoiceController@createCompanies')
         ->name('invoices.companies.create');
 

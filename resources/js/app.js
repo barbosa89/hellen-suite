@@ -19,10 +19,12 @@ Vue.component('room-list', require('./components/Room/RoomList.vue').default);
 
 import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
+import BootstrapVue from 'bootstrap-vue';
 
 Vue.mixin(Permissions);
 
 Vue.use(VueRouter);
+Vue.use(BootstrapVue);
 
 const router = new VueRouter({
     mode: 'history'

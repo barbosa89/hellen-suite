@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('companies/search', 'CompanyController@search')
+		->name('companies.search')
+		->middleware(['auth', 'permission:companies.index']);
+
     Route::get('invoices/{id}/companies/create', 'CompanyController@createForInvoice')
         ->name('invoices.companies.create')
         ->middleware('permission:companies.create');

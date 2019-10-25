@@ -47,6 +47,18 @@ $text-default: white;
     /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
 }
 
+.dont-break-out {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
 .app-nav {
     padding-right: 0 !important;
     padding-left: 0 !important;
@@ -178,7 +190,7 @@ $text-default: white;
     & p {
         margin-bottom: 0;
         & span {
-            padding: 1px 6px;
+            padding: 1px 8.3px;
             color: #fff;
             background-color: #6c757d;
             border-radius: 50%;

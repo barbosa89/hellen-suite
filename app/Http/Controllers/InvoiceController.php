@@ -838,6 +838,12 @@ class InvoiceController extends Controller
             ->where('status', true)
             ->get(Fields::get('products'));
 
+        if ($products->isEmpty()) {
+            flash('No hay productos disponibles')->info();
+
+            return back();
+        }
+
         $customer = $this->getCustomer($invoice);
 
         return view('app.invoices.add-products', compact('invoice', 'products', 'customer'));
@@ -934,7 +940,14 @@ class InvoiceController extends Controller
         }
 
         $services = Service::where('user_id', Id::parent())
+            ->whereStatus(true)
             ->get(Fields::get('services'));
+
+        if ($services->isEmpty()) {
+            flash('No hay servicios disponibles')->info();
+
+            return back();
+        }
 
         $customer = $this->getCustomer($invoice);
 
@@ -961,6 +974,7 @@ class InvoiceController extends Controller
                     ->first(Fields::parsed('invoices'));
 
                 $service = Service::where('user_id', Id::parent())
+                    ->whereStatus(true)
                     ->first(Fields::get('services'));
 
                 $value = (int) $request->quantity * $service->price;

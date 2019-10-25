@@ -33,7 +33,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('language/{locale}', 'LanguageController@locale');
 
-require __DIR__ . '/common.php';
 require __DIR__ . '/receptionist.php';
 require __DIR__ . '/root.php';
 require __DIR__ . '/admin.php';
@@ -44,3 +43,6 @@ require __DIR__ . '/modules/rooms.php';
 require __DIR__ . '/modules/team.php';
 require __DIR__ . '/modules/invoices.php';
 require __DIR__ . '/modules/companies.php';
+require __DIR__ . '/modules/guests.php';
+require __DIR__ . '/modules/products.php';
+require __DIR__ . '/modules/services.php';

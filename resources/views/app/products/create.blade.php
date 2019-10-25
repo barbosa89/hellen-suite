@@ -23,7 +23,7 @@
                 <h2 class="text-center">@lang('common.creationOf') @lang('products.title')</h2>
                 <form action="{{ route('products.store') }}" method="POST">
                     @csrf()
-                    
+
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>
                         <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
@@ -55,7 +55,7 @@
                                 <strong>{{ $errors->first('reference') }}</strong>
                             </span>
                         @endif
-                    </div>                
+                    </div>
 
                     <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
                         <label for="price">@lang('common.price'):</label>
@@ -80,7 +80,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                </form> 
+                </form>
             </div>
         </div>
 
