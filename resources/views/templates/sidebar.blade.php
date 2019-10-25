@@ -76,6 +76,22 @@
         </li>
     @endcan
 
+    @can('products.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('products.index') }}">
+            <i class="fa fa-fw fa-boxes"></i>
+            <span>@lang('products.title')</span></a>
+        </li>
+    @endcan
+
+    @can('services.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('services.index') }}">
+            <i class="fa fa-fw fa-concierge-bell"></i>
+            <span>@lang('services.title')</span></a>
+        </li>
+    @endcan
+
     @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="#">

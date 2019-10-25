@@ -13,24 +13,24 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="row">
                     <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
-                        <div class="btn-group pull-left" role="group" aria-label="Basic example">
+                        <div class="btn-group pull-left" role="group" id="filters">
                             <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
-                            <button type="button" class="btn btn-default" @click.prevent="showAll" title="Todo">
-                                <i class="fa fa-align-justify"></i>
+                            <button type="button" class="btn btn-default pressed" id="all" @click.prevent="showAll" title="Todo">
+                                <i class="fa fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-default" @click.prevent="showAvailable" title="Disponible">
+                            <button type="button" class="btn btn-default" id="available" @click.prevent="showAvailable" title="Disponible">
                                 <i class="fa fa-check-circle"></i>
                             </button>
-                            <button type="button" class="btn btn-default" @click.prevent="showOccupied" title="Ocupado">
+                            <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" title="Ocupado">
                                 <i class="fa fa-tags"></i>
                             </button>
-                            <button type="button" class="btn btn-default" @click.prevent="showMaintenance" title="En limpieza">
+                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En limpieza">
                                 <i class="fa fa-broom"></i>
                             </button>
-                            <button type="button" class="btn btn-default" @click.prevent="showCleaning" title="En mantenimiento">
+                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En mantenimiento">
                                 <i class="fa fa-wrench"></i>
                             </button>
-                            <button type="button" class="btn btn-default" @click.prevent="showDisabled" title="Inhabilitado">
+                            <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" title="Inhabilitado">
                                 <i class="fa fa-lock"></i>
                             </button>
                         </div>
@@ -118,16 +118,17 @@
 
     export default {
         mounted() {
-            // console.log('Component mounted.')
-            this.selectedHotel = _.first(this.hotels).hash
-            this.rooms = _.first(this.hotels).rooms
+            if (this.hotels.length > 0) {
+                this.selectedHotel = _.first(this.hotels).hash
+                this.rooms = _.first(this.hotels).rooms
 
-            // Add custom property selected
-            this.rooms = _.each(this.rooms, function (room) {
-                room.selected = false
-            })
+                // Add custom property selected
+                this.rooms = _.each(this.rooms, function (room) {
+                    room.selected = false
+                })
 
-            this.filteredRooms = this.rooms
+                this.filteredRooms = this.rooms
+            }
         },
         data() {
             return {
@@ -148,6 +149,20 @@
             VueContext
         },
         methods: {
+            pressed(event) {
+                let buttons = document.getElementById('filters')
+                let ArrBtn = Array.from(buttons.children)
+
+                ArrBtn.forEach(function (button, index) {
+                    button.classList.remove('pressed')
+                })
+
+                let tag = event.target.localName
+                let id = tag == 'i' ? event.target.parentNode.id : event.target.id
+
+                let button = document.getElementById(id)
+                button.classList.add('pressed')
+            },
             updateRoomList() {
                 _.map(this.hotels, (hotel) => {
                     if (hotel.hash == this.selectedHotel) {
@@ -156,33 +171,44 @@
                     }
                 })
             },
-            showAll() {
+            showAll(event) {
                 this.filteredRooms = this.rooms
+                this.pressed(event)
             },
-            showAvailable() {
+            showAvailable(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '1'
                 })
+
+                this.pressed(event)
             },
-            showOccupied() {
+            showOccupied(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '0'
                 })
+
+                this.pressed(event)
             },
-            showMaintenance() {
+            showMaintenance(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '2'
                 })
+
+                this.pressed(event)
             },
-            showDisabled() {
+            showDisabled(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '3'
                 })
+
+                this.pressed(event)
             },
-            showCleaning() {
+            showCleaning(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
                     return room.status == '4'
                 })
+
+                this.pressed(event)
             },
             pushSelected(room) {
                 if (room.status == '1') {
@@ -254,8 +280,20 @@
 </script>
 
 <style scoped>
-    #id {
-        position:fixed;
-        z-index: 2;
+    .pressed {
+        background-color: #c7c7c7;
+    }
+
+    #filters > .btn.active.focus,
+    .btn.active:focus,
+    .btn.focus,
+    .btn.focus:active,
+    .btn:active:focus,
+    .btn:focus {
+        outline: 0 !important;
+        outline-offset: 0  !important;
+        background-image: none  !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none  !important;
     }
 </style>
