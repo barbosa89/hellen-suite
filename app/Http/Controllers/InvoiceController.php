@@ -841,7 +841,7 @@ class InvoiceController extends Controller
         if ($products->isEmpty()) {
             flash('No hay productos disponibles')->info();
 
-            return back();
+            return route('invoices.show', ['id' => Hashids::encode($invoice->id)]);
         }
 
         $customer = $this->getCustomer($invoice);
@@ -946,7 +946,7 @@ class InvoiceController extends Controller
         if ($services->isEmpty()) {
             flash('No hay servicios disponibles')->info();
 
-            return back();
+            return route('invoices.show', ['id' => Hashids::encode($invoice->id)]);
         }
 
         $customer = $this->getCustomer($invoice);
