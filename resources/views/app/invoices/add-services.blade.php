@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('invoice', $invoice) }}
+@endsection
+
 @section('content')
 
     @include('partials.page-header', [
@@ -7,52 +11,15 @@
         'url' => route('invoices.index'),
         'options' => [
             [
-                'option' => trans('common.options'),
-                'type' => 'dropdown',
-                'url' => [
-                    [
-                        'option' => trans('rooms.addRoom'),
-                        'url' => route('invoices.rooms', [
-                            'id' => Hashids::encode($invoice->id)
-                        ])
-                    ],
-                    [
-                        'option' => trans('invoices.registerGuests'),
-                        'url' => route('invoices.guests.search', [
-                            'id' => Hashids::encode($invoice->id)
-                        ])
-                    ],
-                    [
-                        'option' => trans('invoices.loadProducts'),
-                        'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
-                    ],
-                    [
-                        'type' => 'divider'
-                    ],
-                    [
-                    'option' => trans('common.close'),
-                        'url' => "#"
-                    ],
-                    [
-                        'type' => 'confirm',
-                        'option' => trans('common.delete'),
-                        'url' => route('invoices.destroy', [
-                            'room' => Hashids::encode($invoice->id)
-                        ]),
-                        'method' => 'DELETE'
-                    ],
-                ]
+                'option' => trans('invoices.loadProducts'),
+                'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
             ],
             [
-                'option' => trans('invoices.see'),
+                'option' => 'Volver al recibo',
                 'url' => route('invoices.show', [
                     'id' => Hashids::encode($invoice->id)
                 ])
-            ],
-            [
-                'option' => trans('common.back'),
-                'url' => url()->previous()
-            ],
+            ]
         ]
     ])
 

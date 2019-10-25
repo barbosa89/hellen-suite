@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('products') }}
+@endsection
 
 @section('content')
 

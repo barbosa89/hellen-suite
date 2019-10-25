@@ -1,21 +1,41 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p><a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->description }}</a></p>
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
+            <p>
+                <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ $row->description }}
+                </a>
+            </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 visible-md visible-lg">
-            <p><a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->brand or trans('common.noData') }}</a></p>
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+            <p>
+                <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ $row->brand ?? trans('common.noData') }}
+                </a>
+            </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 visible-md visible-lg">
-            <p><a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->reference or trans('common.noData') }}</a></p>
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+            <p>
+                <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ $row->reference ?? trans('common.noData') }}
+                </a>
+            </p>
         </div>
-        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
-            <p><a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">{{ number_format($row->price, 2, ',', '.') }}</a></p>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
+            <p>
+                <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ number_format($row->price, 2, ',', '.') }}
+                </a>
+            </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 visible-md visible-lg">
-            <p><a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->quantity }}</a></p>
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+            <p>
+                <a href="{{ route('products.show', ['room' => Hashids::encode($row->id)]) }}">
+                    {{ $row->quantity }}
+                </a>
+            </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             @include('partials.dropdown-btn', [
                 'options' => [
                     [

@@ -37,7 +37,7 @@
 
                     <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
                         <label for="tin">NIT: <small>{{ trans('common.required') }}</small></label>
-                        <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" maxlength="30" placeholder="Formato: 123.456.789-0" required pattern="\d{3}\.\d{3}\.\d{3}\-\d{1}">
+                        <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" maxlength="30" placeholder="Formato: 123.456.789-0" required>
 
                         @if ($errors->has('tin'))
                             <span class="help-block">

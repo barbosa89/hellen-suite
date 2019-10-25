@@ -355,10 +355,10 @@
 
         <!-- Services -->
         @if($invoice->services->isNotEmpty())
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
-                        <small><i class="fas fa-washer"></i></small> @lang('services.title')
+                        <small><i class="fas fa-concierge-bell"></i></small> @lang('services.title')
                     </h4>
                     <div class="row">
                         <div class="col-md-12">

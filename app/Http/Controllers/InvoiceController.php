@@ -223,6 +223,19 @@ class InvoiceController extends Controller
             abort(404);
         }
 
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.show', compact('invoice', 'customer'));
+    }
+
+    /**
+     * Return the invoice customer.
+     *
+     * @param  \App\Welkome\Invoice
+     * @return array
+     */
+    public function getCustomer(Invoice $invoice): array
+    {
         $customer = [];
 
         if (empty($invoice->company)) {
@@ -240,8 +253,8 @@ class InvoiceController extends Controller
             $customer['tin'] = $invoice->company->tin;
             $customer['route'] = route('guests.show', ['id' => Hashids::encode($invoice->company->id)]);
         }
-
-        return view('app.invoices.show', compact('invoice', 'customer'));
+        
+        return $customer;
     }
 
     /**
@@ -337,6 +350,13 @@ class InvoiceController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
                 }
             ])->first(Fields::get('invoices'));
 
@@ -356,7 +376,9 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return view('app.invoices.add-rooms', compact('invoice', 'rooms'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'customer'));
     }
 
     /**
@@ -448,6 +470,13 @@ class InvoiceController extends Controller
                 },
                 'rooms.guests' => function ($query) {
                     $query->select('id', 'name', 'last_name');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
                 }
             ])->first(Fields::parsed('invoices'));
 
@@ -463,7 +492,9 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return view('app.invoices.search-guests', compact('invoice'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.search-guests', compact('invoice', 'customer'));
     }
 
     /**
@@ -486,6 +517,13 @@ class InvoiceController extends Controller
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('invoice_id', $id);
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
                 }
             ])->first(['id']);
 
@@ -497,7 +535,9 @@ class InvoiceController extends Controller
         $countries = Country::all(['id', 'name']);
         $guests = $this->countGuestsPerRoom($invoice);
 
-        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests', 'countries'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests', 'countries', 'customer'));
     }
 
     /**
@@ -583,6 +623,13 @@ class InvoiceController extends Controller
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('invoice_id', $id);
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
                 }
             ])->first(Fields::parsed('invoices'));
 
@@ -600,7 +647,9 @@ class InvoiceController extends Controller
 
         $guests = $this->countGuestsPerRoom($invoice);
 
-        return view('app.invoices.add-guests', compact('invoice', 'guest', 'guests'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.add-guests', compact('invoice', 'guest', 'guests', 'customer'));
     }
 
     /**
@@ -771,6 +820,13 @@ class InvoiceController extends Controller
                 'rooms' => function ($query) {
                     $query->select('id', 'number');
                 },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
             ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
@@ -782,7 +838,9 @@ class InvoiceController extends Controller
             ->where('status', true)
             ->get(Fields::get('products'));
 
-        return view('app.invoices.add-products', compact('invoice', 'products'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.add-products', compact('invoice', 'products', 'customer'));
     }
 
     /**
@@ -860,6 +918,15 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
+            ])
             ->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
@@ -869,7 +936,9 @@ class InvoiceController extends Controller
         $services = Service::where('user_id', Id::parent())
             ->get(Fields::get('services'));
 
-        return view('app.invoices.add-services', compact('invoice', 'services'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.add-services', compact('invoice', 'services', 'customer'));
     }
 
     /**
@@ -935,13 +1004,24 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
+            ])
             ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
-        return view('app.invoices.search-companies', compact('invoice'));
+        $customer = $this->getCustomer($invoice);
+
+        return view('app.invoices.search-companies', compact('invoice', 'customer'));
     }
 
     /**
