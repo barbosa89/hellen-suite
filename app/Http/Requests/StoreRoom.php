@@ -24,7 +24,7 @@ class StoreRoom extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'required|string|unique_with:rooms,hotel_id,hotel',
+            'number' => 'required|string|unique_with:rooms,hotel#hotel_id',
             'description' => 'required|string|max:500',
             'price' => 'required|integer|min:1|max:999999',
             'type' => 'required|in:0,1',
@@ -34,6 +34,18 @@ class StoreRoom extends FormRequest
             'tax_status' => 'required|in:0,1,2',
             'tax' => 'nullable|numeric|min:0.01|max:0.5',
             'hotel' => 'required|string|hashed_exists:hotels,id'
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'number.unique_with' => 'El número ya existe en el hotel seleccionado.',
         ];
     }
 }

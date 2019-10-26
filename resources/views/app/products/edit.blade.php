@@ -13,7 +13,7 @@
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'url' => route('products.show', ['id' => Hashids::encode($product->id)])
                 ],
             ]
         ])
@@ -24,6 +24,19 @@
                 <form action="{{ route('products.update', ['product' => Hashids::encode($product->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
+
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" readonly>
+                                <option value="{{ Hashids::encode($product->hotel->id) }}" selected>{{ $product->hotel->business_name }}</option>
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
 
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>

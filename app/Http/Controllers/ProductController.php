@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Fields;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Product;
@@ -36,6 +37,12 @@ class ProductController extends Controller
             ->whereStatus(true)
             ->get(Fields::get('hotels'));
 
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return back();
+        }
+
         return view('app.products.create', compact('hotels'));
     }
 
@@ -54,6 +61,7 @@ class ProductController extends Controller
         $product->price = (float) $request->price;
         $product->quantity = $request->quantity;
         $product->user()->associate(Id::parent(), ['id']);
+        $product->hotel()->associate(Id::get($request->hotel));
 
         if ($product->save()) {
             flash(trans('common.createdSuccessfully'))->success();
@@ -77,9 +85,11 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -99,9 +109,11 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -122,9 +134,7 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id',
-            ]);
+            ->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -138,12 +148,12 @@ class ProductController extends Controller
         if ($product->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('products.index');
+            return back();
         }
 
         flash(trans('common.error'))->error();
 
-        return redirect()->route('products.index');
+        return back();
     }
 
     /**
@@ -156,9 +166,7 @@ class ProductController extends Controller
     {
         $product = User::find(Id::parent(), ['id'])->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
-            ]);
+            ->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -203,9 +211,7 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
-            ]);
+            ->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -226,9 +232,11 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'reference', 'price', 'user_id', 'quantity'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);

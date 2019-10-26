@@ -24,6 +24,21 @@
                 <form action="{{ route('products.store') }}" method="POST">
                     @csrf()
 
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>
                         <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">

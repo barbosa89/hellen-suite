@@ -24,13 +24,25 @@ class UpdateProduct extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('product'));
+        $id = Id::get($this->route('id'));
 
         return [
-            'description' => 'required|string|max:191|unique:products,description, ' . $id,
+            'description' => 'required|string|max:191|unique_with:products,hotel#hotel_id, ' . $id,
             'brand' => 'nullable|string|max:50',
             'reference' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:1',
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'description.unique_with' => 'La descripción ya existe en el hotel seleccionado.',
         ];
     }
 }

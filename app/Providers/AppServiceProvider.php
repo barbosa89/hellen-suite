@@ -65,16 +65,33 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * $parameters[0]   Table name
-         * $parameters[1]   Field to comparison in the table
-         * $parameters[2]   The field name in the form
+         * $parameters[1]   The parent field
+         * $parameters[2]   Except
          */
         Validator::extend('unique_with', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            $parent = Id::get($data[$parameters[2]]);
 
-            $rooms = DB::table($parameters[0])->where($attribute, $value)
-                ->where($parameters[1], $parent)
+            // Parent field
+            // $alias[0]: Parent field name in the form
+            // $alias[1]: Parent field name in table table
+            $alias = explode('#', $parameters[1]);
+            $parentField = isset($alias[1]) ? $alias[1] : $alias[0];
+            $parentId = Id::get($data[$alias[0]]);
+            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+
+            $rooms = DB::table($parameters[0])
+                ->where($attribute, $value)
+                ->where($parentField, $parentId)
                 ->get(['id']);
+
+            // Update method: Only must be exists one record in the table
+            if (!empty($exception)) {
+                if ($rooms->count() === 1 and $rooms->first()->id === $exception) {
+                    return true;
+                }
+
+                return false;
+            }
 
             return $rooms->count() === 0;
         });

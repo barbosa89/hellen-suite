@@ -49,6 +49,14 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <h2>Hotel:</h2>
+                <p>
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($product->hotel->id)]) }}">
+                        {{ $product->hotel->business_name }}
+                    </a>
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.description'):</h2>
                 <p>
                     <a href="{{ route('products.show', ['id' => Hashids::encode($product->id)]) }}">
@@ -58,22 +66,22 @@
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.brand'):</h2>
-                {{ $product->brand }}
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
+                {{ $product->brand ?? 'No definida' }}
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
+                <p>{{ $product->reference ?? 'No definida' }}</p>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <h3>@lang('common.quantity'):</h3>
                 <p>{{ $product->quantity }}</p>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <h3>@lang('common.price'):</h3>
+                <p>$ {{ round($product->price, 0) }}</p>
             </div>
         </div>
 
