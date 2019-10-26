@@ -1,8 +1,13 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('services/calculate/total', 'ServiceController@total')
+		->name('services.total')
+		->middleware('permission:services.index');
+
 	Route::get('services/{id}/toggle', 'ServiceController@toggle')
-		->name('services.toggle');
+		->name('services.toggle')
+		->middleware('permission:services.edit');
 
 	Route::delete('services/{id}', 'ServiceController@destroy')
 		->name('services.destroy')

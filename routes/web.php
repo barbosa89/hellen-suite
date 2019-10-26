@@ -33,9 +33,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('language/{locale}', 'LanguageController@locale');
 
-require __DIR__ . '/receptionist.php';
 require __DIR__ . '/root.php';
-require __DIR__ . '/admin.php';
 
 // Modules
 require __DIR__ . '/modules/hotels.php';
@@ -46,3 +44,5 @@ require __DIR__ . '/modules/companies.php';
 require __DIR__ . '/modules/guests.php';
 require __DIR__ . '/modules/products.php';
 require __DIR__ . '/modules/services.php';
+require __DIR__ . '/modules/assets.php';
+require __DIR__ . '/modules/props.php';

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Carbon\Carbon;
 use App\Helpers\Id;
 use App\Welkome\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\{StoreProduct, UpdateProduct, IncreaseProduct};
+use App\Welkome\Hotel;
 
 class ProductController extends Controller
 {
@@ -20,9 +20,7 @@ class ProductController extends Controller
     {
         $products = User::find(Id::parent(), ['id'])
             ->products()
-            ->paginate(config('welkome.paginate'), [
-                'id', 'description', 'brand', 'status', 'reference', 'price', 'user_id', 'quantity'
-            ])->sort();
+            ->paginate(config('welkome.paginate'), Fields::get('products'))->sort();
 
         return view('app.products.index', compact('products'));
     }
@@ -34,7 +32,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('app.products.create');
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->whereStatus(true)
+            ->get(Fields::get('hotels'));
+
+        return view('app.products.create', compact('hotels'));
     }
 
     /**

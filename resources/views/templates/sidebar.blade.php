@@ -92,6 +92,22 @@
         </li>
     @endcan
 
+    @can('assets.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('assets.index') }}">
+            <i class="fa fa-fw fa-tv"></i>
+            <span>@lang('assets.title')</span></a>
+        </li>
+    @endcan
+
+    @can('props.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('props.index') }}">
+            <i class="fa fa-fw fa-person-booth"></i>
+            <span>@lang('props.title')</span></a>
+        </li>
+    @endcan
+
     @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="#">

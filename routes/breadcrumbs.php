@@ -91,3 +91,23 @@ Breadcrumbs::for('service', function ($trail, $service) {
     $trail->parent('services');
     $trail->push($service->description, route('services.show', ['id' => Hashids::encode($service->id)]));
 });
+
+Breadcrumbs::for('assets', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('assets.title'), route('assets.index'));
+});
+
+Breadcrumbs::for('asset', function ($trail, $asset) {
+    $trail->parent('assets');
+    $trail->push($asset->description, route('assets.show', ['id' => Hashids::encode($asset->id)]));
+});
+
+Breadcrumbs::for('props', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('props.title'), route('props.index'));
+});
+
+Breadcrumbs::for('prop', function ($trail, $prop) {
+    $trail->parent('props');
+    $trail->push($prop->description, route('props.show', ['id' => Hashids::encode($prop->id)]));
+});

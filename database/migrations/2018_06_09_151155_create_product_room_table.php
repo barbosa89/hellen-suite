@@ -23,7 +23,7 @@ class CreateProductRoomTable extends Migration
             $table->foreign('room_id')->references('id')->on('rooms')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['product_id', 'room_id']);;
+            $table->primary(['product_id', 'room_id']);
         });
     }
 

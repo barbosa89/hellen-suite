@@ -90,7 +90,8 @@ return [
             'price',
             'quantity',
             'status',
-            'user_id'
+            'user_id',
+            'hotel_id'
         ],
         'services' => [
             'id',
@@ -140,6 +141,7 @@ return [
         'services',
         'shifts',
         'vehicles',
+        'props'
     ],
 
     /*

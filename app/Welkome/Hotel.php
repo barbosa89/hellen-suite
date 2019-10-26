@@ -58,4 +58,24 @@ class Hotel extends Model
     {
         return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
     }
+
+    public function products()
+    {
+        return $this->hasMany(\App\Welkome\Product::class);
+    }
+
+    public function services()
+    {
+        return $this->hasMany(\App\Welkome\Service::class);
+    }
+
+    public function assets()
+    {
+        return $this->hasMany(\App\Welkome\Asset::class);
+    }
+
+    public function props()
+    {
+        return $this->hasMany(\App\Welkome\Prop::class);
+    }
 }

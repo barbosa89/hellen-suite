@@ -23,4 +23,9 @@ class Product extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
+    public function hotel()
+    {
+        return $this->belongsTo(\App\Welkome\Hotel::class);
+    }
 }
