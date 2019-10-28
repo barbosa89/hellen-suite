@@ -1,35 +1,35 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('service', $service) }}
+@endsection
 
 @section('content')
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('products.title'),
-            'url' => route('products.index'),
+            'title' => trans('services.title'),
+            'url' => route('services.index'),
             'options' => [
                 [
+                    'type' => 'dropdown',
                     'option' => trans('common.options'),
                     'url' => [
                         [
-                            'option' => trans('products.increase'),
-                            'url' => route('products.increase.form', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'type' => 'divider'
-                        ],
-                        [
                             'option' => trans('common.edit'),
-                            'url' => route('products.edit', [
-                                'room' => Hashids::encode($product->id)
+                            'url' => route('services.edit', [
+                                'room' => Hashids::encode($service->id)
                             ]),
+                        ],
+                        [
+                            'option' => $service->status ? 'Deshabilitar' : 'Habilitar',
+                            'url' => route('services.toggle', ['id' => Hashids::encode($service->id)])
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete'),
-                            'url' => route('products.destroy', [
-                                'id' => Hashids::encode($product->id)
+                            'url' => route('services.destroy', [
+                                'id' => Hashids::encode($service->id)
                             ]),
                             'method' => 'DELETE'
                         ],
@@ -43,28 +43,21 @@
         ])
 
         <div class="row">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <h3>Hotel:</h3>
+                <p>
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($service->hotel->id)]) }}">
+                        {{ $service->hotel->business_name }}
+                    </a>
+                </p>
+            </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.description'):</h2>
-                <p>{{ $product->description }}</p>
+                <p>{{ $service->description }}</p>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.brand'):</h2>
-                {{ $product->brand }}
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference }}</p>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.quantity'):</h3>
-                <p>{{ $product->quantity }}</p>
+                {{ round($service->price, 0) }}
             </div>
         </div>
 
@@ -81,7 +74,6 @@
                 <div class="well">
                     <h4>Gráfica aquí</h4>
                 </div>
-                
             </div>
         </div>
 

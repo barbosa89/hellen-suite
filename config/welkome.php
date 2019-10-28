@@ -98,7 +98,8 @@ return [
             'description',
             'price',
             'status',
-            'user_id'
+            'user_id',
+            'hotel_id'
         ],
         'companies' => [
             'id',

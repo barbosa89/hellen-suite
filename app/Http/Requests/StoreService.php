@@ -26,6 +26,7 @@ class StoreService extends FormRequest
         return [
             'description' => 'required|string|max:191|unique:services,description',
             'price' => 'required|numeric|min:1',
+            'hotel' => 'required|string|hashed_exists:hotels,id'
         ];
     }
 }

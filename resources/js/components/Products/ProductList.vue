@@ -14,7 +14,7 @@
                 <div class="input-group">
                     <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
                     <div class="input-group-append">
-                        <button type="submit" class="input-group-text" id="btnGroupAddon">
+                        <button class="input-group-text" id="btnGroupAddon">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
                             <p class="text-primary">
-                                <i class="fas fa-check"></i>
+                                <i class="fas" :class="product.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
@@ -108,7 +108,7 @@
                                         :href="'/products/' + product.hash + '/toggle'"
                                         class="dropdown-item"
                                         v-if="$can('products.edit')"
-                                        >Deshabilitar</a>
+                                        >{{ product.status == 1 ? 'Deshabilitar' : 'Habilitar' }}</a>
                                     <a
                                         :href="'#'"
                                         :data-url="'/products/' + product.hash"

@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Helpers\Id;
+use App\Welkome\Hotel;
+use App\Helpers\Fields;
+use App\Helpers\Input;
 use App\Welkome\Service;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{StoreService, UpdateService};
 
 class ServiceController extends Controller
@@ -17,12 +21,30 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = User::find(Id::parent(), ['id'])->services()
-            ->paginate(config('welkome.paginate'), [
-                'id', 'description', 'price', 'status', 'user_id', 'created_at'
-            ])->sortByDesc('created_at');
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->with([
+                'services' => function ($query)
+                {
+                    $query->select(Fields::get('services'));
+                }
+            ])->get(Fields::get('hotels'));
 
-        return view('app.services.index', compact('services'));
+        $hotels = $hotels->map(function ($hotel)
+        {
+            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->services = $hotel->services->map(function ($service)
+            {
+                $service->hotel_id = Hashids::encode($service->hotel_id);
+                $service->user_id = Hashids::encode($service->user_id);
+
+                return $service;
+            });
+
+            return $hotel;
+        });
+
+        return view('app.services.index', compact('hotels'));
     }
 
     /**
@@ -32,7 +54,17 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('app.services.create');
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->whereStatus(true)
+            ->get(Fields::get('hotels'));
+
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return back();
+        }
+
+        return view('app.services.create', compact('hotels'));
     }
 
     /**
@@ -47,6 +79,7 @@ class ServiceController extends Controller
         $service->description = $request->description;
         $service->price = (float) $request->price;
         $service->user()->associate(auth()->user()->id);
+        $service->hotel()->associate(Id::get($request->hotel));
 
         if ($service->save()) {
             flash(trans('common.createdSuccessfully'))->success();
@@ -69,9 +102,11 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id', 'created_at'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -90,9 +125,11 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id', 'created_at'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -112,9 +149,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id',
-            ]);
+            ->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -144,9 +179,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id', 'created_at'
-            ]);
+            ->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -190,9 +223,11 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'user_id', 'created_at'
-            ]);
+            ->with([
+                'hotel' => function($query) {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -200,38 +235,6 @@ class ServiceController extends Controller
 
         return view('app.services.increase', compact('service'));
     }
-
-    /**
-     * Increase the service's quantity in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function increase(Increaseservice $request, $id)
-    // {
-    //     $service = User::find(Id::parent(), ['id'])->services()
-    //         ->where('id', Id::get($id))
-    //         ->first([
-    //             'id', 'description', 'price', 'user_id', 'created_at'
-    //         ]);
-
-    //     if (empty($service)) {
-    //         abort(404);
-    //     }
-
-    //     $service->quantity += $request->quantity;
-
-    //     if ($service->update()) {
-    //         flash(trans('common.updatedSuccessfully'))->success();
-
-    //         return redirect()->route('services.index');
-    //     }
-
-    //     flash(trans('common.error'))->error();
-
-    //     return redirect()->route('services.index');
-    // }
 
     /**
      * Return price of resource.
@@ -267,9 +270,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'price', 'status', 'user_id', 'created_at'
-            ]);
+            ->first(Fields::get('services'));
 
         if (empty($service)) {
             return abort(404);
@@ -286,5 +287,36 @@ class ServiceController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect(url()->previous());
+    }
+
+    /**
+     * Return a rooms list by hotel ID.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listByHotel(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Input::clean($request->get('query', null));
+
+            $services = Service::where('hotel_id', Id::get($request->hotel))
+                ->whereLike('description', $query)
+                ->get(Fields::get('services'));
+
+            $services = $services->map(function ($service)
+            {
+                $service->hotel_id = Hashids::encode($service->hotel_id);
+                $service->user_id = Hashids::encode($service->user_id);
+
+                return $service;
+            });
+
+            return response()->json([
+                'services' => $services->toJson()
+            ]);
+        }
+
+        abort(404);
     }
 }

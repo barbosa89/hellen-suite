@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('services/list', 'ServiceController@listByHotel')
+		->name('services.list')
+		->middleware('permission:services.index');
+
     Route::post('services/calculate/total', 'ServiceController@total')
 		->name('services.total')
 		->middleware('permission:services.index');
