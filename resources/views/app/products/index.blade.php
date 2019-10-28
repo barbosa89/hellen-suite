@@ -18,16 +18,7 @@
             ]
         ])
 
-        <div class="row">
-            <div class="col-md-12">
-                @include('partials.list', [
-                    'data' => $products,
-                    'listHeading' => 'app.products.list-heading',
-                    'listRow' => 'app.products.list-row',
-                    'where' => null
-                ])
-            </div>
-        </div>
+        <product-list :hotels="{{ $hotels->toJson() }}"></product-list>
 
         @include('partials.modal-confirm')
     </div>

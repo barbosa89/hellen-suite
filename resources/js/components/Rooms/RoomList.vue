@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <div class="row mb-4">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 without-padding">
-                    <div class="form-group">
-                        <select name="hotel" id="hotel" class="form-control" v-model="selectedHotel" @change="updateRoomList">
-                            <option v-for="(hotel, index) in hotels" :key="hotel.hash" :selected="index === 0" :value="hotel.hash">
-                                {{ hotel.business_name }}
-                            </option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <select name="hotel" id="hotel" class="form-control" v-model="selectedHotel" @change="updateRoomList">
+                        <option v-for="(hotel, index) in hotels" :key="hotel.hash" :selected="index === 0" :value="hotel.hash">
+                            {{ hotel.business_name }}
+                        </option>
+                    </select>
+                </div>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="row">
@@ -269,7 +269,6 @@
 
                     window.location.href = response.data.redirect;
                 }).catch(e => {
-                    console.log(e);
                     toastr.error(
                         'Intenta más tarde otra vez',
                         'Error'

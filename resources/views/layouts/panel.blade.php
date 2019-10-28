@@ -54,10 +54,7 @@
         </main>
     </div>
 
-        <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/welkome.js') }}"></script>
-    @yield('scripts')
+    <!-- Scripts -->
     <script>
         @auth
             window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
@@ -65,5 +62,8 @@
             window.Permissions = [];
         @endauth
     </script>
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/welkome.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Carbon\Carbon;
 use App\Helpers\Id;
 use App\Welkome\Service;
 use Illuminate\Http\Request;

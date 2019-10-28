@@ -14,12 +14,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('room-list', require('./components/Room/RoomList.vue').default);
-
 import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
 import BootstrapVue from 'bootstrap-vue';
+
+Vue.component('product-list', require('./components/Products/ProductList.vue').default);
+Vue.component('room-list', require('./components/Rooms/RoomList.vue').default);
 
 Vue.mixin(Permissions);
 

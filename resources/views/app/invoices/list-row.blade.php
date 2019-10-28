@@ -61,12 +61,10 @@
                         'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
-                        'type' => 'hideable',
                         'option' => 'Vincular empresa',
                         'url' => route('invoices.companies.search', [
                             'id' => Hashids::encode($row->id)
-                        ]),
-                        'show' => empty($row->company) ? true : false
+                        ])
                     ],
                     [
                         'option' => trans('invoices.registerGuests'),

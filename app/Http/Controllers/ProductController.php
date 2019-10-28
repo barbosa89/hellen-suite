@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Fields;
 use App\User;
 use App\Helpers\Id;
+use App\Helpers\Fields;
+use App\Helpers\Input;
 use App\Welkome\Product;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{StoreProduct, UpdateProduct, IncreaseProduct};
 use App\Welkome\Hotel;
 
@@ -19,11 +21,30 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = User::find(Id::parent(), ['id'])
-            ->products()
-            ->paginate(config('welkome.paginate'), Fields::get('products'))->sort();
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->with([
+                'products' => function ($query)
+                {
+                    $query->select(Fields::get('products'));
+                }
+            ])->get(Fields::get('hotels'));
 
-        return view('app.products.index', compact('products'));
+        $hotels = $hotels->map(function ($hotel)
+        {
+            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->products = $hotel->products->map(function ($product)
+            {
+                $product->hotel_id = Hashids::encode($product->hotel_id);
+                $product->user_id = Hashids::encode($product->user_id);
+
+                return $product;
+            });
+
+            return $hotel;
+        });
+
+        return view('app.products.index', compact('hotels'));
     }
 
     /**
@@ -290,9 +311,7 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'description', 'brand', 'status', 'reference', 'price', 'user_id',
-            ]);
+            ->first(Fields::get('products'));
 
         if (empty($product)) {
             return abort(404);
@@ -309,5 +328,36 @@ class ProductController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect(url()->previous());
+    }
+
+    /**
+     * Return a rooms list by hotel ID.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listByHotel(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Input::clean($request->get('query', null));
+
+            $products = Product::where('hotel_id', Id::get($request->hotel))
+                ->whereLike(['description', 'brand', 'reference'], $query)
+                ->get(Fields::get('products'));
+
+            $products = $products->map(function ($product)
+            {
+                $product->hotel_id = Hashids::encode($product->hotel_id);
+                $product->user_id = Hashids::encode($product->user_id);
+
+                return $product;
+            });
+
+            return response()->json([
+                'products' => $products->toJson()
+            ]);
+        }
+
+        abort(404);
     }
 }
