@@ -62,7 +62,7 @@
                     ],
                     [
                         'type' => 'hideable',
-                        'option' => 'Agregar empresa',
+                        'option' => 'Vincular empresa',
                         'url' => route('invoices.companies.search', [
                             'id' => Hashids::encode($row->id)
                         ]),

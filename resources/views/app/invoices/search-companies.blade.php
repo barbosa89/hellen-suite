@@ -69,40 +69,52 @@
 @section('scripts')
     <script type="text/javascript">
         function search (str) {
-            const url = '{{ url('companies/search') }}';
-            const uri = "?query=" + str + "&format=rendered&template=invoices";
+            const url = '{{ url('companies/search') }}'
+            const uri = "?query=" + str + "&format=rendered&template=invoices"
 
             if (str.length == 0) {
                 $('#list').hide();
-                $('#item-search').empty();
+                $('#item-search').empty()
             }
 
             if (str.length >= 3) {
-                $.get(url + uri, function (data, status) {
-                    console.log(data);
-                    let companies = data.companies;
-                    if (companies.length) {
-                        $('#item-search').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: url + uri,
+                    data: {
+                        query: str
+                    },
+                    success: function(result) {
+                        let companies = Array.from(result.companies);
+                        if (companies.length) {
+                            $('#item-search').empty()
 
-                        for (let index = 0; index < companies.length; index++) {
-                            $('#item-search').append($(companies[index]));
+                            for (let index = 0; index < companies.length; index++) {
+                                $('#item-search').append($(companies[index]));
+                            }
+
+                            $('#list').show();
                         }
-
-                        $('#list').show();
+                    },
+                    error: function(xhr){
+                        toastr.error(
+                            'Ha ocurrido un error',
+                            'Error'
+                        )
                     }
-                });
+                })
             }
         }
 
 
         function add(el, e) {
-            e.preventDefault();
+            e.preventDefault()
 
-            const invoice = $('#invoice').data('id');
-            const company = el.dataset.value;
-            const url = '/invoices/'+ invoice +'/companies/' + company;
+            const invoice = $('#invoice').data('id')
+            const company = el.dataset.value
+            const url = '/invoices/'+ invoice +'/companies/' + company
 
-            window.location.replace(url);
+            window.location.replace(url)
         }
     </script>
 @endsection

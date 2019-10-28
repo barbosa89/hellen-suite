@@ -153,7 +153,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('destination') ? ' has-error' : '' }}">
-                <label for="destination">Profesión:</label>
+                <label for="destination">Destino:</label>
                 <input type="text" class="form-control" name="destination" id="destination" value="{{ old('destination') }}">
 
                 @if ($errors->has('destination'))
