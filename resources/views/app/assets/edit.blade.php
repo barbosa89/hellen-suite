@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('asset', $asset) }}
+@endsection
 
 @section('content')
 
@@ -20,10 +24,10 @@
                 <form action="{{ route('assets.update', ['asset' => Hashids::encode($asset->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
-                    
+
                     <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
                         <label for="number">@lang('common.number'):</label>
-                        <input type="text" class="form-control" name="number" id="number" value="{{ $asset->number }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
+                        <input type="text" class="form-control" name="number" id="number" value="{{ $asset->number }}" readonly maxlength="191" placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('number'))
                             <span class="help-block">
@@ -63,7 +67,7 @@
                                 <strong>{{ $errors->first('model') }}</strong>
                             </span>
                         @endif
-                    </div> 
+                    </div>
 
                     <div class="form-group{{ $errors->has('reference') ? ' has-error' : '' }}">
                         <label for="reference">@lang('common.reference'):</label>
@@ -74,8 +78,8 @@
                                 <strong>{{ $errors->first('reference') }}</strong>
                             </span>
                         @endif
-                    </div> 
-                    
+                    </div>
+
                     <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
                         <label for="location">@lang('common.location'):</label>
                         <input type="text" class="form-control" name="location" id="location" value="{{ $asset->location }}" maxlength="50">
@@ -85,17 +89,38 @@
                                 <strong>{{ $errors->first('location') }}</strong>
                             </span>
                         @endif
-                    </div> 
+                    </div>
 
-                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('common.assign'):</label>
-                        <select class="form-control selectpicker" title="Opcional" name="room" id="room">
-                            <option value="{{ Hashids::encode($asset->rooms->first()->id) }}" selected>
-                                {{ $asset->rooms->first()->number . '-' . $asset->rooms->first()->description }}
-                            </option>
-                            
-                            @foreach($rooms as $room)
-                                <option value="{{ Hashids::encode($room->id) }}">{{ $room->number . '-' . $room->description }}</option>
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
+                            <option value="{{ Hashids::encode($asset->hotel->id) }}" selected>{{ $asset->hotel->business_name }}</option>
+
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list">
+                        <label for="pwd">{{ trans('rooms.room') }} No.:</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
+                            @if (!empty($asset->room))
+                                <option value="{{ Hashids::encode($asset->room->id) }}" selected>
+                                    {{ $asset->room->number }}
+                                </option>
+                            @endif
+
+                            @foreach($asset->hotel->rooms as $room)
+                                <option value="{{ Hashids::encode($room->id) }}">
+                                    {{ $room->number }}
+                                </option>
                             @endforeach
                         </select>
 
@@ -107,7 +132,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                </form> 
+                </form>
             </div>
         </div>
 

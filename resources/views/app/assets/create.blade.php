@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.panel')
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('assets') }}
+@endsection
 
 @section('content')
 
@@ -62,7 +66,7 @@
                                 <strong>{{ $errors->first('model') }}</strong>
                             </span>
                         @endif
-                    </div> 
+                    </div>
 
                     <div class="form-group{{ $errors->has('reference') ? ' has-error' : '' }}">
                         <label for="reference">@lang('common.reference'):</label>
@@ -73,24 +77,28 @@
                                 <strong>{{ $errors->first('reference') }}</strong>
                             </span>
                         @endif
-                    </div> 
-                    
-                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
-                        <label for="location">@lang('common.location'):</label>
-                        <input type="text" class="form-control" name="location" id="location" value="{{ old('location') }}" maxlength="50">
+                    </div>
 
-                        @if ($errors->has('location'))
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('location') }}</strong>
+                                <strong>{{ $errors->first('hotel') }}</strong>
                             </span>
                         @endif
-                    </div> 
+                    </div>
 
-                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('common.assign'):</label>
-                        <select class="form-control selectpicker" title="Opcional" name="room" id="room">
-                            @foreach($rooms as $room)
-                                <option value="{{ Hashids::encode($room->id) }}">{{ $room->number . '-' . $room->description }}</option>
+                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list">
+                        <label for="pwd">@lang('rooms.room') No.:</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
+                            @foreach($hotels->first()->rooms as $room)
+                                <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
                             @endforeach
                         </select>
 
@@ -101,8 +109,22 @@
                         @endif
                     </div>
 
+                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
+                        <label for="location">@lang('common.location'):</label>
+                        <input type="text" class="form-control" name="location" id="location" value="{{ old('location') }}" maxlength="50" placeholder="{{ trans('common.optional') }}">
+
+                        @if ($errors->has('location'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('location') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                </form> 
+                    <a href="{{ route('assets.index') }}" class="btn btn-linl">
+                        @lang('common.back')
+                    </a>
+                </form>
             </div>
         </div>
 

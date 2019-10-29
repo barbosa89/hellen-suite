@@ -40,7 +40,7 @@ class Room extends Model
 
     public function assets()
     {
-        return $this->belongsToMany(\App\Welkome\Asset::class);
+        return $this->hasMany(\App\Welkome\Asset::class);
     }
 
     public function products()

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="row mb-4">
-            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <!-- <div class="row mb-2 mt-4">
+            <div class="col">
                 <div class="form-group">
                     <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updateProductList">
                         <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
@@ -10,17 +10,38 @@
                     </select>
                 </div>
             </div>
-            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="input-group">
-                    <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
-                    <div class="input-group-append">
-                        <button class="input-group-text" id="btnGroupAddon">
-                            <i class="fa fa-search"></i>
-                        </button>
+        </div> -->
+
+        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
+            <a href="/products" class="navbar-brand text-muted">
+                Productos
+            </a>
+            <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarNavDropdown" class="collapse navbar-collapse">
+                <form class="form-inline my-2 my-lg-0" method="get">
+                    <select name="hotel" id="hotel" class="form-control mr-md-2 mr-lg-2 mr-xl-2" v-model="hotel" @change="updateProductList">
+                        <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
+                            {{ hotel.business_name }}
+                        </option>
+                    </select>
+
+                    <div class="input-group mt-2 mt-md-0 mt-lg-0 mt-xl-0">
+                        <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
                     </div>
-                </div>
+                </form>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/products/create" class="nav-link">
+                            Nuevo
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
+
         <div class="crud-list">
             <div class="crud-list-heading mt-2">
                 <div class="row">

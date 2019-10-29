@@ -22,6 +22,10 @@ class CreateAssetsTable extends Migration
             $table->string('reference', 100)->nullable();
             $table->string('location')->nullable();
 
+            $table->bigInteger('room_id')->unsigned()->nullable();
+            $table->foreign('room_id')->references('id')
+                ->on('rooms')->onDelete('cascade')->onUpdate('cascade');
+
             $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');

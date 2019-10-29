@@ -7,7 +7,7 @@
 @section('content')
 
     <div id="page-wrapper">
-        @include('partials.page-header', [
+        {{-- @include('partials.page-header', [
             'title' => trans('products.title'),
             'url' => route('products.index'),
             'options' => [
@@ -16,7 +16,7 @@
                     'url' => route('products.create')
                 ],
             ]
-        ])
+        ]) --}}
 
         <product-list :hotels="{{ $hotels->toJson() }}"></product-list>
 

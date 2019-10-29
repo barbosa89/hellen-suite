@@ -118,6 +118,19 @@ return [
             'created_at',
             'updated_at',
             'email_verified_at'
+        ],
+        'assets' => [
+            'id',
+            'number',
+            'description',
+            'brand',
+            'model',
+            'reference',
+            'location',
+            'user_id',
+            'created_at',
+            'hotel_id',
+            'room_id'
         ]
     ],
 

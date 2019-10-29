@@ -313,7 +313,7 @@ class RoomController extends Controller
     {
         if ($request->ajax()) {
             $rooms = Room::where('hotel_id', Id::get($request->hotel))
-                ->where('status', '1') // It is free
+                // ->where('status', '1') // It is free
                 ->get(Fields::get('rooms'));
 
             $rooms = $rooms->map(function ($room, $index)

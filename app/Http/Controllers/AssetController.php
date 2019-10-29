@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Fields;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Room;
 use App\Welkome\Asset;
 use Illuminate\Http\Request;
 use App\Http\Requests\{StoreAsset, UpdateAsset};
+use App\Welkome\Hotel;
 
 class AssetController extends Controller
 {
@@ -18,10 +20,9 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $assets = User::find(auth()->user()->id)->assets()
-            ->paginate(config('welkome.paginate'), [
-                'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id', 'created_at'
-            ])->sortByDesc('created_at');
+        $assets = User::find(Id::parent(), ['id'])->assets()
+            ->paginate(config('welkome.paginate'), Fields::get('assets'))
+            ->sortByDesc('created_at');
 
         return view('app.assets.index', compact('assets'));
     }
@@ -33,10 +34,33 @@ class AssetController extends Controller
      */
     public function create()
     {
-        $rooms = Room::doesntHave('assets')
-            ->get(['id', 'number', 'description']);
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query)
+                {
+                    $query->select(Fields::get('rooms'));
+                }
+            ])->get(Fields::get('hotels'));
 
-        return view('app.assets.create', compact('rooms'));
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('assets.index');
+        }
+
+        $rooms = $hotels->sum(function ($hotel)
+        {
+            return $hotel->rooms()->count();
+        });
+
+        if($rooms == 0) {
+            flash('No hay habitaciones creadas')->info();
+
+            return redirect()->route('assets.index');
+        }
+
+        return view('app.assets.create', compact('hotels'));
     }
 
     /**
@@ -50,15 +74,29 @@ class AssetController extends Controller
         $asset = new Asset();
         $asset->number = $request->number;
         $asset->description = $request->description;
-        $asset->brand = $request->brand;
-        $asset->model = $request->model;
-        $asset->reference = $request->reference;
-        $asset->location = $request->location;
-        $asset->user()->associate(auth()->user()->id);
+        $asset->brand = $request->get('brand', null);
+        $asset->model = $request->get('model', null);
+        $asset->reference = $request->get('reference', null);
+        $asset->location = $request->get('location', null);
+        $asset->user()->associate(Id::parent());
+        $asset->hotel()->associate(Id::get($request->hotel));
+
+        if (!empty($request->get('room', null))) {
+            $room = Room::where('id', Id::get($request->room))
+                ->where('hotel_id', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
+                ->first(['id']);
+
+            if (empty($room)) {
+                flash('La habitación seleccionada no corresponde al hotel')->error();
+
+                return back();
+            }
+
+            $asset->room()->associate($room->id);
+        }
 
         if ($asset->save()) {
-            $asset->rooms()->attach(Id::get($request->room));
-
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('assets.index');
@@ -77,19 +115,20 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        $asset = User::find(auth()->user()->id)->assets()
+        $asset = User::find(Id::parent(), ['id'])->assets()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id'
-            ]);
+            ->first(Fields::get('assets'));
 
         if (empty($asset)) {
             abort(404);
         }
 
         $asset->load([
-            'rooms' => function ($query) {
-                $query->select('id', 'number', 'description');
+            'room' => function ($query) {
+                $query->select('id', 'number');
+            },
+            'hotel' => function ($query) {
+                $query->select('id', 'business_name');
             }
         ]);
 
@@ -104,26 +143,32 @@ class AssetController extends Controller
      */
     public function edit($id)
     {
-        $asset = User::find(auth()->user()->id)->assets()
+        $asset = User::find(Id::parent(), ['id'])->assets()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id'
-            ]);
+            ->first(Fields::get('assets'));
 
         if (empty($asset)) {
             abort(404);
         }
 
         $asset->load([
-            'rooms' => function ($query) {
-                $query->select('id', 'number', 'description');
-            }
+            'room' => function ($query) {
+                $query->select('id', 'number');
+            },
+            'hotel' => function ($query) {
+                $query->select('id', 'business_name');
+            },
+            'hotel.rooms' => function ($query) {
+                $query->select('id', 'number', 'hotel_id');
+            },
         ]);
 
-        $rooms = Room::doesntHave('assets')
-            ->get(['id', 'number', 'description']);
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->where('id', '!=', $asset->hotel->id)
+            ->where('status', true)
+            ->get(Fields::get('hotels'));
 
-        return view('app.assets.edit', compact('asset', 'rooms'));
+        return view('app.assets.edit', compact('asset', 'hotels'));
     }
 
     /**
@@ -135,27 +180,38 @@ class AssetController extends Controller
      */
     public function update(UpdateAsset $request, $id)
     {
-        $asset = User::find(auth()->user()->id)->assets()
+        $asset = User::find(Id::parent(), ['id'])->assets()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id'
-            ]);
+            ->where('hotel_id', Id::get($request->hotel))
+            ->first(Fields::get('assets'));
 
         if (empty($asset)) {
             abort(404);
         }
 
-        $asset->number = $request->number;
         $asset->description = $request->description;
-        $asset->brand = $request->brand;
-        $asset->model = $request->model;
-        $asset->reference = $request->reference;
-        $asset->location = $request->location;
+        $asset->brand = $request->get('brand', null);
+        $asset->model = $request->get('model', null);
+        $asset->reference = $request->get('reference', null);
+        $asset->location = $request->get('location', null);
+        $asset->hotel()->associate(Id::get($request->hotel));
+
+        if (!empty($request->get('room', null))) {
+            $room = Room::where('id', Id::get($request->room))
+                ->where('hotel_id', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
+                ->first(['id']);
+
+            if (empty($room)) {
+                flash('La habitación seleccionada no corresponde al hotel')->error();
+
+                return back();
+            }
+
+            $asset->room()->associate($room->id);
+        }
 
         if ($asset->update()) {
-            $asset->rooms()->sync([]);
-            $asset->rooms()->attach(Id::get($request->room));
-            
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('assets.index');
@@ -174,7 +230,7 @@ class AssetController extends Controller
      */
     public function destroy($id)
     {
-        $asset = User::find(auth()->user()->id)->assets()
+        $asset = User::find(Id::parent(), ['id'])->assets()
             ->where('id', Id::get($id))
             ->first([
                 'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id'

@@ -182,3 +182,47 @@ $("#tax_status").on('change', function(e) {
 //         }
 //     });
 // });
+
+
+function listRoomsByHotel(el) {
+    $.ajax({
+        type: 'POST',
+        url: '/rooms/list',
+        data: {
+            hotel: el.value
+        },
+        success: function(result) {
+            var rooms = JSON.parse(result.rooms);
+            $('#room').empty();
+
+            if (rooms.length) {
+                if ($("#room-list").is(':hidden')) {
+                    $("#room-list").fadeIn();
+                }
+
+                var newOptions = [];
+                rooms.forEach(function(room) {
+                    newOptions.push("<option value=" + room.hash + ">" + room.number + "</option>");
+                });
+
+                $("#room").html(newOptions);
+                $("#room").selectpicker('refresh');
+            } else {
+                toastr.info(
+                    'El hotel seleccionado no tiene habitaciones',
+                    'Sin habitaciones'
+                );
+
+                if ($("#room-list").is(':visible')) {
+                    $("#room-list").fadeOut();
+                }
+            }
+        },
+        error: function(xhr) {
+            toastr.error(
+                'Ha ocurrido un error',
+                'Error'
+            );
+        }
+    });
+}

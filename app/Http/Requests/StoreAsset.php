@@ -24,13 +24,14 @@ class StoreAsset extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'required|string|max:20|unique:assets,number',
+            'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id',
             'description' => 'required|string|max:191',
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',
             'reference' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:50',
-            'room' => 'nullable|string',
+            'room' => 'nullable|string|hashed_exists:rooms,id',
+            'hotel' => 'required|string|hashed_exists:hotels,id',
         ];
     }
 }

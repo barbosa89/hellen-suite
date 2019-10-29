@@ -9,10 +9,9 @@ class Asset extends Model
 {
     use LogsActivity;
 
-    // TODO: Revisar esta relación
-    public function rooms()
+    public function room()
     {
-        return $this->belongsToMany(\App\Welkome\Room::class);
+        return $this->belongsTo(\App\Welkome\Room::class);
     }
 
     public function user()
