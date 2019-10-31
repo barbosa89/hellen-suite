@@ -70,7 +70,7 @@
                                     {{ service.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
                                 </a>
                                 <a href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                Eliminar
+                                    Eliminar
                                 </a>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ export default {
                 this.updateServiceList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/services/list', {
+                    axios.post('/services/search', {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {

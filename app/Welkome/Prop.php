@@ -8,6 +8,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Prop extends Model
 {
+    use LogsActivity;
+
     /**
      * The accessors to append to the model's array form.
      *

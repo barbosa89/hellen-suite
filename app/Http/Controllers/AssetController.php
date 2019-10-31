@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Fields;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Room;
 use App\Welkome\Asset;
-use Illuminate\Http\Request;
-use App\Http\Requests\{StoreAsset, UpdateAsset};
 use App\Welkome\Hotel;
+use App\Helpers\Fields;
+use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
+use App\Http\Requests\{StoreAsset, UpdateAsset};
 
 class AssetController extends Controller
 {
@@ -20,11 +21,31 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $assets = User::find(Id::parent(), ['id'])->assets()
-            ->paginate(config('welkome.paginate'), Fields::get('assets'))
-            ->sortByDesc('created_at');
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->with([
+                'assets' => function ($query)
+                {
+                    $query->select(Fields::get('assets'));
+                }
+            ])->get(Fields::get('hotels'));
 
-        return view('app.assets.index', compact('assets'));
+        $hotels = $hotels->map(function ($hotel)
+        {
+            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->assets = $hotel->assets->map(function ($asset)
+            {
+                $asset->hotel_id = Hashids::encode($asset->hotel_id);
+                $asset->user_id = Hashids::encode($asset->user_id);
+                $asset->room_id = Hashids::encode($asset->room_id);
+
+                return $asset;
+            });
+
+            return $hotel;
+        });
+
+        return view('app.assets.index', compact('hotels'));
     }
 
     /**
@@ -251,5 +272,36 @@ class AssetController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('assets.index');
+    }
+
+    /**
+     * Return a rooms list by hotel ID.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        // if ($request->ajax()) {
+        //     $query = Input::clean($request->get('query', null));
+
+        //     $products = Product::where('hotel_id', Id::get($request->hotel))
+        //         ->whereLike(['description', 'brand', 'reference'], $query)
+        //         ->get(Fields::get('products'));
+
+        //     $products = $products->map(function ($product)
+        //     {
+        //         $product->hotel_id = Hashids::encode($product->hotel_id);
+        //         $product->user_id = Hashids::encode($product->user_id);
+
+        //         return $product;
+        //     });
+
+        //     return response()->json([
+        //         'products' => $products->toJson()
+        //     ]);
+        // }
+
+        // abort(404);
     }
 }

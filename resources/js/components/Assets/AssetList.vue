@@ -24,39 +24,53 @@
         <div class="crud-list">
             <div class="crud-list-heading mt-2">
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+                        <h5>Número</h5>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
                         <h5>Descripción</h5>
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Precio</h5>
+                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
+                        <h5>Marca</h5>
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Estado</h5>
+                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
+                        <h5>Modelo</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 visible-md visible-lg">
                         <h5>Opciones</h5>
                     </div>
                 </div>
             </div>
-            <div class="crud-list-items" v-if="services.length != 0">
-                <div class="crud-list-row" v-for="service in services" :key="service.hash">
+            <div class="crud-list-items" v-if="assets.length != 0">
+                <div class="crud-list-row" v-for="asset in assets" :key="asset.hash">
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 align-self-center">
+                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <p>
-                            <a :href="'/services/' + service.hash">
-                                {{ service.description }}
+                            <a :href="'/assets/' + asset.hash">
+                                {{ asset.number }}
                             </a>
                         </p>
                         </div>
-                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                        <p>
-                            <a :href="'/services/' + service.hash">
-                                {{ service.price }}
-                            </a>
-                        </p>
+                        <div class="col-xs-12 col-sm-2 col-md-4 col-lg-4 align-self-center">
+                            <p>
+                                <a :href="'/assets/' + asset.hash">
+                                    {{ asset.description }}
+                                </a>
+                            </p>
                         </div>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                        <p class="text-primary"><i class="fas" :class="service.status == '1' ? 'fa-check' : 'fa-times-circle'"></i></p>
+                            <p>
+                                <a :href="'/assets/' + asset.hash">
+                                    {{ asset.brand || 'Sin datos' }}
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                            <p>
+                                <a :href="'/assets/' + asset.hash">
+                                    {{ asset.model || 'Sin datos' }}
+                                </a>
+                            </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
@@ -65,12 +79,11 @@
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a :href="'/services/' + service.hash + '/edit'" class="dropdown-item">Editar</a>
-                                <a :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
-                                    {{ service.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
+                                <a :href="'/assets/' + asset.hash + '/edit'" class="dropdown-item">
+                                    Editar
                                 </a>
-                                <a href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                Eliminar
+                                <a href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                    Eliminar
                                 </a>
                             </div>
                         </div>
@@ -97,14 +110,14 @@ export default {
     mounted() {
         if (this.hotels.length > 0) {
             this.hotel = _.first(this.hotels).hash
-            this.services = _.first(this.hotels).services
+            this.assets = _.first(this.hotels).assets
         }
     },
     props: ['hotels'],
     data() {
         return {
             hotel: null,
-            services: [],
+            assets: [],
             query: ''
         }
     },
@@ -112,7 +125,7 @@ export default {
         updateServiceList() {
             _.map(this.hotels, (headquarter) => {
                 if (headquarter.hash == this.hotel) {
-                    this.services = headquarter.services
+                    this.assets = headquarter.assets
                     this.query = ''
                 }
             })
@@ -124,16 +137,16 @@ export default {
                 this.updateServiceList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/services/list', {
+                    axios.post('/assets/search', {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {
-                        let services = JSON.parse(response.data.services);
+                        let assets = JSON.parse(response.data.assets);
 
-                        if (services.length > 0) {
-                            this.services = services
+                        if (assets.length > 0) {
+                            this.assets = assets
                         } else {
-                            this.services = []
+                            this.assets = []
 
                             toastr.info(
                                 'La búsqueda no arrojó resultados',

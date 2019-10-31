@@ -295,7 +295,7 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function listByHotel(Request $request)
+    public function search(Request $request)
     {
         if ($request->ajax()) {
             $query = Input::clean($request->get('query', null));

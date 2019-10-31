@@ -73,27 +73,37 @@
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center dont-break-out">
                             <p>
-                                <a :href="'/products/' + product.hash">{{ product.description }}</a>
+                                <a :href="'/products/' + product.hash">
+                                    {{ product.description }}
+                                </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">Postobón</a>
+                                <a :href="'/products/' + product.hash">
+                                    {{ product.brand || 'Sin datos' }}
+                                </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">123</a>
+                                <a :href="'/products/' + product.hash">
+                                    {{ product.reference || 'Sin datos' }}
+                                </a>
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">2.000,00</a>
+                                <a :href="'/products/' + product.hash">
+                                    {{ product.price }}
+                                </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">54</a>
+                                <a :href="'/products/' + product.hash">
+                                    {{ product.quantity }}
+                                </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
@@ -191,7 +201,7 @@ export default {
                 this.updateProductList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/products/list', {
+                    axios.post('/products/search', {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {

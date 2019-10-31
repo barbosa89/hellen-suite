@@ -66,9 +66,6 @@
 
                                 <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
                                     <a :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">Editar</a>
-                                    <a :href="'/props/' + prop.hash + '/toggle'" class="dropdown-item">
-                                        {{ prop.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
-                                    </a>
                                     <a href="#" :data-url="'/props/' + prop.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
                                     Eliminar
                                     </a>
@@ -124,7 +121,7 @@ export default {
                 this.updateServiceList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/props/list', {
+                    axios.post('/props/search', {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {
