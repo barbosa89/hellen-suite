@@ -213,6 +213,8 @@ function listRoomsByHotel(el) {
                     'Sin habitaciones'
                 );
 
+                $('#room').val('');
+
                 if ($("#room-list").is(':visible')) {
                     $("#room-list").fadeOut();
                 }
@@ -226,3 +228,17 @@ function listRoomsByHotel(el) {
         }
     });
 }
+
+$('#remove-room').click(function() {
+    options = [];
+    $("#room").children().each(function(index, item) {
+        item.removeAttribute('selected');
+
+        if (index > 0) {
+            options.push(item);
+        }
+    });
+
+    $("#room").html(options);
+    $("#room").selectpicker('refresh');
+});

@@ -117,7 +117,7 @@
                                 </option>
                             @endif
 
-                            @foreach($asset->hotel->rooms as $room)
+                            @foreach($asset->hotel->rooms->where('id', '!=', $asset->room->id ?? null) as $room)
                                 <option value="{{ Hashids::encode($room->id) }}">
                                     {{ $room->number }}
                                 </option>
@@ -132,6 +132,10 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.update')</button>
+                    <button type="button" class="btn btn-default" id="remove-room">Quitar habitación</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-default">
+                        @lang('common.back')
+                    </a>
                 </form>
             </div>
         </div>

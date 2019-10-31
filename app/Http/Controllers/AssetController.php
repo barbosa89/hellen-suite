@@ -196,7 +196,9 @@ class AssetController extends Controller
         $asset->location = $request->get('location', null);
         $asset->hotel()->associate(Id::get($request->hotel));
 
-        if (!empty($request->get('room', null))) {
+        if (empty($request->get('room', null))) {
+            $asset->room()->dissociate();
+        } else {
             $room = Room::where('id', Id::get($request->room))
                 ->where('hotel_id', Id::get($request->hotel))
                 ->where('user_id', Id::parent())
@@ -214,7 +216,9 @@ class AssetController extends Controller
         if ($asset->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('assets.index');
+            return redirect()->route('assets.show', [
+                'id' => Hashids::encode($asset->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();

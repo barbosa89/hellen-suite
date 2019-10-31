@@ -121,7 +121,8 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ route('assets.index') }}" class="btn btn-linl">
+                    <button type="button" class="btn btn-default" id="remove-room">Quitar habitación</button>
+                    <a href="{{ route('assets.index') }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
                 </form>

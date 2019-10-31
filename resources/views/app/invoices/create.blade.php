@@ -193,7 +193,7 @@
             }
 
             if (date.getDate() > 8) {
-                var day = date.getDate() + 1
+                var day = date.getDate()
             } else {
                 var day = '0' + date.getDate()
             }

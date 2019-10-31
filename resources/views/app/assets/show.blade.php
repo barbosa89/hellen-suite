@@ -94,10 +94,10 @@
                             <div class="crud-list-row">
                                 <div class="row">
                                     <div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
-                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->number }}</a></p>
+                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->id)]) }}">{{ $asset->number }}</a></p>
                                     </div>
                                     <div class="col-xs-9 col-sm-8 col-md-8 col-lg-8">
-                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($row->id)]) }}">{{ $row->description }}</a></p>
+                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->id)]) }}">{{ $asset->description }}</a></p>
                                     </div>
                                 </div>
                             </div>
