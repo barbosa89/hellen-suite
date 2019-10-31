@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('props/list', 'PropController@listByHotel')
+		->name('props.list')
+		->middleware('permission:props.index');
+
 	Route::delete('props/{id}', 'PropController@destroy')
 		->name('props.destroy')
 		->middleware('permission:props.destroy');

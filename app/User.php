@@ -107,6 +107,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Welkome\Company::class);
     }
 
+    public function props()
+    {
+        return $this->hasMany(Welkome\Prop::class);
+    }
+
     // public function matchRole(string $role = '')
     // {
     //     $this->whereHas('roles', function ($query) use ($role)

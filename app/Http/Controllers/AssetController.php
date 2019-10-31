@@ -236,9 +236,7 @@ class AssetController extends Controller
     {
         $asset = User::find(Id::parent(), ['id'])->assets()
             ->where('id', Id::get($id))
-            ->first([
-                'id', 'number', 'description', 'brand', 'model', 'reference', 'location', 'user_id'
-            ]);
+            ->first(['id']);
 
         if (empty($asset)) {
             abort(404);

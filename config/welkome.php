@@ -131,6 +131,14 @@ return [
             'created_at',
             'hotel_id',
             'room_id'
+        ],
+        'props' => [
+            'id',
+            'description',
+            'quantity',
+            'status',
+            'hotel_id',
+            'user_id'
         ]
     ],
 

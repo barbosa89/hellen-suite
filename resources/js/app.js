@@ -21,6 +21,7 @@ import BootstrapVue from 'bootstrap-vue';
 Vue.component('service-list', require('./components/Services/ServiceList.vue').default);
 Vue.component('product-list', require('./components/Products/ProductList.vue').default);
 Vue.component('room-list', require('./components/Rooms/RoomList.vue').default);
+Vue.component('prop-list', require('./components/Props/PropList.vue').default);
 
 Vue.mixin(Permissions);
 
