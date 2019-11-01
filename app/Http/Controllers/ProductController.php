@@ -342,6 +342,7 @@ class ProductController extends Controller
             $query = Input::clean($request->get('query', null));
 
             $products = Product::where('hotel_id', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
                 ->whereLike(['description', 'brand', 'reference'], $query)
                 ->get(Fields::get('products'));
 

@@ -1,7 +1,15 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-    Route::post('props/search', 'PropController@search')
+	Route::post('props/transactions', 'PropController@transactions')
+		->name('props.transactions')
+		->middleware('permission:props.edit');
+
+	Route::get('props/transactions', 'PropController@showTransactionsForm')
+		->name('props.transactions.form')
+		->middleware('permission:props.edit');
+
+	Route::post('props/search', 'PropController@search')
 		->name('props.search')
 		->middleware('permission:props.index');
 

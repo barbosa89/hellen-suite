@@ -111,3 +111,8 @@ Breadcrumbs::for('prop', function ($trail, $prop) {
     $trail->parent('props');
     $trail->push($prop->description, route('props.show', ['id' => Hashids::encode($prop->id)]));
 });
+
+Breadcrumbs::for('replicate prop', function ($trail) {
+    $trail->parent('props');
+    $trail->push('Replicar', route('props.index'));
+});

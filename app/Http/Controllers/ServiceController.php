@@ -301,6 +301,7 @@ class ServiceController extends Controller
             $query = Input::clean($request->get('query', null));
 
             $services = Service::where('hotel_id', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
                 ->whereLike('description', $query)
                 ->get(Fields::get('services'));
 

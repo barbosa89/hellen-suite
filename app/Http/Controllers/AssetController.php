@@ -287,6 +287,7 @@ class AssetController extends Controller
             $query = Input::clean($request->get('query', null));
 
             $assets = Asset::where('hotel_id', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
                 ->whereLike(['number', 'description', 'brand', 'model', 'reference', 'location'], $query)
                 ->get(Fields::get('assets'));
 

@@ -3,7 +3,7 @@
         <div class="row mb-4">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="form-group">
-                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updateServiceList">
+                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updateAssetList">
                         <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
                             {{ hotel.business_name }}
                         </option>
@@ -122,7 +122,7 @@ export default {
         }
     },
     methods: {
-        updateServiceList() {
+        updateAssetList() {
             _.map(this.hotels, (headquarter) => {
                 if (headquarter.hash == this.hotel) {
                     this.assets = headquarter.assets
@@ -134,7 +134,7 @@ export default {
     watch: {
         query: function(current, old) {
             if (current.length == 0 || this.query.length == 0) {
-                this.updateServiceList()
+                this.updateAssetList()
             } else {
                 if (current.length >= 3) {
                     axios.post('/assets/search', {
@@ -154,10 +154,6 @@ export default {
                             );
                         }
                     }).catch(e => {
-                        console.log(e);
-                        // console.log(e.response.status);
-                        // console.log(e.response.headers);
-                        
                         toastr.error(
                             'Intenta más tarde otra vez',
                             'Error'

@@ -244,4 +244,25 @@ class HotelController extends Controller
 
         return redirect(url()->previous());
     }
+
+    /**
+     * Return a hotels list different to ID received.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getDifferentTo(Request $request)
+    {
+        if ($request->ajax()) {
+            $hotels = Hotel::where('id', '!=', Id::get($request->hotel))
+                ->where('user_id', Id::parent())
+                ->get(['id', 'business_name']);
+
+            return response()->json([
+                'hotels' => $hotels->toJson()
+            ]);
+        }
+
+        abort(404);
+    }
 }

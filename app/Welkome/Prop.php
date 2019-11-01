@@ -11,6 +11,15 @@ class Prop extends Model
     use LogsActivity;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'description', 'quantity', 'status', 'hotel_id', 'user_ud'
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array

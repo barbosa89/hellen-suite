@@ -3,7 +3,7 @@
         <div class="row mb-4">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="form-group">
-                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updateServiceList">
+                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updatePropList">
                         <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
                             {{ hotel.business_name }}
                         </option>
@@ -100,7 +100,7 @@ export default {
         }
     },
     methods: {
-        updateServiceList() {
+        updatePropList() {
             _.map(this.hotels, (headquarter) => {
                 if (headquarter.hash == this.hotel) {
                     this.props = headquarter.props

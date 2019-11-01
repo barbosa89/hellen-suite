@@ -1,6 +1,9 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'role:manager', 'verified']], function() {
+	Route::post('hotels/different', 'HotelController@getDifferentTo')
+		->name('hotels.different');
+
     Route::get('hotels/search', 'HotelController@search')
 		->name('hotels.search');
 

@@ -4,7 +4,6 @@
     {{ Breadcrumbs::render('props') }}
 @endsection
 
-
 @section('content')
 
     <div id="page-wrapper">
@@ -13,19 +12,23 @@
             'url' => route('props.index'),
             'options' => [
                 [
-                    'option' => 'Transacciones',
-                    'url' => route('props.transactions.form')
-                ],
-                [
                     'option' => trans('common.new'),
                     'url' => route('props.create')
                 ],
+                [
+                    'option' => trans('common.back'),
+                    'url' => route('props.index')
+                ]
             ]
         ])
 
-        <prop-list :hotels="{{ $hotels->toJson() }}"></prop-list>
+        <prop-transactions :hotels="{{ $hotels->toJson() }}"></prop-transactions>
 
-        @include('partials.modal-confirm')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spacer-md"></div>
+            </div>
+        </div>
     </div>
 
 @endsection

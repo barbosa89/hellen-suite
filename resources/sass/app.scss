@@ -28,6 +28,10 @@ $text-default: white;
     padding: 0 !important;
 }
 
+.without-border {
+    border: none !important;
+}
+
 .one-edge-shadow {
     box-shadow: 0 8px 6px -6px black;
 }
@@ -124,7 +128,7 @@ $text-default: white;
     }
     .crud-list-items {
         .crud-list-row {
-            padding: 10px 0 0 0;
+            padding: 6px 0 6px 0;
             border-top: solid 1px $borderTable;
             p {
                 font-size: 13px;
