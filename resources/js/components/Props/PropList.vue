@@ -27,11 +27,8 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <h5>Descripción</h5>
                     </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                         <h5>Cantidad</h5>
-                    </div>
-                    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Estado</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                         <h5>Opciones</h5>
@@ -48,14 +45,9 @@
                                 </a>
                             </p>
                         </div>
-                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 align-self-center">
                             <p class="text-primary">
                                 {{ prop.quantity }}
-                            </p>
-                        </div>
-                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                            <p class="text-primary">
-                                <i class="fas" :class="prop.status == '1' ? 'fa-check' : 'fa-times-circle'"></i>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
@@ -65,9 +57,11 @@
                                 </button>
 
                                 <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                    <a :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">Editar</a>
+                                    <a :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">
+                                        Editar
+                                    </a>
                                     <a href="#" :data-url="'/props/' + prop.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    Eliminar
+                                        Eliminar
                                     </a>
                                 </div>
                             </div>
@@ -138,9 +132,6 @@ export default {
                             );
                         }
                     }).catch(e => {
-                        console.log(e.response.data);
-                        console.log(e.response.status);
-                        console.log(e.response.headers);
                         toastr.error(
                             'Intenta más tarde otra vez',
                             'Error'

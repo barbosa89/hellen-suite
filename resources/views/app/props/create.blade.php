@@ -48,7 +48,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
