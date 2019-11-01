@@ -154,6 +154,10 @@ export default {
                             );
                         }
                     }).catch(e => {
+                        console.log(e);
+                        // console.log(e.response.status);
+                        // console.log(e.response.headers);
+                        
                         toastr.error(
                             'Intenta más tarde otra vez',
                             'Error'

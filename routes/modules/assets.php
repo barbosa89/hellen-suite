@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-    Route::post('assets/search', 'ProductController@search')
+    Route::post('assets/search', 'AssetController@search')
 		->name('assets.search')
 		->middleware('permission:assets.index');
 

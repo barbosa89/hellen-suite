@@ -8,6 +8,7 @@ use App\Welkome\Room;
 use App\Welkome\Asset;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
+use App\Helpers\Input;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{StoreAsset, UpdateAsset};
@@ -282,26 +283,26 @@ class AssetController extends Controller
      */
     public function search(Request $request)
     {
-        // if ($request->ajax()) {
-        //     $query = Input::clean($request->get('query', null));
+        if ($request->ajax()) {
+            $query = Input::clean($request->get('query', null));
 
-        //     $products = Product::where('hotel_id', Id::get($request->hotel))
-        //         ->whereLike(['description', 'brand', 'reference'], $query)
-        //         ->get(Fields::get('products'));
+            $assets = Asset::where('hotel_id', Id::get($request->hotel))
+                ->whereLike(['number', 'description', 'brand', 'model', 'reference', 'location'], $query)
+                ->get(Fields::get('assets'));
 
-        //     $products = $products->map(function ($product)
-        //     {
-        //         $product->hotel_id = Hashids::encode($product->hotel_id);
-        //         $product->user_id = Hashids::encode($product->user_id);
+            $assets = $assets->map(function ($asset)
+            {
+                $asset->hotel_id = Hashids::encode($asset->hotel_id);
+                $asset->user_id = Hashids::encode($asset->user_id);
 
-        //         return $product;
-        //     });
+                return $asset;
+            });
 
-        //     return response()->json([
-        //         'products' => $products->toJson()
-        //     ]);
-        // }
+            return response()->json([
+                'assets' => $assets->toJson()
+            ]);
+        }
 
-        // abort(404);
+        abort(404);
     }
 }
