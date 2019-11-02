@@ -395,7 +395,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                         <ul class="list-unstyled mt-3 mb-4">
                                                             <li><i class="fas fa-check-circle"></i> Se realizará una única instalación</li>
                                                             <li><i class="fas fa-check-circle"></i> El costo indicado es por instalación realizada</li>
-                                                            <li><i class="fas fa-check-circle"></i> No hay garantías por afectaciones por virus y demás</li>
+                                                            <li><i class="fas fa-check-circle"></i> No hay garantías por pérdidas de la información</li>
                                                         </ul>
                                                     </div>
                                                 </div>
