@@ -33,13 +33,6 @@ mix.js('resources/js/app.js', 'public/js')
         'public/js/common.js'
     ], 'public/js/welkome.js')
     .styles([
-        'public/css/grayscale.css',
-    ], 'public/css/index.css')
-    .scripts([
-        'public/js/grayscale.js',
-        'node_modules/jquery.easing/jquery.easing.js'
-    ], 'public/js/index.js')
-    .styles([
         'public/css/animation-aos.css',
         'public/css/aos.css',
         'public/css/style.css',
@@ -47,7 +40,6 @@ mix.js('resources/js/app.js', 'public/js')
     .scripts([
         'public/js/aos.js',
         'public/js/responsiveslides.min.js',
-        // 'public/js/smoothscroll.js',
         'public/js/move-top.js',
         'node_modules/jquery.easing/jquery.easing.js'
     ], 'public/js/landing.js')
