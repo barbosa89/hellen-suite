@@ -84,7 +84,9 @@ class ServiceController extends Controller
         if ($service->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
-            return redirect()->route('services.index');
+            return redirect()->route('services.show', [
+                'id' => Hashids::encode($service->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -161,7 +163,9 @@ class ServiceController extends Controller
         if ($service->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('services.index');
+            return redirect()->route('services.show', [
+                'id' => Hashids::encode($service->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -211,29 +215,6 @@ class ServiceController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('services.index');
-    }
-
-    /**
-     * Increase service existence or quantity.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showIncreaseForm($id)
-    {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
-            ->with([
-                'hotel' => function($query) {
-                    $query->select(Fields::get('hotels'));
-                }
-            ])->first(Fields::get('services'));
-
-        if (empty($service)) {
-            abort(404);
-        }
-
-        return view('app.services.increase', compact('service'));
     }
 
     /**

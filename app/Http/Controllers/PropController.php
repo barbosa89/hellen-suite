@@ -84,7 +84,9 @@ class PropController extends Controller
         if ($prop->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
-            return redirect()->route('props.index');
+            return redirect()->route('props.show', [
+                'id' => Hashids::encode($prop->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();

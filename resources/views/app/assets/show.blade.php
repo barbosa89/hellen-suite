@@ -40,6 +40,14 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <h2>Hotel:</h2>
+                <p>
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($asset->hotel->id)]) }}">
+                        {{ $asset->hotel->business_name }}
+                    </a>
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <h2>@lang('common.description'):</h2>
                 <p>{{ $asset->description }}</p>
             </div>
@@ -51,13 +59,13 @@
                 <h3>@lang('common.number'):</h3>
                 <p>{{ $asset->number }}</p>
             </div>
+        </div>
+
+        <div class="row">
             <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
                 <h3>@lang('common.model'):</h3>
                 <p>{{ $asset->model ?? trans('common.noData') }}</p>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
                 <h3>@lang('common.reference'):</h3>
                 <p>{{ $asset->reference ?? trans('common.noData') }}</p>
@@ -65,6 +73,14 @@
             <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
                 <h3>@lang('common.location'):</h3>
                 <p>{{ $asset->location ?? trans('common.noData') }}</p>
+            </div>
+            <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                <h3>@lang('rooms.room'):</h3>
+                @if($asset->room)
+                    <a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->room->id)]) }}">{{ $asset->room->number }}</a>
+                @else
+                    {{ trans('common.noData') }}
+                @endif
             </div>
         </div>
 
@@ -76,36 +92,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h3>@lang('assets.assignedRoom')</h3>
+                <h3>Mantenimientos</h3>
 
-                <div class="crud-list">
-                    <div class="crud-list-heading">
-                        <div class="row">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <h5>@lang('common.number')</h5>
-                            </div>
-                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                <h5>@lang('common.description')</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="crud-list-items">
-                        @if(!empty($asset->room))
-                            <div class="crud-list-row">
-                                <div class="row">
-                                    <div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
-                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->id)]) }}">{{ $asset->number }}</a></p>
-                                    </div>
-                                    <div class="col-xs-9 col-sm-8 col-md-8 col-lg-8">
-                                        <p><a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->id)]) }}">{{ $asset->description }}</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            @include('partials.no-records')
-                        @endif
-                    </div>
-                </div>
             </div>
         </div>
 

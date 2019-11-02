@@ -22,6 +22,10 @@
                             ]),
                         ],
                         [
+                            'option' => trans('products.losses'),
+                            'url' => '#'
+                        ],
+                        [
                             'type' => 'divider'
                         ],
                         [
@@ -29,6 +33,12 @@
                             'url' => route('products.edit', [
                                 'room' => Hashids::encode($product->id)
                             ]),
+                        ],
+                        [
+                            'option' => $product->status ? 'Deshabilitar' : 'Habilitar',
+                            'url' => route('products.toggle', [
+                                'id' => Hashids::encode($product->id)
+                            ])
                         ],
                         [
                             'type' => 'confirm',
@@ -39,6 +49,10 @@
                             'method' => 'DELETE'
                         ],
                     ]
+                ],
+                [
+                    'option' => trans('common.new'),
+                    'url' => route('products.create')
                 ],
                 [
                     'option' => trans('common.back'),
@@ -58,7 +72,7 @@
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.description'):</h2>
-                <p>{{ $product->description }}</p>
+                <p>{{ $product->description }} <i class="fas fa-{{ $product->status ? 'check' : 'times-circle' }}"></i></p>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.brand'):</h2>
@@ -92,9 +106,8 @@
                 <h3>@lang('common.chart')</h3>
 
                 <div class="well">
-                    <h4>Gráfica aquí</h4>
+                    <h4>Datos</h4>
                 </div>
-                
             </div>
         </div>
 

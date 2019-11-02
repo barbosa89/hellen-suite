@@ -87,7 +87,9 @@ class ProductController extends Controller
         if ($product->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
-            return redirect()->route('products.index');
+            return redirect()->route('products.show', [
+                'id' => Hashids::encode($product->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -169,7 +171,9 @@ class ProductController extends Controller
         if ($product->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return back();
+            return redirect()->route('products.show', [
+                'id' => Hashids::encode($product->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -268,7 +272,9 @@ class ProductController extends Controller
         if ($product->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('products.index');
+            return redirect()->route('products.show', [
+                'id' => Hashids::encode($product->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();

@@ -121,7 +121,9 @@ class AssetController extends Controller
         if ($asset->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
-            return redirect()->route('assets.index');
+            return redirect()->route('assets.show', [
+                'id' => Hashids::encode($asset->id)
+            ]);
         }
 
         flash(trans('common.error'))->error();
@@ -147,7 +149,7 @@ class AssetController extends Controller
 
         $asset->load([
             'room' => function ($query) {
-                $query->select('id', 'number');
+                $query->select('id', 'number', 'description');
             },
             'hotel' => function ($query) {
                 $query->select('id', 'business_name');
