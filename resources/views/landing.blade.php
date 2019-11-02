@@ -269,7 +269,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="tabs">
                             <ul class="nav nav-pills my-md-5 my-3 justify-content-center" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fas fa-infinity"></i> Sin límite</a>
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Web</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Escritorio</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
@@ -285,10 +288,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                         </h5>
                                                         <ul class="list-unstyled mt-3 mb-4">
                                                             <li><i class="fas fa-check"></i> 1 hotel</li>
-                                                            <li><i class="fas fa-check"></i> 5 usuarios</li>
+                                                            <li><i class="fas fa-check"></i> 3 usuarios</li>
                                                             <li><i class="fas fa-check"></i> 30 habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
-                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-times"></i> Módulos</li>
                                                             <li><i class="fas fa-check"></i> Soporte por email</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
@@ -308,8 +310,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <li><i class="fas fa-infinity"></i> Sedes</li>
                                                             <li><i class="fas fa-infinity"></i> Usuarios</li>
                                                             <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
-                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-times"></i> Módulos</li>
                                                             <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
@@ -329,8 +330,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <li><i class="fas fa-infinity"></i> Sedes</li>
                                                             <li><i class="fas fa-infinity"></i> Usuarios</li>
                                                             <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Contabilidad</li>
-                                                            <li><i class="fas fa-times"></i> Comedor</li>
+                                                            <li><i class="fas fa-times"></i> Módulos</li>
                                                             <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
@@ -350,23 +350,87 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <li><i class="fas fa-infinity"></i> Sedes</li>
                                                             <li><i class="fas fa-infinity"></i> Usuarios</li>
                                                             <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li>
-                                                                <i class="fas fa-check"></i> Contabilidad
-                                                                <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="En construcción">
-                                                                    <i class="fa fa-info"></i>
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                <i class="fas fa-check"></i> Comedor
-                                                                <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="No incluye hardware requerido">
-                                                                    <i class="fa fa-info"></i>
-                                                                </span>
-                                                            </li>
+                                                            <li><i class="fas fa-check"></i> Módulos</li>
                                                             <li><i class="fas fa-check"></i> 24/7 soporte</li>
                                                         </ul>
                                                         <div class="log-in mt-md-3 mt-2">
                                                             <a class="btn scroll" href="#contact">Seleccionar</a>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                    <div class="menu-grids">
+                                        <div class="row t-in">
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
+                                                <div class="price-inner card box-shadow p-4">
+                                                    <div class="card-body">
+                                                        <h4 class="">Un equipo</h4>
+                                                        <h5 class="card-title pricing-card-title">
+                                                            <span class="">$</span>500.000<span>/siempre</span>
+                                                        </h5>
+                                                        <ul class="list-unstyled mt-3 mb-4">
+                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
+                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
+                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
+                                                            <li><i class="fas fa-infinity"></i> Módulos</li>
+                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
+                                                        </ul>
+                                                        <div class="log-in mt-md-3 mt-2">
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
+                                                <div class="price-inner card box-shadow p-4">
+                                                    <div class="card-body">
+                                                        <h4 class="">Notas</h4>
+                                                        <h5 class="card-title pricing-card-title">
+                                                            Un equipo
+                                                        </h5>
+                                                        <ul class="list-unstyled mt-3 mb-4">
+                                                            <li><i class="fas fa-check-circle"></i> Se realizará una única instalación</li>
+                                                            <li><i class="fas fa-check-circle"></i> El costo indicado es por instalación realizada</li>
+                                                            <li><i class="fas fa-check-circle"></i> No hay garantías por afectaciones por virus y demás</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
+                                                <div class="price-inner card box-shadow p-4">
+                                                    <div class="card-body">
+                                                        <h4 class="">Red local</h4>
+                                                        <h5 class="card-title pricing-card-title">
+                                                            <span class="">$</span>1.000.000<span>/siempre</span>
+                                                        </h5>
+                                                        <ul class="list-unstyled mt-3 mb-4">
+                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
+                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
+                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
+                                                            <li><i class="fas fa-infinity"></i> Módulos</li>
+                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
+                                                        </ul>
+                                                        <div class="log-in mt-md-3 mt-2">
+                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
+                                                <div class="price-inner card box-shadow p-4">
+                                                    <div class="card-body">
+                                                        <h4 class="">Notas</h4>
+                                                        <h5 class="card-title pricing-card-title">
+                                                            Red local
+                                                        </h5>
+                                                        <ul class="list-unstyled mt-3 mb-4">
+                                                            <li><i class="fas fa-check-circle"></i> No incluye el costo del montaje, servidor, cableado o equipos</li>
+                                                            <li><i class="fas fa-check-circle"></i> Sólo incluye la configuración de servidor y el despliegue de la aplicación</li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
@@ -438,10 +502,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 </ul>
                             </li>
                             <li class="item7 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>De que se trara el paquete contable? </h4>
+                                <h4>De que se traran los módulos? </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Es un módulo contable que cumple con las actuales normas, el cual se integra con los demás módulos para registrar toda el ejercicio comercial automáticamente.
+                                        <p>
+                                            Es en conjunto de herramientas administrativas que comprenden control de productos, servicios, activos y utilería.
                                         </p>
                                     </li>
                                 </ul>
@@ -453,7 +518,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </section>
         <!-- //faqs -->
         <!-- testimonials -->
-        <section class="testimonials bg-light py-5" id="testimonials">
+        {{-- <section class="testimonials bg-light py-5" id="testimonials">
             <div class="container py-lg-3">
                 <h3 class="heading mb-5 text-center"> Nuestros clientes</h3>
                 <div class="row test-grids">
@@ -531,7 +596,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
         <!-- //testimonials -->
         <!-- contact -->
         <section class="contact py-5" id="contact">
@@ -667,67 +732,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/landing.js') }}"></script>
     <script>
-		// AOS.init({
-        //     easing: 'ease-out-back',
-        //     duration: 1000
-        // });
-
-        // You can also use"$(window).load(function() {"
-        // $(function () {
-        //     // Slideshow 4
-        //     $("#slider3").responsiveSlides({
-        //         auto: true,
-        //         pager: true,
-        //         nav: false,
-        //         speed: 500,
-        //         namespace: "callbacks",
-        //         before: function () {
-        //             $('.events').append("<li>before event fired.</li>");
-        //         },
-        //         after: function () {
-        //             $('.events').append("<li>after event fired.</li>");
-        //         }
-        //     });
-
-        // });
-
 		$(() => {
-
-		  //On Scroll Functionality
-		  $(window).scroll(() => {
-			var windowTop = $(window).scrollTop();
-			windowTop> 100 ? $('nav').addClass('navShadow') : $('nav').removeClass('navShadow');
-			windowTop> 100 ? $('ul.nav-agile').css('top', '50px') : $('ul.nav-agile').css('top', '160px');
-		  });
-
-		  //Click Logo To Scroll To Top
-		  $('#logo').on('click', () => {
-			$('html,body').animate({
-			  scrollTop: 0
-			}, 500);
-		  });
-
-		 /*
-		  //Smooth Scrolling Using Navigation Menu
-		  $('a[href*="#"]').on('click', function (e) {
-			$('html,body').animate({
-			  scrollTop: $($(this).attr('href')).offset().top - 100
-			}, 500);
-			e.preventDefault();
-		  });
-		 */
-
-		  //Toggle Menu
-        $('#menu-toggle').on('click', () => {
-            $('#menu-toggle').toggleClass('closeMenu');
-            $('ul#menu-list').toggleClass('showMenu');
-
-            $('li').on('click', () => {
-                $('ul#menu-list').removeClass('showMenu');
-                $('#menu-toggle').removeClass('closeMenu');
+            //On Scroll Functionality
+            $(window).scroll(() => {
+                var windowTop = $(window).scrollTop();
+                windowTop> 100 ? $('nav').addClass('navShadow') : $('nav').removeClass('navShadow');
+                windowTop> 100 ? $('ul.nav-agile').css('top', '50px') : $('ul.nav-agile').css('top', '160px');
             });
-        });
 
+            //Click Logo To Scroll To Top
+            $('#logo').on('click', () => {
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            //Toggle Menu
+            $('#menu-toggle').on('click', () => {
+                $('#menu-toggle').toggleClass('closeMenu');
+                $('ul#menu-list').toggleClass('showMenu');
+
+                $('li').on('click', () => {
+                    $('ul#menu-list').removeClass('showMenu');
+                    $('#menu-toggle').removeClass('closeMenu');
+                });
+            });
 		});
 
         jQuery(document).ready(function ($) {
