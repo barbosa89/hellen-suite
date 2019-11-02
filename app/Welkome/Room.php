@@ -63,11 +63,6 @@ class Room extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
-    public function props()
-    {
-        return $this->belongsToMany(\App\Welkome\Prop::class);
-    }
-
     /**
      * Hashing Room ID.
      *

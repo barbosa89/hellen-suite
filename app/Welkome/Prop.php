@@ -33,11 +33,6 @@ class Prop extends Model
      */
     protected $hidden = ['id'];
 
-    public function rooms()
-    {
-        return $this->belongsToMany(\App\Welkome\Room::class);
-    }
-
     public function hotel()
     {
         return $this->belongsTo(\App\Welkome\Hotel::class);

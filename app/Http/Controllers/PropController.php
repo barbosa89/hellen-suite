@@ -8,9 +8,9 @@ use App\Welkome\Prop;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
 use App\Helpers\Input;
-use App\Http\Requests\Replicate;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
+use App\Http\Requests\UpdateProp;
 use Vinkla\Hashids\Facades\Hashids;
 
 class PropController extends Controller
@@ -75,13 +75,13 @@ class PropController extends Controller
      */
     public function store(StoreProp $request)
     {
-        $asset = new Prop();
-        $asset->description = $request->description;
-        $asset->quantity = $request->quantity;
-        $asset->user()->associate(Id::parent(), ['id']);
-        $asset->hotel()->associate(Id::get($request->hotel));
+        $prop = new Prop();
+        $prop->description = $request->description;
+        $prop->quantity = $request->quantity;
+        $prop->user()->associate(Id::parent(), ['id']);
+        $prop->hotel()->associate(Id::get($request->hotel));
 
-        if ($asset->save()) {
+        if ($prop->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('props.index');
@@ -100,24 +100,26 @@ class PropController extends Controller
      */
     public function show($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->props()
+        $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
-            ->first(Fields::get('props'));
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id', 'business_name']);
+                }
+            ])->first(Fields::get('props'));
 
-        if (empty($asset)) {
+        if (empty($prop)) {
             abort(404);
         }
 
-        $asset->load([
-            'room' => function ($query) {
-                $query->select('id', 'number');
-            },
+        $prop->load([
             'hotel' => function ($query) {
                 $query->select('id', 'business_name');
             }
         ]);
 
-        return view('app.props.show', compact('asset'));
+        return view('app.props.show', compact('prop'));
     }
 
     /**
@@ -128,33 +130,20 @@ class PropController extends Controller
      */
     public function edit($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->props()
+        $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
-            ->first(Fields::get('props'));
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id']);
+                }
+            ])->first(Fields::get('props'));
 
-        if (empty($asset)) {
+        if (empty($prop)) {
             abort(404);
         }
 
-        // TODO: Error aquí, continuar edición de PROPS
-        // $asset->load([
-        //     'room' => function ($query) {
-        //         $query->select('id', 'number');
-        //     },
-        //     'hotel' => function ($query) {
-        //         $query->select('id', 'business_name');
-        //     },
-        //     'hotel.rooms' => function ($query) {
-        //         $query->select('id', 'number', 'hotel_id');
-        //     },
-        // ]);
-
-        $hotels = Hotel::where('user_id', Id::parent(), ['id'])
-            ->where('id', '!=', $asset->hotel->id)
-            ->where('status', true)
-            ->get(Fields::get('hotels'));
-
-        return view('app.props.edit', compact('asset', 'hotels'));
+        return view('app.props.edit', compact('prop'));
     }
 
     /**
@@ -166,44 +155,22 @@ class PropController extends Controller
      */
     public function update(UpdateProp $request, $id)
     {
-        $asset = User::find(Id::parent(), ['id'])->props()
+        $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
             ->where('hotel_id', Id::get($request->hotel))
-            ->first(Fields::get('props'));
+            ->first(['id', 'description']);
 
-        if (empty($asset)) {
+        if (empty($prop)) {
             abort(404);
         }
 
-        $asset->description = $request->description;
-        $asset->brand = $request->get('brand', null);
-        $asset->model = $request->get('model', null);
-        $asset->reference = $request->get('reference', null);
-        $asset->location = $request->get('location', null);
-        $asset->hotel()->associate(Id::get($request->hotel));
+        $prop->description = $request->description;
 
-        if (empty($request->get('room', null))) {
-            $asset->room()->dissociate();
-        } else {
-            $room = Room::where('id', Id::get($request->room))
-                ->where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent(), ['id'])
-                ->first(['id']);
-
-            if (empty($room)) {
-                flash('La habitación seleccionada no corresponde al hotel')->error();
-
-                return back();
-            }
-
-            $asset->room()->associate($room->id);
-        }
-
-        if ($asset->update()) {
+        if ($prop->update()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('props.show', [
-                'id' => Hashids::encode($asset->id)
+                'id' => Hashids::encode($prop->id)
             ]);
         }
 
@@ -220,15 +187,15 @@ class PropController extends Controller
      */
     public function destroy($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->props()
+        $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
             ->first(['id']);
 
-        if (empty($asset)) {
+        if (empty($prop)) {
             abort(404);
         }
 
-        if ($asset->delete()) {
+        if ($prop->delete()) {
             flash(trans('common.deletedSuccessfully'))->success();
 
             return redirect()->route('props.index');
