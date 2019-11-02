@@ -24,11 +24,23 @@ class UpdateService extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('service'));
-        
+        $id = Id::get($this->route('id'));
+
         return [
-            'description' => 'required|string|max:191|unique:services,description, ' . $id,
+            'description' => 'required|string|max:191|unique_with:services,hotel#hotel_id,' . $id,
             'price' => 'required|numeric|min:1',
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'description.unique_with' => 'La descripción ya existe en el hotel seleccionado.',
         ];
     }
 }

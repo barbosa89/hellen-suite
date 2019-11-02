@@ -37,4 +37,16 @@ class UpdateAsset extends FormRequest
             'hotel' => 'required|string|hashed_exists:hotels,id',
         ];
     }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'description.unique_with' => 'El número ya existe en el hotel seleccionado.',
+        ];
+    }
 }
