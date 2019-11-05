@@ -27,10 +27,21 @@ Vue.component('prop-list', require('./components/Props/PropList.vue').default);
 
 Vue.component('asset-list', require('./components/Assets/AssetList.vue').default);
 
+import VueInternationalization from 'vue-i18n';
+import Locale from './vue-i18n-locales.generated';
+
 Vue.mixin(Permissions);
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+Vue.use(VueInternationalization);
+
+const lang = document.documentElement.lang.substr(0, 2);
+
+const i18n = new VueInternationalization({
+    locale: lang,
+    messages: Locale
+});
 
 const router = new VueRouter({
     mode: 'history'
@@ -38,5 +49,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    i18n,
     router: router
 });
