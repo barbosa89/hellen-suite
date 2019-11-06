@@ -42,6 +42,14 @@ class Asset extends Model
     }
 
     /**
+     * Get all of the asset's transactions.
+     */
+    public function transactions()
+    {
+        return $this->morphMany(\App\Welkome\Transaction::class, 'transactionable');
+    }
+
+    /**
      * Hashing Product ID.
      *
      * @param  string  $value

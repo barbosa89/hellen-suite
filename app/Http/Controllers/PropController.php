@@ -11,6 +11,7 @@ use App\Helpers\Input;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
+use App\Welkome\Transaction;
 use Vinkla\Hashids\Facades\Hashids;
 
 class PropController extends Controller
@@ -104,20 +105,20 @@ class PropController extends Controller
     {
         $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
-            ->with([
-                'hotel' => function ($query)
-                {
-                    $query->select(['id', 'business_name']);
-                }
-            ])->first(Fields::get('props'));
+            ->first(Fields::get('props'));
 
         if (empty($prop)) {
             abort(404);
         }
 
         $prop->load([
-            'hotel' => function ($query) {
-                $query->select('id', 'business_name');
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'transactions' => function ($query)
+            {
+                $query->select(['id', 'amount', 'commentary', 'type', 'done_by', 'transactionable_id']);
             }
         ]);
 
@@ -258,6 +259,56 @@ class PropController extends Controller
         }
 
         return view('app.props.transactions', compact('hotels'));
+    }
+
+    /**
+     * Process Props transactions inputs/outputs.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function transactions(Request $request)
+    {
+        $props = collect($request->props);
+        $count = 0;
+
+        $props->each(function ($item, $index) use (&$count, $request) {
+            $prop = Prop::where('user_id', Id::parent())
+                ->where('id', Id::get($item['hash']))
+                ->where('hotel_id', Id::get($request->hotel))
+                ->first(['id', 'quantity']);
+
+            if (!empty($prop)) {
+                $transaction = new Transaction();
+                $transaction->amount = (int) $item['amount'];
+                $transaction->commentary = $item['commentary'];
+                $transaction->type = $request->type;
+                $transaction->done_by = substr(auth()->user()->name, 0, 100);
+                $transaction->user()->associate(Id::parent());
+
+                if ($prop->transactions()->save($transaction)) {
+                    if ($request->type == 'input') {
+                        $prop->quantity += (int) $item['amount'];
+                    }
+
+                    if ($request->type == 'output') {
+                        $prop->quantity -= (int) $item['amount'];
+                    }
+
+                    if ($prop->save()) {
+                        $count++;
+                    } else {
+                        $transaction->delete();
+                    }
+                }
+            }
+        });
+
+        return response()->json([
+            'request' => $props->count(),
+            'processed' => $count
+        ]);
+
     }
     // /**
     //  * Show the form for props replication between hotels.

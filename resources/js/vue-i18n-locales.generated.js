@@ -144,6 +144,13 @@ export default {
             "truck": "Truck",
             "van": "Van"
         },
+        "transactions": {
+            "commentary": "Commentary",
+            "done_by": "Done by",
+            "input": "Input",
+            "output": "Output",
+            "type": "Type"
+        },
         "passwords": {
             "password": "Passwords must be at least six characters and match the confirmation.",
             "reset": "Your password has been reset!",
@@ -575,6 +582,13 @@ export default {
             "tricycle": "Triciclo",
             "campers": "Camperos",
             "minivan": "Minivan"
+        },
+        "transactions": {
+            "type": "Tipo",
+            "commentary": "Comentario",
+            "done_by": "Hecho por",
+            "output": "Salida",
+            "input": "Entrada"
         },
         "passwords": {
             "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",

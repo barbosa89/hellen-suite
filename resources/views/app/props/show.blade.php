@@ -53,10 +53,17 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-md-12">
-                <h3>Datos históricos aquí</h3>
-
+                <h3>Transacciones</h3>
+            </div>
+            <div class="col-md-12">
+                @include('partials.list', [
+                    'data' => $prop->transactions,
+                    'listHeading' => 'app.props.transactions-heading',
+                    'listRow' => 'app.props.transactions-row',
+                    'where' => null
+                ])
             </div>
         </div>
 

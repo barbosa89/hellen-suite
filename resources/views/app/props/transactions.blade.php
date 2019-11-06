@@ -7,21 +7,6 @@
 @section('content')
 
     <div id="page-wrapper">
-        @include('partials.page-header', [
-            'title' => trans('props.title'),
-            'url' => route('props.index'),
-            'options' => [
-                [
-                    'option' => trans('common.new'),
-                    'url' => route('props.create')
-                ],
-                [
-                    'option' => trans('common.back'),
-                    'url' => route('props.index')
-                ]
-            ]
-        ])
-
         <prop-transactions :hotels="{{ $hotels->toJson() }}"></prop-transactions>
 
         <div class="row">

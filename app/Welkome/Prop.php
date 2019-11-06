@@ -44,6 +44,14 @@ class Prop extends Model
     }
 
     /**
+     * Get all of the props's transactions.
+     */
+    public function transactions()
+    {
+        return $this->morphMany(\App\Welkome\Transaction::class, 'transactionable');
+    }
+
+    /**
      * Hashing Product ID.
      *
      * @param  string  $value

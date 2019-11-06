@@ -1,141 +1,152 @@
 <template>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h2 class="text-center mb-4">Transacciones de Utilería</h2>
-            <div class="form-group mb-4">
-                <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="resetAll">
-                    <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
-                        {{ hotel.business_name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group mb-4">
-                <select name="transaction" id="transaction" class="form-control" @change="resetAll">
-                    <option value="1">Salida</option>
-                    <option value="2">Entrada</option>
-                </select>
-            </div>
-
-            <div v-if="selecteds.length != 0">
-                <div class="row">
-                    <div class="col-3">
-                        <h4>Descripción</h4>
-                    </div>
-                    <div class="col-3">
-                        <h4>Cantidad</h4>
-                    </div>
-                    <div class="col-4">
-                        <h4>Comentario</h4>
-                    </div>
-                </div>
-
-                <div class="row" v-for="(selected, index) in selecteds" :key="selected.hash">
-                    <template v-if="!selected.editing">
-                        <div class="col-3">
-                            <p>
-                                {{ selected.description }}
-                            </p>
-                        </div>
-                        <div class="col-3">
-                            <p>
-                                {{ selected.amount }}
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p>
-                                {{ selected.commentary }}
-                            </p>
-                        </div>
-                        <div class="col-2 text-right">
-                            <button type="button" class="btn btn-link" @click.prevent="editProp(selected, index)">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-link" @click.prevent="selecteds.splice(index, 1)">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-
-                    <template v-else>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <input type="text" class="form-control without-border" readonly :value="selected.description">
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
+            <a href="/props" class="navbar-brand text-muted">
+                {{ $t('props.title') }}
+            </a>
+            <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarNavDropdown" class="collapse navbar-collapse">
+                <form class="form-inline my-2 my-lg-0" method="get">
+                    <div class="ui search focus">
+                        <div class="ui left icon input">
+                            <div class="input-group">
+                                <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <input type="number" class="form-control without-border" name="amount" id="amount" v-model="amount" required min="1" max="999" placeholder="Requerido">
+                        <transition name="fade">
+                            <div class="results transition visible" v-if="props.length != 0" style="display: block !important;">
+                                <a class="result" v-for="prop in props" :key="prop.hash" @click.prevent="addProp(prop)">
+                                    <div class="content">
+                                        <div class="title">{{ prop.description }}</div>
+                                        <div class="description">Cantidad en existencia: {{ prop.quantity }}</div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        <div class="col-4">
-                            <p v-if="!selected.editing">
-                                {{ selected.commentary }}
-                            </p>
-                            <div class="form-group">
-                                <textarea class="form-control without-border" name="commentary" id="commentary" v-model="commentary" cols="30" rows="3" placeholder="Escriba comentario aquí"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-2 text-right">
-                            <button type="button" class="btn btn-link" @click.prevent="saveProp(selected, index)">
-                                <i class="fas fa-save"></i>
-                            </button>
-                            <button type="button" class="btn btn-link" @click.prevent="cancelEditing()">
-                                <i class="fas fa-times-circle"></i>
-                            </button>
-                        </div>
-                    </template>
-                </div>
-            </div>
-
-            <div class="input-group mb-4 mt-4">
-                <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
-                <div class="input-group-append">
-                    <button class="input-group-text" id="btnGroupAddon">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="crud-list" v-if="props.length != 0">
-                <div class="crud-list-heading mt-2">
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <h5>Descripción</h5>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                            <h5>Cantidad actual</h5>
-                        </div>
+                        </transition>
                     </div>
-                </div>
-                <div class="crud-list-items">
-                    <div class="crud-list-row" v-for="prop in props" :key="prop.hash">
-                        <a href="'#'" @click.prevent="addProp(prop)" class="crud-item-link">
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 align-self-center">
-                                    <p>
-                                        <a :href="'/props/' + prop.hash">
-                                            {{ prop.description }}
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 align-self-center">
-                                    <p class="text-primary">
-                                        {{ prop.quantity }}
-                                    </p>
-                                </div>
-                            </div>
+                </form>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/props/create" class="nav-link">
+                            {{ $t('common.new') }}
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/props" class="nav-link">
+                            {{ $t('common.back') }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <h2 class="text-center mb-4 mt-4">Transacciones de Utilería</h2>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="form-group mb-4">
+                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="resetAll">
+                        <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
+                            {{ hotel.business_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="form-group mb-4">
+                    <select name="type" id="type" v-model="type" class="form-control">
+                        <option :value="null" disabled selected>Selecciona el tipo de transacción</option>
+                        <option value="output">Salida</option>
+                        <option value="input">Entrada</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="crud-list" v-if="selecteds.length != 0">
+            <div class="crud-list-heading mt-2">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>Descripción</h5>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>Cantidad</h5>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>Comentario</h5>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>Opciones</h5>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-4">
-                <button type="button" class="btn btn-primary">Procesar</button>
-                <a href="/props/index" class="btn btn-default">
-                    {{ $t('common.back') }}
-                </a>
+            <div class="crud-list-items">
+                <div class="crud-list-row" v-for="(selected, index) in selecteds" :key="selected.hash">
+                    <template v-if="!selected.editing">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                <p>
+                                    {{ selected.description }}
+                                </p>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                <p>
+                                    {{ selected.amount }}
+                                </p>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                <p>
+                                    {{ selected.commentary }}
+                                </p>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                <button type="button" class="btn btn-link" @click.prevent="editProp(selected, index)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-link" @click.prevent="selecteds.splice(index, 1)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control without-border" readonly :value="selected.description">
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <input type="number" class="form-control without-border" name="amount" id="amount" v-model="amount" required min="1" max="999" placeholder="Requerido">
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <textarea class="form-control without-border" name="commentary" id="commentary" v-model="commentary" cols="30" rows="3" placeholder="Escriba comentario aquí"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                <button type="button" class="btn btn-link" @click.prevent="saveProp(selected, index)">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                                <button type="button" class="btn btn-link" @click.prevent="cancelEditing()">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
             </div>
+        </div>
+
+        <div class="mt-4" v-if="selecteds.length != 0">
+            <button type="button" class="btn btn-primary" @click.prevent="process">Procesar</button>
+            <a class="btn btn-default" @click.prevent="resetAll">
+                Borrar todo
+            </a>
         </div>
     </div>
 </template>
@@ -151,6 +162,7 @@
         data() {
             return {
                 hotel: null,
+                type: null,
                 props: [],
                 query: '',
                 selecteds: [],
@@ -233,6 +245,68 @@
 
                 this.amount = 0
                 this.commentary = ''
+            },
+            process() {
+                if (this.selecteds.length > 0 && this.validate()) {
+                    axios.post('/props/transactions', {
+                        props: this.selecteds,
+                        hotel: this.hotel,
+                        type: this.type
+                    }).then(response => {
+                        this.resetAll()
+                        let msg = ''
+
+                        if (parseInt(response.data.request) == parseInt(response.data.processed)) {
+                            msg = "Todos los ítems enviados fueron procesados"
+                        } else {
+                            msg = response.data.processed + "/" + response.data.request + " ítems procesados"
+                        }
+
+                        toastr.success(
+                            msg,
+                            'Genial'
+                        );
+                    }).catch(e => {
+                        if (e.response) {
+                            console.log(e.response.data);
+                            console.log(e.response.status);
+                            console.log(e.response.headers);
+                        } else {
+                            console.log(e);
+                        }
+                        toastr.error(
+                            'Intenta más tarde otra vez',
+                            'Error'
+                        );
+                    });
+                } else {
+                    toastr.info(
+                        'Aún no puedes procesar la transacción',
+                        'Lo siento'
+                    );
+                }
+            },
+            validate() {
+                let errors = 0
+
+                if (!this.hotel) {
+                    errors++
+                }
+
+                if (!this.type) {
+                    errors++
+                    document.getElementById('type').classList.add('is-invalid')
+                } else {
+                    document.getElementById('type').classList.remove('is-invalid')
+                }
+
+                this.selecteds.forEach(selected => {
+                    if (selected.amount == 0 || selected.commentary == '') {
+                        errors++
+                    }
+                })
+
+                return errors == 0;
             }
         },
         watch: {
@@ -271,14 +345,17 @@
 </script>
 
 <style scoped>
-    .crud-list-row:hover {
-        background-color: #efefef !important;
-    }
-
     a.crud-item-link:hover,
     a.crud-item-link:active,
     a.crud-item-link:link,
     a.crud-item-link:visited {
         text-decoration: none;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>
