@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                 <div class="form-group">
-                                    <input type="number" class="form-control without-border" name="amount" id="amount" v-model="amount" required min="1" max="999" placeholder="Requerido">
+                                    <input type="number" class="form-control without-border" name="amount" id="amount" v-model="amount" required min="1" :max="selected.quantity" placeholder="Requerido">
                                 </div>
                             </div>
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -226,7 +226,13 @@
             },
             saveProp(selected, index) {
                 selected.commentary = this.commentary
-                selected.amount = this.amount
+
+                if (this.amount > selected.quantity) {
+                    selected.amount = selected.quantity
+                } else {
+                    selected.amount = this.amount
+                }
+
                 selected.editing = false
 
                 this.$set(this.selecteds, index, selected);

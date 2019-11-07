@@ -8,6 +8,7 @@ use App\Welkome\Prop;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
 use App\Helpers\Input;
+use App\Http\Requests\PropsTransaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
@@ -267,7 +268,7 @@ class PropController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function transactions(Request $request)
+    public function transactions(PropsTransaction $request)
     {
         $props = collect($request->props);
         $count = 0;

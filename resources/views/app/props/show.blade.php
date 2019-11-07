@@ -12,6 +12,14 @@
             'url' => route('props.index'),
             'options' => [
                 [
+                    'option' => 'Transacciones',
+                    'url' => route('props.transactions.form')
+                ],
+                [
+                    'option' => trans('common.new'),
+                    'url' => route('props.create')
+                ],
+                [
                     'type' => 'dropdown',
                     'option' => trans('common.options'),
                     'url' => [
