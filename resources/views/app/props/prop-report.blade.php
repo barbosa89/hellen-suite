@@ -13,7 +13,9 @@
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'url' => route('props.show', [
+                        'id' => Hashids::encode($prop->id)
+                    ])
                 ],
             ]
         ])
@@ -21,7 +23,11 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.description'):</h2>
-                <p>{{ $prop->description }}</p>
+                <p>
+                    <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}">
+                        {{ $prop->description }}
+                    </a>
+                </p>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <h2>@lang('common.quantity'):</h2>
@@ -61,7 +67,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.query')</button>
+                    <button type="submit" class="btn btn-primary">Consultar</button>
                     <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
