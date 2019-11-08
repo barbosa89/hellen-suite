@@ -139,6 +139,15 @@ return [
             'status',
             'hotel_id',
             'user_id'
+        ],
+        'transactions' => [
+            'id',
+            'amount',
+            'commentary',
+            'type',
+            'done_by',
+            'transactionable_id',
+            'created_at'
         ]
     ],
 

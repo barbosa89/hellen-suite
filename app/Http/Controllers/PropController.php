@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
 use App\Welkome\Transaction;
+use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 
 class PropController extends Controller
@@ -119,21 +120,33 @@ class PropController extends Controller
             },
             'transactions' => function ($query)
             {
-                $query->select(['id', 'amount', 'commentary', 'type', 'done_by', 'transactionable_id', 'created_at'])
+                $query->select(['id', 'amount', 'type', 'transactionable_id', 'created_at'])
                     ->whereYear('created_at', date('Y'))
                     ->orderBy('created_at', 'DESC');
             }
         ]);
 
-        $types = $prop->transactions->groupBy([
-            function($transaction) {
-                return $transaction->type;
-            }, function ($transaction)
-            {
-                return $transaction->created_at->month;
-            }
-        ]);
+        $transactions = Prop::find($prop->id, ['id'])
+            ->transactions()
+            ->where('transactionable_id', $prop->id)
+            ->whereYear('created_at', date('Y'))
+            ->orderBy('created_at', 'DESC')
+            ->paginate(config('welkome.paginate'), Fields::get('transactions'));
 
+        $types = $this->groupTransactionTypesByMonth($prop->transactions);
+        $data = $this->prepareChartData($types);
+
+        return view('app.props.show', compact('prop', 'data', 'transactions'));
+    }
+
+    /**
+     * Prepare chart data by inputs and outputs in a yearly period.
+     *
+     * @param  \Illuminate\Support\Collection $types
+     * @return array $data
+     */
+    public function prepareChartData(Collection $types)
+    {
         $data = [];
 
         for ($i=1; $i <= 12; $i++) {
@@ -149,8 +162,28 @@ class PropController extends Controller
                 $data['output'][$i] = 0;
             }
         }
-        // dd(implode(',', $data['input']));
-        return view('app.props.show', compact('prop', 'data'));
+
+        return $data;
+    }
+
+    /**
+     * Group transaction types by month.
+     *
+     * @param  \Illuminate\Support\Collection $transaction
+     * @return \Illuminate\Support\Collection $types
+     */
+    public function groupTransactionTypesByMonth(Collection $transactions)
+    {
+        $types = $transactions->groupBy([
+            function($transaction) {
+                return $transaction->type;
+            }, function ($transaction)
+            {
+                return $transaction->created_at->month;
+            }
+        ]);
+
+        return $types;
     }
 
     /**
@@ -357,31 +390,28 @@ class PropController extends Controller
             abort(404);
         }
 
-        $prop->load([
-            'transactions' => function ($query) use ($transactionId)
-            {
-                $query->select(['id', 'amount', 'type', 'transactionable_id'])
-                    ->where('id', $transactionId)
-                    ->first();
+        $transaction = Prop::find($prop->id, ['id'])
+            ->transactions()
+            ->where('transactionable_id', $prop->id)
+            ->orderBy('created_at', 'DESC')
+            ->first(Fields::get('transactions'));
+
+        if ($transaction->id == $transactionId) {
+            if ($transaction->type == 'input') {
+                $prop->quantity -= $transaction->amount;
             }
-        ]);
 
-        $transaction = $prop->transactions()->first();
+            if ($transaction->type == 'output') {
+                $prop->quantity += $transaction->amount;
+            }
 
-        if ($transaction->type == 'input') {
-            $prop->quantity -= $transaction->amount;
-        }
+            if ($prop->save()) {
+                $transaction->delete();
 
-        if ($transaction->type == 'output') {
-            $prop->quantity += $transaction->amount;
-        }
+                flash(trans('common.deletedSuccessfully'))->success();
 
-        if ($prop->save()) {
-            $prop->transactions->first()->delete();
-
-            flash(trans('common.deletedSuccessfully'))->success();
-
-            return back();
+                return back();
+            }
         }
 
         flash(trans('common.error'))->error();

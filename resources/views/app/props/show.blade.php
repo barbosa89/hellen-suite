@@ -16,13 +16,16 @@
                     'url' => route('props.transactions.form')
                 ],
                 [
-                    'option' => trans('common.new'),
-                    'url' => route('props.create')
-                ],
-                [
                     'type' => 'dropdown',
                     'option' => trans('common.options'),
                     'url' => [
+                        [
+                            'option' => trans('common.new'),
+                            'url' => route('props.create')
+                        ],
+                        [
+                            'type' => 'divider'
+                        ],
                         [
                             'option' => trans('common.edit'),
                             'url' => route('props.edit', [
@@ -76,7 +79,7 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                 @include('partials.list', [
-                    'data' => $prop->transactions->take(30),
+                    'data' => $transactions,
                     'listHeading' => 'app.props.transactions-heading',
                     'listRow' => 'app.props.transactions-row',
                     'where' => null
@@ -86,20 +89,6 @@
                 <canvas id="myChart"></canvas>
             </div>
         </div>
-
-        {{-- <div class="row mt-4">
-            <div class="col-md-12">
-                <h3>Transacciones</h3>
-            </div>
-            <div class="col-md-12">
-                @include('partials.list', [
-                    'data' => $prop->transactions,
-                    'listHeading' => 'app.props.transactions-heading',
-                    'listRow' => 'app.props.transactions-row',
-                    'where' => null
-                ])
-            </div>
-        </div> --}}
 
         @include('partials.modal-confirm')
     </div>
