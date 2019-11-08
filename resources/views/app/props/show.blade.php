@@ -12,6 +12,12 @@
             'url' => route('props.index'),
             'options' => [
                 [
+                    'option' => 'Reporte',
+                    'url' => route('props.prop.report', [
+                        'id' => Hashids::encode($prop->id)
+                    ])
+                ],
+                [
                     'option' => 'Transacciones',
                     'url' => route('props.transactions.form')
                 ],
@@ -29,7 +35,7 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('props.edit', [
-                                'room' => Hashids::encode($prop->id)
+                                'id' => Hashids::encode($prop->id)
                             ]),
                         ],
                         [

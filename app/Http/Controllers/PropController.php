@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Prop;
 use App\Welkome\Hotel;
-use App\Helpers\Fields;
 use App\Helpers\Input;
-use App\Http\Requests\PropsTransaction;
+use App\Helpers\Fields;
+use App\Exports\PropReport;
+use App\Http\Requests\PropReportQuery;
+use App\Welkome\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
-use App\Welkome\Transaction;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\PropsTransaction;
 
 class PropController extends Controller
 {
@@ -417,6 +421,58 @@ class PropController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
+
+    public function showPropReportForm($id)
+    {
+        $prop = User::find(Id::parent(), ['id'])->props()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('props'));
+
+        if (empty($prop)) {
+            abort(404);
+        }
+
+        $prop->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            }
+        ]);
+
+        return view('app.props.prop-report', compact('prop'));
+    }
+
+    public function propReport(PropReportQuery $request, $id)
+    {
+        $prop = User::find(Id::parent(), ['id'])->props()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('props'));
+
+        if (empty($prop)) {
+            abort(404);
+        }
+
+        $prop->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'transactions' => function ($query) use ($request)
+            {
+                $query->select(Fields::get('transactions'))
+                    ->whereBetween('created_at', [$request->start, $request->end])
+                    ->orderBy('created_at', 'DESC');
+            }
+        ]);
+
+        if ($prop->transactions->isEmpty()) {
+            flash('No hay información en las fechas indicadas')->info();
+
+            return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);
+        }
+
+        return Excel::download(new PropReport($prop), 'prop.xlsx');
     }
 
     // /**
