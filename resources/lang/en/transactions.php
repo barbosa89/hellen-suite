@@ -6,4 +6,7 @@ return array (
   'input' => 'Input',
   'output' => 'Output',
   'type' => 'Type',
+  'title' => 'Transactions',
+  'inputs' => 'Inputs',
+  'outputs' => 'Outputs',
 );

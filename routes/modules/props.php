@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('props/{id}/transactions/{transaction}', 'PropController@destroyTransaction')
+		->name('props.transactions.destroy')
+		->middleware('permission:props.edit');
+
 	Route::post('props/transactions', 'PropController@transactions')
 		->name('props.transactions')
 		->middleware('permission:props.edit');

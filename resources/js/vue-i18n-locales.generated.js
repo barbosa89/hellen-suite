@@ -121,7 +121,8 @@ export default {
             "min_price": "Minimal price",
             "capacity": "Capacity",
             "floor": "Floor",
-            "tax_status": "Tax status"
+            "tax_status": "Tax status",
+            "date": "Date"
         },
         "props": {
             "add": "Add prop",
@@ -149,7 +150,10 @@ export default {
             "done_by": "Done by",
             "input": "Input",
             "output": "Output",
-            "type": "Type"
+            "type": "Type",
+            "title": "Transactions",
+            "inputs": "Inputs",
+            "outputs": "Outputs"
         },
         "passwords": {
             "password": "Passwords must be at least six characters and match the confirmation.",
@@ -560,7 +564,8 @@ export default {
             "capacity": "Capacidad",
             "floor": "Piso",
             "min_price": "Precio mínimo",
-            "tax_status": "Estado de impuestos"
+            "tax_status": "Estado de impuestos",
+            "date": "Fecha"
         },
         "props": {
             "add": "Agregar utilería",
@@ -588,7 +593,10 @@ export default {
             "commentary": "Comentario",
             "done_by": "Hecho por",
             "output": "Salida",
-            "input": "Entrada"
+            "input": "Entrada",
+            "title": "Transacciones",
+            "outputs": "Salidas",
+            "inputs": "Entradas"
         },
         "passwords": {
             "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",

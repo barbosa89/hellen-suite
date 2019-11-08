@@ -105,4 +105,5 @@ return array (
   'capacity' => 'Capacity',
   'floor' => 'Floor',
   'tax_status' => 'Tax status',
+  'date' => 'Date',
 );

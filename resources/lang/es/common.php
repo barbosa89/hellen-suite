@@ -105,4 +105,5 @@ return array (
   'floor' => 'Piso',
   'min_price' => 'Precio mínimo',
   'tax_status' => 'Estado de impuestos',
+  'date' => 'Fecha',
 );

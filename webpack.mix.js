@@ -30,6 +30,7 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/jquery.easing/jquery.easing.js',
         'node_modules/sweetalert2/dist/sweetalert2.all.js',
         'public/js/sb-admin.js',
+        'node_modules/chart.js/dist/Chart.bundle.js',
         'public/js/common.js'
     ], 'public/js/welkome.js')
     .styles([

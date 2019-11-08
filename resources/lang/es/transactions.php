@@ -6,4 +6,7 @@ return array (
   'done_by' => 'Hecho por',
   'output' => 'Salida',
   'input' => 'Entrada',
+  'title' => 'Transacciones',
+  'outputs' => 'Salidas',
+  'inputs' => 'Entradas',
 );

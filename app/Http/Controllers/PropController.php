@@ -119,11 +119,38 @@ class PropController extends Controller
             },
             'transactions' => function ($query)
             {
-                $query->select(['id', 'amount', 'commentary', 'type', 'done_by', 'transactionable_id']);
+                $query->select(['id', 'amount', 'commentary', 'type', 'done_by', 'transactionable_id', 'created_at'])
+                    ->whereYear('created_at', date('Y'))
+                    ->orderBy('created_at', 'DESC');
             }
         ]);
 
-        return view('app.props.show', compact('prop'));
+        $types = $prop->transactions->groupBy([
+            function($transaction) {
+                return $transaction->type;
+            }, function ($transaction)
+            {
+                return $transaction->created_at->month;
+            }
+        ]);
+
+        $data = [];
+
+        for ($i=1; $i <= 12; $i++) {
+            if (isset($types['input'][$i])) {
+                $data['input'][$i] = $types['input'][$i]->count();
+            } else {
+                $data['input'][$i] = 0;
+            }
+
+            if (isset($types['output'][$i])) {
+                $data['output'][$i] = $types['output'][$i]->count();
+            } else {
+                $data['output'][$i] = 0;
+            }
+        }
+        // dd(implode(',', $data['input']));
+        return view('app.props.show', compact('prop', 'data'));
     }
 
     /**
@@ -311,6 +338,57 @@ class PropController extends Controller
         ]);
 
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyTransaction($id, $transaction)
+    {
+        $id = Id::get($id);
+        $transactionId = Id::get($transaction);
+
+        $prop = User::find(Id::parent(), ['id'])->props()
+            ->where('id', $id)
+            ->first(Fields::get('props'));
+
+        if (empty($prop)) {
+            abort(404);
+        }
+
+        $prop->load([
+            'transactions' => function ($query) use ($transactionId)
+            {
+                $query->select(['id', 'amount', 'type', 'transactionable_id'])
+                    ->where('id', $transactionId)
+                    ->first();
+            }
+        ]);
+
+        $transaction = $prop->transactions()->first();
+
+        if ($transaction->type == 'input') {
+            $prop->quantity -= $transaction->amount;
+        }
+
+        if ($transaction->type == 'output') {
+            $prop->quantity += $transaction->amount;
+        }
+
+        if ($prop->save()) {
+            $prop->transactions->first()->delete();
+
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
+    }
+
     // /**
     //  * Show the form for props replication between hotels.
     //  *
