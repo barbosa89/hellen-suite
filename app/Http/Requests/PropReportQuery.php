@@ -26,6 +26,7 @@ class PropReportQuery extends FormRequest
         return [
             'start' => 'required|date',
             'end' => 'required|date|after:start',
+            'hotel' => 'nullable|string|hashed_exists:hotels,id'
         ];
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('prop', $prop) }}
+    {{ Breadcrumbs::render('props') }}
 @endsection
 
 @section('content')
@@ -13,37 +13,39 @@
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => route('props.show', [
-                        'id' => Hashids::encode($prop->id)
-                    ])
+                    'url' => route('props.index')
                 ],
             ]
         ])
 
         <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.description'):</h2>
-                <p>
-                    <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}">
-                        {{ $prop->description }}
-                    </a>
-                </p>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.quantity'):</h2>
-                {{ $prop->quantity }}
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.model'):</h3>
-                <p>{{ $prop->hotel->business_name }}</p>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">Reporte de @lang('props.title')</h2>
-                <form action="{{ route('props.prop.report.export', ['id' => Hashids::encode($prop->id)]) }}" method="POST">
+
+                <div class="alert alert-info alert-important alert-dismissible fade show" role="alert">
+                    <b>Importante!</b> Puedes elegir un hotel en específico, o simplemente indicas las fechas para consultar todos los hoteles
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{{ route('props.report.export') }}" method="POST">
                     @csrf()
+
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="hotel" id="hotel">
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
 
                     <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
                         <label for="start">@lang('common.startDate'):</label>
@@ -68,7 +70,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Consultar</button>
-                    <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}" class="btn btn-default">
+                    <a href="{{ route('props.index') }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
                 </form>

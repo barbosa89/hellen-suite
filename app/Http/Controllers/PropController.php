@@ -10,6 +10,7 @@ use App\Welkome\Hotel;
 use App\Helpers\Input;
 use App\Helpers\Fields;
 use App\Exports\PropReport;
+use App\Exports\PropsReport;
 use App\Http\Requests\PropReportQuery;
 use App\Welkome\Transaction;
 use Illuminate\Http\Request;
@@ -36,6 +37,12 @@ class PropController extends Controller
                     $query->select(Fields::get('props'));
                 }
             ])->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('props.index');
+        }
 
         $hotels = $hotels->map(function ($hotel)
         {
@@ -375,6 +382,7 @@ class PropController extends Controller
         ]);
 
     }
+
     /**
      * Display the specified resource.
      *
@@ -423,6 +431,12 @@ class PropController extends Controller
         return back();
     }
 
+    /**
+     * Display the prop report form to query between dates.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function showPropReportForm($id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
@@ -443,6 +457,13 @@ class PropController extends Controller
         return view('app.props.prop-report', compact('prop'));
     }
 
+    /**
+     * Export Prop report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function propReport(PropReportQuery $request, $id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
@@ -472,7 +493,72 @@ class PropController extends Controller
             return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);
         }
 
-        return Excel::download(new PropReport($prop), 'prop.xlsx');
+        return Excel::download(new PropReport($prop), trans('props.prop') . '.xlsx');
+    }
+
+    /**
+     * Display the report form to query between dates and hotels.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReportForm()
+    {
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('props.index');
+        }
+
+        return view('app.props.report', compact('hotels'));
+    }
+
+    /**
+     * Export the props report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function report(PropReportQuery $request)
+    {
+        if (empty($request->get('hotel', null))) {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->with([
+                    'props' => function($query) {
+                        $query->select(Fields::get('props'));
+                    },
+                    'props.transactions' => function ($query) use ($request)
+                    {
+                        $query->select(Fields::get('transactions'))
+                            ->whereBetween('created_at', [$request->start, $request->end])
+                            ->orderBy('created_at', 'DESC');
+                    }
+                ])->get(Fields::get('hotels'));
+        } else {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->where('id', Id::get($request->hotel))
+                ->with([
+                    'props' => function($query) {
+                        $query->select(Fields::get('props'));
+                    },
+                    'props.transactions' => function ($query) use ($request)
+                    {
+                        $query->select(Fields::get('transactions'))
+                            ->whereBetween('created_at', [$request->start, $request->end])
+                            ->orderBy('created_at', 'DESC');
+                    }
+                ])->get(Fields::get('hotels'));
+        }
+
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return back();
+        }
+
+        return Excel::download(new PropsReport($hotels), trans('props.title') . '.xlsx');
     }
 
     // /**

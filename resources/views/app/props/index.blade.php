@@ -13,6 +13,10 @@
             'url' => route('props.index'),
             'options' => [
                 [
+                    'option' => 'Reporte',
+                    'url' => route('props.report')
+                ],
+                [
                     'option' => 'Transacciones',
                     'url' => route('props.transactions.form')
                 ],

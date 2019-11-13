@@ -1,6 +1,14 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::post('props/report', 'PropController@report')
+		->name('props.report.export')
+		->middleware('permission:props.index');
+
+	Route::get('props/report', 'PropController@showReportForm')
+		->name('props.report')
+		->middleware('permission:props.index');
+
 	Route::post('props/{id}/report', 'PropController@propReport')
 		->name('props.prop.report.export')
 		->middleware('permission:props.index');

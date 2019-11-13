@@ -3,15 +3,28 @@
 namespace App\Exports;
 
 use App\Welkome\Prop;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class PropsReport implements FromCollection
+class PropsReport implements FromView
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+     * The Props collection.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $hotels;
+
+    public function __construct(Collection $hotels)
     {
-        return Prop::all();
+        $this->hotels = $hotels;
+    }
+
+    public function view(): View
+    {
+        return view('app.props.exports.props', [
+            'hotels' => $this->hotels
+        ]);
     }
 }
