@@ -181,6 +181,11 @@ export default {
             "businessName": "Business name",
             "tin": "Taxpayer identification number"
         },
+        "reports": {
+            "report": "Report",
+            "title": "Reports",
+            "type": "Report type"
+        },
         "users": {
             "title": "Users",
             "active": "Active",
@@ -243,7 +248,9 @@ export default {
             "show": "Show"
         },
         "hotels": {
-            "title": "Hotels"
+            "title": "Hotels",
+            "all": "All hotels",
+            "one": "One hotel o headquarter"
         },
         "home": {
             "title": "Panel"
@@ -624,6 +631,11 @@ export default {
             "businessName": "Razón social",
             "tin": "Número de identificación tributaria"
         },
+        "reports": {
+            "title": "Reportes",
+            "report": "Reporte",
+            "type": "Tipo de reporte"
+        },
         "users": {
             "title": "Usuarios",
             "verification": "Verificación",
@@ -686,7 +698,9 @@ export default {
             "load": "Cargar"
         },
         "hotels": {
-            "title": "Hoteles"
+            "title": "Hoteles",
+            "all": "Todos los hoteles",
+            "one": "Un hotel o sede"
         },
         "home": {
             "title": "Panel"

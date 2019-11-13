@@ -12,6 +12,7 @@ use App\Helpers\Fields;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
 use App\Http\Requests\PropReportQuery;
+use App\Http\Requests\PropsReportQuery;
 use App\Welkome\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
@@ -464,7 +465,7 @@ class PropController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function propReport(PropReportQuery $request, $id)
+    public function propReport(PropsReportQuery $request, $id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))

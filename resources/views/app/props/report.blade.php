@@ -22,19 +22,26 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">Reporte de @lang('props.title')</h2>
 
-                <div class="alert alert-info alert-important alert-dismissible fade show" role="alert">
-                    <b>Importante!</b> Puedes elegir un hotel en específico, o simplemente indicas las fechas para consultar todos los hoteles
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
                 <form action="{{ route('props.report.export') }}" method="POST">
                     @csrf()
 
-                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('reports.type'):</label>
+                        <select class="form-control selectpicker" title="Elije una opción" name="type" id="type" required>
+                            <option value="all" selected>@lang('hotels.all')</option>
+                            <option value="one">@lang('hotels.one')</option>
+                        </select>
+
+                        @if ($errors->has('type'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('type') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}" id="hotel-select" style="display:none;">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="hotel" id="hotel">
+                        <select class="form-control selectpicker" title="Elije un hotel o sede" name="hotel" id="hotel">
                             @foreach ($hotels as $hotel)
                                 <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -84,4 +91,22 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        $('#type').change(function () {
+            console.log(this.value);
+            
+            if (this.value === 'one') {
+                if ($('#hotel-select').is(':hidden')) {
+                    $('#hotel-select').fadeIn()
+                }
+            } else {
+                if ($('#hotel-select').is(':visible')) {
+                    $('#hotel-select').fadeOut()
+                }
+            }
+        })
+    </script>
 @endsection
