@@ -27,6 +27,7 @@
         "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-backup": "^5.12",
         "spatie/laravel-permission": "^3.0",
+        "thepinecode/i18n": "^0.6.7",
         "vinkla/hashids": "^5.2"
     },
     "require-dev": {

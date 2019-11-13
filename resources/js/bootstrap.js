@@ -53,3 +53,8 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+// Translations in Javascript
+import I18n from './vendor/I18n';
+
+window.I18n = I18n;

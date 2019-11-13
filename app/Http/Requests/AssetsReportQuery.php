@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PropsReportQuery extends FormRequest
+class AssetsReportQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,7 @@ class PropsReportQuery extends FormRequest
     {
         return [
             'type' => 'required|string|in:all,one',
-            'hotel' => 'nullable|string|hashed_exists:hotels,id',
-            'start' => 'required|date',
-            'end' => 'required|date|after:start'
+            'hotel' => 'nullable|string|hashed_exists:hotels,id'
         ];
     }
 }

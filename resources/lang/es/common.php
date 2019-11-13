@@ -106,4 +106,6 @@ return array (
   'min_price' => 'Precio mínimo',
   'tax_status' => 'Estado de impuestos',
   'date' => 'Fecha',
+  'chooseOption' => 'Elige una opción',
+  'query' => 'Consultar',
 );

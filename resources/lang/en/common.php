@@ -106,4 +106,6 @@ return array (
   'floor' => 'Floor',
   'tax_status' => 'Tax status',
   'date' => 'Date',
+  'chooseOption' => 'Choose a option',
+  'query' => 'Query',
 );

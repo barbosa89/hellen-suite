@@ -81,7 +81,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
+                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
@@ -94,7 +94,21 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list">
+                    <div class="form-group{{ $errors->has('assign') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('assets.assignTo'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
+                            <option value="room">@lang('rooms.room')</option>
+                            <option value="any">@lang('assets.anyPlace')</option>
+                        </select>
+
+                        @if ($errors->has('assign'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('assign') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list" style="display:none;">
                         <label for="pwd">@lang('rooms.room') No.:</label>
                         <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
                             @foreach($hotels->first()->rooms as $room)
@@ -109,7 +123,7 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}" id="any-place" style="display:none;">
                         <label for="location">@lang('common.location'):</label>
                         <input type="text" class="form-control" name="location" id="location" value="{{ old('location') }}" maxlength="50" placeholder="{{ trans('common.optional') }}">
 

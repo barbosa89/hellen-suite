@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AssetsReport;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Room;
@@ -11,7 +12,8 @@ use App\Helpers\Fields;
 use App\Helpers\Input;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Http\Requests\{StoreAsset, UpdateAsset};
+use App\Http\Requests\{AssetsReportQuery, StoreAsset, UpdateAsset};
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
 {
@@ -307,5 +309,105 @@ class AssetController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * Export Prop report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function propReport(PropsReportQuery $request, $id)
+    {
+        $prop = User::find(Id::parent(), ['id'])->props()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('props'));
+
+        if (empty($prop)) {
+            abort(404);
+        }
+
+        $prop->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'transactions' => function ($query) use ($request)
+            {
+                $query->select(Fields::get('transactions'))
+                    ->whereBetween('created_at', [$request->start, $request->end])
+                    ->orderBy('created_at', 'DESC');
+            }
+        ]);
+
+        if ($prop->transactions->isEmpty()) {
+            flash('No hay información en las fechas indicadas')->info();
+
+            return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);
+        }
+
+        return Excel::download(new PropReport($prop), trans('props.prop') . '.xlsx');
+    }
+
+    /**
+     * Display the report form to query between dates and hotels.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReportForm()
+    {
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('assets.index');
+        }
+
+        return view('app.assets.report', compact('hotels'));
+    }
+
+    /**
+     * Export the props report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function report(AssetsReportQuery $request)
+    {
+        if (empty($request->get('hotel', null))) {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->with([
+                    'assets' => function($query) {
+                        $query->select(Fields::get('assets'));
+                    },
+                    'assets.room' => function ($query)
+                    {
+                        $query->select(Fields::get('rooms'));
+                    }
+                ])->get(Fields::get('hotels'));
+        } else {
+            $hotels = Hotel::where('user_id', Id::parent())
+                ->where('id', Id::get($request->hotel))
+                ->with([
+                    'assets' => function($query) {
+                        $query->select(Fields::get('assets'));
+                    },
+                    'assets.room' => function ($query)
+                    {
+                        $query->select(Fields::get('rooms'));
+                    }
+                ])->get(Fields::get('hotels'));
+        }
+
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return back();
+        }
+
+        return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
     }
 }

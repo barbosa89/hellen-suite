@@ -62,6 +62,7 @@
             window.Permissions = [];
         @endauth
     </script>
+    @translations
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/welkome.js') }}"></script>
     @yield('scripts')

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34e574552e84936b16b7b6f8fa500e2f",
+    "content-hash": "e604d8d66da320f600ed4c95eced13e0",
     "packages": [
         {
             "name": "albertcht/invisible-recaptcha",
@@ -4760,6 +4760,55 @@
             ],
             "description": "Translate translation files to other languages using google translate api",
             "time": "2019-10-02T06:32:47+00:00"
+        },
+        {
+            "name": "thepinecode/i18n",
+            "version": "v0.6.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thepinecode/i18n.git",
+                "reference": "21fa942e24223958ef2bea96537335589d71aa5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thepinecode/i18n/zipball/21fa942e24223958ef2bea96537335589d71aa5f",
+                "reference": "21fa942e24223958ef2bea96537335589d71aa5f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.8.0"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Pine\\I18n\\I18nServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pine\\I18n\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gergő D. Nagy",
+                    "email": "hello@iamgergo.com"
+                }
+            ],
+            "description": "Push your translations to the front-end.",
+            "time": "2019-07-05T09:25:24+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

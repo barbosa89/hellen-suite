@@ -1,3 +1,5 @@
+const translator = new I18n();
+
 $('body').on('keydown', 'input, select, textarea', function(e) {
     var self = $(this),
         form = self.parents('form:eq(0)'),
@@ -184,12 +186,12 @@ $("#tax_status").on('change', function(e) {
 // });
 
 
-function listRoomsByHotel(el) {
+function listRoomsByHotel(hotel) {
     $.ajax({
         type: 'POST',
         url: '/rooms/list',
         data: {
-            hotel: el.value
+            hotel: hotel
         },
         success: function(result) {
             var rooms = JSON.parse(result.rooms);
@@ -198,6 +200,7 @@ function listRoomsByHotel(el) {
             if (rooms.length) {
                 if ($("#room-list").is(':hidden')) {
                     $("#room-list").fadeIn();
+                    $("#room").attr('required', 'required');
                 }
 
                 var newOptions = [];
@@ -217,6 +220,7 @@ function listRoomsByHotel(el) {
 
                 if ($("#room-list").is(':visible')) {
                     $("#room-list").fadeOut();
+                    $("#room").removeAttr('required');
                 }
             }
         },
@@ -241,4 +245,29 @@ $('#remove-room').click(function() {
 
     $("#room").html(options);
     $("#room").selectpicker('refresh');
+});
+
+$('#hotel').change(function() {
+    $('#room-list').fadeOut();
+    $('#any-place').fadeOut();
+
+    $("#assign").html(['<option value="room">' + translator.trans('rooms.room') + '</option>', '<option value="any">' + translator.trans('assets.anyPlace') + '</option>']);
+    $("#assign").selectpicker('refresh');
+});
+
+$('#assign').change(function() {
+    if (this.value == 'room') {
+        listRoomsByHotel($('#hotel').val());
+
+        $('#any-place').fadeOut();
+        $("#location").removeAttr('required');
+    } else {
+        if ($('#any-place').is(':hidden')) {
+            $('#room-list').fadeOut();
+            $("#room").removeAttr('required');
+
+            $('#any-place').fadeIn();
+            $("#location").attr('required', 'required');
+        }
+    }
 });

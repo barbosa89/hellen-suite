@@ -465,7 +465,7 @@ class PropController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function propReport(PropsReportQuery $request, $id)
+    public function propReport(PropReportQuery $request, $id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
@@ -522,7 +522,7 @@ class PropController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function report(PropReportQuery $request)
+    public function report(PropsReportQuery $request)
     {
         if (empty($request->get('hotel', null))) {
             $hotels = Hotel::where('user_id', Id::parent())

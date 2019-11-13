@@ -122,7 +122,9 @@ export default {
             "capacity": "Capacity",
             "floor": "Floor",
             "tax_status": "Tax status",
-            "date": "Date"
+            "date": "Date",
+            "chooseOption": "Choose a option",
+            "query": "Query"
         },
         "props": {
             "add": "Add prop",
@@ -184,7 +186,8 @@ export default {
         "reports": {
             "report": "Report",
             "title": "Reports",
-            "type": "Report type"
+            "type": "Report type",
+            "of": "Report of"
         },
         "users": {
             "title": "Users",
@@ -235,7 +238,10 @@ export default {
         "assets": {
             "title": "Assets",
             "add": "Add assets",
-            "assignedRoom": "Assigned room"
+            "assignedRoom": "Assigned room",
+            "location": "Location",
+            "anyPlace": "Any place",
+            "assignTo": "Assign to"
         },
         "permissions": {
             "add": "Add",
@@ -250,7 +256,8 @@ export default {
         "hotels": {
             "title": "Hotels",
             "all": "All hotels",
-            "one": "One hotel o headquarter"
+            "one": "One hotel or headquarter",
+            "choose": "Choose a hotel or headquarter"
         },
         "home": {
             "title": "Panel"
@@ -572,7 +579,9 @@ export default {
             "floor": "Piso",
             "min_price": "Precio mínimo",
             "tax_status": "Estado de impuestos",
-            "date": "Fecha"
+            "date": "Fecha",
+            "chooseOption": "Elige una opción",
+            "query": "Consultar"
         },
         "props": {
             "add": "Agregar utilería",
@@ -634,7 +643,8 @@ export default {
         "reports": {
             "title": "Reportes",
             "report": "Reporte",
-            "type": "Tipo de reporte"
+            "type": "Tipo de reporte",
+            "of": "Reporte de"
         },
         "users": {
             "title": "Usuarios",
@@ -685,7 +695,10 @@ export default {
         "assets": {
             "title": "Activos",
             "add": "Agregar activos",
-            "assignedRoom": "Habitación asignada"
+            "assignedRoom": "Habitación asignada",
+            "location": "Ubicación",
+            "anyPlace": "Cualquier lugar",
+            "assignTo": "Asignar a"
         },
         "permissions": {
             "index": "Listar",
@@ -700,7 +713,8 @@ export default {
         "hotels": {
             "title": "Hoteles",
             "all": "Todos los hoteles",
-            "one": "Un hotel o sede"
+            "one": "Un hotel o sede",
+            "choose": "Elije un hotel o sede"
         },
         "home": {
             "title": "Panel"

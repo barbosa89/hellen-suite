@@ -4,4 +4,5 @@ return array (
   'title' => 'Hoteles',
   'all' => 'Todos los hoteles',
   'one' => 'Un hotel o sede',
+  'choose' => 'Elije un hotel o sede',
 );

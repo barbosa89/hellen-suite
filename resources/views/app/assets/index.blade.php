@@ -13,6 +13,10 @@
             'url' => route('assets.index'),
             'options' => [
                 [
+                    'option' => trans('reports.title'),
+                    'url' => route('assets.report')
+                ],
+                [
                     'option' => trans('common.new'),
                     'url' => route('assets.create')
                 ],
