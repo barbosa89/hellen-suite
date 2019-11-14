@@ -265,6 +265,12 @@ class CompanyController extends Controller
         $companies = Company::where('user_id', Id::parent())
             ->get(Fields::get('companies'));
 
+        if ($companies->isEmpty()) {
+            flash(trans('common.noRecords'))->info();
+
+            return redirect()->route('companies.index');
+        }
+
         return Excel::download(new CompaniesReport($companies), trans('companies.title') . '.xlsx');
     }
 }

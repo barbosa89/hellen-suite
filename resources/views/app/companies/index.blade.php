@@ -15,8 +15,10 @@
             ],
             'options' => [
                 [
+                    'type' => 'hideable',
                     'option' => trans('reports.list'),
-                    'url' => route('companies.export')
+                    'url' => route('companies.export'),
+                    'show' => $companies->count() > 0
                 ],
                 [
                     'option' => trans('common.new'),
