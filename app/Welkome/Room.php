@@ -64,6 +64,14 @@ class Room extends Model
     }
 
     /**
+     * Get all of the asset's maintenances.
+     */
+    public function maintenances()
+    {
+        return $this->morphMany(\App\Welkome\Maintenance::class, 'maintainable');
+    }
+
+    /**
      * Hashing Room ID.
      *
      * @param  string  $value

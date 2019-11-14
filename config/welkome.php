@@ -125,7 +125,7 @@ return [
             'description',
             'brand',
             'model',
-            'reference',
+            'serial_number',
             'location',
             'user_id',
             'created_at',

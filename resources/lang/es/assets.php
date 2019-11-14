@@ -7,4 +7,5 @@ return array (
   'location' => 'Ubicación',
   'anyPlace' => 'Cualquier lugar',
   'assignTo' => 'Asignar a',
+  'serialNumber' => 'Serie',
 );

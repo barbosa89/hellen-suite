@@ -42,7 +42,7 @@ class PropController extends Controller
         if($hotels->isEmpty()) {
             flash('No hay hoteles creados')->info();
 
-            return redirect()->route('props.index');
+            return redirect()->route('hotels.index');
         }
 
         $hotels = $hotels->map(function ($hotel)

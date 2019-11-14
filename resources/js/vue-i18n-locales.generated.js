@@ -241,7 +241,8 @@ export default {
             "assignedRoom": "Assigned room",
             "location": "Location",
             "anyPlace": "Any place",
-            "assignTo": "Assign to"
+            "assignTo": "Assign to",
+            "serialNumber": "Serial number"
         },
         "permissions": {
             "add": "Add",
@@ -698,7 +699,8 @@ export default {
             "assignedRoom": "Habitación asignada",
             "location": "Ubicación",
             "anyPlace": "Cualquier lugar",
-            "assignTo": "Asignar a"
+            "assignTo": "Asignar a",
+            "serialNumber": "Serie"
         },
         "permissions": {
             "index": "Listar",

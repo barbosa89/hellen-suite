@@ -50,6 +50,14 @@ class Asset extends Model
     }
 
     /**
+     * Get all of the asset's maintenances.
+     */
+    public function maintenances()
+    {
+        return $this->morphMany(\App\Welkome\Maintenance::class, 'maintainable');
+    }
+
+    /**
      * Hashing Product ID.
      *
      * @param  string  $value

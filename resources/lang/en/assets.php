@@ -7,4 +7,5 @@ return array (
   'location' => 'Location',
   'anyPlace' => 'Any place',
   'assignTo' => 'Assign to',
+  'serialNumber' => 'Serial number',
 );

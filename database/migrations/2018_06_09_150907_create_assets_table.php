@@ -19,7 +19,7 @@ class CreateAssetsTable extends Migration
             $table->string('description');
             $table->string('brand', 100)->nullable();
             $table->string('model', 100)->nullable();
-            $table->string('reference', 100)->nullable();
+            $table->string('serial_number', 150)->nullable();
             $table->string('location')->nullable();
 
             $table->bigInteger('room_id')->unsigned()->nullable();

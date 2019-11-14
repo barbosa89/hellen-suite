@@ -32,6 +32,12 @@ class AssetController extends Controller
                 }
             ])->get(Fields::get('hotels'));
 
+        if($hotels->isEmpty()) {
+            flash('No hay hoteles creados')->info();
+
+            return redirect()->route('hotels.index');
+        }
+
         $hotels = $hotels->map(function ($hotel)
         {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -70,7 +76,7 @@ class AssetController extends Controller
         if($hotels->isEmpty()) {
             flash('No hay hoteles creados')->info();
 
-            return redirect()->route('assets.index');
+            return redirect()->route('hotels.index');
         }
 
         $rooms = $hotels->sum(function ($hotel)
@@ -100,7 +106,7 @@ class AssetController extends Controller
         $asset->description = $request->description;
         $asset->brand = $request->get('brand', null);
         $asset->model = $request->get('model', null);
-        $asset->reference = $request->get('reference', null);
+        $asset->serial_number = $request->get('serial_number', null);
         $asset->location = $request->get('location', null);
         $asset->user()->associate(Id::parent());
         $asset->hotel()->associate(Id::get($request->hotel));
@@ -218,7 +224,7 @@ class AssetController extends Controller
         $asset->description = $request->description;
         $asset->brand = $request->get('brand', null);
         $asset->model = $request->get('model', null);
-        $asset->reference = $request->get('reference', null);
+        $asset->serial_number = $request->get('serial_number', null);
         $asset->location = $request->get('location', null);
         $asset->hotel()->associate(Id::get($request->hotel));
 
@@ -292,7 +298,7 @@ class AssetController extends Controller
 
             $assets = Asset::where('hotel_id', Id::get($request->hotel))
                 ->where('user_id', Id::parent())
-                ->whereLike(['number', 'description', 'brand', 'model', 'reference', 'location'], $query)
+                ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
                 ->get(Fields::get('assets'));
 
             $assets = $assets->map(function ($asset)
@@ -363,7 +369,7 @@ class AssetController extends Controller
         if($hotels->isEmpty()) {
             flash('No hay hoteles creados')->info();
 
-            return redirect()->route('assets.index');
+            return redirect()->route('hotels.index');
         }
 
         return view('app.assets.report', compact('hotels'));
@@ -405,7 +411,7 @@ class AssetController extends Controller
         if($hotels->isEmpty()) {
             flash('No hay hoteles creados')->info();
 
-            return back();
+            return redirect()->route('hotels.index');
         }
 
         return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');

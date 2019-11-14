@@ -68,13 +68,13 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('reference') ? ' has-error' : '' }}">
-                        <label for="reference">@lang('common.reference'):</label>
-                        <input type="text" class="form-control" name="reference" id="reference" value="{{ old('reference') }}" maxlength="50">
+                    <div class="form-group{{ $errors->has('serial_number') ? ' has-error' : '' }}">
+                        <label for="serial_number">@lang('assets.serialNumber'):</label>
+                        <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" maxlength="50">
 
-                        @if ($errors->has('reference'))
+                        @if ($errors->has('serial_number'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('reference') }}</strong>
+                                <strong>{{ $errors->first('serial_number') }}</strong>
                             </span>
                         @endif
                     </div>
