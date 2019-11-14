@@ -124,7 +124,8 @@ export default {
             "tax_status": "Tax status",
             "date": "Date",
             "chooseOption": "Choose a option",
-            "query": "Query"
+            "query": "Query",
+            "commentary": "Commentary"
         },
         "props": {
             "add": "Add prop",
@@ -156,6 +157,10 @@ export default {
             "title": "Transactions",
             "inputs": "Inputs",
             "outputs": "Outputs"
+        },
+        "maintenances": {
+            "maintenance": "Maintenance",
+            "title": "Maintenances"
         },
         "passwords": {
             "password": "Passwords must be at least six characters and match the confirmation.",
@@ -582,7 +587,8 @@ export default {
             "tax_status": "Estado de impuestos",
             "date": "Fecha",
             "chooseOption": "Elige una opción",
-            "query": "Consultar"
+            "query": "Consultar",
+            "commentary": "Comentario"
         },
         "props": {
             "add": "Agregar utilería",
@@ -614,6 +620,10 @@ export default {
             "title": "Transacciones",
             "outputs": "Salidas",
             "inputs": "Entradas"
+        },
+        "maintenances": {
+            "title": "Mantenimientos",
+            "maintenance": "Mantenimiento"
         },
         "passwords": {
             "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",

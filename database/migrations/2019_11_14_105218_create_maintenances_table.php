@@ -15,6 +15,7 @@ class CreateMaintenancesTable extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('date');
             $table->text('commentary');
             $table->float('value', 10, 2)->nullable();
             $table->text('invoice')->nullable();

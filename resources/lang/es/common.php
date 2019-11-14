@@ -108,4 +108,5 @@ return array (
   'date' => 'Fecha',
   'chooseOption' => 'Elige una opción',
   'query' => 'Consultar',
+  'commentary' => 'Comentario',
 );

@@ -31,7 +31,7 @@ class UpdateAsset extends FormRequest
             'description' => 'required|string|max:191',
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',
-            'reference' => 'nullable|string|max:50',
+            'serial_number' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:50',
             'room' => 'nullable|string|hashed_exists:rooms,id',
             'hotel' => 'required|string|hashed_exists:hotels,id',

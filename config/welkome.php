@@ -147,7 +147,20 @@ return [
             'type',
             'done_by',
             'transactionable_id',
-            'created_at'
+            'transactionable_type',
+            'created_at',
+            'user_id'
+        ],
+        'maintenances' => [
+            'id',
+            'date',
+            'commentary',
+            'value',
+            'invoice',
+            'maintainable_id',
+            'maintainable_type',
+            'created_at',
+            'user_id'
         ]
     ],
 
