@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCompany extends FormRequest
@@ -13,7 +14,7 @@ class UpdateCompany extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +24,15 @@ class UpdateCompany extends FormRequest
      */
     public function rules()
     {
+        $id = Id::get($this->route('id'));
+
         return [
-            //
+            'tin' => 'required|string|unique:companies,tin,' . $id,
+            'business_name' => 'required|string',
+            'email' => 'nullable|email',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|min:6|max:12',
+            'mobile' => 'nullable|string|min:6|max:12'
         ];
     }
 }

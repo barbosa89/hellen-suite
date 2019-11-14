@@ -105,6 +105,10 @@ return [
             'id',
             'tin',
             'business_name',
+            'email',
+            'phone',
+            'address',
+            'mobile',
             'user_id',
             'created_at'
         ],

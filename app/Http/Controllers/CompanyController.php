@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CompaniesReport;
 use Carbon\Carbon;
 use App\Welkome\Company;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use App\Helpers\{Id, Input, Fields, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
 use App\Welkome\Invoice;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
 {
@@ -154,7 +156,15 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $company = Company::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('companies'));
+
+        if (empty($company)) {
+            abort(404);
+        }
+
+        return view('app.companies.edit', compact('company'));
     }
 
     /**
@@ -164,9 +174,32 @@ class CompanyController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCompany $request, $id)
     {
-        //
+        $company = Company::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('companies'));
+
+        if (empty($company)) {
+            abort(404);
+        }
+
+        $company->tin = $request->tin;
+        $company->business_name = $request->business_name;
+        $company->email = $request->get('email', null);
+        $company->address = $request->get('address', null);
+        $company->phone = $request->get('phone', null);
+        $company->mobile = $request->get('mobile', null);
+
+        if ($company->update()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('companies.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('companies.index');
     }
 
     /**
@@ -177,7 +210,23 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $company = Company::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('companies'));
+
+        if (empty($company)) {
+            abort(404);
+        }
+
+        if ($company->delete()) {
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return redirect()->route('companies.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('companies.index');
     }
 
     /**
@@ -204,5 +253,18 @@ class CompanyController extends Controller
         }
 
         return view('app.companies.search', compact('companies', 'query'));
+    }
+
+    /**
+     * Export a listing of companies in excel format.
+     *
+     * @return \Maatwebsite\Excel\Excel
+     */
+    public function export()
+    {
+        $companies = Company::where('user_id', Id::parent())
+            ->get(Fields::get('companies'));
+
+        return Excel::download(new CompaniesReport($companies), trans('companies.title') . '.xlsx');
     }
 }

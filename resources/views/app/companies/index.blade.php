@@ -15,6 +15,10 @@
             ],
             'options' => [
                 [
+                    'option' => trans('reports.list'),
+                    'url' => route('companies.export')
+                ],
+                [
                     'option' => trans('common.new'),
                     'url' => route('companies.create')
                 ],

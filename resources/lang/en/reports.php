@@ -5,4 +5,5 @@ return array (
   'title' => 'Reports',
   'type' => 'Report type',
   'of' => 'Report of',
+  'list' => 'List',
 );

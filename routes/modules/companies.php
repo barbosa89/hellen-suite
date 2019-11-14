@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('companies/export', 'CompanyController@export')
+		->name('companies.export')
+		->middleware(['permission:companies.index']);
+
 	Route::get('companies/search', 'CompanyController@search')
 		->name('companies.search')
 		->middleware(['permission:companies.index']);

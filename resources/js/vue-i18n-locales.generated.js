@@ -192,7 +192,8 @@ export default {
             "report": "Report",
             "title": "Reports",
             "type": "Report type",
-            "of": "Report of"
+            "of": "Report of",
+            "list": "List"
         },
         "users": {
             "title": "Users",
@@ -655,7 +656,8 @@ export default {
             "title": "Reportes",
             "report": "Reporte",
             "type": "Tipo de reporte",
-            "of": "Reporte de"
+            "of": "Reporte de",
+            "list": "Listado"
         },
         "users": {
             "title": "Usuarios",
