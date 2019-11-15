@@ -192,8 +192,8 @@ export default {
             "report": "Report",
             "title": "Reports",
             "type": "Report type",
-            "of": "Report of",
-            "list": "List"
+            "list": "List",
+            "listOf": "List of"
         },
         "users": {
             "title": "Users",
@@ -286,7 +286,10 @@ export default {
             "title": "Guests",
             "guest": "Guest",
             "chooseGender": "Choose gender",
-            "recently": "Recently registered"
+            "recently": "Recently registered",
+            "profession": "Profession",
+            "country": "Country",
+            "registerDate": "Register date"
         },
         "login": {
             "identification": "Sign in",
@@ -656,8 +659,8 @@ export default {
             "title": "Reportes",
             "report": "Reporte",
             "type": "Tipo de reporte",
-            "of": "Reporte de",
-            "list": "Listado"
+            "list": "Listado",
+            "listOf": "Listado de"
         },
         "users": {
             "title": "Usuarios",
@@ -750,7 +753,10 @@ export default {
             "title": "Huéspedes",
             "guest": "Huésped",
             "chooseGender": "Selecciona un género",
-            "recently": "Recientemente registrados"
+            "recently": "Recientemente registrados",
+            "profession": "Profesión",
+            "country": "País",
+            "registerDate": "Fecha de registro"
         },
         "login": {
             "logout": "Salir",

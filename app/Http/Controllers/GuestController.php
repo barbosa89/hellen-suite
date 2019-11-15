@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
 use App\Welkome\{Country, Guest, IdentificationType};
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
 {
@@ -189,5 +191,34 @@ class GuestController extends Controller
         });
 
         return $rendered->toArray();
+    }
+
+    /**
+     * Export a listing of guests in excel format.
+     *
+     * @return \Maatwebsite\Excel\Excel
+     */
+    public function export()
+    {
+        $guests = Guest::where('user_id', Id::parent())
+            ->with([
+                'identificationType' => function ($query)
+                {
+                    $query->select(['id', 'type']);
+                },
+                'country' => function ($query)
+                {
+                    $query->select(['id', 'name']);
+                }
+            ])
+            ->get(Fields::get('guests'));
+
+        if ($guests->isEmpty()) {
+            flash(trans('common.noRecords'))->info();
+
+            return redirect()->route('guests.index');
+        }
+
+        return Excel::download(new GuestsReport($guests), trans('guests.title') . '.xlsx');
     }
 }

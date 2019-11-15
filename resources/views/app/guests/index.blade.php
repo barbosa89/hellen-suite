@@ -15,6 +15,10 @@
             ],
             'options' => [
                 [
+                    'option' => trans('reports.list'),
+                    'url' => route('guests.export')
+                ],
+                [
                     'option' => trans('common.new'),
                     'url' => route('guests.create')
                 ],

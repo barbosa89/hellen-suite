@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('guests/export', 'GuestController@export')
+		->name('guests.export')
+		->middleware(['permission:guests.index']);
+
     Route::post('guests/search/unregistered', 'GuestController@searchUnregistered')
         ->name('guests.search.unregistered')
         ->middleware(['auth', 'permission:guests.index']);

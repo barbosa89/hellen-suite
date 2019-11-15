@@ -20,13 +20,13 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">@lang('reports.of') @lang('assets.title')</h2>
+                <h2 class="text-center">@lang('reports.listOf') @lang('assets.title')</h2>
 
                 <form action="{{ route('assets.report.export') }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('reports.type'):</label>
+                        <label for="pwd">@lang('common.chooseOption'):</label>
                         <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="type" id="type" required>
                             <option value="all" selected>@lang('hotels.all')</option>
                             <option value="one">@lang('hotels.one')</option>

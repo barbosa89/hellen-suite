@@ -5,4 +5,7 @@ return array (
   'guest' => 'Guest',
   'chooseGender' => 'Choose gender',
   'recently' => 'Recently registered',
+  'profession' => 'Profession',
+  'country' => 'Country',
+  'registerDate' => 'Register date',
 );

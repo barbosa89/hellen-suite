@@ -13,7 +13,7 @@
             'url' => route('assets.index'),
             'options' => [
                 [
-                    'option' => trans('reports.title'),
+                    'option' => trans('reports.list'),
                     'url' => route('assets.report')
                 ],
                 [
