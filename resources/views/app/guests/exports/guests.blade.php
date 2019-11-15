@@ -8,7 +8,7 @@
         <thead>
         <tr>
             <th>@lang('common.idType')</th>
-            <th>@lang('common.dni')</th>
+            <th>@lang('common.idNumber')</th>
             <th>@lang('common.name')</th>
             <th>@lang('common.lastName')</th>
             <th>@lang('guests.profession')</th>
@@ -21,12 +21,12 @@
         <tbody>
             @foreach ($guests as $guest)
                 <tr>
-                    <td>{{ $guest->identificationType->type }}</td>
+                    <td>{{ trans('common.' . $guest->identificationType->type) }}</td>
                     <td>{{ $guest->dni }}</td>
                     <td>{{ $guest->name }}</td>
                     <td>{{ $guest->last_name }}</td>
                     <td>{{ $guest->profession ??  trans('common.noData') }}</td>
-                    <td>{{ $guest->gender ??  trans('common.noData') }}</td>
+                    <td>{{ $guest->gender ? trans('common.' . $guest->gender) : trans('common.noData') }}</td>
                     <td>{{ $guest->birthdate ??  trans('common.noData') }}</td>
                     <td>{{ $guest->country ? $guest->country->name : trans('common.noData') }}</td>
                     <td>{{ $guest->created_at }}</td>

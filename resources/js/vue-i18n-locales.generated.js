@@ -125,7 +125,9 @@ export default {
             "date": "Date",
             "chooseOption": "Choose a option",
             "query": "Query",
-            "commentary": "Commentary"
+            "commentary": "Commentary",
+            "x": "Other",
+            "notRemovable": "It is not possible to delete the record"
         },
         "props": {
             "add": "Add prop",
@@ -592,7 +594,9 @@ export default {
             "date": "Fecha",
             "chooseOption": "Elige una opción",
             "query": "Consultar",
-            "commentary": "Comentario"
+            "commentary": "Comentario",
+            "x": "Otro",
+            "notRemovable": "No es posible eliminar el registro"
         },
         "props": {
             "add": "Agregar utilería",

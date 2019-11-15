@@ -64,7 +64,7 @@ Breadcrumbs::for('guests', function ($trail) {
 
 Breadcrumbs::for('guest', function ($trail, $guest) {
     $trail->parent('guests');
-    $trail->push($guest->business_name, route('guest.show', ['id' => Hashids::encode($guest->id)]));
+    $trail->push($guest->full_name, route('guests.show', ['id' => Hashids::encode($guest->id)]));
 });
 
 Breadcrumbs::for('products', function ($trail) {

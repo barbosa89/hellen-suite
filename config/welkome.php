@@ -75,6 +75,7 @@ return [
             'profession',
             'gender',
             'birthdate',
+            'email',
             'responsible_adult',
             'identification_type_id',
             'country_id',

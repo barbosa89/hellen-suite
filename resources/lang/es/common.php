@@ -109,4 +109,6 @@ return array (
   'chooseOption' => 'Elige una opción',
   'query' => 'Consultar',
   'commentary' => 'Comentario',
+  'x' => 'Otro',
+  'notRemovable' => 'No es posible eliminar el registro',
 );

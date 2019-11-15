@@ -109,4 +109,6 @@ return array (
   'chooseOption' => 'Choose a option',
   'query' => 'Query',
   'commentary' => 'Commentary',
+  'x' => 'Other',
+  'notRemovable' => 'It is not possible to delete the record',
 );

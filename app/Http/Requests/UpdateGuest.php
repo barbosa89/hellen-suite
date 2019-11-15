@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGuest extends FormRequest
+class UpdateGuest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +24,11 @@ class StoreGuest extends FormRequest
      */
     public function rules()
     {
+        $id = Id::get($this->route('id'));
+
         return [
             'type' => 'required|string|hashed_exists:identification_types,id',
-            'dni' => 'required|numeric|unique:guests,dni',
+            'dni' => 'required|numeric|unique:guests,dni,' . $id,
             'name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'nullable|email',

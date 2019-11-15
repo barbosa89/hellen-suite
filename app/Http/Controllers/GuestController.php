@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
+use App\Http\Requests\UpdateGuest;
 use App\Welkome\{Country, Guest, IdentificationType};
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -96,7 +97,29 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $guest = Guest::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('guests'));
+
+        if (empty($guest)) {
+            abort(404);
+        }
+
+        $guest->load([
+            'identificationType' => function ($query)
+            {
+                $query->select(['id', 'type']);
+            },
+            'country' => function ($query)
+            {
+                $query->select(['id', 'name']);
+            }
+        ]);
+
+        $types = IdentificationType::all(['id', 'type']);
+        $countries = Country::all(['id', 'name']);
+
+        return view('app.guests.edit', compact('guest', 'types', 'countries'));
     }
 
     /**
@@ -106,9 +129,45 @@ class GuestController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGuest $request, $id)
     {
-        //
+        $guest = Guest::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('guests'));
+
+        if (empty($guest)) {
+            abort(404);
+        }
+
+        $guest->name = $request->name;
+        $guest->last_name = $request->last_name;
+        $guest->dni = $request->dni;
+        $guest->email = $request->get('email', null);
+        $guest->gender = $request->get('gender', null);
+        $guest->birthdate = $request->get('birthdate', null);
+        $guest->profession = $request->get('profession', null);
+
+        if (!empty($request->type)) {
+            $guest->identificationType()->associate(Id::get($request->type));
+        }
+
+        if (!empty($request->nationality)) {
+            $guest->country()->associate(Id::get($request->nationality));
+        }
+
+        if ($guest->save()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('guests.show', [
+                'id' => Hashids::encode($guest->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('guests.show', [
+            'id' => Hashids::encode($guest->id)
+        ]);
     }
 
     /**
@@ -119,7 +178,38 @@ class GuestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $guest = Guest::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('guests'));
+
+        if (empty($guest)) {
+            abort(404);
+        }
+
+        $guest->load([
+            'invoices' => function ($query)
+            {
+                $query->select(['id']);
+            }
+        ]);
+
+        if ($guest->invoices->isNotEmpty()) {
+            flash(trans('common.notRemovable'))->info();
+
+            return redirect()->route('guests.show', [
+                'guest' => Hashids::encode($guest->id)
+            ]);
+        } else {
+            if ($guest->delete()) {
+                flash(trans('common.deletedSuccessfully'))->success();
+
+                return redirect()->route('guests.index');
+            }
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('guests.index');
     }
 
     /**

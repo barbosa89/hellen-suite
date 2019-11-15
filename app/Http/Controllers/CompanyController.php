@@ -191,7 +191,7 @@ class CompanyController extends Controller
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
 
-        if ($company->update()) {
+        if ($company->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('companies.index');
