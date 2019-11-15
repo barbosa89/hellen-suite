@@ -600,7 +600,7 @@ class InvoiceController extends Controller
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function removeGuests(RemoveGuests $request, $id)
+    public function removeGuests($id, $guestId)
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
@@ -608,25 +608,33 @@ class InvoiceController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select('id');
+                    $query->select('id')
+                        ->where('responsible_adult', false);
+                },
+                'guests.rooms' => function ($query) {
+                    $query->select('id', 'number');
                 },
             ])->first(['id']);
 
-        $guest = Guest::where('id', Id::get($request->guest))
-            ->where('status', true) // In hotel
-            ->first(Fields::get('guests'));
+        // Get the guest to remove from invoice
+        $guest = $invoice->guests->where('id', Id::get($guestId))->first();
 
-        if (empty($invoice) or empty($guest)) {
-            abort(404);
-        }
-
+        // Check if the invoice only has a guest
         if ($invoice->guests->count() == 1) {
             flash(trans('invoices.onlyOne'))->error();
 
             return back();
         }
 
+        // Check if invoice or guest are null
+        if (empty($invoice) or empty($guest)) {
+            abort(404);
+        }
+
+        // Detach the guest from invoice
         $invoice->guests()->detach($guest->id);
+
+        // Refresh the guests relationship to select the main guest
         $invoice->load([
             'guests' => function ($query) {
                 $query->select('id')
@@ -634,15 +642,18 @@ class InvoiceController extends Controller
             }
         ]);
 
+        // Select the main guest
         $invoice->guests()->updateExistingPivot(
             $invoice->guests->first(),
             ['main' => true]
         );
 
+        // Detach the guest from room
         $guest->rooms()
             ->wherePivot('invoice_id', $invoice->id)
-            ->detach(Id::get($request->room));
+            ->detach($guest->rooms->first()->id);
 
+        // The guest will be available to add to invoice
         $guest->status = false;
         $guest->save();
 

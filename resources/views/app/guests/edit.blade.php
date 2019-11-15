@@ -13,7 +13,7 @@
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => route('guests.show', ['id' => Hashids::encode($guest->id)])
+                    'url' => url()->previous()
                 ],
             ]
         ])
@@ -33,7 +33,7 @@
                     'btn' => trans('common.update'),
                     'link' => [
                         'name' => trans('common.back'),
-                        'href' => route('guests.show', ['id' => Hashids::encode($guest->id)])
+                        'href' => url()->previous()
                     ]
                 ])
             </div>

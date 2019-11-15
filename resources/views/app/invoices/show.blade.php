@@ -273,10 +273,12 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                        <a class="btn btn-link" href="#" data-room="{{ Hashids::encode($room->id) }}" data-guest="{{ Hashids::encode($guest->id) }}" data-invoice="{{ Hashids::encode($invoice->id) }}">
+                                                        <a class="btn btn-link" href="{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)]) }}">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
-                                                        <a class="btn btn-link" href="#"><i class="fas fa-user-edit"></i></a>
+                                                        <a class="btn btn-link" href="{{ route('guests.edit', ['id' => Hashids::encode($guest->id)]) }}">
+                                                            <i class="fas fa-user-edit"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>

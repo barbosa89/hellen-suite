@@ -23,6 +23,7 @@ class AddGuests extends FormRequest
      */
     public function rules()
     {
+        // TODO: Agregar hashed_exists
         return [
             'guest' => 'required|string',
             'room' => 'required|string',

@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('invoices/{id}/guests/add', 'InvoiceController@addguests')
         ->name('invoices.guests.add');
 
-    Route::post('invoices/{id}/guests/remove', 'InvoiceController@removeguests')
+    Route::get('invoices/{id}/guests/{guest}/remove', 'InvoiceController@removeguests')
         ->name('invoices.guests.remove');
 
     Route::get('invoices/{id}/products', 'InvoiceController@products')
