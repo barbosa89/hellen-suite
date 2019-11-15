@@ -212,10 +212,13 @@ class CompanyController extends Controller
     {
         $company = Company::where('user_id', Id::parent())
             ->where('id', Id::get($id))
+            ->whereDoesntHave('invoices')
             ->first(Fields::get('companies'));
 
         if (empty($company)) {
-            abort(404);
+            flash(trans('common.notRemovable'))->info();
+
+            return back();
         }
 
         if ($company->delete()) {

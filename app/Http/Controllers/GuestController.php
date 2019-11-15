@@ -180,31 +180,19 @@ class GuestController extends Controller
     {
         $guest = Guest::where('user_id', Id::parent())
             ->where('id', Id::get($id))
+            ->whereDoesntHave('invoices')
             ->first(Fields::get('guests'));
 
         if (empty($guest)) {
-            abort(404);
-        }
-
-        $guest->load([
-            'invoices' => function ($query)
-            {
-                $query->select(['id']);
-            }
-        ]);
-
-        if ($guest->invoices->isNotEmpty()) {
             flash(trans('common.notRemovable'))->info();
 
-            return redirect()->route('guests.show', [
-                'guest' => Hashids::encode($guest->id)
-            ]);
-        } else {
-            if ($guest->delete()) {
-                flash(trans('common.deletedSuccessfully'))->success();
+            return back();
+        }
 
-                return redirect()->route('guests.index');
-            }
+        if ($guest->delete()) {
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return redirect()->route('guests.index');
         }
 
         flash(trans('common.error'))->error();
