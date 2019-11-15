@@ -166,6 +166,15 @@ return [
             'maintainable_type',
             'created_at',
             'user_id'
+        ],
+        'vehicles' => [
+            'id',
+            'registration',
+            'brand',
+            'color',
+            'vehicle_type_id',
+            'user_id',
+            'created_at',
         ]
     ],
 

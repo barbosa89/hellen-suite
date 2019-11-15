@@ -13,4 +13,9 @@ return array (
   'tricycle' => 'Tricycle',
   'truck' => 'Truck',
   'van' => 'Van',
+  'title' => 'Vehicles',
+  'vehicle' => 'Vehicle',
+  'registration' => 'Registration',
+  'driver' => 'Driver',
+  'drivers' => 'Drivers',
 );

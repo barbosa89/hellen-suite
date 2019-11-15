@@ -111,4 +111,7 @@ return array (
   'commentary' => 'Comentario',
   'x' => 'Otro',
   'notRemovable' => 'No es posible eliminar el registro',
+  'onlyAlphanumeric' => 'Sólo alfanumérico',
+  'capital' => 'Mayúsculas',
+  'alphabetic' => 'Sólo alfabético',
 );

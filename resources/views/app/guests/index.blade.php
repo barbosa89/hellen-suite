@@ -15,8 +15,10 @@
             ],
             'options' => [
                 [
+                    'type' => 'hideable',
                     'option' => trans('reports.list'),
-                    'url' => route('guests.export')
+                    'url' => route('guests.export'),
+                    'show' => $guests->isNotEmpty()
                 ],
                 [
                     'option' => trans('common.new'),

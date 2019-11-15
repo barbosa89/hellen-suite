@@ -76,6 +76,14 @@
         </li>
     @endcan
 
+    @can('vehicles.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('vehicles.index') }}">
+            <i class="fa fa-fw fa-car"></i>
+            <span>@lang('vehicles.title')</span></a>
+        </li>
+    @endcan
+
     @can('products.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('products.index') }}">

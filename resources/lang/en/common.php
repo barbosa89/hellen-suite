@@ -111,4 +111,7 @@ return array (
   'commentary' => 'Commentary',
   'x' => 'Other',
   'notRemovable' => 'It is not possible to delete the record',
+  'onlyAlphanumeric' => 'Only alphanumeric',
+  'capital' => 'Capital letters',
+  'alphabetic' => 'Only alphabetic',
 );

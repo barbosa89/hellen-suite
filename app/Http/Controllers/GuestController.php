@@ -21,6 +21,7 @@ class GuestController extends Controller
      */
     public function index()
     {
+        // TODO: Limitar la consulta en index
         $guests = Guest::paginate(
             config('welkome.paginate'),
             Fields::get('guests')

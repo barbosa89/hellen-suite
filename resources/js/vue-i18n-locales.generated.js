@@ -127,7 +127,10 @@ export default {
             "query": "Query",
             "commentary": "Commentary",
             "x": "Other",
-            "notRemovable": "It is not possible to delete the record"
+            "notRemovable": "It is not possible to delete the record",
+            "onlyAlphanumeric": "Only alphanumeric",
+            "capital": "Capital letters",
+            "alphabetic": "Only alphabetic"
         },
         "props": {
             "add": "Add prop",
@@ -148,7 +151,12 @@ export default {
             "trailer": "Trailer",
             "tricycle": "Tricycle",
             "truck": "Truck",
-            "van": "Van"
+            "van": "Van",
+            "title": "Vehicles",
+            "vehicle": "Vehicle",
+            "registration": "Registration",
+            "driver": "Driver",
+            "drivers": "Drivers"
         },
         "transactions": {
             "commentary": "Commentary",
@@ -596,7 +604,10 @@ export default {
             "query": "Consultar",
             "commentary": "Comentario",
             "x": "Otro",
-            "notRemovable": "No es posible eliminar el registro"
+            "notRemovable": "No es posible eliminar el registro",
+            "onlyAlphanumeric": "Sólo alfanumérico",
+            "capital": "Mayúsculas",
+            "alphabetic": "Sólo alfabético"
         },
         "props": {
             "add": "Agregar utilería",
@@ -617,7 +628,12 @@ export default {
             "skateboard": "Monopatín",
             "tricycle": "Triciclo",
             "campers": "Camperos",
-            "minivan": "Minivan"
+            "minivan": "Minivan",
+            "title": "Vehículos",
+            "vehicle": "Vehículo",
+            "registration": "Matrícula",
+            "drivers": "Conductores",
+            "driver": "Conductor"
         },
         "transactions": {
             "type": "Tipo",

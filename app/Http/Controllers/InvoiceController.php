@@ -253,7 +253,7 @@ class InvoiceController extends Controller
             $customer['tin'] = $invoice->company->tin;
             $customer['route'] = route('guests.show', ['id' => Hashids::encode($invoice->company->id)]);
         }
-        
+
         return $customer;
     }
 

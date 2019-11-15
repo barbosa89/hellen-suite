@@ -1,28 +1,28 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('companies') }}
+    {{ Breadcrumbs::render('vehicles') }}
 @endsection
 
 @section('content')
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('companies.title'),
-            'url' => route('companies.index'),
+            'title' => trans('vehicles.title'),
+            'url' => route('vehicles.index'),
             'search' => [
-                'action' => route('companies.search')
+                'action' => route('vehicles.search')
             ],
             'options' => [
                 [
                     'type' => 'hideable',
                     'option' => trans('reports.list'),
-                    'url' => route('companies.export'),
-                    'show' => $companies->isNotEmpty()
+                    'url' => route('vehicles.export'),
+                    'show' => $vehicles->isNotEmpty()
                 ],
                 [
                     'option' => trans('common.new'),
-                    'url' => route('companies.create')
+                    'url' => route('vehicles.create')
                 ],
             ]
         ])
@@ -30,10 +30,9 @@
         <div class="row">
             <div class="col-md-12">
                 @include('partials.list', [
-                    'data' => $companies,
-                    'listHeading' => 'app.companies.list-heading',
-                    'listRow' => 'app.companies.list-row',
-                    'where' => null
+                    'data' => $vehicles,
+                    'listHeading' => 'app.vehicles.list-heading',
+                    'listRow' => 'app.vehicles.list-row'
                 ])
             </div>
         </div>
