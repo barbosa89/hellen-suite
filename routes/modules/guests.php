@@ -1,6 +1,12 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('invoices/{id}/guests', 'GuestController@storeForInvoice')
+        ->name('invoices.guests.store');
+
+    Route::get('invoices/{id}/guests/create', 'GuestController@createForInvoice')
+		->name('invoices.guests.create');
+
 	Route::get('guests/export', 'GuestController@export')
 		->name('guests.export')
 		->middleware(['permission:guests.index']);

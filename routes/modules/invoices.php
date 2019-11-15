@@ -43,12 +43,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('invoices/{id}/guests/search', 'InvoiceController@searchGuests')
         ->name('invoices.guests.search');
 
-    Route::post('invoices/{id}/guests', 'InvoiceController@storeGuests')
-        ->name('invoices.guests.store');
-
-    Route::get('invoices/{id}/guests/create', 'InvoiceController@createGuests')
-        ->name('invoices.guests.create');
-
     Route::get('invoices/{id}/guests/{guest}', 'InvoiceController@guests')
         ->name('invoices.guests');
 

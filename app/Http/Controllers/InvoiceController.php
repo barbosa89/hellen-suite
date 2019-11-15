@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Age, Fields, Id, Input, Random};
+use App\Helpers\{Age, Customer, Fields, Id, Input, Random};
 use App\Welkome\{Company, Country, Guest, Hotel, IdentificationType, Invoice, Product, Room, Service};
 use App\Http\Requests\{
     AddGuests,
@@ -17,7 +17,10 @@ use App\Http\Requests\{
     StoreInvoice,
     StoreInvoiceGuest
 };
-
+// TODO: Pensar en crear una tabla de atributos de los invoice
+// TODO: Crear tabla de configuraciones
+// Agregar edad limite para ser adulto
+// Agregar Hora hotelera
 class InvoiceController extends Controller
 {
     /**
@@ -187,75 +190,50 @@ class InvoiceController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
-                        ->withPivot('main');
-                },
-                'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
-                },
-                'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'))
-                        ->withPivot('quantity', 'value', 'start', 'end');
-                },
-                'rooms.guests' => function ($query) use ($id) {
-                    $query->select(Fields::get('guests'))
-                        ->wherePivot('invoice_id', $id);
-                },
-                'rooms.guests.parent' => function ($query) {
-                    $query->select('id', 'name', 'last_name');
-                },
-                'rooms.guests.identificationType' => function ($query) {
-                    $query->select('id', 'type');
-                },
-                'products' => function ($query) {
-                    $query->select(Fields::parsed('products'))
-                        ->withPivot('quantity', 'value');
-                },
-                'services' => function ($query) {
-                    $query->select(Fields::parsed('services'))
-                        ->withPivot('quantity', 'value');
-                },
-            ])->first(Fields::parsed('invoices'));
+            ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $invoice->load([
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'))
+                    ->withPivot('quantity', 'value', 'start', 'end');
+            },
+            'rooms.guests' => function ($query) use ($id) {
+                $query->select(Fields::get('guests'))
+                    ->wherePivot('invoice_id', $id);
+            },
+            'rooms.guests.parent' => function ($query) {
+                $query->select('id', 'name', 'last_name');
+            },
+            'rooms.guests.identificationType' => function ($query) {
+                $query->select('id', 'type');
+            },
+            'products' => function ($query) {
+                $query->select(Fields::parsed('products'))
+                    ->withPivot('quantity', 'value');
+            },
+            'services' => function ($query) {
+                $query->select(Fields::parsed('services'))
+                    ->withPivot('quantity', 'value');
+            }
+        ]);
+
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.show', compact('invoice', 'customer'));
     }
 
-    /**
-     * Return the invoice customer.
-     *
-     * @param  \App\Welkome\Invoice
-     * @return array
-     */
-    public function getCustomer(Invoice $invoice): array
-    {
-        $customer = [];
 
-        if (empty($invoice->company)) {
-            if ($invoice->guests->isNotEmpty()) {
-                $main = $invoice->guests->first(function ($guest, $index) {
-                    return $guest->pivot->main == true;
-                });
-
-                $customer['name'] = $main->full_name;
-                $customer['tin'] = $main->dni;
-                $customer['route'] = route('guests.show', ['id' => Hashids::encode($main->id)]);
-            }
-        } else {
-            $customer['name'] = $invoice->company->business_name;
-            $customer['tin'] = $invoice->company->tin;
-            $customer['route'] = route('guests.show', ['id' => Hashids::encode($invoice->company->id)]);
-        }
-
-        return $customer;
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -376,7 +354,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.add-rooms', compact('invoice', 'rooms', 'customer'));
     }
@@ -492,114 +470,9 @@ class InvoiceController extends Controller
             ]);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.search-guests', compact('invoice', 'customer'));
-    }
-
-    /**
-     * Show the form for creating a new invoice guest.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function createGuests($id)
-    {
-        $id = Id::get($id);
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', $id)
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select('id', 'number');
-                },
-                'rooms.guests' => function ($query) use ($id) {
-                    $query->select('id', 'name', 'last_name')
-                        ->wherePivot('invoice_id', $id);
-                },
-                'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
-                        ->withPivot('main');
-                },
-                'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
-                }
-            ])->first(['id']);
-
-        if (empty($invoice)) {
-            abort(404);
-        }
-
-        $types = IdentificationType::all(['id', 'type']);
-        $countries = Country::all(['id', 'name']);
-        $guests = $this->countGuestsPerRoom($invoice);
-
-        $customer = $this->getCustomer($invoice);
-
-        return view('app.invoices.guests.create', compact('invoice', 'types', 'guests', 'countries', 'customer'));
-    }
-
-    /**
-     * Store a newly created guest in storage and attaching to invoice.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function storeGuests(StoreInvoiceGuest $request, $id)
-    {
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select('id');
-                },
-            ])->first(['id']);
-
-        if (empty($invoice)) {
-            abort(404);
-        }
-
-        $guest = new Guest();
-        $guest->name = $request->name;
-        $guest->last_name = $request->last_name;
-        $guest->dni = $request->dni;
-        $guest->email = $request->get('email', null);
-        $guest->gender = $request->get('gender', null);
-        $guest->birthdate = $request->get('birthdate', null);
-        $guest->profession = $request->get('profession', null);
-        $guest->name = $request->get('name', null);
-        $guest->status = true; // In hotel
-        $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(Id::parent());
-        $guest->country()->associate(Id::get($request->nationality));
-
-        $isMinor = $this->isMinor($request->get('birthdate', null));
-        $responsible = Id::get($request->get('responsible_adult', null));
-
-        if ($isMinor and !empty($responsible)) {
-            $guest->responsible_adult = $responsible;
-        }
-
-        if ($guest->save()) {
-            $main = $invoice->guests->isEmpty() ? true : false;
-            $invoice->guests()->attach($guest->id, ['main' => $main]);
-
-            $guest->rooms()->attach(Id::get($request->room), [
-                'invoice_id' => $invoice->id
-            ]);
-
-            flash(trans('common.successful'))->success();
-
-            return back();
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
     }
 
     /**
@@ -647,7 +520,7 @@ class InvoiceController extends Controller
 
         $guests = $this->countGuestsPerRoom($invoice);
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.add-guests', compact('invoice', 'guest', 'guests', 'customer'));
     }
@@ -699,7 +572,7 @@ class InvoiceController extends Controller
 
         $responsible = Id::get($request->get('responsible_adult', null));
 
-        if ($this->isMinor($guest->birthdate) and !empty($responsible)) {
+        if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
             $guest->responsible_adult = $responsible;
         }
 
@@ -781,30 +654,6 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Check if the guest is a minor.
-     *
-     * @param string $birthdate
-     * @return boolean
-     */
-    private function isMinor($birthdate = '')
-    {
-        if (empty($birthdate)) {
-            return false;
-        }
-
-        $age = Age::get($birthdate);
-        // TODO: Pensar en crear una tabla de atributos de los invoice
-        // TODO: Crear tabla de configuraciones
-        // Agregar edad limite para ser adulto
-        // Agregar Hora hotelera
-        if ($age < 18) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Show the form for adding products to invoice.
      *
      * @param int $id
@@ -846,7 +695,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.add-products', compact('invoice', 'products', 'customer'));
     }
@@ -953,13 +802,13 @@ class InvoiceController extends Controller
             ]);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.add-services', compact('invoice', 'services', 'customer'));
     }
 
     /**
-     * Store the product values to invoice.
+     * Store the services values to invoice.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $id
@@ -1037,7 +886,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $customer = $this->getCustomer($invoice);
+        $customer = Customer::get($invoice);
 
         return view('app.invoices.search-companies', compact('invoice', 'customer'));
     }
@@ -1083,7 +932,7 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Create a new invoice with many rooms.
+     * Redirect to create new invoice with many rooms.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

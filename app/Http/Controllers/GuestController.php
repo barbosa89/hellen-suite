@@ -6,10 +6,11 @@ use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Id, Input, Fields};
+use App\Helpers\{Customer, Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
+use App\Http\Requests\StoreInvoiceGuest;
 use App\Http\Requests\UpdateGuest;
-use App\Welkome\{Country, Guest, IdentificationType};
+use App\Welkome\{Country, Guest, IdentificationType, Invoice};
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
@@ -78,6 +79,116 @@ class GuestController extends Controller
     }
 
     /**
+     * Show the form for creating a new invoice guest.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createForInvoice($id)
+    {
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id', 'number');
+                },
+                'rooms.guests' => function ($query) use ($id) {
+                    $query->select('id', 'name', 'last_name')
+                        ->wherePivot('invoice_id', $id);
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
+            ])->first(['id', 'number']);
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $types = IdentificationType::all(['id', 'type']);
+        $countries = Country::all(['id', 'name']);
+        $guests = 0;
+
+        $invoice->rooms->each(function ($room) use (&$guests)
+        {
+            $guests += $room->guests()->count();
+        });
+
+        $customer = Customer::get($invoice);
+
+        return view('app.guests.create-for-invoice', compact('invoice', 'types', 'guests', 'countries', 'customer'));
+    }
+
+    /**
+     * Store a newly created guest in storage and attaching to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeForInvoice(StoreInvoiceGuest $request, $id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select('id');
+                },
+            ])->first(['id']);
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $guest = new Guest();
+        $guest->name = $request->name;
+        $guest->last_name = $request->last_name;
+        $guest->dni = $request->dni;
+        $guest->email = $request->get('email', null);
+        $guest->gender = $request->get('gender', null);
+        $guest->birthdate = $request->get('birthdate', null);
+        $guest->profession = $request->get('profession', null);
+        $guest->name = $request->get('name', null);
+        $guest->status = true; // In hotel
+        $guest->identificationType()->associate(Id::get($request->type));
+        $guest->user()->associate(Id::parent());
+        $guest->country()->associate(Id::get($request->nationality));
+
+        $isMinor = Customer::isMinor($request->get('birthdate', null));
+        $responsible = Id::get($request->get('responsible_adult', null));
+
+        if ($isMinor and !empty($responsible)) {
+            $guest->responsible_adult = $responsible;
+        }
+
+        if ($guest->save()) {
+            $main = $invoice->guests->isEmpty() ? true : false;
+            $invoice->guests()->attach($guest->id, ['main' => $main]);
+
+            $guest->rooms()->attach(Id::get($request->room), [
+                'invoice_id' => $invoice->id
+            ]);
+
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  $id
@@ -117,8 +228,11 @@ class GuestController extends Controller
             }
         ]);
 
-        $types = IdentificationType::all(['id', 'type']);
-        $countries = Country::all(['id', 'name']);
+        $types = IdentificationType::where('id', '!=', $guest->identificationType->id)
+            ->get(['id', 'type']);
+
+        $countries = Country::where('id', '!=', $guest->country->id)
+            ->get(['id', 'name']);
 
         return view('app.guests.edit', compact('guest', 'types', 'countries'));
     }
