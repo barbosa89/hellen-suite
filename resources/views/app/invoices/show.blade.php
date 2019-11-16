@@ -22,7 +22,7 @@
                             ])
                         ],
                         [
-                            'option' => 'Vincular empresa',
+                            'option' => $invoice->company ? trans('invoices.linkNewCompany') : trans('invoices.linkCompany'),
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
@@ -90,30 +90,38 @@
                                 <div class="crud-list">
                                     <div class="crud-list-heading">
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <h5>@lang('companies.company')</h5>
                                             </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <h5>@lang('companies.tin')</h5>
+                                            </div>
+                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                <h5>@lang('common.options')</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="crud-list-items">
                                         <div class="crud-list-row">
                                             <div class="row">
-                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                     <p>
                                                         <a href="{{ route('companies.show', ['id' => Hashids::encode($invoice->company->id)]) }}">
                                                             {{ $invoice->company->business_name }}
                                                         </a>
                                                     </p>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 visible-md visible-lg">
+                                                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
                                                     <p>
                                                         <a href="{{ route('companies.show', ['id' => Hashids::encode($invoice->company->id)]) }}">
                                                             {{ $invoice->company->tin }}
                                                         </a>
                                                     </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -273,7 +281,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                        <a class="btn btn-link" href="{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)]) }}">
+                                                        <a class="btn btn-link" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                         <a class="btn btn-link" href="{{ route('guests.edit', ['id' => Hashids::encode($guest->id)]) }}">

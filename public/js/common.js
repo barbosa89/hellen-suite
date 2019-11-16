@@ -271,3 +271,22 @@ $('#assign').change(function() {
         }
     }
 });
+
+function confirmRedirect(e, url) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: translator.trans('common.attention'),
+        text: translator.trans('common.confirmAction'),
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: translator.trans('common.continue'),
+        cancelButtonText: translator.trans('common.cancel')
+    }).then(result => {
+        if (result.value) {
+            window.location.href = url;
+        }
+    });
+}

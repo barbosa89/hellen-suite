@@ -249,7 +249,9 @@ export default {
             "job": "Job",
             "registerCompany": "Register company",
             "firstStep": "First you must add rooms",
-            "onlyOne": "There is only one guest"
+            "onlyOne": "There is only one guest",
+            "linkCompany": "Link company",
+            "linkNewCompany": "Link new company"
         },
         "assets": {
             "title": "Assets",
@@ -726,7 +728,9 @@ export default {
             "job": "Trabajo",
             "registerCompany": "Registrar empresa",
             "firstStep": "Primero debes agregar habitaciones",
-            "onlyOne": "Sólo hay un huesped"
+            "onlyOne": "Sólo hay un huesped",
+            "linkCompany": "Vincular empresa",
+            "linkNewCompany": "Vincular nueva empresa"
         },
         "assets": {
             "title": "Activos",

@@ -26,4 +26,6 @@ return array (
   'registerCompany' => 'Registrar empresa',
   'firstStep' => 'Primero debes agregar habitaciones',
   'onlyOne' => 'Sólo hay un huesped',
+  'linkCompany' => 'Vincular empresa',
+  'linkNewCompany' => 'Vincular nueva empresa',
 );

@@ -21,6 +21,7 @@ use App\Http\Requests\{
 // TODO: Crear tabla de configuraciones
 // Agregar edad limite para ser adulto
 // Agregar Hora hotelera
+// Pagos
 class InvoiceController extends Controller
 {
     /**
@@ -903,7 +904,7 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Store a newly created company in storage and attaching to invoice.
+     * Attach a company to invoice.
      *
      * @param $id
      * @param $company
@@ -926,6 +927,48 @@ class InvoiceController extends Controller
         }
 
         $invoice->company()->associate($company->id);
+
+        if ($invoice->update()) {
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.show', [
+                'id' => $id
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('invoices.show', [
+            'id' => $id
+        ]);
+    }
+
+    /**
+     * Detach a company from invoice.
+     *
+     * @param $id
+     * @param $company
+     * @return \Illuminate\Http\Response
+     */
+    public function removeCompany($id, $company)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'company' => function ($query) use ($company)
+                {
+                    $query->select(Fields::get('companies'))
+                        ->where('id', Id::get($company));
+                }
+            ])->first(['id', 'company_id']);
+
+        if (empty($invoice) or empty($invoice->company)) {
+            abort(404);
+        }
+
+        $invoice->company()->dissociate();
 
         if ($invoice->update()) {
             flash(trans('common.successful'))->success();

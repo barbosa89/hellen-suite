@@ -26,4 +26,6 @@ return array (
   'registerCompany' => 'Register company',
   'firstStep' => 'First you must add rooms',
   'onlyOne' => 'There is only one guest',
+  'linkCompany' => 'Link company',
+  'linkNewCompany' => 'Link new company',
 );
