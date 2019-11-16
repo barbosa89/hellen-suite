@@ -147,11 +147,11 @@
                             <div class="crud-list">
                                 <div class="crud-list-heading">
                                     <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
                                             <h5><i class="fas fa-hashtag"></i></h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.value')</h5>
+                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
+                                            <h5>@lang('invoices.nights')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>Inicio</h5>
@@ -160,10 +160,13 @@
                                             <h5>Finaliza</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('invoices.nights')</h5>
+                                            <h5>@lang('common.value')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('common.total')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -171,19 +174,15 @@
                                     @foreach($invoice->rooms as $room)
                                         <div class="crud-list-row">
                                             <div class="row">
-                                                <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                                <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
                                                     <p>
                                                         <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
                                                             {{ $room->number }}
                                                         </a>
                                                     </p>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                                                    <p>
-                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
-                                                            {{ number_format($room->price, 2, ',', '.') }}
-                                                        </a>
-                                                    </p>
+                                                <div class="col-xs-12 col-sm-11 col-md-1 col-lg-1">
+                                                    <p>{{ $room->pivot->quantity }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>{{ $room->pivot->start }}</p>
@@ -192,10 +191,17 @@
                                                     <p>{{ $room->pivot->end }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                                                    <p>{{ $room->pivot->quantity }}</p>
+                                                    <p>
+                                                        {{ number_format($room->price, 2, ',', '.') }}
+                                                    </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                    <a class="btn btn-link" href="#">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

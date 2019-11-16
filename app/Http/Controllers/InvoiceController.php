@@ -687,6 +687,9 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
                 }
             ])->first(Fields::get('invoices'));
 
@@ -695,6 +698,7 @@ class InvoiceController extends Controller
         }
 
         $products = Product::where('user_id', Id::parent())
+            ->where('hotel_id', $invoice->hotel->id)
             ->where('quantity', '>', 0)
             ->where('status', true)
             ->get(Fields::get('products'));
@@ -730,10 +734,15 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
-                    ->first(Fields::parsed('invoices'));
+                    ->with([
+                        'hotel' => function ($query) {
+                            $query->select(Fields::get('hotels'));
+                        }
+                    ])->first(Fields::parsed('invoices'));
 
                 $product = Product::where('user_id', Id::parent())
                     ->where('id', Id::get($request->product))
+                    ->where('hotel_id', $invoice->hotel->id)
                     ->where('quantity', '>', 0)
                     ->where('status', true)
                     ->first(Fields::get('products'));
@@ -794,6 +803,9 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
                 }
             ])
             ->first(Fields::get('invoices'));
@@ -803,6 +815,7 @@ class InvoiceController extends Controller
         }
 
         $services = Service::where('user_id', Id::parent())
+            ->where('hotel_id', $invoice->hotel->id)
             ->whereStatus(true)
             ->get(Fields::get('services'));
 
@@ -836,9 +849,14 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
-                    ->first(Fields::parsed('invoices'));
+                    ->with([
+                        'hotel' => function ($query) {
+                            $query->select(Fields::get('hotels'));
+                        }
+                    ])->first(Fields::parsed('invoices'));
 
                 $service = Service::where('user_id', Id::parent())
+                    ->where('hotel_id', $invoice->hotel->id)
                     ->whereStatus(true)
                     ->first(Fields::get('services'));
 
