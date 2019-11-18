@@ -5,10 +5,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     //     ->name('invoices.rooms.assign')
     //     ->middleware(['permission:invoices.create']);
 
-	Route::post('invoices/multiple', 'InvoiceController@multiple')
-        ->name('invoices.room.multiple')
-        ->middleware(['permission:invoices.create']);
-
     Route::get('invoices', 'InvoiceController@index')
         ->name('invoices.index')
         ->middleware(['permission:invoices.index']);
@@ -33,43 +29,63 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.destroy')
         ->middleware(['permission:invoices.destroy']);
 
+    Route::post('invoices/multiple', 'InvoiceController@multiple')
+        ->name('invoices.room.multiple')
+        ->middleware(['permission:invoices.create']);
+
+    Route::get('invoices/{id}/rooms/{room}', 'InvoiceController@removeRoom')
+        ->name('invoices.rooms.remove')
+        ->middleware(['permission:invoices.edit']);
+
     Route::get('invoices/{id}/rooms', 'InvoiceController@rooms')
         ->name('invoices.rooms')
-        ->middleware(['permission:invoices.index']);
+        ->middleware(['permission:invoices.edit']);
 
     Route::post('invoices/{id}/rooms', 'InvoiceController@addRooms')
-        ->name('invoices.rooms.add');
+        ->name('invoices.rooms.add')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/guests/search', 'InvoiceController@searchGuests')
-        ->name('invoices.guests.search');
+        ->name('invoices.guests.search')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/guests/{guest}', 'InvoiceController@guests')
-        ->name('invoices.guests');
+        ->name('invoices.guests')
+        ->middleware(['permission:invoices.edit']);
 
     Route::post('invoices/{id}/guests/add', 'InvoiceController@addguests')
-        ->name('invoices.guests.add');
+        ->name('invoices.guests.add')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/guests/{guest}/remove', 'InvoiceController@removeguests')
-        ->name('invoices.guests.remove');
+        ->name('invoices.guests.remove')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/products', 'InvoiceController@products')
-        ->name('invoices.products');
+        ->name('invoices.products')
+        ->middleware(['permission:invoices.edit']);
 
     Route::post('invoices/{id}/products', 'InvoiceController@addProducts')
-        ->name('invoices.products.add');
+        ->name('invoices.products.add')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/services', 'InvoiceController@services')
-        ->name('invoices.services');
+        ->name('invoices.services')
+        ->middleware(['permission:invoices.edit']);
 
     Route::post('invoices/{id}/services', 'InvoiceController@addServices')
-        ->name('invoices.services.add');
+        ->name('invoices.services.add')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/companies/search', 'InvoiceController@searchCompanies')
-        ->name('invoices.companies.search');
+        ->name('invoices.companies.search')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/companies/{company}', 'InvoiceController@addCompanies')
-        ->name('invoices.companies.add');
+        ->name('invoices.companies.add')
+        ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/companies/{company}/remove', 'InvoiceController@removeCompany')
-        ->name('invoices.companies.remove');
+        ->name('invoices.companies.remove')
+        ->middleware(['permission:invoices.edit']);
 });

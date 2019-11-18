@@ -37,7 +37,7 @@ class RoomController extends Controller
 
             return $hotel;
         });
-        // TODO: Agregar desplegable de hoteles al index de rooms
+
         return view('app.rooms.index', compact('hotels'));
     }
 
@@ -94,7 +94,7 @@ class RoomController extends Controller
             return back();
         }
 
-        return view('app.rooms.admin.create', compact('hotels'));
+        return view('app.rooms.create', compact('hotels'));
     }
 
     /**
@@ -115,8 +115,7 @@ class RoomController extends Controller
         $room->capacity = (int) $request->capacity;
         $room->hotel()->associate(Id::get($request->hotel));
 
-        if (in_array((int) $request->tax_status, [1,2])) {
-            $room->tax_status = $request->tax_status;
+        if ((int) $request->tax_status == 1) {
             $room->tax = (float) $request->tax;
         }
 

@@ -19,15 +19,7 @@ class CreateRoomsTable extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->decimal('min_price', 10, 2);
-
-            # TODO: Verificar si aplica impuesto
             $table->decimal('tax', 8, 4)->default(0.0);
-            /**
-             * 0: Does not apply
-             * 1: Apply, included
-             * 2: Apply, not included
-             */
-            $table->enum('tax_status', [0, 1, 2])->default(0);
             $table->boolean('is_suite')->default(false);
             $table->mediumInteger('capacity');
             $table->mediumInteger('floor');

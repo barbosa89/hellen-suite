@@ -144,11 +144,13 @@ $("#tax_status").on('change', function(e) {
     if (parseInt(this.value) > 0) {
         if ($('#tax-input').is(':hidden')) {
             $('#tax-input').fadeIn();
+            $('#tax').attr('required', 'required');
         }
     } else {
         if ($('#tax-input').is(':visible')) {
             $('#tax-input').fadeOut();
             $('#tax').value = '';
+            $('#tax').removeAttr('required');
         }
     }
 });

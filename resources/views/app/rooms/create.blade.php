@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('rooms') }}
+@endsection
+
 @section('content')
 
     <div id="page-wrapper">
@@ -119,8 +123,7 @@
                         <label for="pwd">@lang('common.tax_status'):</label>
                         <select class="form-control selectpicker" title="Opcional" name="tax_status" id="tax_status">
                             <option value="0" selected>Sin impuestos</option>
-                            <option value="1">Impuesto incluido en precio</option>
-                            <option value="2">Impuesto no incluido en precio</option>
+                            <option value="1">Con impuestos</option>
                         </select>
 
                         @if ($errors->has('tax_status'))
@@ -132,7 +135,7 @@
 
                     <div class="form-group{{ $errors->has('tax') ? ' has-error' : '' }}" style="display: none" id="tax-input">
                         <label for="tax">@lang('common.tax'):</label>
-                        <input type="number" class="form-control" name="tax" id="tax" value="{{ old('tax') }}" min="0.01" max="0.5" step="0.01">
+                        <input type="number" class="form-control" name="tax" id="tax" min="0.01" max="0.5" step="0.01">
 
                         @if ($errors->has('tax'))
                             <span class="help-block">

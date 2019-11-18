@@ -59,7 +59,6 @@ return [
             'price',
             'status',
             'user_id',
-            'tax_status',
             'tax',
             'is_suite',
             'capacity',

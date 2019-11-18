@@ -113,18 +113,25 @@ class InvoiceController extends Controller
                     }
 
                     $quantity = $start->diffInDays($end);
-                    $value = $quantity * $selected['price'];
+                    $discount = ($room->price - $selected['price']) * $quantity;
+                    $taxes = ($selected['price'] * $room->tax) * $quantity;
+                    $subvalue = $selected['price'] * $quantity;
 
                     $attach[$room->id] = [
                         'quantity' => $quantity,
-                        'value' => $value,
+                        'discount' => $discount,
+                        'subvalue' => $subvalue,
+                        'taxes' => $taxes,
+                        'value' => $subvalue + $taxes,
                         'start' => $start->toDateString(),
                         'end' => $end->toDateString()
                     ];
                 }
 
                 foreach ($attach as $key => $item) {
-                    $invoice->subvalue += $item['value'];
+                    $invoice->discount += $item['discount'];
+                    $invoice->subvalue += $item['subvalue'];
+                    $invoice->taxes += $item['taxes'];
                     $invoice->value += $item['value'];
                 }
                 // TODO: Crear procedimiento para incrementar el valor diario para END null
@@ -207,7 +214,7 @@ class InvoiceController extends Controller
             },
             'rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'value', 'start', 'end');
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
             },
             'rooms.guests' => function ($query) use ($id) {
                 $query->select(Fields::get('guests'))
@@ -343,7 +350,7 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $rooms = Room::where('hotel_id', $invoice->hotel_id)
+        $rooms = Room::where('hotel_id', $invoice->hotel->id)
             ->where('status', '1') // It is free
             ->get(Fields::get('rooms'));
 
@@ -398,20 +405,27 @@ class InvoiceController extends Controller
                 }
 
                 $quantity = $start->diffInDays($end);
-                $value = $quantity * $room->price;
+                $discount = ($room->price - $request->price) * $quantity;
+                $taxes = ($request->price * $room->tax) * $quantity;
+                $subvalue = $request->price * $quantity;
 
                 $invoice->rooms()->attach(
                     $room->id,
                     [
                         'quantity' => $quantity,
-                        'value' => $value,
+                        'discount' => $discount,
+                        'subvalue' => $subvalue,
+                        'taxes' => $taxes,
+                        'value' => $subvalue + $taxes,
                         'start' => $request->start,
-                        'end' => $request->get('end', null)
+                        'end' => $end->toDateString()
                     ]
                 );
 
-                $invoice->subvalue += $value;
-                $invoice->value += $value;
+                $invoice->discount += $discount;
+                $invoice->subvalue += $subvalue;
+                $invoice->taxes += $taxes;
+                $invoice->value += $subvalue + $taxes;
                 $invoice->save();
 
                 $room->status = '0';
@@ -429,6 +443,47 @@ class InvoiceController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Redirect to create new invoice with many rooms.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiple(Multiple $request)
+    {
+        $rooms = collect($request->rooms);
+
+        session()->put('hotel', $request->hotel);
+        session()->put('rooms', $rooms->implode('hash', ','));
+
+        return response()->json([
+            'redirect' => '/invoices/create'
+        ]);
+    }
+
+    public function removeRoom($id, $room)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
+                },
+                'rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'))
+                        ->withPivot('quantity', 'value', 'start', 'end');
+                }
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        dd($invoice);
     }
 
     /**
@@ -1000,24 +1055,6 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoices.show', [
             'id' => $id
-        ]);
-    }
-
-    /**
-     * Redirect to create new invoice with many rooms.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function multiple(Multiple $request)
-    {
-        $rooms = collect($request->rooms);
-
-        session()->put('hotel', $request->hotel);
-        session()->put('rooms', $rooms->implode('hash', ','));
-
-        return response()->json([
-            'redirect' => '/invoices/create'
         ]);
     }
 }

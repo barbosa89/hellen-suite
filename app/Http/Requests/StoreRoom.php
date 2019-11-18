@@ -31,7 +31,7 @@ class StoreRoom extends FormRequest
             'min_price' => 'required|integer|lte:price',
             'capacity' => 'required|integer|min:1|max:12',
             'floor' => 'required|integer|min:1|max:500',
-            'tax_status' => 'required|in:0,1,2',
+            'tax_status' => 'required|in:0,1',
             'tax' => 'nullable|numeric|min:0.01|max:0.5',
             'hotel' => 'required|string|hashed_exists:hotels,id'
         ];

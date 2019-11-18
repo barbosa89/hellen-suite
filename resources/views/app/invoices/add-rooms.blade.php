@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('invoice', $invoice) }}
+@endsection
+
 @section('content')
 
     @include('partials.page-header', [
@@ -19,15 +23,11 @@
                 'show' => $invoice->for_company
             ],
             [
-                'option' => trans('invoices.see'),
+                'option' => 'Volver al recibo',
                 'url' => route('invoices.show', [
                     'id' => Hashids::encode($invoice->id)
                 ])
-            ],
-            [
-                'option' => trans('common.back'),
-                'url' => url()->previous()
-            ],
+            ]
         ]
     ])
 

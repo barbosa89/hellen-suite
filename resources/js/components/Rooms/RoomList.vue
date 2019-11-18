@@ -126,6 +126,7 @@
                 // Add custom property selected
                 this.rooms = _.each(this.rooms, function (room) {
                     room.selected = false
+                    room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
                 })
 
                 this.filteredRooms = this.rooms

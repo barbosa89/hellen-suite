@@ -192,16 +192,18 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>
-                                                        {{ number_format($room->price, 2, ',', '.') }}
+                                                        {{ number_format($room->price - $room->pivot->discount, 2, ',', '.') }}
                                                     </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                    <a class="btn btn-link" href="#">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @if ($invoice->rooms->count() > 1)
+                                                        <a class="btn btn-link" href="#" onclick="confirmRedirect(event, '{{ route('invoices.rooms.remove', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
