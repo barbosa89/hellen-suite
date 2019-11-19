@@ -49,6 +49,14 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.rooms.add')
         ->middleware(['permission:invoices.edit']);
 
+    Route::post('invoices/{id}/guests/{guest}/change', 'InvoiceController@changeGuestRoom')
+        ->name('invoices.guests.change')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::get('invoices/{id}/guests/{guest}/change', 'InvoiceController@showFormToChangeGuestRoom')
+        ->name('invoices.guests.change.form')
+        ->middleware(['permission:invoices.edit']);
+
     Route::get('invoices/{id}/guests/search', 'InvoiceController@searchGuests')
         ->name('invoices.guests.search')
         ->middleware(['permission:invoices.edit']);

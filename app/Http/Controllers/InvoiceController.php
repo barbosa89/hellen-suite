@@ -12,6 +12,7 @@ use App\Http\Requests\{
     AddProducts,
     AddRooms,
     AddServices,
+    ChangeGuestRoom,
     Multiple,
     RemoveGuests,
     ChangeRoom,
@@ -811,8 +812,8 @@ class InvoiceController extends Controller
     /**
      * Remove guests to invoice.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param $id
+     * @param int $id
+     * @param int $guestId
      * @return \Illuminate\Http\Response
      */
     public function removeGuests($id, $guestId)
@@ -871,6 +872,145 @@ class InvoiceController extends Controller
         // The guest will be available to add to invoice
         $guest->status = false;
         $guest->save();
+
+        flash(trans('common.successful'))->success();
+
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
+    }
+
+    /**
+     * Show the form to change guest room from the invoice.
+     *
+     * @param int $id
+     * @param int $guest
+     * @return \Illuminate\Http\Response
+     */
+    public function showFormToChangeGuestRoom($id, $guest)
+    {
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->load([
+            'hotel' => function ($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'guests.rooms' => function ($query) use ($id) {
+                $query->select(Fields::parsed('rooms'));
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) use ($id) {
+                $query->select(Fields::parsed('rooms'));
+            }
+        ]);
+
+        if ($invoice->rooms->count() <= 1) {
+            flash('No es posible cambiar al huésped de habitación')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        if ($invoice->guests->count() <= 1) {
+            flash('No es posible cambiar al huésped de habitación')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        $guest = $invoice->guests->where('id', Id::get($guest))->first();
+        $room = $guest->rooms->first();
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.change-guest-room', compact('invoice', 'customer', 'guest', 'room'));
+    }
+
+    /**
+     * Remove guests to invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $id
+     * @param int $guest
+     * @return \Illuminate\Http\Response
+     */
+    public function changeGuestRoom(ChangeGuestRoom $request, $id, $guest)
+    {
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->load([
+            'hotel' => function ($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'guests.rooms' => function ($query) use ($id) {
+                $query->select(Fields::parsed('rooms'));
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) use ($id) {
+                $query->select(Fields::parsed('rooms'));
+            }
+        ]);
+
+        if ($invoice->rooms->count() <= 1) {
+            flash('No es posible cambiar al huésped de habitación')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        if ($invoice->guests->count() <= 1) {
+            flash('No es posible cambiar al huésped de habitación')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        // The guest
+        $guest = $invoice->guests->where('id', Id::get($guest))->first();
+
+        // Detach current guest room
+        $guest->rooms()->detach($guest->rooms()->first()->id);
+
+        // The room to assign to guest
+        $room = $invoice->rooms->where('number', $request->number)->first();
+
+        // Attach the selected room to guest
+        $guest->rooms()->attach($room->id, [
+            'invoice_id' => $invoice->id
+        ]);
 
         flash(trans('common.successful'))->success();
 

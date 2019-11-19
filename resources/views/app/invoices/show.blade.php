@@ -275,7 +275,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
-                                                        <p>{{ $room->number }}</p>
+                                                        <p>{{ $assigned_room->number }}</p>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 visible-md visible-lg">
                                                         @if(empty($guest->parent))
@@ -289,7 +289,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                        <a class="btn btn-link" title="{{ trans('common.assign') }}">
+                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                             <i class="fas fa-sync-alt"></i>
                                                         </a>
                                                         <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
