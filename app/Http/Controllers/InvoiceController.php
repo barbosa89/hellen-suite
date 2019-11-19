@@ -86,9 +86,10 @@ class InvoiceController extends Controller
     {
         $status = false;
         $numbers = collect($request->room);
+        $invoiceId = null;
 
-        // \DB::transaction(function () use (&$status, $request, $numbers) {
-            // try {
+        \DB::transaction(function () use (&$status, &$invoiceId, $request, $numbers) {
+            try {
                 $invoice = $this->new();
                 $invoice->origin = $request->get('origin', null);
                 $invoice->destination = $request->get('destination', null);
@@ -144,22 +145,22 @@ class InvoiceController extends Controller
                         ->update(['status' => '0']);
 
                     $invoice->rooms()->sync($attach);
-
+                    $invoiceId = $invoice->id;
                     $status = true;
 
                     session()->forget('hotel');
                     session()->forget('rooms');
                 }
-            // } catch (\Throwable $e) {
-                // ..
-            // }
-        // });
+            } catch (\Throwable $e) {
+                //..
+            }
+        });
 
         if ($status) {
             flash(trans('common.successful'))->success();
 
             return redirect()->route('invoices.guests.search', [
-                'id' => Hashids::encode($invoice->id)
+                'id' => Hashids::encode($invoiceId)
             ]);
         }
 
@@ -230,11 +231,11 @@ class InvoiceController extends Controller
             },
             'products' => function ($query) {
                 $query->select(Fields::parsed('products'))
-                    ->withPivot('quantity', 'value');
+                    ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'services' => function ($query) {
                 $query->select(Fields::parsed('services'))
-                    ->withPivot('quantity', 'value');
+                    ->withPivot('id', 'quantity', 'value', 'created_at');
             }
         ]);
 
@@ -536,114 +537,128 @@ class InvoiceController extends Controller
      */
     public function changeRoom(ChangeRoom $request, $id, $roomId)
     {
-        $id = Id::get($id);
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', $id)
-            ->where('open', true)
-            ->where('status', true)
-            ->first(Fields::parsed('invoices'));
+        $status = false;
 
-        if (empty($invoice)) {
-            abort(404);
-        }
+        \DB::transaction(function () use (&$status, $request, $id, $roomId) {
+            try {
+                $id = Id::get($id);
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', $id)
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(Fields::parsed('invoices'));
 
-        $invoice->load([
-            'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
-            },
-            'guests' => function ($query) {
-                $query->select(Fields::get('guests'))
-                    ->withPivot('main');
-            },
-            'company' => function ($query) {
-                $query->select(Fields::get('companies'));
-            },
-            'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
-            },
-            'rooms.guests' => function ($query) use ($id) {
-                $query->select(Fields::get('guests'))
-                    ->wherePivot('invoice_id', $id);
-            }
-        ]);
+                if (empty($invoice)) {
+                    abort(404);
+                }
 
-        // The room to change from the invoice
-        $current = $invoice->rooms->where('id', Id::get($roomId))
-            ->where('hotel_id', $invoice->hotel->id)
-            ->first();
-
-        // The new room to add to the invoice
-        $room = Room::where('hotel_id', $invoice->hotel->id)
-            ->where('number', $request->number)
-            ->where('status', '1') // It is free
-            ->first(Fields::get('rooms'));
-
-        ### Rooms ###
-
-        // Current values are subtracted
-        $invoice->discount -= $current->pivot->discount;
-        $invoice->subvalue -= $current->pivot->subvalue;
-        $invoice->taxes -= $current->pivot->taxes;
-        $invoice->value -= $current->pivot->value;
-
-        // Detach current room
-        $invoice->rooms()->detach($current->id);
-
-        // Calculating de new values
-        $discount = ($room->price - $request->price) * $current->pivot->quantity;
-        $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
-        $subvalue = $request->price * $current->pivot->quantity;
-
-        $invoice->rooms()->attach(
-            $room->id,
-            [
-                'quantity' => $current->pivot->quantity, // This is same that before
-                'discount' => $discount,
-                'subvalue' => $subvalue,
-                'taxes' => $taxes,
-                'value' => $subvalue + $taxes,
-                'start' => $current->pivot->start, // This is same that before
-                'end' => $current->pivot->end // This is same that before
-            ]
-        );
-
-        // Summing the new values
-        $invoice->discount += $discount;
-        $invoice->subvalue += $subvalue;
-        $invoice->taxes += $taxes;
-        $invoice->value += $subvalue + $taxes;
-        $invoice->save();
-
-        ### Guests ###
-
-        // Check the room has guests
-        if ($current->guests->isNotEmpty()) {
-            foreach ($current->guests as $guest) {
-                // Detach room of the guests
-                $guest->rooms()
-                    ->wherePivot('invoice_id', $invoice->id)
-                    ->detach($current->id);
-
-                // Attach the new room of the guests
-                $guest->rooms()->attach($room->id, [
-                    'invoice_id' => $invoice->id
+                $invoice->load([
+                    'hotel' => function ($query) {
+                        $query->select(Fields::get('hotels'));
+                    },
+                    'guests' => function ($query) {
+                        $query->select(Fields::get('guests'))
+                            ->withPivot('main');
+                    },
+                    'company' => function ($query) {
+                        $query->select(Fields::get('companies'));
+                    },
+                    'rooms' => function ($query) {
+                        $query->select(Fields::parsed('rooms'))
+                            ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+                    },
+                    'rooms.guests' => function ($query) use ($id) {
+                        $query->select(Fields::get('guests'))
+                            ->wherePivot('invoice_id', $id);
+                    }
                 ]);
+
+                // The room to change from the invoice
+                $current = $invoice->rooms->where('id', Id::get($roomId))
+                    ->where('hotel_id', $invoice->hotel->id)
+                    ->first();
+
+                // The new room to add to the invoice
+                $room = Room::where('hotel_id', $invoice->hotel->id)
+                    ->where('number', $request->number)
+                    ->where('status', '1') // It is free
+                    ->first(Fields::get('rooms'));
+
+                ### Rooms ###
+
+                // Current values are subtracted
+                $invoice->discount -= $current->pivot->discount;
+                $invoice->subvalue -= $current->pivot->subvalue;
+                $invoice->taxes -= $current->pivot->taxes;
+                $invoice->value -= $current->pivot->value;
+
+                // Detach current room
+                $invoice->rooms()->detach($current->id);
+
+                // Calculating de new values
+                $discount = ($room->price - $request->price) * $current->pivot->quantity;
+                $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
+                $subvalue = $request->price * $current->pivot->quantity;
+
+                $invoice->rooms()->attach(
+                    $room->id,
+                    [
+                        'quantity' => $current->pivot->quantity, // This is same that before
+                        'discount' => $discount,
+                        'subvalue' => $subvalue,
+                        'taxes' => $taxes,
+                        'value' => $subvalue + $taxes,
+                        'start' => $current->pivot->start, // This is same that before
+                        'end' => $current->pivot->end // This is same that before
+                    ]
+                );
+
+                // Summing the new values
+                $invoice->discount += $discount;
+                $invoice->subvalue += $subvalue;
+                $invoice->taxes += $taxes;
+                $invoice->value += $subvalue + $taxes;
+                $invoice->save();
+
+                ### Guests ###
+
+                // Check the room has guests
+                if ($current->guests->isNotEmpty()) {
+                    foreach ($current->guests as $guest) {
+                        // Detach room of the guests
+                        $guest->rooms()
+                            ->wherePivot('invoice_id', $invoice->id)
+                            ->detach($current->id);
+
+                        // Attach the new room of the guests
+                        $guest->rooms()->attach($room->id, [
+                            'invoice_id' => $invoice->id
+                        ]);
+                    }
+                }
+
+                // Change status of the current room
+                $current->status = '2';
+                $current->save();
+
+                // Change status of the new room
+                $room->status = '0';
+                $room->save();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
             }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
         }
-
-        // Change status of the current room
-        $current->status = '2';
-        $current->save();
-
-        // Change status of the new room
-        $room->status = '0';
-        $room->save();
-
-        flash(trans('common.successful'))->success();
 
         return redirect()->route('invoices.show', [
-            'id' => Hashids::encode($invoice->id)
+            'id' => $id
         ]);
     }
 
@@ -1108,20 +1123,69 @@ class InvoiceController extends Controller
                     [
                         'quantity' => $request->quantity,
                         'value' => $value,
+                        'created_at' => Carbon::now()->toDateTimeString()
                     ]
                 );
 
                 $invoice->subvalue += $value;
                 $invoice->value += $value;
-                $invoice->update();
+                $invoice->save();
 
                 $product->quantity -= $request->quantity;
+                $product->save();
 
-                // if (($product->quantity - $request->quantity) == 0) {
-                //     $product->status = false;
-                // }
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
 
-                $product->update();
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
+    }
+
+    /**
+     * Remove a product from the invoice.
+     *
+     * @param int $id
+     * @param int $record
+     * @return \Illuminate\Http\Response
+     */
+    public function removeProduct($id, $record)
+    {
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $id, $record) {
+            try {
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->with([
+                        'products' => function ($query) use ($record) {
+                            $query->select(Fields::parsed('products'))
+                                ->wherePivot('id', Id::get($record))
+                                ->withPivot('id', 'quantity', 'value', 'created_at');
+                        }
+                    ])->first(Fields::parsed('invoices'));
+
+                $product = $invoice->products->first();
+
+                $product->quantity += $product->pivot->quantity;
+                $product->save();
+
+                $invoice->subvalue -= $product->pivot->value;
+                $invoice->value -= $product->pivot->value;
+                $invoice->save();
+
+                $invoice->products()
+                    ->wherePivot('id', Id::get($record))
+                    ->detach($product->id);
 
                 $status = true;
             } catch (\Throwable $e) {
@@ -1210,6 +1274,7 @@ class InvoiceController extends Controller
                     ])->first(Fields::parsed('invoices'));
 
                 $service = Service::where('user_id', Id::parent())
+                    ->where('id', Id::get($request->service))
                     ->where('hotel_id', $invoice->hotel->id)
                     ->whereStatus(true)
                     ->first(Fields::get('services'));
@@ -1221,12 +1286,63 @@ class InvoiceController extends Controller
                     [
                         'quantity' => $request->quantity,
                         'value' => $value,
+                        'created_at' => Carbon::now()->toDateTimeString()
                     ]
                 );
 
                 $invoice->subvalue += $value;
                 $invoice->value += $value;
                 $invoice->update();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
+    }
+
+    /**
+     * Remove a service from the invoice.
+     *
+     * @param int $id
+     * @param int $record
+     * @return \Illuminate\Http\Response
+     */
+    public function removeService($id, $record)
+    {
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $id, $record) {
+            try {
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->with([
+                        'services' => function ($query) use ($record) {
+                            $query->select(Fields::parsed('services'))
+                                ->wherePivot('id', Id::get($record))
+                                ->withPivot('id', 'quantity', 'value', 'created_at');
+                        }
+                    ])->first(Fields::parsed('invoices'));
+
+                $service = $invoice->services->first();
+
+                $invoice->subvalue -= $service->pivot->value;
+                $invoice->value -= $service->pivot->value;
+                $invoice->save();
+
+                $invoice->services()
+                    ->wherePivot('id', Id::get($record))
+                    ->detach($service->id);
 
                 $status = true;
             } catch (\Throwable $e) {

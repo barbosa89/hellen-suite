@@ -14,10 +14,12 @@ class CreateInvoiceProductTable extends Migration
     public function up()
     {
         Schema::create('invoice_product', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->bigInteger('invoice_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
+            $table->dateTime('created_at');
 
             $table->foreign('invoice_id')->references('id')->on('invoices')
             ->onUpdate('cascade')->onDelete('cascade');

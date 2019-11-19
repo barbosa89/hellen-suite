@@ -72,6 +72,9 @@
                                 </div>
                             </div>
                             <input type="number" name="room[{{ $loop->index }}][price]" class="form-control" value="{{ round($room->price, 0) }}" required min="{{ $room->min_price }}" max="{{ $room->price }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text">{{ $room->tax * 100 }}%</span>
+                            </div>
                         </div>
 
                         @if ($errors->has('room.' . $loop->index. '.price'))

@@ -24,7 +24,7 @@ class AddServices extends FormRequest
     public function rules()
     {
         return [
-            'service' => 'required|string',
+            'service' => 'required|string|hashed_exists:services,id',
             'quantity' => 'required|integer|min:1'
         ];
     }

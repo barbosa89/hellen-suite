@@ -12,6 +12,10 @@
             'url' => route('services.index'),
             'options' => [
                 [
+                    'option' => trans('common.new'),
+                    'url' => route('services.create')
+                ],
+                [
                     'type' => 'dropdown',
                     'option' => trans('common.options'),
                     'url' => [

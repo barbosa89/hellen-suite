@@ -25,9 +25,8 @@ class AddProducts extends FormRequest
     {
         return [
             'room' => 'nullable|string',
-            'product' => 'required|string',
-            'quantity' => 'required|integer|min:1|stock',
-            'total' => 'nullable'
+            'product' => 'required|string|hashed_exists:products,id',
+            'quantity' => 'required|integer|min:1|stock'
         ];
     }
 }

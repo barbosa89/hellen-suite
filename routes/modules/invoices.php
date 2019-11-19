@@ -77,8 +77,16 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.products')
         ->middleware(['permission:invoices.edit']);
 
+    Route::get('invoices/{id}/products/{record}/remove', 'InvoiceController@removeProduct')
+        ->name('invoices.products.remove')
+        ->middleware(['permission:invoices.edit']);
+
     Route::post('invoices/{id}/products', 'InvoiceController@addProducts')
         ->name('invoices.products.add')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::get('invoices/{id}/services/{record}/remove', 'InvoiceController@removeService')
+        ->name('invoices.services.remove')
         ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/services', 'InvoiceController@services')
