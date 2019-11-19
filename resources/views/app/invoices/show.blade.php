@@ -119,7 +119,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                                                    <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
+                                                    <a href="#" class="btn btn-link" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
                                                         <i class="fas fa-times-circle"></i>
                                                     </a>
                                                 </div>
@@ -200,8 +200,8 @@
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                                     @if ($invoice->rooms->count() > 1)
-                                                        <a class="btn btn-link" href="#" onclick="confirmRedirect(event, '{{ route('invoices.rooms.remove', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
-                                                            <i class="fas fa-times-circle"></i>
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                            <i class="fas fa-redo"></i>
                                                         </a>
                                                     @endif
                                                 </div>
@@ -289,10 +289,13 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                        <a class="btn btn-link" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                        <a class="btn btn-link" title="{{ trans('common.assign') }}">
+                                                            <i class="fas fa-sync-alt"></i>
+                                                        </a>
+                                                        <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
-                                                        <a class="btn btn-link" href="{{ route('guests.edit', ['id' => Hashids::encode($guest->id)]) }}">
+                                                        <a class="btn btn-link" title="{{ trans('common.edit') }}" href="{{ route('guests.edit', ['id' => Hashids::encode($guest->id)]) }}">
                                                             <i class="fas fa-user-edit"></i>
                                                         </a>
                                                     </div>

@@ -15,10 +15,10 @@
                 'url' => route('invoices.guests.search', ['room' => Hashids::encode($invoice->id)])
             ],
             [
-                'option' => 'Agregar empresa',
+                'option' => $invoice->company ? trans('invoices.linkNewCompany') : trans('invoices.linkCompany'),
                 'url' => route('invoices.companies.search', [
                     'id' => Hashids::encode($invoice->id)
-                ])
+                ]),
             ],
             [
                 'option' => 'Volver al recibo',

@@ -347,7 +347,8 @@ class RoomController extends Controller
 
             return response()->json([
                 'price' => $room->price,
-                'min_price' => $room->min_price
+                'min_price' => $room->min_price,
+                'tax' => $room->tax
             ]);
         }
 

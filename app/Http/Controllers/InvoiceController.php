@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Customer, Fields, Id, Input, Random};
-use App\Welkome\{Company, Country, Guest, Hotel, IdentificationType, Invoice, Product, Room, Service};
+use App\Welkome\{Company, Guest, Hotel, Invoice, Product, Room, Service};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -14,6 +14,7 @@ use App\Http\Requests\{
     AddServices,
     Multiple,
     RemoveGuests,
+    ChangeRoom,
     StoreInvoice,
     StoreInvoiceGuest
 };
@@ -463,27 +464,186 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function removeRoom($id, $room)
+    /**
+     * Show the form to change a room from the invoice.
+     *
+     * @param int $id
+     * @param int $room
+     * @return \Illuminate\Http\Response
+     */
+    public function showFormToChangeRoom($id, $room)
     {
+        $id = Id::get($id);
         $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+            ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->with([
-                'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
-                },
-                'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'))
-                        ->withPivot('quantity', 'value', 'start', 'end');
-                }
-            ])->first(Fields::parsed('invoices'));
+            ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
-        dd($invoice);
+        $invoice->load([
+            'hotel' => function ($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'))
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+            },
+            'rooms.guests' => function ($query) use ($id) {
+                $query->select(Fields::get('guests'))
+                    ->wherePivot('invoice_id', $id);
+            }
+        ]);
+
+        $room = $invoice->rooms->where('id', Id::get($room))
+            ->where('hotel_id', $invoice->hotel->id)
+            ->first();
+
+        $rooms = Room::where('hotel_id', $invoice->hotel->id)
+            ->where('status', '1') // It is free
+            ->get(Fields::get('rooms'));
+
+        if ($rooms->isEmpty()) {
+            flash('No hay habitaciones disponibles')->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.change-room', compact('invoice', 'rooms', 'customer', 'room'));
+    }
+
+    // TODO: Procedimiento para actualizar quitar responsable a quienes hayan pasado el mínimo de edad
+    /**
+     * Change a room in the invoice with relationships.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeRoom(ChangeRoom $request, $id, $roomId)
+    {
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->load([
+            'hotel' => function ($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'))
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+            },
+            'rooms.guests' => function ($query) use ($id) {
+                $query->select(Fields::get('guests'))
+                    ->wherePivot('invoice_id', $id);
+            }
+        ]);
+
+        // The room to change from the invoice
+        $current = $invoice->rooms->where('id', Id::get($roomId))
+            ->where('hotel_id', $invoice->hotel->id)
+            ->first();
+
+        // The new room to add to the invoice
+        $room = Room::where('hotel_id', $invoice->hotel->id)
+            ->where('number', $request->number)
+            ->where('status', '1') // It is free
+            ->first(Fields::get('rooms'));
+
+        ### Rooms ###
+
+        // Current values are subtracted
+        $invoice->discount -= $current->pivot->discount;
+        $invoice->subvalue -= $current->pivot->subvalue;
+        $invoice->taxes -= $current->pivot->taxes;
+        $invoice->value -= $current->pivot->value;
+
+        // Detach current room
+        $invoice->rooms()->detach($current->id);
+
+        // Calculating de new values
+        $discount = ($room->price - $request->price) * $current->pivot->quantity;
+        $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
+        $subvalue = $request->price * $current->pivot->quantity;
+
+        $invoice->rooms()->attach(
+            $room->id,
+            [
+                'quantity' => $current->pivot->quantity, // This is same that before
+                'discount' => $discount,
+                'subvalue' => $subvalue,
+                'taxes' => $taxes,
+                'value' => $subvalue + $taxes,
+                'start' => $current->pivot->start, // This is same that before
+                'end' => $current->pivot->end // This is same that before
+            ]
+        );
+
+        // Summing the new values
+        $invoice->discount += $discount;
+        $invoice->subvalue += $subvalue;
+        $invoice->taxes += $taxes;
+        $invoice->value += $subvalue + $taxes;
+        $invoice->save();
+
+        ### Guests ###
+
+        // Check the room has guests
+        if ($current->guests->isNotEmpty()) {
+            foreach ($current->guests as $guest) {
+                // Detach room of the guests
+                $guest->rooms()
+                    ->wherePivot('invoice_id', $invoice->id)
+                    ->detach($current->id);
+
+                // Attach the new room of the guests
+                $guest->rooms()->attach($room->id, [
+                    'invoice_id' => $invoice->id
+                ]);
+            }
+        }
+
+        // Change status of the current room
+        $current->status = '2';
+        $current->save();
+
+        // Change status of the new room
+        $room->status = '0';
+        $room->save();
+
+        flash(trans('common.successful'))->success();
+
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
     }
 
     /**
@@ -632,8 +792,7 @@ class InvoiceController extends Controller
             $guest->responsible_adult = $responsible;
         }
 
-        $main = $invoice->guests->isEmpty() ? true : false;
-        $invoice->guests()->attach($guest->id, ['main' => $main]);
+        $invoice->guests()->attach($guest->id, ['main' => $invoice->guests->isEmpty()]);
 
         $guest->rooms()->attach(Id::get($request->room), [
             'invoice_id' => $invoice->id

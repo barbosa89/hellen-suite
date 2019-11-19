@@ -15,4 +15,7 @@ return array (
   'chooseRoom' => 'Choose a room',
   'available' => 'Available',
   'cleaning' => 'Cleaning',
+  'availableRooms' => 'Available rooms',
+  'changeRoom' => 'Change room',
+  'currentRoom' => 'Current room',
 );

@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('invoice', $invoice) }}
+@endsection
+
 @section('content')
 
     <div id="page-wrapper">

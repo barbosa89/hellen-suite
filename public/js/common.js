@@ -62,7 +62,7 @@ function confirmAction(el, e) {
     var data = {
         '{url}': el.getAttribute('data-url'),
         '{method}': el.getAttribute('data-method'),
-    }
+    };
 
     var modal = $('div.hide > div#modal-confirm').prop('outerHTML');
 
@@ -154,39 +154,6 @@ $("#tax_status").on('change', function(e) {
         }
     }
 });
-
-// $(document).ready(function() {
-//     $('#room-store').on('click', function(e) {
-//         e.preventDefault();
-
-//         $("#room-form").submit(function(e) {
-//             e.preventDefault();
-//         });
-
-//         var price = $('#price').val();
-//         var min_price = $('#min_price').val();
-
-//         if (min_price <= (price * 0.75)) {
-//             Swal.fire({
-//                 title: 'Estás seguro?',
-//                 text: "El precio mínimo es muy bajo, ¿desea continuar?",
-//                 type: 'warning',
-//                 showCancelButton: true,
-//                 confirmButtonColor: '#3085d6',
-//                 cancelButtonColor: '#d33',
-//                 confirmButtonText: 'Continuar!',
-//                 cancelButtonText: 'Cancelar'
-//             }).then(function(result) {
-//                 if (result.value) {
-//                     $('#room-form').submit();
-//                 }
-//             });
-//         } else {
-//             $('#room-form').submit();
-//         }
-//     });
-// });
-
 
 function listRoomsByHotel(hotel) {
     $.ajax({

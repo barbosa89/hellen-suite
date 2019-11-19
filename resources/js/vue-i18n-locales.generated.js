@@ -130,7 +130,9 @@ export default {
             "notRemovable": "It is not possible to delete the record",
             "onlyAlphanumeric": "Only alphanumeric",
             "capital": "Capital letters",
-            "alphabetic": "Only alphabetic"
+            "alphabetic": "Only alphabetic",
+            "change": "Change",
+            "finalize": "Finalize"
         },
         "props": {
             "add": "Add prop",
@@ -464,7 +466,10 @@ export default {
             "addRoom": "Add room",
             "chooseRoom": "Choose a room",
             "available": "Available",
-            "cleaning": "Cleaning"
+            "cleaning": "Cleaning",
+            "availableRooms": "Available rooms",
+            "changeRoom": "Change room",
+            "currentRoom": "Current room"
         }
     },
     "es": {
@@ -609,7 +614,9 @@ export default {
             "notRemovable": "No es posible eliminar el registro",
             "onlyAlphanumeric": "Sólo alfanumérico",
             "capital": "Mayúsculas",
-            "alphabetic": "Sólo alfabético"
+            "alphabetic": "Sólo alfabético",
+            "finalize": "Finalizar",
+            "change": "Cambiar"
         },
         "props": {
             "add": "Agregar utilería",
@@ -943,7 +950,10 @@ export default {
             "addRoom": "Agregar habitación",
             "chooseRoom": "Elije una habitación",
             "available": "Disponible",
-            "cleaning": "Limpieza"
+            "cleaning": "Limpieza",
+            "changeRoom": "Cambiar de habitación",
+            "currentRoom": "Habitación actual",
+            "availableRooms": "Habitaciones disponibles"
         }
     }
 }

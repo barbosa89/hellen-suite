@@ -114,4 +114,6 @@ return array (
   'onlyAlphanumeric' => 'Only alphanumeric',
   'capital' => 'Capital letters',
   'alphabetic' => 'Only alphabetic',
+  'change' => 'Change',
+  'finalize' => 'Finalize',
 );

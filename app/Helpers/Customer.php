@@ -23,6 +23,7 @@ class Customer
                 $main = $invoice->guests->first(function ($guest, $index) {
                     return $guest->pivot->main == true;
                 });
+                // dd($invoice->guests);
 
                 $customer['name'] = $main->full_name;
                 $customer['tin'] = $main->dni;

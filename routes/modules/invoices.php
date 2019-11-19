@@ -33,8 +33,12 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.room.multiple')
         ->middleware(['permission:invoices.create']);
 
-    Route::get('invoices/{id}/rooms/{room}', 'InvoiceController@removeRoom')
-        ->name('invoices.rooms.remove')
+    Route::post('invoices/{id}/rooms/{room}', 'InvoiceController@changeRoom')
+        ->name('invoices.rooms.change')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::get('invoices/{id}/rooms/{room}', 'InvoiceController@showFormToChangeRoom')
+        ->name('invoices.rooms.change.form')
         ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/rooms', 'InvoiceController@rooms')
