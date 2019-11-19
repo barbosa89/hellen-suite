@@ -259,3 +259,27 @@ function confirmRedirect(e, url) {
         }
     });
 }
+
+function getRoomPriceByNumber(hotel, number) {
+    $.ajax({
+        type: 'POST',
+        url: '/rooms/price',
+        data: {
+            hotel: hotel,
+            number: number
+        },
+        success: function(result) {
+            $('#price').attr('value', Math.round(parseInt(result.price)))
+                .attr('min', Math.round(parseInt(result.min_price)))
+                .attr('max', Math.round(parseInt(result.price)));
+
+            $('span#tax-value').text(parseFloat(result.tax) * 100);
+        },
+        error: function(xhr) {
+            toastr.error(
+                'Ha ocurrido un error',
+                'Error'
+            );
+        }
+    });
+}

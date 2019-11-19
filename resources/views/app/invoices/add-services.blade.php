@@ -38,7 +38,11 @@
             'app.invoices.services.add-fields',
             'app.invoices.total'
         ],
-        'btn' => trans('common.add')
+        'btn' => trans('common.add'),
+        'link' => [
+            'href' => route('invoices.show', ['id' => Hashids::encode($invoice->id)]),
+            'name' => trans('common.back')
+        ]
     ])
 
     @include('partials.spacer', ['size' => 'xs'])

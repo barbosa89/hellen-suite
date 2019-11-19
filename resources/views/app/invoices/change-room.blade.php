@@ -62,7 +62,7 @@
 
         <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
             <label for="number">@lang('rooms.availableRooms'):</label>
-            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required>
+            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required onchange="getRoomPriceByNumber('{{ Hashids::encode($invoice->hotel->id) }}', this.value)">
                 @foreach($rooms as $room)
                     <option value="{{ $room->number }}" {{ $loop->first ? 'selected' : '' }} >{{ $room->number }}</option>
                 @endforeach
@@ -96,32 +96,4 @@
 
     @include('partials.spacer', ['size' => 'md'])
 
-@endsection
-
-@section('scripts')
-    <script>
-        $("#number").change(function() {
-            $.ajax({
-                type: 'POST',
-                url: '/rooms/price',
-                data: {
-                    hotel: '{{ Hashids::encode($invoice->hotel->id) }}',
-                    number: this.value
-                },
-                success: function(result) {
-                    $('#price').attr('value', Math.round(parseInt(result.price)))
-                        .attr('min', Math.round(parseInt(result.min_price)))
-                        .attr('max', Math.round(parseInt(result.price)));
-
-                    $('span#tax-value').text(parseFloat(result.tax) * 100);
-                },
-                error: function(xhr){
-                    toastr.error(
-                        'Ha ocurrido un error',
-                        'Error'
-                    );
-                }
-            })
-        });
-    </script>
 @endsection

@@ -49,7 +49,7 @@
 
         <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
             <label for="number">@lang('rooms.title'):</label>
-            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required>
+            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required onchange="getRoomPriceByNumber('{{ Hashids::encode($invoice->hotel->id) }}', this.value)">
                 @foreach($rooms as $room)
                     <option value="{{ $room->number }}" {{ $loop->first ? 'selected' : '' }} >{{ $room->number }}</option>
                 @endforeach
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
-            <label for="room">Precio:</label>
+            <label for="room">@lang('common.price'): <small>@lang('common.tax') <span id="tax-value">{{ $rooms->first()->tax * 100 }}</span>%</small></label>
             <input type="number" name="price" id="price" class="form-control" value="{{ round($rooms->first()->price, 0) }}" min="{{ round($rooms->first()->min_price, 0) }}" max="{{ round($rooms->first()->price, 0) }}" required>
 
             @if ($errors->has('price'))
@@ -100,30 +100,4 @@
 
     @include('partials.spacer', ['size' => 'md'])
 
-@endsection
-
-@section('scripts')
-    <script>
-        $("#number").change(function() {
-            $.ajax({
-                type: 'POST',
-                url: '/rooms/price',
-                data: {
-                    hotel: '{{ Hashids::encode($invoice->hotel->id) }}',
-                    number: this.value
-                },
-                success: function(result) {
-                    $('#price').attr('value', Math.round(parseInt(result.price)))
-                        .attr('min', Math.round(parseInt(result.min_price)))
-                        .attr('max', Math.round(parseInt(result.price)));
-                },
-                error: function(xhr){
-                    toastr.error(
-                        'Ha ocurrido un error',
-                        'Error'
-                    );
-                }
-            })
-        });
-    </script>
 @endsection

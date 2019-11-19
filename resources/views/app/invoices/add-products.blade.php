@@ -38,7 +38,11 @@
             'app.invoices.products.add-fields',
             'app.invoices.total'
         ],
-        'btn' => trans('common.add')
+        'btn' => trans('common.add'),
+        'link' => [
+            'href' => route('invoices.show', ['id' => Hashids::encode($invoice->id)]),
+            'name' => trans('common.back')
+        ]
     ])
 
     @include('partials.spacer', ['size' => 'xs'])
@@ -74,7 +78,7 @@
             if(value > max) {
                 return false;
             }
-            
+
             return true;
         }
     </script>
