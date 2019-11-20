@@ -1517,4 +1517,44 @@ class InvoiceController extends Controller
 
         return view('app.invoices.search-vehicles', compact('invoice', 'customer'));
     }
+
+    /**
+     * Attach a company to invoice.
+     *
+     * @param $id
+     * @param $company
+     * @return \Illuminate\Http\Response
+     */
+    public function addVehicles($id, $vehicle)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->first(['id']);
+
+        $vehicle = Vehicle::where('user_id', Id::parent())
+            ->where('id', Id::get($vehicle))
+            ->first(Fields::get('vehicles'));
+
+        if (empty($invoice) or empty($vehicle)) {
+            abort(404);
+        }
+        // FIXME: Se requiere el huésped que se encarga del vehículo
+        // $invoice->vehicles()->attach($vehicle->id);
+
+        // if ($invoice->update()) {
+        //     flash(trans('common.successful'))->success();
+
+        //     return redirect()->route('invoices.show', [
+        //         'id' => $id
+        //     ]);
+        // }
+
+        // flash(trans('common.error'))->error();
+
+        // return redirect()->route('invoices.show', [
+        //     'id' => $id
+        // ]);
+    }
 }

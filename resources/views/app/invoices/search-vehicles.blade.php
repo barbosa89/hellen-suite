@@ -111,12 +111,12 @@
                 $.ajax({
                     url: '/vehicles/search?query=' + str,
                     success: function(result) {
-                        let vehicles = JSON.parse(result.vehicles);
+                        let data = JSON.parse(result.data);
 
-                        if (vehicles.length) {
+                        if (data.length) {
                             $('#item-search').empty();
 
-                            vehicles.forEach(vehicle => {
+                            data.forEach(item => {
                                 $('#item-search').append(render(vehicle));
                             });
 
