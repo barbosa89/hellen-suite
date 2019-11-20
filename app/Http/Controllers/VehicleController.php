@@ -12,6 +12,7 @@ use App\Welkome\Vehicle;
 use App\Welkome\VehicleType;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Vinkla\Hashids\Facades\Hashids;
 
 class VehicleController extends Controller
 {
@@ -187,12 +188,26 @@ class VehicleController extends Controller
         $query = Input::clean($request->get('query', null));
 
         if (empty($query)) {
-            return back();
+            abort(404);
         }
 
         $vehicles = Vehicle::where('user_id', Id::parent())
             ->whereLike(['registration', 'brand', 'color', 'type.type'], $query)
             ->get(Fields::get('vehicles'));
+
+        if ($request->ajax()) {
+            $vehicles = $vehicles->map(function ($vehicle)
+            {
+                $vehicle->user_id = Hashids::encode($vehicle->user_id);
+                $vehicle->vehicle_type_id = Hashids::encode($vehicle->vehicle_type_id);
+
+                return $vehicle;
+            });
+
+            return response()->json([
+                'vehicles' => $vehicles->toJson()
+            ]);
+        }
 
         return view('app.vehicles.search', compact('vehicles', 'query'));
     }

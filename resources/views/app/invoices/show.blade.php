@@ -43,7 +43,7 @@
                         ],
                         [
                             'option' => 'Registrar vehículo',
-                            'url' => '#',
+                            'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
                         ],
                         [
                             'option' => 'Agregar servicios de terceros',

@@ -1472,4 +1472,49 @@ class InvoiceController extends Controller
             'id' => $id
         ]);
     }
+
+    /**
+     * Display a listing of searched records.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function searchVehicles($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id');
+                },
+                'rooms.guests' => function ($query) {
+                    $query->select('id', 'name', 'last_name');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        if ($invoice->rooms->count() == 0) {
+            flash(trans('invoices.firstStep'))->info();
+
+            return redirect()->route('invoices.rooms.add', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.search-vehicles', compact('invoice', 'customer'));
+    }
 }
