@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Customer, Fields, Id, Input, Random};
-use App\Welkome\{Company, Guest, Hotel, Invoice, Product, Room, Service};
+use App\Welkome\{Company, Guest, Hotel, Invoice, Product, Room, Service, Vehicle};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -1525,7 +1525,7 @@ class InvoiceController extends Controller
      * @param $company
      * @return \Illuminate\Http\Response
      */
-    public function addVehicles($id, $vehicle)
+    public function addVehicle($id, $vehicle)
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))

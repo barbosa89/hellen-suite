@@ -99,38 +99,15 @@
             </a>
         `}
 
-        function search (str, e) {
-            e.preventDefault();
+        const params = {
+            url: '/vehicles/search',
+            list_id: 'list',
+            item_container: 'item-search',
+            render: render
+        };
 
-            if (str.length == 0) {
-                $('#list').hide();
-                $('#item-search').empty();
-            }
-
-            if (str.length >= 3) {
-                $.ajax({
-                    url: '/vehicles/search?query=' + str,
-                    success: function(result) {
-                        let data = JSON.parse(result.data);
-
-                        if (data.length) {
-                            $('#item-search').empty();
-
-                            data.forEach(item => {
-                                $('#item-search').append(render(vehicle));
-                            });
-
-                            $('#list').show();
-                        }
-                    },
-                    error: function(xhr){
-                        toastr.error(
-                            'Ha ocurrido un error',
-                            'Error'
-                        );
-                    }
-                })
-            }
+        function search(query, event) {
+            std_search(event, query, params);
         }
     </script>
 @endsection

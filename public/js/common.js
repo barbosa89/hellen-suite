@@ -283,3 +283,66 @@ function getRoomPriceByNumber(hotel, number) {
         }
     });
 }
+
+// {
+//     url: '/vehicles/search',
+//     list_id: 'list',
+//     item_container: 'item-search',
+//     render: render
+// }
+
+/**
+ * Object params.
+ *
+ * string   url             The URI to query
+ * string   list_id         The ID of list, include list headers
+ * string   item_container  The container ID where the result will be rendered
+ * function render          The method to render the results in a string template
+ */
+
+/**
+ * Standar search methods.
+ *
+ * @param object event
+ * @param string query
+ * @param object params
+ * @return void
+ */
+function std_search(event, query, params) {
+    event.preventDefault();
+
+    if (query.length == 0) {
+        $('#' + params.list_id).hide();
+        $('#' + params.item_container).empty();
+    }
+
+    if (query.length >= 3) {
+        $.ajax({
+            url: params.url + '?query=' + query,
+            success: function(result) {
+                let data = JSON.parse(result.data);
+
+                if (data.length) {
+                    $('#' + params.item_container).empty();
+
+                    data.forEach(item => {
+                        $('#' + params.item_container).append(params.render(item));
+                    });
+
+                    $('#' + params.list_id).show();
+                } else {
+                    toastr.info(
+                        translator.trans('common.noRecords'),
+                        translator.trans('common.attention')
+                    );
+                }
+            },
+            error: function(xhr) {
+                toastr.error(
+                    translator.trans('common.error'),
+                    'Error'
+                );
+            }
+        });
+    }
+}
