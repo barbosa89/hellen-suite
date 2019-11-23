@@ -32,11 +32,22 @@
 
         @include('app.invoices.info')
 
-        <div class="hide" id="invoice" data-id="{{ Hashids::encode($invoice->id) }}"></div>
+        <div class="form-group{{ $errors->has('guest') ? ' has-error' : '' }}">
+            <label for="pwd">@lang('guests.guest'):</label>
+            <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
+                @foreach ($invoice->guests as $guest)
+                    <option value="{{ Hashids::encode($guest->id) }}">{{ $guest->full_name }}</option>
+                @endforeach
+            </select>
 
-        @include('partials.spacer', ['size' => 'md'])
+            @if ($errors->has('guest'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('guest') }}</strong>
+                </span>
+            @endif
+        </div>
 
-        <div class="row">
+        <div class="row mt-4" id="search-input" style="display:none;">
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
@@ -80,9 +91,38 @@
 
 @section('scripts')
     <script type="text/javascript">
+        $('#guest').change(function () {
+            if ($('#guest').val()) {
+                if ($('#search-input').is(':hidden')) {
+                    $('#search-input').fadeIn();
+                }
+            } else {
+                $('#search-input').fadeOut();
+            }
+        });
+
+        function attachVehicle(e, url) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: translator.trans('common.attention'),
+                text: translator.trans('common.confirmAction'),
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: translator.trans('common.continue'),
+                cancelButtonText: translator.trans('common.cancel')
+            }).then(result => {
+                if (result.value) {
+                    window.location.href = url + $('#guest').val();
+                }
+            });
+        }
+
         function render(vehicle) {
             return `
-            <a href="/invoices/{{ Hashids::encode($invoice->id) }}/vehicles/${vehicle.hash}">
+            <a href="#" onclick="attachVehicle(event, '/invoices/{{ Hashids::encode($invoice->id) }}/vehicles/${vehicle.hash}/guests/')">
                 <div class="crud-list-row">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">

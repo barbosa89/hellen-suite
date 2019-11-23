@@ -253,7 +253,10 @@ export default {
             "firstStep": "First you must add rooms",
             "onlyOne": "There is only one guest",
             "linkCompany": "Link company",
-            "linkNewCompany": "Link new company"
+            "linkNewCompany": "Link new company",
+            "withoutGuests": "There are no registered guests",
+            "vehicleAttached": "The vehicle is already attached to the current invoice.",
+            "hasVehicles": "The guest has a vehicle registered"
         },
         "assets": {
             "title": "Assets",
@@ -737,7 +740,10 @@ export default {
             "firstStep": "Primero debes agregar habitaciones",
             "onlyOne": "Sólo hay un huesped",
             "linkCompany": "Vincular empresa",
-            "linkNewCompany": "Vincular nueva empresa"
+            "linkNewCompany": "Vincular nueva empresa",
+            "withoutGuests": "No hay huéspedes registrados",
+            "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
+            "hasVehicles": "El huésped tiene un vehículo registrado"
         },
         "assets": {
             "title": "Activos",

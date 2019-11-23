@@ -28,4 +28,7 @@ return array (
   'onlyOne' => 'There is only one guest',
   'linkCompany' => 'Link company',
   'linkNewCompany' => 'Link new company',
+  'withoutGuests' => 'There are no registered guests',
+  'vehicleAttached' => 'The vehicle is already attached to the current invoice.',
+  'hasVehicles' => 'The guest has a vehicle registered',
 );

@@ -28,4 +28,7 @@ return array (
   'onlyOne' => 'Sólo hay un huesped',
   'linkCompany' => 'Vincular empresa',
   'linkNewCompany' => 'Vincular nueva empresa',
+  'withoutGuests' => 'No hay huéspedes registrados',
+  'vehicleAttached' => 'El vehículo ya está relacionado a la factura actual.',
+  'hasVehicles' => 'El huésped tiene un vehículo registrado',
 );

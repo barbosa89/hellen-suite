@@ -212,6 +212,10 @@ class InvoiceController extends Controller
                 $query->select(Fields::get('guests'))
                     ->withPivot('main');
             },
+            'guests.vehicles' => function ($query) use ($id) {
+                $query->select(Fields::parsed('vehicles'))
+                    ->wherePivot('invoice_id', $id);
+            },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
             },
@@ -1394,8 +1398,8 @@ class InvoiceController extends Controller
     /**
      * Attach a company to invoice.
      *
-     * @param $id
-     * @param $company
+     * @param string $id
+     * @param string $company
      * @return \Illuminate\Http\Response
      */
     public function addCompanies($id, $company)
@@ -1434,8 +1438,8 @@ class InvoiceController extends Controller
     /**
      * Detach a company from invoice.
      *
-     * @param $id
-     * @param $company
+     * @param string $id
+     * @param string $company
      * @return \Illuminate\Http\Response
      */
     public function removeCompany($id, $company)
@@ -1474,7 +1478,7 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Display a listing of searched records.
+     * Display a listing of searched records from vehicle module.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
@@ -1505,10 +1509,18 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        if ($invoice->rooms->count() == 0) {
+        if ($invoice->rooms->isEmpty()) {
             flash(trans('invoices.firstStep'))->info();
 
             return redirect()->route('invoices.rooms.add', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        if ($invoice->guests->isEmpty()) {
+            flash(trans('invoices.withoutGuests'))->info();
+
+            return redirect()->route('invoices.show', [
                 'id' => Hashids::encode($invoice->id)
             ]);
         }
@@ -1519,19 +1531,93 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Attach a company to invoice.
+     * Attach a vehicle to guest invoice.
      *
-     * @param $id
-     * @param $company
+     * @param string $id
+     * @param string $vehicle
+     * @param string $guest
      * @return \Illuminate\Http\Response
      */
-    public function addVehicle($id, $vehicle)
+    public function addVehicle($id, $vehicleId, $guest)
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(['id']);
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'guests.vehicles' => function ($query) use ($id) {
+                    $query->select(Fields::parsed('vehicles'))
+                        ->wherePivot('invoice_id', Id::get($id));
+                }
+            ])->first(Fields::get('invoices'));
+
+        $vehicle = Vehicle::where('user_id', Id::parent())
+            ->where('id', Id::get($vehicleId))
+            ->first(Fields::get('vehicles'));
+
+        if (empty($invoice) or empty($vehicle)) {
+            abort(404);
+        }
+
+        if ($invoice->guests->where('id', Id::get($guest))->first()->vehicles->isNotEmpty()) {
+            flash(trans('invoices.hasVehicles'))->error();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        $existingVehicle = null;
+        foreach ($invoice->guests as $guest) {
+            if ($guest->vehicles->where('id', Id::get($vehicleId))->count() == 1) {
+                $existingVehicle = $guest->vehicles->where('id', Id::get($vehicleId))->first();
+            }
+        }
+
+        if (empty($existingVehicle)) {
+            $vehicle->guests()->attach($invoice->guests->first()->id, [
+                'invoice_id' => $invoice->id,
+                'created_at' => Carbon::now()->toDateTimeString()
+            ]);
+
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        flash(trans('invoices.vehicleAttached'))->error();
+
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
+    }
+
+    /**
+     * Detach a vehicle from guest invoice.
+     *
+     * @param string $id
+     * @param string $vehicle
+     * @param string $guest
+     * @return \Illuminate\Http\Response
+     */
+    public function removeVehicle($id, $vehicle, $guest)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) use ($guest) {
+                    $query->select(Fields::get('guests'))
+                        ->where('id', Id::get($guest));
+                }
+            ])->first(Fields::get('invoices'));
 
         $vehicle = Vehicle::where('user_id', Id::parent())
             ->where('id', Id::get($vehicle))
@@ -1540,21 +1626,15 @@ class InvoiceController extends Controller
         if (empty($invoice) or empty($vehicle)) {
             abort(404);
         }
-        // FIXME: Se requiere el huésped que se encarga del vehículo
-        // $invoice->vehicles()->attach($vehicle->id);
 
-        // if ($invoice->update()) {
-        //     flash(trans('common.successful'))->success();
+        $vehicle->guests()
+            ->wherePivot('invoice_id', $invoice->id)
+            ->detach($invoice->guests->first()->id);
 
-        //     return redirect()->route('invoices.show', [
-        //         'id' => $id
-        //     ]);
-        // }
+        flash(trans('common.successful'))->success();
 
-        // flash(trans('common.error'))->error();
-
-        // return redirect()->route('invoices.show', [
-        //     'id' => $id
-        // ]);
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
     }
 }

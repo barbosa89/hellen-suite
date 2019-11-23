@@ -464,6 +464,87 @@
         @endif
         <!-- Services -->
 
+        <!-- Vehicles -->
+        @if ($invoice->guests->isNotEmpty())
+            @php
+                $vehicles = 0;
+                foreach($invoice->guests as $guest) {
+                    $vehicles += $guest->vehicles->count();
+                }
+            @endphp
+
+            @if ($vehicles > 0)
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h4 class="page-header">
+                            <small><i class="fas fa-car"></i></small> @lang('vehicles.title')
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="crud-list">
+                                    <div class="crud-list-heading">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                                <h5>@lang('vehicles.registration')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                                <h5>@lang('common.brand')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                                <h5>Color</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                                <h5>@lang('guests.guest')</h5>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                                <h5>@lang('common.options')</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="crud-list-items">
+                                        @foreach($invoice->guests as $guest)
+                                            @foreach($guest->vehicles as $vehicle)
+                                                <div class="crud-list-row">
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+                                                            <p>
+                                                                <a href="{{ route('vehicles.show', ['id' => Hashids::encode($vehicle->id)]) }}">
+                                                                    {{ strtoupper($vehicle->registration) }}
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+                                                            <p>
+                                                                {{ $vehicle->brand }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                            <p>
+                                                                {{ $vehicle->color }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 align-self-center">
+                                                            <p>{{ $guest->full_name }}</p>
+                                                        </div>
+                                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                            <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endif
+        <!-- Vehicles -->
+
         @include('partials.spacer', ['size' => 'md'])
         @include('partials.modal-confirm')
     </div>
