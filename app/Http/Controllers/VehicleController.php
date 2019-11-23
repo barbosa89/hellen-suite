@@ -7,9 +7,12 @@ use App\Helpers\Fields;
 use App\Helpers\Id;
 use App\Helpers\Input;
 use App\Http\Requests\StoreVehicle;
+use App\Http\Requests\StoreVehicleForInvoice;
 use App\Http\Requests\UpdateVehicle;
+use App\Welkome\Invoice;
 use App\Welkome\Vehicle;
 use App\Welkome\VehicleType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Vinkla\Hashids\Facades\Hashids;
@@ -72,6 +75,110 @@ class VehicleController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('vehicles.index');
+    }
+
+    /**
+     * Show the form for creating a new resource for existing invoice.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createForInvoice($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                }
+            ])->first(Fields::get('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $types = VehicleType::all(['id', 'type']);
+
+        return view('app.vehicles.create-for-invoice', compact('invoice', 'types'));
+    }
+
+    /**
+     * Store a newly created resource in storage for existing invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeForInvoice(StoreVehicleForInvoice $request, $id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'guests.vehicles' => function ($query) use ($id) {
+                    $query->select(Fields::parsed('vehicles'))
+                        ->wherePivot('invoice_id', Id::get($id));
+                }
+            ])->first(Fields::get('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        if ($invoice->guests->where('id', Id::get($request->guest))->first()->vehicles->isNotEmpty()) {
+            flash(trans('invoices.hasVehicles'))->error();
+
+            return redirect()->route('invoices.vehicles.create', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        $existingVehicle = null;
+        foreach ($invoice->guests as $guest) {
+            if ($guest->vehicles->where('registration', $request->registration)->count() == 1) {
+                $existingVehicle = $guest->vehicles->where('registration', $request->registration)->first();
+            }
+        }
+
+        if (empty($existingVehicle)) {
+            $vehicle = new Vehicle();
+            $vehicle->registration = $request->registration;
+            $vehicle->brand = $request->get('brand', null);
+            $vehicle->color = $request->get('color', null);
+            $vehicle->type()->associate(Id::get($request->type));
+            $vehicle->user()->associate(Id::parent());
+
+            if ($vehicle->save()) {
+                $vehicle->guests()->attach($invoice->guests->where('id', Id::get($request->guest))->first()->id, [
+                    'invoice_id' => $invoice->id,
+                    'created_at' => Carbon::now()->toDateTimeString()
+                ]);
+
+                flash(trans('common.createdSuccessfully'))->success();
+
+                return redirect()->route('invoices.vehicles.search', [
+                    'id' => Hashids::encode($invoice->id)
+                ]);
+            }
+
+            flash(trans('common.error'))->error();
+
+            return redirect()->route('invoices.vehicles.create', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        flash(trans('invoices.vehicleAttached'))->error();
+
+        return redirect()->route('invoices.vehicles.create', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
     }
 
     /**

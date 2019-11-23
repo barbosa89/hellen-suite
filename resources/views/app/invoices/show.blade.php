@@ -42,7 +42,7 @@
                             'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
                         ],
                         [
-                            'option' => 'Registrar vehículo',
+                            'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                             'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
                         ],
                         [

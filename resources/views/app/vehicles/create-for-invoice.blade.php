@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('companies') }}
+    {{ Breadcrumbs::render('invoice', $invoice) }}
 @endsection
 
 @section('content')
@@ -12,8 +12,8 @@
             'url' => route('companies.index'),
             'options' => [
                 [
-                    'option' => 'Buscar empresas',
-                    'url' => route('invoices.companies.search', ['room' => Hashids::encode($invoice->id)])
+                    'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
+                    'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
                 ],
                 [
                     'option' => 'Volver al recibo',
@@ -28,16 +28,21 @@
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
-                        'title' => trans('common.creationOf') . ' ' . trans('companies.title'),
+                        'title' => trans('common.creationOf') . ' ' . trans('vehicles.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.companies.store', [
+                    'url' => route('invoices.vehicles.store', [
                         'id' => Hashids::encode($invoice->id)
                     ]),
                     'fields' => [
-                        'app.companies.create-fields',
+                        'app.invoices.vehicles.create-fields',
+                        'app.vehicles.create-fields',
                     ],
-                    'btn' => trans('common.create')
+                    'btn' => trans('common.create'),
+                    'link' => [
+                        'href' => route('invoices.show', ['id' => Hashids::encode($invoice->id)]),
+                        'name' => trans('common.back')
+                    ]
                 ])
             </div>
         </div>

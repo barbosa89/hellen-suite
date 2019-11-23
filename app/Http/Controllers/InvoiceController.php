@@ -1579,7 +1579,7 @@ class InvoiceController extends Controller
         }
 
         if (empty($existingVehicle)) {
-            $vehicle->guests()->attach($invoice->guests->first()->id, [
+            $vehicle->guests()->attach($invoice->guests->where('id', Id::get($guest))->first()->id, [
                 'invoice_id' => $invoice->id,
                 'created_at' => Carbon::now()->toDateTimeString()
             ]);

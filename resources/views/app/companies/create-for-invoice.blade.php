@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('companies') }}
+    {{ Breadcrumbs::render('invoice', $invoice) }}
 @endsection
 
 @section('content')

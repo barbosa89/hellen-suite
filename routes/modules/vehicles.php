@@ -2,10 +2,12 @@
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('invoices/{id}/vehicles', 'VehicleController@storeForInvoice')
-        ->name('invoices.vehicles.store');
+		->name('invoices.vehicles.store')
+		->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/vehicles/create', 'VehicleController@createForInvoice')
-		->name('invoices.vehicles.create');
+		->name('invoices.vehicles.create')
+		->middleware(['permission:invoices.edit']);
 
 	Route::get('vehicles/export', 'VehicleController@export')
 		->name('vehicles.export')
