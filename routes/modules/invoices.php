@@ -4,6 +4,18 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 	// Route::get('invoices/rooms/assign', 'InvoiceController@assign')
     //     ->name('invoices.rooms.assign')
     //     ->middleware(['permission:invoices.create']);
+    Route::get('invoices/{id}/additionals/{additional}/remove', 'InvoiceController@destroyAdditional')
+        ->name('invoices.additionals.remove')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::post('invoices/{id}/additionals', 'InvoiceController@storeAdditional')
+        ->name('invoices.additionals.store')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::get('invoices/{id}/additionals', 'InvoiceController@createAdditional')
+        ->name('invoices.additionals.create')
+        ->middleware(['permission:invoices.edit']);
+
     Route::get('invoices/{id}/vehicles/{vehicle}/guests/{guest}/remove', 'InvoiceController@removeVehicle')
         ->name('invoices.vehicles.remove')
         ->middleware(['permission:invoices.edit']);

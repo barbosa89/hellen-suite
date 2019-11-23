@@ -12,6 +12,10 @@
             'url' => route('invoices.index'),
             'options' => [
                 [
+                    'option' => trans('payments.title'),
+                    'url' => '#',
+                ],
+                [
                     'option' => trans('common.options'),
                     'type' => 'dropdown',
                     'url' => [
@@ -50,6 +54,10 @@
                             'url' => '#',
                         ],
                         [
+                            'option' => trans('invoices.addAdditional'),
+                            'url' => route('invoices.additionals.create', ['id' => Hashids::encode($invoice->id)]),
+                        ],
+                        [
                             'type' => 'divider'
                         ],
                         [
@@ -64,7 +72,7 @@
                             ]),
                             'method' => 'DELETE'
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'option' => trans('common.back'),
@@ -77,7 +85,7 @@
 
         <!-- Company -->
         @if($invoice->company)
-            <div class="row mb-4">
+            <div class="row mb-6">
                 <div class="col-md-12">
                     <h3 class="page-header">
                         <small><i class="fas fa-building"></i></small> Empresa
@@ -139,90 +147,8 @@
         @endif
         <!-- Company -->
 
-        <!-- Rooms -->
-        @if($invoice->rooms->isNotEmpty())
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <h4 class="page-header">
-                        <small><i class="fas fa-bed"></i></small> @lang('rooms.title')
-                    </h4>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="crud-list">
-                                <div class="crud-list-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                                            <h5><i class="fas fa-hashtag"></i></h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                                            <h5>@lang('invoices.nights')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>Inicio</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>Finaliza</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.value')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.total')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.options')</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="crud-list-items">
-                                    @foreach($invoice->rooms as $room)
-                                        <div class="crud-list-row">
-                                            <div class="row">
-                                                <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
-                                                    <p>
-                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
-                                                            {{ $room->number }}
-                                                        </a>
-                                                    </p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-11 col-md-1 col-lg-1 align-self-center">
-                                                    <p>{{ $room->pivot->quantity }}</p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>{{ $room->pivot->start }}</p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>{{ $room->pivot->end }}</p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>
-                                                        {{ number_format($room->price - $room->pivot->discount, 2, ',', '.') }}
-                                                    </p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
-                                                </div>
-                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @if ($invoice->rooms->count() > 1)
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
-                                                            <i class="fas fa-redo"></i>
-                                                        </a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-        <!-- Rooms -->
-
         <!-- Guests -->
-        <div class="row mb-4">
+        <div class="row mt-4">
             <div class="col-md-12">
                 <h4 class="page-header">
                     <small><i class="fas fa-users"></i></small> @lang('guests.title')
@@ -316,9 +242,147 @@
         </div>
         <!-- Guests -->
 
+        <!-- Rooms -->
+        @if($invoice->rooms->isNotEmpty())
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-bed"></i></small> @lang('rooms.title')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
+                                            <h5><i class="fas fa-hashtag"></i></h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
+                                            <h5>@lang('invoices.nights')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>Inicio</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>Finaliza</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.total')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->rooms as $room)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+                                                    <p>
+                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
+                                                            {{ $room->number }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-11 col-md-1 col-lg-1 align-self-center">
+                                                    <p>{{ $room->pivot->quantity }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $room->pivot->start }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $room->pivot->end }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>
+                                                        {{ number_format($room->price - $room->pivot->discount, 2, ',', '.') }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                    @if ($invoice->rooms->count() > 1)
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                            <i class="fas fa-redo"></i>
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Rooms -->
+
+        <!-- Additionals -->
+        @if($invoice->additionals->isNotEmpty())
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-star"></i></small> @lang('invoices.additionals')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <h5>@lang('common.description')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.date')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->additionals as $additional)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-11 col-md-6 col-lg-6 align-self-center">
+                                                    <p>{{ $additional->description }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ number_format($additional->value, 2, '.', ',') }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $additional->created_at->format('Y-m-d') }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Additionals -->
+
         <!-- Products -->
         @if($invoice->products->isNotEmpty())
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
                         <small><i class="fas fa-boxes"></i></small> @lang('products.title')
@@ -474,7 +538,7 @@
             @endphp
 
             @if ($vehicles > 0)
-                <div class="row mb-4">
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <h4 class="page-header">
                             <small><i class="fas fa-car"></i></small> @lang('vehicles.title')
@@ -524,7 +588,11 @@
                                                             </p>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 align-self-center">
-                                                            <p>{{ $guest->full_name }}</p>
+                                                            <p>
+                                                                <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
+                                                                    {{ $guest->full_name }}
+                                                                </a>
+                                                            </p>
                                                         </div>
                                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                             <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">

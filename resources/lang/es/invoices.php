@@ -31,4 +31,6 @@ return array (
   'withoutGuests' => 'No hay huéspedes registrados',
   'vehicleAttached' => 'El vehículo ya está relacionado a la factura actual.',
   'hasVehicles' => 'El huésped tiene un vehículo registrado',
+  'addAdditional' => 'Agregar adicional',
+  'additionals' => 'Adicionales',
 );

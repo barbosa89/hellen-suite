@@ -256,7 +256,9 @@ export default {
             "linkNewCompany": "Link new company",
             "withoutGuests": "There are no registered guests",
             "vehicleAttached": "The vehicle is already attached to the current invoice.",
-            "hasVehicles": "The guest has a vehicle registered"
+            "hasVehicles": "The guest has a vehicle registered",
+            "addAdditional": "Add additional",
+            "additionals": "Additionals"
         },
         "assets": {
             "title": "Assets",
@@ -371,6 +373,10 @@ export default {
             "phone": "Phone",
             "copyright": "Copyright",
             "demo": "Video demonstration"
+        },
+        "payments": {
+            "payment": "Payment",
+            "title": "Payments"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -743,7 +749,9 @@ export default {
             "linkNewCompany": "Vincular nueva empresa",
             "withoutGuests": "No hay huéspedes registrados",
             "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
-            "hasVehicles": "El huésped tiene un vehículo registrado"
+            "hasVehicles": "El huésped tiene un vehículo registrado",
+            "addAdditional": "Agregar adicional",
+            "additionals": "Adicionales"
         },
         "assets": {
             "title": "Activos",
@@ -858,6 +866,10 @@ export default {
             "phone": "Teléfono",
             "copyright": "Derechos de autor",
             "demo": "Demostración en vídeo"
+        },
+        "payments": {
+            "title": "Pagos",
+            "payment": "Pago"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",

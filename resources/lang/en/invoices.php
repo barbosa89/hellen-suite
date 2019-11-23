@@ -31,4 +31,6 @@ return array (
   'withoutGuests' => 'There are no registered guests',
   'vehicleAttached' => 'The vehicle is already attached to the current invoice.',
   'hasVehicles' => 'The guest has a vehicle registered',
+  'addAdditional' => 'Add additional',
+  'additionals' => 'Additionals',
 );

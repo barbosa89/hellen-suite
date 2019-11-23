@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Age, Customer, Fields, Id, Input, Random};
-use App\Welkome\{Company, Guest, Hotel, Invoice, Product, Room, Service, Vehicle};
+use App\Welkome\{Additional, Company, Guest, Hotel, Invoice, Product, Room, Service, Vehicle};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -16,6 +16,7 @@ use App\Http\Requests\{
     Multiple,
     RemoveGuests,
     ChangeRoom,
+    StoreAdditional,
     StoreInvoice,
     StoreInvoiceGuest
 };
@@ -240,6 +241,9 @@ class InvoiceController extends Controller
             'services' => function ($query) {
                 $query->select(Fields::parsed('services'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
+            },
+            'additionals' => function ($query) {
+                $query->select(['id', 'description', 'value', 'invoice_id', 'created_at']);
             }
         ]);
 
@@ -1636,5 +1640,122 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.show', [
             'id' => Hashids::encode($invoice->id)
         ]);
+    }
+
+    public function createAdditional($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id');
+                },
+                'rooms.guests' => function ($query) {
+                    $query->select('id', 'name', 'last_name');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                }
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.add-additional', compact('invoice', 'customer'));
+    }
+
+    public function storeAdditional(StoreAdditional $request, $id)
+    {
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $id, $request) {
+            try {
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(Fields::parsed('invoices'));
+
+                if (empty($invoice)) {
+                    abort(404);
+                }
+
+                // Create new additional for the invoice
+                $additional = new Additional();
+                $additional->description = $request->description;
+                $additional->value = (float) $request->value;
+                $additional->invoice()->associate($invoice->id);
+                $additional->save();
+
+                // Increment invoice values
+                $invoice->subvalue += $additional->value;
+                $invoice->value += $additional->value;
+                $invoice->save();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
+    }
+
+    public function destroyAdditional($id, $additional)
+    {
+        $status = false;
+
+        \DB::transaction(function () use (&$status, $id, $additional) {
+            try {
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->first(Fields::parsed('invoices'));
+
+                if (empty($invoice)) {
+                    abort(404);
+                }
+
+                // Query the additional to remove
+                $additional = Additional::where('invoice_id', $invoice->id)
+                    ->first(['id', 'value', 'invoice_id']);
+
+                // Subtract the additional values from the invoice
+                $invoice->subvalue -= $additional->value;
+                $invoice->value -= $additional->value;
+                $invoice->save();
+
+                // Destroy the additional
+                $additional->delete();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                // ..
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
     }
 }

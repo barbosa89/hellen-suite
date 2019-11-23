@@ -49,4 +49,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
+
+    public function additionals()
+    {
+        return $this->hasMany(\App\Welkome\Additional::class);
+    }
 }
