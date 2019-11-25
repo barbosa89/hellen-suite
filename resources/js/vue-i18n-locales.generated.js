@@ -308,7 +308,11 @@ export default {
             "recently": "Recently registered",
             "profession": "Profession",
             "country": "Country",
-            "registerDate": "Register date"
+            "registerDate": "Register date",
+            "entered": "The guest entered the hotel",
+            "left": "The guest left the hotel",
+            "registerEntry": "Register entry",
+            "registerExit": "Register exit"
         },
         "login": {
             "identification": "Sign in",
@@ -801,7 +805,11 @@ export default {
             "recently": "Recientemente registrados",
             "profession": "Profesión",
             "country": "País",
-            "registerDate": "Fecha de registro"
+            "registerDate": "Fecha de registro",
+            "entered": "El huésped ingresó al hotel",
+            "left": "El huésped salió del hotel",
+            "registerEntry": "Registrar entrada",
+            "registerExit": "Registrar salida"
         },
         "login": {
             "logout": "Salir",

@@ -10,6 +10,7 @@ use App\Helpers\{Customer, Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreInvoiceGuest;
 use App\Http\Requests\UpdateGuest;
+use App\User;
 use App\Welkome\{Country, Guest, IdentificationType, Invoice};
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -413,5 +414,89 @@ class GuestController extends Controller
         }
 
         return Excel::download(new GuestsReport($guests), trans('guests.title') . '.xlsx');
+    }
+
+    /**
+     * Toggle status for the specified resource from storage.
+     *
+     * @param  string   $id
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle($id, $invoice = null)
+    {
+        if (empty($invoice)) {
+            $guest = User::find(Id::parent(), ['id'])
+                ->guests()
+                ->where('id', Id::get($id))
+                ->first(Fields::get('guests'));
+
+            if (empty($guest)) {
+                return abort(404);
+            }
+
+            $guest->status = !$guest->status;
+
+            if ($guest->save()) {
+                flash(trans('common.updatedSuccessfully'))->success();
+
+                return back();
+            }
+        } else {
+            $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->where('responsible_adult', false)
+                        ->withPivot('main');
+                }
+            ])->first(['id']);
+
+            if (empty($invoice)) {
+                return abort(404);
+            }
+
+            // Check if the invoice only has a guest
+            if ($invoice->guests->count() == 1) {
+                flash(trans('invoices.onlyOne'))->error();
+
+                return back();
+            }
+
+            // The guest
+            $guest = $invoice->guests->where('id', Id::get($id))->first();
+
+            // Toggle status
+            $guest->status = !$guest->status;
+
+            if ($guest->save()) {
+                if ($guest->pivot->main) {
+                    // Update main guest in the invoice
+                    $invoice->guests()->updateExistingPivot(
+                        $guest,
+                        ['main' => false]
+                    );
+
+                    // The new main guest
+                    $main = $invoice->guests->where('id', '!=', Id::get($id))->where('status', true)->first();
+
+                    // Select the main guest
+                    $invoice->guests()->updateExistingPivot(
+                        $main,
+                        ['main' => true]
+                    );
+                }
+
+                flash(trans('common.updatedSuccessfully'))->success();
+
+                return back();
+            }
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 }

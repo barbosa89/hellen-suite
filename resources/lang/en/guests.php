@@ -8,4 +8,8 @@ return array (
   'profession' => 'Profession',
   'country' => 'Country',
   'registerDate' => 'Register date',
+  'entered' => 'The guest entered the hotel',
+  'left' => 'The guest left the hotel',
+  'registerEntry' => 'Register entry',
+  'registerExit' => 'Register exit',
 );

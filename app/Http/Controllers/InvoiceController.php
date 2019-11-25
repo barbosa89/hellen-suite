@@ -810,13 +810,19 @@ class InvoiceController extends Controller
             abort(404);
         }
 
-        $responsible = Id::get($request->get('responsible_adult', null));
+        if ($invoice->guests->where('id', $guest->id)->count() == 0) {
+            $responsible = Id::get($request->get('responsible_adult', null));
 
-        if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
-            $guest->responsible_adult = $responsible;
+            if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
+                $guest->responsible_adult = $responsible;
+            }
+
+            $invoice->guests()->attach($guest->id, ['main' => $invoice->guests->isEmpty()]);
         }
 
-        $invoice->guests()->attach($guest->id, ['main' => $invoice->guests->isEmpty()]);
+        $guest->rooms()
+            ->wherePivot('invoice_id', $invoice->id)
+            ->detach();
 
         $guest->rooms()->attach(Id::get($request->room), [
             'invoice_id' => $invoice->id
@@ -855,15 +861,15 @@ class InvoiceController extends Controller
                 },
             ])->first(['id']);
 
-        // Get the guest to remove from invoice
-        $guest = $invoice->guests->where('id', Id::get($guestId))->first();
-
         // Check if the invoice only has a guest
         if ($invoice->guests->count() == 1) {
             flash(trans('invoices.onlyOne'))->error();
 
             return back();
         }
+
+        // Get the guest to remove from invoice
+        $guest = $invoice->guests->where('id', Id::get($guestId))->first();
 
         // Check if invoice or guest are null
         if (empty($invoice) or empty($guest)) {

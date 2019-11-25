@@ -8,4 +8,8 @@ return array (
   'profession' => 'Profesión',
   'country' => 'País',
   'registerDate' => 'Fecha de registro',
+  'entered' => 'El huésped ingresó al hotel',
+  'left' => 'El huésped salió del hotel',
+  'registerEntry' => 'Registrar entrada',
+  'registerExit' => 'Registrar salida',
 );

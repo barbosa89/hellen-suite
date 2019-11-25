@@ -225,9 +225,11 @@
                                                         <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                             <i class="fas fa-user-times"></i>
                                                         </a>
-                                                        <a class="btn btn-link" title="{{ trans('common.edit') }}" href="{{ route('guests.edit', ['id' => Hashids::encode($guest->id)]) }}">
-                                                            <i class="fas fa-user-edit"></i>
-                                                        </a>
+                                                        @if ($invoice->guests->count() > 1)
+                                                            <a class="btn btn-link" title="{{ trans($guest->status ? 'guests.registerExit' : 'guests.registerEntry') }}" href="{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)]) }}">
+                                                                <i class="fas fa-door-{{ $guest->status ? 'closed' : 'open' }}"></i>
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -323,62 +325,6 @@
             </div>
         @endif
         <!-- Rooms -->
-
-        <!-- Additionals -->
-        @if($invoice->additionals->isNotEmpty())
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h4 class="page-header">
-                        <small><i class="fas fa-star"></i></small> @lang('invoices.additionals')
-                    </h4>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="crud-list">
-                                <div class="crud-list-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                            <h5>@lang('common.description')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.value')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.date')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.options')</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="crud-list-items">
-                                    @foreach($invoice->additionals as $additional)
-                                        <div class="crud-list-row">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-11 col-md-6 col-lg-6 align-self-center">
-                                                    <p>{{ $additional->description }}</p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>{{ number_format($additional->value, 2, '.', ',') }}</p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <p>{{ $additional->created_at->format('Y-m-d') }}</p>
-                                                </div>
-                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-        <!-- Additionals -->
 
         <!-- Products -->
         @if($invoice->products->isNotEmpty())
@@ -527,6 +473,62 @@
             </div>
         @endif
         <!-- Services -->
+
+        <!-- Additionals -->
+        @if($invoice->additionals->isNotEmpty())
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-star"></i></small> @lang('invoices.additionals')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <h5>@lang('common.description')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.date')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->additionals as $additional)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-11 col-md-6 col-lg-6 align-self-center">
+                                                    <p>{{ $additional->description }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ number_format($additional->value, 2, '.', ',') }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $additional->created_at->format('Y-m-d') }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Additionals -->
 
         <!-- Vehicles -->
         @if ($invoice->guests->isNotEmpty())

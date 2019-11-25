@@ -328,12 +328,12 @@ class ProductController extends Controller
         if ($product->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect(url()->previous());
+            return back();
         }
 
         flash(trans('common.error'))->error();
 
-        return redirect(url()->previous());
+        return back();
     }
 
     /**

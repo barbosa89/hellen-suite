@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('guests/{id}/toggle/{invoice?}', 'GuestController@toggle')
+	->name('guests.toggle')
+	->middleware('permission:guests.edit');
+
     Route::post('invoices/{id}/guests', 'GuestController@storeForInvoice')
         ->name('invoices.guests.store');
 
