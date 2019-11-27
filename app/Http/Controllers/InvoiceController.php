@@ -246,6 +246,10 @@ class InvoiceController extends Controller
             },
             'additionals' => function ($query) {
                 $query->select(['id', 'description', 'value', 'invoice_id', 'created_at']);
+            },
+            'payments' => function ($query)
+            {
+                $query->select(Fields::get('payments'));
             }
         ]);
 
@@ -356,6 +360,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::get('invoices'));
 
@@ -514,6 +522,10 @@ class InvoiceController extends Controller
             'rooms.guests' => function ($query) use ($id) {
                 $query->select(Fields::get('guests'))
                     ->wherePivot('invoice_id', $id);
+            },
+            'payments' => function ($query)
+            {
+                $query->select(Fields::get('payments'));
             }
         ]);
 
@@ -697,6 +709,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::parsed('invoices'));
 
@@ -745,6 +761,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::parsed('invoices'));
 
@@ -947,6 +967,10 @@ class InvoiceController extends Controller
             },
             'rooms' => function ($query) use ($id) {
                 $query->select(Fields::parsed('rooms'));
+            },
+            'payments' => function ($query)
+            {
+                $query->select(Fields::get('payments'));
             }
         ]);
 
@@ -1075,6 +1099,10 @@ class InvoiceController extends Controller
                 },
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::get('invoices'));
 
@@ -1240,6 +1268,10 @@ class InvoiceController extends Controller
                 },
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])
             ->first(Fields::get('invoices'));
@@ -1394,6 +1426,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])
             ->first(Fields::parsed('invoices'));
@@ -1514,6 +1550,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::parsed('invoices'));
 
@@ -1669,6 +1709,10 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::parsed('invoices'));
 

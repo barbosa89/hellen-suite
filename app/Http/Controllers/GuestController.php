@@ -106,6 +106,10 @@ class GuestController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(['id', 'number']);
 

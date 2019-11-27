@@ -2,49 +2,49 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->number }}
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ number_format($row->value, 2, ',', '.') }}
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ empty($row->hotel) ? 'No asignado' : $row->hotel->business_name }}
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->created_at->format('Y-m-d') }}
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->reservation ? 'Reserva' : 'Ingreso' }}
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg- align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     <i class="fa fa-{{ $row->open ? 'check' : 'times-circle' }}"></i>
                 </a>
             </p>
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     <i class="fa fa-{{ $row->status ? 'check' : 'times-circle' }}"></i>
                 </a>
             </p>

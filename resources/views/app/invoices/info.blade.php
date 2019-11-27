@@ -11,13 +11,17 @@
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">Hotel</span>
                         <span class="d-block">
-                            {{ $invoice->hotel->business_name }}
+                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
+                                {{ $invoice->hotel->business_name }}
+                            </a>
                         </span>
                     </div>
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">NIT</span>
                         <span class="d-block">
-                            {{ $invoice->hotel->tin }}
+                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
+                                {{ $invoice->hotel->tin }}
+                            </a>
                         </span>
                     </div>
                 </div>
@@ -76,15 +80,15 @@
                     </span>
                 </div>
                 <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                    <span class="d-block font-weight-light">Origen</span>
+                    <span class="d-block font-weight-light">Origen / Destino</span>
                     <span class="d-block">
-                        {{ $invoice->origin ?? 'No definido' }}
+                        {{ $invoice->origin ?? 'No definido' }} - {{ $invoice->destination ?? 'No definido' }}
                     </span>
                 </div>
                 <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                    <span class="d-block font-weight-light">Destino</span>
+                    <span class="d-block font-weight-light">@lang('payments.title')</span>
                     <span class="d-block">
-                        {{ $invoice->destination ?? 'No definido' }}
+                        $ {{ number_format($invoice->payments->sum('value'), 0, '.', ',') }}
                     </span>
                 </div>
             @endif
@@ -97,13 +101,17 @@
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">Hotel</span>
                         <span class="d-block">
-                            {{ $invoice->hotel->business_name }}
+                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
+                                {{ $invoice->hotel->business_name }}
+                            </a>
                         </span>
                     </div>
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">NIT</span>
                         <span class="d-block">
-                            {{ $invoice->hotel->tin }}
+                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
+                                {{ $invoice->hotel->tin }}
+                            </a>
                         </span>
                     </div>
                 </div>

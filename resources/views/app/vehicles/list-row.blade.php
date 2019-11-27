@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('vehicles.show', ['room' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('vehicles.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->registration }}
                 </a>
             </p>
@@ -32,7 +32,7 @@
                 'options' => [
                     [
                         'option' => trans('common.seeMore'),
-                        'url' => route('vehicles.show', ['room' => Hashids::encode($row->id)]),
+                        'url' => route('vehicles.show', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
                         'type' => 'divider'
@@ -40,14 +40,14 @@
                     [
                         'option' => trans('common.edit'),
                         'url' => route('vehicles.edit', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                     ],
                     [
                         'type' => 'confirm',
                         'option' => trans('common.delete'),
                         'url' => route('vehicles.destroy', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                         'method' => 'DELETE'
                     ],
