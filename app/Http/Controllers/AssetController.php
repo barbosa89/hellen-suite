@@ -560,6 +560,7 @@ class AssetController extends Controller
         if (empty($maintenance)) {
             abort(404);
         }
+
         $invoice = $maintenance->invoice;
 
         if ($maintenance->delete()) {

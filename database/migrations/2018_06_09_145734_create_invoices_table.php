@@ -24,8 +24,9 @@ class CreateInvoicesTable extends Migration
             $table->decimal('value', 10, 2)->default(0.0);
             $table->boolean('open')->default(true);
             # 0: inactive, 1: active
-            $table->boolean('status')->dafault(true);
-            $table->boolean('payment_status')->dafault(false);
+            $table->boolean('status')->default(true);
+            $table->boolean('payment_status')->default(false);
+            $table->boolean('losses')->default(false);
             $table->boolean('reservation')->default(false);
 
             $table->bigInteger('hotel_id')->unsigned();

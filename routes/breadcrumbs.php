@@ -47,6 +47,11 @@ Breadcrumbs::for('invoice', function ($trail, $invoice) {
     $trail->push($invoice->number, route('invoices.show', ['id' => Hashids::encode($invoice->id)]));
 });
 
+Breadcrumbs::for('payments', function ($trail, $invoice) {
+    $trail->parent('invoice', $invoice);
+    $trail->push(trans('payments.title'), route('invoices.show', ['id' => Hashids::encode($invoice->id)]));
+});
+
 Breadcrumbs::for('companies', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('companies.title'), route('companies.index'));

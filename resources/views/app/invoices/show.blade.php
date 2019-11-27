@@ -13,7 +13,9 @@
             'options' => [
                 [
                     'option' => trans('payments.title'),
-                    'url' => '#',
+                    'url' => route('payments.index', [
+                            'invoice' => Hashids::encode($invoice->id)
+                        ])
                 ],
                 [
                     'option' => trans('common.options'),

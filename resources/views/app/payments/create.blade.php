@@ -1,36 +1,36 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('asset', $asset) }}
+    {{ Breadcrumbs::render('payments', $invoice) }}
 @endsection
 
 @section('content')
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => trans('assets.title'),
-            'url' => route('assets.index'),
+            'title' => trans('payments.title'),
+            'url' => route('payments.index', [
+                'invoice' => Hashids::encode($invoice->id)
+            ]),
             'options' => [
                 [
                     'option' => trans('common.back'),
-                    'url' => route('assets.show', [
-                        'id' => Hashids::encode($asset->id)
+                    'url' => route('payments.index', [
+                        'invoice' => Hashids::encode($invoice->id)
                     ]),
                 ],
             ]
         ])
 
-        @include('app.assets.info')
-
-        <div class="row mt-4">
+        <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">@lang('common.new') @lang('maintenances.maintenance')</h2>
-                <form action="{{ route('assets.maintenance', ['id' => Hashids::encode($asset->id)]) }}" method="POST" enctype="multipart/form-data">
+                <h2 class="text-center">@lang('common.creationOf') @lang('payments.title')</h2>
+                <form action="{{ route('payments.store', ['invoice' => Hashids::encode($invoice->id)]) }}" method="POST" enctype="multipart/form-data">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                         <label for="date">@lang('common.date'):</label>
-                        <input type="text" class="form-control datepicker" name="date" id="date" value="{{ old('date') }}" required placeholder="{{ trans('common.required') }}">
+                        <input type="text" class="form-control datepicker" name="date" id="date" value="{{ old('date') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('date'))
                             <span class="help-block">
@@ -41,7 +41,7 @@
 
                     <div class="form-group{{ $errors->has('commentary') ? ' has-error' : '' }}">
                         <label for="commentary">@lang('common.commentary'):</label>
-                        <textarea class="form-control" name="commentary" id="commentary" cols="30" rows="4" required placeholder="{{ trans('common.required') }}">{{ old('commentary') }}</textarea>
+                        <input type="text" class="form-control" name="commentary" id="commentary" value="{{ old('commentary') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('commentary'))
                             <span class="help-block">
@@ -52,7 +52,7 @@
 
                     <div class="form-group{{ $errors->has('value') ? ' has-error' : '' }}">
                         <label for="value">@lang('common.value'):</label>
-                        <input type="number" class="form-control" name="value" id="value" value="{{ old('value') }}" min="0.1" max="99999999" step="0.01">
+                        <input type="number" class="form-control" name="value" id="value" value="{{ old('value') }}" required min="0.01" max="999999999" step="0.01" placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('value'))
                             <span class="help-block">
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('invoice') ? ' has-error' : '' }}">
-                        <label for="invoice">@lang('invoices.invoice'):</label>
+                        <label for="invoice">@lang('invoices.invoice'): <small>@lang('common.optional')</small></label>
                         <input type="file" class="form-control" name="invoice" id="invoice" accept="image/png, image/jpeg, application/pdf">
 
                         @if ($errors->has('invoice'))
@@ -72,8 +72,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.register')</button>
-                    <a href="{{ route('assets.show', ['id' => Hashids::encode($asset->id)]) }}" class="btn btn-default">
+                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <a href="{{ route('payments.index', ['invoice' => Hashids::encode($invoice->id)]) }}" class="btn btn-link">
                         @lang('common.back')
                     </a>
                 </form>

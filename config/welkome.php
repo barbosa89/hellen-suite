@@ -46,6 +46,8 @@ return [
             'value',
             'open',
             'status',
+            'payment_status',
+            'losses',
             'reservation',
             'company_id',
             'user_id',
@@ -174,6 +176,15 @@ return [
             'vehicle_type_id',
             'user_id',
             'created_at',
+        ],
+        'payments' => [
+            'id',
+            'date',
+            'commentary',
+            'value',
+            'invoice',
+            'invoice_id',
+            'created_at',
         ]
     ],
 
@@ -198,7 +209,7 @@ return [
         'services',
         'shifts',
         'vehicles',
-        'props'
+        'props',
     ],
 
     /*

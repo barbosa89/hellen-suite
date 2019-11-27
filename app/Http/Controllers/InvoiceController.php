@@ -20,7 +20,9 @@ use App\Http\Requests\{
     StoreInvoice,
     StoreInvoiceGuest
 };
-// TODO: Pensar en crear una tabla de atributos de los invoice
+use Illuminate\Support\FacadesDB;
+use Illuminate\Support\Facades\Storage;
+
 // TODO: Crear tabla de configuraciones
 // Agregar edad limite para ser adulto
 // Agregar Hora hotelera
@@ -89,7 +91,7 @@ class InvoiceController extends Controller
         $numbers = collect($request->room);
         $invoiceId = null;
 
-        \DB::transaction(function () use (&$status, &$invoiceId, $request, $numbers) {
+        DB::transaction(function () use (&$status, &$invoiceId, $request, $numbers) {
             try {
                 $invoice = $this->new();
                 $invoice->origin = $request->get('origin', null);
@@ -153,7 +155,7 @@ class InvoiceController extends Controller
                     session()->forget('rooms');
                 }
             } catch (\Throwable $e) {
-                //..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -278,7 +280,7 @@ class InvoiceController extends Controller
 
         $status = false;
 
-        \DB::transaction(function () use (&$status, $invoice) {
+        DB::transaction(function () use (&$status, $invoice) {
             try {
                 if ($invoice->delete()) {
                     Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '1']);
@@ -286,7 +288,7 @@ class InvoiceController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                \Storage::append('invoice.log', $e->getMessage());
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -389,8 +391,8 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        // \DB::transaction(function () use (&$status, $request, $id) {
-            // try {
+        DB::transaction(function () use (&$status, $request, $id) {
+            try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
                     ->where('open', true)
@@ -442,10 +444,10 @@ class InvoiceController extends Controller
                 $room->status = '0';
                 $room->save();
                 $status = true;
-            // } catch (\Throwable $e) {
-                // ..
-            // }
-        // });
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
 
         if ($status) {
             flash(trans('common.successful'))->success();
@@ -547,7 +549,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $request, $id, $roomId) {
+        DB::transaction(function () use (&$status, $request, $id, $roomId) {
             try {
                 $id = Id::get($id);
                 $invoice = Invoice::where('user_id', Id::parent())
@@ -655,7 +657,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1111,7 +1113,7 @@ class InvoiceController extends Controller
         // TODO: Implementar el descuento (productos vendidos) de productos por habitación
         $status = false;
 
-        \DB::transaction(function () use (&$status, $request, $id) {
+        DB::transaction(function () use (&$status, $request, $id) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1150,7 +1152,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1174,7 +1176,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $id, $record) {
+        DB::transaction(function () use (&$status, $id, $record) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1203,7 +1205,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1275,7 +1277,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $request, $id) {
+        DB::transaction(function () use (&$status, $request, $id) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1310,7 +1312,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1334,7 +1336,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $id, $record) {
+        DB::transaction(function () use (&$status, $id, $record) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1360,7 +1362,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1683,7 +1685,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $id, $request) {
+        DB::transaction(function () use (&$status, $id, $request) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1709,7 +1711,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 
@@ -1726,7 +1728,7 @@ class InvoiceController extends Controller
     {
         $status = false;
 
-        \DB::transaction(function () use (&$status, $id, $additional) {
+        DB::transaction(function () use (&$status, $id, $additional) {
             try {
                 $invoice = Invoice::where('user_id', Id::parent())
                     ->where('id', Id::get($id))
@@ -1752,7 +1754,7 @@ class InvoiceController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                // ..
+                Storage::append('invoice.log', $e->getMessage());
             }
         });
 

@@ -380,7 +380,10 @@ export default {
         },
         "payments": {
             "payment": "Payment",
-            "title": "Payments"
+            "title": "Payments",
+            "complete": "Payment is complete",
+            "completed": "Payment was completed",
+            "exceeds": "Payment exceeds the amount due"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -877,7 +880,10 @@ export default {
         },
         "payments": {
             "title": "Pagos",
-            "payment": "Pago"
+            "payment": "Pago",
+            "complete": "El pago está completo",
+            "completed": "El pago fue completado",
+            "exceeds": "El pago excede el monto adeudado"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",
