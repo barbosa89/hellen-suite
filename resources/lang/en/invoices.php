@@ -33,4 +33,6 @@ return array (
   'hasVehicles' => 'The guest has a vehicle registered',
   'addAdditional' => 'Add additional',
   'additionals' => 'Additionals',
+  'customer' => 'Customer',
+  'open' => 'Open',
 );

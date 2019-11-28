@@ -43,6 +43,14 @@ class InvoiceController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->wherePivot('main')
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
                 }
             ]);
 
@@ -51,7 +59,6 @@ class InvoiceController extends Controller
         }
 
         $invoices = $query->get(Fields::get('invoices'));
-
         $invoices = $invoices->sortByDesc('created_at');
 
         return view('app.invoices.index', compact('invoices'));

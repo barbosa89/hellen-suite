@@ -1,52 +1,55 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
             <p>
                 <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->number }}
                 </a>
             </p>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ number_format($row->value, 2, ',', '.') }}
+                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->hotel->id)]) }}">
+                    {{ $row->hotel->business_name }}
                 </a>
             </p>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ empty($row->hotel) ? 'No asignado' : $row->hotel->business_name }}
-                </a>
+                @if (empty($row->company))
+                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->first()->id)]) }}">
+                        {{ $row->guests()->first()->full_name }}
+                    </a>
+                @else
+                    <a href="{{ route('companies.show', ['id' => Hashids::encode($row->company->id)]) }}">
+                        {{ $row->company->business_name }}
+                    </a>
+                @endif
             </p>
         </div>
-        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->created_at->format('Y-m-d') }}
-                </a>
+                {{ number_format($row->value, 0, ',', '.') }}
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->reservation ? 'Reserva' : 'Ingreso' }}
-                </a>
+                {{ $row->created_at->format('y-m-d') }}
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
+            <p>
+                {{ $row->reservation ? 'Reserva' : 'Ingreso' }}
             </p>
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg- align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    <i class="fa fa-{{ $row->open ? 'check' : 'times-circle' }}"></i>
-                </a>
+                <i class="text-primary fa fa-{{ $row->open ? 'check' : 'times-circle' }} fa-2x"></i>
             </p>
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
-                    <i class="fa fa-{{ $row->status ? 'check' : 'times-circle' }}"></i>
-                </a>
+                <i class="text-primary fa fa-{{ $row->payment_status ? 'check-square' : 'times-circle' }} fa-2x"></i>
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
@@ -61,7 +64,7 @@
                         'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
-                        'option' => 'Vincular empresa',
+                        'option' => $row->company ? trans('invoices.linkNewCompany') : trans('invoices.linkCompany'),
                         'url' => route('invoices.companies.search', [
                             'id' => Hashids::encode($row->id)
                         ])
@@ -77,6 +80,10 @@
                     [
                         'option' => trans('invoices.loadServices'),
                         'url' => route('invoices.services', ['id' => Hashids::encode($row->id)]),
+                    ],
+                    [
+                        'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
+                        'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
                         'option' => 'Agregar servicios de terceros',

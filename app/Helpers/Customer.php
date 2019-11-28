@@ -32,7 +32,7 @@ class Customer
         } else {
             $customer['name'] = $invoice->company->business_name;
             $customer['tin'] = $invoice->company->tin;
-            $customer['route'] = route('guests.show', ['id' => Hashids::encode($invoice->company->id)]);
+            $customer['route'] = route('companies.show', ['id' => Hashids::encode($invoice->company->id)]);
         }
 
         return $customer;

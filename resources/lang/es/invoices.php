@@ -33,4 +33,6 @@ return array (
   'hasVehicles' => 'El huésped tiene un vehículo registrado',
   'addAdditional' => 'Agregar adicional',
   'additionals' => 'Adicionales',
+  'customer' => 'Cliente',
+  'open' => 'Abierto',
 );

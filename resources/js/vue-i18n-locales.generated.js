@@ -258,7 +258,9 @@ export default {
             "vehicleAttached": "The vehicle is already attached to the current invoice.",
             "hasVehicles": "The guest has a vehicle registered",
             "addAdditional": "Add additional",
-            "additionals": "Additionals"
+            "additionals": "Additionals",
+            "customer": "Customer",
+            "open": "Open"
         },
         "assets": {
             "title": "Assets",
@@ -758,7 +760,9 @@ export default {
             "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
             "hasVehicles": "El huésped tiene un vehículo registrado",
             "addAdditional": "Agregar adicional",
-            "additionals": "Adicionales"
+            "additionals": "Adicionales",
+            "customer": "Cliente",
+            "open": "Abierto"
         },
         "assets": {
             "title": "Activos",
