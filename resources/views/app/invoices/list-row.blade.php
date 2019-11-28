@@ -32,6 +32,25 @@
                 {{ number_format($row->value, 0, ',', '.') }}
             </p>
         </div>
+        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 align-self-center">
+            @if ($row->losses)
+                <p>
+                    (@lang('invoices.losses'))
+                </p>
+            @else
+                @php
+                    if ($row->value == 0) {
+                        $percentage = 0;
+                    } else {
+                        $percentage = $row->payments->sum('value') / $row->value;
+                    }
+                @endphp
+
+                <p>
+                    {{ $percentage * 100 }}%
+                </p>
+            @endif
+        </div>
         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
             <p>
                 {{ $row->created_at->format('y-m-d') }}
@@ -44,12 +63,7 @@
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg- align-self-center">
             <p>
-                <i class="text-primary fa fa-{{ $row->open ? 'check' : 'times-circle' }} fa-2x"></i>
-            </p>
-        </div>
-        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 align-self-center">
-            <p>
-                <i class="text-primary fa fa-{{ $row->payment_status ? 'check-square' : 'times-circle' }} fa-2x"></i>
+                <i class="text-primary fa fa-{{ $row->open ? 'lock-open' : 'lock' }} fa-2x"></i>
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
@@ -93,8 +107,10 @@
                         'type' => 'divider'
                     ],
                     [
-                        'option' => trans('common.close'),
-                        'url' => "#"
+                        'option' => $row->open ? trans('invoices.close') : trans('invoices.open'),
+                        'url' => route($row->open ? 'invoices.close' : 'invoices.open', [
+                            'id' => Hashids::encode($row->id)
+                        ]),
                     ],
                     [
                         'type' => 'confirm',

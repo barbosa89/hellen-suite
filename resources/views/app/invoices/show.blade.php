@@ -12,10 +12,12 @@
             'url' => route('invoices.index'),
             'options' => [
                 [
+                    'type' => 'hideable',
                     'option' => trans('payments.title'),
                     'url' => route('payments.index', [
                             'invoice' => Hashids::encode($invoice->id)
-                        ])
+                        ]),
+                    'show' => !$invoice->losses
                 ],
                 [
                     'option' => trans('common.options'),
@@ -63,8 +65,10 @@
                             'type' => 'divider'
                         ],
                         [
-                        'option' => trans('common.close'),
-                            'url' => "#"
+                            'option' => $invoice->open ? trans('invoices.close') : trans('invoices.open'),
+                            'url' => route($invoice->open ? 'invoices.close' : 'invoices.open', [
+                                'id' => Hashids::encode($invoice->id)
+                            ]),
                         ],
                         [
                             'type' => 'confirm',

@@ -35,4 +35,8 @@ return array (
   'additionals' => 'Additionals',
   'customer' => 'Customer',
   'open' => 'Open',
+  'close' => 'Close',
+  'losses' => 'Losses',
+  'closed' => 'The invoice is closed',
+  'loss' => 'Register as loss',
 );

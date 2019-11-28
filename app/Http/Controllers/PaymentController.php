@@ -62,7 +62,6 @@ class PaymentController extends Controller
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($invoiceId))
-            ->where('open', true)
             ->where('status', true)
             ->where('losses', false)
             ->first(Fields::parsed('invoices'));
@@ -73,6 +72,12 @@ class PaymentController extends Controller
 
         if ($invoice->payment_status) {
             flash(trans('payments.complete'))->info();
+
+            return back();
+        }
+
+        if ($invoice->open == false) {
+            flash(trans('invoices.closed'))->info();
 
             return back();
         }
@@ -106,13 +111,18 @@ class PaymentController extends Controller
         $status = false;
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($invoiceId))
-            ->where('open', true)
             ->where('status', true)
             ->where('losses', false)
             ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->open == false) {
+            flash(trans('invoices.closed'))->info();
+
+            return back();
         }
 
         $invoice->load([
@@ -206,13 +216,18 @@ class PaymentController extends Controller
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($invoice))
-            ->where('open', true)
             ->where('status', true)
             ->where('losses', false)
             ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->open == false) {
+            flash(trans('invoices.closed'))->info();
+
+            return back();
         }
 
         $invoice->load([
@@ -251,13 +266,18 @@ class PaymentController extends Controller
         $status = false;
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($invoice))
-            ->where('open', true)
             ->where('status', true)
             ->where('losses', false)
             ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->open == false) {
+            flash(trans('invoices.closed'))->info();
+
+            return back();
         }
 
         $invoice->load([
@@ -348,13 +368,18 @@ class PaymentController extends Controller
         $status = false;
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($invoice))
-            ->where('open', true)
             ->where('status', true)
             ->where('losses', false)
             ->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->open == false) {
+            flash(trans('invoices.closed'))->info();
+
+            return back();
         }
 
         $invoice->load([

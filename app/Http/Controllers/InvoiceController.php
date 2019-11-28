@@ -20,7 +20,7 @@ use App\Http\Requests\{
     StoreInvoice,
     StoreInvoiceGuest
 };
-use Illuminate\Support\FacadesDB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 // TODO: Crear tabla de configuraciones
@@ -38,7 +38,6 @@ class InvoiceController extends Controller
     {
         $query = Invoice::query();
         $query->where('user_id', Id::parent())
-            ->where('open', true)
             ->where('status', true)
             ->with([
                 'hotel' => function ($query) {
@@ -51,6 +50,9 @@ class InvoiceController extends Controller
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query) {
+                    $query->select(Fields::get('payments'));
                 }
             ]);
 
@@ -209,7 +211,6 @@ class InvoiceController extends Controller
         $id = Id::get($id);
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', $id)
-            ->where('open', true)
             ->where('status', true)
             ->first(Fields::parsed('invoices'));
 
@@ -1697,6 +1698,12 @@ class InvoiceController extends Controller
         ]);
     }
 
+    /**
+     * Show form to create additional value to the invoice.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
     public function createAdditional($id)
     {
         $invoice = Invoice::where('user_id', Id::parent())
@@ -1732,6 +1739,13 @@ class InvoiceController extends Controller
         return view('app.invoices.add-additional', compact('invoice', 'customer'));
     }
 
+    /**
+     * Store additional value to the invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
     public function storeAdditional(StoreAdditional $request, $id)
     {
         $status = false;
@@ -1775,6 +1789,13 @@ class InvoiceController extends Controller
         return back();
     }
 
+    /**
+     * Remove additional value to the invoice.
+     *
+     * @param  string  $id
+     * @param  string  $additional
+     * @return \Illuminate\Http\Response
+     */
     public function destroyAdditional($id, $additional)
     {
         $status = false;
@@ -1814,6 +1835,104 @@ class InvoiceController extends Controller
         } else {
             flash(trans('common.error'))->error();
         }
+
+        return back();
+    }
+
+    /**
+     * Close an open invoice.
+     * The open status is by default in true value.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function close($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->open = false;
+
+        if ($invoice->save()) {
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
+    }
+
+    /**
+     * Open a closed invoice.
+     * Only a manager could open a closed invoice.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function open($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', false)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->open = true;
+
+        if ($invoice->save()) {
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
+    }
+
+        /**
+     * Open a closed invoice.
+     * Only a manager could open a closed invoice.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function losses($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->where('payment_status', false)
+            ->where('losses', false)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->losses = true;
+
+        if ($invoice->save()) {
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
 
         return back();
     }

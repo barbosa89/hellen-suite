@@ -34,5 +34,9 @@ return array (
   'addAdditional' => 'Agregar adicional',
   'additionals' => 'Adicionales',
   'customer' => 'Cliente',
-  'open' => 'Abierto',
+  'open' => 'Abrir',
+  'close' => 'Cerrar',
+  'losses' => 'Pérdidas',
+  'closed' => 'El recibo está cerrado',
+  'loss' => 'Registrar como pérdida',
 );

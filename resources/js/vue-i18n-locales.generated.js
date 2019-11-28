@@ -260,7 +260,11 @@ export default {
             "addAdditional": "Add additional",
             "additionals": "Additionals",
             "customer": "Customer",
-            "open": "Open"
+            "open": "Open",
+            "close": "Close",
+            "losses": "Losses",
+            "closed": "The invoice is closed",
+            "loss": "Register as loss"
         },
         "assets": {
             "title": "Assets",
@@ -762,7 +766,11 @@ export default {
             "addAdditional": "Agregar adicional",
             "additionals": "Adicionales",
             "customer": "Cliente",
-            "open": "Abierto"
+            "open": "Abrir",
+            "close": "Cerrar",
+            "losses": "Pérdidas",
+            "closed": "El recibo está cerrado",
+            "loss": "Registrar como pérdida"
         },
         "assets": {
             "title": "Activos",
