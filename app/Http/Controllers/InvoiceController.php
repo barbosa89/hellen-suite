@@ -1913,7 +1913,7 @@ class InvoiceController extends Controller
         return back();
     }
 
-        /**
+    /**
      * Open a closed invoice.
      * Only a manager could open a closed invoice.
      *
@@ -1947,6 +1947,12 @@ class InvoiceController extends Controller
         return back();
     }
 
+    /**
+     * Show form to change an invoice reservation to check-in reservation.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
     public function takeReservationCheckin($id)
     {
         $invoice = Invoice::where('user_id', Id::parent())
@@ -1980,6 +1986,13 @@ class InvoiceController extends Controller
         return view('app.invoices.reservation-checkin', compact('invoice', 'customer'));
     }
 
+    /**
+     * Change an invoice reservation to check-in reservation, includes origin and destination route.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
     public function storeReservationCheckin(StoreRoute $request, $id)
     {
         $invoice = Invoice::where('user_id', Id::parent())
