@@ -42,24 +42,34 @@
                             ])
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('invoices.loadProducts'),
                             'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
+                            'show' => !$invoice->reservation
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('invoices.loadServices'),
                             'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
+                            'show' => !$invoice->reservation
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                             'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
+                            'show' => !$invoice->reservation
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => 'Agregar servicios de terceros',
                             'url' => '#',
+                            'show' => !$invoice->reservation
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('invoices.addAdditional'),
                             'url' => route('invoices.additionals.create', ['id' => Hashids::encode($invoice->id)]),
+                            'show' => !$invoice->reservation
                         ],
                         [
                             'type' => 'divider'
@@ -88,6 +98,14 @@
         ])
 
         @include('app.invoices.info')
+
+        @if($invoice->reservation)
+            <a href="{{ route('invoices.reservation.checkin', ['id' => Hashids::encode($invoice->id)]) }}">
+                <div class="alert alert-info alert-important mt-4">
+                    <i class="fa fa-key"></i> {{ trans('common.register') }} {{ trans('invoices.checkin') }}
+                </div>
+            </a>
+        @endif
 
         <!-- Company -->
         @if($invoice->company)
@@ -161,7 +179,7 @@
                 </h4>
                 @if($invoice->guests->isEmpty())
                     <a href="{{ route('invoices.guests.search', ['id' => Hashids::encode($invoice->id)]) }}">
-                        <div class="alert alert-info alert-important">
+                        <div class="alert alert-info alert-important mt-4">
                             <i class="fa fa-plus-circle"></i> @lang('invoices.registerGuests')
                         </div>
                     </a>

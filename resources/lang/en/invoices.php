@@ -39,4 +39,6 @@ return array (
   'losses' => 'Losses',
   'closed' => 'The invoice is closed',
   'loss' => 'Register as loss',
+  'route' => 'Route',
+  'checkin' => 'Check-in',
 );

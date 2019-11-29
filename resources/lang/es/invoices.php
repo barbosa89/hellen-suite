@@ -39,4 +39,6 @@ return array (
   'losses' => 'Pérdidas',
   'closed' => 'El recibo está cerrado',
   'loss' => 'Registrar como pérdida',
+  'route' => 'Ruta',
+  'checkin' => 'Ingreso',
 );

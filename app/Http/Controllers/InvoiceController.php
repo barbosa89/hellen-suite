@@ -18,7 +18,8 @@ use App\Http\Requests\{
     ChangeRoom,
     StoreAdditional,
     StoreInvoice,
-    StoreInvoiceGuest
+    StoreInvoiceGuest,
+    StoreRoute
 };
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -45,7 +46,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
-                        ->wherePivot('main')
+                        ->wherePivot('main', true)
                         ->withPivot('main');
                 },
                 'company' => function ($query) {
@@ -1094,6 +1095,7 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'rooms' => function ($query) {
                     $query->select('id', 'number');
@@ -1155,6 +1157,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->with([
                         'hotel' => function ($query) {
                             $query->select(Fields::get('hotels'));
@@ -1218,6 +1221,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->with([
                         'products' => function ($query) use ($record) {
                             $query->select(Fields::parsed('products'))
@@ -1266,6 +1270,7 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
@@ -1323,6 +1328,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->with([
                         'hotel' => function ($query) {
                             $query->select(Fields::get('hotels'));
@@ -1382,6 +1388,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->with([
                         'services' => function ($query) use ($record) {
                             $query->select(Fields::parsed('services'))
@@ -1545,6 +1552,7 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'rooms' => function ($query) {
                     $query->select('id');
@@ -1604,6 +1612,7 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
@@ -1672,6 +1681,7 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'guests' => function ($query) use ($guest) {
                     $query->select(Fields::get('guests'))
@@ -1710,12 +1720,10 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
+            ->where('reservation', false)
             ->with([
                 'rooms' => function ($query) {
                     $query->select('id');
-                },
-                'rooms.guests' => function ($query) {
-                    $query->select('id', 'name', 'last_name');
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
@@ -1756,6 +1764,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->first(Fields::parsed('invoices'));
 
                 if (empty($invoice)) {
@@ -1806,6 +1815,7 @@ class InvoiceController extends Controller
                     ->where('id', Id::get($id))
                     ->where('open', true)
                     ->where('status', true)
+                    ->where('reservation', false)
                     ->first(Fields::parsed('invoices'));
 
                 if (empty($invoice)) {
@@ -1910,7 +1920,7 @@ class InvoiceController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function losses($id)
+    public function registerAsLoss($id)
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
@@ -1935,5 +1945,70 @@ class InvoiceController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
+
+    public function takeReservationCheckin($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->where('reservation', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
+                }
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.reservation-checkin', compact('invoice', 'customer'));
+    }
+
+    public function storeReservationCheckin(StoreRoute $request, $id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->where('reservation', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->origin = $request->get('origin', null);
+        $invoice->destination = $request->get('destination', null);
+        $invoice->reservation = false;
+
+        if ($invoice->save()) {
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('invoices.guests.search', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('invoices.show', [
+            'id' => Hashids::encode($invoice->id)
+        ]);
     }
 }

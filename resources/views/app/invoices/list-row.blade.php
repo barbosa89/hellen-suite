@@ -17,9 +17,11 @@
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
             <p>
                 @if (empty($row->company))
-                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->first()->id)]) }}">
-                        {{ $row->guests()->first()->full_name }}
-                    </a>
+                    @if ($row->guests->isNotEmpty())
+                        <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->first()->id)]) }}">
+                            {{ $row->guests()->first()->full_name }}
+                        </a>
+                    @endif
                 @else
                     <a href="{{ route('companies.show', ['id' => Hashids::encode($row->company->id)]) }}">
                         {{ $row->company->business_name }}
@@ -53,12 +55,12 @@
         </div>
         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
             <p>
-                {{ $row->created_at->format('y-m-d') }}
+                {{ $row->reservation ? 'Reserva' : 'Ingreso' }}
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
             <p>
-                {{ $row->reservation ? 'Reserva' : 'Ingreso' }}
+                {{ $row->created_at->format('y-m-d') }}
             </p>
         </div>
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg- align-self-center">

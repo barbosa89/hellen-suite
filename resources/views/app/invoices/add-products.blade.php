@@ -11,8 +11,10 @@
         'url' => route('invoices.index'),
         'options' => [
             [
+                'type' => 'hideable',
                 'option' => trans('invoices.loadServices'),
                 'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
+                'show' => !$invoice->reservation
             ],
             [
                 'option' => 'Volver al recibo',

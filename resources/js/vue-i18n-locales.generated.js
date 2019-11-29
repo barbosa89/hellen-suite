@@ -264,7 +264,9 @@ export default {
             "close": "Close",
             "losses": "Losses",
             "closed": "The invoice is closed",
-            "loss": "Register as loss"
+            "loss": "Register as loss",
+            "route": "Route",
+            "checkin": "Check-in"
         },
         "assets": {
             "title": "Assets",
@@ -770,7 +772,9 @@ export default {
             "close": "Cerrar",
             "losses": "Pérdidas",
             "closed": "El recibo está cerrado",
-            "loss": "Registrar como pérdida"
+            "loss": "Registrar como pérdida",
+            "route": "Ruta",
+            "checkin": "Ingreso"
         },
         "assets": {
             "title": "Activos",

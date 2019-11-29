@@ -22,7 +22,7 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', auth()->user()->id)
+        $hotels = Hotel::where('user_id', Id::parent())
             ->paginate(config('welkome.paginate', Fields::get('hotels')))
             ->sort();
 

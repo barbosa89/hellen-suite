@@ -24,10 +24,11 @@ class GuestController extends Controller
     public function index()
     {
         // TODO: Limitar la consulta en index
-        $guests = Guest::paginate(
-            config('welkome.paginate'),
-            Fields::get('guests')
-        );
+        $guests = Guest::where('user_id', Id::parent())
+            ->paginate(
+                config('welkome.paginate'),
+                Fields::get('guests')
+            );
 
         return view('app.guests.index', compact('guests'));
     }
