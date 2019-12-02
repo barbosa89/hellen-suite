@@ -28,10 +28,10 @@ class UpdateGuest extends FormRequest
 
         return [
             'type' => 'required|string|hashed_exists:identification_types,id',
-            'dni' => 'required|numeric|unique:guests,dni,' . $id,
+            'dni' => 'required|alpha_num|unique_per_user:guests,dni,' . $id,
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'nullable|email',
+            'email' => 'nullable|email|unique_per_user:guests,email',
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'profession' => 'nullable|string',

@@ -27,7 +27,7 @@ class UpdateCompany extends FormRequest
         $id = Id::get($this->route('id'));
 
         return [
-            'tin' => 'required|string|unique:companies,tin,' . $id,
+            'tin' => 'required|alpha_num|unique_per_user:companies,tin,' . $id,
             'business_name' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',

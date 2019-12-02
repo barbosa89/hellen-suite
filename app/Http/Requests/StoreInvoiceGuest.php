@@ -25,10 +25,10 @@ class StoreInvoiceGuest extends FormRequest
     {
         return [
             'type' => 'required|string',
-            'dni' => 'required|string|unique:guests,dni',
+            'dni' => 'required|alpha_num|unique_per_user:guests,dni',
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'nullable|email|unique:guests,email',
+            'email' => 'nullable|email|unique_per_user:guests,email',
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'room' => 'required|string',

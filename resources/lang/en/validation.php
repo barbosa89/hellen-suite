@@ -88,4 +88,5 @@ return array (
     ),
   ),
   'verified' => 'The :attribute has not been verified',
+  'unique_per_user' => 'There is already a record with the same information',
 );

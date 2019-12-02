@@ -24,7 +24,7 @@ class StoreCompany extends FormRequest
     public function rules()
     {
         return [
-            'tin' => 'required|string|unique:companies,tin',
+            'tin' => 'required|alpha_num|min:5|max:30|unique_per_user:companies,tin',
             'business_name' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',

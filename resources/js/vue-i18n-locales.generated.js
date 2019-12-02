@@ -474,7 +474,8 @@ export default {
                     "rule-name": "custom-message"
                 }
             },
-            "verified": "The {attribute} has not been verified"
+            "verified": "The {attribute} has not been verified",
+            "unique_per_user": "There is already a record with the same information"
         },
         "rooms": {
             "title": "Rooms",
@@ -982,7 +983,8 @@ export default {
                     "rule-name": "custom-message"
                 }
             },
-            "verified": "El correo no ha sido verificado"
+            "verified": "El correo no ha sido verificado",
+            "unique_per_user": "Ya hay un registro con la misma información"
         },
         "rooms": {
             "title": "Habitaciones",

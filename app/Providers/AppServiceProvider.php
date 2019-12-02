@@ -79,21 +79,46 @@ class AppServiceProvider extends ServiceProvider
             $parentId = Id::get($data[$alias[0]]);
             $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
 
-            $rooms = DB::table($parameters[0])
+            $results = DB::table($parameters[0])
                 ->where($attribute, $value)
                 ->where($parentField, $parentId)
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
             if (!empty($exception)) {
-                if ($rooms->count() === 1 and $rooms->first()->id === $exception) {
+                if ($results->count() === 1 and $results->first()->id === $exception) {
                     return true;
                 }
 
                 return false;
             }
 
-            return $rooms->count() === 0;
+            return $results->count() === 0;
+        });
+
+        /**
+         * $parameters[0]   Table name
+         * $parameters[1]   The unique per user field
+         * $parameters[2]   Except
+         */
+        Validator::extend('unique_per_user', function ($attribute, $value, $parameters, $validator) {
+            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+
+            $results = DB::table($parameters[0])
+                ->where($parameters[1], $value)
+                ->where('user_id', auth()->user()->id)
+                ->get(['id']);
+
+            // Update method: Only must be exists one record in the table
+            if (!empty($exception)) {
+                if ($results->count() === 1 and $results->first()->id === $exception) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return $results->count() === 0;
         });
 
         Validator::extend('verified', function($attribute, $value, $parameters, $validator)

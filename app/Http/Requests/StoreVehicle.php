@@ -25,7 +25,7 @@ class StoreVehicle extends FormRequest
     {
         return [
             'type' => 'required|string|hashed_exists:vehicle_types,id',
-            'registration' => 'required|string|regex:/[A-Z0-9]+/|unique:vehicles,registration',
+            'registration' => 'required|alpha_num|unique_per_user:vehicles,registration',
             'brand' => 'required|string',
             'color' => 'required|string'
         ];

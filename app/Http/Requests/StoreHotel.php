@@ -23,9 +23,8 @@ class StoreHotel extends FormRequest
      */
     public function rules()
     {
-        // TODO: La razón social debe ser única en general o por usuario?
         return [
-            'business_name' => 'required|string|max:191|unique:hotels,business_name',
+            'business_name' => 'required|string|max:191|unique_per_user:hotels,business_name',
             'tin' => 'required|string|max:30|headquarter',
             'address' => 'required|string|max:100',
             'phone' => 'required|string|max:10',
