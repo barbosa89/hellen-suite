@@ -2029,13 +2029,20 @@ class InvoiceController extends Controller
     public function export()
     {
         $view = view('app.invoices.exports.template')->render();
-        // return $view;
+        return $view;
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);
         $pdf->setOption('enable-smart-shrinking', true);
+        $pdf->setOption('margin-top', 3);
+        $pdf->setOption('margin-bottom', 3);
+        $pdf->setOption('margin-left', 1);
+        $pdf->setOption('margin-right', 1);
         $pdf->loadHTML($view);
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML($view);
+        return $pdf->download('invoice.pdf');
 
-        return $pdf->inline();
+        // return $pdf->inline();
     }
 }

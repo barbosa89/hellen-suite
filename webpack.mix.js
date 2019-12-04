@@ -13,6 +13,7 @@ let mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/pdf.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .styles([
         'public/css/sb-admin.css',
@@ -45,4 +46,4 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/jquery.easing/jquery.easing.js'
     ], 'public/js/landing.js')
     .sourceMaps()
-    .browserSync({ proxy: "welkome.app" });
+    .browserSync("welkome.app");
