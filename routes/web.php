@@ -12,7 +12,8 @@
 */
 
 Route::get('/test', function () {
-    abort(403);
+    // abort(403);
+    return view('app.invoices.exports.template');
 });
 
 Route::get('/', function () {

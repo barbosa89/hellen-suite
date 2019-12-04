@@ -21,6 +21,7 @@ use App\Http\Requests\{
     StoreInvoiceGuest,
     StoreRoute
 };
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -2023,5 +2024,18 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.show', [
             'id' => Hashids::encode($invoice->id)
         ]);
+    }
+
+    public function export()
+    {
+        $view = view('app.invoices.exports.template')->render();
+        return $view;
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('images', true);
+        $pdf->setOption('enable-smart-shrinking', true);
+        $pdf->loadHTML($view);
+
+        return $pdf->inline();
     }
 }
