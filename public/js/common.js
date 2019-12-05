@@ -122,21 +122,7 @@ $("#min_price").on('keyup', function(e) {
             'Ciudado'
         );
 
-        $("#min_price").val(price * 0.5);
-    }
-});
-
-$("#min_price").on('focusout', function(e) {
-    var price = parseFloat($("#price").val());
-    var min_price = parseFloat($("#min_price").val());
-
-    if (min_price < (price * 0.5)) {
-        toastr.info(
-            'El precio mínimo es muy bajo',
-            'Ciudado'
-        );
-
-        $("#min_price").val(price * 0.5);
+        $("#min_price").val('');
     }
 });
 
