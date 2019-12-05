@@ -17,6 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->date('date');
             $table->text('commentary');
+            $table->enum('payment_method', ['cash', 'transfer', 'courtesy']);
             $table->decimal('value', 10, 2);
             $table->text('invoice')->nullable();
 
