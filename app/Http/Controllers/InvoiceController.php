@@ -301,7 +301,7 @@ class InvoiceController extends Controller
 
         $status = false;
 
-        DB::transaction(function () use (&$status, $invoice) {
+        DB::transaction(function () use (&$status, &$invoice) {
             try {
                 // Change Room status to cleaning
                 Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '2']);
@@ -1899,7 +1899,7 @@ class InvoiceController extends Controller
 
         $status = false;
 
-        DB::transaction(function () use (&$status, $invoice) {
+        DB::transaction(function () use (&$status, &$invoice) {
             try {
                 $invoice->open = false;
 
@@ -1977,15 +1977,43 @@ class InvoiceController extends Controller
             ->where('status', true)
             ->where('payment_status', false)
             ->where('losses', false)
-            ->first(Fields::parsed('invoices'));
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(Fields::get('rooms'));
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'));
+                }
+            ])->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
-        $invoice->losses = true;
+        $status = false;
 
-        if ($invoice->save()) {
+        DB::transaction(function () use (&$status, &$invoice) {
+            try {
+                $invoice->open = false;
+                $invoice->losses = true;
+
+                if ($invoice->save()) {
+                    // Change Room status to cleaning
+                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '2']);
+
+                    // Change Guest status to false: Guest is not in hotel
+                    if ($invoice->guests->isNotEmpty()) {
+                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
+                    }
+
+                    $status = true;
+                }
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
+
+        if ($status) {
             flash(trans('common.successful'))->success();
 
             return back();
