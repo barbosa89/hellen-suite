@@ -304,7 +304,7 @@ class InvoiceController extends Controller
         DB::transaction(function () use (&$status, $invoice) {
             try {
                 // Change Room status to cleaning
-                Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '4']);
+                Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '2']);
 
                 // Change Guest status to false: Guest is not in hotel
                 if ($invoice->guests->isNotEmpty()) {
@@ -1905,7 +1905,7 @@ class InvoiceController extends Controller
 
                 if ($invoice->save()) {
                     // Change Room status to cleaning
-                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '4']);
+                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '2']);
 
                     // Change Guest status to false: Guest is not in hotel
                     if ($invoice->guests->isNotEmpty()) {

@@ -10,8 +10,9 @@ use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields};
+use App\Http\Requests\ChangeRoomStatus;
+use Illuminate\Support\Collection;
 
-# TODO: Habilitar y deshabilitar habitaciones
 class RoomController extends Controller
 {
     /**
@@ -23,7 +24,26 @@ class RoomController extends Controller
     {
         $hotels = $this->getHotels();
 
+        // Check if is empty
+        if ($hotels->isEmpty()) {
+            flash('No hay hoteles creados.')->info();
 
+            return back();
+        }
+
+        $hotels = $this->prepare($hotels);
+
+        return view('app.rooms.index', compact('hotels'));
+    }
+
+    /**
+     * Return hotel list to attach to invoice.
+     *
+     * @param  \Illuminate\Support\Collection
+     * @return  \Illuminate\Support\Collection
+     */
+    public function prepare(Collection $hotels = null)
+    {
         $hotels = $hotels->map(function ($hotel, $index)
         {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -38,7 +58,7 @@ class RoomController extends Controller
             return $hotel;
         });
 
-        return view('app.rooms.index', compact('hotels'));
+        return $hotels;
     }
 
     /**
@@ -311,8 +331,8 @@ class RoomController extends Controller
     public function listByHotel(Request $request)
     {
         if ($request->ajax()) {
-            $rooms = Room::where('hotel_id', Id::get($request->hotel))
-                // ->where('status', '1') // It is free
+            $rooms = Room::where('user_id', Id::parent())
+                ->where('hotel_id', Id::get($request->hotel))
                 ->get(Fields::get('rooms'));
 
             $rooms = $rooms->map(function ($room, $index)
@@ -340,7 +360,8 @@ class RoomController extends Controller
     public function getPrice(Request $request)
     {
         if ($request->ajax()) {
-            $room = Room::where('hotel_id', Id::get($request->hotel))
+            $room = Room::where('user_id', Id::parent())
+                ->where('hotel_id', Id::get($request->hotel))
                 ->where('number', $request->number)
                 ->where('status', '1') // It is free
                 ->first(Fields::get('rooms'));
@@ -353,5 +374,53 @@ class RoomController extends Controller
         }
 
         abort(404);
+    }
+
+    /**
+     * Change room status
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changeStatus(ChangeRoomStatus $request)
+    {
+        $room = Room::where('user_id', Id::parent())
+            ->where('hotel_id', Id::get($request->hotel))
+            ->where('id', Id::get($request->room))
+            ->first(Fields::get('rooms'));
+
+        if (empty($room)) {
+            abort(404);
+        }
+
+        if ($room->status == '0') {
+            abort(403);
+        }
+
+        if ($request->status == '1') {
+            if (in_array($room->status, ['2', '3', '4'])) {
+                $room->status = '1';
+            }
+        }
+
+        if ($request->status == '3') {
+            if (in_array($room->status, ['1', '2', '4'])) {
+                $room->status = '3';
+            }
+        }
+
+        if ($request->status == '4') {
+            if (in_array($room->status, ['1', '2', '3'])) {
+                $room->status = '4';
+            }
+        }
+
+        if ($room->save()) {
+            return response()->json([
+                'result' => true
+            ]);
+        }
+
+        abort(500);
     }
 }

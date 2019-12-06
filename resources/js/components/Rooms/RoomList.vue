@@ -24,10 +24,10 @@
                             <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" title="Ocupado">
                                 <i class="fa fa-tags"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En limpieza">
+                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En mantenimiento">
                                 <i class="fa fa-broom"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En mantenimiento">
+                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En limpieza">
                                 <i class="fa fa-wrench"></i>
                             </button>
                             <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" title="Inhabilitado">
@@ -105,6 +105,21 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#" @click.prevent="enable($event.target.innerText, child.data)">
+                        Habilitar
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="disable($event.target.innerText, child.data)">
+                        Deshabilitar
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="changeStatusToMaintenance($event.target.innerText, child.data)">
+                        Marcar en mantenimiento
+                    </a>
+                </li>
+                <li>
                     <a href="#" @click.prevent="show($event.target.innerText, child.data)">
                         Ver detalles
                     </a>
@@ -119,18 +134,7 @@
 
     export default {
         mounted() {
-            if (this.hotels.length > 0) {
-                this.selectedHotel = _.first(this.hotels).hash
-                this.rooms = _.first(this.hotels).rooms
-
-                // Add custom property selected
-                this.rooms = _.each(this.rooms, function (room) {
-                    room.selected = false
-                    room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
-                })
-
-                this.filteredRooms = this.rooms
-            }
+            this.prepare()
         },
         data() {
             return {
@@ -151,6 +155,20 @@
             VueContext
         },
         methods: {
+            prepare() {
+                if (this.hotels.length > 0) {
+                    this.selectedHotel = _.first(this.hotels).hash
+                    this.rooms = _.first(this.hotels).rooms
+
+                    // Add custom property selected
+                    this.rooms = _.each(this.rooms, function (room) {
+                        room.selected = false
+                        room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
+                    })
+
+                    this.filteredRooms = this.rooms
+                }
+            },
             pressed(event) {
                 let buttons = document.getElementById('filters')
                 let ArrBtn = Array.from(buttons.children)
@@ -193,7 +211,7 @@
             },
             showMaintenance(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '2'
+                    return room.status == '4'
                 })
 
                 this.pressed(event)
@@ -207,7 +225,7 @@
             },
             showCleaning(event) {
                 this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '4'
+                    return room.status == '2'
                 })
 
                 this.pressed(event)
@@ -275,6 +293,70 @@
                         'Error'
                     );
                 });
+            },
+            changeStatus(data, status) {
+                if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
+                    axios.post('/rooms/toggle', {
+                        hotel: data.room.hotel_id,
+                        room: data.room.hash,
+                        status: status
+                    }).then(response => {
+                        this.rooms = _.each(this.rooms, (room) => {
+                            if (data.room.hash == room.hash) {
+                                room.status = status
+                            }
+                        })
+
+                        this.filteredRooms = _.each(this.filteredRooms, (room) => {
+                            if (data.room.hash == room.hash) {
+                                room.status = status
+                            }
+                        })
+                    }).catch(e => {
+                        console.log(e.response.data);
+                        console.log(e.response.status);
+                        console.log(e.response.headers);
+                        toastr.error(
+                            'Intenta más tarde otra vez',
+                            'Error'
+                        );
+                    });
+                } else {
+                    toastr.info(
+                        'No puedes habilitar esta habitación',
+                        'Acción no permitida'
+                    );
+                }
+            },
+            enable(text, data) {
+                if (_.indexOf(['2', '3', '4'], data.room.status) != -1) {
+                    this.changeStatus(data, '1')
+                } else {
+                    toastr.info(
+                        'No puedes habilitar esta habitación',
+                        'Acción no permitida'
+                    );
+                }
+            },
+            disable(text, data) {
+                if (_.indexOf(['1', '2', '4'], data.room.status) != -1) {
+                    this.changeStatus(data, '3')
+                } else {
+                    toastr.info(
+                        'No puedes habilitar esta habitación',
+                        'Acción no permitida'
+                    );
+                }
+            },
+            changeStatusToMaintenance(text, data) {
+                if (_.indexOf(['1', '2', '3'], data.room.status) != -1) {
+                    this.changeStatus(data, '4')
+                } else {
+                    toastr.info(
+                        'No puedes habilitar esta habitación',
+                        'Acción no permitida'
+                    );
+                }
             }
         },
     }
