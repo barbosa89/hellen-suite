@@ -51,6 +51,23 @@
                         @endif
                     </div>
 
+                    <div class="form-group{{ $errors->has('method') ? ' has-error' : '' }}">
+                        <label for="method">@lang('payments.method'):</label>
+                        <select class="form-control selectpicker" name="method" id="method" required>
+                            <option value="{{ $payment->payment_method }}" selected>{{ trans('payments.' . $payment->payment_method) }}</option>
+
+                            @foreach (array_diff(['cash', 'transfer', 'courtesy'], [$payment->payment_method]) as $item)
+                                <option value="{{ $item }}">{{ trans('payments.' . $item) }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('method'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('method') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="form-group{{ $errors->has('value') ? ' has-error' : '' }}">
                         <label for="value">@lang('common.value'):</label>
                         <input type="number" class="form-control" name="value" id="value" value="{{ round($payment->value, 0) }}" required min="0.01" max="999999999" step="0.01" placeholder="{{ trans('common.required') }}">

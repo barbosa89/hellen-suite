@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::get('invoices/{id}/payments/close', 'InvoiceController@closePayment')
+        ->name('invoices.payments.close')
+        ->middleware(['permission:invoices.edit']);
+
     Route::get('invoices/export', 'InvoiceController@export')
         ->name('invoices.export');
 

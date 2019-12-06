@@ -26,6 +26,7 @@ class StorePayment extends FormRequest
         return [
             'date' => 'required|date|before:tomorrow',
             'commentary' => 'required|string|max:191',
+            'method' => 'required|string|in:cash,transfer,courtesy',
             'value' => 'required|numeric|min:0.01|max:999999999',
             'invoice' => 'nullable|file|max:200|mimes:jpeg,png,pdf'
         ];

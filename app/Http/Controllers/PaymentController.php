@@ -76,12 +76,6 @@ class PaymentController extends Controller
             return back();
         }
 
-        if ($invoice->open == false) {
-            flash(trans('invoices.closed'))->info();
-
-            return back();
-        }
-
         $invoice->load([
             'hotel' => function ($query) {
                 $query->select(Fields::get('hotels'));
@@ -92,8 +86,18 @@ class PaymentController extends Controller
             },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
+            },
+            'payments' => function ($query)
+            {
+                $query->select(Fields::get('payments'));
             }
         ]);
+
+        if ((float) $invoice->value == $invoice->payments->sum('value')) {
+            flash(trans('payments.complete'))->info();
+
+            return back();
+        }
 
         $customer = Customer::get($invoice);
 
@@ -117,12 +121,6 @@ class PaymentController extends Controller
 
         if (empty($invoice)) {
             abort(404);
-        }
-
-        if ($invoice->open == false) {
-            flash(trans('invoices.closed'))->info();
-
-            return back();
         }
 
         $invoice->load([
@@ -158,6 +156,7 @@ class PaymentController extends Controller
                 $payment = new Payment();
                 $payment->date = $request->date;
                 $payment->commentary = $request->commentary;
+                $payment->payment_method = $request->method;
                 $payment->value = (float) $request->value;
                 $payment->invoice()->associate($invoice->id);
 
@@ -171,21 +170,7 @@ class PaymentController extends Controller
                 }
 
                 if ($payment->save()) {
-                    // Reload payments
-                    $invoice->load([
-                        'payments' => function ($query)
-                        {
-                            $query->select(Fields::get('payments'));
-                        }
-                    ]);
-
-                    if ((float) $invoice->value == $invoice->payments->sum('value')) {
-                        $invoice->payment_status = true;
-
-                        $invoice->save();
-
-                        $status = true;
-                    }
+                    $status = true;
                 }
             } catch (\Throwable $e) {
                 Storage::append('payment.log', $e->getMessage());
@@ -224,7 +209,7 @@ class PaymentController extends Controller
             abort(404);
         }
 
-        if ($invoice->open == false) {
+        if ($invoice->payment_status) {
             flash(trans('invoices.closed'))->info();
 
             return back();
@@ -274,7 +259,7 @@ class PaymentController extends Controller
             abort(404);
         }
 
-        if ($invoice->open == false) {
+        if ($invoice->payment_status) {
             flash(trans('invoices.closed'))->info();
 
             return back();
@@ -304,6 +289,7 @@ class PaymentController extends Controller
 
                 $payment->date = $request->date;
                 $payment->commentary = $request->commentary;
+                $payment->payment_method = $request->method;
                 $payment->value = (float) $request->value;
 
                 if ($request->hasFile('invoice')) {
@@ -328,9 +314,7 @@ class PaymentController extends Controller
                         }
                     ]);
 
-                    if ((float) $invoice->value == $invoice->payments->sum('value')) {
-                        $invoice->payment_status = true;
-                    } else {
+                    if ((float) $invoice->value < $invoice->payments->sum('value')) {
                         $invoice->payment_status = false;
                     }
 
@@ -376,7 +360,7 @@ class PaymentController extends Controller
             abort(404);
         }
 
-        if ($invoice->open == false) {
+        if ($invoice->payment_status) {
             flash(trans('invoices.closed'))->info();
 
             return back();
@@ -406,9 +390,7 @@ class PaymentController extends Controller
                         }
                     ]);
 
-                    if ((float) $invoice->value == $invoice->payments->sum('value')) {
-                        $invoice->payment_status = true;
-                    } else {
+                    if ((float) $invoice->value < $invoice->payments->sum('value')) {
                         $invoice->payment_status = false;
                     }
 

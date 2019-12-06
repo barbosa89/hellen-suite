@@ -1963,6 +1963,51 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Close Payments in a closed invoice.
+     * The open status is by default in true value.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function closePayment($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', false)
+            ->where('status', true)
+            ->where('payment_status', false)
+            ->first(Fields::get('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $status = false;
+
+        DB::transaction(function () use (&$status, &$invoice) {
+            try {
+                $invoice->payment_status = true;
+
+                if ($invoice->save()) {
+                    $status = true;
+                }
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+
+            return back();
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
+    }
+
+    /**
      * Open a closed invoice.
      * Only a manager could open a closed invoice.
      *
@@ -1973,7 +2018,6 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
-            ->where('open', true)
             ->where('status', true)
             ->where('payment_status', false)
             ->where('losses', false)

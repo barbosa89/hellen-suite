@@ -13,10 +13,20 @@
     ]),
     'options' => [
         [
+            'type' => 'hideable',
+            'option' => trans('common.close') . ' ' . strtolower(trans('payments.title')),
+            'url' => route('invoices.payments.close', [
+                'id' => Hashids::encode($invoice->id)
+            ]),
+            'show' => (float) $invoice->value === $invoice->payments->sum('value') and $invoice->payment_status == false
+        ],
+        [
+            'type' => 'hideable',
             'option' => trans('common.new'),
             'url' => route('payments.create', [
                 'invoice' => Hashids::encode($invoice->id)
             ]),
+            'show' => $invoice->payment_status == false
         ],
     ]
 ])

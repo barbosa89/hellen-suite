@@ -181,6 +181,7 @@ return [
             'id',
             'date',
             'commentary',
+            'payment_method',
             'value',
             'invoice',
             'invoice_id',

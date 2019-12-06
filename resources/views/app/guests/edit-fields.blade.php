@@ -80,13 +80,9 @@
             <option value="m">@lang('common.m')</option>
             <option value="x">@lang('common.other')</option>
         @else
-            @php
-                $diff = array_diff(['f', 'm', 'x'], [$guest->gender])
-            @endphp
-
             <option value="{{ $guest->gender }}" selected>{{ trans('common.' . $guest->gender) }}</option>
 
-            @foreach ($diff as $item)
+            @foreach (array_diff(['f', 'm', 'x'], [$guest->gender]) as $item)
                 <option value="{{ $item }}">{{ trans('common.' . $item) }}</option>
             @endforeach
         @endif
