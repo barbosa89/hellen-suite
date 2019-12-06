@@ -1,9 +1,6 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	// Route::get('invoices/rooms/assign', 'InvoiceController@assign')
-    //     ->name('invoices.rooms.assign')
-    //     ->middleware(['permission:invoices.create']);
     Route::get('invoices/export', 'InvoiceController@export')
         ->name('invoices.export');
 
@@ -19,9 +16,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.losses')
         ->middleware(['permission:invoices.losses']);
 
-    Route::get('invoices/{id}/open', 'InvoiceController@open')
-        ->name('invoices.open')
-        ->middleware(['permission:invoices.open']);
+    // This route will be disabled
+    // Route::get('invoices/{id}/open', 'InvoiceController@open')
+    //     ->name('invoices.open')
+    //     ->middleware(['permission:invoices.open']);
 
     Route::get('invoices/{id}/close', 'InvoiceController@close')
         ->name('invoices.close')

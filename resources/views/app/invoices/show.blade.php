@@ -75,10 +75,12 @@
                             'type' => 'divider'
                         ],
                         [
-                            'option' => $invoice->open ? trans('invoices.close') : trans('invoices.open'),
-                            'url' => route($invoice->open ? 'invoices.close' : 'invoices.open', [
+                            'type' => 'hideable',
+                            'option' => trans('invoices.close'),
+                            'url' => route('invoices.close', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
+                            'show' => $invoice->open
                         ],
                         [
                             'type' => 'confirm',

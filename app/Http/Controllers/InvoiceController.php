@@ -289,6 +289,10 @@ class InvoiceController extends Controller
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'));
                 },
+                'products' => function ($query) {
+                    $query->select(Fields::parsed('products'))
+                        ->withPivot('id', 'quantity', 'value', 'created_at');
+                }
             ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
@@ -299,17 +303,25 @@ class InvoiceController extends Controller
 
         DB::transaction(function () use (&$status, $invoice) {
             try {
-                if ($invoice->delete()) {
-                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '2']);
+                // Change Room status to cleaning
+                Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '4']);
 
-                    if ($invoice->guests->isNotEmpty()) {
-                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
-                    }
-
-                    // TODO: Devolver productos si tiene
-
-                    $status = true;
+                // Change Guest status to false: Guest is not in hotel
+                if ($invoice->guests->isNotEmpty()) {
+                    Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
                 }
+
+                // Restore product stocks
+                if ($invoice->products->isNotEmpty()) {
+                    $invoice->products->each(function ($product)
+                    {
+                        $product->quantity += $product->pivot->quantity;
+                        $product->save();
+                    });
+                }
+
+                $invoice->delete();
+                $status = true;
             } catch (\Throwable $e) {
                 Storage::append('invoice.log', $e->getMessage());
             }
@@ -1872,15 +1884,42 @@ class InvoiceController extends Controller
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('invoices'));
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(Fields::get('rooms'));
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'));
+                }
+            ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
             abort(404);
         }
 
-        $invoice->open = false;
+        $status = false;
 
-        if ($invoice->save()) {
+        DB::transaction(function () use (&$status, $invoice) {
+            try {
+                $invoice->open = false;
+
+                if ($invoice->save()) {
+                    // Change Room status to cleaning
+                    Room::whereIn('id', $invoice->rooms->pluck('id')->toArray())->update(['status' => '4']);
+
+                    // Change Guest status to false: Guest is not in hotel
+                    if ($invoice->guests->isNotEmpty()) {
+                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
+                    }
+
+                    $status = true;
+                }
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
+
+        if ($status) {
             flash(trans('common.successful'))->success();
 
             return back();
