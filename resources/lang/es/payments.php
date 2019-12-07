@@ -10,4 +10,5 @@ return array (
   'transfer' => 'Transferencia',
   'courtesy' => 'Cortesía',
   'method' => 'Método de pago',
+  'incomplete' => 'El pago está incompleto',
 );

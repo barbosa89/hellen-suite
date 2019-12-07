@@ -13,12 +13,13 @@
     ]),
     'options' => [
         [
-            'type' => 'hideable',
+            'type' => $invoice->payment_status ? 'hideable' : 'confirm',
             'option' => trans('common.close') . ' ' . strtolower(trans('payments.title')),
             'url' => route('invoices.payments.close', [
                 'id' => Hashids::encode($invoice->id)
             ]),
-            'show' => (float) $invoice->value === $invoice->payments->sum('value') and $invoice->payment_status == false
+            'show' => (float) $invoice->value === $invoice->payments->sum('value') and $invoice->payment_status == false,
+            'method' => 'POST'
         ],
         [
             'type' => 'hideable',

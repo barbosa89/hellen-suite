@@ -1976,10 +1976,21 @@ class InvoiceController extends Controller
             ->where('open', false)
             ->where('status', true)
             ->where('payment_status', false)
-            ->first(Fields::get('invoices'));
+            ->with([
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
+                }
+            ])->first(Fields::get('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ((float) $invoice->value > $invoice->payments->sum('value')) {
+            flash(trans('payments.incomplete'))->info();
+
+            return back();
         }
 
         $status = false;
@@ -2027,11 +2038,27 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
                 }
             ])->first(Fields::parsed('invoices'));
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->payment_method) {
+            flash(trans('payments.complete'))->info();
+
+            return back();
+        }
+
+        if ((float) $invoice->value == $invoice->payments->sum('value')) {
+            flash(trans('payments.complete'))->info();
+
+            return back();
         }
 
         $status = false;
