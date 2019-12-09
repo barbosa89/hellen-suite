@@ -132,7 +132,8 @@ export default {
             "capital": "Capital letters",
             "alphabetic": "Only alphabetic",
             "change": "Change",
-            "finalize": "Finalize"
+            "finalize": "Finalize",
+            "export": "Export"
         },
         "props": {
             "add": "Add prop",
@@ -266,7 +267,8 @@ export default {
             "closed": "The invoice is closed",
             "loss": "Register as loss",
             "route": "Route",
-            "checkin": "Check-in"
+            "checkin": "Check-in",
+            "external": "External service"
         },
         "assets": {
             "title": "Assets",
@@ -391,7 +393,12 @@ export default {
             "title": "Payments",
             "complete": "Payment is complete",
             "completed": "Payment was completed",
-            "exceeds": "Payment exceeds the amount due"
+            "exceeds": "Payment exceeds the amount due",
+            "cash": "Cash",
+            "courtesy": "Courtesy",
+            "transfer": "Transfer",
+            "method": "Payment method",
+            "incomplete": "Payment is incomplete"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -641,7 +648,8 @@ export default {
             "capital": "Mayúsculas",
             "alphabetic": "Sólo alfabético",
             "finalize": "Finalizar",
-            "change": "Cambiar"
+            "change": "Cambiar",
+            "export": "Exportar"
         },
         "props": {
             "add": "Agregar utilería",
@@ -775,7 +783,8 @@ export default {
             "closed": "El recibo está cerrado",
             "loss": "Registrar como pérdida",
             "route": "Ruta",
-            "checkin": "Ingreso"
+            "checkin": "Ingreso",
+            "external": "Servicio externo"
         },
         "assets": {
             "title": "Activos",
@@ -900,7 +909,12 @@ export default {
             "payment": "Pago",
             "complete": "El pago está completo",
             "completed": "El pago fue completado",
-            "exceeds": "El pago excede el monto adeudado"
+            "exceeds": "El pago excede el monto adeudado",
+            "cash": "Efectivo",
+            "transfer": "Transferencia",
+            "courtesy": "Cortesía",
+            "method": "Método de pago",
+            "incomplete": "El pago está incompleto"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",

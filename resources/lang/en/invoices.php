@@ -41,4 +41,5 @@ return array (
   'loss' => 'Register as loss',
   'route' => 'Route',
   'checkin' => 'Check-in',
+  'external' => 'External service',
 );

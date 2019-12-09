@@ -116,7 +116,7 @@
                     [
                         'type' => 'hideable',
                         'option' => 'Agregar servicios de terceros',
-                        'url' => '#',
+                        'url' => route('invoices.external.add', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open
                     ],
                     [

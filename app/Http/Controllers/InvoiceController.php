@@ -255,7 +255,7 @@ class InvoiceController extends Controller
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'additionals' => function ($query) {
-                $query->select(['id', 'description', 'value', 'invoice_id', 'created_at']);
+                $query->select(['id', 'description', 'billable','value', 'invoice_id', 'created_at']);
             },
             'payments' => function ($query)
             {
@@ -1789,14 +1789,11 @@ class InvoiceController extends Controller
                     ->where('reservation', false)
                     ->first(Fields::parsed('invoices'));
 
-                if (empty($invoice)) {
-                    abort(404);
-                }
-
                 // Create new additional for the invoice
                 $additional = new Additional();
                 $additional->description = $request->description;
                 $additional->value = (float) $request->value;
+                $additional->billable = true;
                 $additional->invoice()->associate($invoice->id);
                 $additional->save();
 
@@ -1846,15 +1843,101 @@ class InvoiceController extends Controller
 
                 // Query the additional to remove
                 $additional = Additional::where('invoice_id', $invoice->id)
-                    ->first(['id', 'value', 'invoice_id']);
+                    ->where('id', Id::get($additional))
+                    ->first(['id', 'value', 'billable','invoice_id']);
 
-                // Subtract the additional values from the invoice
-                $invoice->subvalue -= $additional->value;
-                $invoice->value -= $additional->value;
-                $invoice->save();
+                // Check is a billable additional
+                if ($additional->billable) {
+                    // Subtract the additional values from the invoice
+                    $invoice->subvalue -= $additional->value;
+                    $invoice->value -= $additional->value;
+                    $invoice->save();
+                }
 
                 // Destroy the additional
                 $additional->delete();
+
+                $status = true;
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
+
+        if ($status) {
+            flash(trans('common.successful'))->success();
+        } else {
+            flash(trans('common.error'))->error();
+        }
+
+        return back();
+    }
+
+    /**
+     * Show form to add external service to the invoice.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addExternalService($id)
+    {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('status', true)
+            ->where('reservation', false)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
+                }
+            ])->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $customer = Customer::get($invoice);
+
+        return view('app.invoices.add-external', compact('invoice', 'customer'));
+    }
+
+    /**
+     * Store additional value to the invoice.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeExternalService(StoreAdditional $request, $id)
+    {
+        $status = false;
+
+        DB::transaction(function () use (&$status, $id, $request) {
+            try {
+                $invoice = Invoice::where('user_id', Id::parent())
+                    ->where('id', Id::get($id))
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->where('reservation', false)
+                    ->first(Fields::parsed('invoices'));
+
+                // Create new additional for the invoice
+                $additional = new Additional();
+                $additional->description = $request->description;
+                $additional->value = (float) $request->value;
+                $additional->billable = false;
+                $additional->invoice()->associate($invoice->id);
+                $additional->save();
 
                 $status = true;
             } catch (\Throwable $e) {

@@ -1,6 +1,14 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('invoices/{id}/external', 'InvoiceController@storeExternalService')
+        ->name('invoices.external.store')
+        ->middleware(['permission:invoices.edit']);
+
+    Route::get('invoices/{id}/external', 'InvoiceController@addExternalService')
+        ->name('invoices.external.add')
+        ->middleware(['permission:invoices.edit']);
+
     Route::post('invoices/{id}/payments/close', 'InvoiceController@closePayment')
         ->name('invoices.payments.close')
         ->middleware(['permission:invoices.edit']);

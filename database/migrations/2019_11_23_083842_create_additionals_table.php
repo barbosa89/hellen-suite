@@ -16,6 +16,7 @@ class CreateAdditionalsTable extends Migration
         Schema::create('additionals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('description');
+            $table->boolean('billable')->default(true);
             $table->decimal('value', 10, 2);
 
             $table->bigInteger('invoice_id')->unsigned();

@@ -41,4 +41,5 @@ return array (
   'loss' => 'Registrar como pérdida',
   'route' => 'Ruta',
   'checkin' => 'Ingreso',
+  'external' => 'Servicio externo',
 );

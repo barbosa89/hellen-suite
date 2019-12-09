@@ -72,7 +72,7 @@
                         [
                             'type' => 'hideable',
                             'option' => 'Agregar servicios de terceros',
-                            'url' => '#',
+                            'url' => route('invoices.external.add', ['id' => Hashids::encode($invoice->id)]),
                             'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
@@ -508,7 +508,7 @@
         <!-- Services -->
 
         <!-- Additionals -->
-        @if($invoice->additionals->isNotEmpty())
+        @if($invoice->additionals->where('billable', true)->count() > 0)
             <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
@@ -534,7 +534,7 @@
                                     </div>
                                 </div>
                                 <div class="crud-list-items">
-                                    @foreach($invoice->additionals as $additional)
+                                    @foreach($invoice->additionals->where('billable', true) as $additional)
                                         <div class="crud-list-row">
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-11 col-md-6 col-lg-6 align-self-center">
@@ -562,6 +562,62 @@
             </div>
         @endif
         <!-- Additionals -->
+
+        <!-- External -->
+        @if($invoice->additionals->where('billable', false)->count() > 0)
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-file-medical"></i></small> @lang('invoices.external')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <h5>@lang('common.description')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.date')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->additionals->where('billable', false) as $external)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-11 col-md-6 col-lg-6 align-self-center">
+                                                    <p>{{ $external->description }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ number_format($external->value, 2, '.', ',') }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $external->created_at->format('Y-m-d') }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($external->id)], false) }}')">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- External -->
 
         <!-- Vehicles -->
         @if ($invoice->guests->isNotEmpty())
