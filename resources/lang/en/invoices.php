@@ -42,4 +42,7 @@ return array (
   'route' => 'Route',
   'checkin' => 'Check-in',
   'external' => 'External service',
+  'from' => 'From',
+  'to' => 'To',
+  'note' => 'This document does not represent a legal invoice or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.',
 );

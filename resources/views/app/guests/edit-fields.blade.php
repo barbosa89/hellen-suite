@@ -61,6 +61,28 @@
     @endif
 </div>
 
+<div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+    <label for="address">@lang('common.address'):</label>
+    <input type="text" class="form-control" name="address" id="address" value="{{ $guest->address }}">
+
+    @if ($errors->has('address'))
+        <span class="help-block">
+            <strong>{{ $errors->first('address') }}</strong>
+        </span>
+    @endif
+</div>
+
+<div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+    <label for="phone">@lang('common.phone'):</label>
+    <input type="tel" class="form-control" name="phone" id="phone" value="{{ $guest->phone }}">
+
+    @if ($errors->has('phone'))
+        <span class="help-block">
+            <strong>{{ $errors->first('phone') }}</strong>
+        </span>
+    @endif
+</div>
+
 <div class="form-group{{ $errors->has('profession') ? ' has-error' : '' }}">
     <label for="profession">Profesión:</label>
     <input type="text" class="form-control" name="profession" id="profession" value="{{ $guest->profession }}">

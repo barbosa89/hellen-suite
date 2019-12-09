@@ -29,6 +29,8 @@ class StoreInvoiceGuest extends FormRequest
             'name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'nullable|email|unique_per_user:guests,email',
+            'address' => 'nullable|string|max:191',
+            'phone' => 'nullable|string|max:10',
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'room' => 'required|string',

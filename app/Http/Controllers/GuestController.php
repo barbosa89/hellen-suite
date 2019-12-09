@@ -65,6 +65,8 @@ class GuestController extends Controller
         $guest->last_name = $request->last_name;
         $guest->dni = $request->dni;
         $guest->email = $request->get('email', null);
+        $guest->address = $request->get('address', null);
+        $guest->phone = $request->get('phone', null);
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);
@@ -166,6 +168,8 @@ class GuestController extends Controller
         $guest->last_name = $request->last_name;
         $guest->dni = $request->dni;
         $guest->email = $request->get('email', null);
+        $guest->address = $request->get('address', null);
+        $guest->phone = $request->get('phone', null);
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);
@@ -270,6 +274,8 @@ class GuestController extends Controller
         $guest->last_name = $request->last_name;
         $guest->dni = $request->dni;
         $guest->email = $request->get('email', null);
+        $guest->address = $request->get('address', null);
+        $guest->phone = $request->get('phone', null);
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);

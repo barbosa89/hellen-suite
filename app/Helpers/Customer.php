@@ -23,16 +23,21 @@ class Customer
                 $main = $invoice->guests->first(function ($guest, $index) {
                     return $guest->pivot->main == true;
                 });
-                // dd($invoice->guests);
 
                 $customer['name'] = $main->full_name;
                 $customer['tin'] = $main->dni;
                 $customer['route'] = route('guests.show', ['id' => Hashids::encode($main->id)]);
+                $customer['email'] = $main->email ? $main->email : '';
+                $customer['address'] = $main->address ? $main->address : '';
+                $customer['phone'] = $main->phone ? $main->phone : '';
             }
         } else {
             $customer['name'] = $invoice->company->business_name;
             $customer['tin'] = $invoice->company->tin;
             $customer['route'] = route('companies.show', ['id' => Hashids::encode($invoice->company->id)]);
+            $customer['email'] = $invoice->company->email ? $invoice->company->email : '';
+            $customer['address'] = $invoice->company->address ? $invoice->company->address : '';
+            $customer['phone'] = $invoice->company->phone ? $invoice->company->phone : '';
         }
 
         return $customer;

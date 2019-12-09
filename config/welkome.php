@@ -77,6 +77,8 @@ return [
             'gender',
             'birthdate',
             'email',
+            'address',
+            'phone',
             'responsible_adult',
             'identification_type_id',
             'country_id',

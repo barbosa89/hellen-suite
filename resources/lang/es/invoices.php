@@ -42,4 +42,7 @@ return array (
   'route' => 'Ruta',
   'checkin' => 'Ingreso',
   'external' => 'Servicio externo',
+  'from' => 'De',
+  'to' => 'Para',
+  'note' => 'Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.',
 );

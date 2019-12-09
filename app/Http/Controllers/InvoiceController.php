@@ -2256,10 +2256,52 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function export()
+    public function export($id)
     {
-        $view = view('app.invoices.exports.template')->render();
-        // return $view;
+        $id = Id::get($id);
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', $id)
+            ->where('status', true)
+            ->first(Fields::parsed('invoices'));
+
+        if (empty($invoice)) {
+            abort(404);
+        }
+
+        $invoice->load([
+            'guests' => function ($query) {
+                $query->select(Fields::get('guests'))
+                    ->withPivot('main');
+            },
+            'company' => function ($query) {
+                $query->select(Fields::get('companies'));
+            },
+            'rooms' => function ($query) {
+                $query->select(Fields::parsed('rooms'))
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+            },
+            'products' => function ($query) {
+                $query->select(Fields::parsed('products'))
+                    ->withPivot('id', 'quantity', 'value', 'created_at');
+            },
+            'services' => function ($query) {
+                $query->select(Fields::parsed('services'))
+                    ->withPivot('id', 'quantity', 'value', 'created_at');
+            },
+            'additionals' => function ($query) {
+                $query->select(['id', 'description', 'billable','value', 'invoice_id', 'created_at'])
+                    ->where('billable', true);
+            },
+            'payments' => function ($query)
+            {
+                $query->select(Fields::get('payments'));
+            }
+        ]);
+
+        $customer = Customer::get($invoice);
+
+        $view = view('app.invoices.exports.template', compact('invoice', 'customer'))->render();
+        return $view;
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);

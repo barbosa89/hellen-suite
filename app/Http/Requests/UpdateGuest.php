@@ -31,7 +31,7 @@ class UpdateGuest extends FormRequest
             'dni' => 'required|alpha_num|unique_per_user:guests,dni,' . $id,
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'nullable|email|unique_per_user:guests,email',
+            'email' => 'nullable|email|unique_per_user:guests,email,' . $id,
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'profession' => 'nullable|string',

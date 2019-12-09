@@ -139,22 +139,17 @@
             <div class="col-xs-4 data py-4 col-equal">
                 <div class="spacer-lg">&nbsp;</div>
                 <div class="line mb-4"></div>
-                <h1>INVOICE</h1>
+                <h1 class="text-uppercase">@lang('invoices.invoice')</h1>
 
                 <div class="data-box">
                     <div class="data-separator d-block"></div>
                     <h4 class="text-muted font-weight-light">No.</h4>
-                    <h4 class="font-weight-bold">23123123123</h4>
+                    <h4 class="font-weight-bold">{{ $invoice->number }}</h4>
                 </div>
                 <div class="data-box">
                     <div class="data-separator d-block"></div>
-                    <h4 class="text-muted font-weight-light">INVOICE DATE</h4>
-                    <h4 class="font-weight-bold">January 05, 2018</h4>
-                </div>
-                <div class="data-box">
-                    <div class="data-separator d-block"></div>
-                    <h4 class="text-muted font-weight-light">DUE DATE</h4>
-                    <h4 class="font-weight-bold">January 25, 2018</h4>
+                    <h4 class="text-muted font-weight-light">@lang('common.date')</h4>
+                    <h4 class="font-weight-bold">{{ $invoice->created_at->format('Y-m-d') }}</h4>
                 </div>
                 <div class="data-box">
                     <h5 class="font-weight-bold">TERMS</h5>
@@ -170,7 +165,7 @@
                     <img src="{{ asset('/images/qr.png') }}" alt="" class="img-fluid qr-code">
                 </div>
                 <div class="data-box align-text-bottom">
-                    <h1 class="font-weight-bold text-center">My company name</h1>
+                    <h1 class="font-weight-bold text-center">{{ $invoice->hotel->business_name }}</h1>
                 </div>
             </div>
             <!-- end data -->
@@ -183,20 +178,20 @@
                 <div class="header">
                     <div class="row">
                         <div class="col-xs-6 from">
-                            <span class="d-block font-weight-light">FROM:</span>
-                            <h3>My Company</h3>
-                            <span class="d-block font-weight-light">123.123.12312</span>
-                            <span class="d-block font-weight-light">Address sasd asdas</span>
-                            <span class="d-block font-weight-light">315 234 5677</span>
-                            <span class="d-block font-weight-light">juan@mycompany.com</span>
+                            <span class="d-block font-weight-light">@lang('invoices.from'):</span>
+                            <h3>{{ $invoice->hotel->business_name }}</h3>
+                            <span class="d-block font-weight-light">{{ $invoice->hotel->tin }}</span>
+                            <span class="d-block font-weight-light">{{ $invoice->hotel->address }}</span>
+                            <span class="d-block font-weight-light">{{ $invoice->hotel->phone }}</span>
+                            <span class="d-block font-weight-light">{{ $invoice->hotel->email }}</span>
                         </div>
                         <div class="col-xs-6 to">
-                            <span class="d-block font-weight-light">TO:</span>
-                            <h3>Customer</h3>
-                            <span class="d-block font-weight-light">123.123.12312</span>
-                            <span class="d-block font-weight-light">Address sasd asdas</span>
-                            <span class="d-block font-weight-light">315 234 5677</span>
-                            <span class="d-block font-weight-light">customer@people.com</span>
+                            <span class="d-block font-weight-light">@lang('invoices.to'):</span>
+                            <h3> {{ $customer['name'] }}</h3>
+                            <span class="d-block font-weight-light">{{ $customer['tin'] }}</span>
+                            <span class="d-block font-weight-light">{{ $customer['address'] ?? trans('common.noData') }}</span>
+                            <span class="d-block font-weight-light">{{ $customer['phone'] ?? trans('common.noData') }}</span>
+                            <span class="d-block font-weight-light">{{ $customer['address'] ?? trans('common.noData') }}</span>
                         </div>
                     </div>
                 </div>
@@ -205,7 +200,7 @@
                 <!-- note -->
                 <div class="row mt-4">
                     <div class="col-xs-12">
-                        <p class="text-justify">Quis sunt mollit nostrud aliqua consectetur voluptate eiusmod proident aute laboris non reprehenderit magna qui. Esse occaecat laboris laborum dolore excepteur enim laboris.</p>
+                        <p class="text-justify">@lang('invoices.note')</p>
                     </div>
                 </div>
                 <!-- end note -->
@@ -216,11 +211,11 @@
                         <div class="col-xs-12 mx-2">
                             <div class="line"></div>
                         </div>
-                        <div class="col-xs-6">DESCRIPTION</div>
-                        <div class="col-xs-2 text-center">PRICE</div>
-                        <div class="col-xs-2 text-center">QUANTITY</div>
-                        <div class="col-xs-2 text-right">TOTAL</div>
-                        <div class="col-xs-12 mx-2">
+                        <div class="text-uppercase col-xs-6">@lang('common.description')</div>
+                        <div class="text-uppercase col-xs-2 text-center">@lang('common.price')</div>
+                        <div class="text-uppercase col-xs-2 text-center">@lang('common.quantity')</div>
+                        <div class="text-uppercase col-xs-2 text-right">TOTAL</div>
+                        <div class="text-uppercase col-xs-12 mx-2">
                             <div class="line"></div>
                         </div>
                     </div>
