@@ -12,6 +12,10 @@
             'url' => route('invoices.index'),
             'options' => [
                 [
+                    'option' => trans('common.export'),
+                    'url' => route('invoices.export')
+                ],
+                [
                     'type' => 'hideable',
                     'option' => trans('payments.title'),
                     'url' => route('payments.index', [
@@ -24,55 +28,58 @@
                     'type' => 'dropdown',
                     'url' => [
                         [
+                            'type' => 'hideable',
                             'option' => trans('rooms.addRoom'),
                             'url' => route('invoices.rooms', [
                                 'id' => Hashids::encode($invoice->id)
-                            ])
+                            ]),
+                            'show' => $invoice->open
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => $invoice->company ? trans('invoices.linkNewCompany') : trans('invoices.linkCompany'),
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
+                            'show' => $invoice->open
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('invoices.registerGuests'),
                             'url' => route('invoices.guests.search', [
                                 'id' => Hashids::encode($invoice->id)
-                            ])
+                            ]),
+                            'show' => $invoice->open
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.loadProducts'),
                             'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation
+                            'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.loadServices'),
                             'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation
+                            'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                             'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation
+                            'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
                             'type' => 'hideable',
                             'option' => 'Agregar servicios de terceros',
                             'url' => '#',
-                            'show' => !$invoice->reservation
+                            'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.addAdditional'),
                             'url' => route('invoices.additionals.create', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation
-                        ],
-                        [
-                            'type' => 'divider'
+                            'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
                             'type' => 'hideable',

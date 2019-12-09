@@ -76,34 +76,48 @@
                         'url' => route('invoices.show', ['id' => Hashids::encode($row->id)]),
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => trans('rooms.addRoom'),
                         'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
+                        'show' => $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => $row->company ? trans('invoices.linkNewCompany') : trans('invoices.linkCompany'),
                         'url' => route('invoices.companies.search', [
                             'id' => Hashids::encode($row->id)
-                        ])
+                        ]),
+                        'show' => $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => trans('invoices.registerGuests'),
                         'url' => route('invoices.guests.search', ['id' => Hashids::encode($row->id)]),
+                        'show' => $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => trans('invoices.loadProducts'),
                         'url' => route('invoices.products', ['id' => Hashids::encode($row->id)]),
+                        'show' => !$row->reservation and $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => trans('invoices.loadServices'),
                         'url' => route('invoices.services', ['id' => Hashids::encode($row->id)]),
+                        'show' => !$row->reservation and $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                         'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($row->id)]),
+                        'show' => !$row->reservation and $row->open
                     ],
                     [
+                        'type' => 'hideable',
                         'option' => 'Agregar servicios de terceros',
                         'url' => '#',
+                        'show' => !$row->reservation and $row->open
                     ],
                     [
                         'type' => 'divider'

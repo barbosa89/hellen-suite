@@ -2176,7 +2176,7 @@ class InvoiceController extends Controller
     public function export()
     {
         $view = view('app.invoices.exports.template')->render();
-        return $view;
+        // return $view;
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);

@@ -116,4 +116,5 @@ return array (
   'alphabetic' => 'Sólo alfabético',
   'finalize' => 'Finalizar',
   'change' => 'Cambiar',
+  'export' => 'Exportar',
 );
