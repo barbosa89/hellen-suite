@@ -45,4 +45,5 @@ return array (
   'from' => 'De',
   'to' => 'Para',
   'note' => 'Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.',
+  'isOpen' => 'La factura está abierta, ciérrala antes de cerrar los pagos.',
 );

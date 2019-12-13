@@ -45,4 +45,5 @@ return array (
   'from' => 'From',
   'to' => 'To',
   'note' => 'This document does not represent a legal invoice or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.',
+  'isOpen' => 'The invoice is open, close it before closing payments.',
 );

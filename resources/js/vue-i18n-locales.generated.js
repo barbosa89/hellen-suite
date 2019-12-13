@@ -268,7 +268,11 @@ export default {
             "loss": "Register as loss",
             "route": "Route",
             "checkin": "Check-in",
-            "external": "External service"
+            "external": "External service",
+            "from": "From",
+            "to": "To",
+            "note": "This document does not represent a legal invoice or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.",
+            "isOpen": "The invoice is open, close it before closing payments."
         },
         "assets": {
             "title": "Assets",
@@ -784,7 +788,11 @@ export default {
             "loss": "Registrar como pérdida",
             "route": "Ruta",
             "checkin": "Ingreso",
-            "external": "Servicio externo"
+            "external": "Servicio externo",
+            "from": "De",
+            "to": "Para",
+            "note": "Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.",
+            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos."
         },
         "assets": {
             "title": "Activos",

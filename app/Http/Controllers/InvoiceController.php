@@ -1966,6 +1966,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
+            ->where('payment_status', false)
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
@@ -2056,7 +2057,6 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
-            ->where('open', false)
             ->where('status', true)
             ->where('payment_status', false)
             ->with([
@@ -2068,6 +2068,12 @@ class InvoiceController extends Controller
 
         if (empty($invoice)) {
             abort(404);
+        }
+
+        if ($invoice->open) {
+            flash(trans('invoices.isOpen'))->info();
+
+            return back();
         }
 
         if ((float) $invoice->value > $invoice->payments->sum('value')) {
