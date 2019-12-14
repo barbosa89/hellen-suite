@@ -21,6 +21,7 @@ use App\Http\Requests\{
     StoreInvoiceGuest,
     StoreRoute
 };
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -2305,9 +2306,11 @@ class InvoiceController extends Controller
         ]);
 
         $customer = Customer::get($invoice);
+        // dd($this->prepareItems($invoice));
+        $pages = $this->parsePages($invoice);
 
-        $view = view('app.invoices.exports.template', compact('invoice', 'customer'))->render();
-        return $view;
+        $view = view('app.invoices.exports.template', compact('invoice', 'customer', 'pages'))->render();
+        // return $view;
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);
@@ -2317,10 +2320,82 @@ class InvoiceController extends Controller
         $pdf->setOption('margin-left', 1);
         $pdf->setOption('margin-right', 1);
         $pdf->loadHTML($view);
-        // $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML($view);
-        return $pdf->download('invoice.pdf');
 
-        // return $pdf->inline();
+        return $pdf->download('invoice.pdf');
+    }
+
+    public function parsePages(Invoice $invoice)
+    {
+        return $this->prepareItems($invoice);
+    }
+
+    public function prepareItems(Invoice $invoice)
+    {
+        $items = collect();
+
+        foreach ($invoice->rooms as $room) {
+            $items->push($room);
+        }
+
+        foreach ($invoice->services as $service) {
+            $items->push($service);
+        }
+
+        foreach ($invoice->products as $product) {
+            $items->push($product);
+        }
+
+        foreach ($invoice->additionals as $additional) {
+            $items->push($additional);
+        }
+
+        return $this->chunkItems($items);
+    }
+
+    public function chunkItems(Collection $items)
+    {
+        $pages = $this->calculatePages($items);
+        $chunkedItems = [];
+
+        // IMPORTANT: Will be used the collection function named 'splice'
+        // The splice method removes and returns a slice of items starting at the specified index
+        for ($i=0; $i < $pages; $i++) {
+            // Check if this is the first page
+            if ($i == 0) {
+                // The first page receives only 8 items
+                $chunkedItems[$i] = $items->splice(0, 8);
+            } else {
+                // Check if this is the last page
+                if ($i == $pages) {
+                    // The last page receives only 14 items
+                    $chunkedItems[$i] = $items->splice(0, 14);
+                } else {
+                    // This is a intermediate page
+                    $chunkedItems[$i] = $items->splice(0, 20);
+                }
+            }
+        }
+
+        return $chunkedItems;
+    }
+
+    public function calculatePages(Collection $items)
+    {
+        // The maximun quantity per page
+        $itemsPerPage = 20;
+
+        // The space for the invoice header and signature
+        // 6 items for the header
+        // 6 items for the signature, this section includes the questions section
+        $reservedSpace = 6;
+
+        // Calculate the total items, includes the reserved space (header, signature)
+        // This quantity is to calculate the pages
+        $quantity = $items->count() + $reservedSpace * 2;
+
+        // The pages are round fractions up using ceil function
+        $pages = (int) ceil($quantity / $itemsPerPage);
+
+        return $pages;
     }
 }
