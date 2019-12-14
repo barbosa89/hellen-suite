@@ -2357,21 +2357,21 @@ class InvoiceController extends Controller
         $pages = $this->calculatePages($items);
         $chunkedItems = [];
 
-        // IMPORTANT: Will be used the collection function named 'splice'
+        // Will be used the collection function named 'splice'
         // The splice method removes and returns a slice of items starting at the specified index
-        for ($i=0; $i < $pages; $i++) {
+        for ($i=1; $i <= $pages; $i++) {
             // Check if this is the first page
-            if ($i == 0) {
-                // The first page receives only 8 items
-                $chunkedItems[$i] = $items->splice(0, 8);
+            if ($i == 1) {
+                // The first page receives only 13 items of 18
+                $chunkedItems[$i] = $items->splice(0, 13);
             } else {
                 // Check if this is the last page
                 if ($i == $pages) {
-                    // The last page receives only 14 items
-                    $chunkedItems[$i] = $items->splice(0, 14);
+                    // The last page receives only 10 items of 18
+                    $chunkedItems[$i] = $items->splice(0, 10);
                 } else {
-                    // This is a intermediate page
-                    $chunkedItems[$i] = $items->splice(0, 20);
+                    // This is a intermediate page, total items, 18 items
+                    $chunkedItems[$i] = $items->splice(0, 18);
                 }
             }
         }
@@ -2382,16 +2382,16 @@ class InvoiceController extends Controller
     public function calculatePages(Collection $items)
     {
         // The maximun quantity per page
-        $itemsPerPage = 20;
+        $itemsPerPage = 18;
 
         // The space for the invoice header and signature
-        // 6 items for the header
-        // 6 items for the signature, this section includes the questions section
-        $reservedSpace = 6;
+        // 5 items for the header
+        // 7 items for the signature, this section includes the questions section
+        $reservedSpace = 12;
 
         // Calculate the total items, includes the reserved space (header, signature)
         // This quantity is to calculate the pages
-        $quantity = $items->count() + $reservedSpace * 2;
+        $quantity = $items->count() + $reservedSpace;
 
         // The pages are round fractions up using ceil function
         $pages = (int) ceil($quantity / $itemsPerPage);

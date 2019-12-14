@@ -35,7 +35,7 @@
                     @lang('invoices.invoice')
 
                     @if ($invoice->reservation)
-                        <small>(Reservación)</small>
+                        <small>(@lang('invoices.reservation'))</small>
                     @endif
                 </span>
             </div>

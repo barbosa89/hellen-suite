@@ -117,4 +117,8 @@ return array (
   'finalize' => 'Finalizar',
   'change' => 'Cambiar',
   'export' => 'Exportar',
+  'thanks' => 'Gracias',
+  'page' => 'Página',
+  'of' => 'De',
+  'percentage' => 'Porcentaje',
 );

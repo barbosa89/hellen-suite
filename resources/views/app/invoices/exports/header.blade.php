@@ -1,5 +1,3 @@
-<div class="spacer-lg">&nbsp;</div>
-<div class="line mb-4"></div>
 <!-- header -->
 <div class="header">
     <div class="row">

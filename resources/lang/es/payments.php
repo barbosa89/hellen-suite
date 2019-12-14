@@ -11,4 +11,5 @@ return array (
   'courtesy' => 'Cortesía',
   'method' => 'Método de pago',
   'incomplete' => 'El pago está incompleto',
+  'status' => 'Estado del pago',
 );

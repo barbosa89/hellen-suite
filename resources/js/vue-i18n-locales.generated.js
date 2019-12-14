@@ -133,7 +133,11 @@ export default {
             "alphabetic": "Only alphabetic",
             "change": "Change",
             "finalize": "Finalize",
-            "export": "Export"
+            "export": "Export",
+            "thanks": "Thank you",
+            "page": "Page",
+            "of": "Of",
+            "percentage": "Percentage"
         },
         "props": {
             "add": "Add prop",
@@ -272,7 +276,11 @@ export default {
             "from": "From",
             "to": "To",
             "note": "This document does not represent a legal invoice or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.",
-            "isOpen": "The invoice is open, close it before closing payments."
+            "isOpen": "The invoice is open, close it before closing payments.",
+            "questions": "If you have any questions about this invoice, please contact us",
+            "administration": "Administration",
+            "destination": "Destination",
+            "origin": "Origin"
         },
         "assets": {
             "title": "Assets",
@@ -402,7 +410,8 @@ export default {
             "courtesy": "Courtesy",
             "transfer": "Transfer",
             "method": "Payment method",
-            "incomplete": "Payment is incomplete"
+            "incomplete": "Payment is incomplete",
+            "status": "Payment status"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -653,7 +662,11 @@ export default {
             "alphabetic": "Sólo alfabético",
             "finalize": "Finalizar",
             "change": "Cambiar",
-            "export": "Exportar"
+            "export": "Exportar",
+            "thanks": "Gracias",
+            "page": "Página",
+            "of": "De",
+            "percentage": "Porcentaje"
         },
         "props": {
             "add": "Agregar utilería",
@@ -792,7 +805,11 @@ export default {
             "from": "De",
             "to": "Para",
             "note": "Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.",
-            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos."
+            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
+            "questions": "Si tiene alguna pregunta sobre esta factura, por favor contáctenos",
+            "administration": "Administración",
+            "origin": "Origen",
+            "destination": "Destino"
         },
         "assets": {
             "title": "Activos",
@@ -922,7 +939,8 @@ export default {
             "transfer": "Transferencia",
             "courtesy": "Cortesía",
             "method": "Método de pago",
-            "incomplete": "El pago está incompleto"
+            "incomplete": "El pago está incompleto",
+            "status": "Estado del pago"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",

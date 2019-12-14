@@ -11,4 +11,5 @@ return array (
   'transfer' => 'Transfer',
   'method' => 'Payment method',
   'incomplete' => 'Payment is incomplete',
+  'status' => 'Payment status',
 );
