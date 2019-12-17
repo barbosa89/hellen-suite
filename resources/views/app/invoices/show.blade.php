@@ -82,12 +82,13 @@
                             'show' => !$invoice->reservation and $invoice->open
                         ],
                         [
-                            'type' => 'hideable',
+                            'type' => $invoice->open ? 'confirm' : 'hideable',
                             'option' => trans('invoices.close'),
                             'url' => route('invoices.close', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => $invoice->open
+                            'show' => $invoice->open,
+                            'method' => 'POST'
                         ],
                         [
                             'type' => 'confirm',
@@ -259,7 +260,7 @@
                                                             <i class="fas fa-user-times"></i>
                                                         </a>
                                                         @if ($invoice->guests->count() > 1)
-                                                            <a class="btn btn-link" title="{{ trans($guest->status ? 'guests.registerExit' : 'guests.registerEntry') }}" href="{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)]) }}">
+                                                            <a class="btn btn-link" title="{{ trans($guest->status ? 'guests.registerExit' : 'guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
                                                                 <i class="fas fa-door-{{ $guest->status ? 'closed' : 'open' }}"></i>
                                                             </a>
                                                         @endif

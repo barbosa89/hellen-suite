@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     //     ->name('invoices.open')
     //     ->middleware(['permission:invoices.open']);
 
-    Route::get('invoices/{id}/close', 'InvoiceController@close')
+    Route::post('invoices/{id}/close', 'InvoiceController@close')
         ->name('invoices.close')
         ->middleware(['permission:invoices.close']);
 

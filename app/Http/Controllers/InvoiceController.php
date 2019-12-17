@@ -992,7 +992,8 @@ class InvoiceController extends Controller
                     ->withPivot('main');
             },
             'guests.rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(Fields::parsed('rooms'))
+                    ->wherePivot('invoice_id', $id);
             },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
@@ -1023,6 +1024,7 @@ class InvoiceController extends Controller
         }
 
         $guest = $invoice->guests->where('id', Id::get($guest))->first();
+        // dd($guest);
         $room = $guest->rooms->first();
         $customer = Customer::get($invoice);
 

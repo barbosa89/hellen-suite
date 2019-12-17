@@ -460,16 +460,16 @@ class GuestController extends Controller
             }
         } else {
             $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
-                        ->where('responsible_adult', false)
-                        ->withPivot('main');
-                }
-            ])->first(['id']);
+                ->where('id', Id::get($invoice))
+                ->where('open', true)
+                ->where('status', true)
+                ->with([
+                    'guests' => function ($query) {
+                        $query->select(Fields::get('guests'))
+                            ->where('responsible_adult', false)
+                            ->withPivot('main');
+                    }
+                ])->first(['id']);
 
             if (empty($invoice)) {
                 return abort(404);

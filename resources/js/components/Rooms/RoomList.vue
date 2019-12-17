@@ -24,10 +24,10 @@
                             <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" title="Ocupado">
                                 <i class="fa fa-tags"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En mantenimiento">
+                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En limpieza">
                                 <i class="fa fa-broom"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En limpieza">
+                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En mantenimiento">
                                 <i class="fa fa-wrench"></i>
                             </button>
                             <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" title="Inhabilitado">
