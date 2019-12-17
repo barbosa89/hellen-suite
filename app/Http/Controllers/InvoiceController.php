@@ -732,8 +732,9 @@ class InvoiceController extends Controller
                 'rooms' => function ($query) {
                     $query->select('id');
                 },
-                'rooms.guests' => function ($query) {
-                    $query->select('id', 'name', 'last_name');
+                'rooms.guests' => function ($query) use ($id) {
+                    $query->select('id', 'name', 'last_name')
+                        ->wherePivot('invoice_id', Id::get($id));
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
@@ -910,8 +911,9 @@ class InvoiceController extends Controller
                     $query->select('id')
                         ->where('responsible_adult', false);
                 },
-                'guests.rooms' => function ($query) {
-                    $query->select('id', 'number');
+                'guests.rooms' => function ($query) use ($id) {
+                    $query->select('id', 'number')
+                        ->wherePivot('invoice_id', Id::get($id));
                 },
             ])->first(['id']);
 
@@ -1061,7 +1063,8 @@ class InvoiceController extends Controller
                     ->withPivot('main');
             },
             'guests.rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(Fields::parsed('rooms'))
+                    ->wherePivot('invoice_id', $id);
             },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
@@ -1582,8 +1585,9 @@ class InvoiceController extends Controller
                 'rooms' => function ($query) {
                     $query->select('id');
                 },
-                'rooms.guests' => function ($query) {
-                    $query->select('id', 'name', 'last_name');
+                'rooms.guests' => function ($query) use ($id) {
+                    $query->select('id', 'name', 'last_name')
+                        ->wherePivot('invoice_id', Id::get($id));
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::get('guests'))
