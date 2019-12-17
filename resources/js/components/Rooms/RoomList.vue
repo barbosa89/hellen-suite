@@ -328,7 +328,6 @@
             enable(text, data) {
                 if (_.indexOf(['2', '3', '4'], data.room.status) != -1) {
                     this.changeStatus(data, '1')
-                    this.showAvailable()
                 } else {
                     toastr.info(
                         'No puedes habilitar esta habitación',
@@ -339,7 +338,6 @@
             disable(text, data) {
                 if (_.indexOf(['1', '2', '4'], data.room.status) != -1) {
                     this.changeStatus(data, '3')
-                    this.showDisabled()
                 } else {
                     toastr.info(
                         'No puedes habilitar esta habitación',
@@ -350,7 +348,6 @@
             changeStatusToMaintenance(text, data) {
                 if (_.indexOf(['1', '2', '3'], data.room.status) != -1) {
                     this.changeStatus(data, '4')
-                    this.showMaintenance()
                 } else {
                     toastr.info(
                         'No puedes habilitar esta habitación',

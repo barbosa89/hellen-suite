@@ -123,12 +123,13 @@
                         'type' => 'divider'
                     ],
                     [
-                        'type' => 'hideable',
+                        'type' => $row->open ? 'confirm' : 'hideable',
                         'option' => trans('invoices.close'),
                         'url' => route('invoices.close', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'show' => $row->open
+                        'show' => $row->open,
+                        'method' => 'POST'
                     ],
                     [
                         'type' => 'confirm',
