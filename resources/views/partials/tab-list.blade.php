@@ -10,11 +10,13 @@
 <div id="myTabContent" class="tab-content">
     @foreach($tabs as $tab)
         <div class="tab-pane fade show {{ $loop->first ? 'active' : '' }}" id="{{ $tab['id'] }}" role="tabpanel" aria-labelledby="{{ $tab['id'] }}-tab">
-            @include('partials.list', [
-                'data' => $data,
+            @include(isset($tab['type']) ? 'partials.check-list' : 'partials.list', [
+                'data' => isset($tab['data']) ? $tab['data'] : $data,
                 'listHeading' => isset($tab['listHeading']) ? $tab['listHeading'] : $listHeading,
                 'listRow' => isset($tab['listRow']) ? $tab['listRow'] : $listRow,
                 'where' => isset($tab['where']) ? $tab['where'] : null,
+                'id' => isset($tab['form-id']) ? $tab['form-id'] : null,
+                'url' => isset($tab['action']) ? $tab['action'] : null,
             ])
         </div>
     @endforeach

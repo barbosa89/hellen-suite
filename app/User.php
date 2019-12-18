@@ -45,6 +45,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Welkome\Hotel::class);
     }
 
+    public function configurations()
+    {
+        return $this->belongsToMany(Welkome\Configuration::class);
+    }
+
     public function headquarters()
     {
         return $this->belongsToMany(Welkome\Hotel::class);

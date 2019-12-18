@@ -14,6 +14,12 @@
         ],
         'options' => [
             [
+                'type' => 'hideable',
+                'option' => 'Test',
+                'url' => route('rooms.index'),
+                'show' => now()->greaterThan(today()->addHours('18'))
+            ],
+            [
                 'option' => trans('common.new'),
                 'url' => route('rooms.index')
             ],
@@ -22,11 +28,34 @@
 
     <div class="row">
         <div class="col-md-12">
-            @include('partials.list', [
+            @include('partials.tab-list', [
                 'data' => $invoices,
                 'listHeading' => 'app.invoices.list-heading',
                 'listRow' => 'app.invoices.list-row',
-                'where' => null
+                'tabs' => [
+                    [
+                        'id' => 'all',
+                        'title' => trans('common.all'),
+                    ],
+                    [
+                        'id' => 'open',
+                        'title' => trans('invoices.open'),
+                        'data' => $invoices->where('open', true),
+                        'type' => 'check',
+                        'form-id' => 'close-invoices',
+                        'action' => '#'
+                    ],
+                    [
+                        'id' => 'closed',
+                        'title' => trans('invoices.closed'),
+                        'data' => $invoices->where('open', false),
+                    ],
+                    [
+                        'id' => 'unpaid',
+                        'title' => trans('payments.unpaid'),
+                        'data' => $invoices->where('payment_status', false),
+                    ]
+                ]
             ])
         </div>
     </div>

@@ -268,7 +268,7 @@ export default {
             "open": "Open",
             "close": "Close",
             "losses": "Losses",
-            "closed": "The invoice is closed",
+            "closed": "Closed",
             "loss": "Register as loss",
             "route": "Route",
             "checkin": "Check-in",
@@ -280,7 +280,8 @@ export default {
             "questions": "If you have any questions about this invoice, please contact us",
             "administration": "Administration",
             "destination": "Destination",
-            "origin": "Origin"
+            "origin": "Origin",
+            "isClosed": "The invoice is closed"
         },
         "assets": {
             "title": "Assets",
@@ -411,7 +412,8 @@ export default {
             "transfer": "Transfer",
             "method": "Payment method",
             "incomplete": "Payment is incomplete",
-            "status": "Payment status"
+            "status": "Payment status",
+            "unpaid": "Unpaid bills"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -794,10 +796,10 @@ export default {
             "addAdditional": "Agregar adicional",
             "additionals": "Adicionales",
             "customer": "Cliente",
-            "open": "Abrir",
+            "open": "Abiertos",
             "close": "Cerrar",
             "losses": "Pérdidas",
-            "closed": "El recibo está cerrado",
+            "closed": "Cerrados",
             "loss": "Registrar como pérdida",
             "route": "Ruta",
             "checkin": "Ingreso",
@@ -809,7 +811,8 @@ export default {
             "questions": "Si tiene alguna pregunta sobre esta factura, por favor contáctenos",
             "administration": "Administración",
             "origin": "Origen",
-            "destination": "Destino"
+            "destination": "Destino",
+            "isClosed": "El recibo está cerrado"
         },
         "assets": {
             "title": "Activos",
@@ -940,7 +943,8 @@ export default {
             "courtesy": "Cortesía",
             "method": "Método de pago",
             "incomplete": "El pago está incompleto",
-            "status": "Estado del pago"
+            "status": "Estado del pago",
+            "unpaid": "Pendientes de pago"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",

@@ -12,4 +12,5 @@ return array (
   'method' => 'Método de pago',
   'incomplete' => 'El pago está incompleto',
   'status' => 'Estado del pago',
+  'unpaid' => 'Pendientes de pago',
 );

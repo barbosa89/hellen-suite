@@ -34,10 +34,10 @@ return array (
   'addAdditional' => 'Agregar adicional',
   'additionals' => 'Adicionales',
   'customer' => 'Cliente',
-  'open' => 'Abrir',
+  'open' => 'Abiertos',
   'close' => 'Cerrar',
   'losses' => 'Pérdidas',
-  'closed' => 'El recibo está cerrado',
+  'closed' => 'Cerrados',
   'loss' => 'Registrar como pérdida',
   'route' => 'Ruta',
   'checkin' => 'Ingreso',
@@ -50,4 +50,5 @@ return array (
   'administration' => 'Administración',
   'origin' => 'Origen',
   'destination' => 'Destino',
+  'isClosed' => 'El recibo está cerrado',
 );

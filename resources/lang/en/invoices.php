@@ -37,7 +37,7 @@ return array (
   'open' => 'Open',
   'close' => 'Close',
   'losses' => 'Losses',
-  'closed' => 'The invoice is closed',
+  'closed' => 'Closed',
   'loss' => 'Register as loss',
   'route' => 'Route',
   'checkin' => 'Check-in',
@@ -50,4 +50,5 @@ return array (
   'administration' => 'Administration',
   'destination' => 'Destination',
   'origin' => 'Origin',
+  'isClosed' => 'The invoice is closed',
 );

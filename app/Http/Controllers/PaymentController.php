@@ -210,7 +210,7 @@ class PaymentController extends Controller
         }
 
         if ($invoice->payment_status) {
-            flash(trans('invoices.closed'))->info();
+            flash(trans('invoices.isClosed'))->info();
 
             return back();
         }
@@ -260,7 +260,7 @@ class PaymentController extends Controller
         }
 
         if ($invoice->payment_status) {
-            flash(trans('invoices.closed'))->info();
+            flash(trans('invoices.isClosed'))->info();
 
             return back();
         }
@@ -361,7 +361,7 @@ class PaymentController extends Controller
         }
 
         if ($invoice->payment_status) {
-            flash(trans('invoices.closed'))->info();
+            flash(trans('invoices.isClosed'))->info();
 
             return back();
         }
