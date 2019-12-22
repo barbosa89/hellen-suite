@@ -51,4 +51,7 @@ return array (
   'destination' => 'Destination',
   'origin' => 'Origin',
   'isClosed' => 'The invoice is closed',
+  'process' => 'Process',
+  'nothingToProcess' => 'There are no invoices to process',
+  'processing' => 'Invoice processing',
 );

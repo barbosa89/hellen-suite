@@ -14,10 +14,8 @@
         ],
         'options' => [
             [
-                'type' => 'hideable',
-                'option' => 'Test',
-                'url' => route('rooms.index'),
-                'show' => now()->greaterThan(today()->addHours('18'))
+                'option' => trans('invoices.process'),
+                'url' => route('invoices.process.form'),
             ],
             [
                 'option' => trans('common.new'),

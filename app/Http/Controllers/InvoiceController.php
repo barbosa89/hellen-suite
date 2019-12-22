@@ -2269,6 +2269,129 @@ class InvoiceController extends Controller
         ]);
     }
 
+    /**
+     * Change an invoice reservation to check-in reservation, includes origin and destination route.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showFormToProcess()
+    {
+        $query = Invoice::query();
+        $query->where('user_id', Id::parent())
+            ->where('open', true)
+            ->where('status', true)
+            ->where('reservation', false)
+            ->where('payment_status', false)
+            ->where('losses', false)
+            ->with([
+                'hotel' => function ($query) {
+                    $query->select(Fields::get('hotels'));
+                },
+                'guests' => function ($query) {
+                    $query->select(['id', 'name', 'last_name'])
+                        ->wherePivot('main', true);
+                },
+                'company' => function ($query) {
+                    $query->select(['id', 'tin', 'business_name']);
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
+                }
+            ]);
+
+        if (auth()->user()->hasRole('receptionist')) {
+            $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
+        }
+
+        $invoices = $query->get(Fields::get('invoices'));
+
+        if ($invoices->isEmpty()) {
+            flash(trans('invoices.nothingToProcess'))->info();
+
+            return back();
+        }
+
+        $invoice = $this->prepareData($invoices);
+
+        return view('app.invoices.process', compact('invoices'));
+    }
+
+    public function prepareData(Collection $invoices)
+    {
+        $invoices = $invoices->map(function($invoice) {
+            $invoice->user_id = Hashids::encode($invoice->user_id);
+            $invoice->hotel_id = Hashids::encode($invoice->hotel_id);
+            $invoice->company_id = $invoice->company_id ? Hashids::encode($invoice->company_id) : null;
+
+            if (!empty($invoice->hotel)) {
+                $invoice->hotel->user_id = Hashids::encode($invoice->hotel->user_id);
+                $invoice->hotel->main_hotel = Hashids::encode($invoice->hotel->user_id);
+            }
+
+            $invoice->guests = $invoice->guests->map(function ($guest)
+            {
+                $guest->pivot->invoice_id = Hashids::encode($guest->pivot->invoice_id);
+                $guest->pivot->guest_id = Hashids::encode($guest->pivot->guest_id);
+
+                return $guest;
+            });
+
+            $invoice->payments = $invoice->payments->map(function ($payment)
+            {
+                $payment->invoice_id = Hashids::encode($payment->invoice_id);
+
+                return $payment;
+            });
+
+            return $invoice;
+        });
+
+        return $invoices;
+    }
+
+    public function process()
+    {
+        $invoices = Invoice::where('user_id', Id::parent())
+            ->where('open', true)
+            ->where('status', true)
+            ->where('reservation', false)
+            ->where('payment_status', false)
+            ->where('losses', false)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select('id');
+                },
+                'guests' => function ($query) {
+                    $query->select(Fields::get('guests'))
+                        ->withPivot('main');
+                },
+                'company' => function ($query) {
+                    $query->select(Fields::get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(Fields::get('payments'));
+                }
+            ])->get(Fields::get('invoices'));
+
+        if ($invoices->isEmpty()) {
+            flash(trans('invoices.nothingToProcess'))->info();
+
+            return back();
+        }
+
+        return view('app.invoices.process', compact('invoices'));
+    }
+
+    /**
+     * Export a invoice to PDF.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
     public function export($id)
     {
         $id = Id::get($id);

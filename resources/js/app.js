@@ -27,6 +27,8 @@ Vue.component('prop-list', require('./components/Props/PropList.vue').default);
 
 Vue.component('asset-list', require('./components/Assets/AssetList.vue').default);
 
+Vue.component('process-list', require('./components/Invoices/ProcessList.vue').default);
+
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';
 

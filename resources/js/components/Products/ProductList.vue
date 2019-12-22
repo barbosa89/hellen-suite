@@ -1,17 +1,5 @@
 <template>
     <div>
-        <!-- <div class="row mb-2 mt-4">
-            <div class="col">
-                <div class="form-group">
-                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="updateProductList">
-                        <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
-                            {{ hotel.business_name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div> -->
-
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
             <a href="/products" class="navbar-brand text-muted">
                 Productos
@@ -20,7 +8,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div id="navbarNavDropdown" class="collapse navbar-collapse">
-                <form class="form-inline my-2 my-lg-0" method="get">
+                <div class="form-inline my-2 my-lg-0">
                     <select name="hotel" id="hotel" class="form-control mr-md-2 mr-lg-2 mr-xl-2" v-model="hotel" @change="updateProductList">
                         <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
                             {{ hotel.business_name }}
@@ -30,7 +18,7 @@
                     <div class="input-group mt-2 mt-md-0 mt-lg-0 mt-xl-0">
                         <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
                     </div>
-                </form>
+                </div>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">

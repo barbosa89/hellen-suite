@@ -51,4 +51,7 @@ return array (
   'origin' => 'Origen',
   'destination' => 'Destino',
   'isClosed' => 'El recibo está cerrado',
+  'process' => 'Procesar',
+  'nothingToProcess' => 'No hay facturas para procesar',
+  'processing' => 'Procesamiento de recibos',
 );

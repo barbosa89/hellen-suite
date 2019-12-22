@@ -4,10 +4,13 @@ namespace App\Welkome;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Guest extends Model
 {
     use LogsActivity;
+
+
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +21,20 @@ class Guest extends Model
         'dni', 'name', 'last_name', 'gender', 'birthdate', 'responsible_adult',
         'identification_type_id', 'user_id', 'status', 'created_at'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['hash'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['id'];
 
     public function children()
     {
@@ -68,5 +85,16 @@ class Guest extends Model
     public function getFullNameAttribute()
     {
         return "{$this->name} {$this->last_name}";
+    }
+
+    /**
+     * Hashing ID.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getHashAttribute()
+    {
+        return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
     }
 }

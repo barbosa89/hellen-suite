@@ -281,7 +281,10 @@ export default {
             "administration": "Administration",
             "destination": "Destination",
             "origin": "Origin",
-            "isClosed": "The invoice is closed"
+            "isClosed": "The invoice is closed",
+            "process": "Process",
+            "nothingToProcess": "There are no invoices to process",
+            "processing": "Invoice processing"
         },
         "assets": {
             "title": "Assets",
@@ -812,7 +815,10 @@ export default {
             "administration": "Administración",
             "origin": "Origen",
             "destination": "Destino",
-            "isClosed": "El recibo está cerrado"
+            "isClosed": "El recibo está cerrado",
+            "process": "Procesar",
+            "nothingToProcess": "No hay facturas para procesar",
+            "processing": "Procesamiento de recibos"
         },
         "assets": {
             "title": "Activos",
