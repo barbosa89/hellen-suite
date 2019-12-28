@@ -5,14 +5,14 @@
                 <img class="img-fluid" src="{{ empty($row->image) ? asset('/images/hotel.png') : asset(Storage::url($row->image)) }}" alt="{{ $row->business_name }}">
             </a>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-3   col-lg-3  align-self-center">
             <p>
                 <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->business_name }}
                 </a>
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
             <p>
                 <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->tin }}
@@ -33,7 +33,7 @@
                 </a>
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
             @include('partials.dropdown-btn', [
                 'options' => [
                     [

@@ -18,8 +18,8 @@
             <p>
                 @if (empty($row->company))
                     @if ($row->guests->isNotEmpty())
-                        <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->first()->id)]) }}">
-                            {{ $row->guests()->first()->full_name }}
+                        <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->wherePivot('main', true)->first()->id)]) }}">
+                            {{ $row->guests()->wherePivot('main', true)->first()->full_name }}
                         </a>
                     @endif
                 @else
@@ -49,7 +49,7 @@
                 @endphp
 
                 <p>
-                    {{ $percentage * 100 }}%
+                    {{ number_format( $percentage * 100, 2, ',', '.') }}%
                 </p>
             @endif
         </div>

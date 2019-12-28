@@ -21,6 +21,7 @@ use App\Http\Requests\{
     StoreInvoiceGuest,
     StoreRoute
 };
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -222,7 +223,7 @@ class InvoiceController extends Controller
         }
 
         $invoice->load([
-            'guests' => function ($query) {
+            'guests' => function ($query) use ($id) {
                 $query->select(Fields::get('guests'))
                     ->withPivot('main');
             },
@@ -309,7 +310,13 @@ class InvoiceController extends Controller
 
                 // Change Guest status to false: Guest is not in hotel
                 if ($invoice->guests->isNotEmpty()) {
-                    Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
+                    Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())
+                        ->whereDoesntHave('invoices', function (Builder $query) use ($invoice) {
+                            $query->where('open', true)
+                                ->where('status', true)
+                                ->where('reservation', false)
+                                ->where('created_at', '>', $invoice->created_at);
+                        })->update(['status' => false]);
                 }
 
                 // Restore product stocks
@@ -2000,7 +2007,13 @@ class InvoiceController extends Controller
 
                     // Change Guest status to false: Guest is not in hotel
                     if ($invoice->guests->isNotEmpty()) {
-                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
+                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())
+                            ->whereDoesntHave('invoices', function (Builder $query) use ($invoice) {
+                                $query->where('open', true)
+                                    ->where('status', true)
+                                    ->where('reservation', false)
+                                    ->where('created_at', '>', $invoice->created_at);
+                            })->update(['status' => false]);
                     }
 
                     $status = true;
@@ -2170,7 +2183,13 @@ class InvoiceController extends Controller
 
                     // Change Guest status to false: Guest is not in hotel
                     if ($invoice->guests->isNotEmpty()) {
-                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())->update(['status' => false]);
+                        Guest::whereIn('id', $invoice->guests->pluck('id')->toArray())
+                            ->whereDoesntHave('invoices', function (Builder $query) use ($invoice) {
+                                $query->where('open', true)
+                                    ->where('status', true)
+                                    ->where('reservation', false)
+                                    ->where('created_at', '>', $invoice->created_at);
+                            })->update(['status' => false]);
                     }
 
                     $status = true;
@@ -2278,78 +2297,98 @@ class InvoiceController extends Controller
      */
     public function showFormToProcess()
     {
-        $query = Invoice::query();
-        $query->where('user_id', Id::parent())
-            ->where('open', true)
-            ->where('status', true)
-            ->where('reservation', false)
-            ->where('payment_status', false)
-            ->where('losses', false)
-            ->with([
-                'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
+        // Query hotels with invoices to process
+        $hotels = Hotel::query();
+
+        // Only hotels of parent user
+        $hotels->where('user_id', Id::parent());
+
+        // Check if is receptionist
+        if (auth()->user()->hasRole('receptionist')) {
+            $hotels->where('hotel_id', auth()->user()->headquarters()->first()->id);
+        }
+
+        // Check if hotels have invoices to process
+        $hotels->whereHas('invoices', function ($query) {
+            $query->where('open', true)
+                ->where('status', true)
+                ->where('reservation', false)
+                ->where('payment_status', false)
+                ->where('losses', false);
+        });
+
+        // Load invoices with relateds
+        $hotels->with([
+                'invoices' => function ($query) {
+                    $query->select(Fields::get('invoices'))
+                        ->where('user_id', Id::parent())
+                        ->where('open', true)
+                        ->where('status', true)
+                        ->where('reservation', false)
+                        ->where('payment_status', false)
+                        ->where('losses', false);
                 },
-                'guests' => function ($query) {
+                'invoices.guests' => function ($query) {
                     $query->select(['id', 'name', 'last_name'])
                         ->wherePivot('main', true);
                 },
-                'company' => function ($query) {
+                'invoices.company' => function ($query) {
                     $query->select(['id', 'tin', 'business_name']);
                 },
-                'payments' => function ($query)
+                'invoices.payments' => function ($query)
                 {
                     $query->select(Fields::get('payments'));
                 }
             ]);
 
-        if (auth()->user()->hasRole('receptionist')) {
-            $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
-        }
+        // Get results
+        $hotels = $hotels->get(Fields::get('hotels'));
 
-        $invoices = $query->get(Fields::get('invoices'));
-
-        if ($invoices->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('invoices.nothingToProcess'))->info();
 
             return back();
         }
 
-        $invoice = $this->prepareData($invoices);
+        // Hash ID's to convert to JSON format
+        $hotels = $this->prepareData($hotels);
 
-        return view('app.invoices.process', compact('invoices'));
+        return view('app.invoices.process', compact('hotels'));
     }
 
-    public function prepareData(Collection $invoices)
+    public function prepareData(Collection $hotels)
     {
-        $invoices = $invoices->map(function($invoice) {
-            $invoice->user_id = Hashids::encode($invoice->user_id);
-            $invoice->hotel_id = Hashids::encode($invoice->hotel_id);
-            $invoice->company_id = $invoice->company_id ? Hashids::encode($invoice->company_id) : null;
+        $hotels = $hotels->map(function($hotel) {
+            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->main_hotel = $hotel->main_hotel ? Hashids::encode($hotel->main_hotel) : null;
 
-            if (!empty($invoice->hotel)) {
-                $invoice->hotel->user_id = Hashids::encode($invoice->hotel->user_id);
-                $invoice->hotel->main_hotel = Hashids::encode($invoice->hotel->user_id);
-            }
+            $hotel->invoices = $hotel->invoices->map(function ($invoice) {
+                $invoice->user_id = Hashids::encode($invoice->user_id);
+                $invoice->hotel_id = Hashids::encode($invoice->hotel_id);
+                $invoice->company_id = $invoice->company_id ? Hashids::encode($invoice->company_id) : null;
 
-            $invoice->guests = $invoice->guests->map(function ($guest)
-            {
-                $guest->pivot->invoice_id = Hashids::encode($guest->pivot->invoice_id);
-                $guest->pivot->guest_id = Hashids::encode($guest->pivot->guest_id);
+                $invoice->guests = $invoice->guests->map(function ($guest)
+                {
+                    $guest->pivot->invoice_id = Hashids::encode($guest->pivot->invoice_id);
+                    $guest->pivot->guest_id = Hashids::encode($guest->pivot->guest_id);
 
-                return $guest;
+                    return $guest;
+                });
+
+                $invoice->payments = $invoice->payments->map(function ($payment)
+                {
+                    $payment->invoice_id = Hashids::encode($payment->invoice_id);
+
+                    return $payment;
+                });
+
+                return $invoice;
             });
 
-            $invoice->payments = $invoice->payments->map(function ($payment)
-            {
-                $payment->invoice_id = Hashids::encode($payment->invoice_id);
-
-                return $payment;
-            });
-
-            return $invoice;
+            return $hotel;
         });
 
-        return $invoices;
+        return $hotels;
     }
 
     public function process()

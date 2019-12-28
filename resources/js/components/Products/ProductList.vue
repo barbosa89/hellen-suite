@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
             <a href="/products" class="navbar-brand text-muted">
-                Productos
+                {{ $t('products.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
                 <span class="navbar-toggler-icon"></span>

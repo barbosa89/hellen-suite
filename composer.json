@@ -41,6 +41,8 @@
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.42",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
+        "nunomaduro/larastan": "0.4.*",
+        "nunomaduro/phpinsights": "^1.11",
         "phpunit/phpunit": "^7.5"
     },
     "config": {
