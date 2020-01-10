@@ -2332,6 +2332,11 @@ class InvoiceController extends Controller
                     $query->select(['id', 'name', 'last_name'])
                         ->wherePivot('main', true);
                 },
+                'invoices.rooms' => function ($query)
+                {
+                    $query->select(Fields::get('rooms'))
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+                },
                 'invoices.company' => function ($query) {
                     $query->select(['id', 'tin', 'business_name']);
                 },
@@ -2350,12 +2355,18 @@ class InvoiceController extends Controller
             return back();
         }
 
-        // Hash ID's to convert to JSON format
+        // Hashing IDs before convert to JSON format
         $hotels = $this->prepareData($hotels);
 
         return view('app.invoices.process', compact('hotels'));
     }
 
+    /**
+     * Hashing all IDs, model and relationships, before convert to JSON format.
+     *
+     * @param  \Illuminate\Support\Collection  $hotels
+     * @return \Illuminate\Support\Collection  $hotels
+     */
     public function prepareData(Collection $hotels)
     {
         $hotels = $hotels->map(function($hotel) {
@@ -2375,6 +2386,16 @@ class InvoiceController extends Controller
                     return $guest;
                 });
 
+                $invoice->rooms = $invoice->rooms->map(function ($room)
+                {
+                    $room->user_id = Hashids::encode($room->user_id);
+                    $room->hotel_id = Hashids::encode($room->hotel_id);
+                    $room->pivot->invoice_id = Hashids::encode($room->pivot->invoice_id);
+                    $room->pivot->room_id = Hashids::encode($room->pivot->room_id);
+
+                    return $room;
+                });
+
                 $invoice->payments = $invoice->payments->map(function ($payment)
                 {
                     $payment->invoice_id = Hashids::encode($payment->invoice_id);
@@ -2391,38 +2412,96 @@ class InvoiceController extends Controller
         return $hotels;
     }
 
-    public function process()
+    public function process(Request $request)
     {
-        $invoices = Invoice::where('user_id', Id::parent())
-            ->where('open', true)
-            ->where('status', true)
-            ->where('reservation', false)
-            ->where('payment_status', false)
-            ->where('losses', false)
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select('id');
-                },
-                'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
-                        ->withPivot('main');
-                },
-                'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
-                },
-                'payments' => function ($query)
-                {
-                    $query->select(Fields::get('payments'));
+        $processed = false;
+        DB::transaction(function () use (&$processed, $request) {
+            try {
+                $invoices = Invoice::where('user_id', Id::parent())
+                    ->where('hotel_id', Id::get($request->hotel))
+                    ->whereIn('number', $request->numbers)
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->where('reservation', false)
+                    ->where('payment_status', false)
+                    ->where('losses', false)
+                    ->with([
+                        'rooms' => function (Builder $query)
+                        {
+                            $query->select(Fields::get('rooms'))
+                                ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+                        }
+                    ])->get(Fields::get('invoices'));
+
+                if ($invoices->isNotEmpty()) {
+                    $invoices->each(function ($invoice)
+                    {
+                        $invoice->rooms->each(function ($room) use ($invoice)
+                        {
+                            // Dates
+                            $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
+                            $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
+                            // Calculate diff in days
+                            $diff = $start->diffInDays($end);
+
+                            // Check if the current quantity is same diff in days
+                            // This code check integrity of calculations
+                            if ($diff === (int) $room->pivot->quantity) {
+                                // $invoice->rooms()->attach(
+                                //     $room->id,
+                                //     [
+                                //         'quantity' => $quantity,
+                                //         'discount' => $discount,
+                                //         'subvalue' => $subvalue,
+                                //         'taxes' => $taxes,
+                                //         'value' => $subvalue + $taxes,
+                                //         'start' => $start->toDateString(),
+                                //         'end' => $end->toDateString()
+                                //     ]
+                                // );
+
+                                // $invoice->discount += $discount;
+                                // $invoice->subvalue += $subvalue;
+                                // $invoice->taxes += $taxes;
+                                // $invoice->value += $subvalue + $taxes;
+                                // $invoice->save();
+
+                                // $invoice->rooms()->updateExistingPivot(
+                                //     $room,
+                                //     [
+                                //         'quantity' => $quantity,
+                                //         'discount' => $discount,
+                                //         'subvalue' => $subvalue,
+                                //         'taxes' => $taxes,
+                                //         'value' => $subvalue + $taxes,
+                                //         'start' => $request->start,
+                                //         'end' => $end->toDateString()
+                                //     ]
+                                // );
+                            }
+                        });
+                    });
                 }
-            ])->get(Fields::get('invoices'));
+            } catch (\Throwable $e) {
+                Storage::append('invoice.log', $e->getMessage());
+            }
+        });
 
-        if ($invoices->isEmpty()) {
-            flash(trans('invoices.nothingToProcess'))->info();
+        // if ($status) {
+        //     flash(trans('common.successful'))->success();
 
-            return back();
-        }
+        //     return redirect()->route('invoices.guests.search', [
+        //         'id' => Hashids::encode($invoiceId)
+        //     ]);
+        // }
 
-        return view('app.invoices.process', compact('invoices'));
+        // flash(trans('common.error'))->error();
+
+        // return redirect()->route('invoices.index');
+    
+        // return response()->json([
+        //     'invoices' => $invoices->toArray()
+        // ]);
     }
 
     /**

@@ -17,12 +17,14 @@ class CreateInvoiceRoomTable extends Migration
             $table->bigInteger('invoice_id')->unsigned();
             $table->bigInteger('room_id')->unsigned();
             $table->integer('quantity'); // On days
+            $table->decimal('price', 10, 2); // Final price given to the user
             $table->decimal('discount', 10, 2);
             $table->decimal('subvalue', 10, 2);
             $table->decimal('taxes', 10, 2);
             $table->decimal('value', 10, 2);
             $table->date('start');
             $table->date('end')->nullable();
+            $table->boolean('status');
 
             $table->foreign('invoice_id')->references('id')->on('invoices')
             ->onUpdate('cascade')->onDelete('cascade');

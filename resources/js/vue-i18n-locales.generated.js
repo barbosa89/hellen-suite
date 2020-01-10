@@ -137,7 +137,8 @@ export default {
             "thanks": "Thank you",
             "page": "Page",
             "of": "Of",
-            "percentage": "Percentage"
+            "percentage": "Percentage",
+            "try": "Try again later"
         },
         "props": {
             "add": "Add prop",
@@ -671,7 +672,8 @@ export default {
             "thanks": "Gracias",
             "page": "Página",
             "of": "De",
-            "percentage": "Porcentaje"
+            "percentage": "Porcentaje",
+            "try": "Intenta nuevamente más tarde"
         },
         "props": {
             "add": "Agregar utilería",

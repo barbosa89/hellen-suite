@@ -121,4 +121,5 @@ return array (
   'page' => 'Página',
   'of' => 'De',
   'percentage' => 'Porcentaje',
+  'try' => 'Intenta nuevamente más tarde',
 );

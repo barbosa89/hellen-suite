@@ -17,6 +17,7 @@ class CreateGuestInvoiceTable extends Migration
             $table->bigInteger('guest_id')->unsigned();
             $table->bigInteger('invoice_id')->unsigned();
             $table->boolean('main')->default(false);
+            $table->boolean('status');
 
             $table->foreign('guest_id')->references('id')->on('guests')
                 ->onUpdate('cascade')->onDelete('cascade');

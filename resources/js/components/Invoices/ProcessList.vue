@@ -123,6 +123,33 @@
                             </a>
                         </div>
                     </div>
+                    <div class="row" v-for="room in invoice.rooms" :key="room.hash">
+                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center text-right text-muted">
+                            <i class="fas fa-caret-right"></i>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
+                            <p>{{ room.number }}</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
+                            <p>{{ room.pivot.quantity }}</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                            <!-- PRICE HERE -->
+                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.subvalue) }}</p>
+                        </div>
+                        <!-- <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.subvalue) }}</p>
+                        </div> -->
+                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.discount) }}</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.taxes) }}</p>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.value) }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -150,13 +177,14 @@ export default {
     props: ['hotels'],
     data() {
         return {
-            hotel: null,
+            hotel: null, // The current hotel hash
             invoices: []
         }
     },
     methods: {
         updateInvoiceList() {
             _.map(this.hotels, (headquarter) => {
+                // Filter by current hotel hash
                 if (headquarter.hash == this.hotel) {
                     this.invoices = headquarter.invoices
                 }
@@ -198,10 +226,13 @@ export default {
                     numbers: numbers,
                     hotel: this.hotel
                 }).then(response => {
-                    // Code here
+                    console.log(response);
                 }).catch(e => {
+                    console.log(e.response.data);
+                    console.log(e.response.status);
+                    console.log(e.response.headers);
                     toastr.error(
-                        'Intenta más tarde otra vez',
+                        $t('common.try'),
                         'Error'
                     );
                 });
