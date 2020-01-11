@@ -252,12 +252,17 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                            <i class="fas fa-sync-alt"></i>
-                                                        </a>
+
+                                                        @if ($guest->status == true and $guest->pivot->status == true)
+                                                            <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                <i class="fas fa-sync-alt"></i>
+                                                            </a>
+                                                        @endif
+
                                                         <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                             <i class="fas fa-user-times"></i>
                                                         </a>
+
                                                         @if ($invoice->guests->count() > 1)
                                                             @if ($guest->status == true and $guest->pivot->status == true)
                                                                 <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
@@ -341,24 +346,24 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     <p>
-                                                        {{ number_format($room->price - $room->pivot->discount, 2, ',', '.') }}
+                                                        {{  number_format($room->pivot->value, 2, ',', '.') }}
                                                     </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @if ($invoice->rooms->count() > 1)
+                                                    @if ($invoice->rooms->count() > 1 and $room->pivot->status == true)
                                                         <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
                                                             <i class="fas fa-redo"></i>
                                                         </a>
                                                     @endif
 
-                                                    {{-- @if ($invoice->rooms->count() > 1) --}}
+                                                    @if ($invoice->rooms->count() > 1 and $room->pivot->status == true)
                                                         <a class="btn btn-link" href="#" title="{{ trans('rooms.deliver') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.deliver', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
                                                             <i class="fas fa-key"></i>
                                                         </a>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

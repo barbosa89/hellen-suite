@@ -577,6 +577,12 @@ class InvoiceController extends Controller
             ->where('hotel_id', $invoice->hotel->id)
             ->first();
 
+        if ($room->pivot->status == false) {
+            flash(trans('invoices.delivered.room'))->info();
+
+            return back();
+        }
+
         $rooms = Room::where('hotel_id', $invoice->hotel->id)
             ->where('status', '1') // It is free
             ->get(Fields::parsed('rooms'));
@@ -782,7 +788,7 @@ class InvoiceController extends Controller
             return back();
         }
 
-        // If the invoice hasn't a company as customer, check if this room has the main guest
+        // If the invoice hasn't a company as customer, then check if this room has the main guest
         if (empty($invoice->company)) {
             if ($room->guests->count() > 0) {
                 foreach ($room->guests as $guest) {
@@ -795,8 +801,6 @@ class InvoiceController extends Controller
             }
         }
 
-        dd($invoice, $room->guests);
-
         $room->status = '2';
 
         if ($room->save()) {
@@ -806,12 +810,30 @@ class InvoiceController extends Controller
                 ['status' => false]
             );
 
+            // Each guest in the room must leave
             if ($room->guests->count() > 0) {
                 foreach ($room->guests as $guest) {
-                    // Code HERE
+                    $guest->status = false;
+
+                    if ($guest->save()) {
+                        $invoice->guests()->updateExistingPivot(
+                            $guest,
+                            [
+                                'status' => false
+                            ]
+                        );
+                    }
                 }
             }
+
+            flash(trans('common.successful'))->info();
+
+            return back();
         }
+
+        flash(trans('common.error'))->error();
+
+        return back();
 
     }
 
