@@ -84,6 +84,7 @@ return [
             'country_id',
             'user_id',
             'status',
+            'banned',
             'created_at'
         ],
         'products' => [

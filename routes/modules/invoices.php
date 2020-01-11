@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::get('invoices/{id}/rooms/{room}/deliver', 'InvoiceController@deliverRoom')
+        ->name('invoices.rooms.deliver')
+        ->middleware(['permission:invoices.edit']);
+
     Route::post('invoices/process', 'InvoiceController@process')
         ->name('invoices.process')
         ->middleware(['permission:invoices.edit']);
@@ -93,7 +97,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.destroy')
         ->middleware(['permission:invoices.destroy']);
 
-    Route::post('invoices/multiple', 'InvoiceController@multiple')
+    Route::post('invoices/multiple', 'InvoiceController@createWithMultipleRooms')
         ->name('invoices.room.multiple')
         ->middleware(['permission:invoices.create']);
 
@@ -105,7 +109,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.rooms.change.form')
         ->middleware(['permission:invoices.edit']);
 
-    Route::get('invoices/{id}/rooms', 'InvoiceController@rooms')
+    Route::get('invoices/{id}/rooms', 'InvoiceController@showFormToAddRooms')
         ->name('invoices.rooms')
         ->middleware(['permission:invoices.edit']);
 

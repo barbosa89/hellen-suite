@@ -54,4 +54,15 @@ return array (
   'process' => 'Procesar',
   'nothingToProcess' => 'No hay facturas para procesar',
   'processing' => 'Procesamiento de recibos',
+  'has' => 
+  array (
+    'one' => 
+    array (
+      'room' => 'Este recibo sólo cuenta con una habitación',
+    ),
+  ),
+  'delivered' => 
+  array (
+    'room' => 'La habitación fue entregada',
+  ),
 );

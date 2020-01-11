@@ -196,7 +196,7 @@
             if (date.getMonth() > 8) {
                 var month = date.getMonth() + 1
             } else {
-                var month = '0' + date.getMonth()
+                var month = '0' + (date.getMonth() + 1)
             }
 
             if (date.getDate() > 8) {

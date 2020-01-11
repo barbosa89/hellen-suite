@@ -285,7 +285,15 @@ export default {
             "isClosed": "The invoice is closed",
             "process": "Process",
             "nothingToProcess": "There are no invoices to process",
-            "processing": "Invoice processing"
+            "processing": "Invoice processing",
+            "has": {
+                "one": {
+                    "room": "This invoice only has one room"
+                }
+            },
+            "delivered": {
+                "room": "The room was delivered"
+            }
         },
         "assets": {
             "title": "Assets",
@@ -520,7 +528,8 @@ export default {
             "cleaning": "Cleaning",
             "availableRooms": "Available rooms",
             "changeRoom": "Change room",
-            "currentRoom": "Current room"
+            "currentRoom": "Current room",
+            "deliver": "Deliver the room"
         }
     },
     "es": {
@@ -820,7 +829,15 @@ export default {
             "isClosed": "El recibo está cerrado",
             "process": "Procesar",
             "nothingToProcess": "No hay facturas para procesar",
-            "processing": "Procesamiento de recibos"
+            "processing": "Procesamiento de recibos",
+            "has": {
+                "one": {
+                    "room": "Este recibo sólo cuenta con una habitación"
+                }
+            },
+            "delivered": {
+                "room": "La habitación fue entregada"
+            }
         },
         "assets": {
             "title": "Activos",
@@ -1055,7 +1072,8 @@ export default {
             "cleaning": "Limpieza",
             "changeRoom": "Cambiar de habitación",
             "currentRoom": "Habitación actual",
-            "availableRooms": "Habitaciones disponibles"
+            "availableRooms": "Habitaciones disponibles",
+            "deliver": "Entregar la habitación"
         }
     }
 }

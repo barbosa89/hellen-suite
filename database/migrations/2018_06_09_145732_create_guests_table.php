@@ -32,6 +32,7 @@ class CreateGuestsTable extends Migration
 
             $table->bigInteger('responsible_adult')->default(0);
             $table->boolean('status')->default(0);
+            $table->boolean('banned')->default(0);
 
             $table->integer('identification_type_id')->unsigned();
             $table->foreign('identification_type_id')->references('id')

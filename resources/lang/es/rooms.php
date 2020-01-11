@@ -18,4 +18,5 @@ return array (
   'changeRoom' => 'Cambiar de habitación',
   'currentRoom' => 'Habitación actual',
   'availableRooms' => 'Habitaciones disponibles',
+  'deliver' => 'Entregar la habitación',
 );

@@ -14,8 +14,10 @@
         ],
         'options' => [
             [
+                'type' => 'hideable',
                 'option' => trans('invoices.process'),
                 'url' => route('invoices.process.form'),
+                'show' => $invoices->isNotEmpty()
             ],
             [
                 'option' => trans('common.new'),

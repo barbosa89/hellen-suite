@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::get('guests/{id}/toggle/{invoice?}', 'GuestController@toggle')
+	Route::get('guests/{id}/toggle/{invoice}', 'GuestController@toggle')
 	->name('guests.toggle')
 	->middleware('permission:guests.edit');
 

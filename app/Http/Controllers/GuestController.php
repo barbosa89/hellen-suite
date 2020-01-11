@@ -110,8 +110,8 @@ class GuestController extends Controller
                         ->wherePivot('invoice_id', $id);
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
-                        ->withPivot('main');
+                    $query->select(Fields::parsed('guests'))
+                        ->withPivot('main', 'status');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -188,7 +188,10 @@ class GuestController extends Controller
 
         if ($guest->save()) {
             $main = $invoice->guests->isEmpty() ? true : false;
-            $invoice->guests()->attach($guest->id, ['main' => $main]);
+            $invoice->guests()->attach($guest->id, [
+                'main' => $main,
+                'status' => true
+            ]);
 
             $guest->rooms()->attach(Id::get($request->room), [
                 'invoice_id' => $invoice->id
@@ -439,56 +442,74 @@ class GuestController extends Controller
      * @param  string   $id
      * @return \Illuminate\Http\Response
      */
-    public function toggle($id, $invoice = null)
+    public function toggle($id, $invoice)
     {
+        $invoice = Invoice::where('user_id', Id::parent())
+            ->where('id', Id::get($invoice))
+            ->where('open', true)
+            ->where('status', true)
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(Fields::parsed('guests'))
+                        ->where('responsible_adult', false)
+                        ->withPivot('main', 'status');
+                },
+                'guests.rooms' => function ($query) use ($invoice) {
+                    $query->select(Fields::parsed('rooms'))
+                        ->wherePivot('invoice_id', $invoice);
+                },
+                'rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'))
+                        ->withPivot('status');
+                },
+            ])->first(['id']);
+
         if (empty($invoice)) {
-            $guest = User::find(Id::parent(), ['id'])
-                ->guests()
-                ->where('id', Id::get($id))
-                ->first(Fields::get('guests'));
+            return abort(404);
+        }
 
-            if (empty($guest)) {
-                return abort(404);
-            }
+        // Check if the invoice only has a guest
+        if ($invoice->guests->count() == 1) {
+            flash(trans('invoices.onlyOne'))->error();
 
-            $guest->status = !$guest->status;
+            return back();
+        }
 
-            if ($guest->save()) {
-                flash(trans('common.updatedSuccessfully'))->success();
+        // The guest
+        $guest = $invoice->guests->where('id', Id::get($id))->first();
 
-                return back();
-            }
-        } else {
-            $invoice = Invoice::where('user_id', Id::parent())
-                ->where('id', Id::get($invoice))
-                ->where('open', true)
-                ->where('status', true)
-                ->with([
-                    'guests' => function ($query) {
-                        $query->select(Fields::get('guests'))
-                            ->where('responsible_adult', false)
-                            ->withPivot('main');
-                    }
-                ])->first(['id']);
+        // The guest room
+        $room = $invoice->rooms->where('id', $guest->rooms()->first()->id)->first();
 
-            if (empty($invoice)) {
-                return abort(404);
-            }
-
-            // Check if the invoice only has a guest
-            if ($invoice->guests->count() == 1) {
-                flash(trans('invoices.onlyOne'))->error();
-
-                return back();
-            }
-
-            // The guest
-            $guest = $invoice->guests->where('id', Id::get($id))->first();
-
+        // Check if the room is available in the invoice
+        if ($room->pivot->status) {
             // Toggle status
-            $guest->status = !$guest->status;
+            // The guest leaves the hotel but remains on the invoice
+            if ($guest->status == true and $guest->pivot->status == true) {
+                $guest->status = false;
+
+                $invoice->guests()->updateExistingPivot(
+                    $guest,
+                    [
+                        'status' => false
+                    ]
+                );
+            }
+
+            // The guest enters the hotel at the same invoice
+            if ($guest->status == false and $guest->pivot->status == false) {
+                $guest->status = true;
+
+                $invoice->guests()->updateExistingPivot(
+                    $guest,
+                    [
+                        'status' => true
+                    ]
+                );
+            }
 
             if ($guest->save()) {
+                // Check if is the main guest
                 if ($guest->pivot->main) {
                     // Update main guest in the invoice
                     $invoice->guests()->updateExistingPivot(

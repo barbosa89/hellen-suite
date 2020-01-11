@@ -54,4 +54,15 @@ return array (
   'process' => 'Process',
   'nothingToProcess' => 'There are no invoices to process',
   'processing' => 'Invoice processing',
+  'has' => 
+  array (
+    'one' => 
+    array (
+      'room' => 'This invoice only has one room',
+    ),
+  ),
+  'delivered' => 
+  array (
+    'room' => 'The room was delivered',
+  ),
 );
