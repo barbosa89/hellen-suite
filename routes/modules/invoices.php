@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.guests.add')
         ->middleware(['permission:invoices.edit']);
 
-    Route::get('invoices/{id}/guests/{guest}/remove', 'InvoiceController@removeguests')
+    Route::get('invoices/{id}/guests/{guest}/remove', 'InvoiceController@removeGuests')
         ->name('invoices.guests.remove')
         ->middleware(['permission:invoices.edit']);
 

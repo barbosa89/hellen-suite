@@ -24,7 +24,7 @@ class CreateInvoiceRoomTable extends Migration
             $table->decimal('value', 10, 2);
             $table->date('start');
             $table->date('end')->nullable();
-            $table->boolean('status');
+            $table->boolean('enabled'); // The room can be processed
 
             $table->foreign('invoice_id')->references('id')->on('invoices')
             ->onUpdate('cascade')->onDelete('cascade');

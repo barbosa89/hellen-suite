@@ -50,7 +50,7 @@ class InvoiceController extends Controller
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
                         ->wherePivot('main', true)
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -145,7 +145,7 @@ class InvoiceController extends Controller
                         'value' => $subvalue + $taxes,
                         'start' => $start->toDateString(),
                         'end' => $end->toDateString(),
-                        'status' => true
+                        'enabled' => true
                     ];
                 }
 
@@ -227,7 +227,7 @@ class InvoiceController extends Controller
         $invoice->load([
             'guests' => function ($query) use ($id) {
                 $query->select(Fields::parsed('guests'))
-                    ->withPivot('main', 'status');
+                    ->withPivot('main', 'active');
             },
             'guests.vehicles' => function ($query) use ($id) {
                 $query->select(Fields::parsed('vehicles'))
@@ -248,7 +248,7 @@ class InvoiceController extends Controller
             },
             'rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'products' => function ($query) {
                 $query->select(Fields::parsed('products'))
@@ -397,7 +397,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -482,7 +482,7 @@ class InvoiceController extends Controller
                         'value' => $subvalue + $taxes,
                         'start' => $request->start,
                         'end' => $end->toDateString(),
-                        'status' => true
+                        'enabled' => true
                     ]
                 );
 
@@ -554,14 +554,14 @@ class InvoiceController extends Controller
             },
             'guests' => function ($query) {
                 $query->select(Fields::parsed('guests'))
-                    ->withPivot('main', 'status');
+                    ->withPivot('main', 'active');
             },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
             },
             'rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'rooms.guests' => function ($query) use ($id) {
                 $query->select(Fields::parsed('guests'))
@@ -577,7 +577,7 @@ class InvoiceController extends Controller
             ->where('hotel_id', $invoice->hotel->id)
             ->first();
 
-        if ($room->pivot->status == false) {
+        if ($room->pivot->enabled == false) {
             flash(trans('invoices.delivered.room'))->info();
 
             return back();
@@ -630,14 +630,14 @@ class InvoiceController extends Controller
                     },
                     'guests' => function ($query) {
                         $query->select(Fields::parsed('guests'))
-                            ->withPivot('main', 'status');
+                            ->withPivot('main', 'active');
                     },
                     'company' => function ($query) {
                         $query->select(Fields::get('companies'));
                     },
                     'rooms' => function ($query) {
                         $query->select(Fields::parsed('rooms'))
-                            ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                            ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                     },
                     'rooms.guests' => function ($query) use ($id) {
                         $query->select(Fields::parsed('guests'))
@@ -683,7 +683,7 @@ class InvoiceController extends Controller
                         'value' => $subvalue + $taxes,
                         'start' => $current->pivot->start, // This is same that before
                         'end' => $current->pivot->end, // This is same that before
-                        'status' => true
+                        'enabled' => true
                     ]
                 );
 
@@ -760,7 +760,7 @@ class InvoiceController extends Controller
         $invoice->load([
             'rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'rooms.guests' => function ($query) use ($id) {
                 $query->select(Fields::parsed('guests'))
@@ -782,7 +782,7 @@ class InvoiceController extends Controller
         $room = $invoice->rooms->where('id', Id::get($roomId))->first();
 
         // Check if the room is active in the invoice. Only prevention.
-        if ($room->pivot->status == false) {
+        if ($room->pivot->enabled == false) {
             flash(trans('invoices.delivered.room'))->info();
 
             return back();
@@ -807,7 +807,7 @@ class InvoiceController extends Controller
             // Change room status in the invoice relationship
             $invoice->rooms()->updateExistingPivot(
                 $room,
-                ['status' => false]
+                ['enabled' => false]
             );
 
             // Each guest in the room must leave
@@ -819,7 +819,7 @@ class InvoiceController extends Controller
                         $invoice->guests()->updateExistingPivot(
                             $guest,
                             [
-                                'status' => false
+                                'active' => false
                             ]
                         );
                     }
@@ -859,7 +859,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -911,7 +911,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -995,7 +995,7 @@ class InvoiceController extends Controller
 
             $invoice->guests()->attach($guest->id, [
                 'main' => $invoice->guests->isEmpty(),
-                'status' => true
+                'active' => true
             ]);
         }
 
@@ -1033,7 +1033,8 @@ class InvoiceController extends Controller
             ->with([
                 'guests' => function ($query) {
                     $query->select('id')
-                        ->where('responsible_adult', false);
+                        ->where('responsible_adult', false)
+                        ->withPivot('active');
                 },
                 'guests.rooms' => function ($query) use ($id) {
                     $query->select('id', 'number')
@@ -1042,7 +1043,7 @@ class InvoiceController extends Controller
             ])->first(['id']);
 
         // Check if the invoice only has a guest
-        if ($invoice->guests->count() == 1) {
+        if ($invoice->guests->count() == 1 or $invoice->guests->where('pivot.active', true)->count() == 1) {
             flash(trans('invoices.onlyOne'))->error();
 
             return back();
@@ -1115,7 +1116,7 @@ class InvoiceController extends Controller
             },
             'guests' => function ($query) {
                 $query->select(Fields::parsed('guests'))
-                    ->withPivot('main', 'status');
+                    ->withPivot('main', 'active');
             },
             'guests.rooms' => function ($query) use ($id) {
                 $query->select(Fields::parsed('rooms'))
@@ -1184,7 +1185,7 @@ class InvoiceController extends Controller
             },
             'guests' => function ($query) {
                 $query->select(Fields::parsed('guests'))
-                    ->withPivot('main', 'status');
+                    ->withPivot('main', 'active');
             },
             'guests.rooms' => function ($query) use ($id) {
                 $query->select(Fields::parsed('rooms'))
@@ -1254,7 +1255,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -1426,7 +1427,7 @@ class InvoiceController extends Controller
             ->with([
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -1589,7 +1590,7 @@ class InvoiceController extends Controller
             ->with([
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -1715,7 +1716,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -1769,7 +1770,7 @@ class InvoiceController extends Controller
             ->with([
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'guests.vehicles' => function ($query) use ($id) {
                     $query->select(Fields::parsed('vehicles'))
@@ -1880,7 +1881,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -2022,7 +2023,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -2346,7 +2347,7 @@ class InvoiceController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -2546,7 +2547,7 @@ class InvoiceController extends Controller
                         'rooms' => function (Builder $query)
                         {
                             $query->select(Fields::parsed('rooms'))
-                                ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                                ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                         }
                     ])->get(Fields::parsed('invoices'));
 
@@ -2642,14 +2643,14 @@ class InvoiceController extends Controller
         $invoice->load([
             'guests' => function ($query) {
                 $query->select(Fields::parsed('guests'))
-                    ->withPivot('main', 'status');
+                    ->withPivot('main', 'active');
             },
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
             },
             'rooms' => function ($query) {
                 $query->select(Fields::parsed('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'status');
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'products' => function ($query) {
                 $query->select(Fields::parsed('products'))

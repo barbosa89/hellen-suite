@@ -111,7 +111,7 @@ class GuestController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
                     $query->select(Fields::get('companies'));
@@ -190,7 +190,7 @@ class GuestController extends Controller
             $main = $invoice->guests->isEmpty() ? true : false;
             $invoice->guests()->attach($guest->id, [
                 'main' => $main,
-                'status' => true
+                'active' => true
             ]);
 
             $guest->rooms()->attach(Id::get($request->room), [
@@ -482,10 +482,10 @@ class GuestController extends Controller
         $room = $invoice->rooms->where('id', $guest->rooms()->first()->id)->first();
 
         // Check if the room is available in the invoice
-        if ($room->pivot->status) {
+        if ($room->pivot->active) {
             // Toggle status
             // The guest leaves the hotel but remains on the invoice
-            if ($guest->status == true and $guest->pivot->status == true) {
+            if ($guest->status == true and $guest->pivot->active == true) {
                 $guest->status = false;
 
                 $invoice->guests()->updateExistingPivot(
@@ -497,7 +497,7 @@ class GuestController extends Controller
             }
 
             // The guest enters the hotel at the same invoice
-            if ($guest->status == false and $guest->pivot->status == false) {
+            if ($guest->status == false and $guest->pivot->active == false) {
                 $guest->status = true;
 
                 $invoice->guests()->updateExistingPivot(
