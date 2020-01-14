@@ -293,6 +293,14 @@ export default {
             },
             "delivered": {
                 "room": "The room was delivered"
+            },
+            "impossible": {
+                "room": {
+                    "change": "It is not possible to change the guest of your current room"
+                }
+            },
+            "inactive": {
+                "guest": "The guest is inactive in the current invoice"
             }
         },
         "assets": {
@@ -837,6 +845,14 @@ export default {
             },
             "delivered": {
                 "room": "La habitación fue entregada"
+            },
+            "impossible": {
+                "room": {
+                    "change": "No es posible cambiar al huésped de su habitación actual"
+                }
+            },
+            "inactive": {
+                "guest": "El invitado está inactivo en la factura actual"
             }
         },
         "assets": {

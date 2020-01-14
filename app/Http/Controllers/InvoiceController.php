@@ -577,6 +577,7 @@ class InvoiceController extends Controller
             ->where('hotel_id', $invoice->hotel->id)
             ->first();
 
+        // Check if room is enabled to changes
         if ($room->pivot->enabled == false) {
             flash(trans('invoices.delivered.room'))->info();
 
@@ -650,76 +651,79 @@ class InvoiceController extends Controller
                     ->where('hotel_id', $invoice->hotel->id)
                     ->first();
 
-                // The new room to add to the invoice
-                $room = Room::where('hotel_id', $invoice->hotel->id)
-                    ->where('number', $request->number)
-                    ->where('status', '1') // It is free
-                    ->first(Fields::parsed('rooms'));
+                    // Check if room is enabled to changes
+                if ($current->pivot->enabled == false) {
+                    // The new room to add to the invoice
+                    $room = Room::where('hotel_id', $invoice->hotel->id)
+                        ->where('number', $request->number)
+                        ->where('status', '1') // It is free
+                        ->first(Fields::parsed('rooms'));
 
-                ### Rooms ###
+                    ### Rooms ###
 
-                // Current values are subtracted
-                $invoice->discount -= $current->pivot->discount;
-                $invoice->subvalue -= $current->pivot->subvalue;
-                $invoice->taxes -= $current->pivot->taxes;
-                $invoice->value -= $current->pivot->value;
+                    // Current values are subtracted
+                    $invoice->discount -= $current->pivot->discount;
+                    $invoice->subvalue -= $current->pivot->subvalue;
+                    $invoice->taxes -= $current->pivot->taxes;
+                    $invoice->value -= $current->pivot->value;
 
-                // Detach current room
-                $invoice->rooms()->detach($current->id);
+                    // Detach current room
+                    $invoice->rooms()->detach($current->id);
 
-                // Calculating de new values
-                $discount = ($room->price - $request->price) * $current->pivot->quantity;
-                $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
-                $subvalue = $request->price * $current->pivot->quantity;
+                    // Calculating de new values
+                    $discount = ($room->price - $request->price) * $current->pivot->quantity;
+                    $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
+                    $subvalue = $request->price * $current->pivot->quantity;
 
-                $invoice->rooms()->attach(
-                    $room->id,
-                    [
-                        'price' => $request->price,
-                        'quantity' => $current->pivot->quantity, // This is same that before
-                        'discount' => $discount,
-                        'subvalue' => $subvalue,
-                        'taxes' => $taxes,
-                        'value' => $subvalue + $taxes,
-                        'start' => $current->pivot->start, // This is same that before
-                        'end' => $current->pivot->end, // This is same that before
-                        'enabled' => true
-                    ]
-                );
+                    $invoice->rooms()->attach(
+                        $room->id,
+                        [
+                            'price' => $request->price,
+                            'quantity' => $current->pivot->quantity, // This is same that before
+                            'discount' => $discount,
+                            'subvalue' => $subvalue,
+                            'taxes' => $taxes,
+                            'value' => $subvalue + $taxes,
+                            'start' => $current->pivot->start, // This is same that before
+                            'end' => $current->pivot->end, // This is same that before
+                            'enabled' => true
+                        ]
+                    );
 
-                // Summing the new values
-                $invoice->discount += $discount;
-                $invoice->subvalue += $subvalue;
-                $invoice->taxes += $taxes;
-                $invoice->value += $subvalue + $taxes;
-                $invoice->save();
+                    // Summing the new values
+                    $invoice->discount += $discount;
+                    $invoice->subvalue += $subvalue;
+                    $invoice->taxes += $taxes;
+                    $invoice->value += $subvalue + $taxes;
+                    $invoice->save();
 
-                ### Guests ###
+                    ### Guests ###
 
-                // Check the room has guests
-                if ($current->guests->isNotEmpty()) {
-                    foreach ($current->guests as $guest) {
-                        // Detach room of the guests
-                        $guest->rooms()
-                            ->wherePivot('invoice_id', $invoice->id)
-                            ->detach($current->id);
+                    // Check the room has guests
+                    if ($current->guests->isNotEmpty()) {
+                        foreach ($current->guests as $guest) {
+                            // Detach room of the guests
+                            $guest->rooms()
+                                ->wherePivot('invoice_id', $invoice->id)
+                                ->detach($current->id);
 
-                        // Attach the new room of the guests
-                        $guest->rooms()->attach($room->id, [
-                            'invoice_id' => $invoice->id
-                        ]);
+                            // Attach the new room of the guests
+                            $guest->rooms()->attach($room->id, [
+                                'invoice_id' => $invoice->id
+                            ]);
+                        }
                     }
+
+                    // Change status of the current room
+                    $current->status = '2';
+                    $current->save();
+
+                    // Change status of the new room
+                    $room->status = '0';
+                    $room->save();
+
+                    $status = true;
                 }
-
-                // Change status of the current room
-                $current->status = '2';
-                $current->save();
-
-                // Change status of the new room
-                $room->status = '0';
-                $room->save();
-
-                $status = true;
             } catch (\Throwable $e) {
                 Storage::append('invoice.log', $e->getMessage());
             }
@@ -772,7 +776,7 @@ class InvoiceController extends Controller
         ]);
 
         // Check if the invoice has one room
-        if ($invoice->rooms->count() == 1) {
+        if ($invoice->rooms->where('pivot.enabled')->count() == 1) {
             flash(trans('invoices.has.one.room'))->info();
 
             return back();
@@ -1040,6 +1044,10 @@ class InvoiceController extends Controller
                     $query->select('id', 'number')
                         ->wherePivot('invoice_id', Id::get($id));
                 },
+                'rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'))
+                        ->withPivot('enabled');
+                },
             ])->first(['id']);
 
         // Check if the invoice only has a guest
@@ -1051,6 +1059,20 @@ class InvoiceController extends Controller
 
         // Get the guest to remove from invoice
         $guest = $invoice->guests->where('id', Id::get($guestId))->first();
+
+        // Check if the guest room isn't enabled to changes
+        if ($invoice->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled == false) {
+            flash(trans('invoices.delivered.room'))->info();
+
+            return back();
+        }
+
+        // Check if the guest is inactive in the current invoice
+        if ($guest->pivot->active == false) {
+            flash(trans('invoices.inactive.guest'))->error();
+
+            return back();
+        }
 
         // Check if invoice or guest are null
         if (empty($invoice) or empty($guest)) {
@@ -1134,24 +1156,37 @@ class InvoiceController extends Controller
             }
         ]);
 
+        // Check the rooms number
         if ($invoice->rooms->count() <= 1) {
-            flash('No es posible cambiar al huésped de habitación')->info();
+            flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
                 'id' => Hashids::encode($invoice->id)
             ]);
         }
 
+        // Check the guests number
         if ($invoice->guests->count() <= 1) {
-            flash('No es posible cambiar al huésped de habitación')->info();
+            flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
                 'id' => Hashids::encode($invoice->id)
             ]);
         }
 
+        // Get the guest
         $guest = $invoice->guests->where('id', Id::get($guest))->first();
-        // dd($guest);
+
+        // Check if guest is active in hotel and the current invoice
+        if ($guest->status == true and $guest->pivot->active == true) {
+            flash(trans('invoices.impossible.room.change'))->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        // The current guest room
         $room = $guest->rooms->first();
         $customer = Customer::get($invoice);
 
@@ -1200,7 +1235,7 @@ class InvoiceController extends Controller
         ]);
 
         if ($invoice->rooms->count() <= 1) {
-            flash('No es posible cambiar al huésped de habitación')->info();
+            flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
                 'id' => Hashids::encode($invoice->id)
@@ -1208,7 +1243,7 @@ class InvoiceController extends Controller
         }
 
         if ($invoice->guests->count() <= 1) {
-            flash('No es posible cambiar al huésped de habitación')->info();
+            flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
                 'id' => Hashids::encode($invoice->id)
@@ -1217,6 +1252,15 @@ class InvoiceController extends Controller
 
         // The guest
         $guest = $invoice->guests->where('id', Id::get($guest))->first();
+
+        // Check if guest is active in hotel and the current invoice
+        if ($guest->status == true and $guest->pivot->active == true) {
+            flash(trans('invoices.impossible.room.change'))->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
 
         // Detach current guest room
         $guest->rooms()->detach($guest->rooms()->first()->id);

@@ -90,7 +90,7 @@
             @lang('common.change')
         </button>
         <a href="{{ route('invoices.show', ['id' => Hashids::encode($invoice->id)]) }}" class="btn btn-link">
-            @lang('common.finalize')
+            @lang('common.back')
         </a>
     </form>
 

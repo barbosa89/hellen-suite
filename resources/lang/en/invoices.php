@@ -65,4 +65,15 @@ return array (
   array (
     'room' => 'The room was delivered',
   ),
+  'impossible' => 
+  array (
+    'room' => 
+    array (
+      'change' => 'It is not possible to change the guest of your current room',
+    ),
+  ),
+  'inactive' => 
+  array (
+    'guest' => 'The guest is inactive in the current invoice',
+  ),
 );
