@@ -773,6 +773,10 @@ class InvoiceController extends Controller
             'company' => function ($query) {
                 $query->select(Fields::get('companies'));
             },
+            'guests' => function ($query) {
+                $query->select(Fields::parsed('guests'))
+                    ->withPivot('main', 'active');
+            }
         ]);
 
         // Check if the invoice has one room
@@ -796,7 +800,7 @@ class InvoiceController extends Controller
         if (empty($invoice->company)) {
             if ($room->guests->count() > 0) {
                 foreach ($room->guests as $guest) {
-                    if ($guest->pivot->main) {
+                    if ($invoice->guests->where('id', $guest->id)->first()->pivot->main) {
                         flash(trans('invoices.main.guest'))->info();
 
                         return back();

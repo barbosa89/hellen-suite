@@ -452,7 +452,7 @@ class GuestController extends Controller
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
                         ->where('responsible_adult', false)
-                        ->withPivot('main', 'status');
+                        ->withPivot('main', 'active');
                 },
                 'guests.rooms' => function ($query) use ($invoice) {
                     $query->select(Fields::parsed('rooms'))
@@ -460,7 +460,7 @@ class GuestController extends Controller
                 },
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'))
-                        ->withPivot('status');
+                        ->withPivot('enabled');
                 },
             ])->first(['id']);
 
@@ -482,7 +482,7 @@ class GuestController extends Controller
         $room = $invoice->rooms->where('id', $guest->rooms()->first()->id)->first();
 
         // Check if the room is available in the invoice
-        if ($room->pivot->active) {
+        if ($room->pivot->enabled) {
             // Toggle status
             // The guest leaves the hotel but remains on the invoice
             if ($guest->status == true and $guest->pivot->active == true) {
@@ -491,7 +491,7 @@ class GuestController extends Controller
                 $invoice->guests()->updateExistingPivot(
                     $guest,
                     [
-                        'status' => false
+                        'active' => false
                     ]
                 );
             }
@@ -503,7 +503,7 @@ class GuestController extends Controller
                 $invoice->guests()->updateExistingPivot(
                     $guest,
                     [
-                        'status' => true
+                        'active' => true
                     ]
                 );
             }
@@ -518,7 +518,10 @@ class GuestController extends Controller
                     );
 
                     // The new main guest
-                    $main = $invoice->guests->where('id', '!=', Id::get($id))->where('status', true)->first();
+                    $main = $invoice->guests->where('id', '!=', Id::get($id))
+                        ->where('pivot.active', true)
+                        ->where('status', true)
+                        ->first();
 
                     // Select the main guest
                     $invoice->guests()->updateExistingPivot(
