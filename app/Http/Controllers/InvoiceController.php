@@ -902,7 +902,7 @@ class InvoiceController extends Controller
      * @param $guest
      * @return \Illuminate\Http\Response
      */
-    public function guests($id, $guest)
+    public function showFormToAddGuests($id, $guest)
     {
         $id = Id::get($id);
         $invoice = Invoice::where('user_id', Id::parent())
@@ -911,7 +911,8 @@ class InvoiceController extends Controller
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select('id', 'number');
+                    $query->select('id', 'number', 'status')
+                        ->withPivot('enabled');
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
@@ -984,6 +985,10 @@ class InvoiceController extends Controller
                 'guests' => function ($query) {
                     $query->select('id');
                 },
+                'rooms' => function ($query) {
+                    $query->select('id', 'number', 'status')
+                        ->withPivot('enabled');
+                }
             ])->first(['id']);
 
         $guest = Guest::where('id', Id::get($request->guest))
@@ -992,6 +997,16 @@ class InvoiceController extends Controller
 
         if (empty($invoice) or empty($guest)) {
             abort(404);
+        }
+
+        $room = $invoice->rooms->where('id', Id::get($request->room))->first();
+
+        if ($room->pivot->enabled == false) {
+            flash(trans('invoices.delivered.room'))->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
         }
 
         if ($invoice->guests->where('id', $guest->id)->count() == 0) {
@@ -1011,7 +1026,7 @@ class InvoiceController extends Controller
             ->wherePivot('invoice_id', $invoice->id)
             ->detach();
 
-        $guest->rooms()->attach(Id::get($request->room), [
+        $guest->rooms()->attach($room, [
             'invoice_id' => $invoice->id
         ]);
 
@@ -1152,7 +1167,9 @@ class InvoiceController extends Controller
                 $query->select(Fields::get('companies'));
             },
             'rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(Fields::parsed('rooms'))
+                    ->wherePivot('enabled', true)
+                    ->withPivot('enabled');
             },
             'payments' => function ($query)
             {
@@ -1162,6 +1179,15 @@ class InvoiceController extends Controller
 
         // Check the rooms number
         if ($invoice->rooms->count() <= 1) {
+            flash(trans('invoices.impossible.room.change'))->info();
+
+            return redirect()->route('invoices.show', [
+                'id' => Hashids::encode($invoice->id)
+            ]);
+        }
+
+        // Check the enabled rooms number
+        if ($invoice->rooms->where('pivot.enabled', true)->count() <= 1) {
             flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
@@ -1181,8 +1207,8 @@ class InvoiceController extends Controller
         // Get the guest
         $guest = $invoice->guests->where('id', Id::get($guest))->first();
 
-        // Check if guest is active in hotel and the current invoice
-        if ($guest->status == true and $guest->pivot->active == true) {
+        // Check if guest isn't in hotel and if the guest is inactive in the current invoice
+        if ($guest->status == false and $guest->pivot->active == false) {
             flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [
@@ -1258,7 +1284,7 @@ class InvoiceController extends Controller
         $guest = $invoice->guests->where('id', Id::get($guest))->first();
 
         // Check if guest is active in hotel and the current invoice
-        if ($guest->status == true and $guest->pivot->active == true) {
+        if ($guest->status == false and $guest->pivot->active == false) {
             flash(trans('invoices.impossible.room.change'))->info();
 
             return redirect()->route('invoices.show', [

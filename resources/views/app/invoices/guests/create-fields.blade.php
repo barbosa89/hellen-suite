@@ -2,7 +2,9 @@
     <label for="room">@lang('rooms.room'):</label>
     <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($invoice->rooms as $room)
-            <option value="{{ Hashids::encode($room->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $room->number }}</option>
+            @if ($room->status == '0' and $room->pivot->enabled == true)
+                <option value="{{ Hashids::encode($room->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $room->number }}</option>
+            @endif
         @endforeach
     </select>
 

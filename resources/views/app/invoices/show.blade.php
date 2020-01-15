@@ -253,13 +253,13 @@
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                         @if ($invoice->guests->count() > 1)
-                                                            @if ($guest->status == true and $guest->pivot->active == true)
-                                                                <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                    <i class="fas fa-sync-alt"></i>
-                                                                </a>
-                                                            @endif
-
                                                             @if ($invoice->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled)
+                                                                @if ($guest->status == true and $guest->pivot->active == true)
+                                                                    <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                        <i class="fas fa-sync-alt"></i>
+                                                                    </a>
+                                                                @endif
+
                                                                 <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                     <i class="fas fa-user-times"></i>
                                                                 </a>

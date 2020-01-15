@@ -129,11 +129,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('invoices.guests.search')
         ->middleware(['permission:invoices.edit']);
 
-    Route::get('invoices/{id}/guests/{guest}', 'InvoiceController@guests')
+    Route::get('invoices/{id}/guests/{guest}', 'InvoiceController@showFormToAddGuests')
         ->name('invoices.guests')
         ->middleware(['permission:invoices.edit']);
 
-    Route::post('invoices/{id}/guests/add', 'InvoiceController@addguests')
+    Route::post('invoices/{id}/guests/add', 'InvoiceController@addGuests')
         ->name('invoices.guests.add')
         ->middleware(['permission:invoices.edit']);
 
