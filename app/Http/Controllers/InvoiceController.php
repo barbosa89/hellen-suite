@@ -991,16 +991,23 @@ class InvoiceController extends Controller
                 }
             ])->first(['id']);
 
-        $guest = Guest::where('id', Id::get($request->guest))
-            ->where('status', false) // Not in hotel
-            ->first(Fields::parsed('guests'));
+        $guest = $invoice->guests->where('id', Id::get($request->guest))->first();
+
+        if (empty($guest)) {
+            // The guest to add to the invoice
+            $guest = Guest::where('id', Id::get($request->guest))
+                ->where('status', false) // Not in hotel
+                ->first(Fields::parsed('guests'));
+        }
 
         if (empty($invoice) or empty($guest)) {
             abort(404);
         }
 
+        // Selected room
         $room = $invoice->rooms->where('id', Id::get($request->room))->first();
 
+        // Check if selected room is disabled in the current invoice
         if ($room->pivot->enabled == false) {
             flash(trans('invoices.delivered.room'))->info();
 
@@ -1009,27 +1016,38 @@ class InvoiceController extends Controller
             ]);
         }
 
+        // Check if the guest to add exists in the current guest
         if ($invoice->guests->where('id', $guest->id)->count() == 0) {
             $responsible = Id::get($request->get('responsible_adult', null));
 
+            // Assign a responsible adult
             if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
                 $guest->responsible_adult = $responsible;
             }
 
             $invoice->guests()->attach($guest->id, [
-                'main' => $invoice->guests->isEmpty(),
+                'main' => $invoice->guests->isEmpty(), // Check if the guest is the first so to assign the main guest
                 'active' => true
             ]);
+        } else {
+            // Refresh curren relationship invoice - guest
+            $invoice->guests()->updateExistingPivot(
+                $guest,
+                ['active' => true]
+            );
         }
 
+        // Remove old relationships guest - room
         $guest->rooms()
             ->wherePivot('invoice_id', $invoice->id)
             ->detach();
 
+        // Refresh relationships guest - room
         $guest->rooms()->attach($room, [
             'invoice_id' => $invoice->id
         ]);
 
+        // Change guest status
         $guest->status = true;
         $guest->save();
 
