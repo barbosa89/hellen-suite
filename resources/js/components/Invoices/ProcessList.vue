@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div class="row" v-for="room in invoice.rooms" :key="room.hash">
-                        <template v-if="room.pivot.enabled == true">
+                        <template v-if="checkRoomIsEnabled(room) == true">
                             <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
                                 <p class="text-right">
                                     <i class="fas fa-caret-right"></i>
@@ -168,6 +168,7 @@ export default {
         if (this.hotels.length > 0) {
             this.hotel = _.first(this.hotels).hash
             this.invoices = _.first(this.hotels).invoices
+            this.hasRooms()
         }
     },
     props: ['hotels'],
@@ -183,8 +184,24 @@ export default {
                 // Filter by current hotel hash
                 if (headquarter.hash == this.hotel) {
                     this.invoices = headquarter.invoices
+
+                    this.hasRooms()
                 }
             })
+        },
+        hasRooms() {
+            this.invoices = _.filter(this.invoices, (invoice) => {
+                invoice.rooms = _.filter(invoice.rooms, (room) => {
+                    return this.checkRoomIsEnabled(room)
+                })
+
+                return invoice.rooms.length > 0
+            })
+        },
+        checkRoomIsEnabled(room) {
+            console.log(room.number, room.pivot.enabled && moment(room.pivot.end).isBefore(moment().add(1, 'days').format('YYYY-MM-DD')));
+
+            return room.pivot.enabled && moment(room.pivot.end).isBefore(moment().add(1, 'days').format('YYYY-MM-DD'))
         },
         getSelectedHotel() {
             return _.find(this.hotels, (headquarter) => {

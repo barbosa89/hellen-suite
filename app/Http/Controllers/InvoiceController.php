@@ -16,6 +16,7 @@ use App\Http\Requests\{
     Multiple,
     RemoveGuests,
     ChangeRoom,
+    InvoicesProcessing,
     StoreAdditional,
     StoreInvoice,
     StoreInvoiceGuest,
@@ -2545,6 +2546,7 @@ class InvoiceController extends Controller
                 'invoices.rooms' => function ($query)
                 {
                     $query->select(Fields::parsed('rooms'))
+                        ->wherePivot('enabled', true)
                         ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
                 'invoices.company' => function ($query) {
@@ -2628,7 +2630,7 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function process(Request $request)
+    public function process(InvoicesProcessing $request)
     {
         // All processed invoices will be placed here
         // So the processed invoices will be returned as JSON response
@@ -2648,6 +2650,7 @@ class InvoiceController extends Controller
                         'rooms' => function ($query)
                         {
                             $query->select(Fields::parsed('rooms'))
+                                ->wherePivot('enabled', true)
                                 ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                         }
                     ])->get(Fields::parsed('invoices'));
@@ -2657,11 +2660,13 @@ class InvoiceController extends Controller
                     {
                         $invoice->rooms->each(function ($room) use (&$processed, $invoice)
                         {
+                            // Dates
+                            $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
+                            $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
+                            $tomorrow = Carbon::tomorrow();
+
                             // Check if the room is enabled to changes
-                            if ($room->pivot->enabled) {
-                                // Dates
-                                $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
-                                $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
+                            if ($room->pivot->enabled and $end->lessThan($tomorrow)) {
                                 // Calculate diff in days
                                 $diff = $start->diffInDays($end);
 
