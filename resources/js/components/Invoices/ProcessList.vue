@@ -124,31 +124,27 @@
                         </div>
                     </div>
                     <div class="row" v-for="room in invoice.rooms" :key="room.hash">
-                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center text-right text-muted">
-                            <i class="fas fa-caret-right"></i>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
-                            <p>{{ room.number }}</p>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
-                            <p>{{ room.pivot.quantity }}</p>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <!-- PRICE HERE -->
-                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.subvalue) }}</p>
-                        </div>
-                        <!-- <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.subvalue) }}</p>
-                        </div> -->
-                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.discount) }}</p>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.taxes) }}</p>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <p>$ {{ new Intl.NumberFormat("de-DE").format(room.pivot.value) }}</p>
-                        </div>
+                        <template v-if="room.pivot.enabled == true">
+                            <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center dont-break-out">
+                                <p class="text-right">
+                                    <i class="fas fa-caret-right"></i>
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                                <p>
+                                    {{ $t('rooms.room') }} No. {{ room.number }}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                                <p>{{ $t('invoices.nights') }}: {{ room.pivot.quantity }}</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                                <p>{{ $t('common.endDate') }}: {{ room.pivot.end }}</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
+                                <p>Total: $ {{ new Intl.NumberFormat("de-DE").format(room.pivot.value) }}</p>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -157,7 +153,7 @@
                 <div class="crud-list-row">
                     <div class="card mt-4">
                         <div class="card-body">
-                            Sin registros.
+                            {{ $t('common.noRecords') }}
                         </div>
                     </div>
                 </div>
@@ -226,19 +222,34 @@ export default {
                     numbers: numbers,
                     hotel: this.hotel
                 }).then(response => {
-                    console.log(response);
+                    let processed = Array.from(response.data.processed)
+
+                    processed.forEach((number, index) => {
+                        this.invoices = _.filter(this.invoices, (invoice) => {
+                            return invoice.number != number
+                        })
+                    })
+
+                    if (this.invoices.length > 0) {
+                        toastr.error(
+                            this.$root.$t('invoices.incomplete.processing'),
+                            this.$root.$t('common.sorry')
+                        );
+                    } else {
+                        toastr.success(
+                            this.$root.$t('invoices.complete.processing'),
+                            this.$root.$t('common.successful')
+                        );
+                    }
                 }).catch(e => {
-                    console.log(e.response.data);
-                    console.log(e.response.status);
-                    console.log(e.response.headers);
                     toastr.error(
-                        $t('common.try'),
+                        this.$root.$t('common.try'),
                         'Error'
                     );
                 });
             } else {
                 toastr.error(
-                    $t('common.noRecords'),
+                    this.$root.$t('common.noRecords'),
                     'Error'
                 );
             }

@@ -122,4 +122,5 @@ return array (
   'of' => 'Of',
   'percentage' => 'Percentage',
   'try' => 'Try again later',
+  'sorry' => 'Sorry',
 );

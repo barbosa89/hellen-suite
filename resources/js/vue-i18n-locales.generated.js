@@ -138,7 +138,8 @@ export default {
             "page": "Page",
             "of": "Of",
             "percentage": "Percentage",
-            "try": "Try again later"
+            "try": "Try again later",
+            "sorry": "Sorry"
         },
         "props": {
             "add": "Add prop",
@@ -301,6 +302,12 @@ export default {
             },
             "inactive": {
                 "guest": "The guest is inactive in the current invoice"
+            },
+            "complete": {
+                "processing": "All invoices were processed"
+            },
+            "incomplete": {
+                "processing": "There are pending invoices for processing"
             }
         },
         "assets": {
@@ -690,7 +697,8 @@ export default {
             "page": "Página",
             "of": "De",
             "percentage": "Porcentaje",
-            "try": "Intenta nuevamente más tarde"
+            "try": "Intenta nuevamente más tarde",
+            "sorry": "Lo siento"
         },
         "props": {
             "add": "Agregar utilería",
@@ -853,6 +861,12 @@ export default {
             },
             "inactive": {
                 "guest": "El invitado está inactivo en la factura actual"
+            },
+            "complete": {
+                "processing": "Todos los recibos fueron procesados"
+            },
+            "incomplete": {
+                "processing": "Quedaron recibos pendientes por procesar"
             }
         },
         "assets": {

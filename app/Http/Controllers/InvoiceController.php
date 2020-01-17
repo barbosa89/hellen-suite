@@ -670,7 +670,7 @@ class InvoiceController extends Controller
                     // Detach current room
                     $invoice->rooms()->detach($current->id);
 
-                    // Calculating de new values
+                    // Calculating the new values
                     $discount = ($room->price - $request->price) * $current->pivot->quantity;
                     $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
                     $subvalue = $request->price * $current->pivot->quantity;
@@ -2545,7 +2545,7 @@ class InvoiceController extends Controller
                 'invoices.rooms' => function ($query)
                 {
                     $query->select(Fields::parsed('rooms'))
-                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end');
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
                 'invoices.company' => function ($query) {
                     $query->select(['id', 'tin', 'business_name']);
@@ -2622,9 +2622,18 @@ class InvoiceController extends Controller
         return $hotels;
     }
 
+    /**
+     * Add a night to the room associated with the invoice and calculate the new values
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function process(Request $request)
     {
-        $processed = false;
+        // All processed invoices will be placed here
+        // So the processed invoices will be returned as JSON response
+        $processed = collect();
+
         DB::transaction(function () use (&$processed, $request) {
             try {
                 $invoices = Invoice::where('user_id', Id::parent())
@@ -2636,7 +2645,7 @@ class InvoiceController extends Controller
                     ->where('payment_status', false)
                     ->where('losses', false)
                     ->with([
-                        'rooms' => function (Builder $query)
+                        'rooms' => function ($query)
                         {
                             $query->select(Fields::parsed('rooms'))
                                 ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
@@ -2644,50 +2653,54 @@ class InvoiceController extends Controller
                     ])->get(Fields::parsed('invoices'));
 
                 if ($invoices->isNotEmpty()) {
-                    $invoices->each(function ($invoice)
+                    $invoices->each(function ($invoice) use (&$processed)
                     {
-                        $invoice->rooms->each(function ($room) use ($invoice)
+                        $invoice->rooms->each(function ($room) use (&$processed, $invoice)
                         {
-                            // Dates
-                            $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
-                            $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
-                            // Calculate diff in days
-                            $diff = $start->diffInDays($end);
+                            // Check if the room is enabled to changes
+                            if ($room->pivot->enabled) {
+                                // Dates
+                                $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
+                                $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
+                                // Calculate diff in days
+                                $diff = $start->diffInDays($end);
 
-                            // Check if the current quantity is same diff in days
-                            // This code check integrity of calculations
-                            if ($diff === (int) $room->pivot->quantity) {
-                                // $invoice->rooms()->attach(
-                                //     $room->id,
-                                //     [
-                                //         'quantity' => $quantity,
-                                //         'discount' => $discount,
-                                //         'subvalue' => $subvalue,
-                                //         'taxes' => $taxes,
-                                //         'value' => $subvalue + $taxes,
-                                //         'start' => $start->toDateString(),
-                                //         'end' => $end->toDateString()
-                                //     ]
-                                // );
+                                // Check if the current quantity is same diff in days
+                                // This code check integrity of calculations
+                                if ($diff === (int) $room->pivot->quantity) {
+                                    // Add a day to end date
+                                    $newEnd = $end->copy()->addDays(1);
 
-                                // $invoice->discount += $discount;
-                                // $invoice->subvalue += $subvalue;
-                                // $invoice->taxes += $taxes;
-                                // $invoice->value += $subvalue + $taxes;
-                                // $invoice->save();
+                                    // New quantity to add
+                                    $quantity = $end->diffInDays($newEnd);
 
-                                // $invoice->rooms()->updateExistingPivot(
-                                //     $room,
-                                //     [
-                                //         'quantity' => $quantity,
-                                //         'discount' => $discount,
-                                //         'subvalue' => $subvalue,
-                                //         'taxes' => $taxes,
-                                //         'value' => $subvalue + $taxes,
-                                //         'start' => $request->start,
-                                //         'end' => $end->toDateString()
-                                //     ]
-                                // );
+                                    // Adding the new values
+                                    $discount = ((float) $room->price - (float) $room->pivot->price) * $quantity;
+                                    $taxes = ((float) $room->pivot->price * $room->tax) * $quantity;
+                                    $subvalue = (float) $room->pivot->price * $quantity;
+                                    $value = $subvalue + $taxes;
+
+                                    $invoice->rooms()->updateExistingPivot(
+                                        $room,
+                                        [
+                                            'quantity' => $room->pivot->quantity + $quantity,
+                                            'discount' => $room->pivot->discount + $discount,
+                                            'subvalue' => $room->pivot->subvalue + $subvalue,
+                                            'taxes' => $room->pivot->taxes + $taxes,
+                                            'value' => $room->pivot->value + $value,
+                                            'end' => $newEnd->toDateString()
+                                        ]
+                                    );
+
+                                    $invoice->discount += $discount;
+                                    $invoice->subvalue += $subvalue;
+                                    $invoice->taxes += $taxes;
+                                    $invoice->value += $value;
+
+                                    if ($invoice->save()) {
+                                        $processed->push($invoice);
+                                    }
+                                }
                             }
                         });
                     });
@@ -2697,21 +2710,15 @@ class InvoiceController extends Controller
             }
         });
 
-        // if ($status) {
-        //     flash(trans('common.successful'))->success();
+        if ($processed->isEmpty()) {
+            $processed = [];
+        } else {
+            $processed = $processed->pluck('number')->toArray();
+        }
 
-        //     return redirect()->route('invoices.guests.search', [
-        //         'id' => Hashids::encode($invoiceId)
-        //     ]);
-        // }
-
-        // flash(trans('common.error'))->error();
-
-        // return redirect()->route('invoices.index');
-    
-        // return response()->json([
-        //     'invoices' => $invoices->toArray()
-        // ]);
+        return response()->json([
+            'processed' => $processed
+        ]);
     }
 
     /**
@@ -2836,7 +2843,13 @@ class InvoiceController extends Controller
         return $chunkedItems;
     }
 
-    public function calculatePages(Collection $items)
+    /**
+     * Calculate pages total
+     *
+     * @return \Illuminate\Support\Collection  $items
+     * @return int
+     */
+    public function calculatePages(Collection $items): int
     {
         // The maximun quantity per page
         $itemsPerPage = 18;

@@ -76,4 +76,12 @@ return array (
   array (
     'guest' => 'El invitado está inactivo en la factura actual',
   ),
+  'complete' => 
+  array (
+    'processing' => 'Todos los recibos fueron procesados',
+  ),
+  'incomplete' => 
+  array (
+    'processing' => 'Quedaron recibos pendientes por procesar',
+  ),
 );

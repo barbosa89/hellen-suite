@@ -76,4 +76,12 @@ return array (
   array (
     'guest' => 'The guest is inactive in the current invoice',
   ),
+  'complete' => 
+  array (
+    'processing' => 'All invoices were processed',
+  ),
+  'incomplete' => 
+  array (
+    'processing' => 'There are pending invoices for processing',
+  ),
 );
