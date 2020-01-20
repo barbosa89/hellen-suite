@@ -13,7 +13,8 @@
             'options' => [
                 [
                     'option' => trans('common.new'),
-                    'url' => route('team.create')
+                    'url' => route('team.create'),
+                    'permission' => 'team.create'
                 ],
             ]
         ])

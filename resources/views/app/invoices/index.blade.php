@@ -17,11 +17,13 @@
                 'type' => 'hideable',
                 'option' => trans('invoices.process'),
                 'url' => route('invoices.process.form'),
-                'show' => $invoices->isNotEmpty()
+                'show' => $invoices->isNotEmpty(),
+                'permission' => 'invoices.edit'
             ],
             [
                 'option' => trans('common.new'),
-                'url' => route('rooms.index')
+                'url' => route('rooms.index'),
+                'permission' => 'rooms.index'
             ],
         ]
     ])

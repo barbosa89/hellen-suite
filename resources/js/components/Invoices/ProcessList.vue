@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a href="/invoices" class="navbar-brand text-muted">
+            <a v-if="$can('invoices.index')" href="/invoices" class="navbar-brand text-muted">
                 {{ $t('invoices.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
@@ -9,12 +9,12 @@
             </button>
             <div id="navbarNavDropdown" class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="$can('invoices.edit')">
                         <a href="#" class="nav-link" v-if="invoices.length != 0" @click.prevent="process">
                             {{ $t('common.continue') }}
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="$can('invoices.index')">
                         <a href="/invoices" class="nav-link">
                             {{ $t('common.back') }}
                         </a>
@@ -84,11 +84,13 @@
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
-                            <p>
-                                <a v-if="invoice.company" :href="'/companys/' + invoice.company.hash">
+                            <p v-if="invoice.company">
+                                <a :href="'/companys/' + invoice.company.hash">
                                     {{ invoice.company.business_name }}
                                 </a>
-                                <a v-else :href="'/guests/' + invoice.guests[0].hash">
+                            </p>
+                            <p v-else>
+                                <a :href="'/guests/' + invoice.guests[0].hash">
                                     {{ invoice.guests[0].name }} {{ invoice.guests[0].last_name }}
                                 </a>
                             </p>

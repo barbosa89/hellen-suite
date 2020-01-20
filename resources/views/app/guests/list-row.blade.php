@@ -1,16 +1,26 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 align-self-center">
-            <p><a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->full_name }}</a></p>
-        </div>
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 align-self-center">
-            <p><a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->dni }}</a></p>
+            <p>
+                @can('guests.show')
+                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->full_name }}</a>
+                @endcan
+            </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 align-self-center">
             <p>
-                <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">
-                    @include('partials.guest-status', ['status' => $row->status])
-                </a>
+                @can('guests.show')
+                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->dni }}</a>
+                @endcan
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 align-self-center">
+            <p>
+                @can('guests.show')
+                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">
+                        @include('partials.guest-status', ['status' => $row->status])
+                    </a>
+                @endcan
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
@@ -19,6 +29,7 @@
                     [
                         'option' => trans('common.seeMore'),
                         'url' => route('guests.show', ['id' => Hashids::encode($row->id)]),
+                        'permission' => 'guests.show'
                     ],
                     [
                         'type' => 'divider'
@@ -28,6 +39,7 @@
                         'url' => route('guests.edit', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'guests.edit'
                     ],
                     [
                         'type' => 'confirm',
@@ -35,7 +47,8 @@
                         'url' => route('guests.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'guests.destroy'
                     ],
                 ]
             ])

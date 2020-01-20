@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a href="/props" class="navbar-brand text-muted">
+            <a v-if="$can('props.index')" href="/props" class="navbar-brand text-muted">
                 {{ $t('props.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
@@ -30,12 +30,12 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="/props/create" class="nav-link">
+                        <a v-if="$can('props.create')" href="/props/create" class="nav-link">
                             {{ $t('common.new') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/props" class="nav-link">
+                        <a v-if="$can('props.index')" href="/props" class="nav-link">
                             {{ $t('common.back') }}
                         </a>
                     </li>

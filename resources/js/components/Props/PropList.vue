@@ -57,10 +57,10 @@
                                 </button>
 
                                 <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                    <a :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">
+                                    <a v-if="$can('props.edit')" :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">
                                         Editar
                                     </a>
-                                    <a href="#" :data-url="'/props/' + prop.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                    <a v-if="$can('props.destroy')" href="#" :data-url="'/props/' + prop.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
                                         Eliminar
                                     </a>
                                 </div>

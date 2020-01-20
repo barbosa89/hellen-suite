@@ -43,18 +43,21 @@
                         'url' => route('team.show', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'team.show'
                     ],
                     [
                         'option' => 'Asignaciones',
                         'url' => route('team.assign', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'team.edit'
                     ],
                     [
                         'option' => 'Permisos',
                         'url' => route('team.permissions', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'team.edit'
                     ],
                     [
                         'type' => 'divider'
@@ -65,7 +68,8 @@
                         'url' => route('team.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'team.destroy'
                     ],
                 ]
             ])

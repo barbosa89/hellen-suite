@@ -74,12 +74,14 @@
                     [
                         'option' => trans('common.seeMore'),
                         'url' => route('invoices.show', ['id' => Hashids::encode($row->id)]),
+                        'permission' => 'invoices.show'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('rooms.addRoom'),
                         'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
-                        'show' => $row->open
+                        'show' => $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
@@ -87,37 +89,43 @@
                         'url' => route('invoices.companies.search', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'show' => $row->open
+                        'show' => $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('invoices.registerGuests'),
                         'url' => route('invoices.guests.search', ['id' => Hashids::encode($row->id)]),
-                        'show' => $row->open
+                        'show' => $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('invoices.loadProducts'),
                         'url' => route('invoices.products', ['id' => Hashids::encode($row->id)]),
-                        'show' => !$row->reservation and $row->open
+                        'show' => !$row->reservation and $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('invoices.loadServices'),
                         'url' => route('invoices.services', ['id' => Hashids::encode($row->id)]),
-                        'show' => !$row->reservation and $row->open
+                        'show' => !$row->reservation and $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                         'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($row->id)]),
-                        'show' => !$row->reservation and $row->open
+                        'show' => !$row->reservation and $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => 'Agregar servicios de terceros',
                         'url' => route('invoices.external.add', ['id' => Hashids::encode($row->id)]),
-                        'show' => !$row->reservation and $row->open
+                        'show' => !$row->reservation and $row->open,
+                        'permission' => 'invoices.edit'
                     ],
                     [
                         'type' => 'divider'
@@ -129,7 +137,8 @@
                             'id' => Hashids::encode($row->id)
                         ]),
                         'show' => $row->open,
-                        'method' => 'POST'
+                        'method' => 'POST',
+                        'permission' => $invoice->open ? 'invoices.close' : 'invoices.open',
                     ],
                     [
                         'type' => 'confirm',
@@ -137,7 +146,8 @@
                         'url' => route('invoices.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'invoices.destroy'
                     ],
                 ]
             ])

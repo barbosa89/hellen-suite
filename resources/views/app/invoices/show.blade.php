@@ -13,7 +13,8 @@
             'options' => [
                 [
                     'option' => trans('common.export'),
-                    'url' => route('invoices.export', ['invoice' => Hashids::encode($invoice->id)])
+                    'url' => route('invoices.export', ['invoice' => Hashids::encode($invoice->id)]),
+                    'permission' => 'invoices.show'
                 ],
                 [
                     'type' => 'hideable',
@@ -21,7 +22,8 @@
                     'url' => route('payments.index', [
                             'invoice' => Hashids::encode($invoice->id)
                         ]),
-                    'show' => !$invoice->losses
+                    'show' => !$invoice->losses,
+                    'permission' => 'payments.index'
                 ],
                 [
                     'option' => trans('common.options'),
@@ -33,7 +35,8 @@
                             'url' => route('invoices.rooms', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => $invoice->open
+                            'show' => $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
@@ -41,7 +44,8 @@
                             'url' => route('invoices.companies.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => $invoice->open
+                            'show' => $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
@@ -49,37 +53,43 @@
                             'url' => route('invoices.guests.search', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'show' => $invoice->open
+                            'show' => $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.loadProducts'),
                             'url' => route('invoices.products', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation and $invoice->open
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.loadServices'),
                             'url' => route('invoices.services', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation and $invoice->open
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                             'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation and $invoice->open
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => 'Agregar servicios de terceros',
                             'url' => route('invoices.external.add', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation and $invoice->open
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('invoices.addAdditional'),
                             'url' => route('invoices.additionals.create', ['id' => Hashids::encode($invoice->id)]),
-                            'show' => !$invoice->reservation and $invoice->open
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
                         ],
                         [
                             'type' => $invoice->open ? 'confirm' : 'hideable',
@@ -88,7 +98,8 @@
                                 'id' => Hashids::encode($invoice->id)
                             ]),
                             'show' => $invoice->open,
-                            'method' => 'POST'
+                            'method' => 'POST',
+                            'permission' => $invoice->open ? 'invoices.close' : 'invoices.open',
                         ],
                         [
                             'type' => 'confirm',
@@ -96,7 +107,8 @@
                             'url' => route('invoices.destroy', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
-                            'method' => 'DELETE'
+                            'method' => 'DELETE',
+                            'permission' => 'invoices.destroy'
                         ],
                     ],
                 ],
@@ -165,9 +177,11 @@
                                                     </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <a href="#" class="btn btn-link" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @can('invoices.edit')
+                                                        <a href="#" class="btn btn-link" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -252,31 +266,33 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                        @if ($invoice->guests->count() > 1)
-                                                            @if ($invoice->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled)
-                                                                @if ($guest->status == true and $guest->pivot->active == true)
-                                                                    <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                        <i class="fas fa-sync-alt"></i>
-                                                                    </a>
-                                                                @endif
+                                                        @can('invoices.edit')
+                                                            @if ($invoice->guests->count() > 1)
+                                                                @if ($invoice->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled)
+                                                                    @if ($guest->status == true and $guest->pivot->active == true)
+                                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                            <i class="fas fa-sync-alt"></i>
+                                                                        </a>
+                                                                    @endif
 
-                                                                <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                    <i class="fas fa-user-times"></i>
-                                                                </a>
-
-                                                                @if ($guest->status == true and $guest->pivot->active == true)
-                                                                    <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
-                                                                        <i class="fas fa-door-closed"></i>
+                                                                    <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                        <i class="fas fa-user-times"></i>
                                                                     </a>
-                                                                @endif
 
-                                                                @if ($guest->status == false and $guest->pivot->active == false)
-                                                                    <a class="btn btn-link" title="{{ trans('guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
-                                                                        <i class="fas fa-door-open"></i>
-                                                                    </a>
+                                                                    @if ($guest->status == true and $guest->pivot->active == true)
+                                                                        <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
+                                                                            <i class="fas fa-door-closed"></i>
+                                                                        </a>
+                                                                    @endif
+
+                                                                    @if ($guest->status == false and $guest->pivot->active == false)
+                                                                        <a class="btn btn-link" title="{{ trans('guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($invoice->id)], false) }}')">
+                                                                            <i class="fas fa-door-open"></i>
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                             @endif
-                                                        @endif
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             </div>
@@ -354,17 +370,19 @@
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @if ($room->pivot->enabled == true)
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
-                                                            <i class="fas fa-redo"></i>
-                                                        </a>
-                                                    @endif
+                                                    @can('invoices.edit')
+                                                        @if ($room->pivot->enabled == true)
+                                                            <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                                <i class="fas fa-redo"></i>
+                                                            </a>
+                                                        @endif
 
-                                                    @if ($invoice->rooms->where('pivot.enabled', true)->count() > 1 and $room->pivot->enabled == true)
-                                                        <a class="btn btn-link" href="#" title="{{ trans('rooms.deliver') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.deliver', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
-                                                            <i class="fas fa-key"></i>
-                                                        </a>
-                                                    @endif
+                                                        @if ($invoice->rooms->where('pivot.enabled', true)->count() > 1 and $room->pivot->enabled == true)
+                                                            <a class="btn btn-link" href="#" title="{{ trans('rooms.deliver') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.deliver', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                                <i class="fas fa-key"></i>
+                                                            </a>
+                                                        @endif
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -436,9 +454,11 @@
                                                     <p>{{ $product->pivot->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.products.remove', ['id' => Hashids::encode($invoice->id), 'product' => Hashids::encode($product->pivot->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @can('invoices.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.products.remove', ['id' => Hashids::encode($invoice->id), 'product' => Hashids::encode($product->pivot->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -510,9 +530,11 @@
                                                     <p>{{ $service->pivot->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.services.remove', ['id' => Hashids::encode($invoice->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @can('invoices.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.services.remove', ['id' => Hashids::encode($invoice->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -566,9 +588,11 @@
                                                     <p>{{ $additional->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @can('invoices.edit')
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -622,9 +646,11 @@
                                                     <p>{{ $external->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($external->id)], false) }}')">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </a>
+                                                    @can('invoices.edit')
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($external->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                             </div>
                                         </div>
@@ -705,9 +731,11 @@
                                                             </p>
                                                         </div>
                                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                            <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                <i class="fas fa-times-circle"></i>
-                                                            </a>
+                                                            @can('invoices.edit')
+                                                                <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                    <i class="fas fa-times-circle"></i>
+                                                                </a>
+                                                            @endcan
                                                         </div>
                                                     </div>
                                                 </div>

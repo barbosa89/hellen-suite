@@ -1,36 +1,46 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-            <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
-                <img class="img-fluid" src="{{ empty($row->image) ? asset('/images/hotel.png') : asset(Storage::url($row->image)) }}" alt="{{ $row->business_name }}">
-            </a>
+            @can('hotels.show')
+                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
+                    <img class="img-fluid" src="{{ empty($row->image) ? asset('/images/hotel.png') : asset(Storage::url($row->image)) }}" alt="{{ $row->business_name }}">
+                </a>
+            @endcan
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3   col-lg-3  align-self-center">
             <p>
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->business_name }}
-                </a>
+                @can('hotels.show')
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
+                        {{ $row->business_name }}
+                    </a>
+                @endcan
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
             <p>
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->tin }}
-                </a>
+                @can('hotels.show')
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
+                        {{ $row->tin }}
+                    </a>
+                @endcan
             </p>
         </div>
         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->created_at->format('Y-m-d') }}
-                </a>
+                @can('hotels.show')
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
+                        {{ $row->created_at->format('Y-m-d') }}
+                    </a>
+                @endcan
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
-                    <i class="fa fa-{{ $row->status ? 'check-circle' : 'times-circle' }}"></i>
-                </a>
+                @can('hotels.show')
+                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($row->id)]) }}">
+                        <i class="fa fa-{{ $row->status ? 'check-circle' : 'times-circle' }}"></i>
+                    </a>
+                @endcan
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
@@ -41,6 +51,7 @@
                         'url' => route('hotels.show', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'hotels.show'
                     ],
                     [
                         'type' => 'divider'
@@ -50,12 +61,14 @@
                         'url' => route('hotels.edit', [
                             'room' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'hotels.edit'
                     ],
                     [
                         'option' => $row->status ? 'Deshabilitar' : 'Habilitar',
                         'url' => route('hotels.toggle', [
                             'room' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'hotels.edit'
                     ],
                     [
                         'type' => 'confirm',
@@ -63,7 +76,8 @@
                         'url' => route('hotels.destroy', [
                             'room' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'hotels.destroy'
                     ],
                 ]
             ])

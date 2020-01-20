@@ -17,11 +17,13 @@
             'options' => [
                 [
                     'option' => trans('common.new'),
-                    'url' => route('companies.create')
+                    'url' => route('companies.create'),
+                    'permission' => 'companies.create'
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => route('companies.index')
+                    'url' => route('companies.index'),
+                    'permission' => 'companies.index'
                 ]
             ]
         ])

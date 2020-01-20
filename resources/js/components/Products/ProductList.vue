@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a href="/products" class="navbar-brand text-muted">
+            <a v-if="$can('products.index')" href="/products" class="navbar-brand text-muted">
                 {{ $t('products.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
@@ -22,7 +22,7 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a href="/products/create" class="nav-link">
+                        <a v-if="$can('products.create')" href="/products/create" class="nav-link">
                             Nuevo
                         </a>
                     </li>
@@ -61,35 +61,35 @@
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center dont-break-out">
                             <p>
-                                <a :href="'/products/' + product.hash">
+                                <a v-if="$can('products.show')" :href="'/products/' + product.hash">
                                     {{ product.description }}
                                 </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">
+                                <a v-if="$can('products.show')" :href="'/products/' + product.hash">
                                     {{ product.brand || 'Sin datos' }}
                                 </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">
+                                <a v-if="$can('products.show')" :href="'/products/' + product.hash">
                                     {{ product.reference || 'Sin datos' }}
                                 </a>
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">
+                                <a v-if="$can('products.show')" :href="'/products/' + product.hash">
                                     {{ product.price }}
                                 </a>
                             </p>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
                             <p>
-                                <a :href="'/products/' + product.hash">
+                                <a v-if="$can('products.show')" :href="'/products/' + product.hash">
                                     {{ product.quantity }}
                                 </a>
                             </p>

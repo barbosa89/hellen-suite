@@ -17,11 +17,13 @@
             'options' => [
                 [
                     'option' => trans('common.new'),
-                    'url' => route('guests.create')
+                    'url' => route('guests.create'),
+                    'permission' => 'guests.create'
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => route('guests.index')
+                    'url' => route('guests.index'),
+                    'permission' => 'guests.index'
                 ],
             ]
         ])

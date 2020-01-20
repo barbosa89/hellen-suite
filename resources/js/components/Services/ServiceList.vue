@@ -65,11 +65,11 @@
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a :href="'/services/' + service.hash + '/edit'" class="dropdown-item">Editar</a>
-                                <a :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
+                                <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/edit'" class="dropdown-item">Editar</a>
+                                <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
                                     {{ service.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
                                 </a>
-                                <a href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                <a v-if="$can('services.destroy')" href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
                                     Eliminar
                                 </a>
                             </div>

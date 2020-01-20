@@ -18,11 +18,13 @@
                     'type' => 'hideable',
                     'option' => trans('reports.list'),
                     'url' => route('vehicles.export'),
-                    'show' => $vehicles->isNotEmpty()
+                    'show' => $vehicles->isNotEmpty(),
+                    'permission' => 'vehicles.index'
                 ],
                 [
                     'option' => trans('common.new'),
-                    'url' => route('vehicles.create')
+                    'url' => route('vehicles.create'),
+                    'permission' => 'vehicles.create'
                 ],
             ]
         ])

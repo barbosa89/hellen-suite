@@ -14,11 +14,13 @@
             'options' => [
                 [
                     'option' => trans('reports.list'),
-                    'url' => route('assets.report')
+                    'url' => route('assets.report'),
+                    'permission' => 'assets.create'
                 ],
                 [
                     'option' => trans('common.new'),
-                    'url' => route('assets.create')
+                    'url' => route('assets.create'),
+                    'permission' => 'assets.create'
                 ],
             ]
         ])

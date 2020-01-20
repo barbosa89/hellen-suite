@@ -107,9 +107,11 @@
                         @if ($invoice->payment_method == false and $invoice->value > $invoice->payments->sum('value'))
                             <span class="d-block font-weight-light text-center">@lang('invoices.losses')</span>
                             <span class="d-block text-center">
-                                <a href="#" title="{{ trans('invoices.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('invoices.losses', ['id' => Hashids::encode($invoice->id)], false) }}')">
-                                    <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
-                                </a>
+                                @can('invoices.losses')
+                                    <a href="#" title="{{ trans('invoices.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('invoices.losses', ['id' => Hashids::encode($invoice->id)], false) }}')">
+                                        <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
+                                    </a>
+                                @endcan
                             </span>
                         @endif
                     @endif

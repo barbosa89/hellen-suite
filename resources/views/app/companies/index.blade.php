@@ -18,11 +18,13 @@
                     'type' => 'hideable',
                     'option' => trans('reports.list'),
                     'url' => route('companies.export'),
-                    'show' => $companies->isNotEmpty()
+                    'show' => $companies->isNotEmpty(),
+                    'permission' => 'companies.index'
                 ],
                 [
                     'option' => trans('common.new'),
-                    'url' => route('companies.create')
+                    'url' => route('companies.create'),
+                    'permission' => 'companies.create'
                 ],
             ]
         ])

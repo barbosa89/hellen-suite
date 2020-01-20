@@ -13,7 +13,8 @@
             'options' => [
                 [
                     'option' => trans('common.new'),
-                    'url' => route('hotels.create')
+                    'url' => route('hotels.create'),
+                    'permission' => 'hotels.create'
                 ],
             ]
         ])

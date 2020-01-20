@@ -56,15 +56,5 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'invoices.losses',
             'guard_name' => config('auth.defaults.guard')
         ]);
-
-        // Permission::create([
-        //     'name' => 'rooms.pool',
-        //     'guard_name' => config('auth.defaults.guard')
-        // ]);
-
-        // Permission::create([
-        //     'name' => 'rooms.assign',
-        //     'guard_name' => config('auth.defaults.guard')
-        // ]);
     }
 }

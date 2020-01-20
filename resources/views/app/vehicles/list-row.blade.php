@@ -33,6 +33,7 @@
                     [
                         'option' => trans('common.seeMore'),
                         'url' => route('vehicles.show', ['id' => Hashids::encode($row->id)]),
+                        'permission' => 'vehicles.show'
                     ],
                     [
                         'type' => 'divider'
@@ -42,6 +43,7 @@
                         'url' => route('vehicles.edit', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'vehicles.edit'
                     ],
                     [
                         'type' => 'confirm',
@@ -49,7 +51,8 @@
                         'url' => route('vehicles.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'vehicles.destroy'
                     ],
                 ]
             ])

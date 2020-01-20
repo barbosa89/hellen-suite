@@ -79,13 +79,13 @@
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a :href="'/assets/' + asset.hash + '/maintenance'" class="dropdown-item">
+                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash + '/maintenance'" class="dropdown-item">
                                     Mantenimiento
                                 </a>
-                                <a :href="'/assets/' +  + '/edit'" class="dropdown-item">
+                                <a v-if="$can('assets.edit')" :href="'/assets/' +  + '/edit'" class="dropdown-item">
                                     Editar
                                 </a>
-                                <a href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
                                     Eliminar
                                 </a>
                             </div>

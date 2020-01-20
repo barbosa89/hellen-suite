@@ -1,10 +1,18 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5 align-self-center">
-            <p><a href="{{ route('companies.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->business_name }}</a></p>
+            <p>
+                @can('companies.show')
+                    <a href="{{ route('companies.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->business_name }}</a>
+                @endcan
+            </p>
         </div>
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 align-self-center">
-            <p><a href="{{ route('companies.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->tin }}</a></p>
+            <p>
+                @can('companies.show')
+                    <a href="{{ route('companies.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->tin }}</a>
+                @endcan
+            </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             @include('partials.dropdown-btn', [
@@ -12,6 +20,7 @@
                     [
                         'option' => trans('common.seeMore'),
                         'url' => route('companies.show', ['id' => Hashids::encode($row->id)]),
+                        'permission' => 'companies.show'
                     ],
                     [
                         'type' => 'divider'
@@ -21,6 +30,7 @@
                         'url' => route('companies.edit', [
                             'id' => Hashids::encode($row->id)
                         ]),
+                        'permission' => 'companies.edit'
                     ],
                     [
                         'type' => 'confirm',
@@ -28,7 +38,8 @@
                         'url' => route('companies.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
-                        'method' => 'DELETE'
+                        'method' => 'DELETE',
+                        'permission' => 'companies.destroy'
                     ],
                 ]
             ])

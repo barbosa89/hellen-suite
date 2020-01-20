@@ -19,7 +19,8 @@
                 'id' => Hashids::encode($invoice->id)
             ]),
             'show' => (float) $invoice->value === $invoice->payments->sum('value') and $invoice->payment_status == false,
-            'method' => 'POST'
+            'method' => 'POST',
+            'permission' => 'invoices.payments.close'
         ],
         [
             'type' => 'hideable',
@@ -27,7 +28,8 @@
             'url' => route('payments.create', [
                 'invoice' => Hashids::encode($invoice->id)
             ]),
-            'show' => $invoice->payment_status == false
+            'show' => $invoice->payment_status == false,
+            'permission' => 'payments.create'
         ],
     ]
 ])

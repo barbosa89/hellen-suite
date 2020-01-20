@@ -18,11 +18,13 @@
                     'type' => 'hideable',
                     'option' => trans('reports.list'),
                     'url' => route('guests.export'),
-                    'show' => $guests->isNotEmpty()
+                    'show' => $guests->isNotEmpty(),
+                    'permission' => 'guests.index'
                 ],
                 [
                     'option' => trans('common.new'),
-                    'url' => route('guests.create')
+                    'url' => route('guests.create'),
+                    'permission' => 'guests.create'
                 ],
             ]
         ])

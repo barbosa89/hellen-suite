@@ -26,7 +26,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->middleware(['permission:invoices.edit']);
 
     Route::get('invoices/{id}/export', 'InvoiceController@export')
-        ->name('invoices.export');
+        ->name('invoices.export')
+        ->middleware(['permission:invoices.show']);
 
     Route::post('invoices/{id}/reservation/checkin', 'InvoiceController@storeReservationCheckin')
         ->name('invoices.reservation.checkin.store')
