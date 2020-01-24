@@ -100,6 +100,14 @@
         </li>
     @endcan
 
+    @can('dining.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('dining.index') }}">
+            <i class="fa fa-fw fa-utensils"></i>
+            <span>@lang('dining.title')</span></a>
+        </li>
+    @endcan
+
     @can('assets.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('assets.index') }}">

@@ -15,6 +15,6 @@
         <h5>Verificación</h5>
     </div>
     <div class="col-xs-12 col-sm-1 col-md-2 col-lg-2">
-        <h5>Opciones</h5>
+        <h5>{{ $t('common.options') }}</h5>
     </div>
 </div>

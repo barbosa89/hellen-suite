@@ -46,4 +46,6 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/jquery.easing/jquery.easing.js'
     ], 'public/js/landing.js')
     .sourceMaps()
-    .browserSync("welkome.app");
+    .browserSync({
+        proxy: 'welkome.app'
+    });

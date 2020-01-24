@@ -123,4 +123,10 @@ return array (
   'percentage' => 'Percentage',
   'try' => 'Try again later',
   'sorry' => 'Sorry',
+  'disable' => 'Disable',
+  'enable' => 'Enable',
+  'without' => 
+  array (
+    'results' => 'No search results',
+  ),
 );

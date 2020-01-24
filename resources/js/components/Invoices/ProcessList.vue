@@ -59,10 +59,10 @@
                         <h5>Fecha</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
-                        <h5>Estado</h5>
+                        <h5>{{ $t('common.status') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                        <h5>Opciones</h5>
+                        <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
             </div>

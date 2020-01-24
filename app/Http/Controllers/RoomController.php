@@ -28,7 +28,7 @@ class RoomController extends Controller
         if ($hotels->isEmpty()) {
             flash('No hay hoteles creados.')->info();
 
-            return back();
+            return redirect()->route('hotels.index');
         }
 
         $hotels = $this->prepare($hotels);

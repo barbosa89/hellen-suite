@@ -9,7 +9,7 @@
         @if (!empty($search))
             <form class="form-inline my-2 my-lg-0" action="{{ $search['action'] }}" method="get">
                 <div class="input-group">
-                    <input class="form-control" type="search" name="query" placeholder="Buscar" aria-label="Search" {{ isset($search['query']) ? 'value=' . $search['query'] : '' }} required>
+                    <input class="form-control" type="search" name="query" placeholder="{{ trans('common.search') }}" aria-label="Search" {{ isset($search['query']) ? 'value=' . $search['query'] : '' }} required>
                     <div class="input-group-append">
                         <button type="submit" class="input-group-text" id="btnGroupAddon">
                             <i class="fa fa-search"></i>

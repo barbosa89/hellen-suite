@@ -12,7 +12,7 @@
         <h5>Creado</h5>
     </div>
     <div class="col-xs-12 col-sm-1 col-md-2 col-lg-2 visible-md visible-lg">
-        <h5>Estado</h5>
+        <h5>{{ $t('common.status') }}</h5>
     </div>
     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
         <h5>@lang('common.options')</h5>

@@ -64,7 +64,7 @@
                         'permission' => 'hotels.edit'
                     ],
                     [
-                        'option' => $row->status ? 'Deshabilitar' : 'Habilitar',
+                        'option' => $row->status ? trans('common.disable') : trans('common.enable'),
                         'url' => route('hotels.toggle', [
                             'room' => Hashids::encode($row->id)
                         ]),

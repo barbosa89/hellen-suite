@@ -25,7 +25,8 @@ class ServiceController extends Controller
             ->with([
                 'services' => function ($query)
                 {
-                    $query->select(Fields::get('services'));
+                    $query->select(Fields::get('services'))
+                        ->where('is_dining_service', false);
                 }
             ])->get(Fields::get('hotels'));
 
@@ -75,7 +76,7 @@ class ServiceController extends Controller
      */
     public function store(StoreService $request)
     {
-        $service = new service();
+        $service = new Service();
         $service->description = $request->description;
         $service->price = (float) $request->price;
         $service->user()->associate(auth()->user()->id);
@@ -104,6 +105,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->with([
                 'hotel' => function($query) {
                     $query->select(Fields::get('hotels'));
@@ -127,6 +129,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->with([
                 'hotel' => function($query) {
                     $query->select(Fields::get('hotels'));
@@ -151,6 +154,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
         if (empty($service)) {
@@ -183,6 +187,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
         if (empty($service)) {
@@ -223,7 +228,7 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function total(Request $request)
+    public function calculateTotal(Request $request)
     {
         if ($request->ajax()) {
             $service = Service::find(Id::get($request->element), ['id', 'price']);
@@ -238,7 +243,7 @@ class ServiceController extends Controller
             }
         }
 
-        abort(404);
+        abort(405);
     }
 
     /**
@@ -283,6 +288,7 @@ class ServiceController extends Controller
 
             $services = Service::where('hotel_id', Id::get($request->hotel))
                 ->where('user_id', Id::parent())
+                ->where('is_dining_service', false)
                 ->whereLike('description', $query)
                 ->get(Fields::get('services'));
 
@@ -299,6 +305,6 @@ class ServiceController extends Controller
             ]);
         }
 
-        abort(404);
+        abort(405);
     }
 }

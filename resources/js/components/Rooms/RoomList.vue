@@ -86,7 +86,7 @@
             <div class="col-12">
                 <div class="card mt-4">
                     <div class="card-body">
-                        Sin registros.
+                        {{ $t('common.noRecords') }}
                     </div>
                 </div>
             </div>
@@ -289,7 +289,7 @@
                     window.location.href = response.data.redirect;
                 }).catch(e => {
                     toastr.error(
-                        'Intenta más tarde otra vez',
+                        this.$root.$t('common.try'),
                         'Error'
                     );
                 });
@@ -314,7 +314,7 @@
                         })
                     }).catch(e => {
                         toastr.error(
-                            'Intenta más tarde otra vez',
+                            this.$root.$t('common.try'),
                             'Error'
                         );
                     });

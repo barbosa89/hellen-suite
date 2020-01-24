@@ -12,7 +12,7 @@
                     <div class="ui search focus">
                         <div class="ui left icon input">
                             <div class="input-group">
-                                <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
+                                <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                             </div>
                         </div>
                         <transition name="fade">
@@ -69,7 +69,7 @@
             <div class="crud-list-heading mt-2">
                 <div class="row">
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <h5>Descripción</h5>
+                        <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <h5>Cantidad</h5>
@@ -78,7 +78,7 @@
                         <h5>Comentario</h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <h5>Opciones</h5>
+                        <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
             </div>
@@ -199,7 +199,7 @@
                 } else {
                     toastr.info(
                         'Ya has agregado este elemento',
-                        'Lo siento'
+                        this.$root.$t('common.sorry')
                     );
                 }
             },
@@ -281,14 +281,14 @@
                             console.log(e);
                         }
                         toastr.error(
-                            'Intenta más tarde otra vez',
+                            this.$root.$t('common.try'),
                             'Error'
                         );
                     });
                 } else {
                     toastr.info(
                         'Aún no puedes procesar la transacción',
-                        'Lo siento'
+                        this.$root.$t('common.sorry')
                     );
                 }
             },
@@ -333,13 +333,13 @@
                                 this.props = []
 
                                 toastr.info(
-                                    'La búsqueda no arrojó resultados',
-                                    'Lo siento'
+                                    this.$root.$t('common.without.results'),
+                                    this.$root.$t('common.sorry')
                                 );
                             }
                         }).catch(e => {
                             toastr.error(
-                                'Intenta más tarde otra vez',
+                                this.$root.$t('common.try'),
                                 'Error'
                             );
                         });

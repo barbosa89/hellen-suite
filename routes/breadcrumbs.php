@@ -102,6 +102,16 @@ Breadcrumbs::for('service', function ($trail, $service) {
     $trail->push($service->description, route('services.show', ['id' => Hashids::encode($service->id)]));
 });
 
+Breadcrumbs::for('dining', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('dining.title'), route('dining.index'));
+});
+
+Breadcrumbs::for('dining-service', function ($trail, $service) {
+    $trail->parent('dining');
+    $trail->push($service->description, route('dining.show', ['id' => Hashids::encode($service->id)]));
+});
+
 Breadcrumbs::for('assets', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('assets.title'), route('assets.index'));

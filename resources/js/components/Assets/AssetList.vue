@@ -12,7 +12,7 @@
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="input-group">
-                    <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
+                    <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                     <div class="input-group-append">
                         <button class="input-group-text" id="btnGroupAddon">
                             <i class="fa fa-search"></i>
@@ -28,7 +28,7 @@
                         <h5>Número</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-                        <h5>Descripción</h5>
+                        <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
                         <h5>Marca</h5>
@@ -37,7 +37,7 @@
                         <h5>Modelo</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 visible-md visible-lg">
-                        <h5>Opciones</h5>
+                        <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                                     Editar
                                 </a>
                                 <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    Eliminar
+                                    {{ $t('common.delete') }}</a>
                                 </a>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                 <div class="crud-list-row">
                     <div class="card mt-4">
                         <div class="card-body">
-                            Sin registros.
+                            {{ $t('common.noRecords') }}
                         </div>
                     </div>
                 </div>
@@ -152,13 +152,13 @@ export default {
                             this.assets = []
 
                             toastr.info(
-                                'La búsqueda no arrojó resultados',
-                                'Lo siento'
+                                this.$root.$t('common.without.results'),
+                                this.$root.$t('common.sorry')
                             );
                         }
                     }).catch(e => {
                         toastr.error(
-                            'Intenta más tarde otra vez',
+                            this.$root.$t('common.try'),
                             'Error'
                         );
                     });

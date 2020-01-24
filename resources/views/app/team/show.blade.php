@@ -14,7 +14,7 @@
                     ]),
                 ],
                 [
-                    'option' => $hotel->status ? 'Deshabilitar' : 'Habilitar',
+                    'option' => $hotel->status ? trans('common.disable') : trans('common.enable'),
                     'url' => route('hotels.toggle', [
                         'room' => Hashids::encode($hotel->id)
                     ]),

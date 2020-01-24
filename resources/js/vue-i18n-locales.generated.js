@@ -139,7 +139,24 @@ export default {
             "of": "Of",
             "percentage": "Percentage",
             "try": "Try again later",
-            "sorry": "Sorry"
+            "sorry": "Sorry",
+            "disable": "Disable",
+            "enable": "Enable",
+            "without": {
+                "results": "No search results"
+            }
+        },
+        "dining": {
+            "title": "Dining service",
+            "new": {
+                "item": "New item",
+                "menu": {
+                    "item": "New menu item"
+                }
+            },
+            "menu": {
+                "item": "Menu item"
+            }
         },
         "props": {
             "add": "Add prop",
@@ -698,7 +715,24 @@ export default {
             "of": "De",
             "percentage": "Porcentaje",
             "try": "Intenta nuevamente más tarde",
-            "sorry": "Lo siento"
+            "sorry": "Lo siento",
+            "disable": "Deshabilitar",
+            "enable": "Habilitar",
+            "without": {
+                "results": "No hay resultados de búsqueda."
+            }
+        },
+        "dining": {
+            "title": "Servicio de comedor",
+            "new": {
+                "item": "Nuevo ítem",
+                "menu": {
+                    "item": "Nuevo ítem del menú"
+                }
+            },
+            "menu": {
+                "item": "Ítem del menú"
+            }
         },
         "props": {
             "add": "Agregar utilería",

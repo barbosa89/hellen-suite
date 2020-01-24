@@ -5,7 +5,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('services.search')
 		->middleware('permission:services.index');
 
-    Route::post('services/calculate/total', 'ServiceController@total')
+    Route::post('services/calculate/total', 'ServiceController@calculateTotal')
 		->name('services.total')
 		->middleware('permission:services.index');
 

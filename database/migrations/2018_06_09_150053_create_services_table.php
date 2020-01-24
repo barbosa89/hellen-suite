@@ -17,6 +17,7 @@ class CreateServicesTable extends Migration
             $table->bigIncrements('id');
             $table->string('description');
             $table->decimal('price', 10, 2);
+            $table->boolean('is_dining_service')->default(false);
             $table->boolean('status')->default(true);
 
             $table->bigInteger('hotel_id')->unsigned();

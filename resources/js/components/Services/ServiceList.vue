@@ -12,7 +12,7 @@
             </div>
             <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="input-group">
-                    <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
+                    <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                     <div class="input-group-append">
                         <button class="input-group-text" id="btnGroupAddon">
                             <i class="fa fa-search"></i>
@@ -25,16 +25,16 @@
             <div class="crud-list-heading mt-2">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <h5>Descripción</h5>
+                        <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Precio</h5>
+                        <h5>{{ $t('common.price') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Estado</h5>
+                        <h5>{{ $t('common.status') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                        <h5>Opciones</h5>
+                        <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                         <p>
                             <a :href="'/services/' + service.hash">
-                                {{ service.price }}
+                                {{ new Intl.NumberFormat("de-DE").format(service.price) }}
                             </a>
                         </p>
                         </div>
@@ -65,12 +65,12 @@
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/edit'" class="dropdown-item">Editar</a>
+                                <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/edit'" class="dropdown-item">{{ $t('common.edit') }}</a>
                                 <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
-                                    {{ service.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
+                                    {{ service.status == 1 ? $t('common.disable') : $t('common.disable') }}
                                 </a>
                                 <a v-if="$can('services.destroy')" href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    Eliminar
+                                    {{ $t('common.delete') }}</a>
                                 </a>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                 <div class="crud-list-row">
                     <div class="card mt-4">
                         <div class="card-body">
-                            Sin registros.
+                            {{ $t('common.noRecords') }}
                         </div>
                     </div>
                 </div>
@@ -136,13 +136,13 @@ export default {
                             this.services = []
 
                             toastr.info(
-                                'La búsqueda no arrojó resultados',
-                                'Lo siento'
+                                this.$root.$t('common.without.results'),
+                                this.$root.$t('common.sorry')
                             );
                         }
                     }).catch(e => {
                         toastr.error(
-                            'Intenta más tarde otra vez',
+                            this.$root.$t('common.try'),
                             'Error'
                         );
                     });

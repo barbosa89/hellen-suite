@@ -16,14 +16,14 @@
                     </select>
 
                     <div class="input-group mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                        <input class="form-control" type="search" name="query" v-model="query" placeholder="Buscar" aria-label="Search" required>
+                        <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                     </div>
                 </div>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a v-if="$can('products.create')" href="/products/create" class="nav-link">
-                            Nuevo
+                            {{ $t('common.new') }}
                         </a>
                     </li>
                 </ul>
@@ -34,7 +34,7 @@
             <div class="crud-list-heading mt-2">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                        <h5>Descripción</h5>
+                        <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                         <h5>Marca</h5>
@@ -43,16 +43,16 @@
                         <h5>Referencia</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Precio</h5>
+                        <h5>{{ $t('common.price') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
                         <h5>Existencia</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                        <h5>Estado</h5>
+                        <h5>{{ $t('common.status') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                        <h5>Opciones</h5>
+                        <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <p>
                                 <a v-if="$can('products.show')" :href="'/products/' + product.hash">
-                                    {{ product.price }}
+                                    {{ new Intl.NumberFormat("de-DE").format(product.price) }}
                                 </a>
                             </p>
                         </div>
@@ -122,12 +122,12 @@
                                     <a
                                         :href="'/products/' + product.hash + '/edit'"
                                         class="dropdown-item"
-                                        v-if="$can('products.edit')">Editar</a>
+                                        v-if="$can('products.edit')">{{ $t('common.edit') }}</a>
                                     <a
                                         :href="'/products/' + product.hash + '/toggle'"
                                         class="dropdown-item"
                                         v-if="$can('products.edit')"
-                                        >{{ product.status == 1 ? 'Deshabilitar' : 'Habilitar' }}</a>
+                                        >{{ product.status == 1 ? $t('common.disable') : $t('common.disable') }}</a>
                                     <a
                                         :href="'#'"
                                         :data-url="'/products/' + product.hash"
@@ -136,7 +136,7 @@
                                         onclick="confirmAction(this, event)"
                                         class="dropdown-item"
                                         v-if="$can('products.destroy')"
-                                        >Eliminar</a>
+                                        >{{ $t('common.delete') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                 <div class="crud-list-row">
                     <div class="card mt-4">
                         <div class="card-body">
-                            Sin registros.
+                            {{ $t('common.noRecords') }}
                         </div>
                     </div>
                 </div>
@@ -201,13 +201,13 @@ export default {
                             this.products = []
 
                             toastr.info(
-                                'La búsqueda no arrojó resultados',
-                                'Lo siento'
+                                this.$root.$t('common.without.results'),
+                                this.$root.$t('common.sorry')
                             );
                         }
                     }).catch(e => {
                         toastr.error(
-                            'Intenta más tarde otra vez',
+                            this.$root.$t('common.try'),
                             'Error'
                         );
                     });

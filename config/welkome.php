@@ -103,6 +103,7 @@ return [
             'description',
             'price',
             'status',
+            'is_dining_service',
             'user_id',
             'hotel_id'
         ],
@@ -214,6 +215,7 @@ return [
         'shifts',
         'vehicles',
         'props',
+        'dining'
     ],
 
     /*

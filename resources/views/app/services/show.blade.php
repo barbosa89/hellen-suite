@@ -26,7 +26,7 @@
                             ]),
                         ],
                         [
-                            'option' => $service->status ? 'Deshabilitar' : 'Habilitar',
+                            'option' => $service->status ? trans('common.disable') : trans('common.enable'),
                             'url' => route('services.toggle', ['id' => Hashids::encode($service->id)])
                         ],
                         [

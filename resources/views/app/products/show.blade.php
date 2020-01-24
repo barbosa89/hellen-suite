@@ -35,7 +35,7 @@
                             ]),
                         ],
                         [
-                            'option' => $product->status ? 'Deshabilitar' : 'Habilitar',
+                            'option' => $product->status ? trans('common.disable') : trans('common.enable'),
                             'url' => route('products.toggle', [
                                 'id' => Hashids::encode($product->id)
                             ])
