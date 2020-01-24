@@ -18,8 +18,8 @@
             <p>
                 @if (empty($row->company))
                     @if ($row->guests->isNotEmpty())
-                        <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests()->wherePivot('main', true)->first()->id)]) }}">
-                            {{ $row->guests()->wherePivot('main', true)->first()->full_name }}
+                        <a href="{{ route('guests.show', ['id' => Hashids::encode($row->guests->where('pivot.main', true)->first()->id)]) }}">
+                            {{ $row->guests->where('pivot.main', true)->first()->full_name }}
                         </a>
                     @endif
                 @else
