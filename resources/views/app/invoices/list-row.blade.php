@@ -115,6 +115,16 @@
                     ],
                     [
                         'type' => 'hideable',
+                        'option' => trans('invoices.load.dining.services'),
+                        'url' => route('invoices.services', [
+                            'id' => Hashids::encode($row->id),
+                            'type' => 'dining'
+                        ]),
+                        'show' => !$row->reservation and $row->open,
+                        'permission' => 'invoices.edit'
+                    ],
+                    [
+                        'type' => 'hideable',
                         'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                         'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
@@ -122,7 +132,7 @@
                     ],
                     [
                         'type' => 'hideable',
-                        'option' => 'Agregar servicios de terceros',
+                        'option' => trans('invoices.load.external.services'),
                         'url' => route('invoices.external.add', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
                         'permission' => 'invoices.edit'
@@ -138,7 +148,7 @@
                         ]),
                         'show' => $row->open,
                         'method' => 'POST',
-                        'permission' => $invoice->open ? 'invoices.close' : 'invoices.open',
+                        'permission' => $row->open ? 'invoices.close' : 'invoices.open',
                     ],
                     [
                         'type' => 'confirm',

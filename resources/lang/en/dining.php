@@ -14,4 +14,5 @@ return array (
   array (
     'item' => 'Menu item',
   ),
+  'item' => 'Item',
 );

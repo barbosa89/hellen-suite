@@ -84,4 +84,15 @@ return array (
   array (
     'processing' => 'Quedaron recibos pendientes por procesar',
   ),
+  'load' => 
+  array (
+    'external' => 
+    array (
+      'services' => 'Cargar servicios de terceros',
+    ),
+    'dining' => 
+    array (
+      'services' => 'Cargar servicios de comedor',
+    ),
+  ),
 );

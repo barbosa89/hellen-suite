@@ -156,7 +156,8 @@ export default {
             },
             "menu": {
                 "item": "Menu item"
-            }
+            },
+            "item": "Item"
         },
         "props": {
             "add": "Add prop",
@@ -325,6 +326,14 @@ export default {
             },
             "incomplete": {
                 "processing": "There are pending invoices for processing"
+            },
+            "load": {
+                "external": {
+                    "services": "Load thirdparty services"
+                },
+                "dining": {
+                    "services": "Load dining services"
+                }
             }
         },
         "assets": {
@@ -732,7 +741,8 @@ export default {
             },
             "menu": {
                 "item": "Ítem del menú"
-            }
+            },
+            "item": "Ítem"
         },
         "props": {
             "add": "Agregar utilería",
@@ -901,6 +911,14 @@ export default {
             },
             "incomplete": {
                 "processing": "Quedaron recibos pendientes por procesar"
+            },
+            "load": {
+                "external": {
+                    "services": "Cargar servicios de terceros"
+                },
+                "dining": {
+                    "services": "Cargar servicios de comedor"
+                }
             }
         },
         "assets": {

@@ -1505,13 +1505,19 @@ class InvoiceController extends Controller
     }
 
     /**
-     * Show the form for adding services to invoice.
+     * Show the form to add services to invoice.
      *
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function services($id = '')
+    public function showFormToAddServices($id, $type = 'all')
     {
+        $type = Input::clean($type);
+
+        if (!in_array($type, ['all', 'dining'])) {
+            abort(400);
+        }
+
         $invoice = Invoice::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
@@ -1539,9 +1545,13 @@ class InvoiceController extends Controller
             abort(404);
         }
 
+        // Check if is dining service
+        $serviceType = $type == 'dining' ? true : false;
+
         $services = Service::where('user_id', Id::parent())
             ->where('hotel_id', $invoice->hotel->id)
             ->whereStatus(true)
+            ->where('is_dining_service', $serviceType)
             ->get(Fields::get('services'));
 
         if ($services->isEmpty()) {

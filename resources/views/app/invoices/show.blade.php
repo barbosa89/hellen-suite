@@ -72,6 +72,16 @@
                         ],
                         [
                             'type' => 'hideable',
+                            'option' => trans('invoices.load.dining.services'),
+                            'url' => route('invoices.services', [
+                                'id' => Hashids::encode($invoice->id),
+                                'type' => 'dining'
+                            ]),
+                            'show' => !$invoice->reservation and $invoice->open,
+                            'permission' => 'invoices.edit'
+                        ],
+                        [
+                            'type' => 'hideable',
                             'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
                             'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
                             'show' => !$invoice->reservation and $invoice->open,
@@ -79,7 +89,7 @@
                         ],
                         [
                             'type' => 'hideable',
-                            'option' => 'Agregar servicios de terceros',
+                            'option' => trans('invoices.load.external.services'),
                             'url' => route('invoices.external.add', ['id' => Hashids::encode($invoice->id)]),
                             'show' => !$invoice->reservation and $invoice->open,
                             'permission' => 'invoices.edit'
@@ -473,7 +483,7 @@
         <!-- Products -->
 
         <!-- Services -->
-        @if($invoice->services->isNotEmpty())
+        @if($invoice->services->where('is_dining_service', false)->isNotEmpty())
             <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
@@ -505,7 +515,83 @@
                                     </div>
                                 </div>
                                 <div class="crud-list-items">
-                                    @foreach($invoice->services as $service)
+                                    @foreach($invoice->services->where('is_dining_service', false) as $service)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+                                                    <p>
+                                                        <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
+                                                            {{ $service->description }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>
+                                                        {{ number_format($service->price, 2, ',', '.') }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $service->pivot->quantity }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ number_format($service->pivot->value, 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <p>{{ $service->pivot->created_at->format('Y-m-d') }}</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    @can('invoices.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.services.remove', ['id' => Hashids::encode($invoice->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Services -->
+
+        <!-- Services -->
+        @if($invoice->services->where('is_dining_service', true)->isNotEmpty())
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-utensils"></i></small> @lang('dining.title')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('dining.item')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.quantity')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.total')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.date')</h5>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($invoice->services->where('is_dining_service', true) as $service)
                                         <div class="crud-list-row">
                                             <div class="row">
                                                 <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">

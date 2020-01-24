@@ -84,4 +84,15 @@ return array (
   array (
     'processing' => 'There are pending invoices for processing',
   ),
+  'load' => 
+  array (
+    'external' => 
+    array (
+      'services' => 'Load thirdparty services',
+    ),
+    'dining' => 
+    array (
+      'services' => 'Load dining services',
+    ),
+  ),
 );
