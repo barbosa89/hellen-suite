@@ -3,16 +3,17 @@
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.12.0",
         "@nunomaduro/dd": "^1.0.0",
         "animate.css": "^3.7.0",
-        "axios": "^0.19.1",
+        "axios": "^0.19.2",
         "bootstrap": "^4.4.1",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-sass": "^3.4.1",
@@ -21,7 +22,7 @@
         "browser-sync": "^2.24.7",
         "browser-sync-webpack-plugin": "^2.2.2",
         "chart.js": "^2.9.3",
-        "cross-env": "^5.2.1",
+        "cross-env": "^5.1",
         "datatables": "^1.10.18",
         "datatables-responsive": "1.0.7",
         "datatables.net-plugins": "1.10.15",
@@ -30,14 +31,14 @@
         "holderjs": "^2.4.1",
         "jquery": "^3.2",
         "jquery.flot.tooltip": "0.9.0",
-        "laravel-mix": "^4.1.4",
+        "laravel-mix": "^4.0.7",
         "lodash": "^4.17.15",
         "moment": "^2.22.2",
-        "popper.js": "^1.16.0",
+        "popper.js": "^1.16.1",
         "pretty-checkbox": "^3.0.3",
-        "resolve-url-loader": "^2.3.2",
-        "sass": "^1.24.4",
-        "sass-loader": "^7.3.1",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.25.0",
+        "sass-loader": "^7.1.0",
         "sweetalert2": "^8.19.0",
         "toastr": "^2.1.2",
         "vue": "^2.6.11",
@@ -48,8 +49,7 @@
         "vue-touch": "^2.0.0-beta.4"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.0",
-        "bootstrap-vue": "^2.2.2",
+        "bootstrap-vue": "^2.3.0",
         "jquery.easing": "^1.4.1"
     }
 }
