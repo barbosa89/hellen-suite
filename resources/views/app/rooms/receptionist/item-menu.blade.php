@@ -2,7 +2,7 @@
     'options' => [
         [
             'option' => trans('common.seeMore'),
-            'url' => route('rooms.display', ['room' => Hashids::encode($row->id)]),
+            'url' => route('rooms.display', ['id' => Hashids::encode($row->id)]),
         ],
         [
             'option' => trans('rooms.reserve'),

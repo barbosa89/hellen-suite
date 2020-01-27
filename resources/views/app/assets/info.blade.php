@@ -38,7 +38,7 @@
         <h3>@lang('common.location'):</h3>
         @if(empty($asset->location))
             @if($asset->room)
-                <a href="{{ route('rooms.show', ['room' => Hashids::encode($asset->room->id)]) }}">
+                <a href="{{ route('rooms.show', ['id' => Hashids::encode($asset->room->id)]) }}">
                     {{ trans('rooms.room') }} No. {{ $asset->room->number }}
                 </a>
             @else

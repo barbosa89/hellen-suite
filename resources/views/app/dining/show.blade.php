@@ -22,7 +22,7 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('dining.edit', [
-                                'room' => Hashids::encode($service->id)
+                                'id' => Hashids::encode($service->id)
                             ]),
                         ],
                         [

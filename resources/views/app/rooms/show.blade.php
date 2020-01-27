@@ -47,7 +47,7 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('rooms.edit', [
-                                'room' => Hashids::encode($room->id)
+                                'id' => Hashids::encode($room->id)
                             ]),
                         ],
                         [
@@ -101,7 +101,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>@lang('products.title')</h3>
-                
+
                 @include('partials.list', [
                     'data' => $room->assets,
                     'listHeading' => 'app.assets.list-heading',

@@ -18,7 +18,7 @@
                         [
                             'option' => trans('common.seeMore'),
                             'url' => route('products.show', [
-                                'room' => Hashids::encode($product->id)
+                                'id' => Hashids::encode($product->id)
                             ])
                         ],
                         [
@@ -27,7 +27,7 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('products.edit', [
-                                'room' => Hashids::encode($product->id)
+                                'id' => Hashids::encode($product->id)
                             ]),
                         ],
                         [

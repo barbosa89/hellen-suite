@@ -32,7 +32,7 @@
     @include('app.invoices.info')
 
     <h3 class="text-center">@lang('rooms.changeRoom')</h3>
-    <form class="mt-4" action="{{ route('invoices.guests.change', ['id' => Hashids::encode($invoice->id), 'room' => Hashids::encode($guest->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('invoices.guests.change', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">Hotel:</label>

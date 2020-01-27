@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('props.title')</h2>
-                <form action="{{ route('props.update', ['prop' => Hashids::encode($prop->id)]) }}" method="POST">
+                <form action="{{ route('props.update', ['id' => Hashids::encode($prop->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
                     <input type="hidden" name="hotel" id="hotel" value="{{ Hashids::encode($prop->hotel->id) }}">

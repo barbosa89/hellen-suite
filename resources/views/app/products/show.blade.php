@@ -31,7 +31,7 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('products.edit', [
-                                'room' => Hashids::encode($product->id)
+                                'id' => Hashids::encode($product->id)
                             ]),
                         ],
                         [

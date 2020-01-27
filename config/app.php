@@ -159,15 +159,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // AlbertCht\InvisibleReCaptcha\InvisibleReCaptchaServiceProvider::class,
-        // Laracasts\Flash\FlashServiceProvider::class,
-        // Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
-        // Zizaco\Entrust\EntrustServiceProvider::class,
-        // Barryvdh\Debugbar\ServiceProvider::class,
-        // Vinkla\Hashids\HashidsServiceProvider::class,
-        // Maatwebsite\Excel\ExcelServiceProvider::class,
-        // Laraveles\Spanish\SpanishServiceProvider::class,
-        // Barryvdh\TranslationManager\ManagerServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
     ],
 
@@ -185,6 +176,7 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -214,16 +206,11 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
+        'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        // 'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-        // 'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
-        // 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
-        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
     ],
 
 ];

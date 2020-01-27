@@ -2,7 +2,7 @@
     <div class="col-12 col-sx-12 col-sm-12 col-md-12 d-block d-lg-none d-xl-none mb-4">
         <div class="row">
             <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-3 col-xl-3">
-                <a href="{{ route('hotels.show', ['room' => Hashids::encode($invoice->hotel->id)]) }}">
+                <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
                     <img class="img-fluid" src="{{ empty($invoice->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($invoice->hotel->image)) }}" alt="{{ $invoice->hotel->business_name }}">
                 </a>
             </div>
@@ -142,7 +142,7 @@
                 </div>
             </div>
             <div class="col-md-5 text-right dont-break-out">
-                <a href="{{ route('hotels.show', ['room' => Hashids::encode($invoice->hotel->id)]) }}">
+                <a href="{{ route('hotels.show', ['id' => Hashids::encode($invoice->hotel->id)]) }}">
                     <img class="img-fluid" src="{{ empty($invoice->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($invoice->hotel->image)) }}" alt="{{ $invoice->hotel->business_name }}">
                 </a>
             </div>

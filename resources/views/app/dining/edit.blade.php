@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('dining.menu.item')</h2>
-                <form action="{{ route('dining.update', ['service' => Hashids::encode($service->id)]) }}" method="POST">
+                <form action="{{ route('dining.update', ['id' => Hashids::encode($service->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
 

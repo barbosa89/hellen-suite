@@ -2,7 +2,7 @@
     'options' => [
         [
             'option' => trans('common.seeMore'),
-            'url' => route('rooms.show', ['room' => Hashids::encode($row->id)]),
+            'url' => route('rooms.show', ['id' => Hashids::encode($row->id)]),
         ],
         [
             'option' => trans('assets.add'),
@@ -18,14 +18,14 @@
         [
             'option' => trans('common.edit'),
             'url' => route('rooms.edit', [
-                'room' => Hashids::encode($row->id)
+                'id' => Hashids::encode($row->id)
             ]),
         ],
         [
             'type' => 'confirm',
             'option' => trans('common.delete'),
             'url' => route('rooms.destroy', [
-                'room' => Hashids::encode($row->id)
+                'id' => Hashids::encode($row->id)
             ]),
             'method' => 'DELETE'
         ],

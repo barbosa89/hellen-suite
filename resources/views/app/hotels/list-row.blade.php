@@ -59,14 +59,14 @@
                     [
                         'option' => trans('common.edit'),
                         'url' => route('hotels.edit', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                         'permission' => 'hotels.edit'
                     ],
                     [
                         'option' => $row->status ? trans('common.disable') : trans('common.enable'),
                         'url' => route('hotels.toggle', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                         'permission' => 'hotels.edit'
                     ],
@@ -74,7 +74,7 @@
                         'type' => 'confirm',
                         'option' => trans('common.delete'),
                         'url' => route('hotels.destroy', [
-                            'room' => Hashids::encode($row->id)
+                            'id' => Hashids::encode($row->id)
                         ]),
                         'method' => 'DELETE',
                         'permission' => 'hotels.destroy'

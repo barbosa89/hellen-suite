@@ -13,7 +13,7 @@
             'options' => [
                 [
                     'option' => trans('common.export'),
-                    'url' => route('invoices.export', ['invoice' => Hashids::encode($invoice->id)]),
+                    'url' => route('invoices.export', ['id' => Hashids::encode($invoice->id)]),
                     'permission' => 'invoices.show'
                 ],
                 [

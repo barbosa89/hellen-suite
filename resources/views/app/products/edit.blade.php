@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('products.title')</h2>
-                <form action="{{ route('products.update', ['product' => Hashids::encode($product->id)]) }}" method="POST">
+                <form action="{{ route('products.update', ['id' => Hashids::encode($product->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
 

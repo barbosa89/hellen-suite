@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('rooms.update', ['room' => Hashids::encode($room->id)]) }}" method="POST">
+                <form action="{{ route('rooms.update', ['id' => Hashids::encode($room->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
 

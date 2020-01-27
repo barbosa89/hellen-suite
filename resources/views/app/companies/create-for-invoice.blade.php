@@ -13,7 +13,7 @@
             'options' => [
                 [
                     'option' => 'Buscar empresas',
-                    'url' => route('invoices.companies.search', ['room' => Hashids::encode($invoice->id)])
+                    'url' => route('invoices.companies.search', ['id' => Hashids::encode($invoice->id)])
                 ],
                 [
                     'option' => 'Volver al recibo',
