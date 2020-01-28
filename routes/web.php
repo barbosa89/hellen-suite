@@ -51,3 +51,4 @@ require __DIR__ . '/modules/props.php';
 require __DIR__ . '/modules/vehicles.php';
 require __DIR__ . '/modules/payments.php';
 require __DIR__ . '/modules/dining.php';
+require __DIR__ . '/modules/shifts.php';

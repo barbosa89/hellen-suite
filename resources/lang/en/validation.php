@@ -89,4 +89,5 @@ return array (
   ),
   'verified' => 'The :attribute has not been verified',
   'unique_per_user' => 'There is already a record with the same information',
+  'has_headquarter' => 'The team member does not have an assigned headquarter',
 );

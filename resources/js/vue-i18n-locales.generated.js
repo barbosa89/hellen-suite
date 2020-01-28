@@ -550,7 +550,8 @@ export default {
                 }
             },
             "verified": "The {attribute} has not been verified",
-            "unique_per_user": "There is already a record with the same information"
+            "unique_per_user": "There is already a record with the same information",
+            "has_headquarter": "The team member does not have an assigned headquarter"
         },
         "rooms": {
             "title": "Rooms",
@@ -1135,7 +1136,8 @@ export default {
                 }
             },
             "verified": "El correo no ha sido verificado",
-            "unique_per_user": "Ya hay un registro con la misma información"
+            "unique_per_user": "Ya hay un registro con la misma información",
+            "has_headquarter": "No tienes una sede asignada"
         },
         "rooms": {
             "title": "Habitaciones",

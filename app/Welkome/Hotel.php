@@ -39,6 +39,11 @@ class Hotel extends Model
         return $this->hasMany(\App\Welkome\Invoice::class);
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(\App\Welkome\Shift::class);
+    }
+
     public function rooms()
     {
         return $this->hasMany(\App\Welkome\Room::class);

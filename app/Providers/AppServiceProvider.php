@@ -8,6 +8,7 @@ use App\Welkome\Invoice;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Observers\InvoiceObserver;
+use App\Welkome\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -32,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             return (int) $value <= $product->quantity;
         });
 
+        // Check if encoded ID exists
         Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
             $value = Id::get($value);
             $table = $parameters[0];
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
             return $result->count() === 1;
         });
 
+        // Check if the hotel to be stored is an independent headquarters or hotel
         Validator::extend('headquarter', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
@@ -63,6 +66,56 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return false;
+        });
+
+        // Check if the team member has an assigned headquarter
+        Validator::extend('has_headquarter', function ($attribute, $value, $parameters, $validator) {
+            $user = User::where('email', $value)
+                ->whereDoesntHave('roles', function ($query)
+                {
+                    $query->where('name', 'root')
+                        ->orWhere('name', 'manager');
+                })->with([
+                    'headquarters' => function($query) {
+                        $query->select(['id', 'business_name']);
+                    }
+                ])->first(['id', 'email']);
+
+            if (!empty($user)) {
+                return $user->headquarters->isNotEmpty();
+            }
+
+            return true;
+        });
+
+        // Check if there is an open shift at the headquarters
+        // assigned to the user with receptionist role
+        Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
+            $user = User::where('email', $value)
+                ->whereHas('roles', function ($query)
+                {
+                    $query->where('name', 'receptionist');
+                })->with([
+                    'headquarters' => function($query) {
+                        $query->select(['id', 'business_name']);
+                    }
+                ])->first(['id', 'email']);
+
+            if (!empty($user)) {
+                if ($user->headquarters->isEmpty()) {
+                    return false;
+                }
+
+                $shifts = Shift::where('open', true)
+                    ->whereHas('hotel', function ($query) use ($user)
+                    {
+                        $query->where('id', $user->headquarters->first()->id);
+                    })->get(['id', 'open', 'hotel_id']);
+
+                return $shifts->isEmpty();
+            }
+
+            return true;
         });
 
         /**

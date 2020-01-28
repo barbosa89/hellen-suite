@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
 use App\Notifications\VerifyTeamMemberEmail;
 use Spatie\Permission\Models\Permission;
+use Vinkla\Hashids\Facades\Hashids;
 
 // TODO: Implementar la asignación de permisos directos a usuarios, con los roles se cargan módulos exclusivos
 class TeamController extends Controller
@@ -186,20 +187,29 @@ class TeamController extends Controller
                 }
             ])->first(Fields::get('users'));
 
-        // Check if is empty
-        $headquarter = $member->headquarters()->count() > 0;
+        // Check if the team member has an assigned headquarter,
+        // if the team member has a headquarter, then all headquarters are queried
+        // except the current headquarter
+        $hasHeadquarter = $member->headquarters->isNotEmpty();
 
         $hotels = User::find(auth()->user()->id, ['id'])->hotels()
-            ->when($headquarter, function ($query) use ($member)
+            ->when($hasHeadquarter, function ($query) use ($member)
             {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
             })->get(Fields::get('hotels'));
 
         // Check if is empty
+        if ($hotels->isEmpty() and $member->headquarters->isNotEmpty()) {
+            flash('Sólo hay un hotel creado y ya fue asignado.')->info();
+
+            return back();
+        }
+
+        // Check if is empty
         if ($hotels->isEmpty()) {
             flash('No hay hoteles creados.')->info();
 
-            return back();
+            return redirect()->route('hotels.index');
         }
 
         return view('app.team.assign', compact('member', 'hotels'));
@@ -225,7 +235,9 @@ class TeamController extends Controller
 
         flash(trans('common.updatedSuccessfully'))->success();
 
-        return back();
+        return redirect()->route('team.show', [
+            'id' => Hashids::encode($member->id)
+        ]);
     }
 
     /**
