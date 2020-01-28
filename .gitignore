@@ -12,5 +12,5 @@ npm-debug.log
 yarn-error.log
 .env
 /.phpintel
-/storage/indexes/*.index
+.phpunit.result.cache
 
