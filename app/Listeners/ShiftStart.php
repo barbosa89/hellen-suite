@@ -24,7 +24,7 @@ class ShiftStart
     /**
      * Handle the event.
      *
-     * @param  ShiftWatcher  $event
+     * @param  Login  $event
      * @return void
      */
     public function handle(Login $event)
@@ -40,11 +40,31 @@ class ShiftStart
                 }
             ])->first(['id', 'email']);
 
+        // Check if there is an user with receptionist role
         if (!empty($user)) {
-            $shift = new Shift();
-            $shift->user()->associate($user);
-            $shift->hotel()->associate($user->headquarters->first());
-            $shift->save();
+            // Query an open shift of current user
+            $shift = Shift::where('open', true)
+                ->with([
+                    'user' => function ($query)
+                    {
+                        $query->select(['id']);
+                    }
+                ])->whereHas('hotel', function ($query) use ($user)
+                {
+                    $query->where('id', $user->headquarters->first()->id);
+                })->whereHas('user', function ($query) use ($user)
+                {
+                    $query->where('id', $user->id);
+                })->first(['id', 'open', 'hotel_id', 'user_id']);
+
+            // If there is not a shift, then new shift is created
+            // Else, the user continues with the current shift
+            if (empty($shift)) {
+                $shift = new Shift();
+                $shift->user()->associate($user);
+                $shift->hotel()->associate($user->headquarters->first());
+                $shift->save();
+            }
         }
     }
 }

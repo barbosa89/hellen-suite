@@ -91,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
         // Check if there is an open shift at the headquarters
         // assigned to the user with receptionist role
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
+            // Get receptionist user
             $user = User::where('email', $value)
                 ->whereHas('roles', function ($query)
                 {
@@ -101,20 +102,40 @@ class AppServiceProvider extends ServiceProvider
                     }
                 ])->first(['id', 'email']);
 
+            // Check if there is an user with receptionist role
             if (!empty($user)) {
+                // Check if the team member has an assigned headquarter
                 if ($user->headquarters->isEmpty()) {
                     return false;
                 }
 
-                $shifts = Shift::where('open', true)
+                // Query the open shifts
+                $shift = Shift::where('open', true)
+                    ->with([
+                        'user' => function ($query)
+                        {
+                            $query->select(['id']);
+                        }
+                    ])
                     ->whereHas('hotel', function ($query) use ($user)
                     {
                         $query->where('id', $user->headquarters->first()->id);
-                    })->get(['id', 'open', 'hotel_id']);
+                    })->first(['id', 'open', 'hotel_id', 'user_id']);
 
-                return $shifts->isEmpty();
+                // True if there are no open shifts
+                if (empty($shift)) {
+                    return true;
+                }
+
+                // Check if user ID is equal to shift user ID
+                if ($user->id == $shift->user->id) {
+                    return true;
+                }
+
+                return false;
             }
 
+            // Always returns true to roles other than receptionist
             return true;
         });
 
