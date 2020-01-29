@@ -16,4 +16,6 @@ return array (
   'shifts' => 'Turnos',
   'subscriptions' => 'Suscripciones',
   'vehicles' => 'Vehículos',
+  'props' => 'Utilería',
+  'dining' => 'Servicio de comedor',
 );

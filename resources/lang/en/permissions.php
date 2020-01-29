@@ -9,4 +9,7 @@ return array (
   'load' => 'Load',
   'search' => 'Search',
   'show' => 'Show',
+  'close' => 'Close',
+  'losses' => 'Losses',
+  'open' => 'Open',
 );

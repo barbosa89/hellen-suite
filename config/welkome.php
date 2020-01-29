@@ -215,8 +215,7 @@ return [
         'shifts',
         'vehicles',
         'props',
-        'dining',
-        'shifts'
+        'dining'
     ],
 
     /*

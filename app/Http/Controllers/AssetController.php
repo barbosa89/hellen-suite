@@ -35,7 +35,7 @@ class AssetController extends Controller
             ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return redirect()->route('hotels.index');
         }
@@ -76,7 +76,7 @@ class AssetController extends Controller
             ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return redirect()->route('hotels.index');
         }
@@ -335,7 +335,7 @@ class AssetController extends Controller
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return redirect()->route('hotels.index');
         }
@@ -377,7 +377,7 @@ class AssetController extends Controller
         }
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return redirect()->route('hotels.index');
         }

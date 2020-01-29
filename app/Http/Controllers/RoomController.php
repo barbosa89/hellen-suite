@@ -26,9 +26,13 @@ class RoomController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados.')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
-            return redirect()->route('hotels.index');
+            if (auth()->user()->can('hotels.index')) {
+                return redirect()->route('hotels.index');
+            }
+
+            return redirect()->route('home');
         }
 
         $hotels = $this->prepare($hotels);
@@ -85,11 +89,11 @@ class RoomController extends Controller
             'headquarters' => function ($query)
             {
                 $query->select(Fields::parsed('hotels'))
-                    ->where('status', true)
-                    ->orderBy('number');
+                    ->where('status', true);
             },
             'headquarters.rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(Fields::parsed('rooms'))
+                    ->orderBy('number');
             }
         ]);
 
@@ -109,7 +113,7 @@ class RoomController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados.')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return back();
         }

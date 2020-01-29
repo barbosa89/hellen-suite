@@ -100,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
                     'headquarters' => function($query) {
                         $query->select(['id', 'business_name']);
                     }
-                ])->first(['id', 'email']);
+                ])->first(['id', 'email', 'parent']);
 
             // Check if there is an user with receptionist role
             if (!empty($user)) {
@@ -128,7 +128,7 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 // Check if user ID is equal to shift user ID
-                if ($user->id == $shift->user->id) {
+                if ($user->parent == $shift->user->id) {
                     return true;
                 }
 

@@ -16,4 +16,6 @@ return array (
   'team' => 'Team',
   'users' => 'Users',
   'vehicles' => 'Vehicles',
+  'dining' => 'Dining service',
+  'props' => 'Props',
 );

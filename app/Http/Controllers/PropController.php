@@ -40,9 +40,13 @@ class PropController extends Controller
             ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
-            return redirect()->route('hotels.index');
+            if (auth()->user()->can('hotels.index')) {
+                return redirect()->route('hotels.index');
+            }
+
+            return redirect()->route('home');
         }
 
         $hotels = $hotels->map(function ($hotel)

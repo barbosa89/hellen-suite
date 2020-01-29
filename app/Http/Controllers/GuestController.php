@@ -103,7 +103,8 @@ class GuestController extends Controller
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select('id', 'number');
+                    $query->select('id', 'number', 'status')
+                        ->withPivot('enabled');
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')

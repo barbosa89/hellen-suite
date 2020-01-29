@@ -9,4 +9,7 @@ return array (
   'search' => 'Buscar',
   'add' => 'Agregar',
   'load' => 'Cargar',
+  'close' => 'Cerrar',
+  'open' => 'Abrir',
+  'losses' => 'Losses',
 );

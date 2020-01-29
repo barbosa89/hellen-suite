@@ -70,6 +70,11 @@ class Invoice extends Model
         return $this->hasMany(\App\Welkome\Additional::class);
     }
 
+    public function shifts()
+    {
+        return $this->belongsToMany(\App\Welkome\Shift::class);
+    }
+
     /**
      * Hashing ID.
      *

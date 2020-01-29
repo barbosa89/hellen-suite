@@ -47,9 +47,13 @@ class DiningServiceController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados.')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
-            return redirect()->route('hotels.index');
+            if (auth()->user()->can('hotels.index')) {
+                return redirect()->route('hotels.index');
+            }
+
+            return redirect()->route('home');
         }
 
         return view('app.dining.index', compact('hotels'));
@@ -68,7 +72,7 @@ class DiningServiceController extends Controller
             ->get(Fields::get('hotels'));
 
         if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return back();
         }

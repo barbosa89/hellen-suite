@@ -5,4 +5,8 @@ return array (
   'all' => 'All hotels',
   'one' => 'One hotel or headquarter',
   'choose' => 'Choose a hotel or headquarter',
+  'there' => 
+  array (
+    'isnt' => 'There isn\'t created hotels',
+  ),
 );

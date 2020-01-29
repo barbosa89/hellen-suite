@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Age, Customer, Fields, Id, Input, Random};
-use App\Welkome\{Additional, Company, Guest, Hotel, Invoice, Product, Room, Service, Vehicle};
+use App\Helpers\{Customer, Fields, Id, Input, Random};
+use App\Welkome\{Additional, Company, Guest, Hotel, Invoice, Product, Room, Service, Shift, Vehicle};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -14,12 +14,10 @@ use App\Http\Requests\{
     AddServices,
     ChangeGuestRoom,
     Multiple,
-    RemoveGuests,
     ChangeRoom,
     InvoicesProcessing,
     StoreAdditional,
     StoreInvoice,
-    StoreInvoiceGuest,
     StoreRoute
 };
 use Illuminate\Database\Eloquent\Builder;
@@ -31,7 +29,6 @@ use Illuminate\Support\Facades\Storage;
 // TODO: Crear tabla de configuraciones
 // Agregar edad limite para ser adulto
 // Agregar Hora hotelera
-// Pagos
 class InvoiceController extends Controller
 {
     /**
@@ -156,13 +153,17 @@ class InvoiceController extends Controller
                     $invoice->taxes += $item['taxes'];
                     $invoice->value += $item['value'];
                 }
-                // TODO: Crear procedimiento para incrementar el valor diario para END null
+
                 if ($invoice->save()) {
                     Room::where('user_id', Id::parent())
                         ->whereIn('number', $numbers->pluck('number')->toArray())
                         ->where('hotel_id', Id::get($request->hotel))
                         ->update(['status' => '0']);
 
+                    // Get the shift
+                    $shift = Shift::current();
+
+                    $invoice->shifts()->attach($shift);
                     $invoice->rooms()->sync($attach);
                     $invoiceId = $invoice->id;
                     $status = true;

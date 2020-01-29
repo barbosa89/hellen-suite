@@ -15,7 +15,9 @@ export default {
             "subscriptions": "Subscriptions",
             "team": "Team",
             "users": "Users",
-            "vehicles": "Vehicles"
+            "vehicles": "Vehicles",
+            "dining": "Dining service",
+            "props": "Props"
         },
         "common": {
             "back": "Back",
@@ -353,13 +355,19 @@ export default {
             "index": "List",
             "load": "Load",
             "search": "Search",
-            "show": "Show"
+            "show": "Show",
+            "close": "Close",
+            "losses": "Losses",
+            "open": "Open"
         },
         "hotels": {
             "title": "Hotels",
             "all": "All hotels",
             "one": "One hotel or headquarter",
-            "choose": "Choose a hotel or headquarter"
+            "choose": "Choose a hotel or headquarter",
+            "there": {
+                "isnt": "There isn't created hotels"
+            }
         },
         "home": {
             "title": "Panel"
@@ -551,7 +559,8 @@ export default {
             },
             "verified": "The {attribute} has not been verified",
             "unique_per_user": "There is already a record with the same information",
-            "has_headquarter": "The team member does not have an assigned headquarter"
+            "has_headquarter": "The team member does not have an assigned headquarter",
+            "open_shift": "There is already an open shift"
         },
         "rooms": {
             "title": "Rooms",
@@ -601,7 +610,9 @@ export default {
             "services": "Servicios",
             "shifts": "Turnos",
             "subscriptions": "Suscripciones",
-            "vehicles": "Vehículos"
+            "vehicles": "Vehículos",
+            "props": "Utilería",
+            "dining": "Servicio de comedor"
         },
         "common": {
             "create": "Crear",
@@ -939,13 +950,19 @@ export default {
             "destroy": "Eliminar",
             "search": "Buscar",
             "add": "Agregar",
-            "load": "Cargar"
+            "load": "Cargar",
+            "close": "Cerrar",
+            "open": "Abrir",
+            "losses": "Losses"
         },
         "hotels": {
             "title": "Hoteles",
             "all": "Todos los hoteles",
             "one": "Un hotel o sede",
-            "choose": "Elije un hotel o sede"
+            "choose": "Elije un hotel o sede",
+            "there": {
+                "isnt": "No hay hoteles creados"
+            }
         },
         "home": {
             "title": "Panel"
@@ -1137,7 +1154,8 @@ export default {
             },
             "verified": "El correo no ha sido verificado",
             "unique_per_user": "Ya hay un registro con la misma información",
-            "has_headquarter": "No tienes una sede asignada"
+            "has_headquarter": "No tienes una sede asignada",
+            "open_shift": "Ya hay un turno abierto"
         },
         "rooms": {
             "title": "Habitaciones",

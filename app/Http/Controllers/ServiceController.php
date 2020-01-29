@@ -60,7 +60,7 @@ class ServiceController extends Controller
             ->get(Fields::get('hotels'));
 
         if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.there.isnt'))->info();
 
             return back();
         }
