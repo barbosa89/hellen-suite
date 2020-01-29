@@ -38,30 +38,27 @@ class ShiftStart
                 'headquarters' => function($query) {
                     $query->select(['id', 'business_name']);
                 }
-            ])->first(['id', 'email']);
+            ])->first(['id', 'email', 'parent']);
 
         // Check if there is an user with receptionist role
         if (!empty($user)) {
             // Query an open shift of current user
             $shift = Shift::where('open', true)
-                ->with([
-                    'user' => function ($query)
-                    {
-                        $query->select(['id']);
-                    }
-                ])->whereHas('hotel', function ($query) use ($user)
+                ->where('team_member', $user->id)
+                ->whereHas('hotel', function ($query) use ($user)
                 {
                     $query->where('id', $user->headquarters->first()->id);
                 })->whereHas('user', function ($query) use ($user)
                 {
-                    $query->where('id', $user->id);
+                    $query->where('id', $user->parent);
                 })->first(['id', 'open', 'hotel_id', 'user_id']);
 
             // If there is not a shift, then new shift is created
             // Else, the user continues with the current shift
             if (empty($shift)) {
                 $shift = new Shift();
-                $shift->user()->associate($user);
+                $shift->team_member = $user->id;
+                $shift->user()->associate($user->parent);
                 $shift->hotel()->associate($user->headquarters->first());
                 $shift->save();
             }

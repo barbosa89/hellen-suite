@@ -17,6 +17,7 @@ class CreateShiftsTable extends Migration
             $table->bigIncrements('id');
             $table->decimal('cash', 12, 2)->default(0.0);
             $table->boolean('open')->default(true);
+            $table->bigInteger('team_member');
 
             $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
