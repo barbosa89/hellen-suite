@@ -146,6 +146,12 @@ export default {
             "enable": "Enable",
             "without": {
                 "results": "No search results"
+            },
+            "closed": {
+                "at": "Closed at"
+            },
+            "created": {
+                "at": "Created at"
             }
         },
         "dining": {
@@ -368,6 +374,10 @@ export default {
             "there": {
                 "isnt": "There isn't created hotels"
             }
+        },
+        "shifts": {
+            "shift": "Shift",
+            "title": "Shifts"
         },
         "home": {
             "title": "Panel"
@@ -741,6 +751,12 @@ export default {
             "enable": "Habilitar",
             "without": {
                 "results": "No hay resultados de búsqueda."
+            },
+            "created": {
+                "at": "Fecha de creación"
+            },
+            "closed": {
+                "at": "Fecha de cierre"
             }
         },
         "dining": {
@@ -953,7 +969,7 @@ export default {
             "load": "Cargar",
             "close": "Cerrar",
             "open": "Abrir",
-            "losses": "Losses"
+            "losses": "Pérdidas"
         },
         "hotels": {
             "title": "Hoteles",
@@ -963,6 +979,10 @@ export default {
             "there": {
                 "isnt": "No hay hoteles creados"
             }
+        },
+        "shifts": {
+            "title": "Turnos",
+            "shift": "Turno"
         },
         "home": {
             "title": "Panel"

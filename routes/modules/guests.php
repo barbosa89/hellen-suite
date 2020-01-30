@@ -2,14 +2,16 @@
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::get('guests/{id}/toggle/{invoice}', 'GuestController@toggle')
-	->name('guests.toggle')
-	->middleware('permission:guests.edit');
+        ->name('guests.toggle')
+        ->middleware('permission:guests.edit');
 
     Route::post('invoices/{id}/guests', 'GuestController@storeForInvoice')
-        ->name('invoices.guests.store');
+        ->name('invoices.guests.store')
+        ->middleware(['permission:guests.create']);
 
     Route::get('invoices/{id}/guests/create', 'GuestController@createForInvoice')
-		->name('invoices.guests.create');
+        ->name('invoices.guests.create')
+        ->middleware(['permission:guests.create']);
 
 	Route::get('guests/export', 'GuestController@export')
 		->name('guests.export')
@@ -17,11 +19,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::post('guests/search/unregistered', 'GuestController@searchUnregistered')
         ->name('guests.search.unregistered')
-        ->middleware(['auth', 'permission:guests.index']);
+        ->middleware(['permission:guests.index']);
 
     Route::get('guests/search', 'GuestController@search')
         ->name('guests.search')
-        ->middleware(['auth', 'permission:guests.index']);
+        ->middleware(['permission:guests.index']);
 
 	Route::delete('guests/{id}', 'GuestController@destroy')
 		->name('guests.destroy')

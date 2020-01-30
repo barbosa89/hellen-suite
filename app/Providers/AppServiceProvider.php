@@ -68,13 +68,12 @@ class AppServiceProvider extends ServiceProvider
             return false;
         });
 
-        // Check if the team member has an assigned headquarter
+        // Check if the receptionist has an assigned headquarter
         Validator::extend('has_headquarter', function ($attribute, $value, $parameters, $validator) {
             $user = User::where('email', $value)
-                ->whereDoesntHave('roles', function ($query)
+                ->whereHas('roles', function ($query)
                 {
-                    $query->where('name', 'root')
-                        ->orWhere('name', 'manager');
+                    $query->where('name', 'receptionist');
                 })->with([
                     'headquarters' => function($query) {
                         $query->select(['id', 'business_name']);
@@ -88,55 +87,26 @@ class AppServiceProvider extends ServiceProvider
             return true;
         });
 
-        // Check if there is an open shift at the headquarters
-        // assigned to the user with receptionist role
+        // Check if exists an open shift at the headquarters
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
-            // Get receptionist user
-            $user = User::where('email', $value)
-                ->whereHas('roles', function ($query)
+            // Query the open shifts
+            $shift = Shift::where('open', true)
+                ->whereHas('hotel', function ($query) use ($value)
                 {
-                    $query->where('name', 'receptionist');
-                })->with([
-                    'headquarters' => function($query) {
-                        $query->select(['id', 'business_name']);
-                    }
-                ])->first(['id', 'email', 'parent']);
+                    $query->where('id', Id::get($value));
+                })->first(['id', 'open', 'hotel_id', 'team_member']);
 
-            // Check if there is an user with receptionist role
-            if (!empty($user)) {
-                // Check if the team member has an assigned headquarter
-                if ($user->headquarters->isEmpty()) {
-                    return false;
-                }
-
-                // Query the open shifts
-                $shift = Shift::where('open', true)
-                    ->with([
-                        'user' => function ($query)
-                        {
-                            $query->select(['id']);
-                        }
-                    ])
-                    ->whereHas('hotel', function ($query) use ($user)
-                    {
-                        $query->where('id', $user->headquarters->first()->id);
-                    })->first(['id', 'open', 'hotel_id', 'user_id']);
-
-                // True if there are no open shifts
-                if (empty($shift)) {
-                    return true;
-                }
-
-                // Check if user ID is equal to shift user ID
-                if ($user->parent == $shift->user->id) {
-                    return true;
-                }
-
-                return false;
+            // True if there are no open shifts
+            if (empty($shift)) {
+                return true;
             }
 
-            // Always returns true to roles other than receptionist
-            return true;
+            // Check if user ID is equal to shift user ID
+            if (auth()->user()->id == $shift->team_member) {
+                return true;
+            }
+
+            return false;
         });
 
         /**

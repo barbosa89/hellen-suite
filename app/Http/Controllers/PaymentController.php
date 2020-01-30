@@ -8,6 +8,7 @@ use App\Helpers\Id;
 use App\Http\Requests\StorePayment;
 use App\Welkome\Invoice;
 use App\Welkome\Payment;
+use App\Welkome\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -127,6 +128,10 @@ class PaymentController extends Controller
             'payments' => function ($query)
             {
                 $query->select(Fields::get('payments'));
+            },
+            'hotel' => function ($query)
+            {
+                $query->select(['id']);
             }
         ]);
 
@@ -170,6 +175,21 @@ class PaymentController extends Controller
                 }
 
                 if ($payment->save()) {
+                    if ($payment->payment_method == 'cash') {
+                        $shift = Shift::current($invoice->hotel->id);
+                        $shift->load([
+                            'invoices' => function ($query) use ($invoice)
+                            {
+                                $query->where('id', $invoice->id);
+                            }
+                        ]);
+
+                        if ($shift->invoices->isNotEmpty()) {
+                            $shift->cash += $payment->value;
+                            $shift->save();
+                        }
+                    }
+
                     $status = true;
                 }
             } catch (\Throwable $e) {
@@ -287,6 +307,15 @@ class PaymentController extends Controller
                 // Get payment to update
                 $payment = $invoice->payments->where('id', Id::get($id))->first();
 
+                // subtract value to shift to prepare the change in value
+                $shift = Shift::current($invoice->hotel->id);
+
+                // Only if the payment method is cash,
+                // the value is subtracted to the shift
+                if ($payment->payment_method == 'cash') {
+                    $shift->cash -= (float) $payment->value;
+                }
+
                 $payment->date = $request->date;
                 $payment->commentary = $request->commentary;
                 $payment->payment_method = $request->method;
@@ -306,6 +335,23 @@ class PaymentController extends Controller
                 }
 
                 if ($payment->save()) {
+                    // Only if the payment method is cash,
+                    // the new value will be added to the shift
+                    if ($payment->payment_method == 'cash') {
+                        $shift->load([
+                            'invoices' => function ($query) use ($invoice)
+                            {
+                                $query->where('id', $invoice->id);
+                            }
+                        ]);
+
+                        if ($shift->invoices->isNotEmpty()) {
+                            $shift->cash += $payment->value;
+                        }
+                    }
+
+                    $shift->save();
+
                     // Reload payments
                     $invoice->load([
                         'payments' => function ($query)
@@ -381,7 +427,27 @@ class PaymentController extends Controller
                 // Payment support
                 $support = $payment->invoice;
 
+                // subtract value to shift
+                $shift = Shift::current($invoice->hotel->id);
+
+                // Only if the payment method is cash,
+                // the value is subtracted to the shift
+                if ($payment->payment_method == 'cash') {
+                    $shift->load([
+                        'invoices' => function ($query) use ($invoice)
+                        {
+                            $query->where('id', $invoice->id);
+                        }
+                    ]);
+
+                    if ($shift->invoices->isNotEmpty()) {
+                        $shift->cash -= $payment->value;
+                    }
+                }
+
                 if ($payment->delete()) {
+                    $shift->save();
+
                     // Reload payments
                     $invoice->load([
                         'payments' => function ($query)

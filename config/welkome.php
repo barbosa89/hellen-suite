@@ -190,7 +190,18 @@ return [
             'invoice',
             'invoice_id',
             'created_at',
-        ]
+        ],
+        'shifts' => [
+            'id',
+            'cash',
+            'open',
+            'team_member',
+            'hotel_id',
+            'user_id',
+            'created_at',
+            'updated_at',
+            'closed_at'
+        ],
     ],
 
     /*

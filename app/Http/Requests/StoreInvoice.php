@@ -24,7 +24,7 @@ class StoreInvoice extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'hotel' => 'required|string|hashed_exists:hotels,id|open_shift',
             'room.*.number' => 'required|numeric|exists:rooms,number',
             'room.*.price' => 'required|numeric|price:rooms,number',
             'room.*.start' => 'required|date|after_or_equal:today',

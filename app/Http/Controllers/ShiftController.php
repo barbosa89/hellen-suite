@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Welkome\Shift;
-use Illuminate\Http\Request;
+use App\Helpers\{Fields, Id};
 
 class ShiftController extends Controller
 {
@@ -14,28 +14,18 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $shifts = Shift::where('team_member', auth()->user()->id)
+            ->whereHas('user', function ($query)
+            {
+                $query->where('id', Id::parent());
+            })->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->get(Fields::get('shifts'));
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return view('app.shifts.index', compact('shifts'));
     }
 
     /**
@@ -45,40 +35,6 @@ class ShiftController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Shift $shift)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Welkome\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Shift $shift)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Shift $shift)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Welkome\Shift  $shift
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Shift $shift)
     {
         //
     }

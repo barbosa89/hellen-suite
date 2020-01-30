@@ -161,7 +161,7 @@ class InvoiceController extends Controller
                         ->update(['status' => '0']);
 
                     // Get the shift
-                    $shift = Shift::current();
+                    $shift = Shift::current(Id::get($request->hotel));
 
                     $invoice->shifts()->attach($shift);
                     $invoice->rooms()->sync($attach);

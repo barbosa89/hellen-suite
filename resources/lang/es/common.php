@@ -129,4 +129,12 @@ return array (
   array (
     'results' => 'No hay resultados de búsqueda.',
   ),
+  'created' => 
+  array (
+    'at' => 'Fecha de creación',
+  ),
+  'closed' => 
+  array (
+    'at' => 'Fecha de cierre',
+  ),
 );

@@ -129,4 +129,12 @@ return array (
   array (
     'results' => 'No search results',
   ),
+  'closed' => 
+  array (
+    'at' => 'Closed at',
+  ),
+  'created' => 
+  array (
+    'at' => 'Created at',
+  ),
 );

@@ -11,5 +11,5 @@ return array (
   'load' => 'Cargar',
   'close' => 'Cerrar',
   'open' => 'Abrir',
-  'losses' => 'Losses',
+  'losses' => 'Pérdidas',
 );

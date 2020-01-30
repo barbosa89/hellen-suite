@@ -31,12 +31,15 @@
         </li>
     @endrole
 
-    @role('manager')
+    @can('hotels.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('hotels.index') }}">
             <i class="fas fa-hotel"></i>
             <span>Hoteles</span></a>
         </li>
+    @endcan
+
+    @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('team.index') }}">
             <i class="fas fa-user"></i>
@@ -121,6 +124,14 @@
             <a class="nav-link" href="{{ route('props.index') }}">
             <i class="fa fa-fw fa-person-booth"></i>
             <span>@lang('props.title')</span></a>
+        </li>
+    @endcan
+
+    @can('shifts.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('shifts.index') }}">
+            <i class="fas fa-fw fa-clock"></i>
+            <span>@lang('shifts.title')</span></a>
         </li>
     @endcan
 

@@ -2,7 +2,7 @@
 
 namespace App\Welkome;
 
-use App\User;
+use App\Helpers\{Fields, Id};
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -25,27 +25,32 @@ class Shift extends Model
         return $this->belongsToMany(\App\Welkome\Invoice::class);
     }
 
-    public static function current()
+    public static function current($hotel_id)
     {
-        $user = User::where('id', auth()->user()->id)
-            ->whereHas('roles', function ($query)
-            {
-                $query->where('name', 'receptionist');
-            })->with([
-                'headquarters' => function($query) {
-                    $query->select(['id', 'business_name']);
-                }
-            ])->first(['id', 'email', 'parent']);
-
         $shift = static::where('open', true)
-            ->where('team_member', $user->id)
-            ->whereHas('hotel', function ($query) use ($user)
+            ->where('team_member', auth()->user()->id)
+            ->whereHas('hotel', function ($query) use ($hotel_id)
             {
-                $query->where('id', $user->headquarters->first()->id);
-            })->whereHas('user', function ($query) use ($user)
+                $query->where('id', $hotel_id);
+            })->whereHas('user', function ($query)
             {
-                $query->where('id', $user->parent);
-            })->first(['id', 'open', 'hotel_id', 'user_id']);
+                $query->where('id', auth()->user()->parent);
+            })->first(Fields::get('shifts'));
+
+        if (empty($shift)) {
+            $shift = self::start($hotel_id);
+        }
+
+        return $shift;
+    }
+
+    public static function start($hotel_id)
+    {
+        $shift = new Shift();
+        $shift->team_member = auth()->user()->id;
+        $shift->user()->associate(Id::parent());
+        $shift->hotel()->associate($hotel_id);
+        $shift->save();
 
         return $shift;
     }

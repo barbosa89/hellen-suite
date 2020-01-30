@@ -72,32 +72,32 @@ class RoomController extends Controller
      */
     private function getHotels()
     {
-        if (auth()->user()->hasRole('manager')) {
-            $hotels = Hotel::where('user_id', Id::parent())
-                ->where('status', true)
-                ->with([
-                    'rooms' => function ($query) {
-                        $query->select(Fields::get('rooms'))
-                            ->orderBy('number');
-                    }
-                ])->get(Fields::get('hotels'));
+        if (auth()->user()->hasRole('receptionist')) {
+            $user = auth()->user()->load([
+                'headquarters' => function ($query)
+                {
+                    $query->select(Fields::parsed('hotels'))
+                        ->where('status', true);
+                },
+                'headquarters.rooms' => function ($query) {
+                    $query->select(Fields::parsed('rooms'))
+                        ->orderBy('number');
+                }
+            ]);
 
-            return $hotels;
+            return $user->headquarters;
         }
 
-        $user = auth()->user()->load([
-            'headquarters' => function ($query)
-            {
-                $query->select(Fields::parsed('hotels'))
-                    ->where('status', true);
-            },
-            'headquarters.rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
-                    ->orderBy('number');
-            }
-        ]);
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->where('status', true)
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(Fields::get('rooms'))
+                        ->orderBy('number');
+                }
+            ])->get(Fields::get('hotels'));
 
-        return $user->headquarters;
+        return $hotels;
     }
 
     /**
