@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Id;
+use App\Welkome\Product;
 use App\Welkome\Sale;
 use Illuminate\Http\Request;
 
@@ -12,9 +14,13 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $product = Product::where('id', Id::get($id))
+            ->with('sales')
+            ->first();
+
+        dd($product);
     }
 
     /**
