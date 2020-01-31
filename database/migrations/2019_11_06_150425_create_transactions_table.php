@@ -15,9 +15,10 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('amount');
+            $table->integer('quantity');
+            $table->decimal('value', 10, 2);
             $table->text('commentary');
-            $table->enum('type', ['input', 'output']);
+            $table->enum('type', ['sales', 'entry', 'losses']);
             $table->string('done_by');
             $table->bigInteger('transactionable_id')->unsigned();
             $table->string('transactionable_type');
