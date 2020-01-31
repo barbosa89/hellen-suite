@@ -8,7 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class IdentificationType extends Model
 {
     use LogsActivity;
-    
+
     public function guest()
     {
         return $this->hasMany(\App\Welkome\Guest::class, 'identification_type_id');

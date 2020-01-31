@@ -23,9 +23,6 @@
                         'permission' => 'companies.show'
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'option' => trans('common.edit'),
                         'url' => route('companies.edit', [
                             'id' => Hashids::encode($row->id)

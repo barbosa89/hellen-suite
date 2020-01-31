@@ -37,16 +37,16 @@
                         <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Marca</h5>
+                        <h5>{{ $t('common.brand') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Referencia</h5>
+                        <h5>{{ $t('common.reference') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                         <h5>{{ $t('common.price') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
-                        <h5>Existencia</h5>
+                        <h5>{{ $t('common.existence') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
                         <h5>{{ $t('common.status') }}</h5>
@@ -115,19 +115,36 @@
                                     <a
                                         :href="'/products/' + product.hash + '/increase'"
                                         class="dropdown-item"
-                                        v-if="$can('products.edit')"
-                                        >Incrementar stock</a>
-                                    <a :href="'#'" class="dropdown-item" v-if="$can('products.edit')">Registrar pérdidas</a>
-                                    <div class="dropdown-divider"></div>
+                                        v-if="$can('products.edit')">
+                                        {{ $t('products.increase') }}
+                                    </a>
+                                    <a :href="'/products/' + product.hash + '/sales'"
+                                        class="dropdown-item"
+                                        v-if="$can('sales.index')">
+                                        {{ $t('sales.sales') }}
+                                    </a>
+                                    <a :href="'/products/' + product.hash + '/sales/create'"
+                                        class="dropdown-item"
+                                        v-if="$can('sales.create')">
+                                        {{ $t('sales.register') }}
+                                    </a>
+                                    <a :href="'#'"
+                                        class="dropdown-item"
+                                        v-if="$can('products.edit')">
+                                        {{ $t('products.losses') }}
+                                    </a>
                                     <a
                                         :href="'/products/' + product.hash + '/edit'"
                                         class="dropdown-item"
-                                        v-if="$can('products.edit')">{{ $t('common.edit') }}</a>
+                                        v-if="$can('products.edit')">
+                                        {{ $t('common.edit') }}
+                                    </a>
                                     <a
                                         :href="'/products/' + product.hash + '/toggle'"
                                         class="dropdown-item"
-                                        v-if="$can('products.edit')"
-                                        >{{ product.status == 1 ? $t('common.disable') : $t('common.disable') }}</a>
+                                        v-if="$can('products.edit')">
+                                        {{ product.status == 1 ? $t('common.disable') : $t('common.disable') }}
+                                    </a>
                                     <a
                                         :href="'#'"
                                         :data-url="'/products/' + product.hash"
@@ -135,8 +152,9 @@
                                         id="modal-confirm"
                                         onclick="confirmAction(this, event)"
                                         class="dropdown-item"
-                                        v-if="$can('products.destroy')"
-                                        >{{ $t('common.delete') }}</a>
+                                        v-if="$can('products.destroy')">
+                                        {{ $t('common.delete') }}
+                                    </a>
                                 </div>
                             </div>
                         </div>

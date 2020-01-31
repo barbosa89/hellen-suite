@@ -27,9 +27,6 @@
                             'url' => '#'
                         ],
                         [
-                            'type' => 'divider'
-                        ],
-                        [
                             'option' => 'Asignar',
                             'url' => '#'
                         ],
@@ -40,9 +37,6 @@
                         [
                             'option' => 'Está en mantenimiento',
                             'url' => '#'
-                        ],
-                        [
-                            'type' => 'divider'
                         ],
                         [
                             'option' => trans('common.edit'),

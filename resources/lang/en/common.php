@@ -137,4 +137,5 @@ return array (
   array (
     'at' => 'Created at',
   ),
+  'existence' => 'Existence',
 );

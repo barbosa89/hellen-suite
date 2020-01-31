@@ -30,9 +30,6 @@
                             'url' => route('props.create')
                         ],
                         [
-                            'type' => 'divider'
-                        ],
-                        [
                             'option' => trans('common.edit'),
                             'url' => route('props.edit', [
                                 'id' => Hashids::encode($prop->id)

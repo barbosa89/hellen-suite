@@ -22,11 +22,20 @@
                             ]),
                         ],
                         [
-                            'option' => trans('products.losses'),
-                            'url' => '#'
+                            'option' => trans('sales.sales'),
+                            'url' => route('sales.index', [
+                                'id' => Hashids::encode($product->id)
+                            ]),
                         ],
                         [
-                            'type' => 'divider'
+                            'option' => trans('sales.register'),
+                            'url' => route('sales.create', [
+                                'id' => Hashids::encode($product->id)
+                            ]),
+                        ],
+                        [
+                            'option' => trans('products.losses'),
+                            'url' => '#'
                         ],
                         [
                             'option' => trans('common.edit'),

@@ -13,9 +13,6 @@
             'url' => '#',
         ],
         [
-            'type' => 'divider'
-        ],
-        [
             'option' => trans('common.edit'),
             'url' => route('rooms.edit', [
                 'id' => Hashids::encode($row->id)

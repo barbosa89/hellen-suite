@@ -22,9 +22,6 @@
                             ])
                         ],
                         [
-                            'type' => 'divider'
-                        ],
-                        [
                             'option' => trans('common.edit'),
                             'url' => route('products.edit', [
                                 'id' => Hashids::encode($product->id)

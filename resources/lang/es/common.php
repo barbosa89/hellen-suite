@@ -137,4 +137,5 @@ return array (
   array (
     'at' => 'Fecha de cierre',
   ),
+  'existence' => 'Existencia',
 );

@@ -152,7 +152,8 @@ export default {
             },
             "created": {
                 "at": "Created at"
-            }
+            },
+            "existence": "Existence"
         },
         "dining": {
             "title": "Dining service",
@@ -394,6 +395,13 @@ export default {
         },
         "team": {
             "title": "Team"
+        },
+        "sales": {
+            "new": "New sale",
+            "register": "Register sale",
+            "sale": "Sale",
+            "title": "Product sales",
+            "sales": "Sales"
         },
         "guests": {
             "title": "Guests",
@@ -757,7 +765,8 @@ export default {
             },
             "closed": {
                 "at": "Fecha de cierre"
-            }
+            },
+            "existence": "Existencia"
         },
         "dining": {
             "title": "Servicio de comedor",
@@ -999,6 +1008,13 @@ export default {
         },
         "team": {
             "title": "Miembros del equipo"
+        },
+        "sales": {
+            "title": "Venta de productos",
+            "sale": "Venta",
+            "new": "Nueva venta",
+            "register": "Registrar venta",
+            "sales": "Ventas"
         },
         "guests": {
             "title": "Huéspedes",

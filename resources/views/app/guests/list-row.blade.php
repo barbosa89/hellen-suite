@@ -32,9 +32,6 @@
                         'permission' => 'guests.show'
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'option' => trans('common.edit'),
                         'url' => route('guests.edit', [
                             'id' => Hashids::encode($row->id)

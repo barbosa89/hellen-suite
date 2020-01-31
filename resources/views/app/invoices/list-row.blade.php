@@ -138,9 +138,6 @@
                         'permission' => 'invoices.edit'
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'type' => $row->open ? 'confirm' : 'hideable',
                         'option' => trans('invoices.close'),
                         'url' => route('invoices.close', [

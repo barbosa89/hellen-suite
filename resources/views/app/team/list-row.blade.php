@@ -60,9 +60,6 @@
                         'permission' => 'team.edit'
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'type' => 'confirm',
                         'option' => trans('common.delete'),
                         'url' => route('team.destroy', [

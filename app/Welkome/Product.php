@@ -44,6 +44,11 @@ class Product extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
+    public function sales()
+    {
+        return $this->hasMany(\App\Welkome\Sale::class);
+    }
+
     /**
      * Hashing Product ID.
      *

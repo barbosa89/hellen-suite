@@ -36,9 +36,6 @@
                         'permission' => 'vehicles.show'
                     ],
                     [
-                        'type' => 'divider'
-                    ],
-                    [
                         'option' => trans('common.edit'),
                         'url' => route('vehicles.edit', [
                             'id' => Hashids::encode($row->id)
