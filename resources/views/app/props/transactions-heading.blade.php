@@ -9,7 +9,7 @@
         <h5>@lang('common.quantity')</h5>
     </div>
     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-        <h5>@lang('transactions.done_by')</h5>
+        <h5>@lang('transactions.done.by')</h5>
     </div>
     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
         <h5>@lang('common.date')</h5>

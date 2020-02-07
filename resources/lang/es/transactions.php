@@ -3,10 +3,21 @@
 return array (
   'type' => 'Tipo',
   'commentary' => 'Comentario',
-  'done_by' => 'Hecho por',
-  'output' => 'Salida',
-  'input' => 'Entrada',
   'title' => 'Transacciones',
-  'outputs' => 'Salidas',
-  'inputs' => 'Entradas',
+  'done' => 
+  array (
+    'by' => 'Hecho por',
+  ),
+  'entry' => 'Entrada',
+  'entries' => 'Entradas',
+  'discharge' => 'Salida',
+  'discharges' => 'Salidas',
+  'sale' => 'Venta',
+  'loss' => 'Pérdida',
+  'sales' => 'Ventas',
+  'losses' => 'Pérdidas',
+  'select' => 
+  array (
+    'type' => 'Seleccione el tipo de transacción',
+  ),
 );

@@ -27,7 +27,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('users.index') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Usuarios</span></a>
+            <span>@lang('users.title')</span></a>
         </li>
     @endrole
 
@@ -35,7 +35,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('hotels.index') }}">
             <i class="fas fa-hotel"></i>
-            <span>Hoteles</span></a>
+            <span>@lang('hotels.title')</span></a>
         </li>
     @endcan
 
@@ -43,7 +43,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('team.index') }}">
             <i class="fas fa-user"></i>
-            <span>Mi equipo</span></a>
+            <span>@lang('users.team')</span></a>
         </li>
     @endrole
 

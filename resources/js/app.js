@@ -20,6 +20,8 @@ import BootstrapVue from 'bootstrap-vue';
 
 Vue.component('service-list', require('./components/Services/ServiceList.vue').default);
 Vue.component('dining-service-list', require('./components/Services/DiningServiceList.vue').default);
+
+Vue.component('product-transactions', require('./components/Products/ProductTransactions.vue').default);
 Vue.component('product-list', require('./components/Products/ProductList.vue').default);
 Vue.component('room-list', require('./components/Rooms/RoomList.vue').default);
 

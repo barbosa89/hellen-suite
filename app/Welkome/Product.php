@@ -44,9 +44,9 @@ class Product extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
-    public function sales()
+    public function transactions()
     {
-        return $this->hasMany(\App\Welkome\Sale::class);
+        return $this->morphMany(\App\Welkome\Transaction::class, 'transactionable');
     }
 
     /**

@@ -106,7 +106,7 @@
             data: {
                 labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 datasets: [{
-                    label: '{{ trans('transactions.inputs') }}',
+                    label: '{{ trans('transactions.entries') }}',
                     data: [{{ implode(', ', $data['input']) }}],
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
@@ -139,7 +139,7 @@
                     borderWidth: 1
                 },
                 {
-                    label: '{{ trans('transactions.outputs') }}',
+                    label: '{{ trans('transactions.discharges') }}',
                     data: [{{ implode(', ', $data['output']) }}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

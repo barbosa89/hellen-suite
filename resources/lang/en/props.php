@@ -6,4 +6,5 @@ return array (
   'prop' => 'Prop',
   'title' => 'Props',
   'wasDisabled' => 'The prop element cannot be deleted and was disabled',
+  'transactions' => 'Props transaction',
 );

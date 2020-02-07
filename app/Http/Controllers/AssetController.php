@@ -15,6 +15,8 @@ use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
 use App\Welkome\Maintenance;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
@@ -26,20 +28,35 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
-            ->with([
-                'assets' => function ($query)
-                {
-                    $query->select(Fields::get('assets'));
-                }
-            ])->get(Fields::get('hotels'));
+        $hotels = Hotel::whereHas('owner', function (Builder $query)
+        {
+            $query->where('id', Id::parent());
+        })->with([
+            'assets' => function ($query)
+            {
+                $query->select(Fields::get('assets'));
+            }
+        ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
 
+        $hotels = $this->prepareData($hotels);
+
+        return view('app.assets.index', compact('hotels'));
+    }
+
+    /**
+     * Encode all ID's from collection
+     *
+     * @param  \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
+     */
+    private function prepareData(Collection $hotels)
+    {
         $hotels = $hotels->map(function ($hotel)
         {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -56,7 +73,7 @@ class AssetController extends Controller
             return $hotel;
         });
 
-        return view('app.assets.index', compact('hotels'));
+        return $hotels;
     }
 
     /**
@@ -66,17 +83,19 @@ class AssetController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
-            ->where('status', true)
-            ->with([
-                'rooms' => function ($query)
-                {
-                    $query->select(Fields::get('rooms'));
-                }
-            ])->get(Fields::get('hotels'));
+        $hotels = Hotel::whereHas('owner', function (Builder $query)
+        {
+            $query->where('id', Id::parent());
+        })->where('status', true)
+        ->with([
+            'rooms' => function ($query)
+            {
+                $query->select(Fields::get('rooms'));
+            }
+        ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
@@ -87,7 +106,7 @@ class AssetController extends Controller
         });
 
         if($rooms == 0) {
-            flash('No hay habitaciones creadas')->info();
+            flash(trans('rooms.no.created'))->info();
 
             return redirect()->route('assets.index');
         }
@@ -335,7 +354,7 @@ class AssetController extends Controller
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
@@ -377,7 +396,7 @@ class AssetController extends Controller
         }
 
         if($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }

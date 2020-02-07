@@ -152,8 +152,11 @@ return [
         ],
         'transactions' => [
             'id',
-            'amount',
+            'quantity',
+            'value',
             'commentary',
+            'invoice_number',
+            'invoice_item',
             'type',
             'done_by',
             'transactionable_id',
@@ -227,7 +230,6 @@ return [
         'vehicles',
         'props',
         'dining',
-        'sales'
     ],
 
     /*

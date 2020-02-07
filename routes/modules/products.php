@@ -1,6 +1,22 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	// Props transactions routes
+
+	Route::get('products/{id}/transactions/{transaction}', 'ProductTransactionController@destroy')
+		->name('products.transactions.destroy')
+		->middleware('permission:products.transactions');
+
+	Route::post('products/transactions', 'ProductTransactionController@store')
+		->name('products.transactions')
+		->middleware('permission:products.transactions');
+
+	Route::get('products/transactions', 'ProductTransactionController@create')
+		->name('products.transactions.create')
+		->middleware('permission:products.transactions');
+
+	// Products routes
+
     Route::post('products/search', 'ProductController@search')
 		->name('products.search')
 		->middleware('permission:products.index');
@@ -11,14 +27,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	Route::get('products/{id}/toggle', 'ProductController@toggle')
 		->name('products.toggle')
-		->middleware('permission:products.edit');
-
-    Route::post('products/{id}/increase', 'ProductController@increase')
-		->name('products.increase')
-		->middleware('permission:products.edit');
-
-    Route::get('products/{id}/increase', 'ProductController@showIncreaseForm')
-		->name('products.increase.form')
 		->middleware('permission:products.edit');
 
 	Route::delete('products/{id}', 'ProductController@destroy')

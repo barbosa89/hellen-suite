@@ -19,4 +19,8 @@ return array (
   'currentRoom' => 'Habitación actual',
   'availableRooms' => 'Habitaciones disponibles',
   'deliver' => 'Entregar la habitación',
+  'no' => 
+  array (
+    'created' => 'No hay habitaciones creadas',
+  ),
 );

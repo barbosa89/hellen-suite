@@ -47,7 +47,7 @@ class DiningServiceController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             if (auth()->user()->can('hotels.index')) {
                 return redirect()->route('hotels.index');
@@ -72,7 +72,7 @@ class DiningServiceController extends Controller
             ->get(Fields::get('hotels'));
 
         if ($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return back();
         }

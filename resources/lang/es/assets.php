@@ -8,4 +8,5 @@ return array (
   'anyPlace' => 'Cualquier lugar',
   'assignTo' => 'Asignar a',
   'serialNumber' => 'Serie',
+  'registered' => 'Se registró un nuevo activo',
 );

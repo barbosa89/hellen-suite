@@ -5,8 +5,12 @@ return array (
   'all' => 'All hotels',
   'one' => 'One hotel or headquarter',
   'choose' => 'Choose a hotel or headquarter',
-  'there' => 
+  'no' => 
   array (
-    'isnt' => 'There isn\'t created hotels',
+    'registered' => 'There are no registered hotels',
+  ),
+  'business' => 
+  array (
+    'name' => 'Business name',
   ),
 );

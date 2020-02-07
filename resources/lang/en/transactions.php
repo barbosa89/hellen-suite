@@ -2,11 +2,22 @@
 
 return array (
   'commentary' => 'Commentary',
-  'done_by' => 'Done by',
-  'input' => 'Input',
-  'output' => 'Output',
   'type' => 'Type',
   'title' => 'Transactions',
-  'inputs' => 'Inputs',
-  'outputs' => 'Outputs',
+  'done' => 
+  array (
+    'by' => 'Done by',
+  ),
+  'discharge' => 'Discharge',
+  'discharges' => 'Discharges',
+  'entries' => 'Entries',
+  'entry' => 'Entry',
+  'loss' => 'Loss',
+  'losses' => 'Losses',
+  'sale' => 'Sale',
+  'sales' => 'Sales',
+  'select' => 
+  array (
+    'type' => 'Select transaction type',
+  ),
 );

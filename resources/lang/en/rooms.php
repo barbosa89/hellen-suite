@@ -19,4 +19,8 @@ return array (
   'changeRoom' => 'Change room',
   'currentRoom' => 'Current room',
   'deliver' => 'Deliver the room',
+  'no' => 
+  array (
+    'created' => 'There are no rooms created',
+  ),
 );

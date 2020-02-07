@@ -40,7 +40,7 @@ class PropController extends Controller
             ])->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             if (auth()->user()->can('hotels.index')) {
                 return redirect()->route('hotels.index');

@@ -6,4 +6,5 @@ return array (
   'prop' => 'Utilería',
   'title' => 'Utilería',
   'wasDisabled' => 'El elemento de utilería no pudo ser eliminado y fue deshabilitado',
+  'transactions' => 'Transacciones de utilería',
 );

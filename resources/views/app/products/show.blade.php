@@ -16,28 +16,6 @@
                     'option' => trans('common.options'),
                     'url' => [
                         [
-                            'option' => trans('products.increase'),
-                            'url' => route('products.increase.form', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'option' => trans('sales.sales'),
-                            'url' => route('sales.index', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'option' => trans('sales.register'),
-                            'url' => route('sales.create', [
-                                'id' => Hashids::encode($product->id)
-                            ]),
-                        ],
-                        [
-                            'option' => trans('products.losses'),
-                            'url' => '#'
-                        ],
-                        [
                             'option' => trans('common.edit'),
                             'url' => route('products.edit', [
                                 'id' => Hashids::encode($product->id)
@@ -60,6 +38,10 @@
                     ]
                 ],
                 [
+                    'option' => trans('transactions.title'),
+                    'url' => route('products.transactions'),
+                ],
+                [
                     'option' => trans('common.new'),
                     'url' => route('products.create')
                 ],
@@ -70,53 +52,30 @@
             ]
         ])
 
-        <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>Hotel:</h3>
-                <p>
-                    <a href="{{ route('hotels.show', ['id' => Hashids::encode($product->hotel->id)]) }}">
-                        {{ $product->hotel->business_name }}
-                    </a>
-                </p>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.description'):</h2>
-                <p>{{ $product->description }} <i class="fas fa-{{ $product->status ? 'check' : 'times-circle' }}"></i></p>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.brand'):</h2>
-                {{ $product->brand ?? 'No definida' }}
-            </div>
-        </div>
+        @include('app.products.info')
 
-        <div class="row">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.reference'):</h3>
-                <p>{{ $product->reference ?? 'No definida' }}</p>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">
+                    @lang('transactions.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                    @lang('common.chart')
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+                @include('partials.list', [
+                    'data' => $product->transactions,
+                    'listHeading' => 'app.products.transactions.list-heading',
+                    'listRow' => 'app.products.transactions.list-row'
+                ])
             </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.quantity'):</h3>
-                <p>{{ $product->quantity }}</p>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.price'):</h3>
-                <p>$ {{ round($product->price, 0) }}</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-xs"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('common.chart')</h3>
-
-                <div class="well">
-                    <h4>Datos</h4>
-                </div>
+            <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+                <canvas id="myChart"></canvas>
             </div>
         </div>
 

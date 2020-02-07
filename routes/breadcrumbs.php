@@ -87,9 +87,9 @@ Breadcrumbs::for('product', function ($trail, $product) {
     $trail->push($product->description, route('products.show', ['id' => Hashids::encode($product->id)]));
 });
 
-Breadcrumbs::for('increase', function ($trail, $product) {
-    $trail->parent('product', $product);
-    $trail->push(trans('products.increase'), route('products.increase.form', ['id' => Hashids::encode($product->id)]));
+Breadcrumbs::for('product-transactions', function ($trail) {
+    $trail->parent('products');
+    $trail->push(trans('transactions.title'), route('products.index'));
 });
 
 Breadcrumbs::for('services', function ($trail) {
@@ -155,9 +155,4 @@ Breadcrumbs::for('shifts', function ($trail) {
 Breadcrumbs::for('shift', function ($trail, $shift) {
     $trail->parent('shifts');
     $trail->push($shift->hotel->business_name, route('shifts.show', ['id' => Hashids::encode($shift->id)]));
-});
-
-Breadcrumbs::for('sales', function ($trail, $product) {
-    $trail->parent('product');
-    $trail->push(trans('sales.title'), route('sales.index', ['id' => Hashids::encode($product->id)]));
 });

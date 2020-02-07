@@ -18,7 +18,9 @@ class CreateTransactionsTable extends Migration
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
             $table->text('commentary');
-            $table->enum('type', ['sales', 'entry', 'losses']);
+            $table->string('invoice_number')->nullable();
+            $table->bigInteger('invoice_item')->nullable();
+            $table->enum('type', ['sale', 'entry', 'loss', 'discharge']);
             $table->string('done_by');
             $table->bigInteger('transactionable_id')->unsigned();
             $table->string('transactionable_type');

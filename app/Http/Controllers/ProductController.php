@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{StoreProduct, UpdateProduct, IncreaseProduct};
 use App\Welkome\Hotel;
+use App\Welkome\Transaction;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class ProductController extends Controller
 {
@@ -21,14 +24,35 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
-            ->with([
-                'products' => function ($query)
-                {
-                    $query->select(Fields::get('products'));
-                }
-            ])->get(Fields::get('hotels'));
+        $hotels = Hotel::whereHas('owner', function (Builder $query)
+        {
+            $query->where('id', Id::parent());
+        })->with([
+            'products' => function ($query)
+            {
+                $query->select(Fields::get('products'));
+            }
+        ])->get(Fields::get('hotels'));
 
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return redirect()->route('hotels.index');
+        }
+
+        $hotels = $this->prepareData($hotels);
+
+        return view('app.products.index', compact('hotels'));
+    }
+
+    /**
+     * Encode all ID's from collection
+     *
+     * @param  \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
+     */
+    public function prepareData(Collection $hotels)
+    {
         $hotels = $hotels->map(function ($hotel)
         {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -44,7 +68,7 @@ class ProductController extends Controller
             return $hotel;
         });
 
-        return view('app.products.index', compact('hotels'));
+        return $hotels;
     }
 
     /**
@@ -54,14 +78,16 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
-            ->whereStatus(true)
-            ->get(Fields::get('hotels'));
+        $hotels = Hotel::whereHas('owner', function (Builder $query)
+        {
+            $query->where('id', Id::parent());
+        })->whereStatus(true)
+        ->get(Fields::get('hotels'));
 
-        if ($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
 
-            return back();
+            return redirect()->route('hotels.index');
         }
 
         return view('app.products.create', compact('hotels'));
@@ -85,6 +111,17 @@ class ProductController extends Controller
         $product->hotel()->associate(Id::get($request->hotel));
 
         if ($product->save()) {
+            $transaction = new Transaction();
+            $transaction->quantity = $product->quantity;
+            $transaction->value = $product->price;
+            $transaction->commentary = trans('products.creation');
+            $transaction->type = 'entry';
+            $transaction->done_by = auth()->user()->name;
+            $transaction->user()->associate(Id::parent());
+
+            // Save the product transaction
+            $product->transactions()->save($transaction);
+
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('products.show', [
@@ -111,6 +148,12 @@ class ProductController extends Controller
             ->with([
                 'hotel' => function($query) {
                     $query->select(Fields::get('hotels'));
+                },
+                'transactions' => function ($query)
+                {
+                    $query->select(Fields::get('transactions'))
+                        ->orderBy('created_at', 'DESC')
+                        ->limit(100);
                 }
             ])->first(Fields::get('products'));
 
@@ -218,63 +261,6 @@ class ProductController extends Controller
 
                 return redirect()->route('products.index');
             }
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('products.index');
-    }
-
-    /**
-     * Increase product existence or quantity.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showIncreaseForm($id)
-    {
-        $product = User::find(Id::parent(), ['id'])
-            ->products()
-            ->where('id', Id::get($id))
-            ->first(Fields::get('products'));
-
-        if (empty($product)) {
-            abort(404);
-        }
-
-        return view('app.products.increase', compact('product'));
-    }
-
-    /**
-     * Increase the product's quantity in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function increase(IncreaseProduct $request, $id)
-    {
-        $product = User::find(Id::parent(), ['id'])
-            ->products()
-            ->where('id', Id::get($id))
-            ->with([
-                'hotel' => function($query) {
-                    $query->select(Fields::get('hotels'));
-                }
-            ])->first(Fields::get('products'));
-
-        if (empty($product)) {
-            abort(404);
-        }
-
-        $product->quantity += $request->quantity;
-
-        if ($product->update()) {
-            flash(trans('common.updatedSuccessfully'))->success();
-
-            return redirect()->route('products.show', [
-                'id' => Hashids::encode($product->id)
-            ]);
         }
 
         flash(trans('common.error'))->error();

@@ -18,4 +18,5 @@ return array (
   'chooseRole' => 'Choose a role',
   'accountant' => 'Accountant',
   'manager' => 'Manager',
+  'team' => 'My team',
 );

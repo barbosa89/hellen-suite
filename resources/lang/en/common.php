@@ -138,4 +138,6 @@ return array (
     'at' => 'Created at',
   ),
   'existence' => 'Existence',
+  'tin' => 'TIN',
+  'report' => 'Report',
 );

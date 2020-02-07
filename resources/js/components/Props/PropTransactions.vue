@@ -43,7 +43,7 @@
             </div>
         </nav>
 
-        <h2 class="text-center mb-4 mt-4">Transacciones de Utilería</h2>
+        <h2 class="text-center mb-4 mt-4">{{ $t('props.transactions') }}</h2>
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="form-group mb-4">
@@ -57,9 +57,11 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="form-group mb-4">
                     <select name="type" id="type" v-model="type" class="form-control">
-                        <option :value="null" disabled selected>Selecciona el tipo de transacción</option>
-                        <option value="output">Salida</option>
-                        <option value="input">Entrada</option>
+                        <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
+                        <option value="discharge">{{ $t('transactions.discharge') }}</option>
+                        <option value="entry">{{ $t('transactions.entry') }}</option>
+                        <option value="sales">{{ $t('transactions.sales') }}</option>
+                        <option value="losses">{{ $t('transactions.losses') }}</option>
                     </select>
                 </div>
             </div>

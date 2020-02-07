@@ -138,4 +138,6 @@ return array (
     'at' => 'Fecha de cierre',
   ),
   'existence' => 'Existencia',
+  'tin' => 'NIT - Número de identificación tributaria',
+  'report' => 'Reporte',
 );

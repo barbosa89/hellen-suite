@@ -1,6 +1,8 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	// Props report
+
 	Route::post('props/report', 'PropController@report')
 		->name('props.report.export')
 		->middleware('permission:props.index');
@@ -17,6 +19,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('props.prop.report')
 		->middleware('permission:props.index');
 
+	// Props transactions routes
+
 	Route::get('props/{id}/transactions/{transaction}', 'PropController@destroyTransaction')
 		->name('props.transactions.destroy')
 		->middleware('permission:props.edit');
@@ -28,6 +32,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::get('props/transactions', 'PropController@showTransactionsForm')
 		->name('props.transactions.form')
 		->middleware('permission:props.edit');
+
+	// Props routes
 
 	Route::post('props/search', 'PropController@search')
 		->name('props.search')

@@ -8,7 +8,7 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Hoteles',
+            'title' => trans('hotels.title'),
             'url' => route('hotels.index'),
             'options' => [
                 [
@@ -25,7 +25,7 @@
                     @csrf()
 
                     <div class="form-group{{ $errors->has('business_name') ? ' has-error' : '' }}">
-                        <label for="business_name">Razón social: <small>{{ trans('common.required') }}</small></label>
+                        <label for="business_name">@lang('hotels.business.name'): <small>{{ trans('common.required') }}</small></label>
                         <input type="text" class="form-control" name="business_name" id="business_name" value="{{ old('business_name') }}" required maxlength="191" placeholder="Nombre del hotel o sede">
 
                         @if ($errors->has('business_name'))
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
-                        <label for="tin">NIT: <small>{{ trans('common.required') }}</small></label>
+                        <label for="tin">@lang('common.tin'): <small>{{ trans('common.required') }}</small></label>
                         <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" maxlength="30" placeholder="Formato: 123.456.789-0" required>
 
                         @if ($errors->has('tin'))
@@ -126,7 +126,7 @@
                     @endif
 
                     <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
-                        <label for="image">Logotipo: <small>Se recomienda imágenes cuadradas o de proporción 3/2, peso máximo 200 Kb. Sino agrega un logotipo, se mostrará uno por defecto.</small></label>
+                        <label for="image">Logo: <small>Se recomienda imágenes cuadradas o de proporción 3/2, peso máximo 200 Kb. Sino agrega un logotipo, se mostrará uno por defecto.</small></label>
                         <input type="file" class="form-control" name="image" id="image" value="{{ old('image') }}" accept="image/png, image/jpeg">
 
                         @if ($errors->has('image'))
@@ -137,7 +137,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
                 </form>
             </div>
         </div>

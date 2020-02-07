@@ -51,7 +51,7 @@ class TeamController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return back();
         }
@@ -207,7 +207,7 @@ class TeamController extends Controller
 
         // Check if is empty
         if ($hotels->isEmpty()) {
-            flash(trans('hotels.there.isnt'))->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
