@@ -347,7 +347,7 @@ class ProductController extends Controller
             });
 
             return response()->json([
-                'products' => $products->toJson()
+                'results' => $products->toJson()
             ]);
         }
 

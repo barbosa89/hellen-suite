@@ -10,4 +10,8 @@ return array (
   'wasDisabled' => 'The product cannot be deleted and was disabled',
   'creation' => 'Product creation',
   'transactions' => 'Products transactions',
+  'current' => 
+  array (
+    'stock' => 'Current stock',
+  ),
 );

@@ -10,25 +10,7 @@
             </button>
 
             <div id="navbarNavDropdown" class="collapse navbar-collapse">
-                <form class="form-inline my-2 my-lg-0" method="get">
-                    <div class="ui search focus">
-                        <div class="ui left icon input">
-                            <div class="input-group">
-                                <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
-                            </div>
-                        </div>
-                        <transition name="fade">
-                            <div class="results transition visible" v-if="products.length != 0" style="display: block !important;">
-                                <a class="result" v-for="prop in products" :key="prop.hash" @click.prevent="addProp(prop)">
-                                    <div class="content">
-                                        <div class="title">{{ prop.description }}</div>
-                                        <div class="description">Cantidad en existencia: {{ prop.quantity }}</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </transition>
-                    </div>
-                </form>
+                <transaction-live-search :uri="'/products/search'" :hotel="this.hotel" @selectResult="addProp"></transaction-live-search>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -45,29 +27,12 @@
             </div>
         </nav>
 
-        <h2 class="text-center mb-4 mt-4">{{ $t('products.transactions') }}</h2>
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="form-group mb-4">
-                    <select name="hotel" id="hotel" class="form-control" v-model="hotel" @change="resetAll">
-                        <option v-for="hotel in hotels" :key="hotel.hash" :value="hotel.hash">
-                            {{ hotel.business_name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="form-group mb-4">
-                    <select name="type" id="type" v-model="type" class="form-control">
-                        <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
-                        <option value="discharge">{{ $t('transactions.discharge') }}</option>
-                        <option value="entry">{{ $t('transactions.entry') }}</option>
-                        <option value="sales">{{ $t('transactions.sales') }}</option>
-                        <option value="losses">{{ $t('transactions.losses') }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        <transaction-selects
+            :title="$t('products.transactions')"
+            :hotels="this.hotels"
+            @selectHotel="hotel = $event"
+            @selectType="type = $event">
+        </transaction-selects>
 
         <div class="crud-list" v-if="selecteds.length != 0">
             <div class="crud-list-heading mt-2">
@@ -76,10 +41,10 @@
                         <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <h5>Cantidad</h5>
+                        <h5>{{ $t('common.quantity') }}</h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <h5>Comentario</h5>
+                        <h5>{{ $t('common.commentary') }}</h5>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <h5>{{ $t('common.options') }}</h5>
@@ -147,9 +112,11 @@
         </div>
 
         <div class="mt-4" v-if="selecteds.length != 0">
-            <button type="button" class="btn btn-primary" @click.prevent="process">Procesar</button>
+            <button type="button" class="btn btn-primary" @click.prevent="process">
+                {{ $t('common.process') }}
+            </button>
             <a class="btn btn-default" @click.prevent="resetAll">
-                Borrar todo
+                {{ $t('common.delete.all') }}
             </a>
         </div>
     </div>
@@ -158,6 +125,7 @@
 <script>
     export default {
         mounted() {
+            // If there is one or more hotels, then assign the hotel hash
             if (this.hotels.length > 0) {
                 this.hotel = _.first(this.hotels).hash
             }
@@ -172,7 +140,7 @@
                 selecteds: [],
                 hash: '',
                 amount: 0,
-                commentary: ''
+                commentary: '',
             }
         },
         methods: {
@@ -318,39 +286,7 @@
 
                 return errors == 0;
             }
-        },
-        watch: {
-            query: function(current, old) {
-                if (current.length == 0 || this.query.length == 0) {
-                    this.products = []
-                } else {
-                    if (current.length >= 3) {
-                        axios.post('/products/search', {
-                            query: this.query,
-                            hotel: this.hotel
-                        }).then(response => {
-                            let products = JSON.parse(response.data.products);
-
-                            if (products.length > 0) {
-                                this.products = products
-                            } else {
-                                this.products = []
-
-                                toastr.info(
-                                    this.$root.$t('common.without.results'),
-                                    this.$root.$t('common.sorry')
-                                );
-                            }
-                        }).catch(e => {
-                            toastr.error(
-                                this.$root.$t('common.try'),
-                                'Error'
-                            );
-                        });
-                    }
-                }
-            }
-        },
+        }
     };
 </script>
 

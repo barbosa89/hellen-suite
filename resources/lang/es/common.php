@@ -4,7 +4,10 @@ return array (
   'create' => 'Crear',
   'new' => 'Nuevo',
   'update' => 'Actualizar',
-  'delete' => 'Eliminar',
+  'delete' => 
+  array (
+    'all' => 'Borrar todo',
+  ),
   'back' => 'Volver',
   'creationOf' => 'Creación de',
   'updateOf' => 'Actualización de',
@@ -140,4 +143,9 @@ return array (
   'existence' => 'Existencia',
   'tin' => 'NIT - Número de identificación tributaria',
   'report' => 'Reporte',
+  'process' => 'Procesar',
+  'current' => 
+  array (
+    'stock' => 'Cantidad actual',
+  ),
 );

@@ -18,6 +18,11 @@ import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
 import BootstrapVue from 'bootstrap-vue';
 
+// Commom
+Vue.component('transaction-type', require('./components/Common/TransactionType.vue').default);
+Vue.component('transaction-selects', require('./components/Common/TransactionSelects.vue').default);
+Vue.component('transaction-live-search', require('./components/Common/TransactionLiveSearch.vue').default);
+
 Vue.component('service-list', require('./components/Services/ServiceList.vue').default);
 Vue.component('dining-service-list', require('./components/Services/DiningServiceList.vue').default);
 

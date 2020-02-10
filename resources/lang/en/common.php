@@ -3,7 +3,10 @@
 return array (
   'back' => 'Back',
   'create' => 'Create',
-  'delete' => 'Delete',
+  'delete' => 
+  array (
+    'all' => 'Delete all',
+  ),
   'new' => 'New',
   'update' => 'Update',
   'creationOf' => 'Creation of',
@@ -140,4 +143,9 @@ return array (
   'existence' => 'Existence',
   'tin' => 'TIN',
   'report' => 'Report',
+  'process' => 'Process',
+  'current' => 
+  array (
+    'stock' => 'Current stock',
+  ),
 );

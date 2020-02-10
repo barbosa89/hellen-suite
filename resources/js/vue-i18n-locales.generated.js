@@ -250,18 +250,24 @@ export default {
             "product": "Product",
             "wasDisabled": "The product cannot be deleted and was disabled",
             "creation": "Product creation",
-            "transactions": "Products transactions"
+            "transactions": "Products transactions",
+            "current": {
+                "stock": "Current stock"
+            }
         },
         "services": {
             "title": "Services",
             "chooseService": "Choose a service",
             "service": "Service",
-            "wasDisabled": "The service cannot be deleted and was disabled"
+            "wasDisabled": "The service cannot be deleted and was disabled",
+            "quantity": "This is an unlimited item"
         },
         "common": {
             "back": "Back",
             "create": "Create",
-            "delete": "Delete",
+            "delete": {
+                "all": "Delete all"
+            },
             "new": "New",
             "update": "Update",
             "creationOf": "Creation of",
@@ -394,7 +400,11 @@ export default {
             },
             "existence": "Existence",
             "tin": "TIN",
-            "report": "Report"
+            "report": "Report",
+            "process": "Process",
+            "current": {
+                "stock": "Current stock"
+            }
         },
         "rooms": {
             "title": "Rooms",
@@ -884,19 +894,25 @@ export default {
             "product": "Producto",
             "wasDisabled": "El producto no pudo ser eliminado y fue deshabilitado",
             "creation": "Creación del producto",
-            "transactions": "Transacciones de productos"
+            "transactions": "Transacciones de productos",
+            "current": {
+                "stock": "Cantidad actual"
+            }
         },
         "services": {
             "title": "Servicios",
             "chooseService": "Elije un servicio",
             "service": "Servicio",
-            "wasDisabled": "El servicio no puede ser eliminado y fue deshabilitado"
+            "wasDisabled": "El servicio no puede ser eliminado y fue deshabilitado",
+            "quantity": "Este es un artículo ilimitado"
         },
         "common": {
             "create": "Crear",
             "new": "Nuevo",
             "update": "Actualizar",
-            "delete": "Eliminar",
+            "delete": {
+                "all": "Borrar todo"
+            },
             "back": "Volver",
             "creationOf": "Creación de",
             "updateOf": "Actualización de",
@@ -1028,7 +1044,11 @@ export default {
             },
             "existence": "Existencia",
             "tin": "NIT - Número de identificación tributaria",
-            "report": "Reporte"
+            "report": "Reporte",
+            "process": "Procesar",
+            "current": {
+                "stock": "Cantidad actual"
+            }
         },
         "rooms": {
             "title": "Habitaciones",
