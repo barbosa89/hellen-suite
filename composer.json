@@ -37,6 +37,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
         "beyondcode/laravel-dump-server": "^1.0",
+        "beyondcode/laravel-query-detector": "^1.1",
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.42",

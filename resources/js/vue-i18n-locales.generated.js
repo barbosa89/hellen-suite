@@ -585,6 +585,9 @@ export default {
             "sales": "Sales",
             "select": {
                 "type": "Select transaction type"
+            },
+            "element": {
+                "exists": "This item has already been added."
             }
         },
         "passwords": {
@@ -1229,6 +1232,9 @@ export default {
             "losses": "Pérdidas",
             "select": {
                 "type": "Seleccione el tipo de transacción"
+            },
+            "element": {
+                "exists": "Este elemento ya fue agregado"
             }
         },
         "passwords": {

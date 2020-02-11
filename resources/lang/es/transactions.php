@@ -20,4 +20,8 @@ return array (
   array (
     'type' => 'Seleccione el tipo de transacción',
   ),
+  'element' => 
+  array (
+    'exists' => 'Este elemento ya fue agregado',
+  ),
 );

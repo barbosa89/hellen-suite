@@ -20,4 +20,8 @@ return array (
   array (
     'type' => 'Select transaction type',
   ),
+  'element' => 
+  array (
+    'exists' => 'This item has already been added.',
+  ),
 );
