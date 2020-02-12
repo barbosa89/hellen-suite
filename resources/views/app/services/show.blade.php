@@ -31,7 +31,7 @@
                         ],
                         [
                             'type' => 'confirm',
-                            'option' => trans('common.delete'),
+                            'option' => trans('common.delete.item'),
                             'url' => route('services.destroy', [
                                 'id' => Hashids::encode($service->id)
                             ]),

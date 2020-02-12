@@ -121,18 +121,11 @@
 
 <script>
     export default {
-        mounted() {
-            // If there is one or more hotels, then assign the hotel hash
-            // if (this.hotels.length > 0) {
-            //     this.hotel = _.first(this.hotels).hash
-            // }
-        },
         props: ['hotels'],
         data() {
             return {
                 hotel: '',
                 type: '',
-                elements: [],
                 selecteds: [],
                 hash: '',
                 amount: 0,
@@ -146,7 +139,6 @@
         },
         methods: {
             resetAll() {
-                this.elements = [],
                 this.query = '',
                 this.selecteds = [],
                 this.amount = 0,
@@ -161,14 +153,6 @@
                     element.editing = true
 
                     this.selecteds.push(element)
-
-                    this.elements = _.filter(this.elements, (item) => {
-                        return item.hash != element.hash
-                    })
-
-                    // if (this.elements.length == 0) {
-                    //     this.query = ''
-                    // }
                 } else {
                     toastr.info(
                         this.$root.$t('transactions.element.exists'),
@@ -287,7 +271,12 @@
 
                 return errors == 0;
             }
-        }
+        },
+        watch: {
+            hotel: function (current, old) {
+                this.resetAll()
+            }
+        },
     };
 </script>
 

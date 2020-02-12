@@ -25,7 +25,7 @@
                 ],
                 [
                     'type' => 'confirm',
-                    'option' => trans('common.delete'),
+                    'option' => trans('common.delete.item'),
                     'url' => route('hotels.destroy', [
                         'id' => Hashids::encode($hotel->id)
                     ]),

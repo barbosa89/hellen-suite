@@ -4,10 +4,6 @@ return array (
   'create' => 'Crear',
   'new' => 'Nuevo',
   'update' => 'Actualizar',
-  'delete' => 
-  array (
-    'all' => 'Borrar todo',
-  ),
   'back' => 'Volver',
   'creationOf' => 'Creación de',
   'updateOf' => 'Actualización de',
@@ -144,6 +140,11 @@ return array (
   'tin' => 'NIT - Número de identificación tributaria',
   'report' => 'Reporte',
   'process' => 'Procesar',
+  'delete' => 
+  array (
+    'all' => 'Borrar todo',
+    'item' => 'Eliminar',
+  ),
   'current' => 
   array (
     'stock' => 'Cantidad actual',

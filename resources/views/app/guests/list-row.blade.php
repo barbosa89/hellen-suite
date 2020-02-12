@@ -40,7 +40,7 @@
                     ],
                     [
                         'type' => 'confirm',
-                        'option' => trans('common.delete'),
+                        'option' => trans('common.delete.item'),
                         'url' => route('guests.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),

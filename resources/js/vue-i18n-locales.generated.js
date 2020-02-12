@@ -265,9 +265,6 @@ export default {
         "common": {
             "back": "Back",
             "create": "Create",
-            "delete": {
-                "all": "Delete all"
-            },
             "new": "New",
             "update": "Update",
             "creationOf": "Creation of",
@@ -401,6 +398,10 @@ export default {
             "existence": "Existence",
             "tin": "TIN",
             "report": "Report",
+            "delete": {
+                "all": "Delete all",
+                "item": "Delete"
+            },
             "process": "Process",
             "current": {
                 "stock": "Current stock"
@@ -913,9 +914,6 @@ export default {
             "create": "Crear",
             "new": "Nuevo",
             "update": "Actualizar",
-            "delete": {
-                "all": "Borrar todo"
-            },
             "back": "Volver",
             "creationOf": "Creación de",
             "updateOf": "Actualización de",
@@ -1049,6 +1047,10 @@ export default {
             "tin": "NIT - Número de identificación tributaria",
             "report": "Reporte",
             "process": "Procesar",
+            "delete": {
+                "all": "Borrar todo",
+                "item": "Eliminar"
+            },
             "current": {
                 "stock": "Cantidad actual"
             }

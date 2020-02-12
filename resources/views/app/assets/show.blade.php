@@ -29,7 +29,7 @@
                         ],
                         [
                             'type' => 'confirm',
-                            'option' => trans('common.delete'),
+                            'option' => trans('common.delete.item'),
                             'url' => route('assets.destroy', [
                                 'id' => Hashids::encode($asset->id)
                             ]),

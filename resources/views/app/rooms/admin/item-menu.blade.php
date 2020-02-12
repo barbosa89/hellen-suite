@@ -20,7 +20,7 @@
         ],
         [
             'type' => 'confirm',
-            'option' => trans('common.delete'),
+            'option' => trans('common.delete.item'),
             'url' => route('rooms.destroy', [
                 'id' => Hashids::encode($row->id)
             ]),

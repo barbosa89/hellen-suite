@@ -38,7 +38,7 @@
                 @include('partials.dropdown-btn', [
                     'options' => [
                         [
-                            'option' => 'Ver',
+                            'option' => trans('common.seeMore'),
                             'url' => route('hotels.show', [
                                 'id' => Hashids::encode($row->id)
                             ]),
@@ -60,7 +60,7 @@
                         ],
                         [
                             'type' => 'confirm',
-                            'option' => trans('common.delete'),
+                            'option' => trans('common.delete.item'),
                             'url' => route('hotels.destroy', [
                                 'id' => Hashids::encode($row->id)
                             ]),

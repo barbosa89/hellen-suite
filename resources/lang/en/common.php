@@ -3,10 +3,6 @@
 return array (
   'back' => 'Back',
   'create' => 'Create',
-  'delete' => 
-  array (
-    'all' => 'Delete all',
-  ),
   'new' => 'New',
   'update' => 'Update',
   'creationOf' => 'Creation of',
@@ -143,6 +139,11 @@ return array (
   'existence' => 'Existence',
   'tin' => 'TIN',
   'report' => 'Report',
+  'delete' => 
+  array (
+    'all' => 'Delete all',
+    'item' => 'Delete',
+  ),
   'process' => 'Process',
   'current' => 
   array (

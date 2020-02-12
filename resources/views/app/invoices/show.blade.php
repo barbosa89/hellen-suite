@@ -113,7 +113,7 @@
                         ],
                         [
                             'type' => 'confirm',
-                            'option' => trans('common.delete'),
+                            'option' => trans('common.delete.item'),
                             'url' => route('invoices.destroy', [
                                 'id' => Hashids::encode($invoice->id)
                             ]),
@@ -188,7 +188,7 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     @can('invoices.edit')
-                                                        <a href="#" class="btn btn-link" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
+                                                        <a href="#" class="btn btn-link" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($invoice->id), 'company' => Hashids::encode($invoice->company->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -285,7 +285,7 @@
                                                                         </a>
                                                                     @endif
 
-                                                                    <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                    <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($invoice->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                         <i class="fas fa-user-times"></i>
                                                                     </a>
 
@@ -675,7 +675,7 @@
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                     @can('invoices.edit')
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -733,7 +733,7 @@
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                     @can('invoices.edit')
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($external->id)], false) }}')">
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($invoice->id), 'additional' => Hashids::encode($external->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -818,7 +818,7 @@
                                                         </div>
                                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                             @can('invoices.edit')
-                                                                <a class="btn btn-link" title="{{ trans('common.delete') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($invoice->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                     <i class="fas fa-times-circle"></i>
                                                                 </a>
                                                             @endcan

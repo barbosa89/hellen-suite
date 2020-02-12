@@ -37,7 +37,7 @@
                         ],
                         [
                             'type' => 'confirm',
-                            'option' => trans('common.delete'),
+                            'option' => trans('common.delete.item'),
                             'url' => route('props.destroy', [
                                 'id' => Hashids::encode($prop->id)
                             ]),

@@ -44,7 +44,7 @@
                     ],
                     [
                         'type' => 'confirm',
-                        'option' => trans('common.delete'),
+                        'option' => trans('common.delete.item'),
                         'url' => route('vehicles.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
