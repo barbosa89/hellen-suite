@@ -44,11 +44,6 @@ class Product extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
-    public function transactions()
-    {
-        return $this->morphMany(\App\Welkome\Transaction::class, 'transactionable');
-    }
-
     /**
      * Hashing Product ID.
      *

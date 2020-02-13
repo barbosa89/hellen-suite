@@ -111,17 +111,6 @@ class ProductController extends Controller
         $product->hotel()->associate(Id::get($request->hotel));
 
         if ($product->save()) {
-            $transaction = new Transaction();
-            $transaction->quantity = $product->quantity;
-            $transaction->value = $product->price;
-            $transaction->commentary = trans('products.creation');
-            $transaction->type = 'entry';
-            $transaction->done_by = auth()->user()->name;
-            $transaction->user()->associate(Id::parent());
-
-            // Save the product transaction
-            $product->transactions()->save($transaction);
-
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('products.show', [
