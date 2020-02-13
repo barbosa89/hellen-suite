@@ -490,7 +490,8 @@ export default {
             "process": "Process",
             "current": {
                 "stock": "Current stock"
-            }
+            },
+            "invoice": "Invoice"
         },
         "rooms": {
             "title": "Rooms",
@@ -1138,7 +1139,8 @@ export default {
             },
             "current": {
                 "stock": "Cantidad actual"
-            }
+            },
+            "invoice": "Factura"
         },
         "rooms": {
             "title": "Habitaciones",

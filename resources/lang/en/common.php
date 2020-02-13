@@ -149,4 +149,5 @@ return array (
   array (
     'stock' => 'Current stock',
   ),
+  'invoice' => 'Invoice',
 );
