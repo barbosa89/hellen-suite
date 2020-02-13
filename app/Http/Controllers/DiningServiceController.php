@@ -208,13 +208,13 @@ class DiningServiceController extends Controller
         }
 
         $service->load([
-            'invoices' => function ($query)
+            'vouchers' => function ($query)
             {
                 $query->select('id');
             },
         ]);
 
-        if ($service->invoices->count() > 0) {
+        if ($service->vouchers->count() > 0) {
             $service->status = 0;
 
             if ($service->save()) {

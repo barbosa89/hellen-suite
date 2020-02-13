@@ -195,7 +195,7 @@ class ServiceController extends Controller
         }
 
         $service->load([
-            'invoices' => function ($query)
+            'vouchers' => function ($query)
             {
                 $query->select('id');
             },

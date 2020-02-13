@@ -32,15 +32,15 @@
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
-            @if (!$invoice->payment_status)
+            @if (!$voucher->payment_status)
                 @can('payments.edit')
-                    <a href="{{ route('payments.edit', ['invoice' => Hashids::encode($invoice->id), 'id' => Hashids::encode($row->id)]) }}" class="btn btn-link">
+                    <a href="{{ route('payments.edit', ['invoice' => Hashids::encode($voucher->id), 'id' => Hashids::encode($row->id)]) }}" class="btn btn-link">
                         <i class="fas fa-edit"></i>
                     </a>
                 @endcan
 
                 @can('payments.destroy')
-                    <a href="#" data-url="{{ route('payments.destroy', ['invoice' => Hashids::encode($invoice->id), 'id' => Hashids::encode($row->id)]) }}" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)">
+                    <a href="#" data-url="{{ route('payments.destroy', ['invoice' => Hashids::encode($voucher->id), 'id' => Hashids::encode($row->id)]) }}" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)">
                         <i class="fas fa-times-circle"></i>
                     </a>
                 @endcan

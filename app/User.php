@@ -60,9 +60,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Welkome\Shift::class);
     }
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->hasMany(Welkome\Invoice::class);
+        return $this->hasMany(Welkome\Voucher::class);
     }
 
     public function employees()

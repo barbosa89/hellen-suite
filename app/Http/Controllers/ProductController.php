@@ -230,7 +230,7 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'invoices' => function ($query)
+            'vouchers' => function ($query)
             {
                 $query->select('id');
             },

@@ -3,24 +3,24 @@
 namespace App\Helpers;
 
 use App\Helpers\Age;
-use App\Welkome\Invoice;
+use App\Welkome\Voucher;
 use Vinkla\Hashids\Facades\Hashids;
 
 class Customer
 {
     /**
-     * Return the invoice customer.
+     * Return the voucher customer.
      *
-     * @param  \App\Welkome\Invoice
+     * @param  \App\Welkome\Voucher
      * @return array
      */
-    public static function get(Invoice $invoice): array
+    public static function get(Voucher $voucher): array
     {
         $customer = [];
 
-        if (empty($invoice->company)) {
-            if ($invoice->guests->isNotEmpty()) {
-                $main = $invoice->guests->first(function ($guest, $index) {
+        if (empty($voucher->company)) {
+            if ($voucher->guests->isNotEmpty()) {
+                $main = $voucher->guests->first(function ($guest, $index) {
                     return $guest->pivot->main == true;
                 });
 
@@ -32,12 +32,12 @@ class Customer
                 $customer['phone'] = $main->phone ? $main->phone : '';
             }
         } else {
-            $customer['name'] = $invoice->company->business_name;
-            $customer['tin'] = $invoice->company->tin;
-            $customer['route'] = route('companies.show', ['id' => Hashids::encode($invoice->company->id)]);
-            $customer['email'] = $invoice->company->email ? $invoice->company->email : '';
-            $customer['address'] = $invoice->company->address ? $invoice->company->address : '';
-            $customer['phone'] = $invoice->company->phone ? $invoice->company->phone : '';
+            $customer['name'] = $voucher->company->business_name;
+            $customer['tin'] = $voucher->company->tin;
+            $customer['route'] = route('companies.show', ['id' => Hashids::encode($voucher->company->id)]);
+            $customer['email'] = $voucher->company->email ? $voucher->company->email : '';
+            $customer['address'] = $voucher->company->address ? $voucher->company->address : '';
+            $customer['phone'] = $voucher->company->phone ? $voucher->company->phone : '';
         }
 
         return $customer;

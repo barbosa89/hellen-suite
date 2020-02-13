@@ -14,7 +14,7 @@ class CreateInvoiceRoomTable extends Migration
     public function up()
     {
         Schema::create('invoice_room', function (Blueprint $table) {
-            $table->bigInteger('invoice_id')->unsigned();
+            $table->bigInteger('voucher_id')->unsigned();
             $table->bigInteger('room_id')->unsigned();
             $table->integer('quantity'); // On days
             $table->decimal('price', 10, 2); // Final price given to the user
@@ -26,12 +26,12 @@ class CreateInvoiceRoomTable extends Migration
             $table->date('end')->nullable();
             $table->boolean('enabled'); // The room can be processed
 
-            $table->foreign('invoice_id')->references('id')->on('invoices')
+            $table->foreign('voucher_id')->references('id')->on('vouchers')
             ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['room_id', 'invoice_id']);
+            $table->primary(['room_id', 'voucher_id']);
         });
     }
 

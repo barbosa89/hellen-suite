@@ -33,9 +33,9 @@ class Room extends Model
      */
     protected $hidden = ['id'];
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Voucher::class);
     }
 
     public function assets()

@@ -4,10 +4,10 @@ namespace App\Providers;
 
 use App\User;
 use App\Helpers\Id;
-use App\Welkome\Invoice;
+use App\Welkome\Voucher;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use App\Observers\InvoiceObserver;
+use App\Observers\VoucherObserver;
 use App\Welkome\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -203,7 +203,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Observers
 
-        Invoice::observe(InvoiceObserver::class);
+        Voucher::observe(VoucherObserver::class);
 
         // Macros
 

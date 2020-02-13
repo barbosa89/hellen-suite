@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('payments', $invoice) }}
+    {{ Breadcrumbs::render('payments', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,16 +9,16 @@
 @include('partials.page-header', [
     'title' => trans('payments.title'),
     'url' => route('payments.index', [
-        'invoice' => Hashids::encode($invoice->id)
+        'invoice' => Hashids::encode($voucher->id)
     ]),
     'options' => [
         [
-            'type' => $invoice->payment_status ? 'hideable' : 'confirm',
+            'type' => $voucher->payment_status ? 'hideable' : 'confirm',
             'option' => trans('common.close') . ' ' . strtolower(trans('payments.title')),
             'url' => route('invoices.payments.close', [
-                'id' => Hashids::encode($invoice->id)
+                'id' => Hashids::encode($voucher->id)
             ]),
-            'show' => (float) $invoice->value === $invoice->payments->sum('value') and $invoice->payment_status == false,
+            'show' => (float) $voucher->value === $voucher->payments->sum('value') and $voucher->payment_status == false,
             'method' => 'POST',
             'permission' => 'invoices.payments.close'
         ],
@@ -26,9 +26,9 @@
             'type' => 'hideable',
             'option' => trans('common.new'),
             'url' => route('payments.create', [
-                'invoice' => Hashids::encode($invoice->id)
+                'invoice' => Hashids::encode($voucher->id)
             ]),
-            'show' => $invoice->payment_status == false,
+            'show' => $voucher->payment_status == false,
             'permission' => 'payments.create'
         ],
     ]
@@ -41,7 +41,7 @@
 <div class="row">
     <div class="col-md-12">
         @include('partials.list', [
-            'data' => $invoice->payments,
+            'data' => $voucher->payments,
             'listHeading' => 'app.payments.list-heading',
             'listRow' => 'app.payments.list-row',
             'where' => null

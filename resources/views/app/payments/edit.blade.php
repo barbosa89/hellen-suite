@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('payments', $invoice) }}
+    {{ Breadcrumbs::render('payments', $voucher) }}
 @endsection
 
 @section('content')
@@ -10,13 +10,13 @@
         @include('partials.page-header', [
             'title' => trans('payments.title'),
             'url' => route('payments.index', [
-                'invoice' => Hashids::encode($invoice->id)
+                'invoice' => Hashids::encode($voucher->id)
             ]),
             'options' => [
                 [
                     'option' => trans('common.back'),
                     'url' => route('payments.index', [
-                        'invoice' => Hashids::encode($invoice->id)
+                        'invoice' => Hashids::encode($voucher->id)
                     ]),
                 ],
             ]
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('payments.title')</h2>
-                <form action="{{ route('payments.update', ['invoice' => Hashids::encode($invoice->id), 'id' => Hashids::encode($payment->id)]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('payments.update', ['invoice' => Hashids::encode($voucher->id), 'id' => Hashids::encode($payment->id)]) }}" method="POST" enctype="multipart/form-data">
                     @csrf()
                     @method('PUT')
 
@@ -91,7 +91,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <a href="{{ route('payments.index', ['invoice' => Hashids::encode($invoice->id)]) }}" class="btn btn-link">
+                    <a href="{{ route('payments.index', ['invoice' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
                         @lang('common.back')
                     </a>
                 </form>

@@ -41,7 +41,7 @@ class RoomController extends Controller
     }
 
     /**
-     * Return hotel list to attach to invoice.
+     * Return hotel list to attach to voucher.
      *
      * @param  \Illuminate\Support\Collection
      * @return  \Illuminate\Support\Collection
@@ -66,7 +66,7 @@ class RoomController extends Controller
     }
 
     /**
-     * Return hotel list to attach to invoice.
+     * Return hotel list to attach to voucher.
      *
      * @return  \Illuminate\Support\Collection
      */
@@ -275,7 +275,7 @@ class RoomController extends Controller
         }
 
         $room->load([
-            'invoices' => function ($query)
+            'vouchers' => function ($query)
             {
                 $query->select('id');
             },

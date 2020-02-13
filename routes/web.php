@@ -43,7 +43,7 @@ require __DIR__ . '/modules/rooms.php';
 require __DIR__ . '/modules/team.php';
 require __DIR__ . '/modules/guests.php';
 require __DIR__ . '/modules/companies.php';
-require __DIR__ . '/modules/invoices.php';
+require __DIR__ . '/modules/vouchers.php';
 require __DIR__ . '/modules/products.php';
 require __DIR__ . '/modules/services.php';
 require __DIR__ . '/modules/assets.php';

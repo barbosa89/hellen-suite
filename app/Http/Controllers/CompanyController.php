@@ -10,7 +10,7 @@ use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Id, Input, Fields, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
-use App\Welkome\Invoice;
+use App\Welkome\Voucher;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
@@ -73,44 +73,44 @@ class CompanyController extends Controller
     }
 
     /**
-     * Show the form for creating a new invoice company.
+     * Show the form for creating a new vouche company.
      *
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function createForInvoice($id)
+    public function createForVoucher($id)
     {
-        $invoice = Invoice::where('user_id', Id::parent())
+        $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('invoices'));
+            ->first(Fields::parsed('vouchers'));
 
-        if (empty($invoice)) {
+        if (empty($voucher)) {
             abort(404);
         }
 
         $types = IdentificationType::all(['id', 'type']);
 
-        return view('app.companies.create-for-invoice', compact('invoice', 'types'));
+        return view('app.companies.create-for-voucher', compact('voucher', 'types'));
     }
 
     /**
-     * Store a newly created company in storage and attaching to invoice.
+     * Store a newly created company in storage and attaching to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function storeForInvoice(StoreCompany $request, $id)
+    public function storeForVoucher(StoreCompany $request, $id)
     {
-        $invoice = Invoice::where('user_id', Id::parent())
+        $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('invoices'));
+            ->first(Fields::parsed('vouchers'));
 
-        if (empty($invoice)) {
+        if (empty($voucher)) {
             abort(404);
         }
 
@@ -124,8 +124,8 @@ class CompanyController extends Controller
         $company->user()->associate(Id::parent());
 
         if ($company->save()) {
-            $invoice->company()->associate($company->id);
-            $invoice->save();
+            $voucher->company()->associate($company->id);
+            $voucher->save();
 
             flash(trans('common.successful'))->success();
 
@@ -212,7 +212,7 @@ class CompanyController extends Controller
     {
         $company = Company::where('user_id', Id::parent())
             ->where('id', Id::get($id))
-            ->whereDoesntHave('invoices')
+            ->whereDoesntHave('vouchers')
             ->first(Fields::get('companies'));
 
         if (empty($company)) {

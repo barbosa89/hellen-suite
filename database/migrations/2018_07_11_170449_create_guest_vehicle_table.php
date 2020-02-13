@@ -17,7 +17,7 @@ class CreateGuestVehicleTable extends Migration
             $table->bigInteger('guest_id')->unsigned();
             $table->bigInteger('vehicle_id')->unsigned();
             $table->datetime('created_at')->nullable();
-            $table->bigInteger('invoice_id')->nullable();
+            $table->bigInteger('voucher_id')->nullable();
             $table->string('other')->nullable();
 
             $table->foreign('guest_id')->references('id')->on('guests')

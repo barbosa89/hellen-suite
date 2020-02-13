@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $invoice) }}
+    {{ Breadcrumbs::render('invoice', $voucher) }}
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
             'options' => [
                 [
                     'option' => 'Buscar empresas',
-                    'url' => route('invoices.companies.search', ['id' => Hashids::encode($invoice->id)])
+                    'url' => route('invoices.companies.search', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
                     'option' => 'Volver al recibo',
                     'url' => route('invoices.show', [
-                        'id' => Hashids::encode($invoice->id)
+                        'id' => Hashids::encode($voucher->id)
                     ])
                 ]
             ]
@@ -32,7 +32,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('invoices.companies.store', [
-                        'id' => Hashids::encode($invoice->id)
+                        'id' => Hashids::encode($voucher->id)
                     ]),
                     'fields' => [
                         'app.companies.create-fields',

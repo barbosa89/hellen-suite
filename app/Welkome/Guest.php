@@ -46,9 +46,9 @@ class Guest extends Model
         return $this->belongsTo(\App\Welkome\Guest::class, 'responsible_adult');
     }
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Voucher::class);
     }
 
     public function identificationType()

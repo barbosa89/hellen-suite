@@ -14,15 +14,15 @@ class CreateInvoiceShiftTable extends Migration
     public function up()
     {
         Schema::create('invoice_shift', function (Blueprint $table) {
-            $table->bigInteger('invoice_id')->unsigned();
+            $table->bigInteger('voucher_id')->unsigned();
             $table->bigInteger('shift_id')->unsigned();
 
-            $table->foreign('invoice_id')->references('id')->on('invoices')
+            $table->foreign('voucher_id')->references('id')->on('vouchers')
             ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('shift_id')->references('id')->on('shifts')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['shift_id', 'invoice_id']);
+            $table->primary(['shift_id', 'voucher_id']);
         });
     }
 

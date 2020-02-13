@@ -35,7 +35,7 @@ return [
             'created_at',
             'main_hotel'
         ],
-        'invoices' => [
+        'vouchers' => [
             'id',
             'number',
             'origin',
@@ -150,20 +150,6 @@ return [
             'hotel_id',
             'user_id'
         ],
-        'transactions' => [
-            'id',
-            'quantity',
-            'value',
-            'commentary',
-            'invoice_number',
-            'invoice_item',
-            'type',
-            'done_by',
-            'transactionable_id',
-            'transactionable_type',
-            'created_at',
-            'user_id'
-        ],
         'maintenances' => [
             'id',
             'date',
@@ -191,7 +177,7 @@ return [
             'payment_method',
             'value',
             'invoice',
-            'invoice_id',
+            'voucher_id',
             'created_at',
         ],
         'shifts' => [
@@ -221,7 +207,7 @@ return [
         'companies',
         'guests',
         'hotels',
-        'invoices',
+        'vouchers',
         'payments',
         'products',
         'rooms',
@@ -270,7 +256,7 @@ return [
             'companies' => '*',
             'guests'    => '*',
             'hotels'    => '*',
-            'invoices'  => '*',
+            'vouchers'  => '*',
             'payments'  => '*',
             'products'  => '*',
             'rooms'     => '*',
@@ -280,7 +266,7 @@ return [
         ],
         'admin' => [
             'assets'    => '*',
-            'invoices'  => '*',
+            'vouchers'  => '*',
             'payments'  => '*',
             'products'  => '*',
             'services'  => '*',
@@ -288,7 +274,7 @@ return [
         'receptionist'  => [
             'companies' => ['index', 'create', 'show', 'edit'],
             'guests'    => ['index', 'create', 'show', 'edit'],
-            'invoices'  => ['index', 'create', 'show'],
+            'vouchers'  => ['index', 'create', 'show'],
             'payments'  => ['index', 'create'],
             'products'  => ['index'],
             'rooms'     => ['index'],

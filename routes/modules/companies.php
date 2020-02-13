@@ -9,12 +9,12 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('companies.search')
 		->middleware(['permission:companies.index']);
 
-    Route::get('invoices/{id}/companies/create', 'CompanyController@createForInvoice')
-        ->name('invoices.companies.create')
+    Route::get('vouchers/{id}/companies/create', 'CompanyController@createForvoucher')
+        ->name('vouchers.companies.create')
         ->middleware('permission:companies.create');
 
-    Route::post('invoices/{id}/companies', 'CompanyController@storeForInvoice')
-        ->name('invoices.companies.store')
+    Route::post('vouchers/{id}/companies', 'CompanyController@storeForvoucher')
+        ->name('vouchers.companies.store')
         ->middleware('permission:companies.create');
 
 	Route::delete('companies/{id}', 'CompanyController@destroy')

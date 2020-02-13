@@ -191,7 +191,7 @@ class HotelController extends Controller
             {
                 $query->select(['id', 'main_hotel']);
             })
-            ->whereDoesntHave('invoices', function ($query)
+            ->whereDoesntHave('vouchers', function ($query)
             {
                 $query->select(['id', 'hotel_id']);
             })->first(Fields::get('hotels'));

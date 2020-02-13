@@ -34,9 +34,9 @@ class Hotel extends Model
         return $this->belongsToMany(\App\User::class);
     }
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->hasMany(\App\Welkome\Invoice::class);
+        return $this->hasMany(\App\Welkome\Voucher::class);
     }
 
     public function shifts()

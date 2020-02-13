@@ -15,16 +15,16 @@ class CreateGuestInvoiceTable extends Migration
     {
         Schema::create('guest_invoice', function (Blueprint $table) {
             $table->bigInteger('guest_id')->unsigned();
-            $table->bigInteger('invoice_id')->unsigned();
+            $table->bigInteger('voucher_id')->unsigned();
             $table->boolean('main')->default(false);
-            $table->boolean('active'); // The guest is at the hotel and is related to an invoice
+            $table->boolean('active'); // The guest is at the hotel and is related to an voucher
 
             $table->foreign('guest_id')->references('id')->on('guests')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('invoice_id')->references('id')->on('invoices')
+            $table->foreign('voucher_id')->references('id')->on('vouchers')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['guest_id', 'invoice_id']);
+            $table->primary(['guest_id', 'voucher_id']);
         });
     }
 

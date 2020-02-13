@@ -8,10 +8,10 @@ use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Helpers\{Customer, Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
-use App\Http\Requests\StoreInvoiceGuest;
+use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
 use App\User;
-use App\Welkome\{Country, Guest, IdentificationType, Invoice};
+use App\Welkome\{Country, Guest, IdentificationType, Voucher};
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
@@ -89,15 +89,15 @@ class GuestController extends Controller
     }
 
     /**
-     * Show the form for creating a new invoice guest.
+     * Show the form for creating a new voucher guest.
      *
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function createForInvoice($id)
+    public function createForVoucher($id)
     {
         $id = Id::get($id);
-        $invoice = Invoice::where('user_id', Id::parent())
+        $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -108,7 +108,7 @@ class GuestController extends Controller
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
-                        ->wherePivot('invoice_id', $id);
+                        ->wherePivot('voucher_id', $id);
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
@@ -123,7 +123,7 @@ class GuestController extends Controller
                 }
             ])->first(['id', 'number']);
 
-        if (empty($invoice)) {
+        if (empty($voucher)) {
             abort(404);
         }
 
@@ -131,26 +131,26 @@ class GuestController extends Controller
         $countries = Country::all(['id', 'name']);
         $guests = 0;
 
-        $invoice->rooms->each(function ($room) use (&$guests)
+        $voucher->rooms->each(function ($room) use (&$guests)
         {
             $guests += $room->guests()->count();
         });
 
-        $customer = Customer::get($invoice);
+        $customer = Customer::get($voucher);
 
-        return view('app.guests.create-for-invoice', compact('invoice', 'types', 'guests', 'countries', 'customer'));
+        return view('app.guests.create-for-voucher', compact('voucher', 'types', 'guests', 'countries', 'customer'));
     }
 
     /**
-     * Store a newly created guest in storage and attaching to invoice.
+     * Store a newly created guest in storage and attaching to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function storeForInvoice(StoreInvoiceGuest $request, $id)
+    public function storeForVoucher(StoreVoucherGuest $request, $id)
     {
-        $invoice = Invoice::where('user_id', Id::parent())
+        $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($id))
             ->where('open', true)
             ->where('status', true)
@@ -160,7 +160,7 @@ class GuestController extends Controller
                 },
             ])->first(['id']);
 
-        if (empty($invoice)) {
+        if (empty($voucher)) {
             abort(404);
         }
 
@@ -188,14 +188,14 @@ class GuestController extends Controller
         }
 
         if ($guest->save()) {
-            $main = $invoice->guests->isEmpty() ? true : false;
-            $invoice->guests()->attach($guest->id, [
+            $main = $voucher->guests->isEmpty() ? true : false;
+            $voucher->guests()->attach($guest->id, [
                 'main' => $main,
                 'active' => true
             ]);
 
             $guest->rooms()->attach(Id::get($request->room), [
-                'invoice_id' => $invoice->id
+                'voucher_id' => $voucher->id
             ]);
 
             flash(trans('common.successful'))->success();
@@ -317,7 +317,7 @@ class GuestController extends Controller
     {
         $guest = Guest::where('user_id', Id::parent())
             ->where('id', Id::get($id))
-            ->whereDoesntHave('invoices')
+            ->whereDoesntHave('vouchers')
             ->first(Fields::get('guests'));
 
         if (empty($guest)) {
@@ -377,8 +377,8 @@ class GuestController extends Controller
             return response()->json([
                 'guests' => $this->renderToTemplate(
                     $guests,
-                    'app.invoices.guests.search',
-                    $request->invoice
+                    'app.vouchers.guests.search',
+                    $request->vouche
                     )
             ]);
         }
@@ -392,14 +392,14 @@ class GuestController extends Controller
      * @param Illuminate\Support\Collection  $results
      * @return array
      */
-    private function renderToTemplate(Collection $results, $template, $invoice)
+    private function renderToTemplate(Collection $results, $template, $voucher)
     {
         $rendered = collect();
 
-        $results->each(function ($guest, $index) use (&$rendered, $template, $invoice) {
+        $results->each(function ($guest, $index) use (&$rendered, $template, $voucher) {
             $render = view($template, [
                 'guest' => $guest,
-                'invoice' => $invoice
+                'voucher' => $voucher
             ])->render();
 
             $rendered->push($render);
@@ -443,10 +443,10 @@ class GuestController extends Controller
      * @param  string   $id
      * @return \Illuminate\Http\Response
      */
-    public function toggle($id, $invoice)
+    public function toggle($id, $voucher)
     {
-        $invoice = Invoice::where('user_id', Id::parent())
-            ->where('id', Id::get($invoice))
+        $voucher = Voucher::where('user_id', Id::parent())
+            ->where('id', Id::get($voucher))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -455,9 +455,9 @@ class GuestController extends Controller
                         ->where('responsible_adult', false)
                         ->withPivot('main', 'active');
                 },
-                'guests.rooms' => function ($query) use ($invoice) {
+                'guests.rooms' => function ($query) use ($voucher) {
                     $query->select(Fields::parsed('rooms'))
-                        ->wherePivot('invoice_id', $invoice);
+                        ->wherePivot('voucher_id', $voucher);
                 },
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'))
@@ -465,31 +465,31 @@ class GuestController extends Controller
                 },
             ])->first(['id']);
 
-        if (empty($invoice)) {
+        if (empty($voucher)) {
             return abort(404);
         }
 
-        // Check if the invoice only has a guest
-        if ($invoice->guests->count() == 1) {
-            flash(trans('invoices.onlyOne'))->error();
+        // Check if the voucher only has a guest
+        if ($voucher->guests->count() == 1) {
+            flash(trans('vouchers.onlyOne'))->error();
 
             return back();
         }
 
         // The guest
-        $guest = $invoice->guests->where('id', Id::get($id))->first();
+        $guest = $voucher->guests->where('id', Id::get($id))->first();
 
         // The guest room
-        $room = $invoice->rooms->where('id', $guest->rooms()->first()->id)->first();
+        $room = $voucher->rooms->where('id', $guest->rooms()->first()->id)->first();
 
-        // Check if the room is available in the invoice
+        // Check if the room is available in the voucher
         if ($room->pivot->enabled) {
             // Toggle status
-            // The guest leaves the hotel but remains on the invoice
+            // The guest leaves the hotel but remains on the voucher
             if ($guest->status == true and $guest->pivot->active == true) {
                 $guest->status = false;
 
-                $invoice->guests()->updateExistingPivot(
+                $voucher->guests()->updateExistingPivot(
                     $guest,
                     [
                         'active' => false
@@ -497,11 +497,11 @@ class GuestController extends Controller
                 );
             }
 
-            // The guest enters the hotel at the same invoice
+            // The guest enters the hotel at the same voucher
             if ($guest->status == false and $guest->pivot->active == false) {
                 $guest->status = true;
 
-                $invoice->guests()->updateExistingPivot(
+                $voucher->guests()->updateExistingPivot(
                     $guest,
                     [
                         'active' => true
@@ -512,20 +512,20 @@ class GuestController extends Controller
             if ($guest->save()) {
                 // Check if is the main guest
                 if ($guest->pivot->main) {
-                    // Update main guest in the invoice
-                    $invoice->guests()->updateExistingPivot(
+                    // Update main guest in the voucher
+                    $voucher->guests()->updateExistingPivot(
                         $guest,
                         ['main' => false]
                     );
 
                     // The new main guest
-                    $main = $invoice->guests->where('id', '!=', Id::get($id))
+                    $main = $voucher->guests->where('id', '!=', Id::get($id))
                         ->where('pivot.active', true)
                         ->where('status', true)
                         ->first();
 
                     // Select the main guest
-                    $invoice->guests()->updateExistingPivot(
+                    $voucher->guests()->updateExistingPivot(
                         $main,
                         ['main' => true]
                     );

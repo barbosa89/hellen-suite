@@ -24,9 +24,9 @@ class Company extends Model
      */
     protected $hidden = ['id'];
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->hasMany(\App\Welkome\Invoice::class);
+        return $this->hasMany(\App\Welkome\Voucher::class);
     }
 
     public function user()

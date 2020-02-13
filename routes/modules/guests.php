@@ -1,16 +1,16 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::get('guests/{id}/toggle/{invoice}', 'GuestController@toggle')
+	Route::get('guests/{id}/toggle/{voucher}', 'GuestController@toggle')
         ->name('guests.toggle')
         ->middleware('permission:guests.edit');
 
-    Route::post('invoices/{id}/guests', 'GuestController@storeForInvoice')
-        ->name('invoices.guests.store')
+    Route::post('vouchers/{id}/guests', 'GuestController@storeForvoucher')
+        ->name('vouchers.guests.store')
         ->middleware(['permission:guests.create']);
 
-    Route::get('invoices/{id}/guests/create', 'GuestController@createForInvoice')
-        ->name('invoices.guests.create')
+    Route::get('vouchers/{id}/guests/create', 'GuestController@createForvoucher')
+        ->name('vouchers.guests.create')
         ->middleware(['permission:guests.create']);
 
 	Route::get('guests/export', 'GuestController@export')

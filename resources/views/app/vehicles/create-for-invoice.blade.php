@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $invoice) }}
+    {{ Breadcrumbs::render('invoice', $voucher) }}
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
             'options' => [
                 [
                     'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
-                    'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($invoice->id)]),
+                    'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
                 ],
                 [
                     'option' => 'Volver al recibo',
                     'url' => route('invoices.show', [
-                        'id' => Hashids::encode($invoice->id)
+                        'id' => Hashids::encode($voucher->id)
                     ])
                 ]
             ]
@@ -32,7 +32,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('invoices.vehicles.store', [
-                        'id' => Hashids::encode($invoice->id)
+                        'id' => Hashids::encode($voucher->id)
                     ]),
                     'fields' => [
                         'app.invoices.vehicles.create-fields',
@@ -40,7 +40,7 @@
                     ],
                     'btn' => trans('common.create'),
                     'link' => [
-                        'href' => route('invoices.show', ['id' => Hashids::encode($invoice->id)]),
+                        'href' => route('invoices.show', ['id' => Hashids::encode($voucher->id)]),
                         'name' => trans('common.back')
                     ]
                 ])

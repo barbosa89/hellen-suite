@@ -1,13 +1,13 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-    Route::post('invoices/{id}/vehicles', 'VehicleController@storeForInvoice')
-		->name('invoices.vehicles.store')
-		->middleware(['permission:invoices.edit']);
+    Route::post('vouchers/{id}/vehicles', 'VehicleController@storeForvoucher')
+		->name('vouchers.vehicles.store')
+		->middleware(['permission:vouchers.edit']);
 
-    Route::get('invoices/{id}/vehicles/create', 'VehicleController@createForInvoice')
-		->name('invoices.vehicles.create')
-		->middleware(['permission:invoices.edit']);
+    Route::get('vouchers/{id}/vehicles/create', 'VehicleController@createForvoucher')
+		->name('vouchers.vehicles.create')
+		->middleware(['permission:vouchers.edit']);
 
 	Route::get('vehicles/export', 'VehicleController@export')
 		->name('vehicles.export')

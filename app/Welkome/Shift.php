@@ -20,9 +20,9 @@ class Shift extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
-    public function invoices()
+    public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Invoice::class);
+        return $this->belongsToMany(\App\Welkome\Voucher::class);
     }
 
     public static function current($hotel_id)

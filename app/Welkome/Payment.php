@@ -24,9 +24,9 @@ class Payment extends Model
      */
     protected $hidden = ['id'];
 
-    public function invoice()
+    public function voucher()
     {
-        return $this->belongsTo(\App\Welkome\Invoice::class);
+        return $this->belongsTo(\App\Welkome\Voucher::class);
     }
 
     /**

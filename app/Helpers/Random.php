@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\User;
-use App\Welkome\Invoice;
+use App\Welkome\Voucher;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -32,7 +32,7 @@ class Random
 	}
 
 	/**
-     * Create an unique consecutive from invoices table.
+     * Create an unique consecutive from vouchers table.
      *
      * @param  int		$lenght
      * @return string	$token
@@ -43,9 +43,9 @@ class Random
 
 		while (empty($consecutive)) {
 			$temp = date('y') . date('m') . date('d') . random_int(0, 99999);
-			$invoice = Invoice::where('number', $temp)->first(['id', 'number']);
+			$voucher = Voucher::where('number', $temp)->first(['id', 'number']);
 
-			if (empty($invoice)) {
+			if (empty($voucher)) {
 				$consecutive = $temp;
 			}
 		}

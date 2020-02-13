@@ -21,9 +21,9 @@ class CreatePaymentsTable extends Migration
             $table->decimal('value', 10, 2);
             $table->text('invoice')->nullable();
 
-            $table->bigInteger('invoice_id')->unsigned();
-            $table->foreign('invoice_id')->references('id')
-                ->on('invoices')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('voucher_id')->unsigned();
+            $table->foreign('voucher_id')->references('id')
+                ->on('vouchers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

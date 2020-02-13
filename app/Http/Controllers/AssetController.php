@@ -580,10 +580,10 @@ class AssetController extends Controller
             abort(404);
         }
 
-        $invoice = $maintenance->invoice;
+        $voucher = $maintenance->invoice;
 
         if ($maintenance->delete()) {
-            Storage::delete($invoice);
+            Storage::delete($voucher);
 
             flash(trans('common.deletedSuccessfully'))->success();
 
