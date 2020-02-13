@@ -236,7 +236,7 @@ class ProductController extends Controller
             },
         ]);
 
-        if ($product->invoices->count() > 0) {
+        if ($product->vouchers->count() > 0) {
             $product->status = 0;
 
             if ($product->update()) {

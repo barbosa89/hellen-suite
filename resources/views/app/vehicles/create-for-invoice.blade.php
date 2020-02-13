@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -13,11 +13,11 @@
             'options' => [
                 [
                     'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
-                    'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
+                    'url' => route('vouchers.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
                 ],
                 [
                     'option' => 'Volver al recibo',
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
@@ -31,16 +31,16 @@
                         'title' => trans('common.creationOf') . ' ' . trans('vehicles.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.vehicles.store', [
+                    'url' => route('vouchers.vehicles.store', [
                         'id' => Hashids::encode($voucher->id)
                     ]),
                     'fields' => [
-                        'app.invoices.vehicles.create-fields',
+                        'app.vouchers.vehicles.create-fields',
                         'app.vehicles.create-fields',
                     ],
                     'btn' => trans('common.create'),
                     'link' => [
-                        'href' => route('invoices.show', ['id' => Hashids::encode($voucher->id)]),
+                        'href' => route('vouchers.show', ['id' => Hashids::encode($voucher->id)]),
                         'name' => trans('common.back')
                     ]
                 ])

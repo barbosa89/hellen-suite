@@ -1,38 +1,38 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'options' => [
             [
                 'option' => trans('vouchers.registerGuests'),
-                'url' => route('invoices.guests.search', ['id' => Hashids::encode($voucher->id)])
+                'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
             ],
             [
                 'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
-                'url' => route('invoices.companies.search', [
+                'url' => route('vouchers.companies.search', [
                     'id' => Hashids::encode($voucher->id)
                 ]),
             ],
             [
                 'option' => 'Volver al recibo',
-                'url' => route('invoices.show', [
+                'url' => route('vouchers.show', [
                     'id' => Hashids::encode($voucher->id)
                 ])
             ]
         ]
     ])
 
-    @include('app.invoices.info')
+    @include('app.vouchers.info')
 
     <h3 class="text-center">@lang('rooms.changeRoom')</h3>
-    <form class="mt-4" action="{{ route('invoices.rooms.change', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.rooms.change', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">Hotel:</label>
@@ -89,7 +89,7 @@
         <button type="submit" class="btn btn-primary">
             @lang('common.change')
         </button>
-        <a href="{{ route('invoices.show', ['id' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
+        <a href="{{ route('vouchers.show', ['id' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
             @lang('common.finalize')
         </a>
     </form>

@@ -32,17 +32,17 @@
         <div class="row mb-4">
             <div class="col-6 col-sx-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 align-self-center">
                 <span class="text-uppercase badge badge-dark text-wrap" style="font-size:24px">
-                    @lang('invoices.invoice')
+                    @lang('common.invoice')
 
                     @if ($voucher->reservation)
-                        <small>(@lang('invoices.reservation'))</small>
+                        <small>(@lang('vouchers.reservation'))</small>
                     @endif
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
                 <span class="d-block font-weight-light">No.</span>
                 <span class="d-block">
-                    <a href="{{ route('invoices.show', ['id' => Hashids::encode($voucher->id)] ) }}">
+                    <a href="{{ route('vouchers.show', ['id' => Hashids::encode($voucher->id)] ) }}">
                         {{ $voucher->number }}
                     </a>
                 </span>
@@ -99,16 +99,16 @@
                 </div>
                 <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
                     @if ($voucher->losses)
-                        <span class="d-block font-weight-light text-center">@lang('invoices.losses')</span>
+                        <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                         <span class="d-block text-center">
                             {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, '.', ',') }}
                         </span>
                     @else
                         @if ($voucher->payment_method == false and $voucher->value > $voucher->payments->sum('value'))
-                            <span class="d-block font-weight-light text-center">@lang('invoices.losses')</span>
+                            <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
-                                @can('invoices.losses')
-                                    <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('invoices.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
+                                @can('vouchers.losses')
+                                    <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouches.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
                                         <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
                                     </a>
                                 @endcan

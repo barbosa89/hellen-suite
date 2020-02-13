@@ -10,13 +10,13 @@
         @include('partials.page-header', [
             'title' => trans('payments.title'),
             'url' => route('payments.index', [
-                'invoice' => Hashids::encode($voucher->id)
+                'voucher' => Hashids::encode($voucher->id)
             ]),
             'options' => [
                 [
                     'option' => trans('common.back'),
                     'url' => route('payments.index', [
-                        'invoice' => Hashids::encode($voucher->id)
+                        'voucher' => Hashids::encode($voucher->id)
                     ]),
                 ],
             ]
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.creationOf') @lang('payments.title')</h2>
-                <form action="{{ route('payments.store', ['invoice' => Hashids::encode($voucher->id)]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('payments.store', ['voucher' => Hashids::encode($voucher->id)]) }}" method="POST" enctype="multipart/form-data">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('invoice') ? ' has-error' : '' }}">
-                        <label for="invoice">@lang('invoices.invoice'): <small>@lang('common.optional')</small></label>
+                        <label for="invoice">@lang('common.invoice'): <small>@lang('common.optional')</small></label>
                         <input type="file" class="form-control" name="invoice" id="invoice" accept="image/png, image/jpeg, application/pdf">
 
                         @if ($errors->has('invoice'))

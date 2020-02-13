@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateInvoiceRoomTable extends Migration
+class CreateRoomVoucherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateInvoiceRoomTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_room', function (Blueprint $table) {
+        Schema::create('room_voucher', function (Blueprint $table) {
             $table->bigInteger('voucher_id')->unsigned();
             $table->bigInteger('room_id')->unsigned();
             $table->integer('quantity'); // On days
@@ -42,6 +42,6 @@ class CreateInvoiceRoomTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_room');
+        Schema::dropIfExists('room_voucher');
     }
 }

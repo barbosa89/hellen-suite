@@ -281,7 +281,7 @@ class RoomController extends Controller
             },
         ]);
 
-        if ($room->invoices->count() > 0) {
+        if ($room->vouchers->count() > 0) {
             $room->status = '3';
 
             if ($room->update()) {

@@ -1,35 +1,35 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'options' => [
             [
                 'option' => 'Buscar huéspedes',
-                'url' => route('invoices.guests.search', ['id' => Hashids::encode($voucher->id)])
+                'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
             ],
             [
                 'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
-                'url' => route('invoices.companies.search', [
+                'url' => route('vouchers.companies.search', [
                     'id' => Hashids::encode($voucher->id)
                 ]),
             ],
             [
                 'option' => 'Volver al recibo',
-                'url' => route('invoices.show', [
+                'url' => route('vouchers.show', [
                     'id' => Hashids::encode($voucher->id)
                 ])
             ]
         ]
     ])
 
-    @include('app.invoices.info')
+    @include('app.vouchers.info')
 
     @include('partials.spacer', ['size' => 'xs'])
 
@@ -37,10 +37,10 @@
         'title' => [
             'title' => trans('guests.guest'),
         ],
-        'url' => route('invoices.guests.add', ['id' => Hashids::encode($voucher->id)]),
+        'url' => route('vouchers.guests.add', ['id' => Hashids::encode($voucher->id)]),
         'fields' => [
-            'app.invoices.guests.info',
-            'app.invoices.guests.create-fields'
+            'app.vouchers.guests.info',
+            'app.vouchers.guests.create-fields'
         ],
         'btn' => trans('common.register')
     ])

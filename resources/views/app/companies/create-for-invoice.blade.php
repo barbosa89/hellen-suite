@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -13,11 +13,11 @@
             'options' => [
                 [
                     'option' => 'Buscar empresas',
-                    'url' => route('invoices.companies.search', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.companies.search', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
                     'option' => 'Volver al recibo',
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
@@ -31,7 +31,7 @@
                         'title' => trans('common.creationOf') . ' ' . trans('companies.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.companies.store', [
+                    'url' => route('vouchers.companies.store', [
                         'id' => Hashids::encode($voucher->id)
                     ]),
                     'fields' => [

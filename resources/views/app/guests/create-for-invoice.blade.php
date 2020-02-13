@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,21 +9,21 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => 'Buscar huéspedes',
-                    'url' => route('invoices.guests.search', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
                     'option' => 'Agregar empresa',
-                    'url' => route('invoices.companies.search', [
+                    'url' => route('vouchers.companies.search', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => 'Volver al recibo',
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
@@ -37,10 +37,10 @@
                         'title' => trans('common.creationOf') . ' ' . trans('guests.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('invoices.guests.store', ['id' => Hashids::encode($voucher->id)]),
+                    'url' => route('vouchers.guests.store', ['id' => Hashids::encode($voucher->id)]),
                     'fields' => [
                         'app.guests.create-fields',
-                        'app.invoices.guests.create-fields'
+                        'app.vouchers.guests.create-fields'
                     ],
                     'btn' => trans('common.create')
                 ])

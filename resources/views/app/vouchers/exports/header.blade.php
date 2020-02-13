@@ -2,7 +2,7 @@
 <div class="header">
     <div class="row">
         <div class="col-xs-6 from">
-            <span class="d-block font-weight-light">@lang('invoices.from'):</span>
+            <span class="d-block font-weight-light">@lang('vouchers.from'):</span>
             <h3>{{ $voucher->hotel->business_name }}</h3>
             <span class="d-block font-weight-light">{{ $voucher->hotel->tin }}</span>
             <span class="d-block font-weight-light">{{ $voucher->hotel->address }}</span>
@@ -10,7 +10,7 @@
             <span class="d-block font-weight-light">{{ $voucher->hotel->email }}</span>
         </div>
         <div class="col-xs-6 to">
-            <span class="d-block font-weight-light">@lang('invoices.to'):</span>
+            <span class="d-block font-weight-light">@lang('vouchers.to'):</span>
             <h3> {{ $customer['name'] }}</h3>
             <span class="d-block font-weight-light">{{ $customer['tin'] }}</span>
             <span class="d-block font-weight-light">{{ $customer['address'] ?? trans('common.noData') }}</span>
@@ -24,7 +24,7 @@
 <!-- note -->
 <div class="row mt-4">
     <div class="col-xs-12">
-        <p class="text-justify">@lang('invoices.note')</p>
+        <p class="text-justify">@lang('vouchers.note')</p>
     </div>
 </div>
 <!-- end note -->

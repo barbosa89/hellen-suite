@@ -1,4 +1,4 @@
-<a href="{{ '/invoices/'. $voucher . '/guests/' . Hashids::encode($guest->id) }}">
+<a href="{{ '/vouchers/'. $voucher . '/guests/' . Hashids::encode($guest->id) }}">
     <div class="crud-list-row">
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">

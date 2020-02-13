@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,28 +9,28 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => trans('common.new') . ' ' . trans('vehicles.vehicle'),
-                    'url' => route('invoices.vehicles.create', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.vehicles.create', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
                     'option' => 'Agregar empresa',
-                    'url' => route('invoices.companies.search', [
+                    'url' => route('vouchers.companies.search', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => 'Volver al recibo',
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
             ]
         ])
 
-        @include('app.invoices.info')
+        @include('app.vouchers.info')
 
         <div class="form-group{{ $errors->has('guest') ? ' has-error' : '' }}">
             <label for="pwd">@lang('guests.guest'):</label>
@@ -58,7 +58,7 @@
                     'url' => '#',
                     'method' => 'GET',
                     'fields' => [
-                        'app.invoices.search-field',
+                        'app.vouchers.search-field',
                     ],
                     'csrf' => false
                 ])
@@ -122,7 +122,7 @@
 
         function render(vehicle) {
             return `
-            <a href="#" onclick="attachVehicle(event, '/invoices/{{ Hashids::encode($voucher->id) }}/vehicles/${vehicle.hash}/guests/')">
+            <a href="#" onclick="attachVehicle(event, '/vouchers/{{ Hashids::encode($voucher->id) }}/vehicles/${vehicle.hash}/guests/')">
                 <div class="crud-list-row">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">

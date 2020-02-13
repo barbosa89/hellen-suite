@@ -8,7 +8,7 @@ return array (
   'guests' => 'Huéspedes',
   'hotels' => 'Hoteles',
   'identification_types' => 'Tipos de identificación',
-  'invoices' => 'Facturas',
+  'vouchers' => 'Recibos',
   'payments' => 'Pagos',
   'products' => 'Productos',
   'rooms' => 'Habitaciones',

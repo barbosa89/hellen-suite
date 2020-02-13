@@ -55,11 +55,11 @@
         </li>
     @endcan
 
-    @can('invoices.index')
+    @can('vouchers.index')
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('invoices.index') }}">
+            <a class="nav-link" href="{{ route('vouchers.index') }}">
             <i class="fas fa-file-invoice"></i>
-            <span>@lang('invoices.title')</span></a>
+            <span>@lang('vouchers.title')</span></a>
         </li>
     @endcan
 

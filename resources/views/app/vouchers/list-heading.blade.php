@@ -6,7 +6,7 @@
         <h5>Hotel</h5>
     </div>
     <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-        <h5>@lang('invoices.customer')</h5>
+        <h5>@lang('vouchers.customer')</h5>
     </div>
     <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
         <h5>@lang('common.value')</h5>

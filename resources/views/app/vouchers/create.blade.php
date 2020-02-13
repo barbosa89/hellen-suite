@@ -1,14 +1,14 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoices') }}
+    {{ Breadcrumbs::render('vouchers') }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'options' => [
             [
                 'option' => trans('common.back'),
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <form class="mt-4" action="{{ route('invoices.store') }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.store') }}" method="POST" accept-charset="utf-8">
         @csrf
         <input type="hidden" name="hotel" value="{{ Hashids::encode($hotel->id) }}" required>
 

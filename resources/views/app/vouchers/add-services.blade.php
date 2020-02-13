@@ -1,31 +1,31 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'options' => [
             [
                 'type' => 'hideable',
                 'option' => trans('vouchers.loadProducts'),
-                'url' => route('invoices.products', ['id' => Hashids::encode($voucher->id)]),
+                'url' => route('vouchers.products', ['id' => Hashids::encode($voucher->id)]),
                 'show' => !$voucher->reservation
             ],
             [
                 'option' => 'Volver al recibo',
-                'url' => route('invoices.show', [
+                'url' => route('vouchers.show', [
                     'id' => Hashids::encode($voucher->id)
                 ])
             ]
         ]
     ])
 
-    @include('app.invoices.info')
+    @include('app.vouchers.info')
 
     @include('partials.spacer', ['size' => 'xs'])
 
@@ -35,14 +35,14 @@
             'align' => 'text-center',
             'size' => 'h3'
         ],
-        'url' => route('invoices.services.add', ['id' => Hashids::encode($voucher->id)]),
+        'url' => route('vouchers.services.add', ['id' => Hashids::encode($voucher->id)]),
         'fields' => [
-            'app.invoices.services.add-fields',
-            'app.invoices.total'
+            'app.vouchers.services.add-fields',
+            'app.vouchers.total'
         ],
         'btn' => trans('common.add'),
         'link' => [
-            'href' => route('invoices.show', ['id' => Hashids::encode($voucher->id)]),
+            'href' => route('vouchers.show', ['id' => Hashids::encode($voucher->id)]),
             'name' => trans('common.back')
         ]
     ])

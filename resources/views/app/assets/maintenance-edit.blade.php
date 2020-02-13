@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('invoice') ? ' has-error' : '' }}">
-                        <label for="invoice">@lang('invoices.invoice'): <small>Un nuevo documento reemplaza el actual, en caso contrario, lo agrega</small></label>
+                        <label for="invoice">@lang('common.invoice'): <small>Un nuevo documento reemplaza el actual, en caso contrario, lo agrega</small></label>
                         <input type="file" class="form-control" name="invoice" id="invoice" accept="image/png, image/jpeg">
 
                         @if ($errors->has('invoice'))

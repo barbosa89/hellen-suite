@@ -31,6 +31,10 @@ class TeamController extends Controller
             ->with([
                 'headquarters' => function($query) {
                     $query->select(['id', 'business_name']);
+                },
+                'roles' => function ($query)
+                {
+                    $query->select(['id', 'name']);
                 }
             ])
             ->get(Fields::get('users'));

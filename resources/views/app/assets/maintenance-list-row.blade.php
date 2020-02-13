@@ -21,7 +21,7 @@
                     @lang('common.noData')
                 @else
                     <a href="{{ asset(Storage::url($row->invoice)) }}" target="_blank">
-                        @lang('invoices.invoice')
+                        @lang('common.invoice')
                     </a>
                 @endif
             </p>

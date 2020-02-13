@@ -15,7 +15,7 @@ return array (
   'loadProducts' => 'Cargar productos',
   'loadServices' => 'Cargar servicios',
   'nights' => 'Noches',
-  'invoice' => 'Recibo',
+  'voucher' => 'Recibo',
   'reason' => 'Motivo de la visita',
   'data' => 'Datos',
   'statisticalData' => 'Datos estadísticos',

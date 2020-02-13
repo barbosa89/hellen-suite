@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@lang('invoices.invoice')</title>
+    <title>@lang('common.invoice')</title>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -252,20 +252,20 @@
 
                     @if ($loop->last)
                         <!-- values -->
-                        @include('app.invoices.exports.values')
+                        @include('app.vouchers.exports.values')
                         <!-- end values -->
 
                         <!-- signature -->
-                        @include('app.invoices.exports.signature')
+                        @include('app.vouchers.exports.signature')
                         <!-- end signature -->
 
                         <!-- gratitude -->
-                        @include('app.invoices.exports.questions')
+                        @include('app.vouchers.exports.questions')
                         <!-- end gratitude -->
                     @endif
 
                     <!-- pagination -->
-                    <div class="invoice-pagination text-right">
+                    <div class="vouche-pagination text-right">
                         <p class="text-muted text-right">@lang('common.page') {{ $loop->iteration }} @lang('common.of') {{ count($pages) }}</p>
                     </div>
                     <!-- end pagination -->

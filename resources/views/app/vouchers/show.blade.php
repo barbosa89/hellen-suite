@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,18 +9,18 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => trans('common.export'),
-                    'url' => route('invoices.export', ['id' => Hashids::encode($voucher->id)]),
-                    'permission' => 'invoices.show'
+                    'url' => route('vouchers.export', ['id' => Hashids::encode($voucher->id)]),
+                    'permission' => 'vouchers.show'
                 ],
                 [
                     'type' => 'hideable',
                     'option' => trans('payments.title'),
                     'url' => route('payments.index', [
-                            'invoice' => Hashids::encode($voucher->id)
+                            'voucher' => Hashids::encode($voucher->id)
                         ]),
                     'show' => !$voucher->losses,
                     'permission' => 'payments.index'
@@ -32,93 +32,93 @@
                         [
                             'type' => 'hideable',
                             'option' => trans('rooms.addRoom'),
-                            'url' => route('invoices.rooms', [
+                            'url' => route('vouchers.rooms', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
                             'show' => $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
-                            'url' => route('invoices.companies.search', [
+                            'url' => route('vouchers.companies.search', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
                             'show' => $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.registerGuests'),
-                            'url' => route('invoices.guests.search', [
+                            'url' => route('vouchers.guests.search', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
                             'show' => $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.loadProducts'),
-                            'url' => route('invoices.products', ['id' => Hashids::encode($voucher->id)]),
+                            'url' => route('vouchers.products', ['id' => Hashids::encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.loadServices'),
-                            'url' => route('invoices.services', ['id' => Hashids::encode($voucher->id)]),
+                            'url' => route('vouchers.services', ['id' => Hashids::encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.load.dining.services'),
-                            'url' => route('invoices.services', [
+                            'url' => route('vouchers.services', [
                                 'id' => Hashids::encode($voucher->id),
                                 'type' => 'dining'
                             ]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
-                            'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
+                            'url' => route('vouchers.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.load.external.services'),
-                            'url' => route('invoices.external.add', ['id' => Hashids::encode($voucher->id)]),
+                            'url' => route('vouchers.external.add', ['id' => Hashids::encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => 'hideable',
                             'option' => trans('vouchers.addAdditional'),
-                            'url' => route('invoices.additionals.create', ['id' => Hashids::encode($voucher->id)]),
+                            'url' => route('vouchers.additionals.create', ['id' => Hashids::encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
-                            'permission' => 'invoices.edit'
+                            'permission' => 'vouchers.edit'
                         ],
                         [
                             'type' => $voucher->open ? 'confirm' : 'hideable',
                             'option' => trans('vouchers.close'),
-                            'url' => route('invoices.close', [
+                            'url' => route('vouchers.close', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
                             'show' => $voucher->open,
                             'method' => 'POST',
-                            'permission' => $voucher->open ? 'invoices.close' : 'invoices.open',
+                            'permission' => $voucher->open ? 'vouchers.close' : 'vouchers.open',
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
-                            'url' => route('invoices.destroy', [
+                            'url' => route('vouchers.destroy', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
                             'method' => 'DELETE',
-                            'permission' => 'invoices.destroy'
+                            'permission' => 'vouchers.destroy'
                         ],
                     ],
                 ],
@@ -129,10 +129,10 @@
             ]
         ])
 
-        @include('app.invoices.info')
+        @include('app.vouchers.info')
 
         @if($voucher->reservation)
-            <a href="{{ route('invoices.reservation.checkin', ['id' => Hashids::encode($voucher->id)]) }}">
+            <a href="{{ route('vouchers.reservation.checkin', ['id' => Hashids::encode($voucher->id)]) }}">
                 <div class="alert alert-info alert-important mt-4">
                     <i class="fa fa-key"></i> {{ trans('common.register') }} {{ trans('vouchers.checkin') }}
                 </div>
@@ -147,7 +147,7 @@
                         <small><i class="fas fa-building"></i></small> Empresa
                     </h3>
                     @if(empty($voucher->company))
-                        <a href="{{ route('invoices.companies.search', ['id' => Hashids::encode($voucher->id)]) }}">
+                        <a href="{{ route('vouchers.companies.search', ['id' => Hashids::encode($voucher->id)]) }}">
                             <div class="well">
                                 <i class="fa fa-plus-circle"></i> @lang('common.register') {{ strtolower(trans('vouchers.customerCompany')) }}
                             </div>
@@ -187,8 +187,8 @@
                                                     </p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a href="#" class="btn btn-link" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.companies.remove', ['id' => Hashids::encode($voucher->id), 'company' => Hashids::encode($voucher->company->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a href="#" class="btn btn-link" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('vouchers.companies.remove', ['id' => Hashids::encode($voucher->id), 'company' => Hashids::encode($voucher->company->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -212,9 +212,9 @@
                     <small><i class="fas fa-users"></i></small> @lang('guests.title')
                 </h4>
                 @if($voucher->guests->isEmpty())
-                    <a href="{{ route('invoices.guests.search', ['id' => Hashids::encode($voucher->id)]) }}">
+                    <a href="{{ route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)]) }}">
                         <div class="alert alert-info alert-important mt-4">
-                            <i class="fa fa-plus-circle"></i> @lang('invoices.registerGuests')
+                            <i class="fa fa-plus-circle"></i> @lang('vouchers.registerGuests')
                         </div>
                     </a>
                 @else
@@ -233,7 +233,7 @@
                                             <h5>@lang('rooms.room')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('invoices.responsibleAdult')</h5>
+                                            <h5>@lang('vouchers.responsibleAdult')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('common.options')</h5>
@@ -276,27 +276,27 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                        @can('invoices.edit')
+                                                        @can('vouchers.edit')
                                                             @if ($voucher->guests->count() > 1)
                                                                 @if ($voucher->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled)
                                                                     @if ($guest->status == true and $guest->pivot->active == true)
-                                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.change.form', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('vouchers.guests.change.form', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                             <i class="fas fa-sync-alt"></i>
                                                                         </a>
                                                                     @endif
 
-                                                                    <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.guests.remove', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                                    <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('vouchers.guests.remove', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                         <i class="fas fa-user-times"></i>
                                                                     </a>
 
                                                                     @if ($guest->status == true and $guest->pivot->active == true)
-                                                                        <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($voucher->id)], false) }}')">
+                                                                        <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'voucher' => Hashids::encode($voucher->id)], false) }}')">
                                                                             <i class="fas fa-door-closed"></i>
                                                                         </a>
                                                                     @endif
 
                                                                     @if ($guest->status == false and $guest->pivot->active == false)
-                                                                        <a class="btn btn-link" title="{{ trans('guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'invoice' => Hashids::encode($voucher->id)], false) }}')">
+                                                                        <a class="btn btn-link" title="{{ trans('guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'voucher' => Hashids::encode($voucher->id)], false) }}')">
                                                                             <i class="fas fa-door-open"></i>
                                                                         </a>
                                                                     @endif
@@ -332,7 +332,7 @@
                                             <h5><i class="fas fa-hashtag"></i></h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                                            <h5>@lang('invoices.nights')</h5>
+                                            <h5>@lang('vouchers.nights')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>Inicio</h5>
@@ -380,15 +380,15 @@
                                                     <p>{{  number_format($room->pivot->value, 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
+                                                    @can('vouchers.edit')
                                                         @if ($room->pivot->enabled == true)
-                                                            <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.change.form', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                            <a class="btn btn-link" href="#" title="{{ trans('common.change') }}" onclick="confirmRedirect(event, '{{ route('vouchers.rooms.change.form', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)], false) }}')">
                                                                 <i class="fas fa-redo"></i>
                                                             </a>
                                                         @endif
 
                                                         @if ($voucher->rooms->where('pivot.enabled', true)->count() > 1 and $room->pivot->enabled == true)
-                                                            <a class="btn btn-link" href="#" title="{{ trans('rooms.deliver') }}" onclick="confirmRedirect(event, '{{ route('invoices.rooms.deliver', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)], false) }}')">
+                                                            <a class="btn btn-link" href="#" title="{{ trans('rooms.deliver') }}" onclick="confirmRedirect(event, '{{ route('vouchers.rooms.deliver', ['id' => Hashids::encode($voucher->id), 'room' => Hashids::encode($room->id)], false) }}')">
                                                                 <i class="fas fa-key"></i>
                                                             </a>
                                                         @endif
@@ -464,8 +464,8 @@
                                                     <p>{{ $product->pivot->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.products.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($product->pivot->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.products.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($product->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -540,8 +540,8 @@
                                                     <p>{{ $service->pivot->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -616,8 +616,8 @@
                                                     <p>{{ $service->pivot->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('invoices.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -639,7 +639,7 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
-                        <small><i class="fas fa-star"></i></small> @lang('invoices.additionals')
+                        <small><i class="fas fa-star"></i></small> @lang('vouchers.additionals')
                     </h4>
                     <div class="row">
                         <div class="col-md-12">
@@ -674,8 +674,8 @@
                                                     <p>{{ $additional->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($voucher->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('vouchers.additionals.remove', ['id' => Hashids::encode($voucher->id), 'additional' => Hashids::encode($additional->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -697,7 +697,7 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <h4 class="page-header">
-                        <small><i class="fas fa-file-medical"></i></small> @lang('invoices.external')
+                        <small><i class="fas fa-file-medical"></i></small> @lang('vouchers.external')
                     </h4>
                     <div class="row">
                         <div class="col-md-12">
@@ -732,8 +732,8 @@
                                                     <p>{{ $external->created_at->format('Y-m-d') }}</p>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                    @can('invoices.edit')
-                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('invoices.additionals.remove', ['id' => Hashids::encode($voucher->id), 'additional' => Hashids::encode($external->id)], false) }}')">
+                                                    @can('vouchers.edit')
+                                                        <a class="btn btn-link" href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('vouchers.additionals.remove', ['id' => Hashids::encode($voucher->id), 'additional' => Hashids::encode($external->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -817,8 +817,8 @@
                                                             </p>
                                                         </div>
                                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                            @can('invoices.edit')
-                                                                <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('invoices.vehicles.remove', ['id' => Hashids::encode($voucher->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
+                                                            @can('vouchers.edit')
+                                                                <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('vouchers.vehicles.remove', ['id' => Hashids::encode($voucher->id), 'vehicle' => Hashids::encode($vehicle->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
                                                                     <i class="fas fa-times-circle"></i>
                                                                 </a>
                                                             @endcan

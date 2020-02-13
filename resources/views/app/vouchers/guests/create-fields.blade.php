@@ -17,7 +17,7 @@
 
 @if ($guests > 0)
     <div class="form-group{{ $errors->has('responsible_adult') ? ' has-error' : '' }}">
-        <label for="responsible_adult">@lang('invoices.responsibleAdult'):</label>
+        <label for="responsible_adult">@lang('vouchers.responsibleAdult'):</label>
         <select class="form-control selectpicker" title="{{ trans('common.onlyFor') . ' ' . strtolower(trans('vouchers.minors'))  }}" name="responsible_adult" id="responsible_adult">
             @foreach($voucher->rooms as $room)
                 @foreach($room->guests as $guest)

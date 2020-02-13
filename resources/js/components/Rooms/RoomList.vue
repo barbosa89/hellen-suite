@@ -280,7 +280,7 @@
                 this.send(this.selectedHotel, this.selectedRooms)
             },
             send(hotel, rooms) {
-                axios.post('/invoices/multiple', {
+                axios.post('/vouchers/multiple', {
                     hotel: hotel,
                     rooms: rooms
                 }).then(response => {

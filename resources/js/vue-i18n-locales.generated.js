@@ -1,5 +1,90 @@
 export default {
     "en": {
+        "vouchers": {
+            "title": "Vouchers",
+            "forCompany": "For company",
+            "tourism": "Tourism",
+            "registerGuests": "Register guests",
+            "minors": "Minors",
+            "responsibleAdult": "Responsible adult",
+            "registerCustomerCompany": "Register customer company",
+            "registerCustomerGuest": "Register customer guest",
+            "customerCompany": "Customer company",
+            "customerGuest": "Customer guest",
+            "see": "See thevoucher",
+            "loadProducts": "Load products",
+            "loadServices": "Load services",
+            "nights": "Nights",
+            "voucher": "Voucher",
+            "reason": "The reason for the sight",
+            "data": "Data",
+            "statisticalData": "Statistical data",
+            "selectIfApplicable": "Select only if applicable",
+            "registry": "Registry",
+            "reservation": "Reservation",
+            "job": "Job",
+            "registerCompany": "Register company",
+            "firstStep": "First you must add rooms",
+            "onlyOne": "There is only one guest",
+            "linkCompany": "Link company",
+            "linkNewCompany": "Link new company",
+            "withoutGuests": "There are no registered guests",
+            "vehicleAttached": "The vehicle is already attached to the currentvoucher.",
+            "hasVehicles": "The guest has a vehicle registered",
+            "addAdditional": "Add additional",
+            "additionals": "Additionals",
+            "customer": "Customer",
+            "open": "Open",
+            "close": "Close",
+            "losses": "Losses",
+            "closed": "Closed",
+            "loss": "Register as loss",
+            "route": "Route",
+            "checkin": "Check-in",
+            "external": "External service",
+            "from": "From",
+            "to": "To",
+            "note": "This document does not represent a legalvoucher or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.",
+            "isOpen": "Thevoucher is open, close it before closing payments.",
+            "questions": "If you have any questions about thisvoucher, please contact us",
+            "administration": "Administration",
+            "destination": "Destination",
+            "origin": "Origin",
+            "isClosed": "Thevoucher is closed",
+            "process": "Process",
+            "nothingToProcess": "There are novouchers to process",
+            "processing": "Voucher processing",
+            "has": {
+                "one": {
+                    "room": "Thisvoucher only has one room"
+                }
+            },
+            "delivered": {
+                "room": "The room was delivered"
+            },
+            "impossible": {
+                "room": {
+                    "change": "It is not possible to change the guest of your current room"
+                }
+            },
+            "inactive": {
+                "guest": "The guest is inactive in the currentvoucher"
+            },
+            "complete": {
+                "processing": "Allvouchers were processed"
+            },
+            "incomplete": {
+                "processing": "There are pendingvouchers for processing"
+            },
+            "load": {
+                "external": {
+                    "services": "Load thirdparty services"
+                },
+                "dining": {
+                    "services": "Load dining services"
+                }
+            }
+        },
         "dining": {
             "title": "Dining service",
             "new": {
@@ -436,7 +521,7 @@ export default {
             "guests": "Guests",
             "hotels": "Hotels",
             "identification_types": "Identification types",
-            "invoices": "Invoices",
+            "vouchers": "Vouchers",
             "payments": "Payments",
             "products": "Products",
             "rooms": "Rooms",
@@ -469,91 +554,6 @@ export default {
             "left": "The guest left the hotel",
             "registerEntry": "Register entry",
             "registerExit": "Register exit"
-        },
-        "invoices": {
-            "title": "Invoices",
-            "forCompany": "For company",
-            "tourism": "Tourism",
-            "registerGuests": "Register guests",
-            "minors": "Minors",
-            "responsibleAdult": "Responsible adult",
-            "registerCustomerCompany": "Register customer company",
-            "registerCustomerGuest": "Register customer guest",
-            "customerCompany": "Customer company",
-            "customerGuest": "Customer guest",
-            "see": "See the invoice",
-            "loadProducts": "Load products",
-            "loadServices": "Load services",
-            "nights": "Nights",
-            "invoice": "Invoice",
-            "reason": "The reason for the sight",
-            "data": "Data",
-            "statisticalData": "Statistical data",
-            "selectIfApplicable": "Select only if applicable",
-            "registry": "Registry",
-            "reservation": "Reservation",
-            "job": "Job",
-            "registerCompany": "Register company",
-            "firstStep": "First you must add rooms",
-            "onlyOne": "There is only one guest",
-            "linkCompany": "Link company",
-            "linkNewCompany": "Link new company",
-            "withoutGuests": "There are no registered guests",
-            "vehicleAttached": "The vehicle is already attached to the current invoice.",
-            "hasVehicles": "The guest has a vehicle registered",
-            "addAdditional": "Add additional",
-            "additionals": "Additionals",
-            "customer": "Customer",
-            "open": "Open",
-            "close": "Close",
-            "losses": "Losses",
-            "closed": "Closed",
-            "loss": "Register as loss",
-            "route": "Route",
-            "checkin": "Check-in",
-            "external": "External service",
-            "from": "From",
-            "to": "To",
-            "note": "This document does not represent a legal invoice or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.",
-            "isOpen": "The invoice is open, close it before closing payments.",
-            "questions": "If you have any questions about this invoice, please contact us",
-            "administration": "Administration",
-            "destination": "Destination",
-            "origin": "Origin",
-            "isClosed": "The invoice is closed",
-            "process": "Process",
-            "nothingToProcess": "There are no invoices to process",
-            "processing": "Invoice processing",
-            "has": {
-                "one": {
-                    "room": "This invoice only has one room"
-                }
-            },
-            "delivered": {
-                "room": "The room was delivered"
-            },
-            "impossible": {
-                "room": {
-                    "change": "It is not possible to change the guest of your current room"
-                }
-            },
-            "inactive": {
-                "guest": "The guest is inactive in the current invoice"
-            },
-            "complete": {
-                "processing": "All invoices were processed"
-            },
-            "incomplete": {
-                "processing": "There are pending invoices for processing"
-            },
-            "load": {
-                "external": {
-                    "services": "Load thirdparty services"
-                },
-                "dining": {
-                    "services": "Load dining services"
-                }
-            }
         },
         "payments": {
             "payment": "Payment",
@@ -648,6 +648,91 @@ export default {
         "Reset Password": "Reestablecer contraseña",
         "Send Password Reset Link": "Enviar link para reestablecer contraseña",
         "Logout": "Cerrar sesión",
+        "vouchers": {
+            "title": "Recibos",
+            "forCompany": "Para empresa",
+            "tourism": "Turismo",
+            "registerGuests": "Registrar huéspedes",
+            "minors": "Menores de edad",
+            "responsibleAdult": "Adulto responsable",
+            "registerCustomerGuest": "Registrar huésped cliente",
+            "registerCustomerCompany": "Registrar empresa cliente",
+            "customerCompany": "Empresa cliente",
+            "customerGuest": "Huésped cliente",
+            "see": "Ver el recibo",
+            "loadProducts": "Cargar productos",
+            "loadServices": "Cargar servicios",
+            "nights": "Noches",
+            "voucher": "Recibo",
+            "reason": "Motivo de la visita",
+            "data": "Datos",
+            "statisticalData": "Datos estadísticos",
+            "selectIfApplicable": "Seleccionar sólo si aplica",
+            "registry": "Registro",
+            "reservation": "Reservación",
+            "job": "Trabajo",
+            "registerCompany": "Registrar empresa",
+            "firstStep": "Primero debes agregar habitaciones",
+            "onlyOne": "Sólo hay un huesped",
+            "linkCompany": "Vincular empresa",
+            "linkNewCompany": "Vincular nueva empresa",
+            "withoutGuests": "No hay huéspedes registrados",
+            "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
+            "hasVehicles": "El huésped tiene un vehículo registrado",
+            "addAdditional": "Agregar adicional",
+            "additionals": "Adicionales",
+            "customer": "Cliente",
+            "open": "Abiertos",
+            "close": "Cerrar",
+            "losses": "Pérdidas",
+            "closed": "Cerrados",
+            "loss": "Registrar como pérdida",
+            "route": "Ruta",
+            "checkin": "Ingreso",
+            "external": "Servicio externo",
+            "from": "De",
+            "to": "Para",
+            "note": "Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.",
+            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
+            "questions": "Si tiene alguna pregunta sobre esta factura, por favor contáctenos",
+            "administration": "Administración",
+            "origin": "Origen",
+            "destination": "Destino",
+            "isClosed": "El recibo está cerrado",
+            "process": "Procesar",
+            "nothingToProcess": "No hay facturas para procesar",
+            "processing": "Procesamiento de recibos",
+            "has": {
+                "one": {
+                    "room": "Este recibo sólo cuenta con una habitación"
+                }
+            },
+            "delivered": {
+                "room": "La habitación fue entregada"
+            },
+            "impossible": {
+                "room": {
+                    "change": "No es posible cambiar al huésped de su habitación actual"
+                }
+            },
+            "inactive": {
+                "guest": "El invitado está inactivo en la factura actual"
+            },
+            "complete": {
+                "processing": "Todos los recibos fueron procesados"
+            },
+            "incomplete": {
+                "processing": "Quedaron recibos pendientes por procesar"
+            },
+            "load": {
+                "external": {
+                    "services": "Cargar servicios de terceros"
+                },
+                "dining": {
+                    "services": "Cargar servicios de comedor"
+                }
+            }
+        },
         "dining": {
             "title": "Servicio de comedor",
             "new": {
@@ -1086,7 +1171,7 @@ export default {
             "guests": "Huéspedes",
             "hotels": "Hoteles",
             "identification_types": "Tipos de identificación",
-            "invoices": "Facturas",
+            "vouchers": "Recibos",
             "payments": "Pagos",
             "products": "Productos",
             "rooms": "Habitaciones",
@@ -1117,91 +1202,6 @@ export default {
             "left": "El huésped salió del hotel",
             "registerEntry": "Registrar entrada",
             "registerExit": "Registrar salida"
-        },
-        "invoices": {
-            "title": "Recibos",
-            "forCompany": "Para empresa",
-            "tourism": "Turismo",
-            "registerGuests": "Registrar huéspedes",
-            "minors": "Menores de edad",
-            "responsibleAdult": "Adulto responsable",
-            "registerCustomerGuest": "Registrar huésped cliente",
-            "registerCustomerCompany": "Registrar empresa cliente",
-            "customerCompany": "Empresa cliente",
-            "customerGuest": "Huésped cliente",
-            "see": "Ver el recibo",
-            "loadProducts": "Cargar productos",
-            "loadServices": "Cargar servicios",
-            "nights": "Noches",
-            "invoice": "Recibo",
-            "reason": "Motivo de la visita",
-            "data": "Datos",
-            "statisticalData": "Datos estadísticos",
-            "selectIfApplicable": "Seleccionar sólo si aplica",
-            "registry": "Registro",
-            "reservation": "Reservación",
-            "job": "Trabajo",
-            "registerCompany": "Registrar empresa",
-            "firstStep": "Primero debes agregar habitaciones",
-            "onlyOne": "Sólo hay un huesped",
-            "linkCompany": "Vincular empresa",
-            "linkNewCompany": "Vincular nueva empresa",
-            "withoutGuests": "No hay huéspedes registrados",
-            "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
-            "hasVehicles": "El huésped tiene un vehículo registrado",
-            "addAdditional": "Agregar adicional",
-            "additionals": "Adicionales",
-            "customer": "Cliente",
-            "open": "Abiertos",
-            "close": "Cerrar",
-            "losses": "Pérdidas",
-            "closed": "Cerrados",
-            "loss": "Registrar como pérdida",
-            "route": "Ruta",
-            "checkin": "Ingreso",
-            "external": "Servicio externo",
-            "from": "De",
-            "to": "Para",
-            "note": "Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.",
-            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
-            "questions": "Si tiene alguna pregunta sobre esta factura, por favor contáctenos",
-            "administration": "Administración",
-            "origin": "Origen",
-            "destination": "Destino",
-            "isClosed": "El recibo está cerrado",
-            "process": "Procesar",
-            "nothingToProcess": "No hay facturas para procesar",
-            "processing": "Procesamiento de recibos",
-            "has": {
-                "one": {
-                    "room": "Este recibo sólo cuenta con una habitación"
-                }
-            },
-            "delivered": {
-                "room": "La habitación fue entregada"
-            },
-            "impossible": {
-                "room": {
-                    "change": "No es posible cambiar al huésped de su habitación actual"
-                }
-            },
-            "inactive": {
-                "guest": "El invitado está inactivo en la factura actual"
-            },
-            "complete": {
-                "processing": "Todos los recibos fueron procesados"
-            },
-            "incomplete": {
-                "processing": "Quedaron recibos pendientes por procesar"
-            },
-            "load": {
-                "external": {
-                    "services": "Cargar servicios de terceros"
-                },
-                "dining": {
-                    "services": "Cargar servicios de comedor"
-                }
-            }
         },
         "payments": {
             "title": "Pagos",

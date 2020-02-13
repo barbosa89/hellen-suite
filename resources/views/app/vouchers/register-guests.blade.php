@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => trans('common.options'),
@@ -24,7 +24,7 @@
 
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
-                <h2>@lang('invoices.invoice'):</h2>
+                <h2>@lang('common.invoice'):</h2>
                 <p>{{ $voucher->number }}</p>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
@@ -38,11 +38,11 @@
         </div>
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
-                <h2>@lang('invoices.forCompany'):</h2>
+                <h2>@lang('vouchers.forCompany'):</h2>
                 <p>{{ $voucher->for_company ? trans('common.yes') : trans('common.no') }}</p>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
-                <h2>@lang('invoices.tourism'):</h2>
+                <h2>@lang('vouchers.tourism'):</h2>
                 <p>{{ $voucher->are_tourists ? trans('common.yes') : trans('common.no') }}</p>
             </div>
         </div>
@@ -57,7 +57,7 @@
             <div class="col-md-12">
                 <h3 class="text-center">@lang('rooms.addRoom')</h3>
 
-                <form action="{{ route('invoices.rooms.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST">
+                <form action="{{ route('vouchers.rooms.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">

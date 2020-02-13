@@ -43,17 +43,17 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'invoices.close',
+            'name' => 'vouchers.close',
             'guard_name' => config('auth.defaults.guard')
         ]);
 
         Permission::create([
-            'name' => 'invoices.open',
+            'name' => 'vouchers.open',
             'guard_name' => config('auth.defaults.guard')
         ]);
 
         Permission::create([
-            'name' => 'invoices.losses',
+            'name' => 'vouchers.losses',
             'guard_name' => config('auth.defaults.guard')
         ]);
 

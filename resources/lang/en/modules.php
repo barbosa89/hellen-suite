@@ -6,7 +6,7 @@ return array (
   'guests' => 'Guests',
   'hotels' => 'Hotels',
   'identification_types' => 'Identification types',
-  'invoices' => 'Invoices',
+  'vouchers' => 'Vouchers',
   'payments' => 'Payments',
   'products' => 'Products',
   'rooms' => 'Rooms',

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateInvoiceProductTable extends Migration
+class CreateProductVoucherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateInvoiceProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_product', function (Blueprint $table) {
+        Schema::create('product_voucher', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('voucher_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
@@ -37,6 +37,6 @@ class CreateInvoiceProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_product');
+        Schema::dropIfExists('product_voucher');
     }
 }

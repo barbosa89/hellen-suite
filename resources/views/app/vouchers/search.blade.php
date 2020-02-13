@@ -1,16 +1,16 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoices') }}
+    {{ Breadcrumbs::render('vouchers') }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'search' => [
-            'action' => route('invoices.search'),
+            'action' => route('vouchers.search'),
             'query' => $query
         ],
         'options' => [
@@ -20,7 +20,7 @@
             ],
             [
                 'option' => trans('common.back'),
-                'url' => route('invoices.index')
+                'url' => route('vouchers.index')
             ],
         ]
     ])
@@ -29,8 +29,8 @@
         <div class="col-md-12">
             @include('partials.list', [
                 'data' => $vouchers,
-                'listHeading' => 'app.invoices.list-heading',
-                'listRow' => 'app.invoices.list-row'
+                'listHeading' => 'app.vouchers.list-heading',
+                'listRow' => 'app.vouchers.list-row'
             ])
         </div>
     </div>

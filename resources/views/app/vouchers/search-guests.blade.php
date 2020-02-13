@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,30 +9,30 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => trans('common.new') . ' ' . trans('guests.guest'),
-                    'url' => route('invoices.guests.create', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.guests.create', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
                     'option' => 'Agregar empresa',
-                    'url' => route('invoices.companies.search', [
+                    'url' => route('vouchers.companies.search', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => 'Volver al recibo',
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
             ]
         ])
 
-        @include('app.invoices.info')
+        @include('app.vouchers.info')
 
-        <div class="hide" id="invoice" data-id="{{ Hashids::encode($voucher->id) }}"></div>
+        <div class="hide" id="voucher" data-id="{{ Hashids::encode($voucher->id) }}"></div>
 
         @include('partials.spacer', ['size' => 'md'])
 
@@ -47,7 +47,7 @@
                     'url' => '#',
                     'method' => 'GET',
                     'fields' => [
-                        'app.invoices.search-field',
+                        'app.vouchers.search-field',
                     ],
                     'csrf' => false
                 ])

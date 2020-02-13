@@ -1,24 +1,24 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoices') }}
+    {{ Breadcrumbs::render('vouchers') }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'search' => [
-            'action' => route('invoices.search')
+            'action' => route('vouchers.search')
         ],
         'options' => [
             [
                 'type' => 'hideable',
                 'option' => trans('vouchers.process'),
-                'url' => route('invoices.process.form'),
+                'url' => route('vouchers.process.form'),
                 'show' => $vouchers->isNotEmpty(),
-                'permission' => 'invoices.edit'
+                'permission' => 'vouchers.edit'
             ],
             [
                 'option' => trans('common.new'),
@@ -32,8 +32,8 @@
         <div class="col-md-12">
             @include('partials.tab-list', [
                 'data' => $vouchers,
-                'listHeading' => 'app.invoices.list-heading',
-                'listRow' => 'app.invoices.list-row',
+                'listHeading' => 'app.vouchers.list-heading',
+                'listRow' => 'app.vouchers.list-row',
                 'tabs' => [
                     [
                         'id' => 'all',
@@ -44,7 +44,7 @@
                         'title' => trans('vouchers.open'),
                         'data' => $vouchers->where('open', true),
                         'type' => 'check',
-                        'form-id' => 'close-invoices',
+                        'form-id' => 'close-vouchers',
                         'action' => '#'
                     ],
                     [

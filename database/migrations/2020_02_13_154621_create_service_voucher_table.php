@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateInvoiceServiceTable extends Migration
+class CreateServiceVoucherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateInvoiceServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_service', function (Blueprint $table) {
+        Schema::create('service_voucher', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('voucher_id')->unsigned();
             $table->bigInteger('service_id')->unsigned();
@@ -37,6 +37,6 @@ class CreateInvoiceServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_service');
+        Schema::dropIfExists('service_voucher');
     }
 }

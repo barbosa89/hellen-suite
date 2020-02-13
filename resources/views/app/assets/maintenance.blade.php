@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('invoice') ? ' has-error' : '' }}">
-                        <label for="invoice">@lang('invoices.invoice'):</label>
+                        <label for="invoice">@lang('common.invoice'):</label>
                         <input type="file" class="form-control" name="invoice" id="invoice" accept="image/png, image/jpeg, application/pdf">
 
                         @if ($errors->has('invoice'))

@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'title' => 'Invoices',
+  'title' => 'Vouchers',
   'forCompany' => 'For company',
   'tourism' => 'Tourism',
   'registerGuests' => 'Register guests',
@@ -15,7 +15,7 @@ return array (
   'loadProducts' => 'Load products',
   'loadServices' => 'Load services',
   'nights' => 'Nights',
-  'invoice' => 'Invoice',
+  'voucher' => 'Voucher',
   'reason' => 'The reason for the sight',
   'data' => 'Data',
   'statisticalData' => 'Statistical data',
@@ -53,7 +53,7 @@ return array (
   'isClosed' => 'Thevoucher is closed',
   'process' => 'Process',
   'nothingToProcess' => 'There are novouchers to process',
-  'processing' => 'Invoice processing',
+  'processing' => 'Voucher processing',
   'has' => 
   array (
     'one' => 

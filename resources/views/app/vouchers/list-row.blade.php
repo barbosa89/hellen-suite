@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
             <p>
-                <a href="{{ route('invoices.show', ['id' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('vouchers.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->number }}
                 </a>
             </p>
@@ -37,7 +37,7 @@
         <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 align-self-center">
             @if ($row->losses)
                 <p>
-                    (@lang('invoices.losses'))
+                    (@lang('vouchers.losses'))
                 </p>
             @else
                 @php
@@ -73,88 +73,88 @@
                 'options' => [
                     [
                         'option' => trans('common.seeMore'),
-                        'url' => route('invoices.show', ['id' => Hashids::encode($row->id)]),
-                        'permission' => 'invoices.show'
+                        'url' => route('vouchers.show', ['id' => Hashids::encode($row->id)]),
+                        'permission' => 'vouchers.show'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('rooms.addRoom'),
-                        'url' => route('invoices.rooms', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.rooms', ['id' => Hashids::encode($row->id)]),
                         'show' => $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => $row->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
-                        'url' => route('invoices.companies.search', [
+                        'url' => route('vouchers.companies.search', [
                             'id' => Hashids::encode($row->id)
                         ]),
                         'show' => $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('vouchers.registerGuests'),
-                        'url' => route('invoices.guests.search', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.guests.search', ['id' => Hashids::encode($row->id)]),
                         'show' => $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('vouchers.loadProducts'),
-                        'url' => route('invoices.products', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.products', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('vouchers.loadServices'),
-                        'url' => route('invoices.services', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.services', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('vouchers.load.dining.services'),
-                        'url' => route('invoices.services', [
+                        'url' => route('vouchers.services', [
                             'id' => Hashids::encode($row->id),
                             'type' => 'dining'
                         ]),
                         'show' => !$row->reservation and $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
-                        'url' => route('invoices.vehicles.search', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.vehicles.search', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => 'hideable',
                         'option' => trans('vouchers.load.external.services'),
-                        'url' => route('invoices.external.add', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('vouchers.external.add', ['id' => Hashids::encode($row->id)]),
                         'show' => !$row->reservation and $row->open,
-                        'permission' => 'invoices.edit'
+                        'permission' => 'vouchers.edit'
                     ],
                     [
                         'type' => $row->open ? 'confirm' : 'hideable',
                         'option' => trans('vouchers.close'),
-                        'url' => route('invoices.close', [
+                        'url' => route('vouchers.close', [
                             'id' => Hashids::encode($row->id)
                         ]),
                         'show' => $row->open,
                         'method' => 'POST',
-                        'permission' => $row->open ? 'invoices.close' : 'invoices.open',
+                        'permission' => $row->open ? 'vouchers.close' : 'vouchers.open',
                     ],
                     [
                         'type' => 'confirm',
                         'option' => trans('common.delete.item'),
-                        'url' => route('invoices.destroy', [
+                        'url' => route('vouchers.destroy', [
                             'id' => Hashids::encode($row->id)
                         ]),
                         'method' => 'DELETE',
-                        'permission' => 'invoices.destroy'
+                        'permission' => 'vouchers.destroy'
                     ],
                 ]
             ])

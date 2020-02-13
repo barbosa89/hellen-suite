@@ -7,7 +7,7 @@ use App\Helpers\Fields;
 use App\Helpers\Id;
 use App\Helpers\Input;
 use App\Http\Requests\StoreVehicle;
-use App\Http\Requests\StoreVehicleForInvoice;
+use App\Http\Requests\StoreVehicleForVoucher;
 use App\Http\Requests\UpdateVehicle;
 use App\Welkome\Voucher;
 use App\Welkome\Vehicle;
@@ -101,7 +101,7 @@ class VehicleController extends Controller
 
         $types = VehicleType::all(['id', 'type']);
 
-        return view('app.vehicles.create-for-invoice', compact('voucher', 'types'));
+        return view('app.vehicles.create-for-voucher', compact('voucher', 'types'));
     }
 
     /**
@@ -110,7 +110,7 @@ class VehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeForInvoice(StoreVehicleForInvoice $request, $id)
+    public function storeForVoucher(StoreVehicleForVoucher $request, $id)
     {
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($id))
@@ -134,7 +134,7 @@ class VehicleController extends Controller
         if ($voucher->guests->where('id', Id::get($request->guest))->first()->vehicles->isNotEmpty()) {
             flash(trans('vouchers.hasVehicles'))->error();
 
-            return redirect()->route('invoices.vehicles.create', [
+            return redirect()->route('vouchers.vehicles.create', [
                 'id' => Hashids::encode($voucher->id)
             ]);
         }
@@ -162,21 +162,21 @@ class VehicleController extends Controller
 
                 flash(trans('common.createdSuccessfully'))->success();
 
-                return redirect()->route('invoices.vehicles.search', [
+                return redirect()->route('vouchers.vehicles.search', [
                     'id' => Hashids::encode($voucher->id)
                 ]);
             }
 
             flash(trans('common.error'))->error();
 
-            return redirect()->route('invoices.vehicles.create', [
+            return redirect()->route('vouchers.vehicles.create', [
                 'id' => Hashids::encode($voucher->id)
             ]);
         }
 
         flash(trans('vouchers.vehicleAttached'))->error();
 
-        return redirect()->route('invoices.vehicles.create', [
+        return redirect()->route('vouchers.vehicles.create', [
             'id' => Hashids::encode($voucher->id)
         ]);
     }

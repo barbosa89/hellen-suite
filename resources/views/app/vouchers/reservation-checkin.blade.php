@@ -1,14 +1,14 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
 
     @include('partials.page-header', [
         'title' => trans('vouchers.title'),
-        'url' => route('invoices.index'),
+        'url' => route('vouchers.index'),
         'options' => [
             [
                 'option' => trans('common.back'),
@@ -17,11 +17,11 @@
         ]
     ])
 
-    @include('app.invoices.info')
+    @include('app.vouchers.info')
 
     <h3 class="text-center">{{ trans('common.register') }} {{ trans('vouchers.route') }}</h3>
 
-    <form class="mt-4" action="{{ route('invoices.reservation.checkin.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.reservation.checkin.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
 
         <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">

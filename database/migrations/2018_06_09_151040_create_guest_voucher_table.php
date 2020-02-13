@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGuestInvoiceTable extends Migration
+class CreateGuestVoucherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGuestInvoiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('guest_invoice', function (Blueprint $table) {
+        Schema::create('guest_voucher', function (Blueprint $table) {
             $table->bigInteger('guest_id')->unsigned();
             $table->bigInteger('voucher_id')->unsigned();
             $table->boolean('main')->default(false);
@@ -35,6 +35,6 @@ class CreateGuestInvoiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guest_invoice');
+        Schema::dropIfExists('guest_voucher');
     }
 }

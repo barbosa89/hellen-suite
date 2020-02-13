@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('invoice', $voucher) }}
+    {{ Breadcrumbs::render('voucher', $voucher) }}
 @endsection
 
 @section('content')
@@ -9,26 +9,26 @@
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('vouchers.title'),
-            'url' => route('invoices.index'),
+            'url' => route('vouchers.index'),
             'options' => [
                 [
                     'option' => trans('common.create') . ' ' . trans('companies.company'),
-                    'url' => route('invoices.companies.create', [
+                    'url' => route('vouchers.companies.create', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => trans('vouchers.see'),
-                    'url' => route('invoices.show', [
+                    'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ]
             ]
         ])
 
-        @include('app.invoices.info')
+        @include('app.vouchers.info')
 
-        <div class="hide" id="invoice" data-id="{{ Hashids::encode($voucher->id) }}"></div>
+        <div class="hide" id="voucher" data-id="{{ Hashids::encode($voucher->id) }}"></div>
 
         @include('partials.spacer', ['size' => 'md'])
 
@@ -42,7 +42,7 @@
                     ],
                     'url' => '#',
                     'fields' => [
-                        'app.invoices.search-field',
+                        'app.vouchers.search-field',
                     ],
                     'csrf' => false
                 ])
@@ -74,7 +74,7 @@
     <script type="text/javascript">
         function search (str) {
             const url = '{{ url('companies/search') }}'
-            const uri = "?query=" + str + "&format=rendered&template=invoices"
+            const uri = "?query=" + str + "&format=rendered&template=vouchers"
 
             if (str.length == 0) {
                 $('#list').hide();
