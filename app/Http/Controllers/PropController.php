@@ -134,7 +134,7 @@ class PropController extends Controller
             {
                 $query->select(['id', 'business_name']);
             },
-            'transactions' => function ($query)
+            'vouchers' => function ($query)
             {
                 $query->select(['id', 'amount', 'type', 'transactionable_id', 'created_at'])
                     ->whereYear('created_at', date('Y'))
@@ -142,17 +142,17 @@ class PropController extends Controller
             }
         ]);
 
-        $transactions = Prop::find($prop->id, ['id'])
-            ->transactions()
+        $vouchers = Prop::find($prop->id, ['id'])
+            ->vouchers()
             ->where('transactionable_id', $prop->id)
             ->whereYear('created_at', date('Y'))
             ->orderBy('created_at', 'DESC')
-            ->paginate(config('welkome.paginate'), Fields::get('transactions'));
+            ->paginate(config('welkome.paginate'), Fields::get('vouchers'));
 
-        $types = $this->groupTransactionTypesByMonth($prop->transactions);
+        $types = $this->groupTransactionTypesByMonth($prop->vouchers);
         $data = $this->prepareChartData($types);
 
-        return view('app.props.show', compact('prop', 'data', 'transactions'));
+        return view('app.props.show', compact('prop', 'data', 'vouchers'));
     }
 
     /**
@@ -366,15 +366,15 @@ class PropController extends Controller
             {
                 $query->select(['id', 'business_name']);
             },
-            'transactions' => function ($query) use ($request)
+            'vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::get('transactions'))
+                $query->select(Fields::get('vouchers'))
                     ->whereBetween('created_at', [$request->start, $request->end])
                     ->orderBy('created_at', 'DESC');
             }
         ]);
 
-        if ($prop->transactions->isEmpty()) {
+        if ($prop->vouchers->isEmpty()) {
             flash('No hay información en las fechas indicadas')->info();
 
             return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);

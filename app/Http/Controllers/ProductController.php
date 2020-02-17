@@ -6,12 +6,13 @@ use App\User;
 use App\Helpers\Id;
 use App\Helpers\Fields;
 use App\Helpers\Input;
-use App\Welkome\Product;
+use App\Helpers\Random;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Http\Requests\{StoreProduct, UpdateProduct, IncreaseProduct};
+use App\Http\Requests\{StoreProduct, UpdateProduct};
 use App\Welkome\Hotel;
-use App\Welkome\Transaction;
+use App\Welkome\Product;
+use App\Welkome\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -24,17 +25,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', Id::parent());
         })->with([
-            'products' => function ($query)
-            {
+            'products' => function ($query) {
                 $query->select(Fields::get('products'));
             }
         ])->get(Fields::get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -53,12 +52,10 @@ class ProductController extends Controller
      */
     public function prepareData(Collection $hotels)
     {
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = Hashids::encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
-            $hotel->products = $hotel->products->map(function ($product)
-            {
+            $hotel->products = $hotel->products->map(function ($product) {
                 $product->hotel_id = Hashids::encode($product->hotel_id);
                 $product->user_id = Hashids::encode($product->user_id);
 
@@ -78,13 +75,12 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', Id::parent());
         })->whereStatus(true)
-        ->get(Fields::get('hotels'));
+            ->get(Fields::get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -111,6 +107,29 @@ class ProductController extends Controller
         $product->hotel()->associate(Id::get($request->hotel));
 
         if ($product->save()) {
+            // Voucher creation
+            $voucher = new Voucher();
+            $voucher->number = Random::consecutive();
+            $voucher->open = false;
+            $voucher->type = 'entry';
+            $voucher->value = $product->price * $product->quantity;
+            $voucher->subvalue = $product->price * $product->quantity;
+            $voucher->made_by = auth()->user()->name;
+            $voucher->hotel()->associate(Id::get($request->hotel));
+            $voucher->user()->associate(Id::parent(), ['id']);
+
+            if ($voucher->save()) {
+                // Attach product
+                $voucher->products()->attach(
+                    $product->id,
+                    [
+                        'quantity' => $product->quantity,
+                        'value' => $product->price * $product->quantity,
+                        'created_at' => now()
+                    ]
+                );
+            }
+
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('products.show', [
@@ -135,14 +154,14 @@ class ProductController extends Controller
             ->products()
             ->where('id', Id::get($id))
             ->with([
-                'hotel' => function($query) {
+                'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
                 },
-                'transactions' => function ($query)
-                {
-                    $query->select(Fields::get('transactions'))
+                'vouchers' => function ($query) {
+                    $query->select(Fields::parsed('vouchers'))
                         ->orderBy('created_at', 'DESC')
-                        ->limit(100);
+                        ->limit(100)
+                        ->withPivot(['quantity']);
                 }
             ])->first(Fields::get('products'));
 
@@ -165,7 +184,7 @@ class ProductController extends Controller
             ->products()
             ->where('id', Id::get($id))
             ->with([
-                'hotel' => function($query) {
+                'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
                 }
             ])->first(Fields::get('products'));
@@ -230,8 +249,7 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query) {
                 $query->select('id');
             },
         ]);
@@ -327,8 +345,7 @@ class ProductController extends Controller
                 ->whereLike(['description', 'brand', 'reference'], $query)
                 ->get(Fields::get('products'));
 
-            $products = $products->map(function ($product)
-            {
+            $products = $products->map(function ($product) {
                 $product->hotel_id = Hashids::encode($product->hotel_id);
                 $product->user_id = Hashids::encode($product->user_id);
 

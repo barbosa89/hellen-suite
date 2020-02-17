@@ -45,6 +45,8 @@ class CreateVouchersTable extends Migration
             // Props: entry, discard
             $table->enum('type', ['sale', 'entry', 'loss', 'discard', 'lodging', 'dining']);
 
+            $table->string('made_by')->nullable();
+
             $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');

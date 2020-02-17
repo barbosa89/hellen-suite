@@ -2,10 +2,9 @@
 
 namespace App\Welkome;
 
-use Laravel\Scout\Searchable;
+use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Voucher extends Model
 {

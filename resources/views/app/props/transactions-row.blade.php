@@ -17,7 +17,7 @@
         </div>
         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
             <p>
-                {{ $row->done_by }}
+                {{ $row->made_by }}
             </p>
         </div>
         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">

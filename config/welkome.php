@@ -49,6 +49,8 @@ return [
             'payment_status',
             'losses',
             'reservation',
+            'type',
+            'made_by',
             'company_id',
             'user_id',
             'hotel_id',

@@ -21,7 +21,7 @@
                     <td>{{ trans('transactions.' . $transaction->type) }}</td>
                     <td>{{ $transaction->commentary }}</td>
                     <td>{{ round($transaction->amount, 0) }}</td>
-                    <td>{{ $transaction->done_by }}</td>
+                    <td>{{ $transaction->made_by }}</td>
                 </tr>
             @endforeach
         </tbody>
