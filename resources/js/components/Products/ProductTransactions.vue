@@ -4,7 +4,7 @@
     export default {
         data() {
             return {
-                process_uri: '/products/process',
+                process_uri: '/products/vouchers',
                 search_uri: '/products/search',
                 module_uri: '/products',
                 title: this.$root.$t('products.transactions'),

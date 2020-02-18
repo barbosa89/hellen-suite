@@ -153,21 +153,22 @@ class ProductController extends Controller
         $product = User::find(Id::parent(), ['id'])
             ->products()
             ->where('id', Id::get($id))
-            ->with([
-                'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
-                },
-                'vouchers' => function ($query) {
-                    $query->select(Fields::parsed('vouchers'))
-                        ->orderBy('created_at', 'DESC')
-                        ->limit(100)
-                        ->withPivot(['quantity']);
-                }
-            ])->first(Fields::get('products'));
+            ->first(Fields::get('products'));
 
         if (empty($product)) {
             abort(404);
         }
+
+        $product->load([
+            'hotel' => function ($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'vouchers' => function ($query) {
+                $query->select(Fields::parsed('vouchers'))
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->whereYear('vouchers.created_at', \date('Y'));
+            }
+        ]);
 
         return view('app.products.show', compact('product'));
     }

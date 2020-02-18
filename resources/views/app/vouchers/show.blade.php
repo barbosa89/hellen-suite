@@ -465,7 +465,7 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     @can('vouchers.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.products.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($product->pivot->id)], false) }}')">
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.products.remove', ['id' => Hashids::encode($voucher->id), 'record' => Hashids::encode($product->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan

@@ -1,19 +1,19 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	// Props transactions routes
+	// Products vouchers routes
 
-	Route::get('products/{id}/transactions/{transaction}', 'ProductTransactionController@destroy')
-		->name('products.transactions.destroy')
-		->middleware('permission:products.transactions');
+	Route::get('products/{id}/vouchers/{transaction}', 'ProductVoucherController@destroy')
+		->name('products.vouchers.destroy')
+		->middleware('permission:products.vouchers');
 
-	Route::post('products/transactions', 'ProductTransactionController@store')
-		->name('products.transactions')
-		->middleware('permission:products.transactions');
+	Route::post('products/vouchers', 'ProductVoucherController@store')
+		->name('products.vouchers')
+		->middleware('permission:products.vouchers');
 
-	Route::get('products/transactions', 'ProductTransactionController@create')
-		->name('products.transactions.create')
-		->middleware('permission:products.transactions');
+	Route::get('products/vouchers', 'ProductVoucherController@create')
+		->name('products.vouchers.create')
+		->middleware('permission:products.vouchers');
 
 	// Products routes
 

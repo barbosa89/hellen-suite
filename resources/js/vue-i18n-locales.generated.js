@@ -574,9 +574,6 @@ export default {
             "commentary": "Commentary",
             "type": "Type",
             "title": "Transactions",
-            "done": {
-                "by": "Done by"
-            },
             "discharge": "Discharge",
             "discharges": "Discharges",
             "entries": "Entries",
@@ -590,6 +587,23 @@ export default {
             },
             "element": {
                 "exists": "This item has already been added."
+            },
+            "made": {
+                "by": "Made by"
+            },
+            "no": {
+                "stock": "The element has no stock in the inventory"
+            },
+            "choose": {
+                "hotel": "Please choose a hotel",
+                "type": "Please choose a transaction type"
+            },
+            "incomplete": "Incomplete fields were detected",
+            "amount": {
+                "zero": "The quantity must be greater than zero"
+            },
+            "has": {
+                "errors": "Errors were detected"
             }
         },
         "passwords": {
@@ -1223,9 +1237,6 @@ export default {
             "type": "Tipo",
             "commentary": "Comentario",
             "title": "Transacciones",
-            "done": {
-                "by": "Hecho por"
-            },
             "entry": "Entrada",
             "entries": "Entradas",
             "discharge": "Salida",
@@ -1239,6 +1250,23 @@ export default {
             },
             "element": {
                 "exists": "Este elemento ya fue agregado"
+            },
+            "made": {
+                "by": "Hecho por"
+            },
+            "no": {
+                "stock": "El elemento no tiene existencias en el inventario"
+            },
+            "choose": {
+                "hotel": "Por elije un hotel",
+                "type": "por favor elite un tipo de transacción"
+            },
+            "incomplete": "Se detectaron campos incompletos",
+            "amount": {
+                "zero": "La cantidad debe ser mayor a cero"
+            },
+            "has": {
+                "errors": "Hay errores y no puedes continuar"
             }
         },
         "passwords": {

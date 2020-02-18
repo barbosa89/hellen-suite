@@ -38,8 +38,8 @@
                     ]
                 ],
                 [
-                    'option' => trans('transactions.title'),
-                    'url' => route('products.transactions'),
+                    'option' => trans('vouchers.title'),
+                    'url' => route('products.vouchers'),
                 ],
                 [
                     'option' => trans('common.new'),
@@ -56,8 +56,8 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">
-                    @lang('transactions.title')
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                    @lang('vouchers.title')
                 </a>
             </li>
             <li class="nav-item">
@@ -67,11 +67,11 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                 @include('partials.list', [
                     'data' => $product->vouchers,
-                    'listHeading' => 'app.products.transactions.list-heading',
-                    'listRow' => 'app.products.transactions.list-row'
+                    'listHeading' => 'app.products.vouchers.list-heading',
+                    'listRow' => 'app.products.vouchers.list-row'
                 ])
             </div>
             <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">

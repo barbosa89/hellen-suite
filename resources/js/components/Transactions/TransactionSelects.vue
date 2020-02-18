@@ -15,7 +15,13 @@
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="form-group mb-4">
-                    <transaction-type :type="type" @selectType="pushType"></transaction-type>
+                    <select name="type" id="type" class="form-control" v-model="type" @change="pushType">
+                        <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
+                        <option value="discharge">{{ $t('transactions.discharge') }}</option>
+                        <option value="entry">{{ $t('transactions.entry') }}</option>
+                        <option value="sales">{{ $t('transactions.sales') }}</option>
+                        <option value="losses">{{ $t('transactions.losses') }}</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -26,8 +32,8 @@
 export default {
     data() {
         return {
-            hotel: '',
-            type: ''
+            hotel: null,
+            type: null
         }
     },
     props: ['title', 'hotels'],
@@ -35,8 +41,8 @@ export default {
         pushHotel() {
             this.$emit('selectHotel', this.hotel)
         },
-        pushType(value) {
-            this.$emit('selectType', value)
+        pushType() {
+            this.$emit('selectType', this.type)
         }
     },
 }

@@ -8,7 +8,7 @@ use App\User;
 use App\Welkome\Hotel;
 use Illuminate\Http\Request;
 
-class ProductTransactionController extends Controller
+class ProductVoucherController extends Controller
 {
     /**
      * Show the form for creating a new resource.
@@ -25,11 +25,11 @@ class ProductTransactionController extends Controller
             return redirect()->route('products.index');
         }
 
-        return view('app.products.transactions.create', compact('hotels'));
+        return view('app.products.vouchers.create', compact('hotels'));
     }
 
     /**
-     * Return hotel list
+     * Return the hotel list
      *
      * @return  \Illuminate\Support\Collection
      */
@@ -63,7 +63,9 @@ class ProductTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json([
+            'request' => $request->toArray()
+        ]);
     }
 
     /**

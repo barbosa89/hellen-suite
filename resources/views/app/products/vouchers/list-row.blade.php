@@ -1,13 +1,15 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 {{ $row->created_at->format('Y-m-d') }}
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
-                {{ $row->commentary }}
+                <a href="{{ route('vouchers.show', ['id' => Hashids::encode($row->id)]) }}">
+                    {{ $row->number }}
+                </a>
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
@@ -17,15 +19,10 @@
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
-                {{ $row->quantity }}
-            </p>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
-            <p>
                 {{ number_format($row->value, 2, ',', '.') }}
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
             <p>
                 {{ $row->made_by }}
             </p>

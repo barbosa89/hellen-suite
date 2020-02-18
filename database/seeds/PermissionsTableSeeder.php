@@ -61,9 +61,9 @@ class PermissionsTableSeeder extends Seeder
 
         // Products
 
-        // CRUD Permissions to do transactions
+        // CRUD Permissions to do vouchers
         Permission::create([
-            'name' => 'products.transactions',
+            'name' => 'products.vouchers',
             'guard_name' => config('auth.defaults.guard')
         ]);
 
@@ -83,9 +83,9 @@ class PermissionsTableSeeder extends Seeder
 
         // Props
 
-        // CRUD Permissions to do transactions
+        // CRUD Permissions to do vouchers
         Permission::create([
-            'name' => 'props.transactions',
+            'name' => 'props.vouchers',
             'guard_name' => config('auth.defaults.guard')
         ]);
     }

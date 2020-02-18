@@ -34,16 +34,13 @@
         <div class="crud-list" v-if="selecteds.length != 0">
             <div class="crud-list-heading mt-2">
                 <div class="row">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <h5>{{ $t('common.description') }}</h5>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                         <h5>{{ $t('common.quantity') }}</h5>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <h5>{{ $t('common.commentary') }}</h5>
-                    </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                         <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
@@ -52,22 +49,17 @@
                 <div class="crud-list-row" v-for="(selected, index) in selecteds" :key="selected.hash">
                     <template v-if="!selected.editing">
                         <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 align-self-center">
                                 <p>
                                     {{ selected.description }}
                                 </p>
                             </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 align-self-center">
                                 <p>
                                     {{ selected.amount }}
                                 </p>
                             </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
-                                <p>
-                                    {{ selected.commentary }}
-                                </p>
-                            </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                 <button type="button" class="btn btn-link" @click.prevent="edit(selected, index)">
                                     <i class="fas fa-edit"></i>
                                 </button>
@@ -79,22 +71,17 @@
                     </template>
                     <template v-else>
                         <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                 <div class="form-group">
                                     <input type="text" class="form-control without-border" readonly :value="selected.description">
                                 </div>
                             </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                 <div class="form-group">
                                     <input type="number" class="form-control without-border" name="amount" id="amount" v-model="amount" required min="1" :max="selected.quantity" placeholder="Requerido">
                                 </div>
                             </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                <div class="form-group">
-                                    <textarea class="form-control without-border" name="commentary" id="commentary" v-model="commentary" cols="30" rows="3" placeholder="Escriba comentario aquí"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                 <button type="button" class="btn btn-link" @click.prevent="save(selected, index)">
                                     <i class="fas fa-save"></i>
                                 </button>
@@ -124,12 +111,13 @@
         props: ['hotels'],
         data() {
             return {
+                errors: [],
+                info: [],
                 hotel: '',
                 type: '',
                 selecteds: [],
                 hash: '',
                 amount: 0,
-                commentary: '',
                 process_uri: '',
                 search_uri: '',
                 module_uri: '',
@@ -139,37 +127,29 @@
         },
         methods: {
             resetAll() {
-                this.query = '',
-                this.selecteds = [],
-                this.amount = 0,
-                this.commentary = ''
+                this.query = ''
+                this.selecteds = []
+                this.amount = 0
             },
             add(element) {
-                if (!this.exists(element)) {
+                this.exists(element)
+                this.checkStock(element)
+
+                if (this.info.length == 0) {
                     this.cancelEditing()
 
                     element.amount = 0
-                    element.commentary = ''
                     element.editing = true
 
                     this.selecteds.push(element)
-                } else {
-                    toastr.info(
-                        this.$root.$t('transactions.element.exists'),
-                        this.$root.$t('common.sorry')
-                    );
                 }
             },
             exists(element) {
-                var exists =[]
-
                 _.map(this.selecteds, selected => {
                     if (selected.hash == element.hash) {
-                        exists.push(selected)
+                        this.info.push(this.$root.$t('transactions.element.exists'))
                     }
                 })
-
-                return exists.length != 0
             },
             edit(selected, index) {
                 this.cancelEditing()
@@ -179,23 +159,23 @@
                 this.$set(this.selecteds, index, selected);
 
                 this.amount = selected.amount
-                this.commentary = selected.commentary
             },
             save(selected, index) {
-                selected.commentary = this.commentary
+                this.checkAmount()
 
-                if (this.amount > selected.quantity) {
-                    selected.amount = selected.quantity
-                } else {
-                    selected.amount = this.amount
+                if (this.info.length == 0) {
+                    if (this.amount > selected.quantity) {
+                        selected.amount = selected.quantity
+                    } else {
+                        selected.amount = this.amount
+                    }
+
+                    selected.editing = false
+
+                    this.$set(this.selecteds, index, selected);
+
+                    this.amount = 0
                 }
-
-                selected.editing = false
-
-                this.$set(this.selecteds, index, selected);
-
-                this.amount = 0
-                this.commentary = ''
             },
             cancelEditing() {
                 if (this.selecteds.length > 0) {
@@ -207,26 +187,26 @@
                 }
 
                 this.amount = 0
-                this.commentary = ''
             },
             process() {
-                if (this.selecteds.length > 0 && this.validate()) {
+                if (this.selecteds.length > 0 && this.errors.length == 0) {
                     axios.post(this.process_uri, {
                         elements: this.selecteds,
                         hotel: this.hotel,
                         type: this.type
                     }).then(response => {
                         this.resetAll()
-                        let msg = ''
+                        // let msg = ''
 
-                        if (parseInt(response.data.request) == parseInt(response.data.processed)) {
-                            msg = "Todos los ítems enviados fueron procesados"
-                        } else {
-                            msg = response.data.processed + "/" + response.data.request + " ítems procesados"
-                        }
+                        // if (parseInt(response.data.request) == parseInt(response.data.processed)) {
+                        //     msg = "Todos los ítems enviados fueron procesados"
+                        // } else {
+                        //     msg = response.data.processed + "/" + response.data.request + " ítems procesados"
+                        // }
+                        console.log(response);
 
                         toastr.success(
-                            msg,
+                            'Ok',
                             this.$root.$t('common.great')
                         );
                     }).catch(e => {
@@ -244,37 +224,69 @@
                     });
                 } else {
                     toastr.info(
-                        'Aún no puedes procesar la transacción',
+                        this.$root.$t('transactions.has.errors'),
                         this.$root.$t('common.sorry')
                     );
                 }
             },
             validate() {
-                let errors = 0
-
                 if (!this.hotel) {
-                    errors++
+                    this.errors.push(this.$root.$t('transactions.choose.hotel'))
                 }
 
                 if (!this.type) {
-                    errors++
-                    document.getElementById('type').classList.add('is-invalid')
-                } else {
-                    document.getElementById('type').classList.remove('is-invalid')
+                    this.errors.push(this.$root.$t('transactions.choose.type'))
                 }
 
                 this.selecteds.forEach(selected => {
-                    if (selected.quantity == 0 || selected.commentary == '') {
-                        errors++
+                    if (selected.amount == 0) {
+                        this.errors.push(this.$root.$t('transactions.amount.zero'))
                     }
                 })
-
-                return errors == 0;
+            },
+            checkStock(element) {
+                if (this.type !== 'entry') {
+                    if (parseInt(element.quantity) === 0) {
+                        this.info.push(this.$root.$t('transactions.no.stock'))
+                    }
+                }
+            },
+            checkAmount() {
+                if (parseInt(this.amount) <= 0 || this.amount == '') {
+                    this.info.push(this.$root.$t('transactions.amount.zero'))
+                }
             }
         },
         watch: {
             hotel: function (current, old) {
                 this.resetAll()
+            },
+            type: function (current, old) {
+                this.resetAll()
+            },
+            errors: function (current, old) {
+                if (current.length > 0) {
+                    current.forEach(error => {
+                        toastr.error(
+                            error,
+                            this.$root.$t('common.sorry')
+                        );
+                    })
+
+                    this.errors = []
+                }
+            },
+            info: function (current, old) {
+                if (current.length > 0) {
+                    current.forEach(info => {
+                        toastr.info(
+                            info,
+                            this.$root.$t('common.sorry')
+                        );
+                    })
+
+                    this.info = []
+                }
             }
         },
     };
