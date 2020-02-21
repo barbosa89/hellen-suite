@@ -25,6 +25,7 @@ class UpdateProp extends FormRequest
     {
         return [
             'description' => 'required|string|max:191|unique_with:props,hotel#hotel_id',
+            'price' => 'required|numeric|min:1',
         ];
     }
 }

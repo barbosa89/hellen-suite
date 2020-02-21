@@ -21,6 +21,7 @@ class CreateCompaniesTable extends Migration
             $table->string('address', 150)->nullable();
             $table->string('phone', 12)->nullable();
             $table->string('mobile', 12)->nullable();
+            $table->boolean('is_supplier')->default(false);
 
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')

@@ -63,3 +63,17 @@
         </span>
     @endif
 </div>
+
+<div class="form-group{{ $errors->has('is_supplier') ? ' has-error' : '' }}">
+    <label for="is_supplier">@lang('common.type'):</label>
+    <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="is_supplier" id="is_supplier" required>
+        <option value="1">@lang('companies.is.supplier')</option>
+        <option value="0">@lang('companies.isnt.supplier')</option>
+    </select>
+
+    @if ($errors->has('is_supplier'))
+        <span class="help-block">
+            <strong>{{ $errors->first('is_supplier') }}</strong>
+        </span>
+    @endif
+</div>

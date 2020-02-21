@@ -3,7 +3,7 @@
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	// Products vouchers routes
 
-	Route::get('products/{id}/vouchers/{transaction}', 'ProductVoucherController@destroy')
+	Route::get('products/{id}/vouchers/{voucher}', 'ProductVoucherController@destroy')
 		->name('products.vouchers.destroy')
 		->middleware('permission:products.vouchers');
 

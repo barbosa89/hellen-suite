@@ -11,16 +11,17 @@ use App\Helpers\Input;
 use App\Helpers\Fields;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
+use App\Helpers\Random;
 use App\Http\Requests\PropReportQuery;
 use App\Http\Requests\PropsReportQuery;
-use App\Welkome\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
+use App\Welkome\Company;
+use App\Welkome\Voucher;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\PropsTransaction;
 
 class PropController extends Controller
 {
@@ -49,6 +50,19 @@ class PropController extends Controller
             return redirect()->route('home');
         }
 
+        $hotels = $this->encodeIds($hotels);
+
+        return view('app.props.index', compact('hotels'));
+    }
+
+    /**
+     * Encode all ID's from collection
+     *
+     * @param  \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
+     */
+    public function encodeIds(Collection $hotels)
+    {
         $hotels = $hotels->map(function ($hotel)
         {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -64,7 +78,7 @@ class PropController extends Controller
             return $hotel;
         });
 
-        return view('app.props.index', compact('hotels'));
+        return $hotels;
     }
 
     /**
@@ -74,16 +88,21 @@ class PropController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent(), ['id'])
+        $hotels = Hotel::where('user_id', Id::parent())
             ->where('status', true)
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('props.index');
         }
-        return view('app.props.create', compact('hotels'));
+
+        $companies = Company::where('user_id', Id::parent())
+            ->where('is_supplier', true)
+            ->get(Fields::get('companies'));
+
+        return view('app.props.create', compact('hotels', 'companies'));
     }
 
     /**
@@ -96,11 +115,41 @@ class PropController extends Controller
     {
         $prop = new Prop();
         $prop->description = $request->description;
-        $prop->quantity = $request->quantity;
+        $prop->price = (float) $request->price;
+        $prop->quantity = (int) $request->quantity;
         $prop->user()->associate(Id::parent(), ['id']);
         $prop->hotel()->associate(Id::get($request->hotel));
 
         if ($prop->save()) {
+            // Voucher creation
+            $voucher = new Voucher();
+            $voucher->number = Random::consecutive();
+            $voucher->open = false;
+            $voucher->payment_status = true;
+            $voucher->type = 'entry';
+            $voucher->value = $prop->price * $prop->quantity;
+            $voucher->subvalue = $prop->price * $prop->quantity;
+            $voucher->made_by = auth()->user()->name;
+            $voucher->comments = $request->comments;
+            $voucher->hotel()->associate(Id::get($request->hotel));
+            $voucher->user()->associate(Id::parent());
+
+            if (!empty($request->company)) {
+                $voucher->company()->associate(Id::get($request->company));
+            }
+
+            if ($voucher->save()) {
+                // Attach prop
+                $voucher->props()->attach(
+                    $prop->id,
+                    [
+                        'quantity' => $prop->quantity,
+                        'value' => $prop->price * $prop->quantity,
+                        'created_at' => now()
+                    ]
+                );
+            }
+
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('props.show', [
@@ -136,19 +185,13 @@ class PropController extends Controller
             },
             'vouchers' => function ($query)
             {
-                $query->select(['id', 'amount', 'type', 'transactionable_id', 'created_at'])
-                    ->whereYear('created_at', date('Y'))
-                    ->orderBy('created_at', 'DESC');
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity');
             }
         ]);
-
-        $vouchers = Prop::find($prop->id, ['id'])
-            ->vouchers()
-            ->where('transactionable_id', $prop->id)
-            ->whereYear('created_at', date('Y'))
-            ->orderBy('created_at', 'DESC')
-            ->paginate(config('welkome.paginate'), Fields::get('vouchers'));
-
+        dd($prop);
         $types = $this->groupTransactionTypesByMonth($prop->vouchers);
         $data = $this->prepareChartData($types);
 
@@ -245,6 +288,7 @@ class PropController extends Controller
         }
 
         $prop->description = $request->description;
+        $prop->price = (float) $request->price;
 
         if ($prop->update()) {
             flash(trans('common.updatedSuccessfully'))->success();

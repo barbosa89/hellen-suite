@@ -57,6 +57,7 @@ class CompanyController extends Controller
         $company->address = $request->get('address', null);
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
+        $company->is_supplier = (int) $request->is_supplier;
         $company->user()->associate(Id::parent());
 
         if ($company->save()) {
@@ -121,6 +122,7 @@ class CompanyController extends Controller
         $company->address = $request->get('address', null);
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
+        $company->is_supplier = (int) $request->is_supplier;
         $company->user()->associate(Id::parent());
 
         if ($company->save()) {
@@ -190,6 +192,7 @@ class CompanyController extends Controller
         $company->address = $request->get('address', null);
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
+        $company->is_supplier = (int) $request->is_supplier;
 
         if ($company->save()) {
             flash(trans('common.updatedSuccessfully'))->success();

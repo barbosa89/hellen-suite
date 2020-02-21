@@ -18,7 +18,7 @@
                 ],
                 [
                     'option' => trans('transactions.title'),
-                    'url' => route('props.transactions.form')
+                    'url' => route('props.vouchers')
                 ],
                 [
                     'option' => trans('common.new'),

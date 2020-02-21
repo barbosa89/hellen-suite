@@ -118,6 +118,7 @@ return [
             'phone',
             'address',
             'mobile',
+            'is_supplier',
             'user_id',
             'created_at'
         ],

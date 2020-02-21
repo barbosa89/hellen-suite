@@ -150,4 +150,5 @@ return array (
     'stock' => 'Cantidad actual',
   ),
   'invoice' => 'Factura',
+  'comments' => 'Comentarios',
 );

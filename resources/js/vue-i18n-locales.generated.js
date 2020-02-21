@@ -491,7 +491,8 @@ export default {
             "current": {
                 "stock": "Current stock"
             },
-            "invoice": "Invoice"
+            "invoice": "Invoice",
+            "comments": "Comments"
         },
         "rooms": {
             "title": "Rooms",
@@ -617,7 +618,16 @@ export default {
             "company": "Company",
             "title": "Companies",
             "businessName": "Business name",
-            "tin": "Taxpayer identification number"
+            "tin": "Taxpayer identification number",
+            "is": {
+                "supplier": "La company is a supplier"
+            },
+            "isnt": {
+                "supplier": "The company isn't a supplier"
+            },
+            "no": {
+                "registered": "There are no registered companies"
+            }
         },
         "shifts": {
             "shift": "Shift",
@@ -1154,7 +1164,8 @@ export default {
             "current": {
                 "stock": "Cantidad actual"
             },
-            "invoice": "Factura"
+            "invoice": "Factura",
+            "comments": "Comentarios"
         },
         "rooms": {
             "title": "Habitaciones",
@@ -1280,7 +1291,16 @@ export default {
             "title": "Empresas",
             "company": "Empresa",
             "businessName": "Razón social",
-            "tin": "Número de identificación tributaria"
+            "tin": "Número de identificación tributaria",
+            "is": {
+                "supplier": "La empresa es proveedora"
+            },
+            "isnt": {
+                "supplier": "La empresa no es proveedora"
+            },
+            "no": {
+                "registered": "No hay empresas registradas"
+            }
         },
         "shifts": {
             "title": "Turnos",

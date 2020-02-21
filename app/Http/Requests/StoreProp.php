@@ -26,7 +26,10 @@ class StoreProp extends FormRequest
         return [
             'description' => 'required|string|max:191|unique_with:props,hotel#hotel_id',
             'quantity' => 'required|numeric|max:9999|min:1',
-            'hotel' => 'required|string|hashed_exists:hotels,id'
+            'price' => 'required|numeric|min:1',
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'comments' => 'nullable|string|max:400',
+            'company' => 'nullable|string|hashed_exists:companies,id'
         ];
     }
 }

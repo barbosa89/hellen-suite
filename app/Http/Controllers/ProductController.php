@@ -39,7 +39,7 @@ class ProductController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        $hotels = $this->prepareData($hotels);
+        $hotels = $this->encodeIds($hotels);
 
         return view('app.products.index', compact('hotels'));
     }
@@ -50,7 +50,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Support\Collection
      * @return \Illuminate\Support\Collection
      */
-    public function prepareData(Collection $hotels)
+    public function encodeIds(Collection $hotels)
     {
         $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = Hashids::encode($hotel->user_id);
@@ -103,7 +103,7 @@ class ProductController extends Controller
         $product->reference = $request->reference;
         $product->price = (float) $request->price;
         $product->quantity = $request->quantity;
-        $product->user()->associate(Id::parent(), ['id']);
+        $product->user()->associate(Id::parent());
         $product->hotel()->associate(Id::get($request->hotel));
 
         if ($product->save()) {
@@ -111,12 +111,13 @@ class ProductController extends Controller
             $voucher = new Voucher();
             $voucher->number = Random::consecutive();
             $voucher->open = false;
+            $voucher->payment_status = true;
             $voucher->type = 'entry';
             $voucher->value = $product->price * $product->quantity;
             $voucher->subvalue = $product->price * $product->quantity;
             $voucher->made_by = auth()->user()->name;
             $voucher->hotel()->associate(Id::get($request->hotel));
-            $voucher->user()->associate(Id::parent(), ['id']);
+            $voucher->user()->associate(Id::parent());
 
             if ($voucher->save()) {
                 // Attach product

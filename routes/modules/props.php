@@ -33,6 +33,18 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 	// 	->name('props.transactions.form')
 	// 	->middleware('permission:props.edit');
 
+	Route::get('props/{id}/vouchers/{voucher}', 'PropVoucherController@destroy')
+		->name('props.vouchers.destroy')
+		->middleware('permission:props.vouchers');
+
+	Route::post('props/vouchers', 'PropVoucherController@store')
+		->name('props.vouchers')
+		->middleware('permission:props.vouchers');
+
+	Route::get('props/vouchers', 'PropVoucherController@create')
+		->name('props.vouchers.create')
+		->middleware('permission:props.vouchers'); // Agregar más permisos
+
 	// Props routes
 
 	Route::post('props/search', 'PropController@search')

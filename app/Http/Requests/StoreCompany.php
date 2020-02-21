@@ -29,7 +29,8 @@ class StoreCompany extends FormRequest
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'phone' => 'nullable|string|min:6|max:12',
-            'mobile' => 'nullable|string|min:6|max:12'
+            'mobile' => 'nullable|string|min:6|max:12',
+            'is_supplier' => 'required|integer|in:0,1'
         ];
     }
 }

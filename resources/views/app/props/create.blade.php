@@ -24,6 +24,38 @@
                 <form action="{{ route('props.store') }}" method="POST">
                     @csrf()
 
+                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
+                        <label for="hotel">@lang('hotels.title'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="hotel" id="hotel" required>
+                            @foreach ($hotels as $hotel)
+                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('hotel'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('hotel') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    @if ($companies->isNotEmpty())
+                        <div class="form-group{{ $errors->has('company') ? ' has-error' : '' }}">
+                            <label for="company">@lang('companies.company'):</label>
+                            <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="company" id="company">
+                                @foreach ($companies as $company)
+                                    <option value="{{ Hashids::encode($company->id) }}">{{ $company->business_name }}</option>
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('company'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('company') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    @endif
+
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>
                         <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
@@ -31,6 +63,17 @@
                         @if ($errors->has('description'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('description') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+                        <label for="price">@lang('common.price'):</label>
+                        <input type="number" class="form-control" name="price" id="price" value="{{ old('price') }}" min="1" required placeholder="{{ trans('common.required') }}">
+
+                        @if ($errors->has('price'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('price') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -46,17 +89,15 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
-                            @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="form-group{{ $errors->has('comments') ? ' has-error' : '' }}">
+                        <label for="comments">@lang('common.comments'):</label>
+                        <textarea name="comments" id="comments" id="" cols="30" rows="5" class="form-control" maxlength="400">
+                            {{ old('comments') }}
+                        </textarea>
 
-                        @if ($errors->has('hotel'))
+                        @if ($errors->has('comments'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('hotel') }}</strong>
+                                <strong>{{ $errors->first('comments') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -66,12 +107,6 @@
                         @lang('common.back')
                     </a>
                 </form>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-md"></div>
             </div>
         </div>
     </div>
