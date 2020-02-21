@@ -21,6 +21,7 @@ class CreateAssetsTable extends Migration
             $table->string('model', 100)->nullable();
             $table->string('serial_number', 150)->nullable();
             $table->string('location')->nullable();
+            $table->decimal('price', 10, 2);
 
             $table->bigInteger('room_id')->unsigned()->nullable();
             $table->foreign('room_id')->references('id')

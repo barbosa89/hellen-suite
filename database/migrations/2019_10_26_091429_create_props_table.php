@@ -16,6 +16,7 @@ class CreatePropsTable extends Migration
         Schema::create('props', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('description');
+            $table->decimal('price', 10, 2);
             $table->integer('quantity')->default(0);
             $table->boolean('status')->default(true);
 

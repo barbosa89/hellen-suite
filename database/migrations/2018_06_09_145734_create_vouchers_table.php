@@ -47,6 +47,8 @@ class CreateVouchersTable extends Migration
 
             $table->string('made_by')->nullable();
 
+            $table->text('comments')->nullable();
+
             $table->bigInteger('hotel_id')->unsigned();
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');

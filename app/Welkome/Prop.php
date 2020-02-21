@@ -43,6 +43,11 @@ class Prop extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    public function vouchers()
+    {
+        return $this->belongsToMany(\App\Welkome\Voucher::class);
+    }
+
     /**
      * Hashing Product ID.
      *

@@ -51,6 +51,7 @@ return [
             'reservation',
             'type',
             'made_by',
+            'comments',
             'company_id',
             'user_id',
             'hotel_id',
@@ -139,6 +140,7 @@ return [
             'model',
             'serial_number',
             'location',
+            'price',
             'user_id',
             'created_at',
             'hotel_id',
@@ -148,6 +150,7 @@ return [
             'id',
             'description',
             'quantity',
+            'price',
             'status',
             'hotel_id',
             'user_id'

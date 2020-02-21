@@ -39,6 +39,11 @@ class Voucher extends Model
         return $this->belongsToMany(\App\Welkome\Product::class);
     }
 
+    public function props()
+    {
+        return $this->belongsToMany(\App\Welkome\Prop::class);
+    }
+
     public function services()
     {
         return $this->belongsToMany(\App\Welkome\Service::class);
