@@ -86,7 +86,7 @@
                                     Editar
                                 </a>
                                 <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete') }}</a>
+                                    {{ $t('common.delete.item') }}</a>
                                 </a>
                             </div>
                         </div>

@@ -70,7 +70,7 @@
                                     {{ service.status == 1 ? $t('common.disable') : $t('common.disable') }}
                                 </a>
                                 <a v-if="$can('services.destroy')" href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete') }}</a>
+                                    {{ $t('common.delete.item') }}</a>
                                 </a>
                             </div>
                         </div>

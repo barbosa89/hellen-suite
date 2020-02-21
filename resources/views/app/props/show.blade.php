@@ -19,7 +19,7 @@
                 ],
                 [
                     'option' => 'Transacciones',
-                    'url' => route('props.transactions.form')
+                    'url' => route('props.vouchers')
                 ],
                 [
                     'type' => 'dropdown',
@@ -53,15 +53,19 @@
         ])
 
         <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <h2>@lang('common.description'):</h2>
                 <p>{{ $prop->description }}</p>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <h2>@lang('common.quantity'):</h2>
                 {{ $prop->quantity }}
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <h2>@lang('common.value'):</h2>
+                {{ number_format($prop->price, 2, ',', '.') }}
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <h3>@lang('common.model'):</h3>
                 <p>{{ $prop->hotel->business_name }}</p>
             </div>
@@ -69,7 +73,7 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
                     @lang('transactions.title')
                 </a>
             </li>
@@ -80,12 +84,11 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                 @include('partials.list', [
-                    'data' => $transactions,
-                    'listHeading' => 'app.props.transactions-heading',
-                    'listRow' => 'app.props.transactions-row',
-                    'where' => null
+                    'data' => $prop->vouchers->take(20),
+                    'listHeading' => 'app.props.vouchers.list-heading',
+                    'listRow' => 'app.props.vouchers.list-row'
                 ])
             </div>
             <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
@@ -107,7 +110,7 @@
                 labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 datasets: [{
                     label: '{{ trans('transactions.entries') }}',
-                    data: [{{ implode(', ', $data['input']) }}],
+                    data: [{{ implode(', ', $data['entry']) }}],
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -137,40 +140,8 @@
                         'rgba(54, 162, 235, 1)'
                     ],
                     borderWidth: 1
-                },
-                {
-                    label: '{{ trans('transactions.discharges') }}',
-                    data: [{{ implode(', ', $data['output']) }}],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+                }
+            ]
             },
             options: {
                 scales: {

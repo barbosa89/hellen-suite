@@ -21,18 +21,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	// Props transactions routes
 
-	// Route::get('props/{id}/transactions/{transaction}', 'PropController@destroyTransaction')
-	// 	->name('props.transactions.destroy')
-	// 	->middleware('permission:props.edit');
-
-	// Route::post('props/transactions', 'PropController@transactions')
-	// 	->name('props.transactions')
-	// 	->middleware('permission:props.edit');
-
-	// Route::get('props/transactions', 'PropController@showTransactionsForm')
-	// 	->name('props.transactions.form')
-	// 	->middleware('permission:props.edit');
-
 	Route::get('props/{id}/vouchers/{voucher}', 'PropVoucherController@destroy')
 		->name('props.vouchers.destroy')
 		->middleware('permission:props.vouchers');

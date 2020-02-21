@@ -191,38 +191,11 @@ class PropController extends Controller
                     ->withPivot('quantity');
             }
         ]);
-        dd($prop);
-        $types = $this->groupTransactionTypesByMonth($prop->vouchers);
+
+        $types = $this->groupVoucherTypesByMonth($prop->vouchers);
         $data = $this->prepareChartData($types);
 
-        return view('app.props.show', compact('prop', 'data', 'vouchers'));
-    }
-
-    /**
-     * Prepare chart data by inputs and outputs in a yearly period.
-     *
-     * @param  \Illuminate\Support\Collection $types
-     * @return array $data
-     */
-    public function prepareChartData(Collection $types)
-    {
-        $data = [];
-
-        for ($i=1; $i <= 12; $i++) {
-            if (isset($types['input'][$i])) {
-                $data['input'][$i] = $types['input'][$i]->count();
-            } else {
-                $data['input'][$i] = 0;
-            }
-
-            if (isset($types['output'][$i])) {
-                $data['output'][$i] = $types['output'][$i]->count();
-            } else {
-                $data['output'][$i] = 0;
-            }
-        }
-
-        return $data;
+        return view('app.props.show', compact('prop', 'data'));
     }
 
     /**
@@ -231,18 +204,44 @@ class PropController extends Controller
      * @param  \Illuminate\Support\Collection $transaction
      * @return \Illuminate\Support\Collection $types
      */
-    public function groupTransactionTypesByMonth(Collection $transactions)
+    public function groupVoucherTypesByMonth(Collection $vouchers)
     {
-        $types = $transactions->groupBy([
-            function($transaction) {
-                return $transaction->type;
-            }, function ($transaction)
+        $types = $vouchers->groupBy([
+            function($voucher) {
+                return $voucher->type;
+            }, function ($voucher)
             {
-                return $transaction->created_at->month;
+                return $voucher->created_at->month;
             }
         ]);
 
         return $types;
+    }
+
+    /**
+     * Prepare chart data by voucher type in a yearly period.
+     *
+     * @param  \Illuminate\Support\Collection $types
+     * @return array $data
+     */
+    public function prepareChartData(Collection $types)
+    {
+        $types = $types->toArray();
+        $data = [];
+
+        foreach ($types as $type => $months) {
+            foreach ($months as $month => $vouchers) {
+                foreach ($vouchers as $voucher) {
+                    if (isset($types[$type][$month])) {
+                        $data[$type][$month] = $voucher['pivot']['quantity'];
+                    } else {
+                        $data[$type][$month] = 0;
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -258,7 +257,7 @@ class PropController extends Controller
             ->with([
                 'hotel' => function ($query)
                 {
-                    $query->select(['id']);
+                    $query->select(['id', 'business_name']);
                 }
             ])->first(Fields::get('props'));
 

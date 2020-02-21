@@ -145,7 +145,7 @@
                                         onclick="confirmAction(this, event)"
                                         class="dropdown-item"
                                         v-if="$can('products.destroy')">
-                                        {{ $t('common.delete') }}
+                                        {{ $t('common.delete.item') }}
                                     </a>
                                 </div>
                             </div>

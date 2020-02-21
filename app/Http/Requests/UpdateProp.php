@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProp extends FormRequest
@@ -23,8 +24,10 @@ class UpdateProp extends FormRequest
      */
     public function rules()
     {
+        $id = Id::get($this->route('id'));
+
         return [
-            'description' => 'required|string|max:191|unique_with:props,hotel#hotel_id',
+            'description' => 'required|string|max:191|unique_with:props,hotel#hotel_id, ' . $id,
             'price' => 'required|numeric|min:1',
         ];
     }

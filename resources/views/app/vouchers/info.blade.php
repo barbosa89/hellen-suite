@@ -108,7 +108,7 @@
                             <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
                                 @can('vouchers.losses')
-                                    <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouches.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
+                                    <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
                                         <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
                                     </a>
                                 @endcan

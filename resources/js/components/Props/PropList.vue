@@ -24,13 +24,16 @@
         <div class="crud-list">
             <div class="crud-list-heading mt-2">
                 <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                         <h5>{{ $t('common.description') }}</h5>
                     </div>
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                        <h5>Cantidad</h5>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>{{ $t('common.quantity') }}</h5>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <h5>{{ $t('common.value') }}</h5>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                         <h5>{{ $t('common.options') }}</h5>
                     </div>
                 </div>
@@ -38,19 +41,24 @@
             <div class="crud-list-items" v-if="props.length != 0">
                 <div class="crud-list-row" v-for="prop in props" :key="prop.hash">
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 align-self-center">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                             <p>
                                 <a :href="'/props/' + prop.hash">
                                     {{ prop.description }}
                                 </a>
                             </p>
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 align-self-center">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
                             <p class="text-primary">
                                 {{ prop.quantity }}
                             </p>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                            <p class="text-primary">
+                                {{ new Intl.NumberFormat("de-DE").format(prop.price) }}
+                            </p>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <div class="dropdown">
                                 <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                     <i class="fa fa-ellipsis-v"></i>
@@ -58,10 +66,10 @@
 
                                 <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
                                     <a v-if="$can('props.edit')" :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">
-                                        Editar
+                                        {{ $t('common.edit') }}
                                     </a>
                                     <a v-if="$can('props.destroy')" href="#" :data-url="'/props/' + prop.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                        {{ $t('common.delete') }}</a>
+                                        {{ $t('common.delete.item') }}
                                     </a>
                                 </div>
                             </div>
