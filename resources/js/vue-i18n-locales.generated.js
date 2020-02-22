@@ -593,11 +593,13 @@ export default {
                 "by": "Made by"
             },
             "no": {
-                "stock": "The element has no stock in the inventory"
+                "stock": "The element has no stock in the inventory",
+                "item": "There is no item to process"
             },
             "choose": {
                 "hotel": "Please choose a hotel",
-                "type": "Please choose a transaction type"
+                "type": "Please choose a transaction type",
+                "company": "Please select a supplier"
             },
             "incomplete": "Incomplete fields were detected",
             "amount": {
@@ -605,6 +607,15 @@ export default {
             },
             "has": {
                 "errors": "Errors were detected"
+            },
+            "all": {
+                "processed": "All transaction item were processed."
+            },
+            "partial": {
+                "processed": "Some transaction item were not processed"
+            },
+            "active": {
+                "edition": "An item is being modified"
             }
         },
         "passwords": {
@@ -1266,11 +1277,13 @@ export default {
                 "by": "Hecho por"
             },
             "no": {
-                "stock": "El elemento no tiene existencias en el inventario"
+                "stock": "El elemento no tiene existencias en el inventario",
+                "item": "No hay ítem para procesar"
             },
             "choose": {
                 "hotel": "Por elije un hotel",
-                "type": "por favor elite un tipo de transacción"
+                "type": "por favor elite un tipo de transacción",
+                "company": "Por favor seleccione un proveedor"
             },
             "incomplete": "Se detectaron campos incompletos",
             "amount": {
@@ -1278,6 +1291,15 @@ export default {
             },
             "has": {
                 "errors": "Hay errores y no puedes continuar"
+            },
+            "all": {
+                "processed": "Todos los ítem de la transacción fueron procesados"
+            },
+            "partial": {
+                "processed": "Algunos ítem de la transacción no fueron procesados"
+            },
+            "active": {
+                "edition": "Un ítem está siendo modificado"
             }
         },
         "passwords": {

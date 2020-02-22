@@ -17,10 +17,10 @@
                 <div class="form-group mb-4">
                     <select name="type" id="type" class="form-control" v-model="type" @change="pushType">
                         <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
-                        <option value="discharge">{{ $t('transactions.discharge') }}</option>
+                        <option value="discard">{{ $t('transactions.discharge') }}</option>
                         <option value="entry">{{ $t('transactions.entry') }}</option>
-                        <option value="sales">{{ $t('transactions.sales') }}</option>
-                        <option value="losses">{{ $t('transactions.losses') }}</option>
+                        <option value="sale">{{ $t('transactions.sales') }}</option>
+                        <option value="loss">{{ $t('transactions.losses') }}</option>
                     </select>
                 </div>
             </div>

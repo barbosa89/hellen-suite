@@ -7,7 +7,7 @@
 @section('content')
 
     <div id="page-wrapper">
-        <prop-transactions :hotels="{{ $hotels->toJson() }}"></prop-transactions>
+        <prop-transactions :hotels="{{ $hotels->toJson() }}" :companies="{{ $companies->toJson() }}"></prop-transactions>
     </div>
 
 @endsection

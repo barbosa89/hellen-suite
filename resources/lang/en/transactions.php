@@ -27,11 +27,13 @@ return array (
   'no' => 
   array (
     'stock' => 'The element has no stock in the inventory',
+    'item' => 'There is no item to process',
   ),
   'choose' => 
   array (
     'hotel' => 'Please choose a hotel',
     'type' => 'Please choose a transaction type',
+    'company' => 'Please select a supplier',
   ),
   'incomplete' => 'Incomplete fields were detected',
   'amount' => 
@@ -41,5 +43,17 @@ return array (
   'has' => 
   array (
     'errors' => 'Errors were detected',
+  ),
+  'all' => 
+  array (
+    'processed' => 'All transaction item were processed.',
+  ),
+  'partial' => 
+  array (
+    'processed' => 'Some transaction item were not processed',
+  ),
+  'active' => 
+  array (
+    'edition' => 'An item is being modified',
   ),
 );

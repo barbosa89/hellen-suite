@@ -35,7 +35,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	// Props routes
 
-	Route::post('props/search', 'PropController@search')
+	Route::get('props/search', 'PropController@search')
 		->name('props.search')
 		->middleware('permission:props.index');
 

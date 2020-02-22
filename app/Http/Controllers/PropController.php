@@ -33,6 +33,7 @@ class PropController extends Controller
     public function index()
     {
         $hotels = Hotel::where('user_id', Id::parent())
+            ->where('status', true)
             ->with([
                 'props' => function ($query)
                 {
@@ -354,11 +355,11 @@ class PropController extends Controller
             });
 
             return response()->json([
-                'props' => $props->toJson()
+                'results' => $props->toJson()
             ]);
         }
 
-        abort(404);
+        abort(403);
     }
 
     /**

@@ -45,10 +45,8 @@
                     this.results = []
                 } else {
                     if (current.length >= 3 && this.hotel) {
-                        axios.post(this.uri, {
-                            query: this.query,
-                            hotel: this.hotel
-                        }).then(response => {
+                        axios.get(this.uri + '?query=' + this.query + '&hotel=' + this.hotel)
+                        .then(response => {
                             let results = JSON.parse(response.data.results);
 
                             if (results.length > 0) {

@@ -19,7 +19,7 @@
                 ],
                 [
                     'option' => 'Transacciones',
-                    'url' => route('props.vouchers')
+                    'url' => route('props.vouchers.create')
                 ],
                 [
                     'type' => 'dropdown',
