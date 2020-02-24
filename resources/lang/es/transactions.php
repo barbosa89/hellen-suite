@@ -56,4 +56,5 @@ return array (
   array (
     'edition' => 'Un ítem está siendo modificado',
   ),
+  'discard' => 'Descarga',
 );

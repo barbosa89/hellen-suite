@@ -201,8 +201,6 @@ export default {
             })
         },
         checkRoomIsEnabled(room) {
-            console.log(room.number, room.pivot.enabled && moment(room.pivot.end).isBefore(moment().add(1, 'days').format('YYYY-MM-DD')));
-
             return room.pivot.enabled && moment(room.pivot.end).isBefore(moment().add(1, 'days').format('YYYY-MM-DD'))
         },
         getSelectedHotel() {

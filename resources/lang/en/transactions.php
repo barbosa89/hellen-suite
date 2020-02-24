@@ -56,4 +56,5 @@ return array (
   array (
     'edition' => 'An item is being modified',
   ),
+  'discard' => 'Discard',
 );

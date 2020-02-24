@@ -616,7 +616,8 @@ export default {
             },
             "active": {
                 "edition": "An item is being modified"
-            }
+            },
+            "discard": "Discard"
         },
         "passwords": {
             "password": "Passwords must be at least six characters and match the confirmation.",
@@ -1300,7 +1301,8 @@ export default {
             },
             "active": {
                 "edition": "Un ítem está siendo modificado"
-            }
+            },
+            "discard": "Descarga"
         },
         "passwords": {
             "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",

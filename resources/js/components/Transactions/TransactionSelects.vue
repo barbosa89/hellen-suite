@@ -17,10 +17,9 @@
                 <div class="form-group mb-4">
                     <select name="type" id="type" class="form-control" v-model="type" @change="pushType">
                         <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
-                        <option value="discard">{{ $t('transactions.discharge') }}</option>
-                        <option value="entry">{{ $t('transactions.entry') }}</option>
-                        <option value="sale">{{ $t('transactions.sales') }}</option>
-                        <option value="loss">{{ $t('transactions.losses') }}</option>
+                        <option v-for="(type, index) in types" :key="index" :value="type.value">
+                            {{ type.description }}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -36,7 +35,7 @@ export default {
             type: null
         }
     },
-    props: ['title', 'hotels'],
+    props: ['title', 'hotels', 'types'],
     methods: {
         pushHotel() {
             this.$emit('selectHotel', this.hotel)

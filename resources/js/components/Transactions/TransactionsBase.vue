@@ -27,6 +27,7 @@
         <transaction-selects
             :title="this.title"
             :hotels="this.hotels"
+            :types="this.types"
             @selectHotel="hotel = $event"
             @selectType="type = $event">
         </transaction-selects>
@@ -133,12 +134,13 @@
         props: ['hotels', 'companies'],
         data() {
             return {
+                selecteds: [],
+                types: [],
                 errors: [],
                 info: [],
                 hotel: '',
                 company: '',
                 type: '',
-                selecteds: [],
                 hash: '',
                 amount: 0,
                 price: 0,
@@ -236,31 +238,27 @@
                     }).then(response => {
                         let selecteds = this.selecteds
                         let processed = Array.from(response.data.processed)
-                        console.log(response);
-                        
-                        // this.resetAll()
+                        this.resetAll()
 
-                        // _.each(selecteds, selected => {
-                        //     if (processed.indexOf(selected.hash) == -1) {
-                        //         this.selecteds.push(selected)
-                        //     }
-                        // })
+                        _.each(selecteds, selected => {
+                            if (processed.indexOf(selected.hash) == -1) {
+                                this.selecteds.push(selected)
+                            }
+                        })
 
-                        // if (this.selecteds.length) {
-                        //     toastr.success(
-                        //         this.$root.$t('transactions.partial.processed'),
-                        //         this.$root.$t('common.great')
-                        //     );
-                        // } else {
-                        //     toastr.error(
-                        //         this.$root.$t('transactions.all.processed'),
-                        //         this.$root.$t('common.sorry')
-                        //     );
-                        // }
+                        if (this.selecteds.length) {
+                            toastr.error(
+                                this.$root.$t('transactions.partial.processed'),
+                                this.$root.$t('common.sorry')
+                            );
+                        } else {
+                            toastr.success(
+                                this.$root.$t('transactions.all.processed'),
+                                this.$root.$t('common.great')
+                            );
+                        }
                     }).catch(e => {
-                        console.log(e);
-
-                        toastr.error(
+                         toastr.error(
                             this.$root.$t('common.try'),
                             'Error'
                         );
