@@ -20,28 +20,11 @@
             ]
         ])
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.description'):</h2>
-                <p>
-                    <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}">
-                        {{ $prop->description }}
-                    </a>
-                </p>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <h2>@lang('common.quantity'):</h2>
-                {{ $prop->quantity }}
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <h3>@lang('common.model'):</h3>
-                <p>{{ $prop->hotel->business_name }}</p>
-            </div>
-        </div>
+        @include('app.props.info')
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">Reporte de @lang('props.title')</h2>
+                <h2 class="text-center">@lang('common.report.of') @lang('props.title')</h2>
                 <form action="{{ route('props.prop.report.export', ['id' => Hashids::encode($prop->id)]) }}" method="POST">
                     @csrf()
 
@@ -72,12 +55,6 @@
                         @lang('common.back')
                     </a>
                 </form>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-md"></div>
             </div>
         </div>
     </div>

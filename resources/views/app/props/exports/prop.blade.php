@@ -7,21 +7,29 @@
     <table>
         <thead>
         <tr>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>Comentario</th>
-            <th>Cantidad</th>
-            <th>Hecho por</th>
+            <th>@lang('common.date')</th>
+            <th>@lang('common.number')</th>
+            <th>@lang('common.type')</th>
+            <th>@lang('common.value')</th>
+            <th>@lang('common.quantity')</th>
+            <th>@lang('transactions.made.by')</th>
+            <th>@lang('common.supplier')</th>
+            <th>@lang('companies.tin')</th>
+            <th>@lang('common.comments')</th>
         </tr>
         </thead>
         <tbody>
-            @foreach($prop->transactions as $transaction)
+            @foreach($prop->vouchers as $voucher)
                 <tr>
-                    <td>{{ $transaction->created_at }}</td>
-                    <td>{{ trans('transactions.' . $transaction->type) }}</td>
-                    <td>{{ $transaction->commentary }}</td>
-                    <td>{{ round($transaction->amount, 0) }}</td>
-                    <td>{{ $transaction->made_by }}</td>
+                    <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
+                    <td>{{ $voucher->number }}</td>
+                    <td>{{ trans('transactions.' . $voucher->type) }}</td>
+                    <td>{{ number_format($voucher->value, 2, ',', '.') }}</td>
+                    <td>{{ $voucher->pivot->quantity }}</td>
+                    <td>{{ $voucher->made_by }}</td>
+                    <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->business_name }}</td>
+                    <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->tin }}</td>
+                    <td>{{ $voucher->comments ?? trans('common.noData') }}</td>
                 </tr>
             @endforeach
         </tbody>

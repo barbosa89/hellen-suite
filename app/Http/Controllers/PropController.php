@@ -395,7 +395,7 @@ class PropController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function propReport(PropReportQuery $request, $id)
+    public function exportPropReport(PropReportQuery $request, $id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
@@ -412,14 +412,19 @@ class PropController extends Controller
             },
             'vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::get('vouchers'))
-                    ->whereBetween('created_at', [$request->start, $request->end])
-                    ->orderBy('created_at', 'DESC');
-            }
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            },
         ]);
 
         if ($prop->vouchers->isEmpty()) {
-            flash('No hay información en las fechas indicadas')->info();
+            flash(trans('common.without.results'))->info();
 
             return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);
         }
@@ -452,7 +457,7 @@ class PropController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function report(PropsReportQuery $request)
+    public function exportReport(PropsReportQuery $request)
     {
         if (empty($request->get('hotel', null))) {
             $hotels = Hotel::where('user_id', Id::parent())

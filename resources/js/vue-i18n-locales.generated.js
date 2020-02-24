@@ -482,7 +482,6 @@ export default {
             },
             "existence": "Existence",
             "tin": "TIN",
-            "report": "Report",
             "delete": {
                 "all": "Delete all",
                 "item": "Delete"
@@ -492,7 +491,15 @@ export default {
                 "stock": "Current stock"
             },
             "invoice": "Invoice",
-            "comments": "Comments"
+            "comments": "Comments",
+            "supplier": "Supplier",
+            "report": {
+                "of": "Report of"
+            },
+            "reports": "Reports",
+            "doesnt": {
+                "apply": "Doesn't apply"
+            }
         },
         "rooms": {
             "title": "Rooms",
@@ -1167,7 +1174,6 @@ export default {
             },
             "existence": "Existencia",
             "tin": "NIT - Número de identificación tributaria",
-            "report": "Reporte",
             "process": "Procesar",
             "delete": {
                 "all": "Borrar todo",
@@ -1177,7 +1183,15 @@ export default {
                 "stock": "Cantidad actual"
             },
             "invoice": "Factura",
-            "comments": "Comentarios"
+            "comments": "Comentarios",
+            "supplier": "Proveedor",
+            "report": {
+                "of": "Reporte de"
+            },
+            "reports": "Reportes",
+            "doesnt": {
+                "apply": "No aplica"
+            }
         },
         "rooms": {
             "title": "Habitaciones",

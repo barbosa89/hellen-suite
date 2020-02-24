@@ -3,7 +3,7 @@
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	// Props report
 
-	Route::post('props/report', 'PropController@report')
+	Route::post('props/report', 'PropController@exportReport')
 		->name('props.report.export')
 		->middleware('permission:props.index');
 
@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('props.report')
 		->middleware('permission:props.index');
 
-	Route::post('props/{id}/report', 'PropController@propReport')
+	Route::post('props/{id}/report', 'PropController@exportPropReport')
 		->name('props.prop.report.export')
 		->middleware('permission:props.index');
 

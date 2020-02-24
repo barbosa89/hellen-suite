@@ -138,7 +138,6 @@ return array (
   ),
   'existence' => 'Existencia',
   'tin' => 'NIT - Número de identificación tributaria',
-  'report' => 'Reporte',
   'process' => 'Procesar',
   'delete' => 
   array (
@@ -151,4 +150,14 @@ return array (
   ),
   'invoice' => 'Factura',
   'comments' => 'Comentarios',
+  'supplier' => 'Proveedor',
+  'report' => 
+  array (
+    'of' => 'Reporte de',
+  ),
+  'reports' => 'Reportes',
+  'doesnt' => 
+  array (
+    'apply' => 'No aplica',
+  ),
 );

@@ -13,7 +13,7 @@
             'url' => route('props.index'),
             'options' => [
                 [
-                    'option' => trans('common.report'),
+                    'option' => trans('common.reports'),
                     'url' => route('props.report')
                 ],
                 [
@@ -23,7 +23,7 @@
                 [
                     'option' => trans('common.new'),
                     'url' => route('props.create')
-                ],
+                ]
             ]
         ])
 

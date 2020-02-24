@@ -138,7 +138,6 @@ return array (
   ),
   'existence' => 'Existence',
   'tin' => 'TIN',
-  'report' => 'Report',
   'delete' => 
   array (
     'all' => 'Delete all',
@@ -151,4 +150,14 @@ return array (
   ),
   'invoice' => 'Invoice',
   'comments' => 'Comments',
+  'supplier' => 'Supplier',
+  'report' => 
+  array (
+    'of' => 'Report of',
+  ),
+  'reports' => 'Reports',
+  'doesnt' => 
+  array (
+    'apply' => 'Doesn\'t apply',
+  ),
 );

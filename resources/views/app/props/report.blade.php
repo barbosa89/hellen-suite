@@ -20,7 +20,7 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">@lang('reports.of') @lang('props.title')</h2>
+                <h2 class="text-center">@lang('common.report.of') @lang('props.title')</h2>
 
                 <form action="{{ route('props.report.export') }}" method="POST">
                     @csrf()
@@ -81,12 +81,6 @@
                         @lang('common.back')
                     </a>
                 </form>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-md"></div>
             </div>
         </div>
     </div>

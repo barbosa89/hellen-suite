@@ -41,6 +41,7 @@ class VoucherController extends Controller
         $query = Voucher::query();
         $query->where('user_id', Id::parent())
             ->where('status', true)
+            ->where('type', 'lodging')
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
