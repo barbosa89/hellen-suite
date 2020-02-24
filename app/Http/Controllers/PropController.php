@@ -459,37 +459,34 @@ class PropController extends Controller
      */
     public function exportReport(PropsReportQuery $request)
     {
-        if (empty($request->get('hotel', null))) {
-            $hotels = Hotel::where('user_id', Id::parent())
-                ->with([
-                    'props' => function($query) {
-                        $query->select(Fields::get('props'));
-                    },
-                    'props.transactions' => function ($query) use ($request)
-                    {
-                        $query->select(Fields::get('transactions'))
-                            ->whereBetween('created_at', [$request->start, $request->end])
-                            ->orderBy('created_at', 'DESC');
-                    }
-                ])->get(Fields::get('hotels'));
-        } else {
-            $hotels = Hotel::where('user_id', Id::parent())
-                ->where('id', Id::get($request->hotel))
-                ->with([
-                    'props' => function($query) {
-                        $query->select(Fields::get('props'));
-                    },
-                    'props.transactions' => function ($query) use ($request)
-                    {
-                        $query->select(Fields::get('transactions'))
-                            ->whereBetween('created_at', [$request->start, $request->end])
-                            ->orderBy('created_at', 'DESC');
-                    }
-                ])->get(Fields::get('hotels'));
+        $query = Hotel::query();
+        $query->where('user_id', Id::parent());
+
+        if (!empty($request->hotel)) {
+            $query->where('id', Id::get($request->hotel));
         }
 
+        $query->with([
+            'props' => function($query) {
+                $query->select(Fields::get('props'));
+            },
+            'props.vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'props.vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            }
+        ]);
+
+        $hotels = $query->get(Fields::get('hotels'));
+
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return back();
         }

@@ -8,30 +8,34 @@
         <thead>
         <tr>
             <th>Hotel</th>
-            <th>@lang('companies.tin')</th>
             <th>@lang('common.description')</th>
-            <th>Transacciones de entrada</th>
-            <th>Transacciones de salida</th>
-            <th>Cantidad total en entradas</th>
-            <th>Cantidad total en salidas</th>
-            <th>Promedio mensual de entradas</th>
-            <th>Promedio mensual de salidas</th>
+            <th>@lang('common.date') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('common.number') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('common.type') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('common.value') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('common.quantity') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('transactions.made.by')</th>
+            <th>@lang('common.supplier') @lang('common.of') @lang('vouchers.voucher')</th>
+            <th>@lang('common.comments')</th>
         </tr>
         </thead>
         <tbody>
             @foreach ($hotels as $hotel)
                 @foreach ($hotel->props as $prop)
-                    <tr>
-                        <td>{{ $hotel->business_name }}</td>
-                        <td>{{ $hotel->tin }}</td>
-                        <td>{{ $prop->description }}</td>
-                        <td>{{ $prop->transactions->where('type', 'input')->count() }}</td>
-                        <td>{{ $prop->transactions->where('type', 'output')->count() }}</td>
-                        <td>{{ $prop->transactions->where('type', 'input')->sum('amount') }}</td>
-                        <td>{{ $prop->transactions->where('type', 'output')->sum('amount') }}</td>
-                        <td>{{ $prop->transactions->where('type', 'input')->sum('amount') / 12 }}</td>
-                        <td>{{ $prop->transactions->where('type', 'output')->sum('amount') / 12 }}</td>
-                    </tr>
+                    @foreach ($prop->vouchers as $voucher)
+                        <tr>
+                            <td>{{ $hotel->business_name }}</td>
+                            <td>{{ $prop->description }}</td>
+                            <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $voucher->number }}</td>
+                            <td>{{ trans('transactions.' . $voucher->type) }}</td>
+                            <td>{{ number_format($voucher->value, 2, ',', '.') }}</td>
+                            <td>{{ $voucher->pivot->quantity }}</td>
+                            <td>{{ $voucher->made_by }}</td>
+                            <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->business_name }}</td>
+                            <td>{{ $voucher->comments ?? trans('common.noData') }}</td>
+                        </tr>
+                    @endforeach
                 @endforeach
             @endforeach
         </tbody>

@@ -7,6 +7,37 @@
     <table>
         <thead>
         <tr>
+            <th colspan="3">
+                @lang('common.description')
+            </th>
+            <th colspan="2">
+                @lang('common.quantity')
+            </th>
+            <th colspan="2">
+                @lang('common.price')
+            </th>
+            <th colspan="2">
+                Hotel
+            </th>
+        </tr>
+        <tr>
+            <th colspan="3">
+                {{ $prop->description }}
+            </th>
+            <th colspan="2">
+                {{ $prop->quantity }}
+            </th>
+            <th colspan="2">
+                {{ number_format($prop->price, 2, ',', '.') }}
+            </th>
+            <th colspan="2">
+                {{ $prop->hotel->business_name }}
+            </th>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+        </tr>
+        <tr>
             <th>@lang('common.date')</th>
             <th>@lang('common.number')</th>
             <th>@lang('common.type')</th>
