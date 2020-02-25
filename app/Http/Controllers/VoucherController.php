@@ -267,15 +267,17 @@ class VoucherController extends Controller
             'payments' => function ($query)
             {
                 $query->select(Fields::get('payments'));
-            }
+            },
+            'props' => function ($query) {
+                $query->select(Fields::parsed('props'))
+                    ->withPivot('quantity', 'value', 'created_at');
+            },
         ]);
 
         $customer = Customer::get($voucher);
 
         return view('app.vouchers.show', compact('voucher', 'customer'));
     }
-
-
 
     /**
      * Remove the specified resource from storage.

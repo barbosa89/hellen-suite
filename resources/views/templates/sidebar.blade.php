@@ -122,7 +122,7 @@
     @can('props.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('props.index') }}">
-            <i class="fa fa-fw fa-person-booth"></i>
+            <i class="fas fa-fw fa-person-booth"></i>
             <span>@lang('props.title')</span></a>
         </li>
     @endcan

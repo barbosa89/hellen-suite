@@ -634,6 +634,70 @@
         @endif
         <!-- Services -->
 
+        <!-- Props -->
+        @if($voucher->props->isNotEmpty())
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="page-header">
+                        <small><i class="fas fa-fw fa-person-booth"></i></small> @lang('props.title')
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crud-list">
+                                <div class="crud-list-heading">
+                                    <div class="row">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <h5>@lang('common.description')</h5>
+                                        </div>
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            <h5>@lang('common.quantity')</h5>
+                                        </div>
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            <h5>@lang('common.value')</h5>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <h5>@lang('common.options')</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="crud-list-items">
+                                    @foreach($voucher->props as $prop)
+                                        <div class="crud-list-row">
+                                            <div class="row">
+                                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
+                                                    <p>
+                                                        <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}">
+                                                            {{ $prop->description }}
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                                    <p>
+                                                        {{ number_format($prop->pivot->value, 2, ',', '.') }}
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
+                                                    <p>{{ $prop->pivot->quantity }}</p>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
+                                                    @can('vouchers.edit')
+                                                        <a href="#" class="btn btn-link">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </a>
+                                                    @endcan
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Props -->
+
         <!-- Additionals -->
         @if($voucher->additionals->where('billable', true)->count() > 0)
             <div class="row mt-4">

@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+    // Route::get('vouchers/{id}/single/view', 'VoucherController@showSingle')
+    //     ->name('vouchers.show')
+    //     ->middleware(['permission:vouchers.show']);
+
     Route::get('vouchers/{id}/rooms/{room}/deliver', 'VoucherController@deliverRoom')
         ->name('vouchers.rooms.deliver')
         ->middleware(['permission:vouchers.edit']);
@@ -40,11 +44,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('vouchers/{id}/losses', 'VoucherController@registerAsLoss')
         ->name('vouchers.losses')
         ->middleware(['permission:vouchers.losses']);
-
-    // This route will be disabled
-    // Route::get('vouchers/{id}/open', 'VoucherController@open')
-    //     ->name('vouchers.open')
-    //     ->middleware(['permission:vouchers.open']);
 
     Route::post('vouchers/{id}/close', 'VoucherController@close')
         ->name('vouchers.close')
