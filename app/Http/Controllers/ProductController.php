@@ -10,6 +10,7 @@ use App\Helpers\Random;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{StoreProduct, UpdateProduct};
+use App\Welkome\Company;
 use App\Welkome\Hotel;
 use App\Welkome\Product;
 use App\Welkome\Voucher;
@@ -86,7 +87,11 @@ class ProductController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        return view('app.products.create', compact('hotels'));
+        $companies = Company::where('user_id', Id::parent())
+            ->where('is_supplier', true)
+            ->get(Fields::get('companies'));
+
+        return view('app.products.create', compact('hotels', 'companies'));
     }
 
     /**
@@ -116,8 +121,13 @@ class ProductController extends Controller
             $voucher->value = $product->price * $product->quantity;
             $voucher->subvalue = $product->price * $product->quantity;
             $voucher->made_by = auth()->user()->name;
+            $voucher->comments = $request->comments;
             $voucher->hotel()->associate(Id::get($request->hotel));
             $voucher->user()->associate(Id::parent());
+
+            if (!empty($request->company)) {
+                $voucher->company()->associate(Id::get($request->company));
+            }
 
             if ($voucher->save()) {
                 // Attach product
@@ -167,7 +177,8 @@ class ProductController extends Controller
             'vouchers' => function ($query) {
                 $query->select(Fields::parsed('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
-                    ->whereYear('vouchers.created_at', \date('Y'));
+                    ->whereYear('vouchers.created_at', \date('Y'))
+                    ->withPivot('quantity');
             }
         ]);
 

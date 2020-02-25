@@ -29,7 +29,9 @@ class StoreProduct extends FormRequest
             'reference' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|integer|min:1',
-            'hotel' => 'required|string|hashed_exists:hotels,id'
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'comments' => 'nullable|string|max:400',
+            'company' => 'nullable|string|hashed_exists:companies,id'
         ];
     }
 

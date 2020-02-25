@@ -12,7 +12,7 @@
             'url' => route('products.index'),
             'options' => [
                 [
-                    'option' => trans('common.report'),
+                    'option' => trans('common.reports'),
                     'url' => '#'
                 ],
                 [

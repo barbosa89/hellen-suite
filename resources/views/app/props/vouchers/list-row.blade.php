@@ -2,6 +2,11 @@
     <div class="row">
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">
             <p>
+                {{ $row->created_at->format('Y-m-d') }}
+            </p>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">
+            <p>
                 <a href="{{ route('vouchers.show', ['id' => Hashids::encode($row->id)]) }}">
                     {{ $row->number }}
                 </a>
@@ -30,11 +35,6 @@
         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
             <p>
                 {{ $row->made_by }}
-            </p>
-        </div>
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">
-            <p>
-                {{ $row->created_at->format('Y-m-d') }}
             </p>
         </div>
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">
