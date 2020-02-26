@@ -30,30 +30,24 @@
                     'type' => 'dropdown',
                     'url' => [
                         [
-                            'type' => 'hideable',
                             'option' => trans('rooms.addRoom'),
                             'url' => route('vouchers.rooms', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
-                            'show' => $voucher->open,
                             'permission' => 'vouchers.edit'
                         ],
                         [
-                            'type' => 'hideable',
                             'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
                             'url' => route('vouchers.companies.search', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
-                            'show' => $voucher->open,
                             'permission' => 'vouchers.edit'
                         ],
                         [
-                            'type' => 'hideable',
                             'option' => trans('vouchers.registerGuests'),
                             'url' => route('vouchers.guests.search', [
                                 'id' => Hashids::encode($voucher->id)
                             ]),
-                            'show' => $voucher->open,
                             'permission' => 'vouchers.edit'
                         ],
                         [

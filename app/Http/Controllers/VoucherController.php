@@ -275,8 +275,19 @@ class VoucherController extends Controller
         ]);
 
         $customer = Customer::get($voucher);
+        $view = $this->getView($voucher);
+        // dd($voucher, $view);
 
-        return view('app.vouchers.show', compact('voucher', 'customer'));
+        return view($view, compact('voucher', 'customer'));
+    }
+
+    public function getView(Voucher $voucher)
+    {
+        if ($voucher->open) {
+            return 'app.vouchers.show';
+        }
+
+        return 'app.vouchers.show-static';
     }
 
     /**
@@ -2785,15 +2796,18 @@ class VoucherController extends Controller
             'payments' => function ($query)
             {
                 $query->select(Fields::get('payments'));
-            }
+            },
+            'props' => function ($query) {
+                $query->select(Fields::parsed('props'))
+                    ->withPivot('quantity', 'value', 'created_at');
+            },
         ]);
 
         $customer = Customer::get($voucher);
-        // dd($this->prepareItems($voucher));
-        $pages = $this->parsePages($voucher);
+        $pages = $this->prepareItems($voucher);
 
         $view = view('app.vouchers.exports.template', compact('voucher', 'customer', 'pages'))->render();
-        // return $view;
+        return $view;
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);
@@ -2805,11 +2819,6 @@ class VoucherController extends Controller
         $pdf->loadHTML($view);
 
         return $pdf->download('voucher.pdf');
-    }
-
-    public function parsePages(Voucher $voucher)
-    {
-        return $this->prepareItems($voucher);
     }
 
     public function prepareItems(Voucher $voucher)
@@ -2830,6 +2839,10 @@ class VoucherController extends Controller
 
         foreach ($voucher->additionals as $additional) {
             $items->push($additional);
+        }
+
+        foreach ($voucher->props as $prop) {
+            $items->push($prop);
         }
 
         return $this->chunkItems($items);

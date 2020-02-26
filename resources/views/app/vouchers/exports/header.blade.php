@@ -3,19 +3,18 @@
     <div class="row">
         <div class="col-xs-6 from">
             <span class="d-block font-weight-light">@lang('vouchers.from'):</span>
-            <h3>{{ $voucher->hotel->business_name }}</h3>
-            <span class="d-block font-weight-light">{{ $voucher->hotel->tin }}</span>
-            <span class="d-block font-weight-light">{{ $voucher->hotel->address }}</span>
-            <span class="d-block font-weight-light">{{ $voucher->hotel->phone }}</span>
-            <span class="d-block font-weight-light">{{ $voucher->hotel->email }}</span>
+            @if ($voucher->type == 'entry')
+                @include('app.vouchers.exports.customer')
+            @else
+                @include('app.vouchers.exports.hotel')
+            @endif
         </div>
         <div class="col-xs-6 to">
-            <span class="d-block font-weight-light">@lang('vouchers.to'):</span>
-            <h3> {{ $customer['name'] }}</h3>
-            <span class="d-block font-weight-light">{{ $customer['tin'] }}</span>
-            <span class="d-block font-weight-light">{{ $customer['address'] ?? trans('common.noData') }}</span>
-            <span class="d-block font-weight-light">{{ $customer['phone'] ?? trans('common.noData') }}</span>
-            <span class="d-block font-weight-light">{{ $customer['email'] ?? trans('common.noData') }}</span>
+            @if ($voucher->type == 'entry')
+                @include('app.vouchers.exports.hotel')
+            @else
+                @include('app.vouchers.exports.customer')
+            @endif
         </div>
     </div>
 </div>

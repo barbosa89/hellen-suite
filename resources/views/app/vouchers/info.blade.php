@@ -32,10 +32,12 @@
         <div class="row mb-4">
             <div class="col-6 col-sx-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 align-self-center">
                 <span class="text-uppercase badge badge-dark text-wrap" style="font-size:24px">
-                    @lang('common.invoice')
+                    @lang('vouchers.voucher')
 
                     @if ($voucher->reservation)
                         <small>(@lang('vouchers.reservation'))</small>
+                    @else
+                        <small>(@lang('transactions.' . $voucher->type))</small>
                     @endif
                 </span>
             </div>

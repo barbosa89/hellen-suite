@@ -246,6 +246,25 @@
                                     </div>
                                 </div>
                             @endif
+
+                            @if ($item instanceof \App\Welkome\Prop)
+                                <div class="row mt-2 list-content">
+                                    <div class="col-xs-6">
+                                        <p class="without-margin">{{ $item->description }}</p>
+                                        <p class="without-margin text-muted">
+                                            <small>@lang('common.date'): {{ $item->pivot->created_at->format('Y-m-d') }}</small>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-2 no-padding text-center">$ {{ number_format($item->price, 2, ',', '.') }}</div>
+                                    <div class="col-xs-2 text-center">{{ $item->pivot->quantity }}</div>
+                                    <div class="col-xs-2 no-padding-left text-right">$ {{ number_format($item->pivot->value, 2, ',', '.') }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 mx-2">
+                                        <div class="line-light"></div>
+                                    </div>
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                     <!-- end items -->

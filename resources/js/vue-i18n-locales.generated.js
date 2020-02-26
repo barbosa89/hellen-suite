@@ -11,7 +11,7 @@ export default {
             "registerCustomerGuest": "Register customer guest",
             "customerCompany": "Customer company",
             "customerGuest": "Customer guest",
-            "see": "See thevoucher",
+            "see": "See the voucher",
             "loadProducts": "Load products",
             "loadServices": "Load services",
             "nights": "Nights",
@@ -29,7 +29,7 @@ export default {
             "linkCompany": "Link company",
             "linkNewCompany": "Link new company",
             "withoutGuests": "There are no registered guests",
-            "vehicleAttached": "The vehicle is already attached to the currentvoucher.",
+            "vehicleAttached": "The vehicle is already attached to the current voucher.",
             "hasVehicles": "The guest has a vehicle registered",
             "addAdditional": "Add additional",
             "additionals": "Additionals",
@@ -44,19 +44,19 @@ export default {
             "external": "External service",
             "from": "From",
             "to": "To",
-            "note": "This document does not represent a legalvoucher or equivalent, it is only a support for the consumption of products and services during your stay at the hotel.",
-            "isOpen": "Thevoucher is open, close it before closing payments.",
-            "questions": "If you have any questions about thisvoucher, please contact us",
+            "note": "This document does not represent a legal invoice or equivalent, it is only a support for the transactions of products and services in the hotel.",
+            "isOpen": "The voucher is open, close it before closing payments.",
+            "questions": "If you have any questions about this voucher, please contact us",
             "administration": "Administration",
             "destination": "Destination",
             "origin": "Origin",
-            "isClosed": "Thevoucher is closed",
+            "isClosed": "The voucher is closed",
             "process": "Process",
-            "nothingToProcess": "There are novouchers to process",
+            "nothingToProcess": "There are no vouchers to process",
             "processing": "Voucher processing",
             "has": {
                 "one": {
-                    "room": "Thisvoucher only has one room"
+                    "room": "This voucher only has one room"
                 }
             },
             "delivered": {
@@ -68,13 +68,13 @@ export default {
                 }
             },
             "inactive": {
-                "guest": "The guest is inactive in the currentvoucher"
+                "guest": "The guest is inactive in the current voucher"
             },
             "complete": {
-                "processing": "Allvouchers were processed"
+                "processing": "All vouchers were processed"
             },
             "incomplete": {
-                "processing": "There are pendingvouchers for processing"
+                "processing": "There are pending vouchers for processing"
             },
             "load": {
                 "external": {
@@ -736,9 +736,9 @@ export default {
             "external": "Servicio externo",
             "from": "De",
             "to": "Para",
-            "note": "Este documento no representa una factura legal o equivalente, es sólo un soporte del consumo de productos y servicios durante su estadía en el hotel.",
+            "note": "Este documento no representa una factura legal o equivalente, solo es un soporte de las transacciones de productos y servicios en el hotel.",
             "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
-            "questions": "Si tiene alguna pregunta sobre esta factura, por favor contáctenos",
+            "questions": "Si tiene alguna pregunta sobre este recibo, por favor contáctenos",
             "administration": "Administración",
             "origin": "Origen",
             "destination": "Destino",
