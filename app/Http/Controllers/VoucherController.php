@@ -300,7 +300,6 @@ class VoucherController extends Controller
     {
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($id))
-            ->where('open', true)
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
@@ -320,6 +319,10 @@ class VoucherController extends Controller
             ])->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
+            abort(404);
+        }
+
+        if ($voucher->type == 'lodging' and $voucher->open == false) {
             abort(404);
         }
 
@@ -352,9 +355,14 @@ class VoucherController extends Controller
 
                 // Restore prop stocks
                 if ($voucher->props->isNotEmpty()) {
-                    $voucher->props->each(function ($prop)
+                    $voucher->props->each(function ($prop) use ($voucher)
                     {
-                        $prop->quantity += $prop->pivot->quantity;
+                        if ($voucher->type == 'entry') {
+                            $prop->quantity -= $prop->pivot->quantity;
+                        } else {
+                            $prop->quantity += $prop->pivot->quantity;
+                        }
+
                         $prop->save();
                     });
                 }

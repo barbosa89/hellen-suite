@@ -159,6 +159,7 @@
                 this.amount = 0
                 this.price = 0
                 this.company = ''
+                this.comments = ''
             },
             add(element) {
                 this.exists(element)

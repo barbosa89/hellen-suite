@@ -17,7 +17,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	// Products routes
 
-    Route::post('products/search', 'ProductController@search')
+    Route::get('products/search', 'ProductController@search')
 		->name('products.search')
 		->middleware('permission:products.index');
 

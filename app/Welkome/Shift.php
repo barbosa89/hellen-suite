@@ -29,13 +29,9 @@ class Shift extends Model
     {
         $shift = static::where('open', true)
             ->where('team_member', auth()->user()->id)
-            ->whereHas('hotel', function ($query) use ($hotel_id)
-            {
-                $query->where('id', $hotel_id);
-            })->whereHas('user', function ($query)
-            {
-                $query->where('id', auth()->user()->parent);
-            })->first(Fields::get('shifts'));
+            ->where('hotel_id', $hotel_id)
+            ->where('user_id', Id::parent())
+            ->first(Fields::get('shifts'));
 
         if (empty($shift)) {
             $shift = self::start($hotel_id);

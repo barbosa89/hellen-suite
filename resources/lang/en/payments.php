@@ -13,4 +13,5 @@ return array (
   'incomplete' => 'Payment is incomplete',
   'status' => 'Payment status',
   'unpaid' => 'Unpaid bills',
+  'automatic' => 'Automatic payment record',
 );

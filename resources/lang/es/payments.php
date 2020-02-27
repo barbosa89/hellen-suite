@@ -13,4 +13,5 @@ return array (
   'incomplete' => 'El pago está incompleto',
   'status' => 'Estado del pago',
   'unpaid' => 'Pendientes de pago',
+  'automatic' => 'Registro de pago automático',
 );

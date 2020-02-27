@@ -576,7 +576,8 @@ export default {
             "method": "Payment method",
             "incomplete": "Payment is incomplete",
             "status": "Payment status",
-            "unpaid": "Unpaid bills"
+            "unpaid": "Unpaid bills",
+            "automatic": "Automatic payment record"
         },
         "months": {
             "april": "Abril",
@@ -1282,7 +1283,8 @@ export default {
             "method": "Método de pago",
             "incomplete": "El pago está incompleto",
             "status": "Estado del pago",
-            "unpaid": "Pendientes de pago"
+            "unpaid": "Pendientes de pago",
+            "automatic": "Registro de pago automático"
         },
         "months": {
             "january": "Enero",

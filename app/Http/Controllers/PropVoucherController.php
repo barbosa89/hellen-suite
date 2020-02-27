@@ -151,6 +151,13 @@ class PropVoucherController extends Controller
         ]);
     }
 
+    /**
+     * Return a props collections.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $ids
+     * @return \Illuminate\Support\Collection
+     */
     public function getProps(Request $request, array $ids)
     {
         $props = Prop::where('user_id', Id::parent())
@@ -160,16 +167,5 @@ class PropVoucherController extends Controller
             ->get(Fields::get('props'));
 
         return $props;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

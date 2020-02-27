@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Chart;
 use App\User;
 use App\Helpers\Id;
 use App\Helpers\Fields;
@@ -182,7 +183,9 @@ class ProductController extends Controller
             }
         ]);
 
-        return view('app.products.show', compact('product'));
+        $data = Chart::data($product->vouchers);
+
+        return view('app.products.show', compact('product', 'data'));
     }
 
     /**
@@ -263,7 +266,7 @@ class ProductController extends Controller
 
         $product->load([
             'vouchers' => function ($query) {
-                $query->select('id');
+                $query->select('vouchers.id');
             },
         ]);
 
