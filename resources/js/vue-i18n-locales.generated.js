@@ -589,7 +589,8 @@ export default {
             "march": "March",
             "may": "May",
             "november": "November",
-            "september": "September"
+            "september": "September",
+            "october": "October"
         },
         "transactions": {
             "commentary": "Commentary",
@@ -1294,7 +1295,8 @@ export default {
             "september": "Septiembre",
             "november": "Noviembre",
             "december": "Diciembre",
-            "july": "Julio"
+            "july": "Julio",
+            "october": "Octubre"
         },
         "transactions": {
             "type": "Tipo",

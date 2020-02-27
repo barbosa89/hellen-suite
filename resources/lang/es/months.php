@@ -12,4 +12,5 @@ return array (
   'november' => 'Noviembre',
   'december' => 'Diciembre',
   'july' => 'Julio',
+  'october' => 'Octubre',
 );

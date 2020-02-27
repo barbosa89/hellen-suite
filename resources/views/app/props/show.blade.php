@@ -85,12 +85,25 @@
 @endsection
 
 @section('scripts')
-    <script>
+    <script type="text/javascript">
         var ctx = document.getElementById('myChart');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                labels: [
+                    translator.trans('months.january'),
+                    translator.trans('months.february'),
+                    translator.trans('months.march'),
+                    translator.trans('months.april'),
+                    translator.trans('months.may'),
+                    translator.trans('months.june'),
+                    translator.trans('months.july'),
+                    translator.trans('months.august'),
+                    translator.trans('months.september'),
+                    translator.trans('months.october'),
+                    translator.trans('months.november'),
+                    translator.trans('months.december')
+                ],
                 datasets: Array.from({!! $data->toJson() !!})
             },
             options: {

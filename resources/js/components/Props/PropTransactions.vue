@@ -12,15 +12,18 @@
                 types: [
                     {
                         description: this.$root.$t('transactions.entry'),
-                        value: 'entry'
+                        value: 'entry',
+                        permission: 'transactions.entry'
                     },
                     {
                         description: this.$root.$t('transactions.discard'),
-                        value: 'discard'
+                        value: 'discard',
+                        permission: 'transactions.discard'
                     },
                     {
                         description: this.$root.$t('transactions.loss'),
-                        value: 'loss'
+                        value: 'loss',
+                        permission: 'transactions.loss'
                     }
                 ]
             }

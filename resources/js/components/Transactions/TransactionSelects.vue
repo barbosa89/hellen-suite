@@ -17,7 +17,7 @@
                 <div class="form-group mb-4">
                     <select name="type" id="type" class="form-control" v-model="type" @change="pushType">
                         <option :value="null" disabled selected>{{ $t('transactions.select.type') }}</option>
-                        <option v-for="(type, index) in types" :key="index" :value="type.value">
+                        <option v-for="(type, index) in typesList" :key="index" :value="type.value">
                             {{ type.description }}
                         </option>
                     </select>
@@ -42,6 +42,13 @@ export default {
         },
         pushType() {
             this.$emit('selectType', this.type)
+        }
+    },
+    computed: {
+        typesList: function () {
+            return _.filter(this.types, type => {
+                return this.$root.$can(type.permission)
+            })
         }
     },
 }

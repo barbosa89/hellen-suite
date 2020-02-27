@@ -24,7 +24,9 @@
 <!-- note -->
 <div class="row mt-4">
     <div class="col-xs-12">
-        <p class="text-justify">@lang('vouchers.note')</p>
+        <p class="text-justify text-muted">
+            <small>{{ $voucher->comments }}</small>
+        </p>
     </div>
 </div>
 <!-- end note -->
