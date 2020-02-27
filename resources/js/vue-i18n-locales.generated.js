@@ -578,6 +578,19 @@ export default {
             "status": "Payment status",
             "unpaid": "Unpaid bills"
         },
+        "months": {
+            "april": "Abril",
+            "august": "August",
+            "december": "December",
+            "february": "February",
+            "january": "January",
+            "july": "July",
+            "june": "June",
+            "march": "March",
+            "may": "May",
+            "november": "November",
+            "september": "September"
+        },
         "transactions": {
             "commentary": "Commentary",
             "type": "Type",
@@ -1269,6 +1282,19 @@ export default {
             "incomplete": "El pago está incompleto",
             "status": "Estado del pago",
             "unpaid": "Pendientes de pago"
+        },
+        "months": {
+            "january": "Enero",
+            "february": "Febrero",
+            "march": "Marzo",
+            "april": "Abril",
+            "may": "Mayo",
+            "june": "Junio",
+            "august": "Agosto",
+            "september": "Septiembre",
+            "november": "Noviembre",
+            "december": "Diciembre",
+            "july": "Julio"
         },
         "transactions": {
             "type": "Tipo",

@@ -10,6 +10,7 @@
             @endif
         </div>
         <div class="col-xs-6 to">
+            <span class="d-block font-weight-light">@lang('vouchers.to'):</span>
             @if ($voucher->type == 'entry')
                 @include('app.vouchers.exports.hotel')
             @else

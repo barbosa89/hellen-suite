@@ -87,37 +87,39 @@
                         </a>
                     </span>
                 </div>
-                <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                    <span class="d-block font-weight-light">Origen / Destino</span>
-                    <span class="d-block">
-                        {{ $voucher->origin ?? 'No definido' }} - {{ $voucher->destination ?? 'No definido' }}
-                    </span>
-                </div>
-                <div class="col-2 col-sx-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <span class="d-block font-weight-light">@lang('payments.title')</span>
-                    <span class="d-block">
-                        $ {{ number_format($voucher->payments->sum('value'), 0, '.', ',') }}
-                    </span>
-                </div>
-                <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
-                    @if ($voucher->losses)
-                        <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
-                        <span class="d-block text-center">
-                            {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, '.', ',') }}
+                @if ($voucher->type == 'lodging')
+                    <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                        <span class="d-block font-weight-light">Origen / Destino</span>
+                        <span class="d-block">
+                            {{ $voucher->origin ?? 'No definido' }} - {{ $voucher->destination ?? 'No definido' }}
                         </span>
-                    @else
-                        @if ($voucher->payment_method == false and $voucher->value > $voucher->payments->sum('value'))
+                    </div>
+                    <div class="col-2 col-sx-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                        <span class="d-block font-weight-light">@lang('payments.title')</span>
+                        <span class="d-block">
+                            $ {{ number_format($voucher->payments->sum('value'), 0, '.', ',') }}
+                        </span>
+                    </div>
+                    <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
+                        @if ($voucher->losses)
                             <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
-                                @can('vouchers.losses')
-                                    <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
-                                        <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
-                                    </a>
-                                @endcan
+                                {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, '.', ',') }}
                             </span>
+                        @else
+                            @if ($voucher->payment_method == false and $voucher->value > $voucher->payments->sum('value'))
+                                <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
+                                <span class="d-block text-center">
+                                    @can('vouchers.losses')
+                                        <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
+                                            <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
+                                        </a>
+                                    @endcan
+                                </span>
+                            @endif
                         @endif
-                    @endif
-                </div>
+                    </div>
+                @endif
             @endif
         </div>
     </div>

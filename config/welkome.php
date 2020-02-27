@@ -288,5 +288,32 @@ return [
             'vehicles'  => ['index', 'create', 'show', 'edit'],
         ],
         // 'accountant'
+    ],
+
+    'colors' => [
+        'loss' => [
+            'bar' => 'rgba(255, 102, 102, 0.2)',
+            'border' => 'rgba(255, 102, 102, 1)'
+        ],
+        'entry' => [
+            'bar' => 'rgba(5, 32, 74, 0.2)',
+            'border' => 'rgba(5, 32, 74, 1)'
+        ],
+        'lodging' => [
+            'bar' => 'rgba(117, 185, 190, 0.2)',
+            'border' => 'rgba(117, 185, 190, 1)'
+        ],
+        'discard' => [
+            'bar' => 'rgba(245, 158, 62, 0.2)',
+            'border' => 'rgba(245, 158, 62, 1)'
+        ],
+        'dining' => [
+            'bar' => 'rgba(255, 211, 218, 0.2)',
+            'border' => 'rgba(255, 211, 218, 1)'
+        ],
+        'sale' => [
+            'bar' => 'rgba(35, 206, 107, 0.2)',
+            'border' => 'rgba(35, 206, 107, 1)'
+        ],
     ]
 ];

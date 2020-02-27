@@ -11,6 +11,7 @@ use App\Helpers\Input;
 use App\Helpers\Fields;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
+use App\Helpers\Chart;
 use App\Helpers\Random;
 use App\Http\Requests\PropReportQuery;
 use App\Http\Requests\PropsReportQuery;
@@ -22,6 +23,7 @@ use App\Welkome\Voucher;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 use Maatwebsite\Excel\Facades\Excel;
+use stdClass;
 
 class PropController extends Controller
 {
@@ -193,56 +195,9 @@ class PropController extends Controller
             }
         ]);
 
-        $types = $this->groupVoucherTypesByMonth($prop->vouchers);
-        $data = $this->prepareChartData($types);
+        $data = Chart::data($prop->vouchers);
 
         return view('app.props.show', compact('prop', 'data'));
-    }
-
-    /**
-     * Group transaction types by month.
-     *
-     * @param  \Illuminate\Support\Collection $transaction
-     * @return \Illuminate\Support\Collection $types
-     */
-    public function groupVoucherTypesByMonth(Collection $vouchers)
-    {
-        $types = $vouchers->groupBy([
-            function($voucher) {
-                return $voucher->type;
-            }, function ($voucher)
-            {
-                return $voucher->created_at->month;
-            }
-        ]);
-
-        return $types;
-    }
-
-    /**
-     * Prepare chart data by voucher type in a yearly period.
-     *
-     * @param  \Illuminate\Support\Collection $types
-     * @return array $data
-     */
-    public function prepareChartData(Collection $types)
-    {
-        $types = $types->toArray();
-        $data = [];
-
-        foreach ($types as $type => $months) {
-            foreach ($months as $month => $vouchers) {
-                foreach ($vouchers as $voucher) {
-                    if (isset($types[$type][$month])) {
-                        $data[$type][$month] = $voucher['pivot']['quantity'];
-                    } else {
-                        $data[$type][$month] = 0;
-                    }
-                }
-            }
-        }
-
-        return $data;
     }
 
     /**

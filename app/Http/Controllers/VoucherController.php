@@ -311,7 +311,11 @@ class VoucherController extends Controller
                 },
                 'products' => function ($query) {
                     $query->select(Fields::parsed('products'))
-                        ->withPivot('id', 'quantity', 'value', 'created_at');
+                        ->withPivot('id', 'quantity', 'value');
+                },
+                'props' => function ($query) {
+                    $query->select(Fields::parsed('props'))
+                        ->withPivot('quantity');
                 }
             ])->first(Fields::parsed('vouchers'));
 
@@ -343,6 +347,15 @@ class VoucherController extends Controller
                     {
                         $product->quantity += $product->pivot->quantity;
                         $product->save();
+                    });
+                }
+
+                // Restore prop stocks
+                if ($voucher->props->isNotEmpty()) {
+                    $voucher->props->each(function ($prop)
+                    {
+                        $prop->quantity += $prop->pivot->quantity;
+                        $prop->save();
                     });
                 }
 
@@ -2807,7 +2820,7 @@ class VoucherController extends Controller
         $pages = $this->prepareItems($voucher);
 
         $view = view('app.vouchers.exports.template', compact('voucher', 'customer', 'pages'))->render();
-        return $view;
+
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->setOption('enable-javascript', true);
         $pdf->setOption('images', true);
