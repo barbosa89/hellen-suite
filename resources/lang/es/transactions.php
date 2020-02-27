@@ -57,4 +57,5 @@ return array (
     'edition' => 'Un ítem está siendo modificado',
   ),
   'discard' => 'Descarga',
+  'lodging' => 'Alojamiento',
 );

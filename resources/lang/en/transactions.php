@@ -57,4 +57,5 @@ return array (
     'edition' => 'An item is being modified',
   ),
   'discard' => 'Discard',
+  'lodging' => 'Lodging',
 );

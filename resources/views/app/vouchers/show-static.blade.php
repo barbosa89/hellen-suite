@@ -36,7 +36,7 @@
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'url' => route('vouchers.index')
                 ],
             ]
         ])

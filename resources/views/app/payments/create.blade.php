@@ -88,7 +88,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ route('payments.index', ['invoice' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
+                    <a href="{{ route('payments.index', ['voucher' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
                         @lang('common.back')
                     </a>
                 </form>

@@ -97,14 +97,14 @@
                     <div class="col-2 col-sx-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                         <span class="d-block font-weight-light">@lang('payments.title')</span>
                         <span class="d-block">
-                            $ {{ number_format($voucher->payments->sum('value'), 0, '.', ',') }}
+                            $ {{ number_format($voucher->payments->sum('value'), 0, ',', '.') }}
                         </span>
                     </div>
                     <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
                         @if ($voucher->losses)
                             <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
-                                {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, '.', ',') }}
+                                {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, ',', '.') }}
                             </span>
                         @else
                             @if ($voucher->payment_method == false and $voucher->value > $voucher->payments->sum('value'))

@@ -1,64 +1,49 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('hotel', $hotel) }}
+    {{ Breadcrumbs::render('shift', $shift) }}
 @endsection
 
 @section('content')
-    <!-- TODO: Reparar la generación de dropdown menu por modulo"-->
+
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Hoteles',
-            'url' => route('hotels.index'),
+            'title' => trans('shifts.title'),
+            'url' => route('shifts.index'),
             'options' => [
                 [
-                    'option' => trans('common.edit'),
-                    'url' => route('hotels.edit', [
-                        'id' => Hashids::encode($hotel->id)
-                    ]),
-                ],
-                [
-                    'option' => $hotel->status ? trans('common.disable') : trans('common.enable'),
-                    'url' => route('hotels.toggle', [
-                        'id' => Hashids::encode($hotel->id)
-                    ]),
-                ],
-                [
-                    'type' => 'confirm',
-                    'option' => trans('common.delete.item'),
-                    'url' => route('hotels.destroy', [
-                        'id' => Hashids::encode($hotel->id)
-                    ]),
-                    'method' => 'DELETE'
+                    'option' => trans('common.back'),
+                    'url' => route('shifts.index')
                 ],
             ]
         ])
 
-        <div class="row mb-4">
-            <div class="col-2"><b>Hotel</b></div>
-            <div class="col-10">{{ $hotel->business_name }}</div>
-            <div class="col-2"><b>NIT</b></div>
-            <div class="col-10">{{ $hotel->tin }}</div>
-
-            @if (!empty($hotel->main))
-                <div class="col-2"><b>Hotel principal</b></div>
-                <div class="col-10">{{ $hotel->main->business_name }}</div>
-            @endif
-        </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-xs"></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <h2>@lang('common.description'):</h2>
+                <p>{{ auth()->user()->name }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <h2>@lang('common.quantity'):</h2>
+                {{ $shift->created_at->format('Y-m-d') }}
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <h2>@lang('common.value'):</h2>
+                {{ number_format($shift->cash, 2, ',', '.') }}
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <h3>@lang('common.model'):</h3>
+                <p>{{ $shift->hotel->business_name }}</p>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('common.chart')</h3>
-
-                <div class="well">
-                    <h4>Gráfica aquí</h4>
-                </div>
+            <div class="col-12">
+                @include('partials.list', [
+                    'data' => $shift->vouchers,
+                    'listHeading' => 'app.shifts.vouchers.list-heading',
+                    'listRow' => 'app.shifts.vouchers.list-row'
+                ])
             </div>
         </div>
 

@@ -16,7 +16,7 @@
                     'url' => '#'
                 ],
                 [
-                    'option' => trans('vouchers.title'),
+                    'option' => trans('transactions.title'),
                     'url' => route('products.vouchers.create')
                 ],
                 [

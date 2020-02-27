@@ -31,11 +31,16 @@ class ShiftController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Shift  $shift
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Shift $shift)
+    public function show(string $id)
     {
-        //
+        $shift = Shift::where('team_member', auth()->user()->id)
+            ->where('id', Id::get($id))
+            ->with(['vouchers', 'hotel'])
+            ->first();
+
+        return view('app.shifts.show', compact('shift'));
     }
 }

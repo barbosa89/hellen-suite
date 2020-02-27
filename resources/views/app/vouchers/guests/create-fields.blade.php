@@ -21,7 +21,7 @@
         <select class="form-control selectpicker" title="{{ trans('common.onlyFor') . ' ' . strtolower(trans('vouchers.minors'))  }}" name="responsible_adult" id="responsible_adult">
             @foreach($voucher->rooms as $room)
                 @foreach($room->guests as $guest)
-                    <option value="{{ Hashids::encode($guest->id) }}">{{ $guest->name . ' ' . $guest->last_name }}</option>
+                    <option value="{{ Hashids::encode($guest->id) }}">{{ $guest->name }} {{ $guest->last_name }}</option>
                 @endforeach
             @endforeach
         </select>

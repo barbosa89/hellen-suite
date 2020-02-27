@@ -118,7 +118,7 @@
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'url' => route('vouchers.index')
                 ],
             ]
         ])
@@ -535,7 +535,7 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     @can('vouchers.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'record' => Hashids::encode($service->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -552,7 +552,7 @@
         @endif
         <!-- Services -->
 
-        <!-- Services -->
+        <!-- Dining Services -->
         @if($voucher->services->where('is_dining_service', true)->isNotEmpty())
             <div class="row mt-4">
                 <div class="col-md-12">
@@ -611,7 +611,7 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
                                                     @can('vouchers.edit')
-                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'product' => Hashids::encode($service->pivot->id)], false) }}')">
+                                                        <a href="#" class="btn btn-link" onclick="confirmRedirect(event, '{{ route('vouchers.services.remove', ['id' => Hashids::encode($voucher->id), 'record' => Hashids::encode($service->pivot->id)], false) }}')">
                                                             <i class="fas fa-times-circle"></i>
                                                         </a>
                                                     @endcan
@@ -626,7 +626,7 @@
                 </div>
             </div>
         @endif
-        <!-- Services -->
+        <!-- Dining Services -->
 
         <!-- Props -->
         @if($voucher->props->isNotEmpty())

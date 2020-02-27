@@ -105,7 +105,7 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, &$voucherId, $request, $numbers) {
             try {
-                $voucher = $this->new();
+                $voucher = $this->newVoucher();
                 $voucher->origin = $request->get('origin', null);
                 $voucher->destination = $request->get('destination', null);
                 $voucher->hotel()->associate(Id::get($request->hotel));
@@ -195,7 +195,7 @@ class VoucherController extends Controller
      *
      * @return \App\Welkome\Voucher
      */
-    private function new()
+    private function newVoucher()
     {
         $voucher = new Voucher();
         $voucher->number = Random::consecutive();
@@ -204,6 +204,8 @@ class VoucherController extends Controller
         $voucher->discount = 0.0;
         $voucher->value = 0.0;
         $voucher->status = true;
+        $voucher->type = 'lodging';
+        $voucher->made_by = auth()->user()->name;
         $voucher->user()->associate(Id::parent());
 
         return $voucher;
@@ -454,7 +456,7 @@ class VoucherController extends Controller
             ->get(Fields::parsed('rooms'));
 
         if ($rooms->isEmpty()) {
-            flash('No hay habitaciones disponibles')->info();
+            // flash('No hay habitaciones disponibles')->info();
 
             return redirect()->route('vouchers.show', [
                 'id' => Hashids::encode($voucher->id)
@@ -999,7 +1001,7 @@ class VoucherController extends Controller
 
         $voucher->rooms->each(function ($room) use (&$guests)
         {
-            $guests += $room->guests()->count();
+            $guests += $room->guests->count();
         });
 
         return $guests;

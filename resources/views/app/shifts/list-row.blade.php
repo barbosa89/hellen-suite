@@ -1,11 +1,11 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 align-self-center">
             <p>
                 {{ $row->hotel->business_name }}
             </p>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2  align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 {{ $row->created_at }}
             </p>

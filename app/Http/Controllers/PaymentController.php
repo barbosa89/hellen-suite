@@ -163,7 +163,7 @@ class PaymentController extends Controller
                 $payment->commentary = $request->commentary;
                 $payment->payment_method = $request->method;
                 $payment->value = (float) $request->value;
-                $payment->invoice()->associate($voucher->id);
+                $payment->voucher()->associate($voucher->id);
 
                 if ($request->hasFile('invoice')) {
                     $path = $request->file('invoice')->storeAs(
@@ -177,6 +177,7 @@ class PaymentController extends Controller
                 if ($payment->save()) {
                     if ($payment->payment_method == 'cash') {
                         $shift = Shift::current($voucher->hotel->id);
+
                         $shift->load([
                             'vouchers' => function ($query) use ($voucher)
                             {
@@ -184,7 +185,7 @@ class PaymentController extends Controller
                             }
                         ]);
 
-                        if ($shift->invoices->isNotEmpty()) {
+                        if ($shift->vouchers->isNotEmpty()) {
                             $shift->cash += $payment->value;
                             $shift->save();
                         }
@@ -199,15 +200,13 @@ class PaymentController extends Controller
 
         if ($status) {
             flash(trans('common.createdSuccessfully'))->success();
-
-            return redirect()->route('payments.index', [
-                'invoice' => Hashids::encode($voucher->id)
-            ]);
+        } else {
+            flash(trans('common.error'))->error();
         }
 
-        flash(trans('common.error'))->error();
-
-        return back();
+        return redirect()->route('payments.index', [
+            'voucher' => Hashids::encode($voucher->id)
+        ]);
     }
 
     /**
@@ -345,7 +344,7 @@ class PaymentController extends Controller
                             }
                         ]);
 
-                        if ($shift->invoices->isNotEmpty()) {
+                        if ($shift->vouchers->isNotEmpty()) {
                             $shift->cash += $payment->value;
                         }
                     }
@@ -377,7 +376,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'invoice' => Hashids::encode($voucher->id)
+                'voucher' => Hashids::encode($voucher->id)
             ]);
         }
 
@@ -440,7 +439,7 @@ class PaymentController extends Controller
                         }
                     ]);
 
-                    if ($shift->invoices->isNotEmpty()) {
+                    if ($shift->vouchers->isNotEmpty()) {
                         $shift->cash -= $payment->value;
                     }
                 }
@@ -475,7 +474,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'invoice' => Hashids::encode($voucher->id)
+                'voucher' => Hashids::encode($voucher->id)
             ]);
         }
 

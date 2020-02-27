@@ -378,7 +378,7 @@ class GuestController extends Controller
                 'guests' => $this->renderToTemplate(
                     $guests,
                     'app.vouchers.guests.search',
-                    $request->vouche
+                    $request->voucher
                     )
             ]);
         }
