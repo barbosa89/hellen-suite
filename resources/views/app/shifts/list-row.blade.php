@@ -27,16 +27,9 @@
         </div>
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
             @can(['shifts.show'])
-                @include('partials.dropdown-btn', [
-                    'options' => [
-                        [
-                            'option' => 'Ver',
-                            'url' => route('shifts.show', [
-                                'id' => Hashids::encode($row->id)
-                            ])
-                        ]
-                    ]
-                ])
+                <a href="{{ route('shifts.show', ['id' => Hashids::encode($row->id)]) }}" class="btn btn-link">
+                    <i class="fas fa-eye"></i>
+                </a>
             @endcan
         </div>
     </div>

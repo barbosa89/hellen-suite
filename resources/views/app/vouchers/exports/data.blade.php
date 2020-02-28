@@ -38,7 +38,7 @@
                 <h6 class="font-weight-light">@lang('payments.title')</h6>
                 <p>$ {{ number_format($voucher->payments->sum('value'), 2, ',', '.') }}</p>
                 <h6 class="font-weight-light">@lang('common.percentage')</h6>
-                <p>{{ ($voucher->payments->sum('value') / $voucher->value) * 100 }}%</p>
+                <p>{{ round(($voucher->payments->sum('value') / $voucher->value) * 100, 2) }}%</p>
             @endif
         </div>
     @endif
