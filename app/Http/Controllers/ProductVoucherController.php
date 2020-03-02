@@ -135,14 +135,14 @@ class ProductVoucherController extends Controller
                 if ($voucher->save()) {
                     $voucher->products()->sync($attach);
 
+                    // Get the shift
+                    $shift = Shift::current(Id::get($request->hotel));
+                    $voucher->shifts()->attach($shift);
+
                     if ($voucher->type == 'sale') {
-                        // Get the shift
-                        $shift = Shift::current(Id::get($request->hotel));
                         $shift->cash += $voucher->value;
 
                         if ($shift->save()) {
-                            $voucher->shifts()->attach($shift);
-
                             $payment = new Payment();
                             $payment->date = now();
                             $payment->commentary = trans('payments.automatic');

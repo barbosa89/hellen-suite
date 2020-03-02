@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductReport;
+use App\Exports\ProductsReport;
 use App\Helpers\Chart;
 use App\User;
 use App\Helpers\Id;
@@ -10,13 +12,14 @@ use App\Helpers\Input;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Http\Requests\{StoreProduct, UpdateProduct};
+use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
 use App\Welkome\Company;
 use App\Welkome\Hotel;
 use App\Welkome\Product;
 use App\Welkome\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -374,5 +377,137 @@ class ProductController extends Controller
         }
 
         abort(404);
+    }
+
+        /**
+     * Display the product report form to query between dates.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showProductReportForm($id)
+    {
+        $product = User::find(Id::parent(), ['id'])->products()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('products'));
+
+        if (empty($product)) {
+            abort(404);
+        }
+
+        $product->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            }
+        ]);
+
+        return view('app.products.product-report', compact('product'));
+    }
+
+    /**
+     * Export Product report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportProductReport(DateRangeQuery $request, $id)
+    {
+        $product = User::find(Id::parent(), ['id'])->products()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('products'));
+
+        if (empty($product)) {
+            abort(404);
+        }
+
+        $product->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            },
+        ]);
+
+        if ($product->vouchers->isEmpty()) {
+            flash(trans('common.without.results'))->info();
+
+            return redirect()->route('products.product.report', ['id' => Hashids::encode($product->id)]);
+        }
+
+        return Excel::download(new ProductReport($product), trans('products.product') . '.xlsx');
+    }
+
+    /**
+     * Display the report form to query between dates and hotels.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReportForm()
+    {
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return redirect()->route('products.index');
+        }
+
+        return view('app.products.report', compact('hotels'));
+    }
+
+    /**
+     * Export the products report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportReport(ReportQuery $request)
+    {
+        $query = Hotel::query();
+        $query->where('user_id', Id::parent());
+
+        if (!empty($request->hotel)) {
+            $query->where('id', Id::get($request->hotel));
+        }
+
+        $query->with([
+            'products' => function($query) {
+                $query->select(Fields::get('products'));
+            },
+            'products.vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'products.vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            }
+        ]);
+
+        $hotels = $query->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return back();
+        }
+
+        return Excel::download(new ProductsReport($hotels), trans('products.title') . '.xlsx');
     }
 }

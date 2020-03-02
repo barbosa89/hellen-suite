@@ -1,6 +1,24 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	// Products report
+
+	Route::post('products/report', 'ProductController@exportReport')
+		->name('products.report.export')
+		->middleware('permission:products.index');
+
+	Route::get('products/report', 'ProductController@showReportForm')
+		->name('products.report')
+		->middleware('permission:products.index');
+
+	Route::post('products/{id}/report', 'ProductController@exportProductReport')
+		->name('products.product.report.export')
+		->middleware('permission:products.index');
+
+	Route::get('products/{id}/report', 'ProductController@showProductReportForm')
+		->name('products.product.report')
+		->middleware('permission:products.index');
+
 	// Products vouchers routes
 
 	Route::get('products/{id}/vouchers/{voucher}', 'ProductVoucherController@destroy')

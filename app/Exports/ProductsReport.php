@@ -6,10 +6,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class PropsReport implements FromView
+class ProductsReport implements FromView
 {
     /**
-     * The Props collection.
+     * The products collection.
      *
      * @var \Illuminate\Support\Collection
      */
@@ -22,7 +22,7 @@ class PropsReport implements FromView
 
     public function view(): View
     {
-        return view('app.props.exports.props', [
+        return view('app.products.exports.products', [
             'hotels' => $this->hotels
         ]);
     }

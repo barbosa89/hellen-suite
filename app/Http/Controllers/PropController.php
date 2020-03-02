@@ -13,8 +13,8 @@ use App\Exports\PropReport;
 use App\Exports\PropsReport;
 use App\Helpers\Chart;
 use App\Helpers\Random;
-use App\Http\Requests\PropReportQuery;
-use App\Http\Requests\PropsReportQuery;
+use App\Http\Requests\DateRangeQuery;
+use App\Http\Requests\ReportQuery;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
@@ -350,7 +350,7 @@ class PropController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function exportPropReport(PropReportQuery $request, $id)
+    public function exportPropReport(DateRangeQuery $request, $id)
     {
         $prop = User::find(Id::parent(), ['id'])->props()
             ->where('id', Id::get($id))
@@ -398,7 +398,7 @@ class PropController extends Controller
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
-            flash('No hay hoteles creados')->info();
+            flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('props.index');
         }
@@ -412,7 +412,7 @@ class PropController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function exportReport(PropsReportQuery $request)
+    public function exportReport(ReportQuery $request)
     {
         $query = Hotel::query();
         $query->where('user_id', Id::parent());
@@ -461,7 +461,7 @@ class PropController extends Controller
     //         ->get(Fields::get('hotels'));
 
     //     if($hotels->isEmpty()) {
-    //         flash('No hay hoteles creados')->info();
+    //         flash(trans('hotels.no.registered'))->info();
 
     //         return redirect()->route('props.index');
     //     }

@@ -38,8 +38,14 @@
                     ]
                 ],
                 [
-                    'option' => trans('transactions.title'),
-                    'url' => route('products.vouchers'),
+                    'option' => trans('common.reports'),
+                    'url' => route('products.product.report', [
+                        'id' => Hashids::encode($product->id)
+                    ])
+                ],
+                [
+                    'option' => 'Transacciones',
+                    'url' => route('products.vouchers.create')
                 ],
                 [
                     'option' => trans('common.new'),
