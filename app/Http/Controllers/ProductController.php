@@ -379,7 +379,7 @@ class ProductController extends Controller
         abort(404);
     }
 
-        /**
+    /**
      * Display the product report form to query between dates.
      *
      * @param  int  $id

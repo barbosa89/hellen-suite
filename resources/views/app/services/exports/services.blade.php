@@ -21,11 +21,11 @@
         </thead>
         <tbody>
             @foreach ($hotels as $hotel)
-                @foreach ($hotel->props as $prop)
-                    @foreach ($prop->vouchers as $voucher)
+                @foreach ($hotel->services as $service)
+                    @foreach ($service->vouchers as $voucher)
                         <tr>
                             <td>{{ $hotel->business_name }}</td>
-                            <td>{{ $prop->description }}</td>
+                            <td>{{ $service->description }}</td>
                             <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
                             <td>{{ $voucher->number }}</td>
                             <td>{{ trans('transactions.' . $voucher->type) }}</td>

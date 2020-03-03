@@ -54,7 +54,7 @@
                     <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
                     <td>{{ $voucher->number }}</td>
                     <td>{{ trans('transactions.' . $voucher->type) }}</td>
-                    <td>{{ number_format($voucher->value, 2, ',', '.') }}</td>
+                    <td>{{ number_format($voucher->pivot->value, 2, ',', '.') }}</td>
                     <td>{{ $voucher->pivot->quantity }}</td>
                     <td>{{ $voucher->made_by }}</td>
                     <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->business_name }}</td>

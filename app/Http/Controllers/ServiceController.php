@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ServiceReport;
+use App\Exports\ServicesReport;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Hotel;
@@ -10,7 +12,8 @@ use App\Helpers\Input;
 use App\Welkome\Service;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Http\Requests\{StoreService, UpdateService};
+use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServiceController extends Controller
 {
@@ -306,5 +309,137 @@ class ServiceController extends Controller
         }
 
         abort(405);
+    }
+
+    /**
+     * Display the service report form to query between dates.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showServiceReportForm($id)
+    {
+        $service = User::find(Id::parent(), ['id'])->services()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('services'));
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            }
+        ]);
+
+        return view('app.services.service-report', compact('service'));
+    }
+
+    /**
+     * Export Service report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportServiceReport(DateRangeQuery $request, $id)
+    {
+        $service = User::find(Id::parent(), ['id'])->services()
+            ->where('id', Id::get($id))
+            ->first(Fields::get('services'));
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            },
+        ]);
+
+        if ($service->vouchers->isEmpty()) {
+            flash(trans('common.without.results'))->info();
+
+            return redirect()->route('services.service.report', ['id' => Hashids::encode($service->id)]);
+        }
+
+        return Excel::download(new ServiceReport($service), trans('services.service') . '.xlsx');
+    }
+
+    /**
+     * Display the report form to query between dates and hotels.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReportForm()
+    {
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return redirect()->route('services.index');
+        }
+
+        return view('app.services.report', compact('hotels'));
+    }
+
+    /**
+     * Export the services report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportReport(ReportQuery $request)
+    {
+        $query = Hotel::query();
+        $query->where('user_id', Id::parent());
+
+        if (!empty($request->hotel)) {
+            $query->where('id', Id::get($request->hotel));
+        }
+
+        $query->with([
+            'services' => function($query) {
+                $query->select(Fields::get('services'));
+            },
+            'services.vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'services.vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            }
+        ]);
+
+        $hotels = $query->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return back();
+        }
+
+        return Excel::download(new ServicesReport($hotels), trans('services.title') . '.xlsx');
     }
 }

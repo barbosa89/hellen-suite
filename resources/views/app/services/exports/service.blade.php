@@ -7,11 +7,8 @@
     <table>
         <thead>
         <tr>
-            <th colspan="3">
+            <th colspan="4">
                 @lang('common.description')
-            </th>
-            <th colspan="2">
-                @lang('common.quantity')
             </th>
             <th colspan="2">
                 @lang('common.price')
@@ -21,17 +18,14 @@
             </th>
         </tr>
         <tr>
-            <th colspan="3">
-                {{ $prop->description }}
+            <th colspan="4">
+                {{ $service->description }}
             </th>
             <th colspan="2">
-                {{ $prop->quantity }}
+                {{ number_format($service->price, 2, ',', '.') }}
             </th>
             <th colspan="2">
-                {{ number_format($prop->price, 2, ',', '.') }}
-            </th>
-            <th colspan="2">
-                {{ $prop->hotel->business_name }}
+                {{ $service->hotel->business_name }}
             </th>
         </tr>
         <tr>
@@ -45,12 +39,11 @@
             <th>@lang('common.quantity')</th>
             <th>@lang('transactions.made.by')</th>
             <th>@lang('companies.company')</th>
-            <th>@lang('companies.tin')</th>
             <th>@lang('common.comments')</th>
         </tr>
         </thead>
         <tbody>
-            @foreach($prop->vouchers as $voucher)
+            @foreach($service->vouchers as $voucher)
                 <tr>
                     <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
                     <td>{{ $voucher->number }}</td>
@@ -59,7 +52,6 @@
                     <td>{{ $voucher->pivot->quantity }}</td>
                     <td>{{ $voucher->made_by }}</td>
                     <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->business_name }}</td>
-                    <td>{{ empty($voucher->company) ? trans('common.doesnt.apply') : $voucher->company->tin }}</td>
                     <td>{{ $voucher->comments ?? trans('common.noData') }}</td>
                 </tr>
             @endforeach

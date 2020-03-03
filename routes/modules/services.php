@@ -1,6 +1,26 @@
 <?php
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	// Service report
+
+	Route::post('services/report', 'ServiceController@exportReport')
+		->name('services.report.export')
+		->middleware('permission:services.index');
+
+	Route::get('services/report', 'ServiceController@showReportForm')
+		->name('services.report')
+		->middleware('permission:services.index');
+
+	Route::post('services/{id}/report', 'ServiceController@exportServiceReport')
+		->name('services.service.report.export')
+		->middleware('permission:services.index');
+
+	Route::get('services/{id}/report', 'ServiceController@showServiceReportForm')
+		->name('services.service.report')
+		->middleware('permission:services.index');
+
+	# CRUD
+
     Route::post('services/search', 'ServiceController@search')
 		->name('services.search')
 		->middleware('permission:services.index');
