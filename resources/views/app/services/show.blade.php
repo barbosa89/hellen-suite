@@ -54,23 +54,67 @@
 
         @include('app.services.info')
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-xs"></div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                    @lang('vouchers.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                    @lang('common.chart')
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
+                @include('partials.list', [
+                    'data' => $service->vouchers,
+                    'listHeading' => 'app.services.vouchers.list-heading',
+                    'listRow' => 'app.services.vouchers.list-row'
+                ])
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('common.chart')</h3>
-
-                <div class="well">
-                    <h4>Gráfica aquí</h4>
-                </div>
+            <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+                <canvas id="myChart"></canvas>
             </div>
         </div>
 
         @include('partials.modal-confirm')
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    translator.trans('months.january'),
+                    translator.trans('months.february'),
+                    translator.trans('months.march'),
+                    translator.trans('months.april'),
+                    translator.trans('months.may'),
+                    translator.trans('months.june'),
+                    translator.trans('months.july'),
+                    translator.trans('months.august'),
+                    translator.trans('months.september'),
+                    translator.trans('months.october'),
+                    translator.trans('months.november'),
+                    translator.trans('months.december')
+                ],
+                datasets: Array.from({!! $data->toJson() !!})
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 @endsection

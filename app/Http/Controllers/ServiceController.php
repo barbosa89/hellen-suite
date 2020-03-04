@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ServiceReport;
 use App\Exports\ServicesReport;
+use App\Helpers\Chart;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Hotel;
@@ -119,7 +120,21 @@ class ServiceController extends Controller
             abort(404);
         }
 
-        return view('app.services.show', compact('service'));
+        $service->load([
+            'hotel' => function($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'vouchers' => function ($query) {
+                $query->select(Fields::parsed('vouchers'))
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->whereYear('vouchers.created_at', \date('Y'))
+                    ->withPivot('quantity');
+            }
+        ]);
+
+        $data = Chart::data($service->vouchers);
+
+        return view('app.services.show', compact('service', 'data'));
     }
 
     /**

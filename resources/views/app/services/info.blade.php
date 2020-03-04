@@ -12,7 +12,7 @@
         <p>{{ $service->description }} <i class="fas fa-{{ $service->status ? 'check' : 'times-circle' }}"></i></p>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-        <h2>@lang('common.brand'):</h2>
-        {{ round($service->price, 0) }}
+        <h2>@lang('common.price'):</h2>
+        {{ number_format($service->price, 0, ',', '.') }}
     </div>
 </div>

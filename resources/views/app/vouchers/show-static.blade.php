@@ -26,15 +26,6 @@
                     'permission' => 'payments.index'
                 ],
                 [
-                    'type' => 'confirm',
-                    'option' => trans('common.delete.item'),
-                    'url' => route('vouchers.destroy', [
-                        'id' => Hashids::encode($voucher->id)
-                    ]),
-                    'method' => 'DELETE',
-                    'permission' => 'vouchers.destroy'
-                ],
-                [
                     'option' => trans('common.back'),
                     'url' => route('vouchers.index')
                 ],
@@ -103,20 +94,17 @@
                             <div class="crud-list">
                                 <div class="crud-list-heading">
                                     <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                             <h5>@lang('common.idNumber')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <h5>@lang('common.name')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                             <h5>@lang('rooms.room')</h5>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                             <h5>@lang('vouchers.responsibleAdult')</h5>
-                                        </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>@lang('common.options')</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -124,27 +112,27 @@
                                     @foreach($voucher->guests as $guest)
                                             <div class="crud-list-row">
                                                 <div class="row">
-                                                    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+                                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">
                                                         <p>{{ strtoupper($guest->identificationType->type) }}</p>
                                                     </div>
-                                                    <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                         <p>
                                                             <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
                                                                 {{ number_format($guest->dni, 0, ',', '.') }}
                                                             </a>
                                                         </p>
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 align-self-center">
+                                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                         <p>
                                                             <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
                                                                 {{ $guest->full_name }}
                                                             </a>
                                                         </p>
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                         <p>{{ $guest->rooms->first()->number }}</p>
                                                     </div>
-                                                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 align-self-center">
+                                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
                                                         @if(empty($guest->parent))
                                                             <p>-</p>
                                                         @else
@@ -154,35 +142,6 @@
                                                                 </a>
                                                             </p>
                                                         @endif
-                                                    </div>
-                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
-                                                        @can('vouchers.edit')
-                                                            @if ($voucher->guests->count() > 1)
-                                                                @if ($voucher->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled)
-                                                                    @if ($guest->status == true and $guest->pivot->active == true)
-                                                                        <a class="btn btn-link" title="{{ trans('rooms.changeRoom') }}" href="#" onclick="confirmRedirect(event, '{{ route('vouchers.guests.change.form', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                            <i class="fas fa-sync-alt"></i>
-                                                                        </a>
-                                                                    @endif
-
-                                                                    <a class="btn btn-link" title="{{ trans('common.delete.item') }}" href="#" onclick="confirmRedirect(event, '{{ route('vouchers.guests.remove', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)], false) }}')">
-                                                                        <i class="fas fa-user-times"></i>
-                                                                    </a>
-
-                                                                    @if ($guest->status == true and $guest->pivot->active == true)
-                                                                        <a class="btn btn-link" title="{{ trans('guests.registerExit') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'voucher' => Hashids::encode($voucher->id)], false) }}')">
-                                                                            <i class="fas fa-door-closed"></i>
-                                                                        </a>
-                                                                    @endif
-
-                                                                    @if ($guest->status == false and $guest->pivot->active == false)
-                                                                        <a class="btn btn-link" title="{{ trans('guests.registerEntry') }}" href="#" onclick="confirmRedirect(event, '{{ route('guests.toggle', ['id' => Hashids::encode($guest->id), 'voucher' => Hashids::encode($voucher->id)], false) }}')">
-                                                                            <i class="fas fa-door-open"></i>
-                                                                        </a>
-                                                                    @endif
-                                                                @endif
-                                                            @endif
-                                                        @endcan
                                                     </div>
                                                 </div>
                                             </div>
