@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col-md-12">
                 @include('partials.list', [
-                    'data' => $company->vouchers,
+                    'data' => $vouchers,
                     'listHeading' => 'app.companies.vouchers.list-heading',
                     'listRow' => 'app.companies.vouchers.list-row'
                 ])

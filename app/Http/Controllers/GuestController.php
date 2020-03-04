@@ -216,9 +216,30 @@ class GuestController extends Controller
      */
     public function show($id)
     {
-        flash('Característica en proceso de construcción')->info();
+        $guest = Guest::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('guests'));
 
-        return redirect()->route('guests.index');
+        if (empty($guest)) {
+            abort(404);
+        }
+
+        $guest->load([
+            'vouchers' => function ($query)
+            {
+                $query->select(Fields::get('vouchers'));
+            },
+            'vouchers.hotel' => function ($query)
+            {
+                $query->select(Fields::get('hotels'));
+            },
+            'country' => function ($query)
+            {
+                $query->select('id', 'name');
+            },
+        ]);
+
+        return view('app.guests.show', compact('guest'));
     }
 
     /**

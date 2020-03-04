@@ -616,9 +616,7 @@
                                                     <div class="row">
                                                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
                                                             <p>
-                                                                <a href="{{ route('vehicles.show', ['id' => Hashids::encode($vehicle->id)]) }}">
-                                                                    {{ strtoupper($vehicle->registration) }}
-                                                                </a>
+                                                                {{ strtoupper($vehicle->registration) }}
                                                             </p>
                                                         </div>
                                                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
