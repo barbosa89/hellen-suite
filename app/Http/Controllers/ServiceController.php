@@ -110,11 +110,7 @@ class ServiceController extends Controller
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->where('is_dining_service', false)
-            ->with([
-                'hotel' => function($query) {
-                    $query->select(Fields::get('hotels'));
-                }
-            ])->first(Fields::get('services'));
+            ->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
@@ -128,7 +124,7 @@ class ServiceController extends Controller
                 $query->select(Fields::parsed('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->whereYear('vouchers.created_at', \date('Y'))
-                    ->withPivot('quantity');
+                    ->withPivot(['quantity', 'value']);
             }
         ]);
 
@@ -336,6 +332,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
         if (empty($service)) {
@@ -363,6 +360,7 @@ class ServiceController extends Controller
     {
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
+            ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
         if (empty($service)) {
@@ -432,7 +430,8 @@ class ServiceController extends Controller
 
         $query->with([
             'services' => function($query) {
-                $query->select(Fields::get('services'));
+                $query->select(Fields::get('services'))
+                    ->where('is_dining_service', false);
             },
             'services.vouchers' => function ($query) use ($request)
             {

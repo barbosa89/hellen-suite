@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ServiceReport;
+use App\Exports\ServicesReport;
+use App\Helpers\Chart;
 use App\User;
 use App\Helpers\Id;
 use App\Welkome\Hotel;
@@ -10,7 +13,8 @@ use App\Helpers\Input;
 use App\Welkome\Service;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Http\Requests\{StoreService, UpdateService};
+use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
+use Maatwebsite\Excel\Facades\Excel;
 
 class DiningServiceController extends Controller
 {
@@ -119,17 +123,27 @@ class DiningServiceController extends Controller
         $service = User::find(Id::parent(), ['id'])->services()
             ->where('id', Id::get($id))
             ->where('is_dining_service', true)
-            ->with([
-                'hotel' => function($query) {
-                    $query->select(Fields::get('hotels'));
-                }
-            ])->first(Fields::get('services'));
+            ->first(Fields::get('services'));
 
         if (empty($service)) {
             abort(404);
         }
 
-        return view('app.dining.show', compact('service'));
+        $service->load([
+            'hotel' => function($query) {
+                $query->select(Fields::get('hotels'));
+            },
+            'vouchers' => function ($query) {
+                $query->select(Fields::parsed('vouchers'))
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->whereYear('vouchers.created_at', \date('Y'))
+                    ->withPivot(['quantity', 'value']);
+            }
+        ]);
+
+        $data = Chart::data($service->vouchers);
+
+        return view('app.dining.show', compact('service', 'data'));
     }
 
     /**
@@ -266,5 +280,140 @@ class DiningServiceController extends Controller
         }
 
         abort(405);
+    }
+
+    /**
+     * Display the service report form to query between dates.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showServiceReportForm($id)
+    {
+        $service = User::find(Id::parent(), ['id'])->services()
+            ->where('id', Id::get($id))
+            ->where('is_dining_service', true)
+            ->first(Fields::get('services'));
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            }
+        ]);
+
+        return view('app.dining.dining-service-report', compact('service'));
+    }
+
+    /**
+     * Export Service report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportServiceReport(DateRangeQuery $request, $id)
+    {
+        $service = User::find(Id::parent(), ['id'])->services()
+            ->where('id', Id::get($id))
+            ->where('is_dining_service', true)
+            ->first(Fields::get('services'));
+
+        if (empty($service)) {
+            abort(404);
+        }
+
+        $service->load([
+            'hotel' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            },
+            'vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            },
+        ]);
+
+        if ($service->vouchers->isEmpty()) {
+            flash(trans('common.without.results'))->info();
+
+            return redirect()->route('dining.service.report', ['id' => Hashids::encode($service->id)]);
+        }
+
+        return Excel::download(new ServiceReport($service), trans('dining.item') . '.xlsx');
+    }
+
+    /**
+     * Display the report form to query between dates and hotels.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showReportForm()
+    {
+        $hotels = Hotel::where('user_id', Id::parent())
+            ->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return redirect()->route('dining.index');
+        }
+
+        return view('app.dining.report', compact('hotels'));
+    }
+
+    /**
+     * Export the services report in an excel document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportReport(ReportQuery $request)
+    {
+        $query = Hotel::query();
+        $query->where('user_id', Id::parent());
+
+        if (!empty($request->hotel)) {
+            $query->where('id', Id::get($request->hotel));
+        }
+
+        $query->with([
+            'services' => function($query) {
+                $query->select(Fields::get('services'))
+                    ->where('is_dining_service', true);
+            },
+            'services.vouchers' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('quantity', 'value');
+            },
+            'services.vouchers.company' => function ($query) use ($request)
+            {
+                $query->select(Fields::parsed('companies'));
+            }
+        ]);
+
+        $hotels = $query->get(Fields::get('hotels'));
+
+        if($hotels->isEmpty()) {
+            flash(trans('hotels.no.registered'))->info();
+
+            return back();
+        }
+
+        return Excel::download(new ServicesReport($hotels), trans('dining.title') . '.xlsx');
     }
 }

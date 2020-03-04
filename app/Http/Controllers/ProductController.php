@@ -182,7 +182,7 @@ class ProductController extends Controller
                 $query->select(Fields::parsed('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->whereYear('vouchers.created_at', \date('Y'))
-                    ->withPivot('quantity');
+                    ->withPivot('quantity', 'value');
             }
         ]);
 

@@ -24,7 +24,7 @@
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
             <p>
-                {{ number_format($row->value, 2, ',', '.') }}
+                {{ number_format($row->pivot->value, 2, ',', '.') }}
             </p>
         </div>
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 align-self-center">

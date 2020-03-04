@@ -12,6 +12,10 @@
             'url' => route('dining.index'),
             'options' => [
                 [
+                    'option' => trans('common.reports'),
+                    'url' => route('dining.report')
+                ],
+                [
                     'option' => trans('dining.new.item'),
                     'url' => route('dining.create')
                 ],

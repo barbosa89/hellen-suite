@@ -75,7 +75,7 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                 @include('partials.list', [
-                    'data' => $product->vouchers,
+                    'data' => $product->vouchers->take(20),
                     'listHeading' => 'app.products.vouchers.list-heading',
                     'listRow' => 'app.products.vouchers.list-row'
                 ])
