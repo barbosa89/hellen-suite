@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-    <!-- TODO: Reparar la generación de dropdown menu por modulo"-->
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => 'Hoteles',
@@ -34,30 +33,38 @@
             ]
         ])
 
-        <div class="row mb-4">
-            <div class="col-2"><b>Hotel</b></div>
-            <div class="col-10">{{ $hotel->business_name }}</div>
-            <div class="col-2"><b>NIT</b></div>
-            <div class="col-10">{{ $hotel->tin }}</div>
-
-            @if (!empty($hotel->main))
-                <div class="col-2"><b>Hotel principal</b></div>
-                <div class="col-10">{{ $hotel->main->business_name }}</div>
-            @endif
-        </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-xs"></div>
+            <div class="col-xs-2 col-sm-2 col-md-2 col-md-2">
+                <img class="img-fluid" src="{{ empty($hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($hotel->image)) }}" alt="{{ $hotel->business_name }}">
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('common.chart')</h3>
-
-                <div class="well">
-                    <h4>Gráfica aquí</h4>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-md-10">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('companies.businessName'):</h3>
+                        <p>{{ $hotel->business_name }}</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('common.number'):</h3>
+                        <p>{{ $hotel->tin }}</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('hotels.headquarters'):</h3>
+                        <p>{{ $hotel->main ? $hotel->main->business_name : trans('common.doesnt.apply') }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('common.address'):</h3>
+                        <p>{{ $hotel->address }}</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('common.phone'):</h3>
+                        <p>{{ $hotel->phone }} {{ $hotel->mobile }}</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-md-4">
+                        <h3>@lang('common.email'):</h3>
+                        <p>{{ $hotel->email }}</p>
+                    </div>
                 </div>
             </div>
         </div>

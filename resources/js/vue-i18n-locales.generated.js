@@ -124,17 +124,24 @@ export default {
         "hotels": {
             "title": "Hotels",
             "all": "All hotels",
-            "one": "One hotel or headquarter",
-            "choose": "Choose a hotel or headquarter",
+            "one": "One hotel or headquarters",
+            "choose": "Choose a hotel or headquarters",
             "no": {
                 "registered": "There are no registered hotels"
             },
             "business": {
                 "name": "Business name"
-            }
+            },
+            "headquarters": "Headquarters",
+            "note": "We recommend you upload square images, or 3/2 aspect ratio, maximum weight 200 Kb. If you do not add a logo, one will be displayed by default.",
+            "independent": "Independent hotel"
         },
         "team": {
-            "title": "Team"
+            "title": "Team",
+            "member": "Team member",
+            "assignment": "Headquarters Assignment",
+            "workplace": "Workplace",
+            "new": "New team member"
         },
         "sales": {
             "new": "New sale",
@@ -160,7 +167,9 @@ export default {
             "chooseRole": "Choose a role",
             "accountant": "Accountant",
             "manager": "Manager",
-            "team": "My team"
+            "team": "My team",
+            "role": "Role",
+            "permissions": "Permissions"
         },
         "landing": {
             "about": "About",
@@ -301,8 +310,9 @@ export default {
             },
             "verified": "The {attribute} has not been verified",
             "unique_per_user": "There is already a record with the same information",
-            "has_headquarter": "The team member does not have an assigned headquarter",
-            "open_shift": "There is already an open shift"
+            "open_shift": "There is already an open shift",
+            "has_headquarters": "The team member does not have an assigned headquarter",
+            "headquarters": "This unique number, as an independent hotel, is already in use."
         },
         "login": {
             "identification": "Sign in",
@@ -499,6 +509,9 @@ export default {
             "reports": "Reports",
             "doesnt": {
                 "apply": "Doesn't apply"
+            },
+            "not": {
+                "assigned": "Not assigned"
             }
         },
         "rooms": {
@@ -839,10 +852,17 @@ export default {
             },
             "business": {
                 "name": "Razón social"
-            }
+            },
+            "headquarters": "Sede",
+            "note": "Te recomendamos cargar imágenes cuadradas, o de proporción 3/2, peso máximo 200 Kb. Si no agrega un logotipo, se mostrará uno por defecto.",
+            "independent": "Hotel independiente"
         },
         "team": {
-            "title": "Miembros del equipo"
+            "title": "Miembros del equipo",
+            "member": "Miembro del equipo",
+            "assignment": "Asignación de sede",
+            "workplace": "Sede laboral",
+            "new": "Nuevo integrante del equipo"
         },
         "sales": {
             "title": "Ventas",
@@ -868,7 +888,9 @@ export default {
             "chooseRole": "Elige un rol",
             "manager": "Gerente",
             "accountant": "Contador",
-            "team": "Mi equipo"
+            "team": "Mi equipo",
+            "role": "Rol",
+            "permissions": "Permisos"
         },
         "landing": {
             "home": "Inicio",
@@ -1009,8 +1031,9 @@ export default {
             },
             "verified": "El correo no ha sido verificado",
             "unique_per_user": "Ya hay un registro con la misma información",
-            "has_headquarter": "No tienes una sede asignada",
-            "open_shift": "Ya hay un turno abierto"
+            "open_shift": "Ya hay un turno abierto",
+            "has_headquarters": "No tienes una sede asignada",
+            "headquarters": "Este número único, como hotel independiente, ya está en uso."
         },
         "login": {
             "logout": "Salir",
@@ -1207,6 +1230,9 @@ export default {
             "reports": "Reportes",
             "doesnt": {
                 "apply": "No aplica"
+            },
+            "not": {
+                "assigned": "No asignado"
             }
         },
         "rooms": {

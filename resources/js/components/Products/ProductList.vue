@@ -185,9 +185,9 @@ export default {
     },
     methods: {
         updateProductList() {
-            _.map(this.hotels, (headquarter) => {
-                if (headquarter.hash == this.hotel) {
-                    this.products = headquarter.products
+            _.map(this.hotels, (headquarters) => {
+                if (headquarters.hash == this.hotel) {
+                    this.products = headquarters.products
                     this.query = ''
                 }
             })

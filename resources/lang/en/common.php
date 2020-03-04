@@ -160,4 +160,8 @@ return array (
   array (
     'apply' => 'Doesn\'t apply',
   ),
+  'not' => 
+  array (
+    'assigned' => 'Not assigned',
+  ),
 );

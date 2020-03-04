@@ -20,10 +20,10 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">Asignación de sede</h2>
+                <h2 class="text-center">@lang('team.assignment')</h2>
 
                 <div class="row mb-4">
-                    <div class="col-12">Miembro:</div>
+                    <div class="col-12">@lang('team.member'):</div>
                     <div class="col-12 mt-2">
                         <h4>{{ $member->name }}</h4>
                     </div>
@@ -36,8 +36,8 @@
                         <label for="hotel">Sede laboral:</label>
                         <select class="form-control selectpicker" name="hotel" id="hotel" required>
                             @if ($member->headquarters->count() > 0)
-                                @foreach ($member->headquarters as $headquarter)
-                                    <option value="{{ Hashids::encode($headquarter->id) }}" selected>{{ $headquarter->business_name }}</option>
+                                @foreach ($member->headquarters as $hotel)
+                                    <option value="{{ Hashids::encode($hotel->id) }}" selected>{{ $hotel->business_name }}</option>
                                 @endforeach
                             @endif
 
@@ -53,8 +53,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Asignar</button>
-                    <a href="{{ route('team.index') }}" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary">@lang('common.assign')</button>
+                    <a href="{{ route('team.index') }}" class="btn btn-secondary">@lang('common.back')</a>
                 </form>
             </div>
         </div>

@@ -110,9 +110,9 @@ export default {
     },
     methods: {
         updateServiceList() {
-            _.map(this.hotels, (headquarter) => {
-                if (headquarter.hash == this.hotel) {
-                    this.services = headquarter.services
+            _.map(this.hotels, (headquarters) => {
+                if (headquarters.hash == this.hotel) {
+                    this.services = headquarters.services
                     this.query = ''
                 }
             })

@@ -12,7 +12,6 @@ use App\Http\Requests\StoreHotel;
 use App\Http\Requests\UpdateHotel;
 use Illuminate\Support\Facades\Storage;
 
-# TODO: Completar el método show
 class HotelController extends Controller
 {
     /**
@@ -94,16 +93,18 @@ class HotelController extends Controller
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', Id::get($id))
-            ->with([
-                'main' => function ($query)
-                {
-                    $query->select(['id', 'business_name']);
-                }
-            ])->first(Fields::get('hotels'));
+            ->first(Fields::get('hotels'));
 
         if (empty($hotel)) {
             return abort(404);
         }
+
+        $hotel->load([
+            'main' => function ($query)
+            {
+                $query->select(['id', 'business_name']);
+            }
+        ]);
 
         return view('app.hotels.show', compact('hotel'));
     }

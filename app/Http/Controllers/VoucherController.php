@@ -26,9 +26,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-// TODO: Crear tabla de configuraciones
-// Agregar edad limite para ser adulto
-// Agregar Hora hotelera
+// TODO: Agregar edad limite para ser adulto
+// TODO: Agregar Hora hotelera
 class VoucherController extends Controller
 {
     /**

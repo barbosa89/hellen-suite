@@ -1,60 +1,73 @@
 @extends('layouts.panel')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('member', $member) }}
+@endsection
+
 @section('content')
-    <!-- TODO: Reparar la generación de dropdown menu por modulo"-->
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Hoteles',
-            'url' => route('hotels.index'),
+            'title' => trans('team.title'),
+            'url' => route('team.index'),
             'options' => [
                 [
-                    'option' => trans('common.edit'),
-                    'url' => route('hotels.edit', [
-                        'id' => Hashids::encode($hotel->id)
+                    'option' => trans('common.assign'),
+                    'url' => route('team.assign', [
+                        'id' => Hashids::encode($member->id)
                     ]),
+                    'permission' => 'team.edit'
                 ],
                 [
-                    'option' => $hotel->status ? trans('common.disable') : trans('common.enable'),
-                    'url' => route('hotels.toggle', [
-                        'id' => Hashids::encode($hotel->id)
+                    'option' => trans('users.permissions'),
+                    'url' => route('team.permissions', [
+                        'id' => Hashids::encode($member->id)
+                    ]),
+                    'permission' => 'team.edit'
+                ],
+                [
+                    'option' => trans('common.edit'),
+                    'url' => route('team.edit', [
+                        'id' => Hashids::encode($member->id)
                     ]),
                 ],
                 [
                     'type' => 'confirm',
                     'option' => trans('common.delete.item'),
-                    'url' => route('hotels.destroy', [
-                        'id' => Hashids::encode($hotel->id)
+                    'url' => route('team.destroy', [
+                        'id' => Hashids::encode($member->id)
                     ]),
                     'method' => 'DELETE'
                 ],
             ]
         ])
 
-        <div class="row mb-4">
-            <div class="col-2"><b>Hotel</b></div>
-            <div class="col-10">{{ $hotel->business_name }}</div>
-            <div class="col-2"><b>NIT</b></div>
-            <div class="col-10">{{ $hotel->tin }}</div>
-
-            @if (!empty($hotel->main))
-                <div class="col-2"><b>Hotel principal</b></div>
-                <div class="col-10">{{ $hotel->main->business_name }}</div>
-            @endif
-        </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-xs"></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.name'):</h3>
+                <p>{{ $member->name }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.email'):</h3>
+                <p>{{ $member->email }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('users.role'):</h3>
+                <p>{{ $member->roles->isNotEmpty() ? trans('users.' . $member->roles->first()->name) : trans('common.not.assigned') }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>Hotel:</h3>
+                <p>{{ $member->headquarters->isNotEmpty() ? $member->headquarters->first()->business_name : trans('common.not.assigned') }}</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <h3>@lang('common.chart')</h3>
-
-                <div class="well">
-                    <h4>Gráfica aquí</h4>
-                </div>
+                @include('partials.list', [
+                    'data' => $member->shifts,
+                    'listHeading' => 'app.shifts.list-heading',
+                    'listRow' => 'app.shifts.list-row',
+                    'where' => null
+                ])
             </div>
         </div>
 

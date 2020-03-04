@@ -89,6 +89,7 @@ return array (
   ),
   'verified' => 'El correo no ha sido verificado',
   'unique_per_user' => 'Ya hay un registro con la misma información',
-  'has_headquarter' => 'No tienes una sede asignada',
   'open_shift' => 'Ya hay un turno abierto',
+  'has_headquarters' => 'No tienes una sede asignada',
+  'headquarters' => 'Este número único, como hotel independiente, ya está en uso.',
 );

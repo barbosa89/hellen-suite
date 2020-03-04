@@ -19,4 +19,6 @@ return array (
   'accountant' => 'Accountant',
   'manager' => 'Manager',
   'team' => 'My team',
+  'role' => 'Role',
+  'permissions' => 'Permissions',
 );

@@ -12,9 +12,8 @@
                     'url' => route('rooms.create')
                 ],
                 [
-                    'option' => 'Volver',
-                    'url' => route('rooms.index'),
-                    'active' => true
+                    'option' => trans('common.back'),
+                    'url' => route('rooms.index')
                 ],
             ],
             'search' => [

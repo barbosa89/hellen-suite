@@ -126,9 +126,9 @@ export default {
     },
     methods: {
         updateAssetList() {
-            _.map(this.hotels, (headquarter) => {
-                if (headquarter.hash == this.hotel) {
-                    this.assets = headquarter.assets
+            _.map(this.hotels, (headquarters) => {
+                if (headquarters.hash == this.hotel) {
+                    this.assets = headquarters.assets
                     this.query = ''
                 }
             })

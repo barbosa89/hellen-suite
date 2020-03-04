@@ -109,9 +109,9 @@ export default {
     },
     methods: {
         updatePropList() {
-            _.map(this.hotels, (headquarter) => {
-                if (headquarter.hash == this.hotel) {
-                    this.props = headquarter.props
+            _.map(this.hotels, (headquarters) => {
+                if (headquarters.hash == this.hotel) {
+                    this.props = headquarters.props
                     this.query = ''
                 }
             })

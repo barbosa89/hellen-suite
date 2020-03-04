@@ -17,14 +17,14 @@
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 <a href="{{ route('team.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->roles->count() > 0 ? trans('users.' . $row->roles->first()->name) : 'No asignado' }}
+                    {{ $row->roles->isNotEmpty() ? trans('users.' . $row->roles->first()->name) : trans('common.not.assigned') }}
                 </a>
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 <a href="{{ route('team.show', ['id' => Hashids::encode($row->id)]) }}">
-                    {{ $row->headquarters->count() > 0 ? $row->headquarters->first()->business_name : 'No asignado' }}
+                    {{ $row->headquarters->isNotEmpty() ? $row->headquarters->first()->business_name : trans('common.not.assigned') }}
                 </a>
             </p>
         </div>
@@ -39,21 +39,21 @@
             @include('partials.dropdown-btn', [
                 'options' => [
                     [
-                        'option' => 'Ver',
+                        'option' => trans('common.seeMore'),
                         'url' => route('team.show', [
                             'id' => Hashids::encode($row->id)
                         ]),
                         'permission' => 'team.show'
                     ],
                     [
-                        'option' => 'Asignaciones',
+                        'option' => trans('common.assign'),
                         'url' => route('team.assign', [
                             'id' => Hashids::encode($row->id)
                         ]),
                         'permission' => 'team.edit'
                     ],
                     [
-                        'option' => 'Permisos',
+                        'option' => trans('users.permissions'),
                         'url' => route('team.permissions', [
                             'id' => Hashids::encode($row->id)
                         ]),

@@ -17,7 +17,6 @@ use App\Notifications\VerifyTeamMemberEmail;
 use Spatie\Permission\Models\Permission;
 use Vinkla\Hashids\Facades\Hashids;
 
-// TODO: Implementar la asignación de permisos directos a usuarios, con los roles se cargan módulos exclusivos
 class TeamController extends Controller
 {
     /**
@@ -36,8 +35,7 @@ class TeamController extends Controller
                 {
                     $query->select(['id', 'name']);
                 }
-            ])
-            ->get(Fields::get('users'));
+            ])->get(Fields::get('users'));
 
         return view('app.team.index', compact('team'));
     }
@@ -87,7 +85,7 @@ class TeamController extends Controller
         $member->boss()->associate(auth()->user()->id);
 
         if ($member->save()) {
-            // Assign the team member to work in a headquarter
+            // Assign the team member to work in a headquarters
             $member->headquarters()->attach(Id::get($request->hotel));
 
             // The hotel
@@ -117,10 +115,33 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //TODO: Implementar el show del team member
-        flash('Característica en construcción')->info();
+        $member = User::where('parent', auth()->user()->id)
+            ->where('id', Id::get($id))
+            ->first(Fields::get('users'));
 
-        return redirect()->route('team.index');
+        if (empty($member)) {
+            abort(404);
+        }
+
+        $member->load([
+            'headquarters' => function($query) {
+                $query->select(['id', 'business_name']);
+            },
+            'roles' => function ($query)
+            {
+                $query->select(['id', 'name']);
+            },
+            'shifts' => function ($query)
+            {
+                $query->select(Fields::get('shifts'));
+            },
+            'shifts.hotel' => function ($query)
+            {
+                $query->select(Fields::get('hotels'));
+            }
+        ]);
+
+        return view('app.team.show', compact('member'));
     }
 
     /**
@@ -191,13 +212,13 @@ class TeamController extends Controller
                 }
             ])->first(Fields::get('users'));
 
-        // Check if the team member has an assigned headquarter,
-        // if the team member has a headquarter, then all headquarters are queried
-        // except the current headquarter
-        $hasHeadquarter = $member->headquarters->isNotEmpty();
+        // Check if the team member has an assigned headquarters,
+        // if the team member has a headquarters, then all headquarters are queried
+        // except the current headquarters
+        $hasHeadquarters = $member->headquarters->isNotEmpty();
 
         $hotels = User::find(auth()->user()->id, ['id'])->hotels()
-            ->when($hasHeadquarter, function ($query) use ($member)
+            ->when($hasHeadquarters, function ($query) use ($member)
             {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
             })->get(Fields::get('hotels'));
@@ -220,7 +241,7 @@ class TeamController extends Controller
     }
 
     /**
-     * Attach hotel headquarter to the team member.
+     * Attach hotel headquarters to the team member.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -276,7 +297,7 @@ class TeamController extends Controller
     }
 
     /**
-     * Attach hotel headquarter to the team member.
+     * Attach hotel headquarters to the team member.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id

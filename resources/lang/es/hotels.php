@@ -13,4 +13,7 @@ return array (
   array (
     'name' => 'Razón social',
   ),
+  'headquarters' => 'Sede',
+  'note' => 'Te recomendamos cargar imágenes cuadradas, o de proporción 3/2, peso máximo 200 Kb. Si no agrega un logotipo, se mostrará uno por defecto.',
+  'independent' => 'Hotel independiente',
 );

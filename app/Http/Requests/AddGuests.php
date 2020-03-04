@@ -23,11 +23,10 @@ class AddGuests extends FormRequest
      */
     public function rules()
     {
-        // TODO: Agregar hashed_exists
         return [
-            'guest' => 'required|string',
-            'room' => 'required|string',
-            'responsible_adult' => 'nullable|string'
+            'guest' => 'required|string|hashed_exists:guests,id',
+            'room' => 'required|string|hashed_exists:rooms,id',
+            'responsible_adult' => 'nullable|string|hashed_exists:guests,id'
         ];
     }
 }

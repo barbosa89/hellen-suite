@@ -23,18 +23,10 @@ class GuestController extends Controller
      */
     public function index()
     {
-        // TODO: Limitar la consulta en index
         $guests = Guest::where('user_id', Id::parent())
-            ->where('status', true) // Guests in hotel
-            ->get(Fields::get('guests'));
-
-        $latest = Guest::where('user_id', Id::parent())
-            ->where('status', false) // Guests in hotel
             ->orderBy('created_at', 'DESC')
-            ->limit(60)
-            ->get(Fields::get('guests'));
-
-        $guests = $guests->merge($latest);
+            ->limit('200')
+            ->pagination(config('welkome.pagination'), Fields::get('guests'));
 
         return view('app.guests.index', compact('guests'));
     }

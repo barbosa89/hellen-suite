@@ -174,13 +174,17 @@ class RoomController extends Controller
         }
 
         $room->load([
+            'hotel' => function ($query)
+            {
+                $query->select(Fields::get('hotels'));
+            },
             'assets' => function ($query)
             {
-                $query->select('id', 'number', 'description', 'brand', 'model', 'reference');
+                $query->select(Fields::parsed('assets'));
             },
             'products' => function ($query)
             {
-                $query->select('id', 'description', 'brand', 'reference', 'price');
+                $query->select(Fields::parsed('products'));
             },
         ]);
 

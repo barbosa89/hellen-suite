@@ -70,7 +70,6 @@ class DiningServiceController extends Controller
      */
     public function create()
     {
-        // TODO: Limitar la sede del hotel
         $hotels = Hotel::where('user_id', Id::parent())
             ->whereStatus(true)
             ->get(Fields::get('hotels'));

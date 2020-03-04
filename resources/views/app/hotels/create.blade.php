@@ -94,10 +94,10 @@
                         <label for="type">@lang('common.type'):</label>
                         <select class="form-control selectpicker" name="type" id="type" required>
                             @if ($hotels->isEmpty())
-                                <option value="main" selected>Hotel independiente</option>
+                                <option value="main" selected>@lang('hotels.independent')</option>
                             @else
-                                <option value="main">Hotel independiente</option>
-                                <option value="headquarter">Sede de hotel</option>
+                                <option value="main">@lang('hotels.independent')</option>
+                                <option value="headquarters">@lang('hotels.headquarters')</option>
                             @endif
                         </select>
 
@@ -110,7 +110,7 @@
 
                     @if($hotels->isNotEmpty())
                         <div class="form-group{{ $errors->has('main_hotel') ? ' has-error' : '' }}" id="main-hotel" style="display:none;">
-                            <label for="main_hotel">Sede principal:</label>
+                            <label for="main_hotel">@lang('hotels.headquarters'):</label>
                             <select class="form-control selectpicker" name="main_hotel" id="main_hotel">
                                 @foreach ($hotels as $hotel)
                                     <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
@@ -126,7 +126,7 @@
                     @endif
 
                     <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
-                        <label for="image">Logo: <small>Se recomienda imágenes cuadradas o de proporción 3/2, peso máximo 200 Kb. Sino agrega un logotipo, se mostrará uno por defecto.</small></label>
+                        <label for="image">Logo: <small>@lang('hotels.note')</small></label>
                         <input type="file" class="form-control" name="image" id="image" value="{{ old('image') }}" accept="image/png, image/jpeg">
 
                         @if ($errors->has('image'))
@@ -154,7 +154,7 @@
 @section('scripts')
     <script type="text/javascript">
         $("#type").on('change', function(e) {
-            if (this.value == 'headquarter') {
+            if (this.value == 'headquarters') {
                 if ($('#main-hotel').is(':hidden')) {
                     $('#main-hotel').fadeIn();
                 }

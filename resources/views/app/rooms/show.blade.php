@@ -18,26 +18,26 @@
                     'option' => trans('common.options'),
                     'type' => 'dropdown',
                     'url' => [
-                        [
-                            'option' => trans('assets.add'),
-                            'url' => '#'
-                        ],
-                        [
-                            'option' => trans('products.add'),
-                            'url' => '#'
-                        ],
-                        [
-                            'option' => 'Asignar',
-                            'url' => '#'
-                        ],
-                        [
-                            'option' => 'Marca como inhabilitada',
-                            'url' => '#'
-                        ],
-                        [
-                            'option' => 'Está en mantenimiento',
-                            'url' => '#'
-                        ],
+                        // [
+                        //     'option' => trans('assets.add'),
+                        //     'url' => '#'
+                        // ],
+                        // [
+                        //     'option' => trans('products.add'),
+                        //     'url' => '#'
+                        // ],
+                        // [
+                        //     'option' => 'Asignar',
+                        //     'url' => '#'
+                        // ],
+                        // [
+                        //     'option' => 'Marca como inhabilitada',
+                        //     'url' => '#'
+                        // ],
+                        // [
+                        //     'option' => 'Está en mantenimiento',
+                        //     'url' => '#'
+                        // ],
                         [
                             'option' => trans('common.edit'),
                             'url' => route('rooms.edit', [
@@ -62,24 +62,69 @@
         ])
 
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-                <h2>@lang('rooms.room') No. {{ $room->number }}</h2>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>
+                    @lang('rooms.room') No.:
+                </h3>
+                <p>
+                    {{ $room->number }}
+
+                    @if ($room->is_suite)
+                        <i class="fas fa-star"></i>
+                    @endif
+                </p>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-                <h2>@lang('common.price'):</h2>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>Hotel:</h3>
+                <p>{{ $room->hotel->business_name }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.status'):</h3>
+                <p>
+                    @switch($room->status)
+                        @case('0')
+                            @lang('rooms.occupied')
+                            @break
+                        @case('1')
+                            @lang('rooms.available')
+                            @break
+                        @case('2')
+                            @lang('rooms.cleaning')
+                            @break
+                        @case('3')
+                            @lang('rooms.disabled')
+                            @break
+                        @case('4')
+                            @lang('rooms.maintenance')
+                            @break
+                    @endswitch
+                </p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.floor'):</h3>
+                <p>{{ $room->floor }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.price'):</h3>
                 <p>{{ number_format($room->price, 2, ',', '.') }}</p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-                <h3>@lang('common.description')</h3>
-                <p>{{ $room->description }}</p>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.min_price'):</h3>
+                <p>{{ number_format($room->min_price, 2, ',', '.') }}</p>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-                <h3>@lang('common.status')</h3>
-                <p>@include('partials.room-status', ['status' => $room->status])</p>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.capacity')</h3>
+                <p>{{ $room->capacity }}</p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
+                <h3>@lang('common.tax')</h3>
+                <p>{{ number_format($room->tax * 100, 0, ',', '.') }}%</p>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <h3>@lang('assets.title')</h3>

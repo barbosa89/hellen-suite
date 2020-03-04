@@ -20,12 +20,12 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h2 class="text-center">Nuevo integrante del equipo</h2>
+                <h2 class="text-center">@lang('team.new')</h2>
                 <form action="{{ route('team.store') }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
-                        <label for="hotel">Sede laboral:</label>
+                        <label for="hotel">@lang('team.workplace'):</label>
                         <select class="form-control selectpicker" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="name">Nombre:</label>
+                        <label for="name">@lang('common.name'):</label>
                         <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required maxlength="191" placeholder="Nombre del empleado">
 
                         @if ($errors->has('name'))
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label for="email">Correo electrónico:</label>
+                        <label for="email">@lang('common.email'):</label>
                         <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" maxlength="100" placeholder="Correo electrónico" required>
 
                         @if ($errors->has('email'))
@@ -94,7 +94,7 @@
 @section('scripts')
     <script type="text/javascript">
         $("#type").on('change', function(e) {
-            if (this.value == 'headquarter') {
+            if (this.value == 'headquarters') {
                 if ($('#main-hotel').is(':hidden')) {
                     $('#main-hotel').fadeIn();
                 }

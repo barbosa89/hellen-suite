@@ -89,6 +89,7 @@ return array (
   ),
   'verified' => 'The :attribute has not been verified',
   'unique_per_user' => 'There is already a record with the same information',
-  'has_headquarter' => 'The team member does not have an assigned headquarter',
   'open_shift' => 'There is already an open shift',
+  'has_headquarters' => 'The team member does not have an assigned headquarter',
+  'headquarters' => 'This unique number, as an independent hotel, is already in use.',
 );

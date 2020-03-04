@@ -22,7 +22,7 @@ class VerifyTeamMemberEmail extends Notification
     public $user;
 
     /**
-     * The hotel headquarter
+     * The hotel headquarters
      *
      * @var App\Welkome\Hotel
      */

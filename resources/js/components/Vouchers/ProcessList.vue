@@ -182,10 +182,10 @@ export default {
     },
     methods: {
         updateVoucherList() {
-            _.map(this.hotels, (headquarter) => {
+            _.map(this.hotels, (headquarters) => {
                 // Filter by current hotel hash
-                if (headquarter.hash == this.hotel) {
-                    this.vouchers = headquarter.vouchers
+                if (headquarters.hash == this.hotel) {
+                    this.vouchers = headquarters.vouchers
 
                     this.hasRooms()
                 }
@@ -204,8 +204,8 @@ export default {
             return room.pivot.enabled && moment(room.pivot.end).isBefore(moment().add(1, 'days').format('YYYY-MM-DD'))
         },
         getSelectedHotel() {
-            return _.find(this.hotels, (headquarter) => {
-                return headquarter.hash == this.hotel;
+            return _.find(this.hotels, (headquarters) => {
+                return headquarters.hash == this.hotel;
             })
         },
         calculatePaymentPercentage(voucher) {

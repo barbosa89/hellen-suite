@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Check if the hotel to be stored is an independent headquarters or hotel
-        Validator::extend('headquarter', function ($attribute, $value, $parameters, $validator) {
+        Validator::extend('headquarters', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
             if (isset($data['type'])) {
@@ -59,8 +59,8 @@ class AppServiceProvider extends ServiceProvider
                     return $hotel->count() === 0;
                 }
 
-                // Hotel is a headquarter
-                if ($data['type'] == 'headquarter') {
+                // Hotel is a headquarters
+                if ($data['type'] == 'headquarters') {
                     return $hotel->count() === 1;
                 }
             }
@@ -68,8 +68,8 @@ class AppServiceProvider extends ServiceProvider
             return false;
         });
 
-        // Check if the receptionist has an assigned headquarter
-        Validator::extend('has_headquarter', function ($attribute, $value, $parameters, $validator) {
+        // Check if the receptionist has an assigned headquarters
+        Validator::extend('has_headquarters', function ($attribute, $value, $parameters, $validator) {
             $user = User::where('email', $value)
                 ->whereHas('roles', function ($query)
                 {
