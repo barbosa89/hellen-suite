@@ -13,14 +13,14 @@
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
         <h2>@lang('common.brand'):</h2>
-        {{ $product->brand ?? 'No definida' }}
+        {{ $product->brand ?? trans('common.noData') }}
     </div>
 </div>
 
 <div class="row mb-4">
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
         <h3>@lang('common.reference'):</h3>
-        <p>{{ $product->reference ?? 'No definida' }}</p>
+        <p>{{ $product->reference ?? trans('common.noData') }}</p>
     </div>
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
         <h3>@lang('common.quantity'):</h3>

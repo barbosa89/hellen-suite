@@ -37,10 +37,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('vehicles.create')
 		->middleware('permission:vehicles.create');
 
-	Route::get('vehicles/{id}', 'VehicleController@show')
-		->name('vehicles.show')
-		->middleware('permission:vehicles.show');
-
 	Route::get('vehicles', 'VehicleController@index')
 		->name('vehicles.index')
 		->middleware('permission:vehicles.index');

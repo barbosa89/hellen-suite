@@ -11,6 +11,7 @@ use App\Helpers\{Id, Input, Fields, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
 use App\Welkome\Voucher;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
@@ -147,7 +148,24 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        return redirect()->route('companies.index');
+        $company = Company::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->first(Fields::get('companies'));
+
+        if (empty($company)) {
+            abort(404);
+        }
+
+        $vouchers = Voucher::where('user_id', Id::parent())
+            ->where('company_id', $company->id)
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select('id', 'business_name');
+                }
+            ])->paginate(config('welkome.paginate'), Fields::get('vouchers'));
+
+        return view('app.companies.show', compact('company', 'vouchers'));
     }
 
     /**
