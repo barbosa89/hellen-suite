@@ -332,3 +332,44 @@ function std_search(event, query, params) {
         });
     }
 }
+
+/**
+ * Generate standart bar chart.
+ *
+ * @param string id
+ * @param array datasets
+ * @return void
+ */
+function generate_chart(id, datasets) {
+    let ctx = document.getElementById(id);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                translator.trans('months.january'),
+                translator.trans('months.february'),
+                translator.trans('months.march'),
+                translator.trans('months.april'),
+                translator.trans('months.may'),
+                translator.trans('months.june'),
+                translator.trans('months.july'),
+                translator.trans('months.august'),
+                translator.trans('months.september'),
+                translator.trans('months.october'),
+                translator.trans('months.november'),
+                translator.trans('months.december')
+            ],
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
