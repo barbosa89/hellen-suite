@@ -18,7 +18,7 @@ class CreateShiftVoucherTable extends Migration
             $table->bigInteger('shift_id')->unsigned();
 
             $table->foreign('voucher_id')->references('id')->on('vouchers')
-            ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('shift_id')->references('id')->on('shifts')
                 ->onUpdate('cascade')->onDelete('cascade');
 

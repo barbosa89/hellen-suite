@@ -12,4 +12,5 @@ return array (
   'left' => 'El huésped salió del hotel',
   'registerEntry' => 'Registrar entrada',
   'registerExit' => 'Registrar salida',
+  'hosted' => 'Hospedados',
 );

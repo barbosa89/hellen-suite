@@ -42,7 +42,7 @@
                         ],
                         [
                             'id' => ucfirst(trans('common.actives')),
-                            'title' => 'Hospedados',
+                            'title' => trans('guests.hosted'),
                             'where' => [
                                 'field' => 'status',
                                 'values' => [1]

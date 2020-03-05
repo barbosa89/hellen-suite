@@ -12,4 +12,5 @@ return array (
   'left' => 'The guest left the hotel',
   'registerEntry' => 'Register entry',
   'registerExit' => 'Register exit',
+  'hosted' => 'Hosted',
 );

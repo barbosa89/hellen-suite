@@ -575,7 +575,8 @@ export default {
             "entered": "The guest entered the hotel",
             "left": "The guest left the hotel",
             "registerEntry": "Register entry",
-            "registerExit": "Register exit"
+            "registerExit": "Register exit",
+            "hosted": "Hosted"
         },
         "payments": {
             "payment": "Payment",
@@ -1296,7 +1297,8 @@ export default {
             "entered": "El huésped ingresó al hotel",
             "left": "El huésped salió del hotel",
             "registerEntry": "Registrar entrada",
-            "registerExit": "Registrar salida"
+            "registerExit": "Registrar salida",
+            "hosted": "Hospedados"
         },
         "payments": {
             "title": "Pagos",

@@ -38,8 +38,20 @@ class ShiftController extends Controller
     {
         $shift = Shift::where('team_member', auth()->user()->id)
             ->where('id', Id::get($id))
-            ->with(['vouchers', 'hotel'])
-            ->first();
+            ->with([
+                'vouchers' => function($query)
+                {
+                    $query->select(Fields::get('vouchers'));
+                },
+                'vouchers.payments' => function($query)
+                {
+                    $query->select(Fields::get('payments'));
+                },
+                'hotel' => function($query)
+                {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('shifts'));
 
         return view('app.shifts.show', compact('shift'));
     }
