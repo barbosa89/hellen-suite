@@ -140,7 +140,9 @@ class DiningServiceController extends Controller
             }
         ]);
 
-        $data = Chart::data($service->vouchers);
+        $data = Chart::create($service->vouchers)
+            ->countItems()
+            ->get();
 
         return view('app.dining.show', compact('service', 'data'));
     }

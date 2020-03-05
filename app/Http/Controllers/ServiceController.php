@@ -128,7 +128,9 @@ class ServiceController extends Controller
             }
         ]);
 
-        $data = Chart::data($service->vouchers);
+        $data = Chart::create($service->vouchers)
+            ->countItems()
+            ->get();
 
         return view('app.services.show', compact('service', 'data'));
     }

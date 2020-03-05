@@ -47,14 +47,55 @@
         <div class="row">
             <div class="col-md-12">
                 @include('partials.list', [
-                    'data' => $vouchers,
+                    'data' => $vouchers->take(20),
                     'listHeading' => 'app.companies.vouchers.list-heading',
                     'listRow' => 'app.companies.vouchers.list-row'
                 ])
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+
         @include('partials.modal-confirm')
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    translator.trans('months.january'),
+                    translator.trans('months.february'),
+                    translator.trans('months.march'),
+                    translator.trans('months.april'),
+                    translator.trans('months.may'),
+                    translator.trans('months.june'),
+                    translator.trans('months.july'),
+                    translator.trans('months.august'),
+                    translator.trans('months.september'),
+                    translator.trans('months.october'),
+                    translator.trans('months.november'),
+                    translator.trans('months.december')
+                ],
+                datasets: Array.from({!! $data->toJson() !!})
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 @endsection

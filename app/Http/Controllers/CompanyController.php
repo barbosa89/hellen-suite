@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Welkome\Company;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Id, Input, Fields, Response};
+use App\Helpers\{Chart, Id, Input, Fields, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
 use App\Welkome\Voucher;
@@ -158,14 +158,20 @@ class CompanyController extends Controller
 
         $vouchers = Voucher::where('user_id', Id::parent())
             ->where('company_id', $company->id)
+            ->whereYear('vouchers.created_at', date('Y'))
+            ->orderBy('vouchers.created_at', 'DESC')
             ->with([
                 'hotel' => function ($query)
                 {
                     $query->select('id', 'business_name');
                 }
-            ])->paginate(config('welkome.paginate'), Fields::get('vouchers'));
+            ])->get(Fields::get('vouchers'));
 
-        return view('app.companies.show', compact('company', 'vouchers'));
+        $data = Chart::create($vouchers)
+            ->addValues()
+            ->get();
+
+        return view('app.companies.show', compact('company', 'vouchers', 'data'));
     }
 
     /**

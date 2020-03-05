@@ -186,7 +186,9 @@ class ProductController extends Controller
             }
         ]);
 
-        $data = Chart::data($product->vouchers);
+        $data = Chart::create($product->vouchers)
+            ->countItems()
+            ->get();
 
         return view('app.products.show', compact('product', 'data'));
     }

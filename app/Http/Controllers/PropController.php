@@ -195,7 +195,9 @@ class PropController extends Controller
             }
         ]);
 
-        $data = Chart::data($prop->vouchers);
+        $data = Chart::create($prop->vouchers)
+            ->countItems()
+            ->get();
 
         return view('app.props.show', compact('prop', 'data'));
     }
