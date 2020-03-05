@@ -156,22 +156,24 @@ class CompanyController extends Controller
             abort(404);
         }
 
-        $vouchers = Voucher::where('user_id', Id::parent())
-            ->where('company_id', $company->id)
-            ->whereYear('vouchers.created_at', date('Y'))
-            ->orderBy('vouchers.created_at', 'DESC')
-            ->with([
-                'hotel' => function ($query)
-                {
-                    $query->select('id', 'business_name');
-                }
-            ])->get(Fields::get('vouchers'));
+        $company->load([
+            'vouchers' => function ($query)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->orderBy('vouchers.created_at', 'DESC');
+            },
+            'vouchers.hotel' => function ($query)
+            {
+                $query->select('id', 'business_name');
+            }
+        ]);
 
-        $data = Chart::create($vouchers)
+        $data = Chart::create($company->vouchers)
             ->addValues()
             ->get();
 
-        return view('app.companies.show', compact('company', 'vouchers', 'data'));
+        return view('app.companies.show', compact('company', 'data'));
     }
 
     /**

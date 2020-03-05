@@ -60,7 +60,7 @@ class Chart
                 return $voucher->created_at->month;
             }
         ]);
-
+            // dd($this->data);
         return $this;
     }
 
@@ -123,8 +123,7 @@ class Chart
     {
         $this->process(function ($vouchers, $voucher)
         {
-            // Count vouchers by month
-            return count($vouchers);
+            return 1;
         });
 
         return $this;
@@ -141,6 +140,22 @@ class Chart
         {
             // Add voucher value
             return (float) $voucher['value'];
+        });
+
+        return $this;
+    }
+
+    /**
+     * Add the voucher item value.
+     *
+     * @return \App\Helpers\Chart
+     */
+    public function addItemValues()
+    {
+        $this->process(function ($vouchers, $voucher)
+        {
+            // Add voucher item value
+            return (float) $voucher['pivot']['value'];
         });
 
         return $this;

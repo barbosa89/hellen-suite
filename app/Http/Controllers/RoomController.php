@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Id, Input, Fields};
+use App\Helpers\{Chart, Id, Input, Fields};
 use App\Http\Requests\ChangeRoomStatus;
 use Illuminate\Support\Collection;
 
@@ -186,9 +186,20 @@ class RoomController extends Controller
             {
                 $query->select(Fields::parsed('products'));
             },
+            'vouchers' => function ($query)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->orderBy('vouchers.created_at', 'DESC')
+                    ->withPivot('value');
+            }
         ]);
 
-        return view('app.rooms.show', compact('room'));
+        $data = Chart::create($room->vouchers)
+            ->addItemValues()
+            ->get();
+
+        return view('app.rooms.show', compact('room', 'data'));
     }
 
     /**

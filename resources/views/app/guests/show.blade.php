@@ -53,11 +53,12 @@
                         @case('f')
                             <i class="fas fa-2x fa-female"></i>
                             @break
-                        @case(2)
+                        @case('m')
                             <i class="fas fa-2x fa-male"></i>
                             @break
-                        @default
+                        @case('x')
                             <i class="fas fa-2x fa-rainbow"></i>
+                            @break
                     @endswitch
                 </p>
             </div>
@@ -94,17 +95,67 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                    @lang('transactions.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                    @lang('common.chart')
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                 @include('partials.list', [
-                    'data' => $guest->vouchers,
-                    'listHeading' => 'app.guests.vouchers.list-heading',
-                    'listRow' => 'app.guests.vouchers.list-row'
+                    'data' => $guest->vouchers->take(20),
+                    'listHeading' => 'app.companies.vouchers.list-heading',
+                    'listRow' => 'app.companies.vouchers.list-row'
                 ])
+            </div>
+            <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+                <canvas id="myChart"></canvas>
             </div>
         </div>
 
         @include('partials.modal-confirm')
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    translator.trans('months.january'),
+                    translator.trans('months.february'),
+                    translator.trans('months.march'),
+                    translator.trans('months.april'),
+                    translator.trans('months.may'),
+                    translator.trans('months.june'),
+                    translator.trans('months.july'),
+                    translator.trans('months.august'),
+                    translator.trans('months.september'),
+                    translator.trans('months.october'),
+                    translator.trans('months.november'),
+                    translator.trans('months.december')
+                ],
+                datasets: Array.from({!! $data->toJson() !!})
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 @endsection

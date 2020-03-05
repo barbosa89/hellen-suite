@@ -6,7 +6,7 @@ use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Customer, Id, Input, Fields};
+use App\Helpers\{Chart, Customer, Id, Input, Fields};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
@@ -26,7 +26,7 @@ class GuestController extends Controller
         $guests = Guest::where('user_id', Id::parent())
             ->orderBy('created_at', 'DESC')
             ->limit('200')
-            ->pagination(config('welkome.pagination'), Fields::get('guests'));
+            ->paginate(config('welkome.paginate'), Fields::get('guests'));
 
         return view('app.guests.index', compact('guests'));
     }
@@ -219,11 +219,13 @@ class GuestController extends Controller
         $guest->load([
             'vouchers' => function ($query)
             {
-                $query->select(Fields::get('vouchers'));
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->orderBy('vouchers.created_at', 'DESC');
             },
             'vouchers.hotel' => function ($query)
             {
-                $query->select(Fields::get('hotels'));
+                $query->select('id', 'business_name');
             },
             'country' => function ($query)
             {
@@ -231,7 +233,11 @@ class GuestController extends Controller
             },
         ]);
 
-        return view('app.guests.show', compact('guest'));
+        $data = Chart::create($guest->vouchers)
+            ->countVouchers()
+            ->get();
+
+        return view('app.guests.show', compact('guest', 'data'));
     }
 
     /**

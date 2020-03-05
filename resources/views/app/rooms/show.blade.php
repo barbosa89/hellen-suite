@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
                 <h3>@lang('common.price'):</h3>
                 <p>{{ number_format($room->price, 2, ',', '.') }}</p>
@@ -125,10 +125,40 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('assets.title')</h3>
-
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                    @lang('transactions.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                    @lang('common.chart')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="assets-tab" data-toggle="tab" href="#assets" role="tab" aria-controls="assets" aria-selected="false">
+                    @lang('assets.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="false">
+                    @lang('products.title')
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
+                @include('partials.list', [
+                    'data' => $room->vouchers->take(20),
+                    'listHeading' => 'app.rooms.vouchers.list-heading',
+                    'listRow' => 'app.rooms.vouchers.list-row'
+                ])
+            </div>
+            <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="assets-tab">
                 @include('partials.list', [
                     'data' => $room->assets,
                     'listHeading' => 'app.assets.list-heading',
@@ -136,15 +166,11 @@
                     'where' => null,
                 ])
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>@lang('products.title')</h3>
-
+            <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
                 @include('partials.list', [
-                    'data' => $room->assets,
-                    'listHeading' => 'app.assets.list-heading',
-                    'listRow' => 'app.assets.list-row',
+                    'data' => $room->products,
+                    'listHeading' => 'app.products.list-heading',
+                    'listRow' => 'app.products.list-row',
                     'where' => null,
                 ])
             </div>
@@ -153,4 +179,39 @@
         @include('partials.modal-confirm')
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    translator.trans('months.january'),
+                    translator.trans('months.february'),
+                    translator.trans('months.march'),
+                    translator.trans('months.april'),
+                    translator.trans('months.may'),
+                    translator.trans('months.june'),
+                    translator.trans('months.july'),
+                    translator.trans('months.august'),
+                    translator.trans('months.september'),
+                    translator.trans('months.october'),
+                    translator.trans('months.november'),
+                    translator.trans('months.december')
+                ],
+                datasets: Array.from({!! $data->toJson() !!})
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 @endsection

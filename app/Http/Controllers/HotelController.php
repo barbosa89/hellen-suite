@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Chart;
 use App\User;
 use App\Helpers\Id;
 use App\Helpers\Input;
@@ -103,10 +104,20 @@ class HotelController extends Controller
             'main' => function ($query)
             {
                 $query->select(['id', 'business_name']);
+            },
+            'vouchers' => function ($query)
+            {
+                $query->select(Fields::parsed('vouchers'))
+                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->orderBy('vouchers.created_at', 'DESC');
             }
         ]);
 
-        return view('app.hotels.show', compact('hotel'));
+        $data = Chart::create($hotel->vouchers)
+            ->addValues()
+            ->get();
+
+        return view('app.hotels.show', compact('hotel', 'data'));
     }
 
     /**

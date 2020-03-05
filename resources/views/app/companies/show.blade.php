@@ -44,18 +44,27 @@
 
         @include('app.companies.info')
 
-        <div class="row">
-            <div class="col-md-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                    @lang('transactions.title')
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                    @lang('common.chart')
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="vouchers" role="tabpanel" aria-labelledby="vouchers-tab">
                 @include('partials.list', [
-                    'data' => $vouchers->take(20),
+                    'data' => $company->vouchers->take(20),
                     'listHeading' => 'app.companies.vouchers.list-heading',
                     'listRow' => 'app.companies.vouchers.list-row'
                 ])
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
+            <div class="tab-pane fade" id="charts" role="tabpanel" aria-labelledby="charts-tab">
                 <canvas id="myChart"></canvas>
             </div>
         </div>
