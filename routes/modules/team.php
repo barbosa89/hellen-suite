@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['auth', 'role:manager', 'verified']], function() {
 	Route::post('team/members/{id}/permissions', 'TeamController@storePermissions')
 		->name('team.permissions.store');

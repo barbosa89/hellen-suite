@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::get('companies/export', 'CompanyController@export')
 		->name('companies.export')

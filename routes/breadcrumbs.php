@@ -1,5 +1,6 @@
 <?php
 
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Vinkla\Hashids\Facades\Hashids;
 
 // Home

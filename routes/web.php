@@ -11,8 +11,10 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/test', function () {
-    abort(403);
+    dd(403);
 });
 
 Route::get('/', function () {

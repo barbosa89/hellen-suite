@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::delete('vouchers/{voucher}/payments/{id}', 'PaymentController@destroy')
 		->name('payments.destroy')

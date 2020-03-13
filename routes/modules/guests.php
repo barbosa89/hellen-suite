@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::get('guests/{id}/toggle/{voucher}', 'GuestController@toggle')
         ->name('guests.toggle')

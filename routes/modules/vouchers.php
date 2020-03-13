@@ -1,10 +1,8 @@
 <?php
 
-Route::group(['middleware' => ['auth', 'verified']], function() {
-    // Route::get('vouchers/{id}/single/view', 'VoucherController@showSingle')
-    //     ->name('vouchers.show')
-    //     ->middleware(['permission:vouchers.show']);
+use Illuminate\Support\Facades\Route;
 
+Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('vouchers/{id}/rooms/{room}/deliver', 'VoucherController@deliverRoom')
         ->name('vouchers.rooms.deliver')
         ->middleware(['permission:vouchers.edit']);
