@@ -14,23 +14,22 @@
                 <div class="row">
                     <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
                         <div class="btn-group pull-left" role="group" id="filters">
-                            <!-- <div v-if="$can('rooms.create')">Create rooms.</div> -->
-                            <button type="button" class="btn btn-default pressed" id="all" @click.prevent="showAll" title="Todo">
+                            <button type="button" class="btn btn-default pressed" id="all" @click.prevent="showAll" :title="this.$root.$t('common.all')">
                                 <i class="fa fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="available" @click.prevent="showAvailable" title="Disponible">
+                            <button type="button" class="btn btn-default" id="available" @click.prevent="showAvailable" :title="this.$root.$t('rooms.available')">
                                 <i class="fa fa-check-circle"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" title="Ocupado">
+                            <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" :title="this.$root.$t('rooms.occupied')">
                                 <i class="fa fa-tags"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" title="En limpieza">
+                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" :title="this.$root.$t('rooms.cleaning')">
                                 <i class="fa fa-broom"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" title="En mantenimiento">
+                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" :title="this.$root.$t('rooms.maintenance')">
                                 <i class="fa fa-wrench"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" title="Inhabilitado">
+                            <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" :title="this.$root.$t('rooms.disabled')">
                                 <i class="fa fa-lock"></i>
                             </button>
                         </div>
@@ -96,32 +95,32 @@
             <template slot-scope="child">
                 <li>
                     <a href="#" @click.prevent="assign($event.target.innerText, child.data)">
-                        Asignar
+                        {{ $t('common.assign') }}
                     </a>
                 </li>
                 <li>
                     <a href="#" @click.prevent="select($event.target.innerText, child.data)">
-                        Seleccionar
+                        {{ $t('common.select') }}
                     </a>
                 </li>
                 <li>
                     <a href="#" @click.prevent="enable($event.target.innerText, child.data)">
-                        Habilitar
+                        {{ $t('common.enable') }}
                     </a>
                 </li>
                 <li>
                     <a href="#" @click.prevent="disable($event.target.innerText, child.data)">
-                        Deshabilitar
+                        {{ $t('common.disable') }}
                     </a>
                 </li>
                 <li>
                     <a href="#" @click.prevent="changeStatusToMaintenance($event.target.innerText, child.data)">
-                        Marcar en mantenimiento
+                        {{ $t('rooms.maintenance') }}
                     </a>
                 </li>
                 <li>
                     <a href="#" @click.prevent="show($event.target.innerText, child.data)">
-                        Ver detalles
+                        {{ $t('common.show') }}
                     </a>
                 </li>
             </template>

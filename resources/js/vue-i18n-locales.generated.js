@@ -513,7 +513,9 @@ export default {
             },
             "not": {
                 "assigned": "Not assigned"
-            }
+            },
+            "show": "Show",
+            "select": "Select room"
         },
         "rooms": {
             "title": "Rooms",
@@ -708,7 +710,12 @@ export default {
             "show": "Show",
             "close": "Close",
             "losses": "Losses",
-            "open": "Open"
+            "open": "Open",
+            "discard": "Discard",
+            "entry": "Entry",
+            "loss": "Loss",
+            "sale": "Sale",
+            "vouchers": "Vouchers"
         }
     },
     "es": {
@@ -1236,7 +1243,9 @@ export default {
             },
             "not": {
                 "assigned": "No asignado"
-            }
+            },
+            "show": "Mostrar",
+            "select": "Seleccionar"
         },
         "rooms": {
             "title": "Habitaciones",
@@ -1431,7 +1440,12 @@ export default {
             "load": "Cargar",
             "close": "Cerrar",
             "open": "Abrir",
-            "losses": "Pérdidas"
+            "losses": "Pérdidas",
+            "sale": "Venta",
+            "entry": "Entrada",
+            "loss": "Pérdida",
+            "discard": "Salida",
+            "vouchers": "Recibos"
         }
     }
 }

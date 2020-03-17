@@ -8,7 +8,7 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Mi equipo',
+            'title' => trans('users.team'),
             'url' => route('team.index'),
             'options' => [
                 [
@@ -41,7 +41,7 @@
 
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">@lang('common.name'):</label>
-                        <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required maxlength="191" placeholder="Nombre del empleado">
+                        <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required maxlength="191" placeholder="{{ trans('common.name') }}">
 
                         @if ($errors->has('name'))
                             <span class="help-block">
@@ -52,7 +52,7 @@
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email">@lang('common.email'):</label>
-                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" maxlength="100" placeholder="Correo electrónico" required>
+                        <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" maxlength="100" placeholder="{{ trans('common.email') }}" required>
 
                         @if ($errors->has('email'))
                             <span class="help-block">
@@ -77,7 +77,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
                 </form>
             </div>
         </div>

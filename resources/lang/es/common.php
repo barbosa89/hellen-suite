@@ -164,4 +164,6 @@ return array (
   array (
     'assigned' => 'No asignado',
   ),
+  'show' => 'Mostrar',
+  'select' => 'Seleccionar',
 );

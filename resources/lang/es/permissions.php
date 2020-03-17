@@ -12,4 +12,9 @@ return array (
   'close' => 'Cerrar',
   'open' => 'Abrir',
   'losses' => 'Pérdidas',
+  'sale' => 'Venta',
+  'entry' => 'Entrada',
+  'loss' => 'Pérdida',
+  'discard' => 'Salida',
+  'vouchers' => 'Recibos',
 );

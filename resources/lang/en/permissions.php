@@ -12,4 +12,9 @@ return array (
   'close' => 'Close',
   'losses' => 'Losses',
   'open' => 'Open',
+  'discard' => 'Discard',
+  'entry' => 'Entry',
+  'loss' => 'Loss',
+  'sale' => 'Sale',
+  'vouchers' => 'Vouchers',
 );

@@ -8,7 +8,7 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Mi equipo',
+            'title' => trans('users.team'),
             'url' => route('team.index'),
             'options' => [
                 [

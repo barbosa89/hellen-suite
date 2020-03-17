@@ -164,4 +164,6 @@ return array (
   array (
     'assigned' => 'Not assigned',
   ),
+  'show' => 'Show',
+  'select' => 'Select room',
 );

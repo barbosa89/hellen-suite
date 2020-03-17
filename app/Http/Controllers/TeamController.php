@@ -6,6 +6,7 @@ use App\User;
 use App\Helpers\Id;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
+use App\Helpers\Permissions;
 use App\Helpers\Random;
 use App\Http\Requests\AssignTeamMember;
 use Illuminate\Support\Str;
@@ -93,6 +94,9 @@ class TeamController extends Controller
 
             //Assign role
             $member->assignRole($request->role);
+
+            // Assign permissions
+            $member->syncPermissions(Permissions::list($request->role));
 
             // Send notification
             $member->notify(new VerifyTeamMemberEmail($member, $hotel, $password));
