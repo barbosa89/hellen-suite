@@ -37,6 +37,23 @@ class PermissionsTableSeeder extends Seeder
             ]);
         }
 
+        // Shift permissions
+
+        Permission::insert([
+            [
+                'name' => 'shifts.index',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+            [
+                'name' => 'shifts.create',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+            [
+                'name' => 'shifts.show',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+        ]);
+
         Permission::create([
             'name' => 'payments.close',
             'guard_name' => config('auth.defaults.guard')
@@ -49,11 +66,6 @@ class PermissionsTableSeeder extends Seeder
 
         Permission::create([
             'name' => 'vouchers.open',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
-
-        Permission::create([
-            'name' => 'vouchers.losses',
             'guard_name' => config('auth.defaults.guard')
         ]);
 
@@ -91,7 +103,7 @@ class PermissionsTableSeeder extends Seeder
 
         // Only for dining service
         Permission::create([
-            'name' => 'dining.sales',
+            'name' => 'dining.sale',
             'guard_name' => config('auth.defaults.guard')
         ]);
 

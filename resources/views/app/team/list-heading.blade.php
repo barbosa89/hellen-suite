@@ -12,7 +12,7 @@
         <h5>Hotel</h5>
     </div>
     <div class="col-xs-12 col-sm-1 col-md-2 col-lg-2">
-        <h5>Verificación</h5>
+        <h5>@lang('users.verification')</h5>
     </div>
     <div class="col-xs-12 col-sm-1 col-md-2 col-lg-2">
         <h5>{{ trans('common.options') }}</h5>

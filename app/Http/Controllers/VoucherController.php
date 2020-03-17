@@ -2433,7 +2433,7 @@ class VoucherController extends Controller
         DB::transaction(function () use (&$status, &$voucher) {
             try {
                 $voucher->open = false;
-                $voucher->losses = true;
+                $voucher->type = 'loss';
 
                 if ($voucher->save()) {
                     // Change Room status to cleaning

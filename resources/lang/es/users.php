@@ -21,4 +21,5 @@ return array (
   'team' => 'Mi equipo',
   'role' => 'Rol',
   'permissions' => 'Permisos',
+  'cashier' => 'Cajero',
 );

@@ -29,7 +29,7 @@
     @if ($voucher->type == 'lodging')
         <div class="data-box">
             <h5 class="font-weight-bold text-uppercase">@lang('payments.status')</h5>
-            @if ($voucher->losses)
+            @if ($voucher->type == 'loss')
                 <h6 class="font-weight-light">@lang('vouchers.losses')</h6>
                 <p>$ {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, '.', ',') }}</p>
             @else

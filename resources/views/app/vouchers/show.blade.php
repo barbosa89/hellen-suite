@@ -22,7 +22,7 @@
                     'url' => route('payments.index', [
                             'voucher' => Hashids::encode($voucher->id)
                         ]),
-                    'show' => !$voucher->losses,
+                    'show' => !$voucher->type != 'loss',
                     'permission' => 'payments.index'
                 ],
                 [

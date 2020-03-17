@@ -43,18 +43,19 @@ class UsersTableSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Recep',
-            'email' => 'recep@welkome.com',
-            'password' => bcrypt('recep'),
+            'name' => 'Receptionist',
+            'email' => 'receptionist@welkome.com',
+            'password' => bcrypt('receptionist'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
         ]);
 
         User::create([
-            'name' => 'Táchiras',
-            'email' => 'tachira@welkome.com',
-            'password' => bcrypt('tachira'),
+            'name' => 'cashier',
+            'email' => 'cashier@welkome.com',
+            'password' => bcrypt('cashier'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'parent' => 2
         ]);
     }
 }

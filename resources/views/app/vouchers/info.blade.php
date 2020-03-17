@@ -101,7 +101,7 @@
                         </span>
                     </div>
                     <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
-                        @if ($voucher->losses)
+                        @if ($voucher->type == 'loss')
                             <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
                                 {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, ',', '.') }}

@@ -169,7 +169,8 @@ export default {
             "manager": "Manager",
             "team": "My team",
             "role": "Role",
-            "permissions": "Permissions"
+            "permissions": "Permissions",
+            "cashier": "Cashier"
         },
         "landing": {
             "about": "About",
@@ -367,7 +368,7 @@ export default {
             "address": "Address",
             "email": "Email address",
             "lastName": "Last name",
-            "name": "Nombre",
+            "name": "Name",
             "password": "Password",
             "phone": "Phone number",
             "emailOnly": "Email",
@@ -891,7 +892,8 @@ export default {
             "accountant": "Contador",
             "team": "Mi equipo",
             "role": "Rol",
-            "permissions": "Permisos"
+            "permissions": "Permisos",
+            "cashier": "Cajero"
         },
         "landing": {
             "home": "Inicio",

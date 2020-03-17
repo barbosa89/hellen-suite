@@ -21,4 +21,5 @@ return array (
   'team' => 'My team',
   'role' => 'Role',
   'permissions' => 'Permissions',
+  'cashier' => 'Cashier',
 );

@@ -29,7 +29,7 @@ class CreateVouchersTable extends Migration
             // 1: active
             $table->boolean('status')->default(true);
             $table->boolean('payment_status')->default(false);
-            $table->boolean('losses')->default(false);
+            // $table->boolean('losses')->default(false);
             $table->boolean('reservation')->default(false);
 
             // Type

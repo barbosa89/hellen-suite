@@ -10,7 +10,7 @@ return array (
   'address' => 'Address',
   'email' => 'Email address',
   'lastName' => 'Last name',
-  'name' => 'Nombre',
+  'name' => 'Name',
   'password' => 'Password',
   'phone' => 'Phone number',
   'emailOnly' => 'Email',
