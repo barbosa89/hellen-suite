@@ -1,7 +1,7 @@
 @include('partials.dropdown-btn', [
     'options' => [
         [
-            'option' => trans('common.seeMore'),
+            'option' => trans('common.show'),
             'url' => route('rooms.show', ['id' => Hashids::encode($row->id)]),
         ],
         [

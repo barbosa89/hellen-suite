@@ -12,17 +12,17 @@
             'url' => route('vouchers.index'),
             'options' => [
                 [
-                    'option' => 'Buscar huéspedes',
+                    'option' => trans('common.search') . ' ' . strtolower(trans('guests.title')),
                     'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
                 ],
                 [
-                    'option' => 'Agregar empresa',
+                    'option' => trans('vouchers.linkCompany'),
                     'url' => route('vouchers.companies.search', [
                         'id' => Hashids::encode($voucher->id)
                     ])
                 ],
                 [
-                    'option' => 'Volver al recibo',
+                    'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
                         'id' => Hashids::encode($voucher->id)
                     ])

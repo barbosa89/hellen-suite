@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('tax_status') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('common.tax_status'):</label>
+                        <label for="pwd">@lang('common.tax.status'):</label>
                         <select class="form-control selectpicker" title="Opcional" name="tax_status" id="tax_status">
                             <option value="0" {{ $room->tax_status == "0" ? 'selected' : '' }}>Sin impuestos</option>
                             <option value="1" {{ $room->tax_status == "1" ? 'selected' : '' }}>Impuesto incluido en precio</option>
@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('tax') ? ' has-error' : '' }}" style="display:{{ $room->tax > 0 ? 'block;' : 'none;' }}" id="tax-input">
-                        <label for="tax">@lang('common.tax'):</label>
+                        <label for="tax">@lang('common.tax.title'):</label>
                         <input type="number" class="form-control" name="tax" id="tax" value="{{ $room->tax > 0 ? number_format($room->tax, 2, '.', '') : '' }}" min="0.01" max="0.5" step="0.01">
 
                         @if ($errors->has('tax'))

@@ -95,7 +95,11 @@ return array (
   'inactives' => 'Inactivos',
   'total' => 'Total',
   'subtotal' => 'Subtotal',
-  'tax' => 'Impuesto',
+  'tax' => 
+  array (
+    'status' => 'Estado de impuestos',
+    'title' => 'Impuesto',
+  ),
   'discount' => 'Descuento',
   'taxes' => 'Impuestos',
   'optional' => 'Opcional',
@@ -103,7 +107,6 @@ return array (
   'capacity' => 'Capacidad',
   'floor' => 'Piso',
   'min_price' => 'Precio mínimo',
-  'tax_status' => 'Estado de impuestos',
   'date' => 'Fecha',
   'chooseOption' => 'Elige una opción',
   'query' => 'Consultar',
@@ -127,6 +130,7 @@ return array (
   'without' => 
   array (
     'results' => 'No hay resultados de búsqueda.',
+    'tax' => 'Sin impuesto',
   ),
   'created' => 
   array (
@@ -163,7 +167,12 @@ return array (
   'not' => 
   array (
     'assigned' => 'No asignado',
+    'allowed' => 'Acción no permitida',
   ),
   'show' => 'Mostrar',
   'select' => 'Seleccionar',
+  'with' => 
+  array (
+    'tax' => 'Con impuesto',
+  ),
 );

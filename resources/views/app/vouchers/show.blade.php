@@ -329,10 +329,10 @@
                                             <h5>@lang('vouchers.nights')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>Inicio</h5>
+                                            <h5>@lang('common.startDate')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
-                                            <h5>Finaliza</h5>
+                                            <h5>@lang('common.endDate')</h5>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
                                             <h5>@lang('common.value')</h5>

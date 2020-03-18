@@ -21,7 +21,7 @@
                 ]),
             ],
             [
-                'option' => 'Volver al recibo',
+                'option' => trans('vouchers.back'),
                 'url' => route('vouchers.show', [
                     'id' => Hashids::encode($voucher->id)
                 ])
@@ -76,7 +76,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
-            <label for="room">@lang('common.price'): <small>@lang('common.tax') <span id="tax-value">{{ $rooms->first()->tax * 100 }}</span>%</small></label>
+            <label for="room">@lang('common.price'): <small>@lang('common.tax.title') <span id="tax-value">{{ $rooms->first()->tax * 100 }}</span>%</small></label>
             <input type="number" name="price" id="price" class="form-control" value="{{ round($rooms->first()->price, 0) }}" min="{{ round($rooms->first()->min_price, 0) }}" max="{{ round($rooms->first()->price, 0) }}" required>
 
             @if ($errors->has('price'))

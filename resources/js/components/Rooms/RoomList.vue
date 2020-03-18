@@ -159,7 +159,7 @@
                     this.selectedHotel = _.first(this.hotels).hash
                     this.rooms = _.first(this.hotels).rooms
 
-                    // Add custom property selected
+                    // Add custom property to selected items
                     this.rooms = _.each(this.rooms, function (room) {
                         room.selected = false
                         room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
@@ -245,8 +245,8 @@
                     }
                 } else {
                     toastr.info(
-                        'No puedes agregar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.add'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             },
@@ -270,8 +270,8 @@
                     this.send(this.selectedHotel, [data.room])
                 } else {
                     toastr.info(
-                        'No puedes agregar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.add'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             },
@@ -319,8 +319,8 @@
                     });
                 } else {
                     toastr.info(
-                        'No puedes habilitar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.enable'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             },
@@ -329,8 +329,8 @@
                     this.changeStatus(data, '1')
                 } else {
                     toastr.info(
-                        'No puedes habilitar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.enable'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             },
@@ -339,8 +339,8 @@
                     this.changeStatus(data, '3')
                 } else {
                     toastr.info(
-                        'No puedes habilitar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.enable'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             },
@@ -349,8 +349,8 @@
                     this.changeStatus(data, '4')
                 } else {
                     toastr.info(
-                        'No puedes habilitar esta habitación',
-                        'Acción no permitida'
+                        this.$root.$t('rooms.cannot.enable'),
+                        this.$root.$t('common.not.allowed')
                     );
                 }
             }

@@ -17,7 +17,7 @@
                         </span>
                     </div>
                     <div class="col-md-12">
-                        <span class="d-block font-weight-bold">NIT</span>
+                        <span class="d-block font-weight-bold">@common('common.tin')</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}
@@ -50,13 +50,13 @@
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                <span class="d-block font-weight-light">Fecha</span>
+                <span class="d-block font-weight-light">@lang('common.date')</span>
                 <span class="d-block">
                     {{ $voucher->created_at->format('Y-m-d') }}
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
-                <span class="d-block font-weight-light">Valor</span>
+                <span class="d-block font-weight-light">@lang('common.value')</span>
                 <span class="d-block">
                     $ {{ number_format($voucher->value, 0, ',', '.') }}
                 </span>
@@ -72,7 +72,7 @@
         <div class="row">
             @if (!empty($customer))
                 <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                    <span class="d-block font-weight-light">Cliente</span>
+                    <span class="d-block font-weight-light">@lang('vouchers.customer')</span>
                     <span class="d-block dont-break-out">
                         <a href="{{ $customer['route'] }}">
                             {{ $customer['name'] }}
@@ -89,7 +89,7 @@
                 </div>
                 @if ($voucher->type == 'lodging')
                     <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                        <span class="d-block font-weight-light">Origen / Destino</span>
+                        <span class="d-block font-weight-light">@lang('vouchers.origin') / @lang('vouchers.destination')</span>
                         <span class="d-block">
                             {{ $voucher->origin ?? 'No definido' }} - {{ $voucher->destination ?? 'No definido' }}
                         </span>
@@ -136,7 +136,7 @@
                         </span>
                     </div>
                     <div class="col-md-12 dont-break-out">
-                        <span class="d-block font-weight-bold">NIT</span>
+                        <span class="d-block font-weight-bold">@lang('common.tin')</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}

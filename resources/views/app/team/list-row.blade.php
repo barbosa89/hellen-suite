@@ -39,7 +39,7 @@
             @include('partials.dropdown-btn', [
                 'options' => [
                     [
-                        'option' => trans('common.seeMore'),
+                        'option' => trans('common.show'),
                         'url' => route('team.show', [
                             'id' => Hashids::encode($row->id)
                         ]),

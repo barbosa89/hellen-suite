@@ -25,7 +25,7 @@ class PaymentController extends Controller
     {
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucherId))
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
@@ -64,7 +64,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucherId))
             ->where('status', true)
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
@@ -117,7 +117,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucherId))
             ->where('status', true)
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
@@ -221,7 +221,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucher))
             ->where('status', true)
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
@@ -271,7 +271,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucher))
             ->where('status', true)
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {
@@ -398,7 +398,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', Id::parent())
             ->where('id', Id::get($voucher))
             ->where('status', true)
-            ->where('losses', false)
+            ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
         if (empty($voucher)) {

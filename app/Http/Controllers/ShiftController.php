@@ -50,6 +50,10 @@ class ShiftController extends Controller
                 'hotel' => function($query)
                 {
                     $query->select(Fields::get('hotels'));
+                },
+                'hotel.rooms' => function($query)
+                {
+                    $query->select(Fields::get('rooms'));
                 }
             ])->first(Fields::get('shifts'));
 

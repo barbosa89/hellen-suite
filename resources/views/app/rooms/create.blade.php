@@ -25,8 +25,8 @@
                     @csrf()
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
-                        <label for="pwd">Hotel:</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
+                        <label for="hotel">Hotel:</label>
+                        <select class="form-control selectpicker" title="{{ trans('hotels.choose') }}" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -73,10 +73,10 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                        <label for="pwd">Indica si es una suite:</label>
-                        <select class="form-control selectpicker" title="Es una suite?" name="type" id="type" required>
-                            <option value="0" selected>No</option>
-                            <option value="1">Si</option>
+                        <label for="type">@lang('rooms.type'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('rooms.type') }}" name="type" id="type" required>
+                            <option value="0" selected>@lang('common.no')</option>
+                            <option value="1">@lang('common.yes')</option>
                         </select>
 
                         @if ($errors->has('type'))
@@ -110,7 +110,7 @@
 
                     <div class="form-group{{ $errors->has('capacity') ? ' has-error' : '' }}">
                         <label for="capacity">@lang('common.capacity'):</label>
-                        <input type="number" class="form-control" name="capacity" id="capacity" value="{{ old('capacity') }}" min="1" max="12" placeholder="Cantidad de personas" required>
+                        <input type="number" class="form-control" name="capacity" id="capacity" value="{{ old('capacity') }}" min="1" max="12" placeholder="{{ trans('rooms.capacity') }}" required>
 
                         @if ($errors->has('capacity'))
                             <span class="help-block">
@@ -120,10 +120,10 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('tax_status') ? ' has-error' : '' }}">
-                        <label for="pwd">@lang('common.tax_status'):</label>
-                        <select class="form-control selectpicker" title="Opcional" name="tax_status" id="tax_status">
-                            <option value="0" selected>Sin impuestos</option>
-                            <option value="1">Con impuestos</option>
+                        <label for="pwd">@lang('common.tax.status'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="tax_status" id="tax_status">
+                            <option value="0" selected>@lang('common.without.tax')</option>
+                            <option value="1">@lang('common.with.tax')</option>
                         </select>
 
                         @if ($errors->has('tax_status'))
@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('tax') ? ' has-error' : '' }}" style="display: none" id="tax-input">
-                        <label for="tax">@lang('common.tax'):</label>
+                        <label for="tax">@lang('common.tax.title'):</label>
                         <input type="number" class="form-control" name="tax" id="tax" min="0.01" max="0.5" step="0.01">
 
                         @if ($errors->has('tax'))
@@ -144,15 +144,13 @@
                         @endif
                     </div>
 
-                    <button type="submit" id="room-store" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">Volver</a>
+                    <button type="submit" id="room-store" class="btn btn-primary">
+                        @lang('common.create')
+                    </button>
+                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">
+                        @lang('common.back')
+                    </a>
                 </form>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-md"></div>
             </div>
         </div>
     </div>

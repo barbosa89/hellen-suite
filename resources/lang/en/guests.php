@@ -13,4 +13,8 @@ return array (
   'registerEntry' => 'Register entry',
   'registerExit' => 'Register exit',
   'hosted' => 'Hosted',
+  'birth' => 
+  array (
+    'country' => 'Birth country',
+  ),
 );

@@ -120,7 +120,7 @@
                 <p>{{ $room->capacity }}</p>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
-                <h3>@lang('common.tax')</h3>
+                <h3>@lang('common.tax.title')</h3>
                 <p>{{ number_format($room->tax * 100, 0, ',', '.') }}%</p>
             </div>
         </div>

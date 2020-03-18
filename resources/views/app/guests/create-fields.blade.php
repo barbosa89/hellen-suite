@@ -19,7 +19,7 @@
 
 <div class="form-group{{ $errors->has('dni') ? ' has-error' : '' }}">
     <label for="dni">@lang('common.number'):</label>
-    <input type="text" class="form-control" name="dni" id="dni" value="{{ old('dni') }}" required>
+    <input type="text" class="form-control" name="dni" id="dni" value="{{ old('dni') }}" required placeholder="{{ trans('common.required') }}">
 
     @if ($errors->has('dni'))
         <span class="help-block">
@@ -30,7 +30,7 @@
 
 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
     <label for="name">@lang('common.name')(s):</label>
-    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required>
+    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" required placeholder="{{ trans('common.required') }}">
 
     @if ($errors->has('name'))
         <span class="help-block">
@@ -41,7 +41,7 @@
 
 <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
     <label for="last_name">@lang('common.lastName')(s):</label>
-    <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required>
+    <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required placeholder="{{ trans('common.required') }}">
 
     @if ($errors->has('last_name'))
         <span class="help-block">
@@ -52,7 +52,7 @@
 
 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
     <label for="email">@lang('common.email'):</label>
-    <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}">
+    <input type="email" class="form-control" name="email" id="email" value="{{ old('email') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('email'))
         <span class="help-block">
@@ -63,7 +63,7 @@
 
 <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
     <label for="address">@lang('common.address'):</label>
-    <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}">
+    <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('address'))
         <span class="help-block">
@@ -74,7 +74,7 @@
 
 <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
     <label for="phone">@lang('common.phone'):</label>
-    <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}">
+    <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('phone'))
         <span class="help-block">
@@ -84,8 +84,8 @@
 </div>
 
 <div class="form-group{{ $errors->has('profession') ? ' has-error' : '' }}">
-    <label for="profession">Profesión:</label>
-    <input type="text" class="form-control" name="profession" id="profession" value="{{ old('profession') }}">
+    <label for="profession">@lang('guests.profession'):</label>
+    <input type="text" class="form-control" name="profession" id="profession" value="{{ old('profession') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('profession'))
         <span class="help-block">
@@ -110,8 +110,8 @@
 </div>
 
 <div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
-    <label for="nationality">Pais de nacimiento:</label>
-    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required>
+    <label for="nationality">@lang('guests.birth.country'):</label>
+    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required placeholder="{{ trans('common.required') }}">
         @foreach ($countries as $country)
         <option value="{{ Hashids::encode($country->id) }}" {{ $country->name == 'Colombia' ? 'selected' : '' }}>{{ $country->name }}</option>
         @endforeach
@@ -126,7 +126,7 @@
 
 <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
     <label for="birthdate">@lang('common.birthdate'):</label>
-    <input type="string" class="form-control datepicker" name="birthdate" id="birthdate" value="{{ old('birthdate') }}">
+    <input type="string" class="form-control datepicker" name="birthdate" id="birthdate" value="{{ old('birthdate') }}" placeholder="{{ trans('common.optional') }}">
 
     @if ($errors->has('birthdate'))
         <span class="help-block">

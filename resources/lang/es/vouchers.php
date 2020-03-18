@@ -95,4 +95,5 @@ return array (
       'services' => 'Cargar servicios de comedor',
     ),
   ),
+  'back' => 'Volver al recibo',
 );

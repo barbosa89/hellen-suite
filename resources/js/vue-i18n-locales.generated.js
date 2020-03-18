@@ -83,7 +83,8 @@ export default {
                 "dining": {
                     "services": "Load dining services"
                 }
-            }
+            },
+            "back": "Back to voucher"
         },
         "dining": {
             "title": "Dining service",
@@ -134,7 +135,9 @@ export default {
             },
             "headquarters": "Headquarters",
             "note": "We recommend you upload square images, or 3/2 aspect ratio, maximum weight 200 Kb. If you do not add a logo, one will be displayed by default.",
-            "independent": "Independent hotel"
+            "independent": "Independent hotel",
+            "info": "The hotels and the headquarters, once created, cannot be modified due to the restrictions of the historical records",
+            "main": "Main hotel"
         },
         "team": {
             "title": "Team",
@@ -453,7 +456,10 @@ export default {
             "inactives": "Inactives",
             "discount": "Discount",
             "subtotal": "Subtotal",
-            "tax": "Tax",
+            "tax": {
+                "status": "Tax status",
+                "title": "Tax"
+            },
             "total": "Total",
             "taxes": "Taxes",
             "optional": "Optional",
@@ -461,7 +467,6 @@ export default {
             "min_price": "Minimal price",
             "capacity": "Capacity",
             "floor": "Floor",
-            "tax_status": "Tax status",
             "date": "Date",
             "chooseOption": "Choose a option",
             "query": "Query",
@@ -483,7 +488,8 @@ export default {
             "disable": "Disable",
             "enable": "Enable",
             "without": {
-                "results": "No search results"
+                "results": "No search results",
+                "tax": "Without tax"
             },
             "closed": {
                 "at": "Closed at"
@@ -512,10 +518,14 @@ export default {
                 "apply": "Doesn't apply"
             },
             "not": {
-                "assigned": "Not assigned"
+                "assigned": "Not assigned",
+                "allowed": "Action not allowed"
             },
             "show": "Show",
-            "select": "Select room"
+            "select": "Select room",
+            "with": {
+                "tax": "With tax"
+            }
         },
         "rooms": {
             "title": "Rooms",
@@ -538,6 +548,12 @@ export default {
             "deliver": "Deliver the room",
             "no": {
                 "created": "There are no rooms created"
+            },
+            "type": "Indicates if the room is a suite",
+            "capacity": "Number of people to stay in the room",
+            "cannot": {
+                "enable": "You cannot enable this room",
+                "add": "You cannot add this room"
             }
         },
         "modules": {
@@ -579,7 +595,10 @@ export default {
             "left": "The guest left the hotel",
             "registerEntry": "Register entry",
             "registerExit": "Register exit",
-            "hosted": "Hosted"
+            "hosted": "Hosted",
+            "birth": {
+                "country": "Birth country"
+            }
         },
         "payments": {
             "payment": "Payment",
@@ -813,7 +832,8 @@ export default {
                 "dining": {
                     "services": "Cargar servicios de comedor"
                 }
-            }
+            },
+            "back": "Volver al recibo"
         },
         "dining": {
             "title": "Servicio de comedor",
@@ -864,7 +884,9 @@ export default {
             },
             "headquarters": "Sede",
             "note": "Te recomendamos cargar imágenes cuadradas, o de proporción 3/2, peso máximo 200 Kb. Si no agrega un logotipo, se mostrará uno por defecto.",
-            "independent": "Hotel independiente"
+            "independent": "Hotel independiente",
+            "info": "Los hoteles y la sede, una vez creados, no pueden modificarse debido a las restricciones de los registros históricos.",
+            "main": "Hotel principal"
         },
         "team": {
             "title": "Miembros del equipo",
@@ -1183,7 +1205,10 @@ export default {
             "inactives": "Inactivos",
             "total": "Total",
             "subtotal": "Subtotal",
-            "tax": "Impuesto",
+            "tax": {
+                "status": "Estado de impuestos",
+                "title": "Impuesto"
+            },
             "discount": "Descuento",
             "taxes": "Impuestos",
             "optional": "Opcional",
@@ -1191,7 +1216,6 @@ export default {
             "capacity": "Capacidad",
             "floor": "Piso",
             "min_price": "Precio mínimo",
-            "tax_status": "Estado de impuestos",
             "date": "Fecha",
             "chooseOption": "Elige una opción",
             "query": "Consultar",
@@ -1213,7 +1237,8 @@ export default {
             "disable": "Deshabilitar",
             "enable": "Habilitar",
             "without": {
-                "results": "No hay resultados de búsqueda."
+                "results": "No hay resultados de búsqueda.",
+                "tax": "Sin impuesto"
             },
             "created": {
                 "at": "Fecha de creación"
@@ -1242,10 +1267,14 @@ export default {
                 "apply": "No aplica"
             },
             "not": {
-                "assigned": "No asignado"
+                "assigned": "No asignado",
+                "allowed": "Acción no permitida"
             },
             "show": "Mostrar",
-            "select": "Seleccionar"
+            "select": "Seleccionar",
+            "with": {
+                "tax": "Con impuesto"
+            }
         },
         "rooms": {
             "title": "Habitaciones",
@@ -1268,6 +1297,12 @@ export default {
             "deliver": "Entregar la habitación",
             "no": {
                 "created": "No hay habitaciones creadas"
+            },
+            "type": "Indica si la habitación es una suite",
+            "capacity": "Cantidad de personas a hospedar en la habitación",
+            "cannot": {
+                "enable": "Tú no puedes habilitar esta habitación",
+                "add": "Tú no puedes agregar esta habitación"
             }
         },
         "modules": {
@@ -1309,7 +1344,10 @@ export default {
             "left": "El huésped salió del hotel",
             "registerEntry": "Registrar entrada",
             "registerExit": "Registrar salida",
-            "hosted": "Hospedados"
+            "hosted": "Hospedados",
+            "birth": {
+                "country": "País de nacimiento"
+            }
         },
         "payments": {
             "title": "Pagos",

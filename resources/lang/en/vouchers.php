@@ -95,4 +95,5 @@ return array (
       'services' => 'Load dining services',
     ),
   ),
+  'back' => 'Back to voucher',
 );

@@ -4,7 +4,7 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Hoteles',
+            'title' => trans('hotels.title'),
             'url' => route('hotels.index'),
             'options' => [
                 [

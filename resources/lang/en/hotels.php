@@ -16,4 +16,6 @@ return array (
   'headquarters' => 'Headquarters',
   'note' => 'We recommend you upload square images, or 3/2 aspect ratio, maximum weight 200 Kb. If you do not add a logo, one will be displayed by default.',
   'independent' => 'Independent hotel',
+  'info' => 'The hotels and the headquarters, once created, cannot be modified due to the restrictions of the historical records',
+  'main' => 'Main hotel',
 );

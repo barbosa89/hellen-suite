@@ -23,4 +23,11 @@ return array (
   array (
     'created' => 'No hay habitaciones creadas',
   ),
+  'type' => 'Indica si la habitación es una suite',
+  'capacity' => 'Cantidad de personas a hospedar en la habitación',
+  'cannot' => 
+  array (
+    'enable' => 'Tú no puedes habilitar esta habitación',
+    'add' => 'Tú no puedes agregar esta habitación',
+  ),
 );

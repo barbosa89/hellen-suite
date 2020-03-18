@@ -17,7 +17,7 @@
                 'show' => !$voucher->reservation
             ],
             [
-                'option' => 'Volver al recibo',
+                'option' => trans('vouchers.back'),
                 'url' => route('vouchers.show', [
                     'id' => Hashids::encode($voucher->id)
                 ])

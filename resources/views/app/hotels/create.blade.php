@@ -26,7 +26,7 @@
 
                     <div class="form-group{{ $errors->has('business_name') ? ' has-error' : '' }}">
                         <label for="business_name">@lang('hotels.business.name'): <small>{{ trans('common.required') }}</small></label>
-                        <input type="text" class="form-control" name="business_name" id="business_name" value="{{ old('business_name') }}" required maxlength="191" placeholder="Nombre del hotel o sede">
+                        <input type="text" class="form-control" name="business_name" id="business_name" value="{{ old('business_name') }}" required maxlength="191" placeholder="{{ trans('hotels.business.name') }}">
 
                         @if ($errors->has('business_name'))
                             <span class="help-block">
@@ -37,7 +37,7 @@
 
                     <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
                         <label for="tin">@lang('common.tin'): <small>{{ trans('common.required') }}</small></label>
-                        <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" maxlength="30" placeholder="Formato: 123.456.789-0" required>
+                        <input type="text" class="form-control" name="tin" id="tin" value="{{ old('tin') }}" maxlength="30" placeholder="{{ trans('common.tin') }}" required>
 
                         @if ($errors->has('tin'))
                             <span class="help-block">

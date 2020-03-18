@@ -8,7 +8,7 @@
 
     <div id="page-wrapper">
         @include('partials.page-header', [
-            'title' => 'Hoteles',
+            'title' => trans('shifts.title'),
             'url' => route('shifts.index'),
             'options' => []
         ])

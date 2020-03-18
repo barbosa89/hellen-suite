@@ -27,7 +27,7 @@
             @include('partials.dropdown-btn', [
                 'options' => [
                     [
-                        'option' => trans('common.seeMore'),
+                        'option' => trans('common.show'),
                         'url' => route('guests.show', ['id' => Hashids::encode($row->id)]),
                         'permission' => 'guests.show'
                     ],

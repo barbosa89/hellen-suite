@@ -23,4 +23,11 @@ return array (
   array (
     'created' => 'There are no rooms created',
   ),
+  'type' => 'Indicates if the room is a suite',
+  'capacity' => 'Number of people to stay in the room',
+  'cannot' => 
+  array (
+    'enable' => 'You cannot enable this room',
+    'add' => 'You cannot add this room',
+  ),
 );

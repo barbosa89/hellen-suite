@@ -95,7 +95,11 @@ return array (
   'inactives' => 'Inactives',
   'discount' => 'Discount',
   'subtotal' => 'Subtotal',
-  'tax' => 'Tax',
+  'tax' => 
+  array (
+    'status' => 'Tax status',
+    'title' => 'Tax',
+  ),
   'total' => 'Total',
   'taxes' => 'Taxes',
   'optional' => 'Optional',
@@ -103,7 +107,6 @@ return array (
   'min_price' => 'Minimal price',
   'capacity' => 'Capacity',
   'floor' => 'Floor',
-  'tax_status' => 'Tax status',
   'date' => 'Date',
   'chooseOption' => 'Choose a option',
   'query' => 'Query',
@@ -127,6 +130,7 @@ return array (
   'without' => 
   array (
     'results' => 'No search results',
+    'tax' => 'Without tax',
   ),
   'closed' => 
   array (
@@ -163,7 +167,12 @@ return array (
   'not' => 
   array (
     'assigned' => 'Not assigned',
+    'allowed' => 'Action not allowed',
   ),
   'show' => 'Show',
   'select' => 'Select room',
+  'with' => 
+  array (
+    'tax' => 'With tax',
+  ),
 );
