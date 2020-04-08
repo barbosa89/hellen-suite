@@ -57,6 +57,8 @@ class ShiftController extends Controller
                 }
             ])->first(Fields::get('shifts'));
 
+        // List rooms with vouchers of the shift
+
         return view('app.shifts.show', compact('shift'));
     }
 }
