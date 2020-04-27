@@ -14,8 +14,8 @@ class CreateGuestVoucherTable extends Migration
     public function up()
     {
         Schema::create('guest_voucher', function (Blueprint $table) {
-            $table->bigInteger('guest_id')->unsigned();
-            $table->bigInteger('voucher_id')->unsigned();
+            $table->foreignId('guest_id');
+            $table->foreignId('voucher_id');
             $table->boolean('main')->default(false);
             $table->boolean('active'); // The guest is at the hotel and is related to an voucher
 

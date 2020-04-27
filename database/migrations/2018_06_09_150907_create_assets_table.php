@@ -14,7 +14,7 @@ class CreateAssetsTable extends Migration
     public function up()
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('number', 20);
             $table->string('description');
             $table->string('brand', 100)->nullable();
@@ -23,15 +23,15 @@ class CreateAssetsTable extends Migration
             $table->string('location')->nullable();
             $table->decimal('price', 10, 2);
 
-            $table->bigInteger('room_id')->unsigned()->nullable();
+            $table->foreignId('room_id')->unsigned()->nullable();
             $table->foreign('room_id')->references('id')
                 ->on('rooms')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('hotel_id')->unsigned();
+            $table->foreignId('hotel_id');
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 

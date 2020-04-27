@@ -14,7 +14,7 @@ class CreateCompaniesTable extends Migration
     public function up()
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('business_name', 150);
             $table->string('tin', 16)->nullable();
             $table->string('email', 150)->nullable();
@@ -23,7 +23,7 @@ class CreateCompaniesTable extends Migration
             $table->string('mobile', 12)->nullable();
             $table->boolean('is_supplier')->default(false);
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 

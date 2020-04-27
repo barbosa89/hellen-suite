@@ -14,9 +14,9 @@ class CreateServiceVoucherTable extends Migration
     public function up()
     {
         Schema::create('service_voucher', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('voucher_id')->unsigned();
-            $table->bigInteger('service_id')->unsigned();
+            $table->id('id');
+            $table->foreignId('voucher_id');
+            $table->foreignId('service_id');
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
             $table->dateTime('created_at');

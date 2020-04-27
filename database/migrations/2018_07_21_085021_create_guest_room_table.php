@@ -14,9 +14,9 @@ class CreateGuestRoomTable extends Migration
     public function up()
     {
         Schema::create('guest_room', function (Blueprint $table) {
-            $table->bigInteger('guest_id')->unsigned();
-            $table->bigInteger('room_id')->unsigned();
-            $table->bigInteger('voucher_id');
+            $table->foreignId('guest_id');
+            $table->foreignId('room_id');
+            $table->foreignId('voucher_id');
 
             $table->foreign('guest_id')->references('id')->on('guests')
                 ->onUpdate('cascade')->onDelete('cascade');

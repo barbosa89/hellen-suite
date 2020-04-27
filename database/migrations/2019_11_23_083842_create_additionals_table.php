@@ -14,12 +14,12 @@ class CreateAdditionalsTable extends Migration
     public function up()
     {
         Schema::create('additionals', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('description');
             $table->boolean('billable')->default(true);
             $table->decimal('value', 10, 2);
 
-            $table->bigInteger('voucher_id')->unsigned();
+            $table->foreignId('voucher_id');
             $table->foreign('voucher_id')->references('id')
                 ->on('vouchers')->onDelete('cascade')->onUpdate('cascade');
 

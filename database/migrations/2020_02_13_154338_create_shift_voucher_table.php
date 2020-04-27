@@ -14,8 +14,8 @@ class CreateShiftVoucherTable extends Migration
     public function up()
     {
         Schema::create('shift_voucher', function (Blueprint $table) {
-            $table->bigInteger('voucher_id')->unsigned();
-            $table->bigInteger('shift_id')->unsigned();
+            $table->foreignId('voucher_id');
+            $table->foreignId('shift_id');
 
             $table->foreign('voucher_id')->references('id')->on('vouchers')
                 ->onUpdate('cascade')->onDelete('cascade');

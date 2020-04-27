@@ -14,8 +14,8 @@ class CreateProductRoomTable extends Migration
     public function up()
     {
         Schema::create('product_room', function (Blueprint $table) {
-            $table->bigInteger('product_id')->unsigned();
-            $table->bigInteger('room_id')->unsigned();
+            $table->foreignId('product_id');
+            $table->foreignId('room_id');
             $table->integer('quantity');
 
             $table->foreign('product_id')->references('id')->on('products')

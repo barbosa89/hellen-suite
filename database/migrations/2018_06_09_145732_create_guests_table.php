@@ -14,7 +14,7 @@ class CreateGuestsTable extends Migration
     public function up()
     {
         Schema::create('guests', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('dni', 15);
             $table->string('name', 150);
             $table->string('last_name', 150);
@@ -25,21 +25,21 @@ class CreateGuestsTable extends Migration
             $table->date('birthdate')->nullable();
             $table->string('profession', 100)->nullable();
 
-            $table->integer('country_id')->unsigned();
+            $table->foreignId('country_id');
             $table->foreign('country_id')
                 ->references('id')
                 ->on('countries');
 
-            $table->bigInteger('responsible_adult')->default(0);
+            $table->foreignId('responsible_adult')->default(0);
             $table->boolean('status')->default(0);
             $table->boolean('banned')->default(0);
 
-            $table->integer('identification_type_id')->unsigned();
+            $table->foreignId('identification_type_id');
             $table->foreign('identification_type_id')->references('id')
                 ->on('identification_types')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');

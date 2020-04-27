@@ -16,7 +16,6 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
-import BootstrapVue from 'bootstrap-vue';
 
 // Commom
 // Vue.component('transaction-type', require('./components/Transactions/TransactionType.vue').default);
@@ -43,7 +42,6 @@ import Locale from './vue-i18n-locales.generated';
 Vue.mixin(Permissions);
 
 Vue.use(VueRouter);
-Vue.use(BootstrapVue);
 Vue.use(VueInternationalization);
 
 const lang = document.documentElement.lang.substr(0, 2);

@@ -14,9 +14,9 @@ class CreateProductVoucherTable extends Migration
     public function up()
     {
         Schema::create('product_voucher', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('voucher_id')->unsigned();
-            $table->bigInteger('product_id')->unsigned();
+            $table->id('id');
+            $table->foreignId('voucher_id');
+            $table->foreignId('product_id');
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
             $table->dateTime('created_at');

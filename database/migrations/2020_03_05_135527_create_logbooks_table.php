@@ -14,7 +14,7 @@ class CreateLogbooksTable extends Migration
     public function up()
     {
         Schema::create('logbooks', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->timestamps();
         });
     }

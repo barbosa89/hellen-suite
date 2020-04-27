@@ -14,17 +14,17 @@ class CreatePropsTable extends Migration
     public function up()
     {
         Schema::create('props', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('description');
             $table->decimal('price', 10, 2);
             $table->integer('quantity')->default(0);
             $table->boolean('status')->default(true);
 
-            $table->bigInteger('hotel_id')->unsigned();
+            $table->foreignId('hotel_id');
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 

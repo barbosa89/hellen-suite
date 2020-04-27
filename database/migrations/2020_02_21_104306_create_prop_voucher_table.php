@@ -14,8 +14,8 @@ class CreatePropVoucherTable extends Migration
     public function up()
     {
         Schema::create('prop_voucher', function (Blueprint $table) {
-            $table->bigInteger('voucher_id')->unsigned();
-            $table->bigInteger('prop_id')->unsigned();
+            $table->foreignId('voucher_id');
+            $table->foreignId('prop_id');
             $table->integer('quantity');
             $table->decimal('value', 10, 2);
             $table->dateTime('created_at');

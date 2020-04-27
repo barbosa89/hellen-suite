@@ -14,10 +14,10 @@ class CreateGuestVehicleTable extends Migration
     public function up()
     {
         Schema::create('guest_vehicle', function (Blueprint $table) {
-            $table->bigInteger('guest_id')->unsigned();
-            $table->bigInteger('vehicle_id')->unsigned();
+            $table->foreignId('guest_id');
+            $table->foreignId('vehicle_id');
             $table->datetime('created_at')->nullable();
-            $table->bigInteger('voucher_id')->nullable();
+            $table->foreignId('voucher_id')->nullable();
             $table->string('other')->nullable();
 
             $table->foreign('guest_id')->references('id')->on('guests')

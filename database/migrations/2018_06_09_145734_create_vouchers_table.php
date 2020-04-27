@@ -14,7 +14,7 @@ class CreateVouchersTable extends Migration
     public function up()
     {
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('number')->unique();
             $table->string('origin')->nullable();
             $table->string('destination')->nullable();
@@ -49,16 +49,16 @@ class CreateVouchersTable extends Migration
 
             $table->text('comments')->nullable();
 
-            $table->bigInteger('hotel_id')->unsigned();
+            $table->foreignId('hotel_id');
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('company_id')->nullable()->unsigned();
+            $table->foreignId('company_id')->nullable();
             $table->foreign('company_id')->references('id')
                 ->on('companies')->onDelete('cascade')->onUpdate('cascade');
 
             // Vouche owner
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 

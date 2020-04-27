@@ -14,16 +14,16 @@ class CreateShiftsTable extends Migration
     public function up()
     {
         Schema::create('shifts', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->decimal('cash', 12, 2)->default(0.0);
             $table->boolean('open')->default(true);
-            $table->bigInteger('team_member');
+            $table->foreignId('team_member');
 
-            $table->bigInteger('hotel_id')->unsigned();
+            $table->foreignId('hotel_id');
             $table->foreign('hotel_id')->references('id')
                 ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

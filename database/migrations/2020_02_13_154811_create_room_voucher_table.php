@@ -14,8 +14,8 @@ class CreateRoomVoucherTable extends Migration
     public function up()
     {
         Schema::create('room_voucher', function (Blueprint $table) {
-            $table->bigInteger('voucher_id')->unsigned();
-            $table->bigInteger('room_id')->unsigned();
+            $table->foreignId('voucher_id');
+            $table->foreignId('room_id');
             $table->integer('quantity'); // On days
             $table->decimal('price', 10, 2); // Final price given to the user
             $table->decimal('discount', 10, 2);
