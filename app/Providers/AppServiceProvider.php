@@ -23,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Custom validation
-
         Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
             $product = Id::get($data['product']);

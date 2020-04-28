@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    dd(403);
+    abort(403);
 });
 
 Route::get('/', function () {

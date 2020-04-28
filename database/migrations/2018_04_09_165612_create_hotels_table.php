@@ -18,8 +18,8 @@ class CreateHotelsTable extends Migration
             $table->string('business_name');
             $table->string('tin', 30);
             $table->string('address', 100)->nullable();
-            $table->string('phone', 10)->nullable();
-            $table->string('mobile', 10)->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->string('mobile', 20)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('image', 100)->nullable();
             $table->boolean('status')->default(true);

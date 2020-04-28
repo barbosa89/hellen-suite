@@ -14,35 +14,27 @@ class AssignmentsSeeder extends Seeder
      */
     public function run()
     {
-        // Roles list
-        $root = Role::where('name', 'root')->first(['id', 'name', 'guard_name']);
-        $manager = Role::where('name', 'manager')->first(['id', 'name', 'guard_name']);
-        $admin = Role::where('name', 'admin')->first(['id', 'name', 'guard_name']);
-        $receptionist = Role::where('name', 'receptionist')->first(['id', 'name', 'guard_name']);
-        $accountant = Role::where('name', 'accountant')->first(['id', 'name', 'guard_name']);
-        $cashier = Role::where('name', 'cashier')->first(['id', 'name', 'guard_name']);
-
         // Root user
         $welkome = User::where('name', 'Welkome')->first(['id', 'name']);
-        $welkome->assignRole($root);
+        $welkome->assignRole('root');
 
         // Testing users
         $managerUser = User::where('name', 'Manager')->first(['id', 'name']);
-        $managerUser->assignRole($manager);
+        $managerUser->assignRole('manager');
 
         $adminUser = User::where('name', 'Admin')->first(['id', 'name']);
-        $adminUser->assignRole($admin);
+        $adminUser->assignRole('admin');
 
         $accountantUser = User::where('name', 'Accountant')->first(['id', 'name']);
-        $accountantUser->assignRole($accountant);
+        $accountantUser->assignRole('accountant');
 
         $recepUser = User::where('name', 'Receptionist')->first(['id', 'name']);
-        $recepUser->assignRole($receptionist);
+        $recepUser->assignRole('receptionist');
 
         $cashierUser = User::where('name', 'cashier')->first(['id', 'name']);
-        $cashierUser->assignRole($cashier);
+        $cashierUser->assignRole('cashier');
 
-        // Assign permissions to roles
+        // Assign permissions to users
         $allPermissions = Permission::all(['id', 'name', 'guard_name']);
         $managerUser->syncPermissions($allPermissions);
 

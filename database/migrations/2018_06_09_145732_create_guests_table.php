@@ -20,7 +20,7 @@ class CreateGuestsTable extends Migration
             $table->string('last_name', 150);
             $table->string('email', 120)->nullable();
             $table->string('address', 191)->nullable();
-            $table->string('phone', 10)->nullable();
+            $table->string('phone', 20)->nullable();
             $table->enum('gender', ['m', 'f', 'x'])->nullable();
             $table->date('birthdate')->nullable();
             $table->string('profession', 100)->nullable();

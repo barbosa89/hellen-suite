@@ -23,6 +23,6 @@ class VehicleTypesTableSeeder extends Seeder
         VehicleType::create(['type' => 'skateboard']);
         VehicleType::create(['type' => 'tricycle']);
         VehicleType::create(['type' => 'campers']);
-        VehicleType::create(['type' => 'minivan']);        
+        VehicleType::create(['type' => 'minivan']);
     }
 }
