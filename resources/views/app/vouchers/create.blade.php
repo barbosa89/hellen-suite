@@ -30,6 +30,18 @@
         </div>
     </div>
 
+    @if ($errors->has('hotel'))
+        <div class="row my-4">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    <span class="help-block">
+                        <strong>{{ $errors->first('hotel') }}</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form class="mt-4" action="{{ route('vouchers.store') }}" method="POST" accept-charset="utf-8">
         @csrf
         <input type="hidden" name="hotel" value="{{ Hashids::encode($hotel->id) }}" required>

@@ -18,7 +18,7 @@
             ]
         ])
 
-        <div class="row">
+        <div class="row my-4">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <span>@lang('team.member'):</span>
                 <h5>{{ auth()->user()->name }}</h5>

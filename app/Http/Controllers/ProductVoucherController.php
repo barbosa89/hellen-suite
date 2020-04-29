@@ -137,19 +137,27 @@ class ProductVoucherController extends Controller
 
                     // Get the shift
                     $shift = Shift::current(Id::get($request->hotel));
-                    $voucher->shifts()->attach($shift);
 
-                    if ($voucher->type == 'sale') {
-                        $shift->cash += $voucher->value;
+                    // Check if user is the shift owner
+                    // Else, the sale was done by admin people
+                    // The generated voucher is not added to the shift
+                    if ($shift->team_member == auth()->user()->id) {
+                        $voucher->shifts()->attach($shift);
 
-                        if ($shift->save()) {
-                            $payment = new Payment();
-                            $payment->date = now();
-                            $payment->commentary = trans('payments.automatic');
-                            $payment->payment_method = 'cash';
-                            $payment->value = $voucher->value;
-                            $payment->voucher()->associate($voucher->id);
-                            $payment->save();
+                        // Only if the voucher is sale type, the value is loaded to the shift
+                        if ($voucher->type == 'sale') {
+                            $shift->cash += $voucher->value;
+
+                            if ($shift->save()) {
+                                // Add new automatic payment
+                                $payment = new Payment();
+                                $payment->date = now();
+                                $payment->commentary = trans('payments.automatic');
+                                $payment->payment_method = 'cash';
+                                $payment->value = $voucher->value;
+                                $payment->voucher()->associate($voucher->id);
+                                $payment->save();
+                            }
                         }
                     }
                 }

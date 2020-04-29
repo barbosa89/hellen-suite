@@ -163,7 +163,10 @@ class VoucherController extends Controller
                     // Get the shift
                     $shift = Shift::current(Id::get($request->hotel));
 
+                    // Add the voucher to shift
                     $voucher->shifts()->attach($shift);
+
+                    // Attach rooms
                     $voucher->rooms()->sync($attach);
                     $voucherId = $voucher->id;
                     $status = true;
@@ -277,7 +280,6 @@ class VoucherController extends Controller
 
         $customer = Customer::get($voucher);
         $view = $this->getView($voucher);
-        // dd($voucher, $view);
 
         return view($view, compact('voucher', 'customer'));
     }

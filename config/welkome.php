@@ -294,7 +294,7 @@ return [
             'hotels'        => ['index'],
             'vouchers'      => ['index', 'create', 'show', 'edit', 'destroy', 'close'],
             'payments'      => ['index', 'create', 'edit', 'destroy', 'close'],
-            'products'      => ['index'],
+            'products'      => ['index', 'vouchers'],
             'rooms'         => ['index'],
             'services'      => ['index'],
             'shifts'        => ['index', 'create', 'show'],

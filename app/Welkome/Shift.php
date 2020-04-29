@@ -10,6 +10,13 @@ class Shift extends Model
 {
     use LogsActivity;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['open', 'cash'];
+
     public function user()
     {
         return $this->belongsTo(\App\User::class);
@@ -28,7 +35,6 @@ class Shift extends Model
     public static function current($hotel_id)
     {
         $shift = static::where('open', true)
-            ->where('team_member', auth()->user()->id)
             ->where('hotel_id', $hotel_id)
             ->where('user_id', Id::parent())
             ->first(Fields::get('shifts'));

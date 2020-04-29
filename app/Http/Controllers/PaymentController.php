@@ -175,9 +175,11 @@ class PaymentController extends Controller
                 }
 
                 if ($payment->save()) {
+                    // If payment method is cash, the shift cash is increased
                     if ($payment->payment_method == 'cash') {
                         $shift = Shift::current($voucher->hotel->id);
 
+                        // Load the voucher owner of payment
                         $shift->load([
                             'vouchers' => function ($query) use ($voucher)
                             {
@@ -185,6 +187,7 @@ class PaymentController extends Controller
                             }
                         ]);
 
+                        // Check the voucher was loaded
                         if ($shift->vouchers->isNotEmpty()) {
                             $shift->cash += $payment->value;
                             $shift->save();

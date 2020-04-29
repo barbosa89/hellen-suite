@@ -90,21 +90,22 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
             // Query the open shifts
             $shift = Shift::where('open', true)
-                ->whereHas('hotel', function ($query) use ($value)
-                {
-                    $query->where('id', Id::get($value));
-                })->first(['id', 'open', 'hotel_id', 'team_member']);
+                ->where('hotel_id', Id::get($value))
+                ->first(['id', 'open', 'hotel_id', 'team_member']);
 
             // True if there are no open shifts
+            // Shift will be created
             if (empty($shift)) {
                 return true;
             }
 
             // Check if user ID is equal to shift user ID
+            // The user has a shift
             if (auth()->user()->id == $shift->team_member) {
                 return true;
             }
 
+            // User is not the shift owner
             return false;
         });
 
