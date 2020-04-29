@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Welkome\Shift;
 use App\Helpers\{Fields, Id};
+use App\Welkome\Room;
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class ShiftController extends Controller
 {
@@ -50,15 +53,47 @@ class ShiftController extends Controller
                 'hotel' => function($query)
                 {
                     $query->select(Fields::get('hotels'));
-                },
-                'hotel.rooms' => function($query)
-                {
-                    $query->select(Fields::get('rooms'));
                 }
             ])->first(Fields::get('shifts'));
 
-        // List rooms with vouchers of the shift
+        $cash = $this->filterByPaymentMethod($shift, 'cash');
+        $transfer = $this->filterByPaymentMethod($shift, 'transfer');
+        $courtesy = $this->filterByPaymentMethod($shift, 'courtesy');
 
-        return view('app.shifts.show', compact('shift'));
+        $rooms = Room::where('user_id', Id::parent())
+                    ->where('hotel_id', $shift->hotel->id)
+                    ->with([
+                        'vouchers' => function ($query)
+                        {
+                            $query->select(['vouchers.id', 'vouchers.value', 'vouchers.number']);
+                        },
+                        'vouchers.payments' => function ($query)
+                        {
+                            $query->select(['id', 'value', 'voucher_id']);
+                        }
+                    ])->get(['id', 'number', 'status']);
+
+        return view('app.shifts.show', compact('shift', 'cash', 'transfer', 'courtesy', 'rooms'));
+    }
+
+    /**
+     * Filter vouchers by payment method
+     *
+     * @param \App\Welkome\Shift $shift
+     * @param string $method
+     * @return \Illuminate\Support\Collection
+     */
+    private function filterByPaymentMethod(Shift $shift, string $method): Collection
+    {
+        if (!in_array($method, ['cash', 'transfer', 'courtesy'])) {
+            throw new InvalidArgumentException("Unknown payment method: " . $method, 1);
+        }
+
+        return $shift->vouchers->filter(function ($voucher) use ($method)
+        {
+            $results = $voucher->payments->where('payment_method', $method);
+
+            return $results->count() > 0;
+        });
     }
 }

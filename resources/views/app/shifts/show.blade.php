@@ -55,17 +55,29 @@
                         [
                             'id' => ucfirst(trans('payments.cash')),
                             'title' => trans('payments.cash'),
-                            'data' => $shift->vouchers->where('payments.payment_method', 'cash')
+                            'data' => $cash
                         ],
                         [
                             'id' => ucfirst(trans('payments.transfer')),
                             'title' => trans('payments.transfer'),
-                            'data' => $shift->vouchers->where('payments.payment_method', 'transfer')
+                            'data' => $transfer
                         ],
                         [
                             'id' => ucfirst(trans('payments.courtesy')),
                             'title' => trans('payments.courtesy'),
-                            'data' => $shift->vouchers->where('payments.payment_method', 'courtesy')
+                            'data' => $courtesy
+                        ],
+                        [
+                            'id' => ucfirst(trans('vouchers.losses')),
+                            'title' => trans('vouchers.losses'),
+                            'data' => $shift->vouchers->where('type', 'loss')
+                        ],
+                        [
+                            'id' => ucfirst(trans('rooms.title')),
+                            'title' => trans('rooms.title'),
+                            'listHeading' => 'app.shifts.rooms.list-heading',
+                            'listRow' => 'app.shifts.rooms.list-row',
+                            'data' => $rooms
                         ]
                     ]
                 ])
