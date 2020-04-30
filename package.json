@@ -29,7 +29,7 @@
         "flot": "0.8.0-alpha",
         "font-awesome": "^4.7.0",
         "holderjs": "^2.9.7",
-        "jquery": "^3.5.0",
+        "jquery": "^3.4.1",
         "jquery.easing": "^1.4.1",
         "jquery.flot.tooltip": "0.9.0",
         "laravel-mix": "^5.0.1",
