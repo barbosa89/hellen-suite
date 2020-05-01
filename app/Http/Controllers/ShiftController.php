@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ShiftReport;
 use App\Welkome\Shift;
 use App\Helpers\{Fields, Id};
 use App\Welkome\Room;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ShiftController extends Controller
 {
@@ -17,10 +19,10 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shifts = Shift::where('team_member', auth()->user()->id)
-            ->whereHas('user', function ($query)
+        $shifts = Shift::where('user_id', Id::parent())
+            ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
             {
-                $query->where('id', Id::parent());
+                $query->where('team_member', auth()->user()->id);
             })->with([
                 'hotel' => function ($query)
                 {
@@ -39,8 +41,11 @@ class ShiftController extends Controller
      */
     public function show(string $id)
     {
-        $shift = Shift::where('team_member', auth()->user()->id)
-            ->where('id', Id::get($id))
+        $shift = Shift::where('user_id', Id::parent())
+            ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
+            {
+                $query->where('team_member', auth()->user()->id);
+            })->where('id', Id::get($id))
             ->with([
                 'vouchers' => function($query)
                 {
@@ -95,5 +100,49 @@ class ShiftController extends Controller
 
             return $results->count() > 0;
         });
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function export(string $id)
+    {
+        $shift = Shift::where('user_id', Id::parent())
+            ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
+            {
+                $query->where('team_member', auth()->user()->id);
+            })->where('id', Id::get($id))
+            ->with([
+                'vouchers' => function($query)
+                {
+                    $query->select(Fields::get('vouchers'));
+                },
+                'vouchers.payments' => function($query)
+                {
+                    $query->select(Fields::get('payments'));
+                },
+                'hotel' => function($query)
+                {
+                    $query->select(Fields::get('hotels'));
+                }
+            ])->first(Fields::get('shifts'));
+
+        $rooms = Room::where('user_id', Id::parent())
+                    ->where('hotel_id', $shift->hotel->id)
+                    ->with([
+                        'vouchers' => function ($query)
+                        {
+                            $query->select(['vouchers.id', 'vouchers.value', 'vouchers.number']);
+                        },
+                        'vouchers.payments' => function ($query)
+                        {
+                            $query->select(['id', 'value', 'voucher_id']);
+                        }
+                    ])->get(['id', 'number', 'status']);
+
+        return Excel::download(new ShiftReport($shift, $rooms), trans('shifts.shift') . '.xlsx');
     }
 }

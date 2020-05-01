@@ -12,6 +12,12 @@
             'url' => route('shifts.index'),
             'options' => [
                 [
+                    'option' => trans('common.export'),
+                    'url' => route('shifts.export', [
+                        'id' => Hashids::encode($shift->id)
+                    ])
+                ],
+                [
                     'option' => trans('common.back'),
                     'url' => route('shifts.index')
                 ],
@@ -19,9 +25,13 @@
         ])
 
         <div class="row my-4">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <span>Hotel:</span>
+                <h5>{{ $shift->hotel->business_name }}</h5>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <span>@lang('team.member'):</span>
-                <h5>{{ auth()->user()->name }}</h5>
+                <h5>{{ $shift->team_member_name }}</h5>
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <span>@lang('common.created.at'):</span>
@@ -29,15 +39,11 @@
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <span>@lang('common.closed.at'):</span>
-                {{ $shift->closed_at ? $shift->closed_at->format('Y-m-d H:m') : '' }}
+                <h5>{{ $shift->closed_at ? $shift->closed_at->format('Y-m-d H:m') : '-' }}</h5>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <span>@lang('payments.cash'):</span>
                 <h5>{{ number_format($shift->cash, 2, ',', '.') }}</h5>
-            </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <span>Hotel:</span>
-                <h5>{{ $shift->hotel->business_name }}</h5>
             </div>
         </div>
 

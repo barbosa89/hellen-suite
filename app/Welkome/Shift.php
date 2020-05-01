@@ -17,6 +17,15 @@ class Shift extends Model
      */
     protected $fillable = ['open', 'cash'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'closed_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(\App\User::class);
@@ -50,6 +59,7 @@ class Shift extends Model
     {
         $shift = new Shift();
         $shift->team_member = auth()->user()->id;
+        $shift->team_member_name = auth()->user()->name;
         $shift->user()->associate(Id::parent());
         $shift->hotel()->associate($hotel_id);
         $shift->save();

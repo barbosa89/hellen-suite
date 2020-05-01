@@ -190,6 +190,7 @@ return [
             'cash',
             'open',
             'team_member',
+            'team_member_name',
             'hotel_id',
             'user_id',
             'created_at',

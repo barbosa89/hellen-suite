@@ -11,7 +11,7 @@ class CompaniesReport implements FromView
     /**
      * The Company collection.
      *
-     * @var \App\Welkome\Company
+     * @var \Illuminate\Support\Collection
      */
     protected $companies;
 
