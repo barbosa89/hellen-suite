@@ -6,9 +6,11 @@ use App\Exports\ShiftReport;
 use App\Welkome\Shift;
 use App\Helpers\{Fields, Id};
 use App\Welkome\Room;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Facades\Excel;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ShiftController extends Controller
 {
@@ -144,5 +146,35 @@ class ShiftController extends Controller
                     ])->get(['id', 'number', 'status']);
 
         return Excel::download(new ShiftReport($shift, $rooms), trans('shifts.shift') . '.xlsx');
+    }
+
+    /**
+     * Close the shift.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function close(string $id)
+    {
+        $shift = Shift::where('user_id', Id::parent())
+            ->where('id', Id::get($id))
+            ->where('open', true)
+            ->where('closed_at', null)
+            ->first(Fields::get('shifts'));
+
+        $shift->open = false;
+        $shift->closed_at = now();
+
+        if ($shift->save()) {
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route([
+                'id' => Hashids::encode($shift->id)
+            ]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 }
