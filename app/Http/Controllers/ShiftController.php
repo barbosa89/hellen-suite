@@ -162,13 +162,15 @@ class ShiftController extends Controller
             ->where('closed_at', null)
             ->first(Fields::get('shifts'));
 
+        abort_if(empty($shift), 404);
+
         $shift->open = false;
         $shift->closed_at = now();
 
         if ($shift->save()) {
             flash(trans('common.successful'))->success();
 
-            return redirect()->route([
+            return redirect()->route('shifts.close', [
                 'id' => Hashids::encode($shift->id)
             ]);
         }

@@ -38,7 +38,6 @@ class PermissionsTableSeeder extends Seeder
         }
 
         // Shift permissions
-
         Permission::insert([
             [
                 'name' => 'shifts.index',
@@ -46,6 +45,10 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'name' => 'shifts.create',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+            [
+                'name' => 'shifts.close',
                 'guard_name' => config('auth.defaults.guard')
             ],
             [

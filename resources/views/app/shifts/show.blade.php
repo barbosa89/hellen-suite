@@ -18,6 +18,14 @@
                     ])
                 ],
                 [
+                    'type' => 'hideable',
+                    'option' => trans('common.close'),
+                    'url' => route('shifts.close', [
+                        'id' => Hashids::encode($shift->id)
+                    ]),
+                    'show' => $shift->open
+                ],
+                [
                     'option' => trans('common.back'),
                     'url' => route('shifts.index')
                 ],

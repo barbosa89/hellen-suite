@@ -41,6 +41,14 @@ class Shift extends Model
         return $this->belongsToMany(\App\Welkome\Voucher::class);
     }
 
+    /**
+     * The notes that belong to the shift.
+     */
+    public function notes()
+    {
+        return $this->belongsToMany(\App\Welkome\Note::class);
+    }
+
     public static function current($hotel_id)
     {
         $shift = static::where('open', true)

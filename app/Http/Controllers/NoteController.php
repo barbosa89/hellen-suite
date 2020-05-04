@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\Logbook;
+use App\Note;
 use Illuminate\Http\Request;
 
-class LogbookController extends Controller
+class NoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class LogbookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Logbook  $logbook
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show(Logbook $logbook)
+    public function show(Note $note)
     {
         //
     }
@@ -52,10 +52,10 @@ class LogbookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Logbook  $logbook
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function edit(Logbook $logbook)
+    public function edit(Note $note)
     {
         //
     }
@@ -64,10 +64,10 @@ class LogbookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Logbook  $logbook
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Logbook $logbook)
+    public function update(Request $request, Note $note)
     {
         //
     }
@@ -75,10 +75,10 @@ class LogbookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Logbook  $logbook
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Logbook $logbook)
+    public function destroy(Note $note)
     {
         //
     }
