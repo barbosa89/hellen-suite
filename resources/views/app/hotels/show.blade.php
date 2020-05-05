@@ -13,20 +13,20 @@
                 [
                     'option' => trans('common.edit'),
                     'url' => route('hotels.edit', [
-                        'id' => Hashids::encode($hotel->id)
+                        'id' => id_encode($hotel->id)
                     ]),
                 ],
                 [
                     'option' => $hotel->status ? trans('common.disable') : trans('common.enable'),
                     'url' => route('hotels.toggle', [
-                        'id' => Hashids::encode($hotel->id)
+                        'id' => id_encode($hotel->id)
                     ]),
                 ],
                 [
                     'type' => 'confirm',
                     'option' => trans('common.delete.item'),
                     'url' => route('hotels.destroy', [
-                        'id' => Hashids::encode($hotel->id)
+                        'id' => id_encode($hotel->id)
                     ]),
                     'method' => 'DELETE'
                 ],

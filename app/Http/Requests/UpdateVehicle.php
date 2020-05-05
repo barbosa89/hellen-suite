@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVehicle extends FormRequest
@@ -24,7 +23,7 @@ class UpdateVehicle extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('id'));
+        $id = id_decode($this->route('id'));
 
         return [
             'type' => 'required|string|hashed_exists:vehicle_types,id',

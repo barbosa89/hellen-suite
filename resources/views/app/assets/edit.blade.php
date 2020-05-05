@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('assets.title')</h2>
-                <form action="{{ route('assets.update', ['id' => Hashids::encode($asset->id)]) }}" method="POST">
+                <form action="{{ route('assets.update', ['id' => id_encode($asset->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
 
@@ -94,10 +94,10 @@
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
                         <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
-                            <option value="{{ Hashids::encode($asset->hotel->id) }}" selected>{{ $asset->hotel->business_name }}</option>
+                            <option value="{{ id_encode($asset->hotel->id) }}" selected>{{ $asset->hotel->business_name }}</option>
 
                             @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                                <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 
@@ -112,13 +112,13 @@
                         <label for="pwd">{{ trans('rooms.room') }} No.:</label>
                         <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
                             @if (!empty($asset->room))
-                                <option value="{{ Hashids::encode($asset->room->id) }}" selected>
+                                <option value="{{ id_encode($asset->room->id) }}" selected>
                                     {{ $asset->room->number }}
                                 </option>
                             @endif
 
                             @foreach($asset->hotel->rooms->where('id', '!=', $asset->room->id ?? null) as $room)
-                                <option value="{{ Hashids::encode($room->id) }}">
+                                <option value="{{ id_encode($room->id) }}">
                                     {{ $room->number }}
                                 </option>
                             @endforeach

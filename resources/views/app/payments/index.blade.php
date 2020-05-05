@@ -9,14 +9,14 @@
     @include('partials.page-header', [
         'title' => trans('payments.title'),
         'url' => route('payments.index', [
-            'voucher' => Hashids::encode($voucher->id)
+            'voucher' => id_encode($voucher->id)
         ]),
         'options' => [
             [
                 'type' => (float) $voucher->value == (float) $voucher->payments->sum('value') ? 'confirm' : 'hideable',
                 'option' => trans('common.close') . ' ' . strtolower(trans('payments.title')),
                 'url' => route('vouchers.payments.close', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ]),
                 'show' => (float) $voucher->value == (float) $voucher->payments->sum('value') and !$voucher->payment_status,
                 'method' => 'POST',
@@ -26,7 +26,7 @@
                 'type' => 'hideable',
                 'option' => trans('common.new'),
                 'url' => route('payments.create', [
-                    'voucher' => Hashids::encode($voucher->id)
+                    'voucher' => id_encode($voucher->id)
                 ]),
                 'show' => $voucher->payment_status == false,
                 'permission' => 'payments.create'

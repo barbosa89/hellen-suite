@@ -13,18 +13,18 @@
             'options' => [
                 [
                     'option' => trans('common.new') . ' ' . trans('vehicles.vehicle'),
-                    'url' => route('vouchers.vehicles.create', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.vehicles.create', ['id' => id_encode($voucher->id)])
                 ],
                 [
                     'option' => 'Agregar empresa',
                     'url' => route('vouchers.companies.search', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -36,7 +36,7 @@
             <label for="pwd">@lang('guests.guest'):</label>
             <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
                 @foreach ($voucher->guests as $guest)
-                    <option value="{{ Hashids::encode($guest->id) }}">{{ $guest->full_name }}</option>
+                    <option value="{{ id_encode($guest->id) }}">{{ $guest->full_name }}</option>
                 @endforeach
             </select>
 
@@ -122,7 +122,7 @@
 
         function render(vehicle) {
             return `
-            <a href="#" onclick="attachVehicle(event, '/vouchers/{{ Hashids::encode($voucher->id) }}/vehicles/${vehicle.hash}/guests/')">
+            <a href="#" onclick="attachVehicle(event, '/vouchers/{{ id_encode($voucher->id) }}/vehicles/${vehicle.hash}/guests/')">
                 <div class="crud-list-row">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">

@@ -28,7 +28,7 @@
                         <label for="pwd">Replicar desde el hotel:</label>
                         <select class="form-control selectpicker" title="Elige un hotel o sede" name="from" id="from" required>
                             @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                                <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 
@@ -44,7 +44,7 @@
                         <select class="form-control selectpicker" title="Elige un hotel o sede" name="to" id="to" required>
                             @if ($hotels->count() > 1)
                                 @foreach ($hotels->where('id', '!=', $hotels->first()->id) as $hotel)
-                                    <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                                    <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                                 @endforeach
                             @endif
                         </select>

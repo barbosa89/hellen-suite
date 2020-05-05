@@ -14,14 +14,14 @@
                 [
                     'option' => trans('common.export'),
                     'url' => route('shifts.export', [
-                        'id' => Hashids::encode($shift->id)
+                        'id' => id_encode($shift->id)
                     ])
                 ],
                 [
                     'type' => 'hideable',
                     'option' => trans('common.close'),
                     'url' => route('shifts.close', [
-                        'id' => Hashids::encode($shift->id)
+                        'id' => id_encode($shift->id)
                     ]),
                     'show' => $shift->open
                 ],

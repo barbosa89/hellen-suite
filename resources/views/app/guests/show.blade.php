@@ -18,14 +18,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('guests.edit', [
-                                'id' => Hashids::encode($guest->id)
+                                'id' => id_encode($guest->id)
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('guests.destroy', [
-                                'id' => Hashids::encode($guest->id)
+                                'id' => id_encode($guest->id)
                             ]),
                             'method' => 'DELETE'
                         ],
@@ -46,7 +46,7 @@
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                 <h3>@lang('common.name'):</h3>
                 <p>
-                    <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
+                    <a href="{{ route('guests.show', ['id' => id_encode($guest->id)]) }}">
                         {{ $guest->full_name }}
                     </a>
                     @switch($guest->gender)

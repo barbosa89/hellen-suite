@@ -14,7 +14,7 @@
                 [
                     'option' => trans('common.back'),
                     'url' => route('assets.show', [
-                        'id' => Hashids::encode($asset->id)
+                        'id' => id_encode($asset->id)
                     ]),
                 ],
             ]
@@ -25,7 +25,7 @@
         <div class="row mt-4">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.new') @lang('maintenances.maintenance')</h2>
-                <form action="{{ route('assets.maintenance', ['id' => Hashids::encode($asset->id)]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('assets.maintenance', ['id' => id_encode($asset->id)]) }}" method="POST" enctype="multipart/form-data">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
@@ -73,7 +73,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.register')</button>
-                    <a href="{{ route('assets.show', ['id' => Hashids::encode($asset->id)]) }}" class="btn btn-default">
+                    <a href="{{ route('assets.show', ['id' => id_encode($asset->id)]) }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
                 </form>

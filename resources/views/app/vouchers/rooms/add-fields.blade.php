@@ -2,7 +2,7 @@
     <label for="room">@lang('rooms.title'):</label>
     <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($rooms as $room)
-            <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
+            <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
         @endforeach
     </select>
 

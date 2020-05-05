@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <form action="{{ route('team.permissions.store', ['id' => Hashids::encode($member->id)]) }}" method="POST">
+        <form action="{{ route('team.permissions.store', ['id' => id_encode($member->id)]) }}" method="POST">
             @csrf()
 
             @foreach ($permissions->chunk(4) as $chunked)
@@ -46,7 +46,7 @@
                             <h4>{{ trans('modules.' . $group) }}</h4>
                             @foreach($value as $permission)
                                 <div class="pretty p-icon p-smooth d-block my-2">
-                                <input type="checkbox" name="permissions[]" value="{{ Hashids::encode($permission->id) }}" {{ $member->permissions->contains($permission) ? 'checked' : '' }}/>
+                                <input type="checkbox" name="permissions[]" value="{{ id_encode($permission->id) }}" {{ $member->permissions->contains($permission) ? 'checked' : '' }}/>
                                     <div class="state p-primary">
                                         <i class="icon fa fa-check"></i>
                                         <label>{{ trans('permissions.' . explode('.', $permission->name)[1]) }}</label>

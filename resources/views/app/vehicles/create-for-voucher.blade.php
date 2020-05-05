@@ -13,12 +13,12 @@
             'options' => [
                 [
                     'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
-                    'url' => route('vouchers.vehicles.search', ['id' => Hashids::encode($voucher->id)]),
+                    'url' => route('vouchers.vehicles.search', ['id' => id_encode($voucher->id)]),
                 ],
                 [
                     'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -32,7 +32,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('vouchers.vehicles.store', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ]),
                     'fields' => [
                         'app.vouchers.vehicles.create-fields',
@@ -40,7 +40,7 @@
                     ],
                     'btn' => trans('common.create'),
                     'link' => [
-                        'href' => route('vouchers.show', ['id' => Hashids::encode($voucher->id)]),
+                        'href' => route('vouchers.show', ['id' => id_encode($voucher->id)]),
                         'name' => trans('common.back')
                     ]
                 ])

@@ -2,7 +2,7 @@
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
         <h3>@lang('companies.businessName'):</h3>
         <p>
-            <a href="{{ route('companies.show', ['id' => Hashids::encode($company->id)]) }}">
+            <a href="{{ route('companies.show', ['id' => id_encode($company->id)]) }}">
                 {{ $company->business_name }}
             </a>
         </p>

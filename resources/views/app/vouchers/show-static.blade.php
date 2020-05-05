@@ -13,14 +13,14 @@
             'options' => [
                 [
                     'option' => trans('common.export'),
-                    'url' => route('vouchers.export', ['id' => Hashids::encode($voucher->id)]),
+                    'url' => route('vouchers.export', ['id' => id_encode($voucher->id)]),
                     'permission' => 'vouchers.show'
                 ],
                 [
                     'type' => 'hideable',
                     'option' => trans('payments.title'),
                     'url' => route('payments.index', [
-                            'voucher' => Hashids::encode($voucher->id)
+                            'voucher' => id_encode($voucher->id)
                         ]),
                     'show' => !$voucher->type != 'loss',
                     'permission' => 'payments.index'
@@ -59,14 +59,14 @@
                                         <div class="row">
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 align-self-center">
                                                 <p>
-                                                    <a href="{{ route('companies.show', ['id' => Hashids::encode($voucher->company->id)]) }}">
+                                                    <a href="{{ route('companies.show', ['id' => id_encode($voucher->company->id)]) }}">
                                                         {{ $voucher->company->business_name }}
                                                     </a>
                                                 </p>
                                             </div>
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 align-self-center">
                                                 <p>
-                                                    <a href="{{ route('companies.show', ['id' => Hashids::encode($voucher->company->id)]) }}">
+                                                    <a href="{{ route('companies.show', ['id' => id_encode($voucher->company->id)]) }}">
                                                         {{ $voucher->company->tin }}
                                                     </a>
                                                 </p>
@@ -117,14 +117,14 @@
                                                     </div>
                                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                         <p>
-                                                            <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
+                                                            <a href="{{ route('guests.show', ['id' => id_encode($guest->id)]) }}">
                                                                 {{ number_format($guest->dni, 0, ',', '.') }}
                                                             </a>
                                                         </p>
                                                     </div>
                                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                         <p>
-                                                            <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
+                                                            <a href="{{ route('guests.show', ['id' => id_encode($guest->id)]) }}">
                                                                 {{ $guest->full_name }}
                                                             </a>
                                                         </p>
@@ -137,7 +137,7 @@
                                                             <p>-</p>
                                                         @else
                                                             <p>
-                                                                <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->parent->id)]) }}">
+                                                                <a href="{{ route('guests.show', ['id' => id_encode($guest->parent->id)]) }}">
                                                                     {{ $guest->parent->full_name }}
                                                                 </a>
                                                             </p>
@@ -193,7 +193,7 @@
                                             <div class="row">
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                                                     <p>
-                                                        <a href="{{ route('rooms.show', ['id' => Hashids::encode($room->id)]) }}">
+                                                        <a href="{{ route('rooms.show', ['id' => id_encode($room->id)]) }}">
                                                             {{ $room->number }}
                                                         </a>
                                                     </p>
@@ -262,7 +262,7 @@
                                             <div class="row">
                                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                     <p>
-                                                        <a href="{{ route('products.show', ['id' => Hashids::encode($product->id)]) }}">
+                                                        <a href="{{ route('products.show', ['id' => id_encode($product->id)]) }}">
                                                             {{ $product->description }}
                                                         </a>
                                                     </p>
@@ -328,7 +328,7 @@
                                             <div class="row">
                                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                     <p>
-                                                        <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
+                                                        <a href="{{ route('services.show', ['id' => id_encode($service->id)]) }}">
                                                             {{ $service->description }}
                                                         </a>
                                                     </p>
@@ -394,7 +394,7 @@
                                             <div class="row">
                                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                     <p>
-                                                        <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}">
+                                                        <a href="{{ route('services.show', ['id' => id_encode($service->id)]) }}">
                                                             {{ $service->description }}
                                                         </a>
                                                     </p>
@@ -454,7 +454,7 @@
                                             <div class="row">
                                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 align-self-center">
                                                     <p>
-                                                        <a href="{{ route('props.show', ['id' => Hashids::encode($prop->id)]) }}">
+                                                        <a href="{{ route('props.show', ['id' => id_encode($prop->id)]) }}">
                                                             {{ $prop->description }}
                                                         </a>
                                                     </p>
@@ -631,7 +631,7 @@
                                                         </div>
                                                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 align-self-center">
                                                             <p>
-                                                                <a href="{{ route('guests.show', ['id' => Hashids::encode($guest->id)]) }}">
+                                                                <a href="{{ route('guests.show', ['id' => id_encode($guest->id)]) }}">
                                                                     {{ $guest->full_name }}
                                                                 </a>
                                                             </p>

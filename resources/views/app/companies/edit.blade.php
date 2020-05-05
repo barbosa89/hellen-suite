@@ -26,7 +26,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('companies.update', [
-                        'id' => Hashids::encode($company->id)
+                        'id' => id_encode($company->id)
                     ]),
                     'method' => 'PUT',
                     'fields' => [

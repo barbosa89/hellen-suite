@@ -12,18 +12,18 @@
         'options' => [
             [
                 'option' => trans('vouchers.registerGuests'),
-                'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
+                'url' => route('vouchers.guests.search', ['id' => id_encode($voucher->id)])
             ],
             [
                 'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
                 'url' => route('vouchers.companies.search', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ]),
             ],
             [
                 'option' => 'Volver al recibo',
                 'url' => route('vouchers.show', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ])
             ]
         ]
@@ -32,12 +32,12 @@
     @include('app.vouchers.info')
 
     <h3 class="text-center">Agregar habitación</h3>
-    <form class="mt-4" action="{{ route('vouchers.rooms.add', ['id' => Hashids::encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.rooms.add', ['id' => id_encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">@lang('hotels.title'):</label>
             <select class="form-control" title="Elige un hotel" name="hotel" id="hotel" required>
-                <option value="{{ Hashids::encode($voucher->hotel->id) }}" selected>{{ $voucher->hotel->business_name }}</option>
+                <option value="{{ id_encode($voucher->hotel->id) }}" selected>{{ $voucher->hotel->business_name }}</option>
             </select>
 
             @if ($errors->has('hotel'))
@@ -49,7 +49,7 @@
 
         <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
             <label for="number">@lang('rooms.title'):</label>
-            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required onchange="getRoomPriceByNumber('{{ Hashids::encode($voucher->hotel->id) }}', this.value)">
+            <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="number" id="number" required onchange="getRoomPriceByNumber('{{ id_encode($voucher->hotel->id) }}', this.value)">
                 @foreach($rooms as $room)
                     <option value="{{ $room->number }}" {{ $loop->first ? 'selected' : '' }} >{{ $room->number }}</option>
                 @endforeach
@@ -95,7 +95,7 @@
             @endif
         </div>
         <button type="submit" class="btn btn-primary">Agregar</button>
-        <a href="{{ route('vouchers.show', ['id' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">Finalizar</a>
+        <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}" class="btn btn-link">Finalizar</a>
     </form>
 
     @include('partials.spacer', ['size' => 'md'])

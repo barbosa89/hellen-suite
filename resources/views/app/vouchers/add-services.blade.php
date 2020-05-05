@@ -13,13 +13,13 @@
             [
                 'type' => 'hideable',
                 'option' => trans('vouchers.loadProducts'),
-                'url' => route('vouchers.products', ['id' => Hashids::encode($voucher->id)]),
+                'url' => route('vouchers.products', ['id' => id_encode($voucher->id)]),
                 'show' => !$voucher->reservation
             ],
             [
                 'option' => trans('vouchers.back'),
                 'url' => route('vouchers.show', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ])
             ]
         ]
@@ -35,14 +35,14 @@
             'align' => 'text-center',
             'size' => 'h3'
         ],
-        'url' => route('vouchers.services.add', ['id' => Hashids::encode($voucher->id)]),
+        'url' => route('vouchers.services.add', ['id' => id_encode($voucher->id)]),
         'fields' => [
             'app.vouchers.services.add-fields',
             'app.vouchers.total'
         ],
         'btn' => trans('common.add'),
         'link' => [
-            'href' => route('vouchers.show', ['id' => Hashids::encode($voucher->id)]),
+            'href' => route('vouchers.show', ['id' => id_encode($voucher->id)]),
             'name' => trans('common.back')
         ]
     ])

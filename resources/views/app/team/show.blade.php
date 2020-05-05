@@ -13,28 +13,28 @@
                 [
                     'option' => trans('common.assign'),
                     'url' => route('team.assign', [
-                        'id' => Hashids::encode($member->id)
+                        'id' => id_encode($member->id)
                     ]),
                     'permission' => 'team.edit'
                 ],
                 [
                     'option' => trans('users.permissions'),
                     'url' => route('team.permissions', [
-                        'id' => Hashids::encode($member->id)
+                        'id' => id_encode($member->id)
                     ]),
                     'permission' => 'team.edit'
                 ],
                 [
                     'option' => trans('common.edit'),
                     'url' => route('team.edit', [
-                        'id' => Hashids::encode($member->id)
+                        'id' => id_encode($member->id)
                     ]),
                 ],
                 [
                     'type' => 'confirm',
                     'option' => trans('common.delete.item'),
                     'url' => route('team.destroy', [
-                        'id' => Hashids::encode($member->id)
+                        'id' => id_encode($member->id)
                     ]),
                     'method' => 'DELETE'
                 ],

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCompany extends FormRequest
@@ -24,7 +23,7 @@ class UpdateCompany extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('id'));
+        $id = id_decode($this->route('id'));
 
         return [
             'tin' => 'required|alpha_num|unique_per_user:companies,tin,' . $id,

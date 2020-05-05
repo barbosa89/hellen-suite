@@ -2,7 +2,7 @@
     <div class="col-12 col-sx-12 col-sm-12 col-md-12 d-block d-lg-none d-xl-none mb-4">
         <div class="row">
             <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-3 col-xl-3">
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                     <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
                 </a>
             </div>
@@ -11,7 +11,7 @@
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">Hotel</span>
                         <span class="d-block">
-                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                            <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->business_name }}
                             </a>
                         </span>
@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         <span class="d-block font-weight-bold">@common('common.tin')</span>
                         <span class="d-block">
-                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                            <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}
                             </a>
                         </span>
@@ -44,7 +44,7 @@
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
                 <span class="d-block font-weight-light">No.</span>
                 <span class="d-block">
-                    <a href="{{ route('vouchers.show', ['id' => Hashids::encode($voucher->id)] ) }}">
+                    <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)] ) }}">
                         {{ $voucher->number }}
                     </a>
                 </span>
@@ -111,7 +111,7 @@
                                 <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
                                 <span class="d-block text-center">
                                     @can('vouchers.losses')
-                                        <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => Hashids::encode($voucher->id)], false) }}')">
+                                        <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => id_encode($voucher->id)], false) }}')">
                                             <i class="fas fa-arrow-down"></i> <i class="fas fa-dollar-sign"></i>
                                         </a>
                                     @endcan
@@ -130,7 +130,7 @@
                     <div class="col-md-12 dont-break-out">
                         <span class="d-block font-weight-bold">Hotel</span>
                         <span class="d-block">
-                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                            <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->business_name }}
                             </a>
                         </span>
@@ -138,7 +138,7 @@
                     <div class="col-md-12 dont-break-out">
                         <span class="d-block font-weight-bold">@lang('common.tin')</span>
                         <span class="d-block">
-                            <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                            <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}
                             </a>
                         </span>
@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="col-md-5 text-right dont-break-out">
-                <a href="{{ route('hotels.show', ['id' => Hashids::encode($voucher->hotel->id)]) }}">
+                <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                     <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
                 </a>
             </div>

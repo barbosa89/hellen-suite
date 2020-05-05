@@ -6,12 +6,10 @@ use App\Exports\ProductReport;
 use App\Exports\ProductsReport;
 use App\Helpers\Chart;
 use App\User;
-use App\Helpers\Id;
 use App\Helpers\Fields;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
 use App\Welkome\Company;
 use App\Welkome\Hotel;
@@ -31,7 +29,7 @@ class ProductController extends Controller
     public function index()
     {
         $hotels = Hotel::whereHas('owner', function (Builder $query) {
-            $query->where('id', Id::parent());
+            $query->where('id', id_parent());
         })->with([
             'products' => function ($query) {
                 $query->select(Fields::get('products'));
@@ -58,11 +56,11 @@ class ProductController extends Controller
     public function encodeIds(Collection $hotels)
     {
         $hotels = $hotels->map(function ($hotel) {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->products = $hotel->products->map(function ($product) {
-                $product->hotel_id = Hashids::encode($product->hotel_id);
-                $product->user_id = Hashids::encode($product->user_id);
+                $product->hotel_id = id_encode($product->hotel_id);
+                $product->user_id = id_encode($product->user_id);
 
                 return $product;
             });
@@ -81,7 +79,7 @@ class ProductController extends Controller
     public function create()
     {
         $hotels = Hotel::whereHas('owner', function (Builder $query) {
-            $query->where('id', Id::parent());
+            $query->where('id', id_parent());
         })->whereStatus(true)
             ->get(Fields::get('hotels'));
 
@@ -91,7 +89,7 @@ class ProductController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
             ->get(Fields::get('companies'));
 
@@ -112,8 +110,8 @@ class ProductController extends Controller
         $product->reference = $request->reference;
         $product->price = (float) $request->price;
         $product->quantity = $request->quantity;
-        $product->user()->associate(Id::parent());
-        $product->hotel()->associate(Id::get($request->hotel));
+        $product->user()->associate(id_parent());
+        $product->hotel()->associate(id_decode($request->hotel));
 
         if ($product->save()) {
             // Voucher creation
@@ -126,11 +124,11 @@ class ProductController extends Controller
             $voucher->subvalue = $product->price * $product->quantity;
             $voucher->made_by = auth()->user()->name;
             $voucher->comments = $request->comments;
-            $voucher->hotel()->associate(Id::get($request->hotel));
-            $voucher->user()->associate(Id::parent());
+            $voucher->hotel()->associate(id_decode($request->hotel));
+            $voucher->user()->associate(id_parent());
 
             if (!empty($request->company)) {
-                $voucher->company()->associate(Id::get($request->company));
+                $voucher->company()->associate(id_decode($request->company));
             }
 
             if ($voucher->save()) {
@@ -148,7 +146,7 @@ class ProductController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('products.show', [
-                'id' => Hashids::encode($product->id)
+                'id' => id_encode($product->id)
             ]);
         }
 
@@ -165,9 +163,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = User::find(Id::parent(), ['id'])
+        $product = User::find(id_parent(), ['id'])
             ->products()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -201,9 +199,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = User::find(Id::parent(), ['id'])
+        $product = User::find(id_parent(), ['id'])
             ->products()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->with([
                 'hotel' => function ($query) {
                     $query->select(Fields::get('hotels'));
@@ -226,9 +224,9 @@ class ProductController extends Controller
      */
     public function update(UpdateProduct $request, $id)
     {
-        $product = User::find(Id::parent(), ['id'])
+        $product = User::find(id_parent(), ['id'])
             ->products()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -244,7 +242,7 @@ class ProductController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('products.show', [
-                'id' => Hashids::encode($product->id)
+                'id' => id_encode($product->id)
             ]);
         }
 
@@ -261,8 +259,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = User::find(Id::parent(), ['id'])->products()
-            ->where('id', Id::get($id))
+        $product = User::find(id_parent(), ['id'])->products()
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -305,7 +303,7 @@ class ProductController extends Controller
     public function total(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::find(Id::get($request->element), ['id', 'price']);
+            $product = Product::find(id_decode($request->element), ['id', 'price']);
 
             if (empty($product)) {
                 return response()->json(['value' => null]);
@@ -328,9 +326,9 @@ class ProductController extends Controller
      */
     public function toggle($id)
     {
-        $product = User::find(Id::parent(), ['id'])
+        $product = User::find(id_parent(), ['id'])
             ->products()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -359,16 +357,16 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $products = Product::where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $products = Product::where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->whereLike(['description', 'brand', 'reference'], $query)
                 ->get(Fields::get('products'));
 
             $products = $products->map(function ($product) {
-                $product->hotel_id = Hashids::encode($product->hotel_id);
-                $product->user_id = Hashids::encode($product->user_id);
+                $product->hotel_id = id_encode($product->hotel_id);
+                $product->user_id = id_encode($product->user_id);
 
                 return $product;
             });
@@ -389,8 +387,8 @@ class ProductController extends Controller
      */
     public function showProductReportForm($id)
     {
-        $product = User::find(Id::parent(), ['id'])->products()
-            ->where('id', Id::get($id))
+        $product = User::find(id_parent(), ['id'])->products()
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -416,8 +414,8 @@ class ProductController extends Controller
      */
     public function exportProductReport(DateRangeQuery $request, $id)
     {
-        $product = User::find(Id::parent(), ['id'])->products()
-            ->where('id', Id::get($id))
+        $product = User::find(id_parent(), ['id'])->products()
+            ->where('id', id_decode($id))
             ->first(Fields::get('products'));
 
         if (empty($product)) {
@@ -445,7 +443,7 @@ class ProductController extends Controller
         if ($product->vouchers->isEmpty()) {
             flash(trans('common.without.results'))->info();
 
-            return redirect()->route('products.product.report', ['id' => Hashids::encode($product->id)]);
+            return redirect()->route('products.product.report', ['id' => id_encode($product->id)]);
         }
 
         return Excel::download(new ProductReport($product), trans('products.product') . '.xlsx');
@@ -458,7 +456,7 @@ class ProductController extends Controller
      */
     public function showReportForm()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -479,10 +477,10 @@ class ProductController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $query = Hotel::query();
-        $query->where('user_id', Id::parent());
+        $query->where('user_id', id_parent());
 
         if (!empty($request->hotel)) {
-            $query->where('id', Id::get($request->hotel));
+            $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([

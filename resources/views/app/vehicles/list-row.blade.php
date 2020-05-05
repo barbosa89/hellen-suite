@@ -31,7 +31,7 @@
                     [
                         'option' => trans('common.edit'),
                         'url' => route('vehicles.edit', [
-                            'id' => Hashids::encode($row->id)
+                            'id' => id_encode($row->id)
                         ]),
                         'permission' => 'vehicles.edit'
                     ],
@@ -39,7 +39,7 @@
                         'type' => 'confirm',
                         'option' => trans('common.delete.item'),
                         'url' => route('vehicles.destroy', [
-                            'id' => Hashids::encode($row->id)
+                            'id' => id_encode($row->id)
                         ]),
                         'method' => 'DELETE',
                         'permission' => 'vehicles.destroy'

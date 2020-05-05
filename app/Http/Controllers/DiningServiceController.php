@@ -4,15 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exports\ServiceReport;
 use App\Exports\ServicesReport;
-use App\Helpers\Chart;
+use App\Helpers\{Chart, Fields, Parameter};
 use App\User;
-use App\Helpers\Id;
-use App\Welkome\Hotel;
-use App\Helpers\Fields;
-use App\Helpers\Input;
-use App\Welkome\Service;
+use App\Welkome\{Hotel, Service};
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -25,7 +20,7 @@ class DiningServiceController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->with([
                 'services' => function ($query)
                 {
@@ -36,12 +31,12 @@ class DiningServiceController extends Controller
 
         $hotels = $hotels->map(function ($hotel)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->services = $hotel->services->map(function ($service)
             {
-                $service->hotel_id = Hashids::encode($service->hotel_id);
-                $service->user_id = Hashids::encode($service->user_id);
+                $service->hotel_id = id_encode($service->hotel_id);
+                $service->user_id = id_encode($service->user_id);
 
                 return $service;
             });
@@ -70,7 +65,7 @@ class DiningServiceController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->whereStatus(true)
             ->get(Fields::get('hotels'));
 
@@ -96,13 +91,13 @@ class DiningServiceController extends Controller
         $service->price = (float) $request->price;
         $service->is_dining_service = true;
         $service->user()->associate(auth()->user()->id);
-        $service->hotel()->associate(Id::get($request->hotel));
+        $service->hotel()->associate(id_decode($request->hotel));
 
         if ($service->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('dining.show', [
-                'id' => Hashids::encode($service->id)
+                'id' => id_encode($service->id)
             ]);
         }
 
@@ -119,8 +114,8 @@ class DiningServiceController extends Controller
      */
     public function show($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->first(Fields::get('services'));
 
@@ -155,8 +150,8 @@ class DiningServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->with([
                 'hotel' => function($query) {
@@ -180,8 +175,8 @@ class DiningServiceController extends Controller
      */
     public function update(UpdateService $request, $id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->first(Fields::get('services'));
 
@@ -196,7 +191,7 @@ class DiningServiceController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('dining.show', [
-                'id' => Hashids::encode($service->id)
+                'id' => id_encode($service->id)
             ]);
         }
 
@@ -213,8 +208,8 @@ class DiningServiceController extends Controller
      */
     public function destroy($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->first(Fields::get('services'));
 
@@ -259,18 +254,18 @@ class DiningServiceController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $services = Service::where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $services = Service::where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->where('is_dining_service', true)
                 ->whereLike('description', $query)
                 ->get(Fields::get('services'));
 
             $services = $services->map(function ($service)
             {
-                $service->hotel_id = Hashids::encode($service->hotel_id);
-                $service->user_id = Hashids::encode($service->user_id);
+                $service->hotel_id = id_encode($service->hotel_id);
+                $service->user_id = id_encode($service->user_id);
 
                 return $service;
             });
@@ -291,8 +286,8 @@ class DiningServiceController extends Controller
      */
     public function showServiceReportForm($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->first(Fields::get('services'));
 
@@ -319,8 +314,8 @@ class DiningServiceController extends Controller
      */
     public function exportServiceReport(DateRangeQuery $request, $id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->first(Fields::get('services'));
 
@@ -349,7 +344,7 @@ class DiningServiceController extends Controller
         if ($service->vouchers->isEmpty()) {
             flash(trans('common.without.results'))->info();
 
-            return redirect()->route('dining.service.report', ['id' => Hashids::encode($service->id)]);
+            return redirect()->route('dining.service.report', ['id' => id_encode($service->id)]);
         }
 
         return Excel::download(new ServiceReport($service), trans('dining.item') . '.xlsx');
@@ -362,7 +357,7 @@ class DiningServiceController extends Controller
      */
     public function showReportForm()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -383,10 +378,10 @@ class DiningServiceController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $query = Hotel::query();
-        $query->where('user_id', Id::parent());
+        $query->where('user_id', id_parent());
 
         if (!empty($request->hotel)) {
-            $query->where('id', Id::get($request->hotel));
+            $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([

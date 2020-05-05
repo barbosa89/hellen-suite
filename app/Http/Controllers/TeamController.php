@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
 use App\Helpers\Permissions;
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
 use App\Notifications\VerifyTeamMemberEmail;
 use Spatie\Permission\Models\Permission;
-use Vinkla\Hashids\Facades\Hashids;
 
 class TeamController extends Controller
 {
@@ -87,10 +85,10 @@ class TeamController extends Controller
 
         if ($member->save()) {
             // Assign the team member to work in a headquarters
-            $member->headquarters()->attach(Id::get($request->hotel));
+            $member->headquarters()->attach(id_decode($request->hotel));
 
             // The hotel
-            $hotel = Hotel::find(Id::get($request->hotel), ['id', 'business_name']);
+            $hotel = Hotel::find(id_decode($request->hotel), ['id', 'business_name']);
 
             //Assign role
             $member->assignRole($request->role);
@@ -103,7 +101,7 @@ class TeamController extends Controller
 
             flash(trans('common.createdSuccessfully') . '. El usuario debe verificar su correo electrónico.')->success();
 
-            return redirect()->route('team.permissions', ['id' => Hashids::encode($member->id)]);
+            return redirect()->route('team.permissions', ['id' => id_encode($member->id)]);
         }
 
         flash(trans('common.error'))->error();
@@ -120,7 +118,7 @@ class TeamController extends Controller
     public function show($id)
     {
         $member = User::where('parent', auth()->user()->id)
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('users'));
 
         if (empty($member)) {
@@ -180,7 +178,7 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $member = User::find(auth()->user()->id, ['id'])->employees()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->with([
                 'roles' => function($query) {
                     $query->select(['id', 'name']);
@@ -209,7 +207,7 @@ class TeamController extends Controller
     public function assign($id)
     {
         $member = User::find(auth()->user()->id, ['id'])->employees()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->with([
                 'headquarters' => function($query) {
                     $query->select(['id', 'business_name']);
@@ -254,18 +252,18 @@ class TeamController extends Controller
     public function attach(AssignTeamMember $request, $id)
     {
         $member = User::find(auth()->user()->id, ['id'])->employees()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('users'));
 
         // Delete the old relationship
         $member->headquarters()->sync([]);
 
-        $member->headquarters()->attach(Id::get($request->hotel));
+        $member->headquarters()->attach(id_decode($request->hotel));
 
         flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('team.show', [
-            'id' => Hashids::encode($member->id)
+            'id' => id_encode($member->id)
         ]);
     }
 
@@ -279,7 +277,7 @@ class TeamController extends Controller
     {
         // Team member receiving permissions
         $member = User::find(auth()->user()->id, ['id'])->employees()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->with([
                 'roles' => function($query) {
                     $query->select(['id', 'name', 'guard_name']);
@@ -311,11 +309,11 @@ class TeamController extends Controller
     {
         // Team member receiving permissions
         $member = User::find(auth()->user()->id, ['id'])->employees()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('users'));
 
         // Checked permissions from database
-        $permissions = Permission::whereIn('id', Id::get($request->permissions))
+        $permissions = Permission::whereIn('id', id_decode($request->permissions))
             ->get(['id', 'name', 'guard_name']);
 
         // Delete all old permissions

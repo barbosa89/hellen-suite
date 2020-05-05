@@ -2,7 +2,7 @@
     <label for="service">@lang('services.title'):</label>
     <select class="form-control selectpicker" title="{{ trans('services.chooseService') }}" name="service" id="service" required onchange="showTotal()">
         @foreach($services as $service)
-            <option value="{{ Hashids::encode($service->id) }}">
+            <option value="{{ id_encode($service->id) }}">
                 {{ $service->description }} 
             </option>
         @endforeach

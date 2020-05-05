@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exports\AssetsReport;
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Room;
 use App\Welkome\Asset;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
 use App\Welkome\Maintenance;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +28,7 @@ class AssetController extends Controller
     {
         $hotels = Hotel::whereHas('owner', function (Builder $query)
         {
-            $query->where('id', Id::parent());
+            $query->where('id', id_parent());
         })->with([
             'assets' => function ($query)
             {
@@ -59,13 +57,13 @@ class AssetController extends Controller
     {
         $hotels = $hotels->map(function ($hotel)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->assets = $hotel->assets->map(function ($asset)
             {
-                $asset->hotel_id = Hashids::encode($asset->hotel_id);
-                $asset->user_id = Hashids::encode($asset->user_id);
-                $asset->room_id = Hashids::encode($asset->room_id);
+                $asset->hotel_id = id_encode($asset->hotel_id);
+                $asset->user_id = id_encode($asset->user_id);
+                $asset->room_id = id_encode($asset->room_id);
 
                 return $asset;
             });
@@ -85,7 +83,7 @@ class AssetController extends Controller
     {
         $hotels = Hotel::whereHas('owner', function (Builder $query)
         {
-            $query->where('id', Id::parent());
+            $query->where('id', id_parent());
         })->where('status', true)
         ->with([
             'rooms' => function ($query)
@@ -129,13 +127,13 @@ class AssetController extends Controller
         $asset->model = $request->get('model', null);
         $asset->serial_number = $request->get('serial_number', null);
         $asset->location = $request->get('location', null);
-        $asset->user()->associate(Id::parent());
-        $asset->hotel()->associate(Id::get($request->hotel));
+        $asset->user()->associate(id_parent());
+        $asset->hotel()->associate(id_decode($request->hotel));
 
         if (!empty($request->get('room', null))) {
-            $room = Room::where('id', Id::get($request->room))
-                ->where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $room = Room::where('id', id_decode($request->room))
+                ->where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->first(['id']);
 
             if (empty($room)) {
@@ -151,7 +149,7 @@ class AssetController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('assets.show', [
-                'id' => Hashids::encode($asset->id)
+                'id' => id_encode($asset->id)
             ]);
         }
 
@@ -168,8 +166,8 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -201,8 +199,8 @@ class AssetController extends Controller
      */
     public function edit($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -221,7 +219,7 @@ class AssetController extends Controller
             },
         ]);
 
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->where('id', '!=', $asset->hotel->id)
             ->where('status', true)
             ->get(Fields::get('hotels'));
@@ -238,9 +236,9 @@ class AssetController extends Controller
      */
     public function update(UpdateAsset $request, $id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
-            ->where('hotel_id', Id::get($request->hotel))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
+            ->where('hotel_id', id_decode($request->hotel))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -252,14 +250,14 @@ class AssetController extends Controller
         $asset->model = $request->get('model', null);
         $asset->serial_number = $request->get('serial_number', null);
         $asset->location = $request->get('location', null);
-        $asset->hotel()->associate(Id::get($request->hotel));
+        $asset->hotel()->associate(id_decode($request->hotel));
 
         if (empty($request->get('room', null))) {
             $asset->room()->dissociate();
         } else {
-            $room = Room::where('id', Id::get($request->room))
-                ->where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $room = Room::where('id', id_decode($request->room))
+                ->where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->first(['id']);
 
             if (empty($room)) {
@@ -275,7 +273,7 @@ class AssetController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('assets.show', [
-                'id' => Hashids::encode($asset->id)
+                'id' => id_encode($asset->id)
             ]);
         }
 
@@ -292,8 +290,8 @@ class AssetController extends Controller
      */
     public function destroy($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(['id']);
 
         if (empty($asset)) {
@@ -320,17 +318,17 @@ class AssetController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $assets = Asset::where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $assets = Asset::where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
                 ->get(Fields::get('assets'));
 
             $assets = $assets->map(function ($asset)
             {
-                $asset->hotel_id = Hashids::encode($asset->hotel_id);
-                $asset->user_id = Hashids::encode($asset->user_id);
+                $asset->hotel_id = id_encode($asset->hotel_id);
+                $asset->user_id = id_encode($asset->user_id);
 
                 return $asset;
             });
@@ -350,7 +348,7 @@ class AssetController extends Controller
      */
     public function showReportForm()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -371,7 +369,7 @@ class AssetController extends Controller
     public function report(AssetsReportQuery $request)
     {
         if (empty($request->get('hotel', null))) {
-            $hotels = Hotel::where('user_id', Id::parent())
+            $hotels = Hotel::where('user_id', id_parent())
                 ->with([
                     'assets' => function($query) {
                         $query->select(Fields::get('assets'));
@@ -382,8 +380,8 @@ class AssetController extends Controller
                     }
                 ])->get(Fields::get('hotels'));
         } else {
-            $hotels = Hotel::where('user_id', Id::parent())
-                ->where('id', Id::get($request->hotel))
+            $hotels = Hotel::where('user_id', id_parent())
+                ->where('id', id_decode($request->hotel))
                 ->with([
                     'assets' => function($query) {
                         $query->select(Fields::get('assets'));
@@ -411,8 +409,8 @@ class AssetController extends Controller
      */
     public function showMaintenanceForm($id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -439,8 +437,8 @@ class AssetController extends Controller
      */
     public function maintenance(StoreMaintenance $request, $id)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -451,7 +449,7 @@ class AssetController extends Controller
         $maintenance->date = $request->date;
         $maintenance->commentary = $request->commentary;
         $maintenance->value = $request->get('value', null);
-        $maintenance->user()->associate(Id::parent());
+        $maintenance->user()->associate(id_parent());
 
         if ($request->hasFile('invoice')) {
             $path = $request->file('invoice')->storeAs(
@@ -466,7 +464,7 @@ class AssetController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('assets.show', [
-                'id' => Hashids::encode($asset->id)
+                'id' => id_encode($asset->id)
             ]);
         }
 
@@ -482,8 +480,8 @@ class AssetController extends Controller
      */
     public function showMaintenanceEditForm($id, $maintenance)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -500,8 +498,8 @@ class AssetController extends Controller
             'maintenances' => function ($query) use ($id, $maintenance)
             {
                 $query->select(Fields::get('maintenances'))
-                    ->where('maintainable_id', Id::get($id))
-                    ->where('id', Id::get($maintenance));
+                    ->where('maintainable_id', id_decode($id))
+                    ->where('id', id_decode($maintenance));
             }
         ]);
 
@@ -516,8 +514,8 @@ class AssetController extends Controller
      */
     public function updateMaintenance(StoreMaintenance $request, $id, $maintenance)
     {
-        $asset = User::find(Id::parent(), ['id'])->assets()
-            ->where('id', Id::get($id))
+        $asset = User::find(id_parent(), ['id'])->assets()
+            ->where('id', id_decode($id))
             ->first(Fields::get('assets'));
 
         if (empty($asset)) {
@@ -528,8 +526,8 @@ class AssetController extends Controller
             'maintenances' => function ($query) use ($id, $maintenance)
             {
                 $query->select(Fields::get('maintenances'))
-                    ->where('maintainable_id', Id::get($id))
-                    ->where('id', Id::get($maintenance));
+                    ->where('maintainable_id', id_decode($id))
+                    ->where('id', id_decode($maintenance));
             }
         ]);
 
@@ -554,7 +552,7 @@ class AssetController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('assets.show', [
-                'id' => Hashids::encode($asset->id)
+                'id' => id_encode($asset->id)
             ]);
         }
 
@@ -571,9 +569,9 @@ class AssetController extends Controller
      */
     public function destroyMaintenance($id, $maintenanceId)
     {
-        $maintenance = Maintenance::where('user_id', Id::parent())
-            ->where('id', Id::get($maintenanceId))
-            ->where('maintainable_id', Id::get($id))
+        $maintenance = Maintenance::where('user_id', id_parent())
+            ->where('id', id_decode($maintenanceId))
+            ->where('maintainable_id', id_decode($id))
             ->first(Fields::get('maintenances'));
 
         if (empty($maintenance)) {

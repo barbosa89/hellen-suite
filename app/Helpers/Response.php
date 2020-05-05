@@ -2,9 +2,7 @@
 
 namespace App\Helpers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Response
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProduct extends FormRequest
@@ -24,7 +23,7 @@ class UpdateProduct extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('id'));
+        $id = id_decode($this->route('id'));
 
         return [
             'description' => 'required|string|max:191|unique_with:products,hotel#hotel_id, ' . $id,

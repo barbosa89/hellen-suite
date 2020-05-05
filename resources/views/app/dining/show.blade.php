@@ -14,7 +14,7 @@
                 [
                     'option' => trans('common.reports'),
                     'url' => route('dining.service.report', [
-                        'id' => Hashids::encode($service->id)
+                        'id' => id_encode($service->id)
                     ])
                 ],
                 [
@@ -28,18 +28,18 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('dining.edit', [
-                                'id' => Hashids::encode($service->id)
+                                'id' => id_encode($service->id)
                             ]),
                         ],
                         [
                             'option' => $service->status ? trans('common.disable') : trans('common.enable'),
-                            'url' => route('services.toggle', ['id' => Hashids::encode($service->id)])
+                            'url' => route('services.toggle', ['id' => id_encode($service->id)])
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('dining.destroy', [
-                                'id' => Hashids::encode($service->id)
+                                'id' => id_encode($service->id)
                             ]),
                             'method' => 'DELETE'
                         ],

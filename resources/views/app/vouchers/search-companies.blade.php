@@ -14,13 +14,13 @@
                 [
                     'option' => trans('common.create') . ' ' . trans('companies.company'),
                     'url' => route('vouchers.companies.create', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => trans('vouchers.see'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -28,7 +28,7 @@
 
         @include('app.vouchers.info')
 
-        <div class="hide" id="voucher" data-id="{{ Hashids::encode($voucher->id) }}"></div>
+        <div class="hide" id="voucher" data-id="{{ id_encode($voucher->id) }}"></div>
 
         @include('partials.spacer', ['size' => 'md'])
 

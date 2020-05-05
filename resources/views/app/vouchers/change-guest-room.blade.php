@@ -12,18 +12,18 @@
         'options' => [
             [
                 'option' => trans('vouchers.registerGuests'),
-                'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
+                'url' => route('vouchers.guests.search', ['id' => id_encode($voucher->id)])
             ],
             [
                 'option' => $voucher->company ? trans('vouchers.linkNewCompany') : trans('vouchers.linkCompany'),
                 'url' => route('vouchers.companies.search', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ]),
             ],
             [
                 'option' => 'Volver al recibo',
                 'url' => route('vouchers.show', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ])
             ]
         ]
@@ -32,12 +32,12 @@
     @include('app.vouchers.info')
 
     <h3 class="text-center">@lang('rooms.changeRoom')</h3>
-    <form class="mt-4" action="{{ route('vouchers.guests.change', ['id' => Hashids::encode($voucher->id), 'guest' => Hashids::encode($guest->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.guests.change', ['id' => id_encode($voucher->id), 'guest' => id_encode($guest->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
             <label for="hotel">Hotel:</label>
             <select class="form-control" title="Elige un hotel" name="hotel" id="hotel" readonly>
-                <option value="{{ Hashids::encode($voucher->hotel->id) }}" selected>{{ $voucher->hotel->business_name }}</option>
+                <option value="{{ id_encode($voucher->hotel->id) }}" selected>{{ $voucher->hotel->business_name }}</option>
             </select>
 
             @if ($errors->has('hotel'))
@@ -89,7 +89,7 @@
         <button type="submit" class="btn btn-primary">
             @lang('common.change')
         </button>
-        <a href="{{ route('vouchers.show', ['id' => Hashids::encode($voucher->id)]) }}" class="btn btn-link">
+        <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}" class="btn btn-link">
             @lang('common.back')
         </a>
     </form>

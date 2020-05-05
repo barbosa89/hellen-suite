@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\VehiclesReport;
 use App\Helpers\Fields;
-use App\Helpers\Id;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use App\Http\Requests\StoreVehicle;
 use App\Http\Requests\StoreVehicleForVoucher;
 use App\Http\Requests\UpdateVehicle;
@@ -15,7 +14,6 @@ use App\Welkome\VehicleType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Vinkla\Hashids\Facades\Hashids;
 
 class VehicleController extends Controller
 {
@@ -26,7 +24,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::where('user_id', Id::parent())
+        $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
                 'type' => function ($query)
                 {
@@ -63,8 +61,8 @@ class VehicleController extends Controller
         $vehicle->registration = $request->registration;
         $vehicle->brand = $request->get('brand', null);
         $vehicle->color = $request->get('color', null);
-        $vehicle->type()->associate(Id::get($request->type));
-        $vehicle->user()->associate(Id::parent());
+        $vehicle->type()->associate(id_decode($request->type));
+        $vehicle->user()->associate(id_parent());
 
         if ($vehicle->save()) {
             flash(trans('common.createdSuccessfully'))->success();
@@ -84,8 +82,8 @@ class VehicleController extends Controller
      */
     public function createForVoucher($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -112,8 +110,8 @@ class VehicleController extends Controller
      */
     public function storeForVoucher(StoreVehicleForVoucher $request, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -123,7 +121,7 @@ class VehicleController extends Controller
                 },
                 'guests.vehicles' => function ($query) use ($id) {
                     $query->select(Fields::parsed('vehicles'))
-                        ->wherePivot('voucher_id', Id::get($id));
+                        ->wherePivot('voucher_id', id_decode($id));
                 }
             ])->first(Fields::get('vouchers'));
 
@@ -131,11 +129,11 @@ class VehicleController extends Controller
             abort(404);
         }
 
-        if ($voucher->guests->where('id', Id::get($request->guest))->first()->vehicles->isNotEmpty()) {
+        if ($voucher->guests->where('id', id_decode($request->guest))->first()->vehicles->isNotEmpty()) {
             flash(trans('vouchers.hasVehicles'))->error();
 
             return redirect()->route('vouchers.vehicles.create', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -151,11 +149,11 @@ class VehicleController extends Controller
             $vehicle->registration = $request->registration;
             $vehicle->brand = $request->get('brand', null);
             $vehicle->color = $request->get('color', null);
-            $vehicle->type()->associate(Id::get($request->type));
-            $vehicle->user()->associate(Id::parent());
+            $vehicle->type()->associate(id_decode($request->type));
+            $vehicle->user()->associate(id_parent());
 
             if ($vehicle->save()) {
-                $vehicle->guests()->attach($voucher->guests->where('id', Id::get($request->guest))->first()->id, [
+                $vehicle->guests()->attach($voucher->guests->where('id', id_decode($request->guest))->first()->id, [
                     'voucher_id' => $voucher->id,
                     'created_at' => Carbon::now()->toDateTimeString()
                 ]);
@@ -163,21 +161,21 @@ class VehicleController extends Controller
                 flash(trans('common.createdSuccessfully'))->success();
 
                 return redirect()->route('vouchers.vehicles.search', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ]);
             }
 
             flash(trans('common.error'))->error();
 
             return redirect()->route('vouchers.vehicles.create', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         flash(trans('vouchers.vehicleAttached'))->error();
 
         return redirect()->route('vouchers.vehicles.create', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -189,8 +187,8 @@ class VehicleController extends Controller
      */
     public function edit($id)
     {
-        $vehicle = Vehicle::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $vehicle = Vehicle::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('vehicles'));
 
         if (empty($vehicle)) {
@@ -219,8 +217,8 @@ class VehicleController extends Controller
      */
     public function update(UpdateVehicle $request, $id)
     {
-        $vehicle = Vehicle::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $vehicle = Vehicle::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('vehicles'));
 
         if (empty($vehicle)) {
@@ -230,7 +228,7 @@ class VehicleController extends Controller
         $vehicle->registration = $request->registration;
         $vehicle->brand = $request->get('brand', null);
         $vehicle->color = $request->get('color', null);
-        $vehicle->type()->associate(Id::get($request->type));
+        $vehicle->type()->associate(id_decode($request->type));
 
         if ($vehicle->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
@@ -251,8 +249,8 @@ class VehicleController extends Controller
      */
     public function destroy($id)
     {
-        $vehicle = Vehicle::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $vehicle = Vehicle::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->whereDoesntHave('guests')
             ->first(Fields::get('vehicles'));
 
@@ -281,21 +279,21 @@ class VehicleController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Input::clean($request->get('query', null));
+        $query = Parameter::clean($request->get('query', null));
 
         if (empty($query)) {
             abort(404);
         }
 
-        $vehicles = Vehicle::where('user_id', Id::parent())
+        $vehicles = Vehicle::where('user_id', id_parent())
             ->whereLike(['registration', 'brand', 'color', 'type.type'], $query)
             ->get(Fields::get('vehicles'));
 
         if ($request->ajax()) {
             $vehicles = $vehicles->map(function ($vehicle)
             {
-                $vehicle->user_id = Hashids::encode($vehicle->user_id);
-                $vehicle->vehicle_type_id = Hashids::encode($vehicle->vehicle_type_id);
+                $vehicle->user_id = id_encode($vehicle->user_id);
+                $vehicle->vehicle_type_id = id_encode($vehicle->vehicle_type_id);
 
                 return $vehicle;
             });
@@ -315,7 +313,7 @@ class VehicleController extends Controller
      */
     public function export()
     {
-        $vehicles = Vehicle::where('user_id', Id::parent())
+        $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
                 'type' => function ($query)
                 {

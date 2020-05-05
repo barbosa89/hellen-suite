@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Chart;
 use App\User;
-use App\Helpers\Id;
-use App\Helpers\Input;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreHotel;
-use App\Http\Requests\UpdateHotel;
+use App\Http\Requests\{StoreHotel, UpdateHotel};
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -22,7 +19,7 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->paginate(config('welkome.paginate', Fields::get('hotels')))
             ->sort();
 
@@ -61,7 +58,7 @@ class HotelController extends Controller
         $hotel->owner()->associate(auth()->user()->id);
 
         if (!empty($request->main_hotel)) {
-            $hotel->main_hotel = Id::get($request->main_hotel);
+            $hotel->main_hotel = id_decode($request->main_hotel);
         }
 
         if ($request->hasFile('image')) {
@@ -93,7 +90,7 @@ class HotelController extends Controller
     public function show($id)
     {
         $hotel = User::find(auth()->user()->id)->hotels()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('hotels'));
 
         if (empty($hotel)) {
@@ -129,7 +126,7 @@ class HotelController extends Controller
     public function edit($id)
     {
         $hotel = User::find(auth()->user()->id)->hotels()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->with([
                 'main' => function ($query)
                 {
@@ -154,7 +151,7 @@ class HotelController extends Controller
     public function update(UpdateHotel $request, $id)
     {
         $hotel = User::find(auth()->user()->id, ['id'])->hotels()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('hotels'));
 
         if (empty($hotel)) {
@@ -198,7 +195,7 @@ class HotelController extends Controller
     public function destroy($id)
     {
         $hotel = User::find(auth()->user()->id)->hotels()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->whereDoesntHave('headquarters', function ($query)
             {
                 $query->select(['id', 'main_hotel']);
@@ -237,7 +234,7 @@ class HotelController extends Controller
     public function toggle($id)
     {
         $hotel = User::find(auth()->user()->id)->hotels()
-            ->where('id', Id::get($id))
+            ->where('id', id_decode($id))
             ->first(Fields::get('hotels'));
 
         if (empty($hotel)) {
@@ -266,8 +263,8 @@ class HotelController extends Controller
     public function getDifferentTo(Request $request)
     {
         if ($request->ajax()) {
-            $hotels = Hotel::where('id', '!=', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $hotels = Hotel::where('id', '!=', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->get(['id', 'business_name']);
 
             return response()->json([

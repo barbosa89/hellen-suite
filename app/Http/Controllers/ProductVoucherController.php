@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Fields;
-use App\Helpers\Id;
 use App\Helpers\Random;
 use App\User;
 use App\Welkome\Company;
@@ -14,7 +13,6 @@ use App\Welkome\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Vinkla\Hashids\Facades\Hashids;
 
 class ProductVoucherController extends Controller
 {
@@ -33,7 +31,7 @@ class ProductVoucherController extends Controller
             return redirect()->route('products.index');
         }
 
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
             ->get(Fields::get('companies'));
 
@@ -59,7 +57,7 @@ class ProductVoucherController extends Controller
             return $user->headquarters;
         }
 
-        $hotels = User::find(Id::parent(), ['id'])
+        $hotels = User::find(id_parent(), ['id'])
             ->hotels()
             ->where('status', true)
             ->get(Fields::get('hotels'));
@@ -89,17 +87,17 @@ class ProductVoucherController extends Controller
                 $voucher->type = $request->type;
                 $voucher->made_by = auth()->user()->name;
                 $voucher->comments = $request->comments;
-                $voucher->hotel()->associate(Id::get($request->hotel));
-                $voucher->user()->associate(Id::parent());
+                $voucher->hotel()->associate(id_decode($request->hotel));
+                $voucher->user()->associate(id_parent());
 
                 // Check if a supplier was selected
                 if (!empty($request->company)) {
-                    $voucher->company()->associate(Id::get($request->company));
+                    $voucher->company()->associate(id_decode($request->company));
                 }
 
                 foreach ($request->elements as $element) {
                     // Get the product to process
-                    $product = $products->where('id', Id::get($element['hash']))->first();
+                    $product = $products->where('id', id_decode($element['hash']))->first();
 
                     // If voucher type is an entry,
                     // add the quantity and change to new price
@@ -127,7 +125,7 @@ class ProductVoucherController extends Controller
                         $voucher->value += $value;
 
                         // Push as product processed
-                        $processed->push(Hashids::encode($product->id));
+                        $processed->push(id_encode($product->id));
                     }
                 }
 
@@ -136,7 +134,7 @@ class ProductVoucherController extends Controller
                     $voucher->products()->sync($attach);
 
                     // Get the shift
-                    $shift = Shift::current(Id::get($request->hotel));
+                    $shift = Shift::current(id_decode($request->hotel));
 
                     // Check if user is the shift owner
                     // Else, the sale was done by admin people
@@ -180,9 +178,9 @@ class ProductVoucherController extends Controller
      */
     public function getProducts(Request $request, array $ids)
     {
-        $products = Product::where('user_id', Id::parent())
-            ->where('hotel_id', Id::get($request->hotel))
-            ->whereIn('id', Id::pool($ids))
+        $products = Product::where('user_id', id_parent())
+            ->where('hotel_id', id_decode($request->hotel))
+            ->whereIn('id', id_decode_recursive($ids))
             ->where('status', true)
             ->get(Fields::get('products'));
 

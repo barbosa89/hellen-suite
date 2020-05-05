@@ -2,7 +2,7 @@
     <label for="room">@lang('rooms.title'):</label>
     <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($voucher->rooms as $room)
-            <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
+            <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
         @endforeach
     </select>
 
@@ -17,7 +17,7 @@
     <label for="product">@lang('products.title'):</label>
     <select class="form-control selectpicker" title="{{ trans('products.chooseProduct') }}" name="product" id="product" required onchange="showTotal()">
         @foreach($products as $product)
-            <option value="{{ Hashids::encode($product->id) }}" data-max="{{ $product->quantity }}">
+            <option value="{{ id_encode($product->id) }}" data-max="{{ $product->quantity }}">
                 {{ $product->description }} 
                 {{ !empty($product->brand) ? $product->brand : '' }} 
                 {{ !empty($product->reference) ? 'Ref. ' . $product->reference : '' }} 

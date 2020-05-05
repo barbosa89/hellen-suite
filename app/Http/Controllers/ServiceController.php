@@ -6,13 +6,11 @@ use App\Exports\ServiceReport;
 use App\Exports\ServicesReport;
 use App\Helpers\Chart;
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Hotel;
 use App\Helpers\Fields;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use App\Welkome\Service;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -25,7 +23,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->with([
                 'services' => function ($query)
                 {
@@ -36,12 +34,12 @@ class ServiceController extends Controller
 
         $hotels = $hotels->map(function ($hotel)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->services = $hotel->services->map(function ($service)
             {
-                $service->hotel_id = Hashids::encode($service->hotel_id);
-                $service->user_id = Hashids::encode($service->user_id);
+                $service->hotel_id = id_encode($service->hotel_id);
+                $service->user_id = id_encode($service->user_id);
 
                 return $service;
             });
@@ -59,7 +57,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->whereStatus(true)
             ->get(Fields::get('hotels'));
 
@@ -84,13 +82,13 @@ class ServiceController extends Controller
         $service->description = $request->description;
         $service->price = (float) $request->price;
         $service->user()->associate(auth()->user()->id);
-        $service->hotel()->associate(Id::get($request->hotel));
+        $service->hotel()->associate(id_decode($request->hotel));
 
         if ($service->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('services.show', [
-                'id' => Hashids::encode($service->id)
+                'id' => id_encode($service->id)
             ]);
         }
 
@@ -107,8 +105,8 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
@@ -143,8 +141,8 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->with([
                 'hotel' => function($query) {
@@ -168,8 +166,8 @@ class ServiceController extends Controller
      */
     public function update(UpdateService $request, $id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
@@ -184,7 +182,7 @@ class ServiceController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('services.show', [
-                'id' => Hashids::encode($service->id)
+                'id' => id_encode($service->id)
             ]);
         }
 
@@ -201,8 +199,8 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
@@ -247,7 +245,7 @@ class ServiceController extends Controller
     public function calculateTotal(Request $request)
     {
         if ($request->ajax()) {
-            $service = Service::find(Id::get($request->element), ['id', 'price']);
+            $service = Service::find(id_decode($request->element), ['id', 'price']);
 
             if (empty($service)) {
                 return response()->json(['value' => null]);
@@ -270,8 +268,8 @@ class ServiceController extends Controller
      */
     public function toggle($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->first(Fields::get('services'));
 
         if (empty($service)) {
@@ -300,18 +298,18 @@ class ServiceController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $services = Service::where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $services = Service::where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->where('is_dining_service', false)
                 ->whereLike('description', $query)
                 ->get(Fields::get('services'));
 
             $services = $services->map(function ($service)
             {
-                $service->hotel_id = Hashids::encode($service->hotel_id);
-                $service->user_id = Hashids::encode($service->user_id);
+                $service->hotel_id = id_encode($service->hotel_id);
+                $service->user_id = id_encode($service->user_id);
 
                 return $service;
             });
@@ -332,8 +330,8 @@ class ServiceController extends Controller
      */
     public function showServiceReportForm($id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
@@ -360,8 +358,8 @@ class ServiceController extends Controller
      */
     public function exportServiceReport(DateRangeQuery $request, $id)
     {
-        $service = User::find(Id::parent(), ['id'])->services()
-            ->where('id', Id::get($id))
+        $service = User::find(id_parent(), ['id'])->services()
+            ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->first(Fields::get('services'));
 
@@ -390,7 +388,7 @@ class ServiceController extends Controller
         if ($service->vouchers->isEmpty()) {
             flash(trans('common.without.results'))->info();
 
-            return redirect()->route('services.service.report', ['id' => Hashids::encode($service->id)]);
+            return redirect()->route('services.service.report', ['id' => id_encode($service->id)]);
         }
 
         return Excel::download(new ServiceReport($service), trans('services.service') . '.xlsx');
@@ -403,7 +401,7 @@ class ServiceController extends Controller
      */
     public function showReportForm()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -424,10 +422,10 @@ class ServiceController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $query = Hotel::query();
-        $query->where('user_id', Id::parent());
+        $query->where('user_id', id_parent());
 
         if (!empty($request->hotel)) {
-            $query->where('id', Id::get($request->hotel));
+            $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([

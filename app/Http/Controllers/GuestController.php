@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Chart, Customer, Id, Input, Fields};
+use App\Helpers\{Chart, Customer, Fields, Parameter};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
-use App\User;
 use App\Welkome\{Country, Guest, IdentificationType, Voucher};
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -23,7 +21,7 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $guests = Guest::where('user_id', Id::parent())
+        $guests = Guest::where('user_id', id_parent())
             ->orderBy('created_at', 'DESC')
             ->limit('200')
             ->paginate(config('welkome.paginate'), Fields::get('guests'));
@@ -63,15 +61,15 @@ class GuestController extends Controller
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);
         $guest->status = false; # Not in hotel
-        $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(Id::parent());
-        $guest->country()->associate(Id::get($request->nationality));
+        $guest->identificationType()->associate(id_decode($request->type));
+        $guest->user()->associate(id_parent());
+        $guest->country()->associate(id_decode($request->nationality));
 
         if ($guest->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('guests.show', [
-                'id' => Hashids::encode($guest->id)
+                'id' => id_encode($guest->id)
             ]);
         }
 
@@ -88,8 +86,8 @@ class GuestController extends Controller
      */
     public function createForVoucher($id)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -142,8 +140,8 @@ class GuestController extends Controller
      */
     public function storeForVoucher(StoreVoucherGuest $request, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -168,12 +166,12 @@ class GuestController extends Controller
         $guest->profession = $request->get('profession', null);
         $guest->name = $request->get('name', null);
         $guest->status = true; // In hotel
-        $guest->identificationType()->associate(Id::get($request->type));
-        $guest->user()->associate(Id::parent());
-        $guest->country()->associate(Id::get($request->nationality));
+        $guest->identificationType()->associate(id_decode($request->type));
+        $guest->user()->associate(id_parent());
+        $guest->country()->associate(id_decode($request->nationality));
 
         $isMinor = Customer::isMinor($request->get('birthdate', null));
-        $responsible = Id::get($request->get('responsible_adult', null));
+        $responsible = id_decode($request->get('responsible_adult', null));
 
         if ($isMinor and !empty($responsible)) {
             $guest->responsible_adult = $responsible;
@@ -186,7 +184,7 @@ class GuestController extends Controller
                 'active' => true
             ]);
 
-            $guest->rooms()->attach(Id::get($request->room), [
+            $guest->rooms()->attach(id_decode($request->room), [
                 'voucher_id' => $voucher->id
             ]);
 
@@ -208,8 +206,8 @@ class GuestController extends Controller
      */
     public function show($id)
     {
-        $guest = Guest::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $guest = Guest::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('guests'));
 
         if (empty($guest)) {
@@ -248,8 +246,8 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
-        $guest = Guest::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $guest = Guest::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('guests'));
 
         if (empty($guest)) {
@@ -285,8 +283,8 @@ class GuestController extends Controller
      */
     public function update(UpdateGuest $request, $id)
     {
-        $guest = Guest::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $guest = Guest::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('guests'));
 
         if (empty($guest)) {
@@ -304,25 +302,25 @@ class GuestController extends Controller
         $guest->profession = $request->get('profession', null);
 
         if (!empty($request->type)) {
-            $guest->identificationType()->associate(Id::get($request->type));
+            $guest->identificationType()->associate(id_decode($request->type));
         }
 
         if (!empty($request->nationality)) {
-            $guest->country()->associate(Id::get($request->nationality));
+            $guest->country()->associate(id_decode($request->nationality));
         }
 
         if ($guest->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('guests.show', [
-                'id' => Hashids::encode($guest->id)
+                'id' => id_encode($guest->id)
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('guests.show', [
-            'id' => Hashids::encode($guest->id)
+            'id' => id_encode($guest->id)
         ]);
     }
 
@@ -334,8 +332,8 @@ class GuestController extends Controller
      */
     public function destroy($id)
     {
-        $guest = Guest::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $guest = Guest::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->whereDoesntHave('vouchers')
             ->first(Fields::get('guests'));
 
@@ -364,13 +362,13 @@ class GuestController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Input::clean($request->get('query', null));
+        $query = Parameter::clean($request->get('query', null));
 
         if (empty($query)) {
             return back();
         }
 
-        $guests = Guest::where('user_id', Id::parent())
+        $guests = Guest::where('user_id', id_parent())
             ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
             ->get(Fields::get('guests'));
 
@@ -386,9 +384,9 @@ class GuestController extends Controller
     public function searchUnregistered(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $guests = Guest::where('user_id', Id::parent())
+            $guests = Guest::where('user_id', id_parent())
                 ->where('status', false)
                 ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
                 ->get(Fields::get('guests'));
@@ -434,7 +432,7 @@ class GuestController extends Controller
      */
     public function export()
     {
-        $guests = Guest::where('user_id', Id::parent())
+        $guests = Guest::where('user_id', id_parent())
             ->with([
                 'identificationType' => function ($query)
                 {
@@ -464,8 +462,8 @@ class GuestController extends Controller
      */
     public function toggle($id, $voucher)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucher))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucher))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -496,7 +494,7 @@ class GuestController extends Controller
         }
 
         // The guest
-        $guest = $voucher->guests->where('id', Id::get($id))->first();
+        $guest = $voucher->guests->where('id', id_decode($id))->first();
 
         // The guest room
         $room = $voucher->rooms->where('id', $guest->rooms()->first()->id)->first();
@@ -538,7 +536,7 @@ class GuestController extends Controller
                     );
 
                     // The new main guest
-                    $main = $voucher->guests->where('id', '!=', Id::get($id))
+                    $main = $voucher->guests->where('id', '!=', id_decode($id))
                         ->where('pivot.active', true)
                         ->where('status', true)
                         ->first();

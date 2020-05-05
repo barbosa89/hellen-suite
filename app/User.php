@@ -117,13 +117,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Welkome\Prop::class);
     }
 
-    // public function matchRole(string $role = '')
-    // {
-    //     $this->whereHas('roles', function ($query) use ($role)
-    //     {
-    //         $query->where('name', $role);
-    //     })->first(['id']);
-    // }
+    /**
+     * Get the tags for the user.
+     */
+    public function tags()
+    {
+        return $this->hasMany(\App\Welkome\Tag::class);
+    }
 
 	/**
      * Unhash an ID collection.

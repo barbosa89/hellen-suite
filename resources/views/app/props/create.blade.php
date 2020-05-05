@@ -28,7 +28,7 @@
                         <label for="hotel">@lang('hotels.title'):</label>
                         <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                                <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 
@@ -44,7 +44,7 @@
                             <label for="company">@lang('companies.company'):</label>
                             <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="company" id="company">
                                 @foreach ($companies as $company)
-                                    <option value="{{ Hashids::encode($company->id) }}">{{ $company->business_name }}</option>
+                                    <option value="{{ id_encode($company->id) }}">{{ $company->business_name }}</option>
                                 @endforeach
                             </select>
 

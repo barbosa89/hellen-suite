@@ -46,7 +46,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('hotels.update', ['id' => Hashids::encode($hotel->id)]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('hotels.update', ['id' => id_encode($hotel->id)]) }}" method="POST" enctype="multipart/form-data">
                     @csrf()
                     @method('PUT')
 

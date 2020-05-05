@@ -26,7 +26,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('vehicles.update', [
-                        'id' => Hashids::encode($vehicle->id)
+                        'id' => id_encode($vehicle->id)
                     ]),
                     'method' => 'PUT',
                     'fields' => [

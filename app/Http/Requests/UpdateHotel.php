@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateHotel extends FormRequest
@@ -24,7 +23,7 @@ class UpdateHotel extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('id'));
+        $id = id_decode($this->route('id'));
 
         return [
             'address' => 'required|string|max:100',

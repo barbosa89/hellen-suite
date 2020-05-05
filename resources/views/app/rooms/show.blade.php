@@ -41,14 +41,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('rooms.edit', [
-                                'id' => Hashids::encode($room->id)
+                                'id' => id_encode($room->id)
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('rooms.destroy', [
-                                'id' => Hashids::encode($room->id)
+                                'id' => id_encode($room->id)
                             ]),
                             'method' => 'DELETE'
                         ],

@@ -13,18 +13,18 @@
             'options' => [
                 [
                     'option' => trans('common.new') . ' ' . strtolower(trans('guests.guest')),
-                    'url' => route('vouchers.guests.create', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.guests.create', ['id' => id_encode($voucher->id)])
                 ],
                 [
                     'option' => trans('vouchers.linkCompany'),
                     'url' => route('vouchers.companies.search', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -32,7 +32,7 @@
 
         @include('app.vouchers.info')
 
-        <div class="hide" id="voucher" data-id="{{ Hashids::encode($voucher->id) }}"></div>
+        <div class="hide" id="voucher" data-id="{{ id_encode($voucher->id) }}"></div>
 
         @include('partials.spacer', ['size' => 'md'])
 
@@ -94,7 +94,7 @@
                     url: '/guests/search/unregistered',
                     data: {
                         query: str,
-                        voucher: '{{ Hashids::encode($voucher->id) }}'
+                        voucher: '{{ id_encode($voucher->id) }}'
                     },
                     success: function(result) {
                         let guests = result.guests;

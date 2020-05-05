@@ -14,7 +14,7 @@
                 [
                     'option' => trans('common.reports'),
                     'url' => route('props.prop.report', [
-                        'id' => Hashids::encode($prop->id)
+                        'id' => id_encode($prop->id)
                     ])
                 ],
                 [
@@ -32,14 +32,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('props.edit', [
-                                'id' => Hashids::encode($prop->id)
+                                'id' => id_encode($prop->id)
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('props.destroy', [
-                                'id' => Hashids::encode($prop->id)
+                                'id' => id_encode($prop->id)
                             ]),
                             'method' => 'DELETE'
                         ],

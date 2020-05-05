@@ -113,7 +113,7 @@
                             <label for="main_hotel">@lang('hotels.headquarters'):</label>
                             <select class="form-control selectpicker" name="main_hotel" id="main_hotel">
                                 @foreach ($hotels as $hotel)
-                                    <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                                    <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                                 @endforeach
                             </select>
 

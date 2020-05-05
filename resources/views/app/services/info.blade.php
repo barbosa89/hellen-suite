@@ -2,7 +2,7 @@
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
         <h3>Hotel:</h3>
         <p>
-            <a href="{{ route('hotels.show', ['id' => Hashids::encode($service->hotel->id)]) }}">
+            <a href="{{ route('hotels.show', ['id' => id_encode($service->hotel->id)]) }}">
                 {{ $service->hotel->business_name }}
             </a>
         </p>

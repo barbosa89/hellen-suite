@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRoom extends FormRequest

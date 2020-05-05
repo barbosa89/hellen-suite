@@ -3,21 +3,21 @@
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 align-self-center">
             <p>
                 @can('guests.show')
-                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->full_name }}</a>
+                    <a href="{{ route('guests.show', ['id' => id_encode($row->id)]) }}">{{ $row->full_name }}</a>
                 @endcan
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 align-self-center">
             <p>
                 @can('guests.show')
-                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">{{ $row->dni }}</a>
+                    <a href="{{ route('guests.show', ['id' => id_encode($row->id)]) }}">{{ $row->dni }}</a>
                 @endcan
             </p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 align-self-center">
             <p>
                 @can('guests.show')
-                    <a href="{{ route('guests.show', ['id' => Hashids::encode($row->id)]) }}">
+                    <a href="{{ route('guests.show', ['id' => id_encode($row->id)]) }}">
                         @include('partials.guest-status', ['status' => $row->status])
                     </a>
                 @endcan
@@ -28,13 +28,13 @@
                 'options' => [
                     [
                         'option' => trans('common.show'),
-                        'url' => route('guests.show', ['id' => Hashids::encode($row->id)]),
+                        'url' => route('guests.show', ['id' => id_encode($row->id)]),
                         'permission' => 'guests.show'
                     ],
                     [
                         'option' => trans('common.edit'),
                         'url' => route('guests.edit', [
-                            'id' => Hashids::encode($row->id)
+                            'id' => id_encode($row->id)
                         ]),
                         'permission' => 'guests.edit'
                     ],
@@ -42,7 +42,7 @@
                         'type' => 'confirm',
                         'option' => trans('common.delete.item'),
                         'url' => route('guests.destroy', [
-                            'id' => Hashids::encode($row->id)
+                            'id' => id_encode($row->id)
                         ]),
                         'method' => 'DELETE',
                         'permission' => 'guests.destroy'

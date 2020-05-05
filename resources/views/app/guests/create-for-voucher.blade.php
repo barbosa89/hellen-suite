@@ -13,18 +13,18 @@
             'options' => [
                 [
                     'option' => trans('common.search') . ' ' . strtolower(trans('guests.title')),
-                    'url' => route('vouchers.guests.search', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.guests.search', ['id' => id_encode($voucher->id)])
                 ],
                 [
                     'option' => trans('vouchers.linkCompany'),
                     'url' => route('vouchers.companies.search', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ],
                 [
                     'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -37,7 +37,7 @@
                         'title' => trans('common.creationOf') . ' ' . trans('guests.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('vouchers.guests.store', ['id' => Hashids::encode($voucher->id)]),
+                    'url' => route('vouchers.guests.store', ['id' => id_encode($voucher->id)]),
                     'fields' => [
                         'app.guests.create-fields',
                         'app.vouchers.guests.create-fields'

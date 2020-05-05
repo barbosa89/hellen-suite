@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Id;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAsset extends FormRequest
@@ -24,7 +23,7 @@ class UpdateAsset extends FormRequest
      */
     public function rules()
     {
-        $id = Id::get($this->route('id'));
+        $id = id_decode($this->route('id'));
 
         return [
             'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id,' . $id,

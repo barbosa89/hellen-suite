@@ -18,14 +18,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('companies.edit', [
-                                'id' => Hashids::encode($company->id)
+                                'id' => id_encode($company->id)
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('companies.destroy', [
-                                'id' => Hashids::encode($company->id)
+                                'id' => id_encode($company->id)
                             ]),
                             'method' => 'DELETE'
                         ],

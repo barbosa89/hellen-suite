@@ -25,7 +25,7 @@
                         'title' => trans('common.editionOf') . ' ' . trans('guests.title'),
                         'align' => 'text-center'
                     ],
-                    'url' => route('guests.update', ['id' => Hashids::encode($guest->id)]),
+                    'url' => route('guests.update', ['id' => id_encode($guest->id)]),
                     'method' => 'PUT',
                     'fields' => [
                         'app.guests.edit-fields',

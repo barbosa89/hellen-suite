@@ -21,7 +21,7 @@
 
     <h3 class="text-center">{{ trans('common.register') }} {{ trans('vouchers.route') }}</h3>
 
-    <form class="mt-4" action="{{ route('vouchers.reservation.checkin.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
+    <form class="mt-4" action="{{ route('vouchers.reservation.checkin.store', ['id' => id_encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
 
         <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">

@@ -13,6 +13,6 @@
     </div>
 </div>
 
-<input type="hidden" name="guest" value="{{ Hashids::encode($guest->id) }}">
+<input type="hidden" name="guest" value="{{ id_encode($guest->id) }}">
 
 @include('partials.spacer', ['size' => 'xs'])

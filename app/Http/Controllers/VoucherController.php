@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Customer, Fields, Id, Input, Random};
+use App\Helpers\{Customer, Fields, Parameter, Random};
 use App\Welkome\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
 use App\Http\Requests\{
     AddGuests,
@@ -38,7 +37,7 @@ class VoucherController extends Controller
     public function index()
     {
         $query = Voucher::query();
-        $query->where('user_id', Id::parent())
+        $query->where('user_id', id_parent())
             ->where('status', true)
             ->where('type', 'lodging')
             ->with([
@@ -75,13 +74,13 @@ class VoucherController extends Controller
      */
     public function create()
     {
-        $hotel = Hotel::where('user_id', Id::parent())
-            ->where('id', Id::get(session('hotel')))
+        $hotel = Hotel::where('user_id', id_parent())
+            ->where('id', id_decode(session('hotel')))
             ->with([
                 'rooms' => function ($query)
                 {
                     $ids = explode(',', session('rooms'));
-                    $query->whereIn('id', Id::pool($ids))
+                    $query->whereIn('id', id_decode_recursive($ids))
                         ->select(Fields::parsed('rooms'));
                 }
             ])->first(Fields::get('hotels'));
@@ -107,15 +106,15 @@ class VoucherController extends Controller
                 $voucher = $this->newVoucher();
                 $voucher->origin = $request->get('origin', null);
                 $voucher->destination = $request->get('destination', null);
-                $voucher->hotel()->associate(Id::get($request->hotel));
+                $voucher->hotel()->associate(id_decode($request->hotel));
 
                 if ($request->registry == 'reservation') {
                     $voucher->reservation = true;
                 }
 
-                $rooms = Room::where('user_id', Id::parent())
+                $rooms = Room::where('user_id', id_parent())
                     ->whereIn('number', $numbers->pluck('number')->toArray())
-                    ->where('hotel_id', Id::get($request->hotel))
+                    ->where('hotel_id', id_decode($request->hotel))
                     ->where('status', '1')
                     ->get(Fields::parsed('rooms'));
 
@@ -155,13 +154,13 @@ class VoucherController extends Controller
                 }
 
                 if ($voucher->save()) {
-                    Room::where('user_id', Id::parent())
+                    Room::where('user_id', id_parent())
                         ->whereIn('number', $numbers->pluck('number')->toArray())
-                        ->where('hotel_id', Id::get($request->hotel))
+                        ->where('hotel_id', id_decode($request->hotel))
                         ->update(['status' => '0']);
 
                     // Get the shift
-                    $shift = Shift::current(Id::get($request->hotel));
+                    $shift = Shift::current(id_decode($request->hotel));
 
                     // Add the voucher to shift
                     $voucher->shifts()->attach($shift);
@@ -183,7 +182,7 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.guests.search', [
-                'id' => Hashids::encode($voucherId)
+                'id' => id_encode($voucherId)
             ]);
         }
 
@@ -208,7 +207,7 @@ class VoucherController extends Controller
         $voucher->status = true;
         $voucher->type = 'lodging';
         $voucher->made_by = auth()->user()->name;
-        $voucher->user()->associate(Id::parent());
+        $voucher->user()->associate(id_parent());
 
         return $voucher;
     }
@@ -221,8 +220,8 @@ class VoucherController extends Controller
      */
     public function show($id)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('status', true)
             ->first(Fields::parsed('vouchers'));
@@ -301,8 +300,8 @@ class VoucherController extends Controller
      */
     public function destroy($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
@@ -397,13 +396,13 @@ class VoucherController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Input::clean($request->get('query', null));
+        $query = Parameter::clean($request->get('query', null));
 
         if (empty($query)) {
             return back();
         }
 
-        $vouchers = Voucher::where('user_id', Id::parent())
+        $vouchers = Voucher::where('user_id', id_parent())
             ->whereLike([
                 'number',
                 'guests.name',
@@ -427,8 +426,8 @@ class VoucherController extends Controller
      */
     public function showFormToAddRooms($id = '')
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -460,7 +459,7 @@ class VoucherController extends Controller
             // flash('No hay habitaciones disponibles')->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -482,8 +481,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->with([
@@ -492,7 +491,7 @@ class VoucherController extends Controller
                         }
                     ])->first(Fields::parsed('vouchers'));
 
-                $room = Room::where('user_id', Id::parent())
+                $room = Room::where('user_id', id_parent())
                     ->where('number', $request->number)
                     ->where('hotel_id', $voucher->hotel->id)
                     ->where('status', '1')
@@ -577,8 +576,8 @@ class VoucherController extends Controller
      */
     public function showFormToChangeRoom($id, $room)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -613,7 +612,7 @@ class VoucherController extends Controller
             }
         ]);
 
-        $room = $voucher->rooms->where('id', Id::get($room))
+        $room = $voucher->rooms->where('id', id_decode($room))
             ->where('hotel_id', $voucher->hotel->id)
             ->first();
 
@@ -632,7 +631,7 @@ class VoucherController extends Controller
             flash('No hay habitaciones disponibles')->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -654,8 +653,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $request, $id, $roomId) {
             try {
-                $id = Id::get($id);
-                $voucher = Voucher::where('user_id', Id::parent())
+                $id = id_decode($id);
+                $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', $id)
                     ->where('open', true)
                     ->where('status', true)
@@ -687,7 +686,7 @@ class VoucherController extends Controller
                 ]);
 
                 // The room to change from the voucher
-                $current = $voucher->rooms->where('id', Id::get($roomId))
+                $current = $voucher->rooms->where('id', id_decode($roomId))
                     ->where('hotel_id', $voucher->hotel->id)
                     ->first();
 
@@ -788,8 +787,8 @@ class VoucherController extends Controller
      */
     public function deliverRoom($id, $roomId)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -827,7 +826,7 @@ class VoucherController extends Controller
         }
 
         // Get the room
-        $room = $voucher->rooms->where('id', Id::get($roomId))->first();
+        $room = $voucher->rooms->where('id', id_decode($roomId))->first();
 
         // Check if the room is active in the voucher. Only prevention.
         if ($room->pivot->enabled == false) {
@@ -893,8 +892,8 @@ class VoucherController extends Controller
      */
     public function searchGuests($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -903,7 +902,7 @@ class VoucherController extends Controller
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
-                        ->wherePivot('voucher_id', Id::get($id));
+                        ->wherePivot('voucher_id', id_decode($id));
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
@@ -926,7 +925,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.firstStep'))->info();
 
             return redirect()->route('vouchers.rooms.add', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -944,8 +943,8 @@ class VoucherController extends Controller
      */
     public function showFormToAddGuests($id, $guest)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -971,7 +970,7 @@ class VoucherController extends Controller
                 }
             ])->first(Fields::parsed('vouchers'));
 
-        $guest = Guest::where('id', Id::get($guest))
+        $guest = Guest::where('id', id_decode($guest))
             ->where('status', false) // Not in hotel
             ->with([
                 'identificationType' => function ($query) {
@@ -1017,8 +1016,8 @@ class VoucherController extends Controller
      */
     public function addGuests(AddGuests $request, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -1031,11 +1030,11 @@ class VoucherController extends Controller
                 }
             ])->first(['id']);
 
-        $guest = $voucher->guests->where('id', Id::get($request->guest))->first();
+        $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
         if (empty($guest)) {
             // The guest to add to the voucher
-            $guest = Guest::where('id', Id::get($request->guest))
+            $guest = Guest::where('id', id_decode($request->guest))
                 ->where('status', false) // Not in hotel
                 ->first(Fields::parsed('guests'));
         }
@@ -1045,20 +1044,20 @@ class VoucherController extends Controller
         }
 
         // Selected room
-        $room = $voucher->rooms->where('id', Id::get($request->room))->first();
+        $room = $voucher->rooms->where('id', id_decode($request->room))->first();
 
         // Check if selected room is disabled in the current voucher
         if ($room->pivot->enabled == false) {
             flash(trans('vouchers.delivered.room'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         // Check if the guest to add exists in the current guest
         if ($voucher->guests->where('id', $guest->id)->count() == 0) {
-            $responsible = Id::get($request->get('responsible_adult', null));
+            $responsible = id_decode($request->get('responsible_adult', null));
 
             // Assign a responsible adult
             if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
@@ -1094,7 +1093,7 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.guests.search', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -1107,8 +1106,8 @@ class VoucherController extends Controller
      */
     public function removeGuests($id, $guestId)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -1119,7 +1118,7 @@ class VoucherController extends Controller
                 },
                 'guests.rooms' => function ($query) use ($id) {
                     $query->select('id', 'number')
-                        ->wherePivot('voucher_id', Id::get($id));
+                        ->wherePivot('voucher_id', id_decode($id));
                 },
                 'rooms' => function ($query) {
                     $query->select(Fields::parsed('rooms'))
@@ -1135,7 +1134,7 @@ class VoucherController extends Controller
         }
 
         // Get the guest to remove from voucher
-        $guest = $voucher->guests->where('id', Id::get($guestId))->first();
+        $guest = $voucher->guests->where('id', id_decode($guestId))->first();
 
         // Check if the guest room isn't enabled to changes
         if ($voucher->rooms->where('id', $guest->rooms->first()->id)->first()->pivot->enabled == false) {
@@ -1185,7 +1184,7 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -1198,8 +1197,8 @@ class VoucherController extends Controller
      */
     public function showFormToChangeGuestRoom($id, $guest)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -1240,7 +1239,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1249,7 +1248,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1258,19 +1257,19 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         // Get the guest
-        $guest = $voucher->guests->where('id', Id::get($guest))->first();
+        $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest isn't in hotel and if the guest is inactive in the current voucher
         if ($guest->status == false and $guest->pivot->active == false) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1291,8 +1290,8 @@ class VoucherController extends Controller
      */
     public function changeGuestRoom(ChangeGuestRoom $request, $id, $guest)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
@@ -1326,7 +1325,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1334,19 +1333,19 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         // The guest
-        $guest = $voucher->guests->where('id', Id::get($guest))->first();
+        $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest is active in hotel and the current voucher
         if ($guest->status == false and $guest->pivot->active == false) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1364,7 +1363,7 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -1376,8 +1375,8 @@ class VoucherController extends Controller
      */
     public function products($id = '')
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -1405,7 +1404,7 @@ class VoucherController extends Controller
             abort(404);
         }
 
-        $products = Product::where('user_id', Id::parent())
+        $products = Product::where('user_id', id_parent())
             ->where('hotel_id', $voucher->hotel->id)
             ->where('quantity', '>', 0)
             ->where('status', true)
@@ -1415,7 +1414,7 @@ class VoucherController extends Controller
             flash('No hay productos disponibles')->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1438,8 +1437,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
@@ -1449,8 +1448,8 @@ class VoucherController extends Controller
                         }
                     ])->first(Fields::parsed('vouchers'));
 
-                $product = Product::where('user_id', Id::parent())
-                    ->where('id', Id::get($request->product))
+                $product = Product::where('user_id', id_parent())
+                    ->where('id', id_decode($request->product))
                     ->where('hotel_id', $voucher->hotel->id)
                     ->where('quantity', '>', 0)
                     ->where('status', true)
@@ -1502,15 +1501,15 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $id, $record) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
                         'products' => function ($query) use ($record) {
                             $query->select(Fields::parsed('products'))
-                                ->wherePivot('id', Id::get($record))
+                                ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
                         }
                     ])->first(Fields::parsed('vouchers'));
@@ -1525,7 +1524,7 @@ class VoucherController extends Controller
                 $voucher->save();
 
                 $voucher->products()
-                    ->wherePivot('id', Id::get($record))
+                    ->wherePivot('id', id_decode($record))
                     ->detach($product->id);
 
                 $status = true;
@@ -1551,14 +1550,14 @@ class VoucherController extends Controller
      */
     public function showFormToAddServices($id, $type = 'all')
     {
-        $type = Input::clean($type);
+        $type = Parameter::clean($type);
 
         if (!in_array($type, ['all', 'dining'])) {
             abort(400);
         }
 
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -1587,7 +1586,7 @@ class VoucherController extends Controller
         // Check if is dining service
         $serviceType = $type == 'dining' ? true : false;
 
-        $services = Service::where('user_id', Id::parent())
+        $services = Service::where('user_id', id_parent())
             ->where('hotel_id', $voucher->hotel->id)
             ->whereStatus(true)
             ->where('is_dining_service', $serviceType)
@@ -1597,7 +1596,7 @@ class VoucherController extends Controller
             flash('No hay servicios disponibles')->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1619,8 +1618,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $request, $id) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
@@ -1630,8 +1629,8 @@ class VoucherController extends Controller
                         }
                     ])->first(Fields::parsed('vouchers'));
 
-                $service = Service::where('user_id', Id::parent())
-                    ->where('id', Id::get($request->service))
+                $service = Service::where('user_id', id_parent())
+                    ->where('id', id_decode($request->service))
                     ->where('hotel_id', $voucher->hotel->id)
                     ->whereStatus(true)
                     ->first(Fields::get('services'));
@@ -1679,15 +1678,15 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $id, $record) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
                         'services' => function ($query) use ($record) {
                             $query->select(Fields::parsed('services'))
-                                ->wherePivot('id', Id::get($record))
+                                ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
                         }
                     ])->first(Fields::parsed('vouchers'));
@@ -1699,7 +1698,7 @@ class VoucherController extends Controller
                 $voucher->save();
 
                 $voucher->services()
-                    ->wherePivot('id', Id::get($record))
+                    ->wherePivot('id', id_decode($record))
                     ->detach($service->id);
 
                 $status = true;
@@ -1725,8 +1724,8 @@ class VoucherController extends Controller
      */
     public function searchCompanies($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
@@ -1762,14 +1761,14 @@ class VoucherController extends Controller
      */
     public function addCompanies($id, $company)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->first(['id']);
 
-        $company = Company::where('user_id', Id::parent())
-            ->where('id', Id::get($company))
+        $company = Company::where('user_id', id_parent())
+            ->where('id', id_decode($company))
             ->first(Fields::get('companies'));
 
         if (empty($voucher) or empty($company)) {
@@ -1802,15 +1801,15 @@ class VoucherController extends Controller
      */
     public function removeCompany($id, $company)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->with([
                 'company' => function ($query) use ($company)
                 {
                     $query->select(Fields::get('companies'))
-                        ->where('id', Id::get($company));
+                        ->where('id', id_decode($company));
                 }
             ])->first(['id', 'company_id']);
 
@@ -1843,8 +1842,8 @@ class VoucherController extends Controller
      */
     public function searchVehicles($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -1854,7 +1853,7 @@ class VoucherController extends Controller
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select('id', 'name', 'last_name')
-                        ->wherePivot('voucher_id', Id::get($id));
+                        ->wherePivot('voucher_id', id_decode($id));
                 },
                 'guests' => function ($query) {
                     $query->select(Fields::parsed('guests'))
@@ -1877,7 +1876,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.firstStep'))->info();
 
             return redirect()->route('vouchers.rooms.add', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1885,7 +1884,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.withoutGuests'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
@@ -1904,8 +1903,8 @@ class VoucherController extends Controller
      */
     public function addVehicle($id, $vehicleId, $guestId)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -1916,35 +1915,35 @@ class VoucherController extends Controller
                 },
                 'guests.vehicles' => function ($query) use ($id) {
                     $query->select(Fields::parsed('vehicles'))
-                        ->wherePivot('voucher_id', Id::get($id));
+                        ->wherePivot('voucher_id', id_decode($id));
                 }
             ])->first(Fields::parsed('vouchers'));
 
-        $vehicle = Vehicle::where('user_id', Id::parent())
-            ->where('id', Id::get($vehicleId))
+        $vehicle = Vehicle::where('user_id', id_parent())
+            ->where('id', id_decode($vehicleId))
             ->first(Fields::get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
             abort(404);
         }
 
-        if ($voucher->guests->where('id', Id::get($guestId))->first()->vehicles->isNotEmpty()) {
+        if ($voucher->guests->where('id', id_decode($guestId))->first()->vehicles->isNotEmpty()) {
             flash(trans('vouchers.hasVehicles'))->error();
 
             return redirect()->route('vouchers.vehicles.search', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         $existingVehicle = null;
         foreach ($voucher->guests as $guest) {
-            if ($guest->vehicles->where('id', Id::get($vehicleId))->count() == 1) {
-                $existingVehicle = $guest->vehicles->where('id', Id::get($vehicleId))->first();
+            if ($guest->vehicles->where('id', id_decode($vehicleId))->count() == 1) {
+                $existingVehicle = $guest->vehicles->where('id', id_decode($vehicleId))->first();
             }
         }
 
         if (empty($existingVehicle)) {
-            $vehicle->guests()->attach($voucher->guests->where('id', Id::get($guestId))->first()->id, [
+            $vehicle->guests()->attach($voucher->guests->where('id', id_decode($guestId))->first()->id, [
                 'voucher_id' => $voucher->id,
                 'created_at' => Carbon::now()->toDateTimeString()
             ]);
@@ -1952,14 +1951,14 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.show', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         flash(trans('vouchers.vehicleAttached'))->error();
 
         return redirect()->route('vouchers.vehicles.search', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -1973,20 +1972,20 @@ class VoucherController extends Controller
      */
     public function removeVehicle($id, $vehicle, $guest)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
             ->with([
                 'guests' => function ($query) use ($guest) {
                     $query->select(Fields::parsed('guests'))
-                        ->where('id', Id::get($guest));
+                        ->where('id', id_decode($guest));
                 }
             ])->first(Fields::parsed('vouchers'));
 
-        $vehicle = Vehicle::where('user_id', Id::parent())
-            ->where('id', Id::get($vehicle))
+        $vehicle = Vehicle::where('user_id', id_parent())
+            ->where('id', id_decode($vehicle))
             ->first(Fields::get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
@@ -2000,7 +1999,7 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -2012,8 +2011,8 @@ class VoucherController extends Controller
      */
     public function createAdditional($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -2056,8 +2055,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $id, $request) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
@@ -2104,8 +2103,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $id, $additional) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
@@ -2117,7 +2116,7 @@ class VoucherController extends Controller
 
                 // Query the additional to remove
                 $additional = Additional::where('voucher_id', $voucher->id)
-                    ->where('id', Id::get($additional))
+                    ->where('id', id_decode($additional))
                     ->first(['id', 'value', 'billable','voucher_id']);
 
                 // Check is a billable additional
@@ -2154,8 +2153,8 @@ class VoucherController extends Controller
      */
     public function addExternalService($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
@@ -2198,8 +2197,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$status, $id, $request) {
             try {
-                $voucher = Voucher::where('user_id', Id::parent())
-                    ->where('id', Id::get($id))
+                $voucher = Voucher::where('user_id', id_parent())
+                    ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
@@ -2237,8 +2236,8 @@ class VoucherController extends Controller
      */
     public function close($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('payment_status', false)
             ->where('status', true)
@@ -2303,8 +2302,8 @@ class VoucherController extends Controller
      */
     public function open($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', false)
             ->where('status', true)
             ->first(Fields::parsed('vouchers'));
@@ -2335,8 +2334,8 @@ class VoucherController extends Controller
      */
     public function closePayment($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('status', true)
             ->where('payment_status', false)
             ->with([
@@ -2396,8 +2395,8 @@ class VoucherController extends Controller
      */
     public function registerAsLoss($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('status', true)
             ->where('payment_status', false)
             ->where('losses', false)
@@ -2478,8 +2477,8 @@ class VoucherController extends Controller
      */
     public function takeReservationCheckin($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', true)
@@ -2518,8 +2517,8 @@ class VoucherController extends Controller
      */
     public function storeReservationCheckin(StoreRoute $request, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', true)
@@ -2537,14 +2536,14 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.guests.search', [
-                'id' => Hashids::encode($voucher->id)
+                'id' => id_encode($voucher->id)
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('vouchers.show', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]);
     }
 
@@ -2561,7 +2560,7 @@ class VoucherController extends Controller
         $hotels = Hotel::query();
 
         // Only hotels of parent user
-        $hotels->where('user_id', Id::parent());
+        $hotels->where('user_id', id_parent());
 
         // Check if is receptionist
         if (auth()->user()->hasRole('receptionist')) {
@@ -2581,7 +2580,7 @@ class VoucherController extends Controller
         $hotels->with([
                 'vouchers' => function ($query) {
                     $query->select(Fields::parsed('vouchers'))
-                        ->where('user_id', Id::parent())
+                        ->where('user_id', id_parent())
                         ->where('open', true)
                         ->where('status', true)
                         ->where('reservation', false)
@@ -2631,35 +2630,35 @@ class VoucherController extends Controller
     public function prepareData(Collection $hotels)
     {
         $hotels = $hotels->map(function($hotel) {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = $hotel->main_hotel ? Hashids::encode($hotel->main_hotel) : null;
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = $hotel->main_hotel ? id_encode($hotel->main_hotel) : null;
 
             $hotel->vouchers = $hotel->vouchers->map(function ($voucher) {
-                $voucher->user_id = Hashids::encode($voucher->user_id);
-                $voucher->hotel_id = Hashids::encode($voucher->hotel_id);
-                $voucher->company_id = $voucher->company_id ? Hashids::encode($voucher->company_id) : null;
+                $voucher->user_id = id_encode($voucher->user_id);
+                $voucher->hotel_id = id_encode($voucher->hotel_id);
+                $voucher->company_id = $voucher->company_id ? id_encode($voucher->company_id) : null;
 
                 $voucher->guests = $voucher->guests->map(function ($guest)
                 {
-                    $guest->pivot->voucher_id = Hashids::encode($guest->pivot->voucher_id);
-                    $guest->pivot->guest_id = Hashids::encode($guest->pivot->guest_id);
+                    $guest->pivot->voucher_id = id_encode($guest->pivot->voucher_id);
+                    $guest->pivot->guest_id = id_encode($guest->pivot->guest_id);
 
                     return $guest;
                 });
 
                 $voucher->rooms = $voucher->rooms->map(function ($room)
                 {
-                    $room->user_id = Hashids::encode($room->user_id);
-                    $room->hotel_id = Hashids::encode($room->hotel_id);
-                    $room->pivot->voucher_id = Hashids::encode($room->pivot->voucher_id);
-                    $room->pivot->room_id = Hashids::encode($room->pivot->room_id);
+                    $room->user_id = id_encode($room->user_id);
+                    $room->hotel_id = id_encode($room->hotel_id);
+                    $room->pivot->voucher_id = id_encode($room->pivot->voucher_id);
+                    $room->pivot->room_id = id_encode($room->pivot->room_id);
 
                     return $room;
                 });
 
                 $voucher->payments = $voucher->payments->map(function ($payment)
                 {
-                    $payment->voucher_id = Hashids::encode($payment->voucher_id);
+                    $payment->voucher_id = id_encode($payment->voucher_id);
 
                     return $payment;
                 });
@@ -2687,8 +2686,8 @@ class VoucherController extends Controller
 
         DB::transaction(function () use (&$processed, $request) {
             try {
-                $vouchers = Voucher::where('user_id', Id::parent())
-                    ->where('hotel_id', Id::get($request->hotel))
+                $vouchers = Voucher::where('user_id', id_parent())
+                    ->where('hotel_id', id_decode($request->hotel))
                     ->whereIn('number', $request->numbers)
                     ->where('open', true)
                     ->where('status', true)
@@ -2783,8 +2782,8 @@ class VoucherController extends Controller
      */
     public function export($id)
     {
-        $id = Id::get($id);
-        $voucher = Voucher::where('user_id', Id::parent())
+        $id = id_decode($id);
+        $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('status', true)
             ->first(Fields::parsed('vouchers'));

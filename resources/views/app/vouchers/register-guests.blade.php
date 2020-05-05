@@ -57,14 +57,14 @@
             <div class="col-md-12">
                 <h3 class="text-center">@lang('rooms.addRoom')</h3>
 
-                <form action="{{ route('vouchers.rooms.store', ['id' => Hashids::encode($voucher->id)]) }}" method="POST">
+                <form action="{{ route('vouchers.rooms.store', ['id' => id_encode($voucher->id)]) }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
                         <label for="room">@lang('rooms.title'):</label>
                         <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
                             @foreach($rooms as $room)
-                                <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
+                                <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
                             @endforeach
                         </select>
 
@@ -77,7 +77,7 @@
 
                     <div class="rooms-description">
                         @foreach($rooms as $room)
-                            <div class="alert alert-info" id="description-{{ Hashids::encode($room->id) }}" style="display:none">
+                            <div class="alert alert-info" id="description-{{ id_encode($room->id) }}" style="display:none">
                                 <p>{{ $room->description }}</p>
                             </div>
                         @endforeach

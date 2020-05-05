@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Fields;
-use App\Helpers\Id;
 use App\Helpers\Random;
 use App\Welkome\Company;
 use App\Welkome\Hotel;
@@ -13,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Vinkla\Hashids\Facades\Hashids;
 
 class PropVoucherController extends Controller
 {
@@ -24,7 +22,7 @@ class PropVoucherController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->get(Fields::get('hotels'));
 
@@ -38,7 +36,7 @@ class PropVoucherController extends Controller
             return redirect()->route('home');
         }
 
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
             ->get(Fields::get('companies'));
 
@@ -57,12 +55,12 @@ class PropVoucherController extends Controller
     {
         $hotels = $hotels->map(function ($hotel)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->props = $hotel->props->map(function ($prop)
             {
-                $prop->hotel_id = Hashids::encode($prop->hotel_id);
-                $prop->user_id = Hashids::encode($prop->user_id);
+                $prop->hotel_id = id_encode($prop->hotel_id);
+                $prop->user_id = id_encode($prop->user_id);
 
                 return $prop;
             });
@@ -95,17 +93,17 @@ class PropVoucherController extends Controller
                 $voucher->type = $request->type;
                 $voucher->made_by = auth()->user()->name;
                 $voucher->comments = $request->comments;
-                $voucher->hotel()->associate(Id::get($request->hotel));
-                $voucher->user()->associate(Id::parent());
+                $voucher->hotel()->associate(id_decode($request->hotel));
+                $voucher->user()->associate(id_parent());
 
                 // Check if a supplier was selected
                 if (!empty($request->company)) {
-                    $voucher->company()->associate(Id::get($request->company));
+                    $voucher->company()->associate(id_decode($request->company));
                 }
 
                 foreach ($request->elements as $element) {
                     // Get the prop to process
-                    $prop = $props->where('id', Id::get($element['hash']))->first();
+                    $prop = $props->where('id', id_decode($element['hash']))->first();
 
                     // Calculations
                     $value = $prop->price * $element['amount'];
@@ -133,7 +131,7 @@ class PropVoucherController extends Controller
                         $voucher->value += $value;
 
                         // Push as Prop processed
-                        $processed->push(Hashids::encode($prop->id));
+                        $processed->push(id_encode($prop->id));
                     }
                 }
 
@@ -160,9 +158,9 @@ class PropVoucherController extends Controller
      */
     public function getProps(Request $request, array $ids)
     {
-        $props = Prop::where('user_id', Id::parent())
-            ->where('hotel_id', Id::get($request->hotel))
-            ->whereIn('id', Id::pool($ids))
+        $props = Prop::where('user_id', id_parent())
+            ->where('hotel_id', id_decode($request->hotel))
+            ->whereIn('id', id_decode_recursive($ids))
             ->where('status', true)
             ->get(Fields::get('props'));
 

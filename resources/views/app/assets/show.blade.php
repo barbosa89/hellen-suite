@@ -14,7 +14,7 @@
                 [
                     'option' => trans('maintenances.maintenance'),
                     'url' => route('assets.maintenance.form', [
-                        'id' => Hashids::encode($asset->id)
+                        'id' => id_encode($asset->id)
                     ]),
                 ],
                 [
@@ -24,14 +24,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('assets.edit', [
-                                'id' => Hashids::encode($asset->id)
+                                'id' => id_encode($asset->id)
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('assets.destroy', [
-                                'id' => Hashids::encode($asset->id)
+                                'id' => id_encode($asset->id)
                             ]),
                             'method' => 'DELETE'
                         ],

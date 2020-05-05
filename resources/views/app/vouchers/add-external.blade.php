@@ -13,7 +13,7 @@
             [
                 'option' => 'Volver al recibo',
                 'url' => route('vouchers.show', [
-                    'id' => Hashids::encode($voucher->id)
+                    'id' => id_encode($voucher->id)
                 ])
             ]
         ]
@@ -30,14 +30,14 @@
             'size' => 'h3'
         ],
         'url' => route('vouchers.external.store', [
-            'id' => Hashids::encode($voucher->id)
+            'id' => id_encode($voucher->id)
         ]),
         'fields' => [
             'app.vouchers.additionals.create-fields',
         ],
         'btn' => trans('common.add'),
         'link' => [
-            'href' => route('vouchers.show', ['id' => Hashids::encode($voucher->id)]),
+            'href' => route('vouchers.show', ['id' => id_encode($voucher->id)]),
             'name' => trans('common.back')
         ]
     ])

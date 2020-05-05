@@ -1,57 +1,68 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use Vinkla\Hashids\Facades\Hashids;
 
 class Id
 {
 	/**
-     * Unhash an ID.
+     * Decode ID.
      *
-     * @param  string  		$ids
-     * @return int|array
+     * @param  string $id
+     * @return int
      */
-	public static function get($ids)
+	public static function decode(string $id): int
 	{
-		if (empty($ids)) {
-			return null;
+		try {
+			$id = Parameter::clean($id);
+
+			return Hashids::decode($id)[0];
+		} catch (\Throwable $e) {
+			report($e);
+
+			return false;
 		}
-
-		if (is_array($ids)) {
-			return self::pool($ids);
-		}
-
-		$id = Input::clean($ids);
-
-		return Hashids::decode($ids)[0];
 	}
 
 	/**
-     * Unhash an ID collection.
+     * Encode ID.
      *
-     * @param  array	$ids
+     * @param  int $id
+     * @return string
+     */
+	public static function encode(int $id): string
+	{
+		return (string) Hashids::encode($id);
+	}
+
+	/**
+     * Decode an ID's array.
+     *
+     * @param  array $ids
      * @return array
      */
-	public static function pool($ids)
+	public static function pool(array $ids): array
 	{
 		$collection = [];
 
 		array_walk($ids, function ($id) use (&$collection)
 		{
-			array_push($collection, Hashids::decode($id)[0]);
+			array_push($collection, self::decode($id));
 		});
 
 		return $collection;
 	}
 
 	/**
-     * Return de parent ID of User.
+     * Return de User parent ID.
      *
      * @return integer
      */
-	public static function parent()
+	public static function parent(): int
 	{
 		if (empty(auth()->user()->parent)) {
 			return auth()->user()->id;

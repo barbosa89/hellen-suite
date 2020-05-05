@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
         <h2>Hotel:</h2>
         <p>
-            <a href="{{ route('hotels.show', ['id' => Hashids::encode($asset->hotel->id)]) }}">
+            <a href="{{ route('hotels.show', ['id' => id_encode($asset->hotel->id)]) }}">
                 {{ $asset->hotel->business_name }}
             </a>
         </p>
@@ -10,7 +10,7 @@
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
         <h2>@lang('common.description'):</h2>
         <p>
-            <a href="{{ route('assets.show', ['id' => Hashids::encode($asset->id)]) }}">
+            <a href="{{ route('assets.show', ['id' => id_encode($asset->id)]) }}">
                 {{ $asset->description }}
             </a>
         </p>
@@ -38,7 +38,7 @@
         <h3>@lang('common.location'):</h3>
         @if(empty($asset->location))
             @if($asset->room)
-                <a href="{{ route('rooms.show', ['id' => Hashids::encode($asset->room->id)]) }}">
+                <a href="{{ route('rooms.show', ['id' => id_encode($asset->room->id)]) }}">
                     {{ trans('rooms.room') }} No. {{ $asset->room->number }}
                 </a>
             @else

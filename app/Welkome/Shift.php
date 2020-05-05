@@ -2,7 +2,7 @@
 
 namespace App\Welkome;
 
-use App\Helpers\{Fields, Id};
+use App\Helpers\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -36,6 +36,9 @@ class Shift extends Model
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
 
+    /**
+     * The vouchers that belong to the shift.
+     */
     public function vouchers()
     {
         return $this->belongsToMany(\App\Welkome\Voucher::class);
@@ -49,11 +52,17 @@ class Shift extends Model
         return $this->belongsToMany(\App\Welkome\Note::class);
     }
 
-    public static function current($hotel_id)
+    /**
+     * Get the current shift
+     *
+     * @param integer $hotel_id
+     * @return \App\Welkome\Shift
+     */
+    public static function current(int $hotel_id): Shift
     {
         $shift = static::where('open', true)
             ->where('hotel_id', $hotel_id)
-            ->where('user_id', Id::parent())
+            ->where('user_id', id_parent())
             ->first(Fields::get('shifts'));
 
         if (empty($shift)) {
@@ -63,12 +72,18 @@ class Shift extends Model
         return $shift;
     }
 
-    public static function start($hotel_id)
+    /**
+     * Create new Shift
+     *
+     * @param integer $hotel_id
+     * @return \App\Welkome\Shift
+     */
+    public static function start(int $hotel_id): Shift
     {
         $shift = new Shift();
         $shift->team_member = auth()->user()->id;
         $shift->team_member_name = auth()->user()->name;
-        $shift->user()->associate(Id::parent());
+        $shift->user()->associate(id_parent());
         $shift->hotel()->associate($hotel_id);
         $shift->save();
 

@@ -2,7 +2,7 @@
     <label for="type">@lang('common.type'):</label>
     <select name="type" id="type" class="form-control selectpicker" required>
         @foreach ($types as $type)
-            <option value="{{ Hashids::encode($type->id) }}">{{ trans('vehicles.' . $type->type) }}</option>
+            <option value="{{ id_encode($type->id) }}">{{ trans('vehicles.' . $type->type) }}</option>
         @endforeach
     </select>
 

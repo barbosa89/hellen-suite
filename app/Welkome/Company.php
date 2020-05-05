@@ -4,7 +4,6 @@ namespace App\Welkome;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Company extends Model
 {
@@ -42,6 +41,6 @@ class Company extends Model
      */
     public function getHashAttribute()
     {
-        return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
+        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 }

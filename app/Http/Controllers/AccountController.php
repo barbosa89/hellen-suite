@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use Carbon\Carbon;
 class AccountController extends Controller
 {
@@ -15,8 +15,8 @@ class AccountController extends Controller
      */
     public function verify($email = '', $token = '')
     {
-        $email = Input::clean($email);
-        $token = Input::clean($token);
+        $email = Parameter::clean($email);
+        $token = Parameter::clean($token);
 
         $user = User::where('email', $email)
             ->where('token', $token)
@@ -40,6 +40,6 @@ class AccountController extends Controller
 
         flash()->overlay(trans('common.error'), 'Error');
 
-        return redirect(utl('/'));
+        return redirect(url('/'));
     }
 }

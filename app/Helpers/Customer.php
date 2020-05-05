@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use App\Helpers\Age;
 use App\Welkome\Voucher;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Customer
 {
@@ -26,7 +25,7 @@ class Customer
 
                 $customer['name'] = $main->full_name;
                 $customer['tin'] = $main->dni;
-                $customer['route'] = route('guests.show', ['id' => Hashids::encode($main->id)]);
+                $customer['route'] = route('guests.show', ['id' => id_encode($main->id)]);
                 $customer['email'] = $main->email ? $main->email : '';
                 $customer['address'] = $main->address ? $main->address : '';
                 $customer['phone'] = $main->phone ? $main->phone : '';
@@ -34,7 +33,7 @@ class Customer
         } else {
             $customer['name'] = $voucher->company->business_name;
             $customer['tin'] = $voucher->company->tin;
-            $customer['route'] = route('companies.show', ['id' => Hashids::encode($voucher->company->id)]);
+            $customer['route'] = route('companies.show', ['id' => id_encode($voucher->company->id)]);
             $customer['email'] = $voucher->company->email ? $voucher->company->email : '';
             $customer['address'] = $voucher->company->address ? $voucher->company->address : '';
             $customer['phone'] = $voucher->company->phone ? $voucher->company->phone : '';

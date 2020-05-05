@@ -2,7 +2,6 @@
 
 namespace App\Welkome;
 
-use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
@@ -61,7 +60,7 @@ class Hotel extends Model
 
     public function getHashAttribute()
     {
-        return $this->attributes['hash'] = (string) Hashids::encode($this->attributes['id']);
+        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 
     public function products()

@@ -8,8 +8,7 @@ use App\Welkome\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
-use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Chart, Id, Input, Fields};
+use App\Helpers\{Chart, Fields, Parameter};
 use App\Http\Requests\ChangeRoomStatus;
 use Illuminate\Support\Collection;
 
@@ -50,11 +49,11 @@ class RoomController extends Controller
     {
         $hotels = $hotels->map(function ($hotel, $index)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
+            $hotel->user_id = id_encode($hotel->user_id);
             $hotel->rooms = $hotel->rooms->map(function ($room)
             {
-                $room->hotel_id = Hashids::encode($room->hotel_id);
-                $room->user_id = Hashids::encode($room->user_id);
+                $room->hotel_id = id_encode($room->hotel_id);
+                $room->user_id = id_encode($room->user_id);
 
                 return $room;
             });
@@ -88,7 +87,7 @@ class RoomController extends Controller
             return $user->headquarters;
         }
 
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
@@ -107,7 +106,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        $hotels = User::find(Id::parent(), ['id'])
+        $hotels = User::find(id_parent(), ['id'])
             ->hotels()
             ->get(Fields::get('hotels'));
 
@@ -137,13 +136,13 @@ class RoomController extends Controller
         $room->description = $request->description;
         $room->status = '1';
         $room->capacity = (int) $request->capacity;
-        $room->hotel()->associate(Id::get($request->hotel));
+        $room->hotel()->associate(id_decode($request->hotel));
 
         if ((int) $request->tax_status == 1) {
             $room->tax = (float) $request->tax;
         }
 
-        $room->user()->associate(Id::parent());
+        $room->user()->associate(id_parent());
         $room->is_suite = (int) $request->type;
 
         if ($room->save()) {
@@ -165,8 +164,8 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        $room = User::find(Id::parent(), ['id'])->rooms()
-            ->where('id', Id::get($id))
+        $room = User::find(id_parent(), ['id'])->rooms()
+            ->where('id', id_decode($id))
             ->first(Fields::get('rooms'));
 
         if (empty($room)) {
@@ -210,8 +209,8 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        $room = User::find(Id::parent(), ['id'])->rooms()
-            ->where('id', Id::get($id))
+        $room = User::find(id_parent(), ['id'])->rooms()
+            ->where('id', id_decode($id))
             ->with([
                 'hotel' => function ($query)
                 {
@@ -235,8 +234,8 @@ class RoomController extends Controller
      */
     public function update(UpdateRoom $request, $id)
     {
-        $room = User::find(Id::parent(), ['id'])->rooms()
-            ->where('id', Id::get($id))
+        $room = User::find(id_parent(), ['id'])->rooms()
+            ->where('id', id_decode($id))
             ->first(Fields::get('rooms'));
 
         if (empty($room)) {
@@ -264,7 +263,7 @@ class RoomController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('rooms.show', [
-                'room' => Hashids::encode($room->id)
+                'room' => id_encode($room->id)
             ]);
         }
 
@@ -281,8 +280,8 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        $room = User::find(Id::parent(), ['id'])->rooms()
-            ->where('id', Id::get($id))
+        $room = User::find(id_parent(), ['id'])->rooms()
+            ->where('id', id_decode($id))
             ->first(Fields::get('rooms'));
 
         if (empty($room)) {
@@ -303,7 +302,7 @@ class RoomController extends Controller
                 flash(trans('rooms.wasDisabled'))->success();
 
                 return redirect()->route('rooms.show', [
-                    'room' => Hashids::encode($room->id)
+                    'room' => id_encode($room->id)
                 ]);
             }
         } else {
@@ -328,13 +327,13 @@ class RoomController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Input::clean($request->get('query', null));
+        $query = Parameter::clean($request->get('query', null));
 
         if (empty($query)) {
             return redirect()->route('rooms.index');
         }
 
-        $rooms = User::find(Id::parent(), ['id'])->rooms()
+        $rooms = User::find(id_parent(), ['id'])->rooms()
             ->whereLike(['number', 'description'], $query)
             ->paginate(20, Fields::get('rooms'));
 
@@ -350,14 +349,14 @@ class RoomController extends Controller
     public function listByHotel(Request $request)
     {
         if ($request->ajax()) {
-            $rooms = Room::where('user_id', Id::parent())
-                ->where('hotel_id', Id::get($request->hotel))
+            $rooms = Room::where('user_id', id_parent())
+                ->where('hotel_id', id_decode($request->hotel))
                 ->get(Fields::get('rooms'));
 
             $rooms = $rooms->map(function ($room, $index)
             {
-                $room->hotel_id = Hashids::encode($room->hotel_id);
-                $room->user_id = Hashids::encode($room->user_id);
+                $room->hotel_id = id_encode($room->hotel_id);
+                $room->user_id = id_encode($room->user_id);
 
                 return $room;
             });
@@ -379,8 +378,8 @@ class RoomController extends Controller
     public function getPrice(Request $request)
     {
         if ($request->ajax()) {
-            $room = Room::where('user_id', Id::parent())
-                ->where('hotel_id', Id::get($request->hotel))
+            $room = Room::where('user_id', id_parent())
+                ->where('hotel_id', id_decode($request->hotel))
                 ->where('number', $request->number)
                 ->where('status', '1') // It is free
                 ->first(Fields::get('rooms'));
@@ -403,9 +402,9 @@ class RoomController extends Controller
      */
     public function changeStatus(ChangeRoomStatus $request)
     {
-        $room = Room::where('user_id', Id::parent())
-            ->where('hotel_id', Id::get($request->hotel))
-            ->where('id', Id::get($request->room))
+        $room = Room::where('user_id', id_parent())
+            ->where('hotel_id', id_decode($request->hotel))
+            ->where('id', id_decode($request->room))
             ->first(Fields::get('rooms'));
 
         if (empty($room)) {

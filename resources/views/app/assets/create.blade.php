@@ -83,7 +83,7 @@
                         <label for="pwd">@lang('hotels.title'):</label>
                         <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
+                                <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 
@@ -112,7 +112,7 @@
                         <label for="pwd">@lang('rooms.room') No.:</label>
                         <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
                             @foreach($hotels->first()->rooms as $room)
-                                <option value="{{ Hashids::encode($room->id) }}">{{ $room->number }}</option>
+                                <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
                             @endforeach
                         </select>
 

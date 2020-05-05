@@ -6,12 +6,10 @@ use App\Exports\CompaniesReport;
 use Carbon\Carbon;
 use App\Welkome\Company;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
-use App\Helpers\{Chart, Id, Input, Fields, Response};
+use App\Helpers\{Chart, Fields, Parameter, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
 use App\Welkome\Voucher;
-use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
@@ -25,7 +23,7 @@ class CompanyController extends Controller
     {
         $month = Carbon::now()->subDays(31);
 
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->where('created_at', '>=', $month->toDateTimeString())
             ->paginate(config('welkome.paginate'), Fields::get('companies'))
             ->sortByDesc('created_at');
@@ -59,13 +57,13 @@ class CompanyController extends Controller
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
         $company->is_supplier = (int) $request->is_supplier;
-        $company->user()->associate(Id::parent());
+        $company->user()->associate(id_parent());
 
         if ($company->save()) {
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('companies.show', [
-                'id' => Hashids::encode($company->id)
+                'id' => id_encode($company->id)
             ]);
         }
 
@@ -82,8 +80,8 @@ class CompanyController extends Controller
      */
     public function createForVoucher($id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->first(Fields::parsed('vouchers'));
@@ -106,8 +104,8 @@ class CompanyController extends Controller
      */
     public function storeForVoucher(StoreCompany $request, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
             ->first(Fields::parsed('vouchers'));
@@ -124,7 +122,7 @@ class CompanyController extends Controller
         $company->phone = $request->get('phone', null);
         $company->mobile = $request->get('mobile', null);
         $company->is_supplier = (int) $request->is_supplier;
-        $company->user()->associate(Id::parent());
+        $company->user()->associate(id_parent());
 
         if ($company->save()) {
             $voucher->company()->associate($company->id);
@@ -148,8 +146,8 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $company = Company::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('companies'));
 
         if (empty($company)) {
@@ -184,8 +182,8 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $company = Company::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('companies'));
 
         if (empty($company)) {
@@ -204,8 +202,8 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompany $request, $id)
     {
-        $company = Company::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $company = Company::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->first(Fields::get('companies'));
 
         if (empty($company)) {
@@ -239,8 +237,8 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $company = Company::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $company = Company::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->whereDoesntHave('vouchers')
             ->first(Fields::get('companies'));
 
@@ -269,14 +267,14 @@ class CompanyController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Input::clean($request->get('query'));
+        $query = Parameter::clean($request->get('query'));
         $companies = Company::whereLike(['business_name', 'tin'], $query)
-            ->where('user_id', Id::parent())
+            ->where('user_id', id_parent())
             ->get(Fields::get('companies'));
 
         if ($request->ajax()) {
-            $format = Input::clean($request->get('format'));
-            $template = 'app.companies.search.' . Input::clean($request->get('template'));
+            $format = Parameter::clean($request->get('format'));
+            $template = 'app.companies.search.' . Parameter::clean($request->get('template'));
             $response = new Response($format, $template, $companies);
 
             return response()->json([
@@ -294,7 +292,7 @@ class CompanyController extends Controller
      */
     public function export()
     {
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->get(Fields::get('companies'));
 
         if ($companies->isEmpty()) {

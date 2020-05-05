@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Prop;
 use App\Welkome\Hotel;
-use App\Helpers\Input;
+use App\Helpers\Parameter;
 use App\Helpers\Fields;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
@@ -21,9 +20,7 @@ use App\Http\Requests\UpdateProp;
 use App\Welkome\Company;
 use App\Welkome\Voucher;
 use Illuminate\Support\Collection;
-use Vinkla\Hashids\Facades\Hashids;
 use Maatwebsite\Excel\Facades\Excel;
-use stdClass;
 
 class PropController extends Controller
 {
@@ -34,7 +31,7 @@ class PropController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->with([
                 'props' => function ($query)
@@ -68,12 +65,12 @@ class PropController extends Controller
     {
         $hotels = $hotels->map(function ($hotel)
         {
-            $hotel->user_id = Hashids::encode($hotel->user_id);
-            $hotel->main_hotel = empty($hotel->main_hotel) ? null : Hashids::encode($hotel->main_hotel);
+            $hotel->user_id = id_encode($hotel->user_id);
+            $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->props = $hotel->props->map(function ($prop)
             {
-                $prop->hotel_id = Hashids::encode($prop->hotel_id);
-                $prop->user_id = Hashids::encode($prop->user_id);
+                $prop->hotel_id = id_encode($prop->hotel_id);
+                $prop->user_id = id_encode($prop->user_id);
 
                 return $prop;
             });
@@ -91,7 +88,7 @@ class PropController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->get(Fields::get('hotels'));
 
@@ -101,7 +98,7 @@ class PropController extends Controller
             return redirect()->route('props.index');
         }
 
-        $companies = Company::where('user_id', Id::parent())
+        $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
             ->get(Fields::get('companies'));
 
@@ -120,8 +117,8 @@ class PropController extends Controller
         $prop->description = $request->description;
         $prop->price = (float) $request->price;
         $prop->quantity = (int) $request->quantity;
-        $prop->user()->associate(Id::parent(), ['id']);
-        $prop->hotel()->associate(Id::get($request->hotel));
+        $prop->user()->associate(id_parent(), ['id']);
+        $prop->hotel()->associate(id_decode($request->hotel));
 
         if ($prop->save()) {
             // Voucher creation
@@ -134,11 +131,11 @@ class PropController extends Controller
             $voucher->subvalue = $prop->price * $prop->quantity;
             $voucher->made_by = auth()->user()->name;
             $voucher->comments = $request->comments;
-            $voucher->hotel()->associate(Id::get($request->hotel));
-            $voucher->user()->associate(Id::parent());
+            $voucher->hotel()->associate(id_decode($request->hotel));
+            $voucher->user()->associate(id_parent());
 
             if (!empty($request->company)) {
-                $voucher->company()->associate(Id::get($request->company));
+                $voucher->company()->associate(id_decode($request->company));
             }
 
             if ($voucher->save()) {
@@ -156,7 +153,7 @@ class PropController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('props.show', [
-                'id' => Hashids::encode($prop->id)
+                'id' => id_encode($prop->id)
             ]);
         }
 
@@ -173,8 +170,8 @@ class PropController extends Controller
      */
     public function show($id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
             ->first(Fields::get('props'));
 
         if (empty($prop)) {
@@ -210,8 +207,8 @@ class PropController extends Controller
      */
     public function edit($id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
             ->with([
                 'hotel' => function ($query)
                 {
@@ -235,9 +232,9 @@ class PropController extends Controller
      */
     public function update(UpdateProp $request, $id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
-            ->where('hotel_id', Id::get($request->hotel))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
+            ->where('hotel_id', id_decode($request->hotel))
             ->first(['id', 'description']);
 
         if (empty($prop)) {
@@ -251,7 +248,7 @@ class PropController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('props.show', [
-                'id' => Hashids::encode($prop->id)
+                'id' => id_encode($prop->id)
             ]);
         }
 
@@ -268,8 +265,8 @@ class PropController extends Controller
      */
     public function destroy($id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
             ->first(['id']);
 
         if (empty($prop)) {
@@ -296,17 +293,17 @@ class PropController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Input::clean($request->get('query', null));
+            $query = Parameter::clean($request->get('query', null));
 
-            $props = Prop::where('hotel_id', Id::get($request->hotel))
-                ->where('user_id', Id::parent())
+            $props = Prop::where('hotel_id', id_decode($request->hotel))
+                ->where('user_id', id_parent())
                 ->whereLike('description', $query)
                 ->get(Fields::get('props'));
 
             $props = $props->map(function ($prop)
             {
-                $prop->hotel_id = Hashids::encode($prop->hotel_id);
-                $prop->user_id = Hashids::encode($prop->user_id);
+                $prop->hotel_id = id_encode($prop->hotel_id);
+                $prop->user_id = id_encode($prop->user_id);
 
                 return $prop;
             });
@@ -327,8 +324,8 @@ class PropController extends Controller
      */
     public function showPropReportForm($id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
             ->first(Fields::get('props'));
 
         if (empty($prop)) {
@@ -354,8 +351,8 @@ class PropController extends Controller
      */
     public function exportPropReport(DateRangeQuery $request, $id)
     {
-        $prop = User::find(Id::parent(), ['id'])->props()
-            ->where('id', Id::get($id))
+        $prop = User::find(id_parent(), ['id'])->props()
+            ->where('id', id_decode($id))
             ->first(Fields::get('props'));
 
         if (empty($prop)) {
@@ -383,7 +380,7 @@ class PropController extends Controller
         if ($prop->vouchers->isEmpty()) {
             flash(trans('common.without.results'))->info();
 
-            return redirect()->route('props.prop.report', ['id' => Hashids::encode($prop->id)]);
+            return redirect()->route('props.prop.report', ['id' => id_encode($prop->id)]);
         }
 
         return Excel::download(new PropReport($prop), trans('props.prop') . '.xlsx');
@@ -396,7 +393,7 @@ class PropController extends Controller
      */
     public function showReportForm()
     {
-        $hotels = Hotel::where('user_id', Id::parent())
+        $hotels = Hotel::where('user_id', id_parent())
             ->get(Fields::get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -417,10 +414,10 @@ class PropController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $query = Hotel::query();
-        $query->where('user_id', Id::parent());
+        $query->where('user_id', id_parent());
 
         if (!empty($request->hotel)) {
-            $query->where('id', Id::get($request->hotel));
+            $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([
@@ -458,7 +455,7 @@ class PropController extends Controller
     //  */
     // public function showFormToReplicate()
     // {
-    //     $hotels = Hotel::where('user_id', Id::parent(), ['id'])
+    //     $hotels = Hotel::where('user_id', id_parent(), ['id'])
     //         ->where('status', true)
     //         ->get(Fields::get('hotels'));
 
@@ -472,8 +469,8 @@ class PropController extends Controller
 
     // public function replicants(Replicate $request)
     // {
-    //     $count = Prop::where('user_id', Id::parent())
-    //         ->where('hotel_id', Id::get($request->from))
+    //     $count = Prop::where('user_id', id_parent())
+    //         ->where('hotel_id', id_decode($request->from))
     //         ->count();
 
     //     if ($count > 0) {
@@ -490,8 +487,8 @@ class PropController extends Controller
 
     // public function showFormWithItems($from, $to)
     // {
-    //     $fromHotel = Hotel::where('user_id', Id::parent())
-    //         ->where('id', Id::get($from))
+    //     $fromHotel = Hotel::where('user_id', id_parent())
+    //         ->where('id', id_decode($from))
     //         ->with([
     //             'props' => function ($query)
     //             {
@@ -499,8 +496,8 @@ class PropController extends Controller
     //             }
     //         ])->first(Fields::get('hotels'));
 
-    //     $toHotel = Hotel::where('user_id', Id::parent())
-    //         ->where('id', Id::get($to))
+    //     $toHotel = Hotel::where('user_id', id_parent())
+    //         ->where('id', id_decode($to))
     //         ->with([
     //             'props' => function ($query)
     //             {
@@ -519,23 +516,23 @@ class PropController extends Controller
      */
     // public function replicate(Replicate $request)
     // {
-    //     // $props = Prop::where('user_id', Id::parent())
-    //     //     ->where('hotel_id', Id::get($request->from))
+    //     // $props = Prop::where('user_id', id_parent())
+    //     //     ->where('hotel_id', id_decode($request->from))
     //     //     ->get(Fields::get('props'));
 
     //     // $replicas = collect();
     //     // $props->each(function ($prop) use (&$replicas, $request)
     //     // {
     //     //     $exists = Prop::where('description', $prop->description)
-    //     //         ->where('user_id', Id::parent())
-    //     //         ->where('hotel_id', Id::get($request->to))
+    //     //         ->where('user_id', id_parent())
+    //     //         ->where('hotel_id', id_decode($request->to))
     //     //         ->first(['id']);
 
     //     //     if (empty($exists)) {
     //     //         $replicas->push([
     //     //             'description' => $prop->description,
-    //     //             'hotel_id' => Id::get($request->to),
-    //     //             'user_id' => Id::parent()
+    //     //             'hotel_id' => id_decode($request->to),
+    //     //             'user_id' => id_parent()
     //     //         ]);
     //     //     }
     //     // });

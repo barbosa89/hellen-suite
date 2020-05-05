@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Exports\ShiftReport;
 use App\Welkome\Shift;
-use App\Helpers\{Fields, Id};
+use App\Helpers\Fields;
 use App\Welkome\Room;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Facades\Excel;
-use Vinkla\Hashids\Facades\Hashids;
 
 class ShiftController extends Controller
 {
@@ -21,7 +19,7 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shifts = Shift::where('user_id', Id::parent())
+        $shifts = Shift::where('user_id', id_parent())
             ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
             {
                 $query->where('team_member', auth()->user()->id);
@@ -43,11 +41,11 @@ class ShiftController extends Controller
      */
     public function show(string $id)
     {
-        $shift = Shift::where('user_id', Id::parent())
+        $shift = Shift::where('user_id', id_parent())
             ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
             {
                 $query->where('team_member', auth()->user()->id);
-            })->where('id', Id::get($id))
+            })->where('id', id_decode($id))
             ->with([
                 'vouchers' => function($query)
                 {
@@ -67,7 +65,7 @@ class ShiftController extends Controller
         $transfer = $this->filterByPaymentMethod($shift, 'transfer');
         $courtesy = $this->filterByPaymentMethod($shift, 'courtesy');
 
-        $rooms = Room::where('user_id', Id::parent())
+        $rooms = Room::where('user_id', id_parent())
                     ->where('hotel_id', $shift->hotel->id)
                     ->with([
                         'vouchers' => function ($query)
@@ -112,11 +110,11 @@ class ShiftController extends Controller
      */
     public function export(string $id)
     {
-        $shift = Shift::where('user_id', Id::parent())
+        $shift = Shift::where('user_id', id_parent())
             ->when(!auth()->user()->hasRole(['manager', 'admin']), function ($query)
             {
                 $query->where('team_member', auth()->user()->id);
-            })->where('id', Id::get($id))
+            })->where('id', id_decode($id))
             ->with([
                 'vouchers' => function($query)
                 {
@@ -132,7 +130,7 @@ class ShiftController extends Controller
                 }
             ])->first(Fields::get('shifts'));
 
-        $rooms = Room::where('user_id', Id::parent())
+        $rooms = Room::where('user_id', id_parent())
                     ->where('hotel_id', $shift->hotel->id)
                     ->with([
                         'vouchers' => function ($query)
@@ -156,8 +154,8 @@ class ShiftController extends Controller
      */
     public function close(string $id)
     {
-        $shift = Shift::where('user_id', Id::parent())
-            ->where('id', Id::get($id))
+        $shift = Shift::where('user_id', id_parent())
+            ->where('id', id_decode($id))
             ->where('open', true)
             ->where('closed_at', null)
             ->first(Fields::get('shifts'));
@@ -171,7 +169,7 @@ class ShiftController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('shifts.close', [
-                'id' => Hashids::encode($shift->id)
+                'id' => id_encode($shift->id)
             ]);
         }
 

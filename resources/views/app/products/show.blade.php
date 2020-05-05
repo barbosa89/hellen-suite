@@ -18,20 +18,20 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('products.edit', [
-                                'id' => Hashids::encode($product->id)
+                                'id' => id_encode($product->id)
                             ]),
                         ],
                         [
                             'option' => $product->status ? trans('common.disable') : trans('common.enable'),
                             'url' => route('products.toggle', [
-                                'id' => Hashids::encode($product->id)
+                                'id' => id_encode($product->id)
                             ])
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('products.destroy', [
-                                'id' => Hashids::encode($product->id)
+                                'id' => id_encode($product->id)
                             ]),
                             'method' => 'DELETE'
                         ],
@@ -40,7 +40,7 @@
                 [
                     'option' => trans('common.reports'),
                     'url' => route('products.product.report', [
-                        'id' => Hashids::encode($product->id)
+                        'id' => id_encode($product->id)
                     ])
                 ],
                 [

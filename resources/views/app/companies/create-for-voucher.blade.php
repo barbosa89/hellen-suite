@@ -13,12 +13,12 @@
             'options' => [
                 [
                     'option' => 'Buscar empresas',
-                    'url' => route('vouchers.companies.search', ['id' => Hashids::encode($voucher->id)])
+                    'url' => route('vouchers.companies.search', ['id' => id_encode($voucher->id)])
                 ],
                 [
                     'option' => trans('vouchers.back'),
                     'url' => route('vouchers.show', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ])
                 ]
             ]
@@ -32,7 +32,7 @@
                         'align' => 'text-center'
                     ],
                     'url' => route('vouchers.companies.store', [
-                        'id' => Hashids::encode($voucher->id)
+                        'id' => id_encode($voucher->id)
                     ]),
                     'fields' => [
                         'app.companies.create-fields',

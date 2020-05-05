@@ -14,7 +14,7 @@
                 [
                     'option' => trans('common.back'),
                     'url' => route('services.show', [
-                        'id' => Hashids::encode($service->id)
+                        'id' => id_encode($service->id)
                     ])
                 ],
             ]
@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.report.of') @lang('services.title')</h2>
-                <form action="{{ route('services.service.report.export', ['id' => Hashids::encode($service->id)]) }}" method="POST">
+                <form action="{{ route('services.service.report.export', ['id' => id_encode($service->id)]) }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
@@ -51,7 +51,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">@lang('common.query')</button>
-                    <a href="{{ route('services.show', ['id' => Hashids::encode($service->id)]) }}" class="btn btn-default">
+                    <a href="{{ route('services.show', ['id' => id_encode($service->id)]) }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
                 </form>

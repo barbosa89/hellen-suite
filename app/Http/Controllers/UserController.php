@@ -8,7 +8,6 @@ use App\Mail\Welcome;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUser;
-use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller

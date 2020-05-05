@@ -1,12 +1,12 @@
 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
     <label for="type">@lang('common.idType'):</label>
     <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
-        <option value="{{ Hashids::encode($guest->identificationType->id) }}" selected>
+        <option value="{{ id_encode($guest->identificationType->id) }}" selected>
             {{ trans('common.' . $guest->identificationType->type) }}
         </option>
 
         @foreach($types as $type)
-            <option value="{{ Hashids::encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
+            <option value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
         @endforeach
     </select>
 
@@ -121,9 +121,9 @@
 <div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
     <label for="nationality">Pais de nacimiento:</label>
     <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required>
-            <option value="{{ Hashids::encode($guest->country->id) }}" selected>{{ $guest->country->name }}</option>
+            <option value="{{ id_encode($guest->country->id) }}" selected>{{ $guest->country->name }}</option>
         @foreach ($countries as $country)
-            <option value="{{ Hashids::encode($country->id) }}">{{ $country->name }}</option>
+            <option value="{{ id_encode($country->id) }}">{{ $country->name }}</option>
         @endforeach
     </select>
 

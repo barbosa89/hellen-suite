@@ -44,7 +44,7 @@
 
     <form class="mt-4" action="{{ route('vouchers.store') }}" method="POST" accept-charset="utf-8">
         @csrf
-        <input type="hidden" name="hotel" value="{{ Hashids::encode($hotel->id) }}" required>
+        <input type="hidden" name="hotel" value="{{ id_encode($hotel->id) }}" required>
 
         @foreach ($hotel->rooms as $room)
             <div class="row mt-4">

@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('team.assign.attach', ['id' => Hashids::encode($member->id)]) }}" method="POST">
+                <form action="{{ route('team.assign.attach', ['id' => id_encode($member->id)]) }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
@@ -37,12 +37,12 @@
                         <select class="form-control selectpicker" name="hotel" id="hotel" required>
                             @if ($member->headquarters->count() > 0)
                                 @foreach ($member->headquarters as $hotel)
-                                    <option value="{{ Hashids::encode($hotel->id) }}" selected>{{ $hotel->business_name }}</option>
+                                    <option value="{{ id_encode($hotel->id) }}" selected>{{ $hotel->business_name }}</option>
                                 @endforeach
                             @endif
 
                             @foreach ($hotels as $hotel)
-                                <option value="{{ Hashids::encode($hotel->id) }}">{{ $hotel->business_name }}</option>
+                                <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 

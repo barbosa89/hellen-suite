@@ -2,11 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
+use App\Http\Requests\StoreTag;
+use App\Repository\TagRepository;
+use App\welkome\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    /**
+     * Tag repository Eloquent based
+     *
+     * @var TagRepository
+     */
+    public TagRepository $tag;
+
+    /**
+     * Construct function
+     *
+     * @param \App\Repository\TagRepository $tag
+     */
+    public function __construct(TagRepository $tag)
+    {
+        $this->tag = $tag;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +33,13 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $tags = Tag::whereUserId(id_parent())
+            ->paginate(
+                config('welkome.paginate'),
+                ['id', 'description', 'slug', 'user_id']
+            );
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($tags);
     }
 
     /**
@@ -33,9 +48,13 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTag $request)
     {
-        //
+        $tag = $this->tag->create($request);
+
+        return response()->json([
+            'status' => $tag instanceof Tag ? true : false
+        ]);
     }
 
     /**

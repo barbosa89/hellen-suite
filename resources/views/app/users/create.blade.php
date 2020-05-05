@@ -47,9 +47,9 @@
                         <select class="form-control selectpicker" title="{{ trans('users.chooseRole') }}" name="role" id="role" required>
                             @foreach($roles as $role)
                                 @if($loop->first)
-                                    <option selected value="{{ Hashids::encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>
+                                    <option selected value="{{ id_encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>
                                 @else
-                                    <option value="{{ Hashids::encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>
+                                    <option value="{{ id_encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>
                                 @endif
                             @endforeach
                         </select>

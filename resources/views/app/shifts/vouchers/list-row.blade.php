@@ -7,7 +7,7 @@
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
             <p>
-                <a href="{{ route('vouchers.show', ['id' => Hashids::encode($row->id)]) }}">
+                <a href="{{ route('vouchers.show', ['id' => id_encode($row->id)]) }}">
                     {{ $row->number }}
                 </a>
             </p>

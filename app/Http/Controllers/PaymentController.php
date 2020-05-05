@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Customer;
 use App\Helpers\Fields;
-use App\Helpers\Id;
 use App\Http\Requests\StorePayment;
 use App\Welkome\Voucher;
 use App\Welkome\Payment;
 use App\Welkome\Shift;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Vinkla\Hashids\Facades\Hashids;
 
 class PaymentController extends Controller
 {
@@ -23,8 +20,8 @@ class PaymentController extends Controller
      */
     public function index($voucherId)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucherId))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucherId))
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
 
@@ -61,8 +58,8 @@ class PaymentController extends Controller
      */
     public function create($voucherId)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucherId))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucherId))
             ->where('status', true)
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
@@ -114,8 +111,8 @@ class PaymentController extends Controller
     public function store(StorePayment $request, $voucherId)
     {
         $status = false;
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucherId))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucherId))
             ->where('status', true)
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
@@ -208,7 +205,7 @@ class PaymentController extends Controller
         }
 
         return redirect()->route('payments.index', [
-            'voucher' => Hashids::encode($voucher->id)
+            'voucher' => id_encode($voucher->id)
         ]);
     }
 
@@ -221,8 +218,8 @@ class PaymentController extends Controller
      */
     public function edit($voucher, $id)
     {
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucher))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
@@ -255,7 +252,7 @@ class PaymentController extends Controller
         ]);
 
         $customer = Customer::get($voucher);
-        $payment = $voucher->payments->where('id', Id::get($id))->first();
+        $payment = $voucher->payments->where('id', id_decode($id))->first();
 
         return view('app.payments.edit', compact('voucher', 'customer', 'payment'));
     }
@@ -271,8 +268,8 @@ class PaymentController extends Controller
     public function update(StorePayment $request, $voucher, $id)
     {
         $status = false;
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucher))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
@@ -295,7 +292,7 @@ class PaymentController extends Controller
         ]);
 
         // Calculate the total value with the other payments adding the payment to update
-        $paymentsValue = $voucher->payments->where('id', '!=', Id::get($id))->sum('value') + (float) $request->value;
+        $paymentsValue = $voucher->payments->where('id', '!=', id_decode($id))->sum('value') + (float) $request->value;
 
         // Check if payments value is greater than voucher value
         if ($paymentsValue > (float) $voucher->value) {
@@ -307,7 +304,7 @@ class PaymentController extends Controller
         DB::transaction(function () use (&$status, &$voucher, $request, $id) {
             try {
                 // Get payment to update
-                $payment = $voucher->payments->where('id', Id::get($id))->first();
+                $payment = $voucher->payments->where('id', id_decode($id))->first();
 
                 // subtract value to shift to prepare the change in value
                 $shift = Shift::current($voucher->hotel->id);
@@ -379,7 +376,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'voucher' => Hashids::encode($voucher->id)
+                'voucher' => id_encode($voucher->id)
             ]);
         }
 
@@ -398,8 +395,8 @@ class PaymentController extends Controller
     public function destroy($voucher, $id)
     {
         $status = false;
-        $voucher = Voucher::where('user_id', Id::parent())
-            ->where('id', Id::get($voucher))
+        $voucher = Voucher::where('user_id', id_parent())
+            ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
             ->first(Fields::parsed('vouchers'));
@@ -424,7 +421,7 @@ class PaymentController extends Controller
         DB::transaction(function () use (&$status, &$voucher, $id) {
             try {
                 // Get payment to delete
-                $payment = $voucher->payments->where('id', Id::get($id))->first();
+                $payment = $voucher->payments->where('id', id_decode($id))->first();
 
                 // Payment support
                 $support = $payment->invoice;
@@ -477,7 +474,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'voucher' => Hashids::encode($voucher->id)
+                'voucher' => id_encode($voucher->id)
             ]);
         }
 

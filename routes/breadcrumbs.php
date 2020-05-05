@@ -1,7 +1,6 @@
 <?php
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
-use Vinkla\Hashids\Facades\Hashids;
 
 // Home
 Breadcrumbs::for('home', function ($trail) {
@@ -15,7 +14,7 @@ Breadcrumbs::for('rooms', function ($trail) {
 
 Breadcrumbs::for('room', function ($trail, $room) {
     $trail->parent('rooms');
-    $trail->push($room->number, route('rooms.show', ['id' => Hashids::encode($room->id)]));
+    $trail->push($room->number, route('rooms.show', ['id' => id_encode($room->id)]));
 });
 
 Breadcrumbs::for('hotels', function ($trail) {
@@ -25,7 +24,7 @@ Breadcrumbs::for('hotels', function ($trail) {
 
 Breadcrumbs::for('hotel', function ($trail, $hotel) {
     $trail->parent('hotels');
-    $trail->push($hotel->business_name, route('hotels.show', ['id' => Hashids::encode($hotel->id)]));
+    $trail->push($hotel->business_name, route('hotels.show', ['id' => id_encode($hotel->id)]));
 });
 
 Breadcrumbs::for('team', function ($trail) {
@@ -35,7 +34,7 @@ Breadcrumbs::for('team', function ($trail) {
 
 Breadcrumbs::for('member', function ($trail, $member) {
     $trail->parent('team');
-    $trail->push($member->name, route('hotels.show', ['id' => Hashids::encode($member->id)]));
+    $trail->push($member->name, route('hotels.show', ['id' => id_encode($member->id)]));
 });
 
 Breadcrumbs::for('vouchers', function ($trail) {
@@ -50,12 +49,12 @@ Breadcrumbs::for('process', function ($trail) {
 
 Breadcrumbs::for('voucher', function ($trail, $voucher) {
     $trail->parent('vouchers');
-    $trail->push($voucher->number, route('vouchers.show', ['id' => Hashids::encode($voucher->id)]));
+    $trail->push($voucher->number, route('vouchers.show', ['id' => id_encode($voucher->id)]));
 });
 
 Breadcrumbs::for('payments', function ($trail, $voucher) {
     $trail->parent('voucher', $voucher);
-    $trail->push(trans('payments.title'), route('vouchers.show', ['id' => Hashids::encode($voucher->id)]));
+    $trail->push(trans('payments.title'), route('vouchers.show', ['id' => id_encode($voucher->id)]));
 });
 
 Breadcrumbs::for('companies', function ($trail) {
@@ -65,7 +64,7 @@ Breadcrumbs::for('companies', function ($trail) {
 
 Breadcrumbs::for('company', function ($trail, $company) {
     $trail->parent('companies');
-    $trail->push($company->business_name, route('companies.show', ['id' => Hashids::encode($company->id)]));
+    $trail->push($company->business_name, route('companies.show', ['id' => id_encode($company->id)]));
 });
 
 Breadcrumbs::for('guests', function ($trail) {
@@ -75,7 +74,7 @@ Breadcrumbs::for('guests', function ($trail) {
 
 Breadcrumbs::for('guest', function ($trail, $guest) {
     $trail->parent('guests');
-    $trail->push($guest->full_name, route('guests.show', ['id' => Hashids::encode($guest->id)]));
+    $trail->push($guest->full_name, route('guests.show', ['id' => id_encode($guest->id)]));
 });
 
 Breadcrumbs::for('products', function ($trail) {
@@ -85,7 +84,7 @@ Breadcrumbs::for('products', function ($trail) {
 
 Breadcrumbs::for('product', function ($trail, $product) {
     $trail->parent('products');
-    $trail->push($product->description, route('products.show', ['id' => Hashids::encode($product->id)]));
+    $trail->push($product->description, route('products.show', ['id' => id_encode($product->id)]));
 });
 
 Breadcrumbs::for('product-transactions', function ($trail) {
@@ -100,7 +99,7 @@ Breadcrumbs::for('services', function ($trail) {
 
 Breadcrumbs::for('service', function ($trail, $service) {
     $trail->parent('services');
-    $trail->push($service->description, route('services.show', ['id' => Hashids::encode($service->id)]));
+    $trail->push($service->description, route('services.show', ['id' => id_encode($service->id)]));
 });
 
 Breadcrumbs::for('dining', function ($trail) {
@@ -110,7 +109,7 @@ Breadcrumbs::for('dining', function ($trail) {
 
 Breadcrumbs::for('dining-service', function ($trail, $service) {
     $trail->parent('dining');
-    $trail->push($service->description, route('dining.show', ['id' => Hashids::encode($service->id)]));
+    $trail->push($service->description, route('dining.show', ['id' => id_encode($service->id)]));
 });
 
 Breadcrumbs::for('assets', function ($trail) {
@@ -120,7 +119,7 @@ Breadcrumbs::for('assets', function ($trail) {
 
 Breadcrumbs::for('asset', function ($trail, $asset) {
     $trail->parent('assets');
-    $trail->push($asset->description, route('assets.show', ['id' => Hashids::encode($asset->id)]));
+    $trail->push($asset->description, route('assets.show', ['id' => id_encode($asset->id)]));
 });
 
 Breadcrumbs::for('props', function ($trail) {
@@ -130,7 +129,7 @@ Breadcrumbs::for('props', function ($trail) {
 
 Breadcrumbs::for('prop', function ($trail, $prop) {
     $trail->parent('props');
-    $trail->push($prop->description, route('props.show', ['id' => Hashids::encode($prop->id)]));
+    $trail->push($prop->description, route('props.show', ['id' => id_encode($prop->id)]));
 });
 
 Breadcrumbs::for('replicate prop', function ($trail) {
@@ -145,7 +144,7 @@ Breadcrumbs::for('vehicles', function ($trail) {
 
 Breadcrumbs::for('vehicle', function ($trail, $vehicle) {
     $trail->parent('vehicles');
-    $trail->push($vehicle->registration, route('vehicles.show', ['id' => Hashids::encode($vehicle->id)]));
+    $trail->push($vehicle->registration, route('vehicles.show', ['id' => id_encode($vehicle->id)]));
 });
 
 Breadcrumbs::for('shifts', function ($trail) {
@@ -155,5 +154,5 @@ Breadcrumbs::for('shifts', function ($trail) {
 
 Breadcrumbs::for('shift', function ($trail, $shift) {
     $trail->parent('shifts');
-    $trail->push($shift->hotel->business_name, route('shifts.show', ['id' => Hashids::encode($shift->id)]));
+    $trail->push($shift->hotel->business_name, route('shifts.show', ['id' => id_encode($shift->id)]));
 });

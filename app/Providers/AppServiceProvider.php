@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\User;
-use App\Helpers\Id;
 use App\Welkome\Voucher;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
@@ -25,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         // Custom validation
         Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            $product = Id::get($data['product']);
+            $product = id_decode($data['product']);
             $product = DB::table('products')->where('id', $product)
                 ->select('id', 'quantity')->first();
 
@@ -34,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Check if encoded ID exists
         Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
-            $value = Id::get($value);
+            $value = id_decode($value);
             $table = $parameters[0];
             $field = $parameters[1];
             $result = DB::table($table)->where($field, $value)
@@ -90,7 +89,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
             // Query the open shifts
             $shift = Shift::where('open', true)
-                ->where('hotel_id', Id::get($value))
+                ->where('hotel_id', id_decode($value))
                 ->first(['id', 'open', 'hotel_id', 'team_member']);
 
             // True if there are no open shifts
@@ -122,7 +121,7 @@ class AppServiceProvider extends ServiceProvider
             // $alias[1]: Parent field name in table table
             $alias = explode('#', $parameters[1]);
             $parentField = isset($alias[1]) ? $alias[1] : $alias[0];
-            $parentId = Id::get($data[$alias[0]]);
+            $parentId = id_decode($data[$alias[0]]);
             $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
 
             $results = DB::table($parameters[0])
@@ -152,7 +151,7 @@ class AppServiceProvider extends ServiceProvider
 
             $results = DB::table($parameters[0])
                 ->where($parameters[1], $value)
-                ->where('user_id', auth()->user()->id)
+                ->where('user_id', id_parent())
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
@@ -191,7 +190,7 @@ class AppServiceProvider extends ServiceProvider
 
             $room = DB::table($parameters[0])
                 ->where($parameters[1], $id)
-                ->where('hotel_id', Id::get($data['hotel']))
+                ->where('hotel_id', id_decode($data['hotel']))
                 ->first(['id', 'price', 'min_price']);
 
             if ($value >= $room->min_price && $value <= $room->price) {
