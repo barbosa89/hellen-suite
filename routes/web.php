@@ -54,3 +54,4 @@ require __DIR__ . '/modules/payments.php';
 require __DIR__ . '/modules/dining.php';
 require __DIR__ . '/modules/shifts.php';
 require __DIR__ . '/modules/tags.php';
+require __DIR__ . '/modules/notes.php';

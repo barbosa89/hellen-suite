@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Note;
+use App\Welkome\Hotel;
+use App\Welkome\Note;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -14,7 +15,16 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $hotels = Hotel::whereUserId(id_parent())
+            ->when(auth()->user()->hasRole('receptionist'), function ($query)
+            {
+                $query->whereHas('employees', function ($query)
+                {
+                    $query->where('id', auth()->user()->id);
+                });
+            })->get(Hotel::getColumnNames());
+
+        return view('app.notes.index', compact('hotels'));
     }
 
     /**

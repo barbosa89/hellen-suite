@@ -685,6 +685,12 @@ export default {
             "token": "This password reset token is invalid.",
             "user": "We can't find a user with that e-mail address."
         },
+        "notes": {
+            "title": "Notes",
+            "notes": {
+                "logbook": "Logbook"
+            }
+        },
         "companies": {
             "company": "Company",
             "title": "Companies",
@@ -702,7 +708,9 @@ export default {
         },
         "shifts": {
             "shift": "Shift",
-            "title": "Shifts"
+            "title": "Shifts",
+            "open": "Open",
+            "close": "Close"
         },
         "home": {
             "title": "Panel"
@@ -1434,6 +1442,12 @@ export default {
             "token": "Este token de restablecimiento de contraseña es inválido.",
             "user": "No se ha encontrado un usuario con esa dirección de correo."
         },
+        "notes": {
+            "title": "Notas",
+            "notes": {
+                "logbook": "Bitácora"
+            }
+        },
         "companies": {
             "title": "Empresas",
             "company": "Empresa",
@@ -1451,7 +1465,9 @@ export default {
         },
         "shifts": {
             "title": "Turnos",
-            "shift": "Turno"
+            "shift": "Turno",
+            "close": "Cerrado",
+            "open": "Abierto"
         },
         "home": {
             "title": "Panel"

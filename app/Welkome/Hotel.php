@@ -2,10 +2,29 @@
 
 namespace App\Welkome;
 
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
+    use Queryable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'business_name',
+        'tin',
+        'address',
+        'phone',
+        'mobile',
+        'email',
+        'status',
+        'image',
+        'created_at'
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -19,7 +38,7 @@ class Hotel extends Model
      *
      * @var array
      */
-    protected $hidden = ['id'];
+    protected $hidden = ['id', 'main_hotel', 'user_id'];
 
     // The hotel owner
     public function owner()
@@ -81,5 +100,13 @@ class Hotel extends Model
     public function props()
     {
         return $this->hasMany(\App\Welkome\Prop::class);
+    }
+
+    /**
+     * Get the notes for the hotel.
+     */
+    public function notes()
+    {
+        return $this->hasMany(\App\Welkome\Note::class);
     }
 }

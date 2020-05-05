@@ -156,3 +156,8 @@ Breadcrumbs::for('shift', function ($trail, $shift) {
     $trail->parent('shifts');
     $trail->push($shift->hotel->business_name, route('shifts.show', ['id' => id_encode($shift->id)]));
 });
+
+Breadcrumbs::for('notes', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('notes.title'), route('notes.index'));
+});

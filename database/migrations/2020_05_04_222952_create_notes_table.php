@@ -19,6 +19,10 @@ class CreateNotesTable extends Migration
             $table->string('team_member_name');
             $table->string('team_member_email');
 
+            $table->foreignId('hotel_id');
+            $table->foreign('hotel_id')->references('id')
+                ->on('hotels')->onDelete('cascade')->onUpdate('cascade');
+
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');

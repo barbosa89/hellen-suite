@@ -2,21 +2,31 @@
 
 namespace App\Helpers;
 
-use Illuminate\Http\Request;
-
 class Fields
 {
-	public static function get($model)
+	/**
+	 * Retrieve column names to execute a query by model
+	 *
+	 * @param string $model
+	 * @return array
+	 */
+	public static function get(string $model): array
 	{
 		return config('welkome.fields.' . $model);
 	}
 
-	public static function parsed($model)
+	/**
+	 * Retrieve column names in dot notacion to execute a query by model
+	 * Example: model.column_name
+	 *
+	 * @param string $model
+	 * @return array
+	 */
+	public static function parsed(string $model): array
 	{
-		$fields = config('welkome.fields.' . $model);
 		$parsed = [];
 
-		foreach ($fields as $field) {
+		foreach (self::get($model) as $field) {
 			$parsed[] = $model . '.' . $field;
 		}
 

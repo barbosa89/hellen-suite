@@ -118,6 +118,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the notes for the user.
+     */
+    public function notes()
+    {
+        return $this->hasMany(Welkome\Note::class);
+    }
+
+    /**
      * Get the tags for the user.
      */
     public function tags()
