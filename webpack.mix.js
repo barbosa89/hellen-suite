@@ -21,7 +21,8 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/pretty-checkbox/dist/pretty-checkbox.min.css',
         'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
-        'node_modules/sweetalert2/dist/sweetalert2.css'
+        'node_modules/sweetalert2/dist/sweetalert2.css',
+        'node_modules/@voerro/vue-tagsinput/dist/style.css'
     ], 'public/css/welkome.css')
     .scripts([
         'node_modules/moment/min/moment.min.js',

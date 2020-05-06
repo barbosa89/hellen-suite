@@ -2,10 +2,13 @@
 
 namespace App\Welkome;
 
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
+    use Queryable;
+
     /**
      * The attributes that are mass assignable.
      *

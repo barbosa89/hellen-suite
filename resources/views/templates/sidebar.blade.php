@@ -135,6 +135,12 @@
         </li>
     @endcan
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('notes.index') }}">
+        <i class="fas fa-fw fa-book"></i>
+        <span>@lang('notes.title')</span></a>
+    </li>
+
     @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="#">

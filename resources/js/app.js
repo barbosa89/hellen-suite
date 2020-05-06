@@ -36,6 +36,8 @@ Vue.component('asset-list', require('./components/Assets/AssetList.vue').default
 
 Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default);
 
+Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
+
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';
 

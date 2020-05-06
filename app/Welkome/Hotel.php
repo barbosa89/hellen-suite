@@ -109,4 +109,22 @@ class Hotel extends Model
     {
         return $this->hasMany(\App\Welkome\Note::class);
     }
+
+    /**
+     * Scope a query to get assigned hotels by role.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAssigned($query)
+    {
+        return $query->whereUserId(id_parent())
+            ->when(auth()->user()->hasRole('receptionist'), function ($query)
+            {
+                $query->whereHas('employees', function ($query)
+                {
+                    $query->where('id', auth()->user()->id);
+                });
+            });
+    }
 }

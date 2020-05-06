@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Welkome\Hotel;
-use App\Welkome\Note;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
