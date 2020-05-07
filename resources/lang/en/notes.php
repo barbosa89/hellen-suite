@@ -6,4 +6,5 @@ return array (
   array (
     'logbook' => 'Logbook',
   ),
+  'add' => 'Add note to shift',
 );

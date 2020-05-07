@@ -54,7 +54,8 @@ class TagTest extends TestCase
 
         $response->assertOk()
             ->assertJson([
-                'status' => true
+                'value' => 'foo',
+                'hash' => id_encode(1)
             ]);
 
         $this->assertDatabaseHas('tags', [

@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Welkome\Hotel;
+use App\Welkome\Note;
+use App\Welkome\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -28,11 +30,68 @@ class NoteTest extends TestCase
         $this->be($this->user);
     }
 
-    public function test_user_can_search_notes()
+    public function test_user_can_see_form_to_search_notes()
     {
         $response = $this->get('/notes');
 
         $response->assertOk()
             ->assertViewIs('app.notes.index');
+    }
+
+    public function test_user_can_see_notes_search_results()
+    {
+        // Prepare note
+        $note = factory(Note::class)->create([
+            'user_id' => $this->user->id,
+            'hotel_id' => $this->hotel->id
+        ]);
+
+        // Search params
+        $start = now()->subDay();
+        $end = now()->addDay();
+        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start}&end={$end}";
+
+        $response = $this->get('/notes/search' . $params);
+
+        $response->assertOk()
+            ->assertViewIs('app.notes.search')
+            ->assertSee($note->content);
+    }
+
+    public function test_user_can_store_note()
+    {
+        $this->withExceptionHandling();
+
+        // Prepate tags
+        $tags = factory(Tag::class, 3)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->post('/notes', [
+            'hotel' => id_encode($this->hotel->id),
+            'content' => 'content',
+            'tags' => $tags->toArray(),
+            'add' => false
+        ]);
+
+        $response->dump();
+
+        $response->assertOk()
+            ->assertJson([
+                'status' => true
+            ]);
+
+        $this->assertDatabaseHas('notes', [
+            'content' => 'content'
+        ])->assertDatabaseHas('note_tag', [
+            'note_id' => 1,
+            'tag_id' => 1
+        ])->assertDatabaseHas('note_tag', [
+            'note_id' => 1,
+            'tag_id' => 2
+        ])->assertDatabaseHas('note_tag', [
+            'note_id' => 1,
+            'tag_id' => 3
+        ]);
     }
 }

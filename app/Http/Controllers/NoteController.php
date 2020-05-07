@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNote;
+use App\Repository\NoteRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
 use App\Welkome\Tag;
@@ -11,6 +12,23 @@ use Illuminate\Support\Facades\Validator;
 
 class NoteController extends Controller
 {
+    /**
+     * Note repository Eloquent based
+     *
+     * @var NoteRepository
+     */
+    public NoteRepository $note;
+
+    /**
+     * Construct function
+     *
+     * @param \App\Repository\NoteRepository $note
+     */
+    public function __construct(NoteRepository $note)
+    {
+        $this->note = $note;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +62,11 @@ class NoteController extends Controller
      */
     public function store(StoreNote $request)
     {
-        //
+        $note = $this->note->create($request);
+
+        return response()->json([
+            'status' => $note instanceof Note
+        ]);
     }
 
     /**
@@ -102,7 +124,7 @@ class NoteController extends Controller
         $validator = Validator::make($request->all(), [
             'hotel' => 'required|string|hashed_exists:hotels,id',
             'start' => 'required|date',
-            'end' => 'required|after:start'
+            'end' => 'required|after_or_equal:start'
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +142,9 @@ class NoteController extends Controller
 
         $notes = Note::whereUserId(id_parent())
             ->whereHotelId(id_decode($request->hotel))
-            ->whereBetween('created_at', [$start, $end])
+            ->whereDate('created_at', '>=', $start)
+            ->whereDate('created_at', '<=', $end)
+            ->orderBy('created_at', 'DESC')
             ->with([
                 'tags' => function ($query)
                 {

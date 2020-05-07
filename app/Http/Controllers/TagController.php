@@ -52,9 +52,7 @@ class TagController extends Controller
     {
         $tag = $this->tag->create($request);
 
-        return response()->json([
-            'status' => $tag instanceof Tag ? true : false
-        ]);
+        return response()->json($tag);
     }
 
     /**

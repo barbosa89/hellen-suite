@@ -6,4 +6,5 @@ return array (
   array (
     'logbook' => 'Bitácora',
   ),
+  'add' => 'Agregar la nota al turno',
 );

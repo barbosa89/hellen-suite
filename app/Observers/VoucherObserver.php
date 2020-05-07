@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Helpers\Fields;
 use App\Welkome\Voucher;
+use Illuminate\Support\Facades\DB;
 
 class VoucherObserver
 {
@@ -50,7 +51,7 @@ class VoucherObserver
             $room->number = $room->number;
             $room->description = $room->description;
             $room->status = '1';
-            $room->save(); 
+            $room->save();
         });
 
         $voucher->guests->each(function ($guest, $index) {
@@ -62,7 +63,7 @@ class VoucherObserver
             $guest->save();
         });
 
-        \DB::table('guest_room')
+        DB::table('guest_room')
             ->where('voucher_id', $voucher->id)
             ->delete();
     }

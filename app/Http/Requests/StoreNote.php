@@ -26,7 +26,8 @@ class StoreNote extends FormRequest
         return [
             'hotel' => 'required|string|hashed_exists:hotels,id|open_shift',
             'content' => 'required|string|max:1200',
-            'tags.*' => 'string|max:30'
+            'tags.*.hash' => 'required|string|hashed_exists:tags,id',
+            'add' => 'required|boolean'
         ];
     }
 }

@@ -689,7 +689,8 @@ export default {
             "title": "Notes",
             "notes": {
                 "logbook": "Logbook"
-            }
+            },
+            "add": "Add note to shift"
         },
         "companies": {
             "company": "Company",
@@ -1446,7 +1447,8 @@ export default {
             "title": "Notas",
             "notes": {
                 "logbook": "Bitácora"
-            }
+            },
+            "add": "Agregar la nota al turno"
         },
         "companies": {
             "title": "Empresas",
