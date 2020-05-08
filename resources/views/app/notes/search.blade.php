@@ -110,7 +110,7 @@
                             <div class="col-12 mt-2">
                                 <span><b>Tags</b>:</span>
                                 @foreach ($note->tags as $tag)
-                                    <a href="{{ route('tags.show', ['id' => id_encode($tag->id)]) }}">#{{ $tag->slug }}</a>
+                                    <a href="{{ route('tags.show', ['id' => id_encode($tag->id), 'hotel' => id_encode($hotel->id)]) }}">#{{ $tag->slug }}</a>
                                 @endforeach
                             </div>
                         </div>

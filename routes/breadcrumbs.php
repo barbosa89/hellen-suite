@@ -161,3 +161,13 @@ Breadcrumbs::for('notes', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('notes.title'), route('notes.index'));
 });
+
+Breadcrumbs::for('tags', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Tags', route('tags.index'));
+});
+
+Breadcrumbs::for('tag', function ($trail, $tag) {
+    $trail->parent('tags');
+    $trail->push($tag->slug, route('tags.index'));
+});

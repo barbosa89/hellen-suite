@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTag;
 use App\Repository\TagRepository;
+use App\Welkome\Hotel;
+use App\Welkome\Note;
 use App\welkome\Tag;
 use Illuminate\Http\Request;
 
@@ -58,21 +60,39 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Tag  $tag
+     * @param  string  $id
+     * @param  string  $hotel
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show(string $id, string $hotel)
     {
-        //
+        $tag = $this->tag->get(id_decode($id));
+
+        // TODO: Cargar por repositorio
+        $hotel = Hotel::whereUserId(id_parent())
+            ->whereId(id_decode($hotel))
+            ->first(['id', 'business_name']);
+
+        $notes = Note::whereUserId(id_parent())
+            ->whereHotelId($hotel->id)
+            ->whereHas('tags', function ($query) use ($tag)
+            {
+                $query->where('id', $tag->id);
+            })->paginate(
+                config('welkome.paginate'),
+                Note::getColumnNames()
+            );
+
+        return view('app.tags.show', compact('tag', 'notes', 'hotel'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Tag  $tag
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit(string $id)
     {
         //
     }
@@ -81,10 +101,10 @@ class TagController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Tag  $tag
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -92,10 +112,10 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Tag  $tag
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(string $id)
     {
         //
     }

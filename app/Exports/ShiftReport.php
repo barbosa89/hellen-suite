@@ -48,8 +48,7 @@ class ShiftReport implements WithMultipleSheets
 
         $sheets[] = new ShiftVouchersReport($this->shift);
         $sheets[] = new ShiftRoomsReport($this->rooms);
-        $sheets[] = new ShiftNotesReport($this->shift->notes);
-
+        $sheets[] = new ShiftNotesReport($this->shift);
 
         return $sheets;
     }

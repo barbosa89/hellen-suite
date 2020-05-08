@@ -37,7 +37,9 @@ class TagRepository implements Repository
     {
         $tag = Tag::whereUserId(id_parent())
             ->whereId($id)
-            ->get(['id', 'description', 'slug', 'user_id']);
+            ->first(['id', 'description', 'slug', 'user_id']);
+
+        abort_if(empty($tag), 404);
 
         return $tag;
     }

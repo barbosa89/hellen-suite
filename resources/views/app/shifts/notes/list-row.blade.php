@@ -19,7 +19,7 @@
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center dont-break-out">
             <p>
                 @foreach ($row->tags as $tag)
-                    <a href="{{ route('tags.show', ['id' => id_encode($tag->id)]) }}">#{{ $tag->slug }}</a>
+                    <a href="{{ route('tags.show', ['id' => id_encode($tag->id), 'hotel' => id_encode($shift->hotel->id)]) }}">#{{ $tag->slug }}</a>
                 @endforeach
             </p>
         </div>

@@ -6,7 +6,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::post('tags', 'TagController@store')
 		->name('tags.store');
 
-	Route::get('tags/{id}', 'TagController@show')
+	Route::get('tags/{id}/hotel/{hotel}', 'TagController@show')
 		->name('tags.show');
 
 	Route::get('tags', 'TagController@index')

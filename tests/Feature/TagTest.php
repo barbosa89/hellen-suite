@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\Welkome\Hotel;
 use App\Welkome\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -62,5 +63,25 @@ class TagTest extends TestCase
             'description' => 'foo',
             'user_id' => $this->user->id
         ])->assertEquals(1, Tag::count());
+    }
+
+    public function test_user_can_see_tag()
+    {
+        $this->withExceptionHandling();
+
+        // Create tag
+        $tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->get('/tags/' . id_encode($tag->id) . '/hotel/' . id_encode($hotel->id));
+
+        $response->assertOk()
+            ->assertViewIs('app.tags.show')
+            ->assertViewHas('tag', $tag);
     }
 }

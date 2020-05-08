@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($notes as $note)
+            @foreach ($shift->notes as $note)
                 <tr>
                     <td>{{ $note->created_at }}</td>
                     <td>
@@ -25,7 +25,7 @@
                     </td>
                     <td>
                         @foreach ($note->tags as $tag)
-                            <a href="{{ route('tags.show', ['id' => id_encode($tag->id)]) }}">#{{ $tag->slug }}</a>
+                            <a href="{{ route('tags.show', ['id' => id_encode($tag->id), 'hotel' => id_encode($shift->hotel->id)]) }}">#{{ $tag->slug }}</a>
                         @endforeach
                     </td>
                 </tr>

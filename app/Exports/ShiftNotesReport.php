@@ -2,29 +2,29 @@
 
 namespace App\Exports;
 
+use App\Welkome\Shift;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
 class ShiftNotesReport implements FromView, WithTitle
 {
     /**
-     * Notes attached to shift.
+     * Shift with notes.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \App\Welkome\Shift
      */
-    protected $notes;
+    protected $shift;
 
-    public function __construct(Collection $notes)
+    public function __construct(Shift $shift)
     {
-        $this->notes = $notes;
+        $this->shift = $shift;
     }
 
     public function view(): View
     {
         return view('app.shifts.exports.notes', [
-            'notes' => $this->notes
+            'shift' => $this->shift
         ]);
     }
 
