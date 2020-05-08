@@ -415,6 +415,10 @@ class VoucherController extends Controller
                 Fields::parsed('vouchers')
             );
 
+        if ($request->ajax()) {
+            return response()->json($vouchers);
+        }
+
         return view('app.vouchers.search', compact('vouchers', 'query'));
     }
 

@@ -84,7 +84,8 @@ export default {
                     "services": "Load dining services"
                 }
             },
-            "back": "Back to voucher"
+            "back": "Back to voucher",
+            "notfound": "Voucher not found"
         },
         "dining": {
             "title": "Dining service",
@@ -692,7 +693,8 @@ export default {
             },
             "add": "Add note to shift",
             "author": "Author",
-            "content": "Content"
+            "content": "Content",
+            "check": "Please check this note before sending, there are some errors"
         },
         "companies": {
             "company": "Company",
@@ -844,7 +846,8 @@ export default {
                     "services": "Cargar servicios de comedor"
                 }
             },
-            "back": "Volver al recibo"
+            "back": "Volver al recibo",
+            "notfound": "Comprobante no encontrado"
         },
         "dining": {
             "title": "Servicio de comedor",
@@ -1452,7 +1455,8 @@ export default {
             },
             "add": "Agregar la nota al turno",
             "content": "Contenido",
-            "author": "Autor(a)"
+            "author": "Autor(a)",
+            "check": "Por favor revise esta nota antes de enviar, hay algunos errores"
         },
         "companies": {
             "title": "Empresas",

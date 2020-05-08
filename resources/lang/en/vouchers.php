@@ -96,4 +96,5 @@ return array (
     ),
   ),
   'back' => 'Back to voucher',
+  'notfound' => 'Voucher not found',
 );

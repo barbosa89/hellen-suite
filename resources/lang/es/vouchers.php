@@ -96,4 +96,5 @@ return array (
     ),
   ),
   'back' => 'Volver al recibo',
+  'notfound' => 'Comprobante no encontrado',
 );

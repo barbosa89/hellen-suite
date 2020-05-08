@@ -80,24 +80,17 @@
                 hotel: '',
                 content: '',
                 add: false,
-                tag_list: this.tags
+                tag_list: this.tags,
+                errors: []
             }
         },
         components: {
             "tags-input": VoerroTagsInput
         },
-        computed: {
-            lang() {
-                let lang = document.documentElement.lang
-
-                if (lang = 'es') {
-                    return this.es
-                }
-
-
-                if (lang = 'en') {
-                    return this.en
-                }
+        watch: {
+            content(current, old) {
+                // Check hashtags in content
+                this.checkVoucherNumbers()
             }
         },
         methods: {
@@ -118,13 +111,19 @@
                         confirmButtonText: this.$root.$t('common.continue'),
                         cancelButtonText: this.$root.$t('common.cancel')
                     }).then((result) => {
-                        this.send()
+                        if (result.value) {
+                            this.send()
+                        }
                     })
                 } else {
-                    toastr.info(
-                        this.$root.$t('common.error'),
-                        this.$root.$t('common.sorry')
-                    )
+                    if (this.errors.length == 0) {
+                        toastr.info(
+                            this.$root.$t('notes.check'),
+                            this.$root.$t('common.sorry')
+                        )
+                    }
+
+                    this.showErrors()
                 }
             },
             validate() {
@@ -137,6 +136,10 @@
                 }
 
                 if (this.selected_tags.length == 0) {
+                    return false
+                }
+
+                if (this.errors.length) {
                     return false
                 }
 
@@ -159,7 +162,7 @@
                     }
                 }).catch(error => {
                     toastr.error(
-                        this.$root.$t('common.error'),
+                        this.$root.$t('notes.error'),
                         'Error'
                     )
                 })
@@ -196,6 +199,42 @@
                 this.hotel = ''
                 this.content = ''
                 this.add = false
+                this.errors = []
+            },
+            checkVoucherNumbers() {
+                // Reset errors
+                this.errors = []
+
+                // Get all hashtags
+                let hashtags =  this.getHashtags()
+
+                // Validate each voucher number exists
+                this.checkHashtags(hashtags)
+            },
+            getHashtags() {
+                return this.content.match(/#(\w+)/g);
+            },
+            checkHashtags(hashtags) {
+                _.each(hashtags, hashtag => {
+                    let number = hashtag.replace('#', '')
+
+                    if (number.length > 6) {
+                        axios.get('/vouchers/search?query=' + number)
+                        .then(response => {
+                            if (response.data.data.length == 0) {
+                                this.errors.push(this.$root.$t('vouchers.notfound') + ': #' + number)
+                            }
+                        })
+                    }
+                })
+            },
+            showErrors() {
+                _.each(this.errors, error => {
+                    toastr.error(
+                        error,
+                        'Error'
+                    )
+                })
             }
         },
     }
