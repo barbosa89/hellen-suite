@@ -45,7 +45,7 @@
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label for="start">{{ trans('common.startDate') }}:</label>
-                        <input type="text" class="form-control datepicker @error('start') is-invalid @enderror" name="start" id="start" value="{{ old('start') }}" required>
+                        <input type="text" class="form-control datepicker @error('start') is-invalid @enderror" name="start" id="start" value="{{ old('start') }}" required placeholder="{{ trans('common.required') }}">
 
                         @error ('start')
                             <span class="invalid-feedback d-block" role="alert">
@@ -58,9 +58,25 @@
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label for="end">{{ trans('common.endDate') }}:</label>
-                        <input type="text" class="form-control datepicker @error('end') is-invalid @enderror" name="end" id="end" value="{{ old('end') }}" required>
+                        <input type="text" class="form-control datepicker @error('end') is-invalid @enderror" name="end" id="end" value="{{ old('end') }}" required placeholder="{{ trans('common.required') }}">
 
                         @error ('end')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row my-2">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="form-group">
+                        <label for="query">{{ trans('common.search') }}:</label>
+                        <input type="text" class="form-control @error('query') is-invalid @enderror" name="query" id="query" value="{{ old('query') }}" placeholder="{{ trans('common.optional') }}">
+
+                        @error ('query')
                             <span class="invalid-feedback d-block" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

@@ -48,8 +48,29 @@ class NoteTest extends TestCase
 
         // Search params
         $start = now()->subDay();
-        $end = now()->addDay();
-        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start}&end={$end}";
+        $end = now();
+        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start->toDateString()}&end={$end->toDateString()}";
+
+        $response = $this->get('/notes/search' . $params);
+
+        $response->assertOk()
+            ->assertViewIs('app.notes.search')
+            ->assertSee($note->content);
+    }
+
+    public function test_user_can_search_notes_by_text()
+    {
+        // Prepare note
+        $note = factory(Note::class)->create([
+            'content' => 'Custom content',
+            'user_id' => $this->user->id,
+            'hotel_id' => $this->hotel->id
+        ]);
+
+        // Search params
+        $start = now()->subDay();
+        $end = now();
+        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start->toDateString()}&end={$end->toDateString()}&text=custom";
 
         $response = $this->get('/notes/search' . $params);
 

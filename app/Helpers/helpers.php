@@ -32,7 +32,7 @@ if (!function_exists('id_parent')) {
 }
 
 if (!function_exists('param_clean')) {
-    function param_clean($value)
+    function param_clean($value = null)
     {
         return Parameter::clean($value);
     }

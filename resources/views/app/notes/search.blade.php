@@ -53,6 +53,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row my-2">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="form-group">
+                                <label for="query">{{ trans('common.search') }}:</label>
+                                <input type="text" class="form-control @error('query') is-invalid @enderror" name="query" id="query" value="{{ $text ?? '' }}" placeholder="{{ trans('common.optional') }}">
+
+                                @error ('query')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" role="button" class="btn btn-primary">
@@ -62,7 +76,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
 
         <div class="row my-4">

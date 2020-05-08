@@ -123,8 +123,8 @@ class NoteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'hotel' => 'required|string|hashed_exists:hotels,id',
-            'start' => 'required|date',
-            'end' => 'required|after_or_equal:start'
+            'start' => 'required|date|before_or_equal:today',
+            'end' => 'required|date|after_or_equal:start|before_or_equal:today'
         ]);
 
         if ($validator->fails()) {
@@ -135,6 +135,7 @@ class NoteController extends Controller
 
         $start = param_clean($request->start);
         $end = param_clean($request->end);
+        $text = param_clean($request->get('query', null));
 
         $hotel = Hotel::whereUserId(id_parent())
             ->whereId(id_decode($request->hotel))
@@ -144,7 +145,10 @@ class NoteController extends Controller
             ->whereHotelId(id_decode($request->hotel))
             ->whereDate('created_at', '>=', $start)
             ->whereDate('created_at', '<=', $end)
-            ->orderBy('created_at', 'DESC')
+            ->when(!empty($text), function ($query) use ($text)
+            {
+                $query->whereLike(['content'], $text);
+            })->orderBy('created_at', 'DESC')
             ->with([
                 'tags' => function ($query)
                 {
@@ -155,6 +159,6 @@ class NoteController extends Controller
                 Note::getColumnNames(['user_id', 'hotel_id'])
             );
 
-        return view('app.notes.search', compact('notes', 'start', 'end', 'hotel'));
+        return view('app.notes.search', compact('notes', 'start', 'end', 'hotel', 'text'));
     }
 }

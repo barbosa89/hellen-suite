@@ -14,6 +14,10 @@ class Parameter
      */
 	public static function clean($value = null, $encoding = 'UTF-8')
 	{
+		if (empty($value)) {
+			return null;
+		}
+
 		return htmlentities($value, ENT_QUOTES | ENT_HTML5, $encoding);
 	}
 
