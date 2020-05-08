@@ -94,4 +94,33 @@ class NoteTest extends TestCase
             'tag_id' => 3
         ]);
     }
+
+    public function test_user_can_attach_note_to_shift()
+    {
+        $this->withExceptionHandling();
+
+        // Prepate tags
+        $tags = factory(Tag::class, 3)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->post('/notes', [
+            'hotel' => id_encode($this->hotel->id),
+            'content' => 'content',
+            'tags' => $tags->toArray(),
+            'add' => true
+        ]);
+
+        $response->dump();
+
+        $response->assertOk()
+            ->assertJson([
+                'status' => true
+            ]);
+
+        $this->assertDatabaseHas('note_shift', [
+            'note_id' => 1,
+            'shift_id' => 1
+        ]);
+    }
 }

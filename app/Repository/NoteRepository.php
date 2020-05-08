@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 use App\Welkome\Note;
+use App\Welkome\Shift;
 use Illuminate\Http\Request;
 
 /**
@@ -29,8 +30,15 @@ class NoteRepository implements Repository
 
         // Get all Tag Ids
         $ids = collect($request->tags)->pluck('hash')->toArray();
-
         $note->tags()->sync(id_decode_recursive($ids));
+
+        // If add is true
+        // The note is attached to Shift
+        if ($request->add) {
+            Shift::current(id_decode($request->hotel))
+                ->notes()
+                ->attach($note);
+        }
 
         return $note;
     }

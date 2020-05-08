@@ -92,6 +92,13 @@
                             'listHeading' => 'app.shifts.rooms.list-heading',
                             'listRow' => 'app.shifts.rooms.list-row',
                             'data' => $rooms
+                        ],
+                        [
+                            'id' => ucfirst(trans('notes.title')),
+                            'title' => trans('notes.title'),
+                            'listHeading' => 'app.shifts.notes.list-heading',
+                            'listRow' => 'app.shifts.notes.list-row',
+                            'data' => $shift->notes
                         ]
                     ]
                 ])

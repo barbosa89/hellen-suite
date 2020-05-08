@@ -39,7 +39,11 @@
             @foreach ($shift->vouchers as $voucher)
                 <tr>
                     <td>{{ $voucher->created_at->format('Y-m-d') }}</td>
-                    <td>{{ $voucher->number }}</td>
+                    <td>
+                        <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}">
+                            {{ $voucher->number }}
+                        </a>
+                    </td>
                     <td>{{ $voucher->open ? trans('shifts.open') : trans('shifts.close') }}</td>
                     <td>{{ trans('transactions.' . $voucher->type) }}</td>
                     <td>{{ $voucher->value }}</td>

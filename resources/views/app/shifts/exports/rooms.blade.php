@@ -17,7 +17,11 @@
         <tbody>
             @foreach ($rooms as $room)
                 <tr>
-                    <td>{{ $room->number }}</td>
+                    <td>
+                        <a href="{{ route('rooms.show', ['id' => id_encode($room->id)]) }}">
+                            {{ $room->number }}
+                        </a>
+                    </td>
                     <td>
                         @switch($room->status)
                             @case(0)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ShiftReport;
 use App\Welkome\Shift;
 use App\Helpers\Fields;
+use App\Welkome\Note;
 use App\Welkome\Room;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -58,6 +59,14 @@ class ShiftController extends Controller
                 'hotel' => function($query)
                 {
                     $query->select(Fields::get('hotels'));
+                },
+                'notes' => function ($query)
+                {
+                    $query->select(Note::getColumnNames());
+                },
+                'notes.tags' => function ($query)
+                {
+                    $query->select(['id', 'slug']);
                 }
             ])->first(Fields::get('shifts'));
 
@@ -127,6 +136,14 @@ class ShiftController extends Controller
                 'hotel' => function($query)
                 {
                     $query->select(Fields::get('hotels'));
+                },
+                'notes' => function ($query)
+                {
+                    $query->select(Note::getColumnNames());
+                },
+                'notes.tags' => function ($query)
+                {
+                    $query->select(['id', 'slug']);
                 }
             ])->first(Fields::get('shifts'));
 

@@ -7,4 +7,6 @@ return array (
     'logbook' => 'Bitácora',
   ),
   'add' => 'Agregar la nota al turno',
+  'content' => 'Contenido',
+  'author' => 'Autor(a)',
 );
