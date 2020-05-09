@@ -30,7 +30,7 @@
                 <label>Tags:</label>
                 <tags-input element-id="tags"
                 v-model="selected_tags"
-                :existing-tags="tag_list"
+                :existing-tags="tags"
                 :typeahead="true"
                 :add-tags-on-space="true"
                 :add-tags-on-comma="true"
@@ -70,17 +70,18 @@
     import VoerroTagsInput from '@voerro/vue-tagsinput';
 
     export default {
-        props: {
-            hotels: Array,
-            tags: Array
+        mounted() {
+            this.loadHotels()
+            this.loadTags()
         },
         data() {
             return {
+                hotels: [],
                 selected_tags: [],
                 hotel: '',
                 content: '',
                 add: false,
-                tag_list: this.tags,
+                tags: [],
                 errors: []
             }
         },
@@ -94,6 +95,24 @@
             }
         },
         methods: {
+            loadHotels() {
+                axios.get('/hotels/assigned')
+                    .then(response => {
+                        if (response.data.length) {
+                            this.hotels = response.data
+                        } else {
+                            window.location.href = '/home'
+                        }
+                    })
+            },
+            loadTags() {
+                axios.get('/tags')
+                    .then(response => {
+                        if (response.data.length) {
+                            this.tags = response.data
+                        }
+                    })
+            },
             tagAdded(tag) {
                 if (tag.hasOwnProperty('key')) {
                     this.createTag(tag)
@@ -174,7 +193,7 @@
                     this.$set(tag, 'hash', response.data.hash)
 
                     if (!this.existsTag(response.data.hash)) {
-                        this.tag_list.push({
+                        this.tags.push({
                             hash: response.data.hash,
                             value: response.data.value,
                         })
@@ -188,7 +207,7 @@
                 })
             },
             existsTag(hash) {
-                let results = _.find(this.tag_list, tag => {
+                let results = _.find(this.tags, tag => {
                     return tag.hash == hash
                 })
 

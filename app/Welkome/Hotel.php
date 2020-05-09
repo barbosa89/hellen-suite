@@ -119,6 +119,7 @@ class Hotel extends Model
     public function scopeAssigned($query)
     {
         return $query->whereUserId(id_parent())
+            ->whereStatus(true)
             ->when(auth()->user()->hasRole('receptionist'), function ($query)
             {
                 $query->whereHas('employees', function ($query)

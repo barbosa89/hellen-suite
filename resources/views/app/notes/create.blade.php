@@ -18,7 +18,7 @@
             ]
         ])
 
-        <note-create :hotels='@json($hotels)' :tags='@json($tags)'></note-create>
+        <note-create></note-create>
     </div>
 
 @endsection

@@ -62,7 +62,8 @@ class ShiftController extends Controller
                 },
                 'notes' => function ($query)
                 {
-                    $query->select(Note::getColumnNames());
+                    $query->select(Note::getColumnNames())
+                        ->orderBy('created_at', 'DESC');
                 },
                 'notes.tags' => function ($query)
                 {
@@ -139,7 +140,8 @@ class ShiftController extends Controller
                 },
                 'notes' => function ($query)
                 {
-                    $query->select(Note::getColumnNames());
+                    $query->select(Note::getColumnNames())
+                        ->orderBy('created_at', 'DESC');
                 },
                 'notes.tags' => function ($query)
                 {

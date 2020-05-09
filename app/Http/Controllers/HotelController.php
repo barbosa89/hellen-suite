@@ -274,4 +274,18 @@ class HotelController extends Controller
 
         abort(404);
     }
+
+    /**
+     * Return assigned hotel list.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAssigned()
+    {
+        // Using assigned scoped
+        $hotels = Hotel::assigned()->get(Fields::get('hotels'));
+
+        return response()->json($hotels);
+    }
 }

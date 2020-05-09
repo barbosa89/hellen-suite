@@ -24,7 +24,28 @@ class TagTest extends TestCase
         $this->be($this->user);
     }
 
-    public function test_user_can_get_all_tags()
+    public function test_user_can_get_all_tags_as_json()
+    {
+        // Create tag
+        $tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $response = $this->get('/tags', ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                [
+                    'hash' => id_encode($tag->id),
+                    'value' => $tag->description,
+                    'slug' => $tag->slug
+                ]
+            ]);
+
+        $this->assertEquals(1, Tag::count());
+    }
+
+    public function test_user_can_see_all_tags()
     {
         // Create tag
         $tag = factory(Tag::class)->create([
@@ -33,18 +54,11 @@ class TagTest extends TestCase
 
         $response = $this->get('/tags');
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    [
-                        'hash' => id_encode($tag->id),
-                        'value' => $tag->description,
-                        'slug' => $tag->slug
-                    ]
-                ]
-            ])->assertJsonFragment(['per_page' => 20]);
+        $tags = Tag::all();
 
-        $this->assertEquals(1, Tag::count());
+        $response->assertOk()
+            ->assertViewIs('app.tags.index')
+            ->assertSee($tag->slug);
     }
 
     public function test_user_can_store_tag()

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Welkome\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Pure Eloquent Repository
@@ -71,5 +72,17 @@ class TagRepository implements Repository
         $tag = $this->get($id);
 
         return $tag->delete();
+    }
+
+    /**
+     * Get all tags
+     *
+     * @return Collection
+     */
+    public function all(): Collection
+    {
+        return Tag::whereUserId(id_parent())
+            ->orderBy('description')
+            ->get(['id', 'description', 'slug', 'user_id']);
     }
 }

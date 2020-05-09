@@ -35,13 +35,13 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::whereUserId(id_parent())
-            ->paginate(
-                config('welkome.paginate'),
-                ['id', 'description', 'slug', 'user_id']
-            );
+        $tags = $this->tag->all();
 
-        return response()->json($tags);
+        if (request()->ajax()) {
+            return response()->json($tags);
+        }
+
+        return view('app.tags.index', compact('tags'));
     }
 
     /**

@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::post('hotels/different', 'HotelController@getDifferentTo')
+	Route::get('hotels/assigned', 'HotelController@getAssigned')
+        ->name('hotels.assigned')
+        ->middleware(['permission:hotels.index']);
+
+    Route::post('hotels/different', 'HotelController@getDifferentTo')
         ->name('hotels.different')
         ->middleware(['permission:hotels.index']);
 

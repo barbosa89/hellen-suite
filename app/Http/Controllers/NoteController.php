@@ -6,7 +6,6 @@ use App\Http\Requests\StoreNote;
 use App\Repository\NoteRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
-use App\Welkome\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,10 +47,9 @@ class NoteController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::assigned()->get(Hotel::getColumnNames());
-        $tags = Tag::whereUserId(id_parent())->get(['id', 'description', 'user_id']);
-
-        return view('app.notes.create', compact('hotels', 'tags'));
+        // This view has a Vue component: NoteCreate <note-create></note-create>
+        // In the component the hotel data and the tag data will be loaded
+        return view('app.notes.create');
     }
 
     /**
