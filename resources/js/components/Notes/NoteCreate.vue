@@ -20,8 +20,23 @@
 
         <div class="row my-2">
             <div class="col-12">
-                <label for="content">Content:</label>
-                <textarea name="content" id="content" cols="30" rows="5" class="form-control" v-model="content"></textarea>
+                <editor
+                v-model="content"
+                api-key="no-api-key"
+                :init="{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                    'undo redo | formatselect | bold italic backcolor | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | removeformat | help'
+                }"
+                />
             </div>
         </div>
 
@@ -67,7 +82,8 @@
 </template>
 
 <script>
-    import VoerroTagsInput from '@voerro/vue-tagsinput';
+    import VoerroTagsInput from '@voerro/vue-tagsinput'
+    import Editor from '@tinymce/tinymce-vue'
 
     export default {
         mounted() {
@@ -86,7 +102,8 @@
             }
         },
         components: {
-            "tags-input": VoerroTagsInput
+            "tags-input": VoerroTagsInput,
+            'editor': Editor
         },
         watch: {
             content(current, old) {

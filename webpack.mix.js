@@ -15,6 +15,9 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/pdf.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
+    .copy('node_modules/tinymce/themes', 'public/js/themes')
+    .copy('node_modules/tinymce/skins', 'public/js/skins')
+    .copy('node_modules/tinymce/plugins', 'public/js/plugins')
     .styles([
         'public/css/sb-admin.css',
         'node_modules/toastr/build/toastr.min.css',
@@ -46,6 +49,9 @@ mix.js('resources/js/app.js', 'public/js')
         'public/js/move-top.js',
         'node_modules/jquery.easing/jquery.easing.js'
     ], 'public/js/landing.js')
+    .scripts([
+        'node_modules/tinymce/tinymce.min.js'
+    ], 'public/js/editor.js')
     .sourceMaps()
     .browserSync({
         proxy: 'welkome.app'

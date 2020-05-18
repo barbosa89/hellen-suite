@@ -6,6 +6,7 @@ use App\Repository\Repository;
 use App\Welkome\Note;
 use App\Welkome\Shift;
 use Illuminate\Http\Request;
+use Mews\Purifier\Facades\Purifier;
 
 /**
  * Pure Eloquent Repository
@@ -21,7 +22,7 @@ class NoteRepository implements Repository
     public function create(Request $request): Note
     {
         $note = new Note();
-        $note->content = $request->content;
+        $note->content = Purifier::clean($request->content);
         $note->team_member_name = auth()->user()->name;
         $note->team_member_email = auth()->user()->email;
         $note->hotel()->associate(id_decode($request->hotel));

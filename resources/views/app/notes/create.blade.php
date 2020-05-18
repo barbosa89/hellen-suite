@@ -22,3 +22,7 @@
     </div>
 
 @endsection
+
+@section('editor')
+    <script type="text/javascript" src="{{ asset('js/editor.js') }}"></script>
+@endsection

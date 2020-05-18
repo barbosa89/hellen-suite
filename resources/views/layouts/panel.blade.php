@@ -63,6 +63,7 @@
         @endauth
     </script>
     @translations
+    @yield('editor')
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/welkome.js') }}"></script>
     @yield('scripts')

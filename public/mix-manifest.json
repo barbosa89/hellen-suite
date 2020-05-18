@@ -6,5 +6,6 @@
     "/css/welkome.css": "/css/welkome.css",
     "/js/welkome.js": "/js/welkome.js",
     "/css/landing.css": "/css/landing.css",
-    "/js/landing.js": "/js/landing.js"
+    "/js/landing.js": "/js/landing.js",
+    "/js/editor.js": "/js/editor.js"
 }
