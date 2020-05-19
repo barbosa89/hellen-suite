@@ -18,7 +18,7 @@
                 <tr>
                     <td>{{ $note->created_at }}</td>
                     <td>
-                        {{ $note->content }}
+                        {!! $note->content !!}
                     </td>
                     <td>
                         {{ $note->team_member_name }} - {{ $note->team_member_email }}

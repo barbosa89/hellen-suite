@@ -25,17 +25,7 @@
         </div>
 
         @if ($tags->isNotEmpty())
-            <div class="row">
-                <div class="col">
-                    @foreach ($tags as $tag)
-                        <a href="#">
-                            <h3 class="badge badge-secondary text-wrap" style="font-size: 1em;">
-                                {{ $tag->description }}
-                            </h3>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
+            <tag-list :tags=@json($tags)></tag-list>
         @else
             @include('partials.no-records')
         @endif

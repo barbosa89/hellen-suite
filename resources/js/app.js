@@ -18,7 +18,7 @@ import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
 
 // Commom
-// Vue.component('transaction-type', require('./components/Transactions/TransactionType.vue').default);
+Vue.component('hotel-select', require('./components/Hotels/HotelSelect.vue').default);
 Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default);
 Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default);
 
@@ -37,6 +37,7 @@ Vue.component('asset-list', require('./components/Assets/AssetList.vue').default
 Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default);
 
 Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
+Vue.component('tag-list', require('./components/Tags/TagList.vue').default);
 
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';

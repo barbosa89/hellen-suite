@@ -9,12 +9,7 @@
         <div class="row my-2">
             <div class="col-12">
                 <label for="hotel">Hotel:</label>
-                <select name="hotel" id="hotel" class="form-control" v-model="hotel">
-                    <option :value="''" disabled selected>{{ $t('common.chooseOption') }}</option>
-                    <option v-for="(hotel, index) in hotels" :key="index" :value="hotel.hash">
-                        {{ hotel.business_name }}
-                    </option>
-                </select>
+                <hotel-select @hotel="hotel = $event"></hotel-select>
             </div>
         </div>
 
@@ -87,7 +82,6 @@
 
     export default {
         mounted() {
-            this.loadHotels()
             this.loadTags()
         },
         data() {
@@ -112,16 +106,6 @@
             }
         },
         methods: {
-            loadHotels() {
-                axios.get('/hotels/assigned')
-                    .then(response => {
-                        if (response.data.length) {
-                            this.hotels = response.data
-                        } else {
-                            window.location.href = '/home'
-                        }
-                    })
-            },
             loadTags() {
                 axios.get('/tags')
                     .then(response => {

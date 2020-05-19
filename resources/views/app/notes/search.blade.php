@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-12">
                                 <p>
-                                    {{ $note->content }}
+                                    {!! $note->content !!}
                                 </p>
                             </div>
                             <div class="col-12">
