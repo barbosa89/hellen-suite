@@ -77,12 +77,25 @@ class TagRepository implements Repository
     /**
      * Get all tags
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all(): Collection
     {
         return Tag::whereUserId(id_parent())
             ->orderBy('description')
+            ->get(['id', 'description', 'slug', 'user_id']);
+    }
+
+    /**
+     * Tag search by query text
+     *
+     * @param string $query
+     * @return \Illuminate\Support\Collection
+     */
+    public function search(string $query): Collection
+    {
+        return Tag::whereUserId(id_parent())
+            ->whereLike(['description'], $query)
             ->get(['id', 'description', 'slug', 'user_id']);
     }
 }

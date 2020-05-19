@@ -18,6 +18,7 @@ import VueRouter from 'vue-router';
 import Permissions from './mixins/Permissions';
 
 // Commom
+Vue.component('search-input', require('./components/SearchInput.vue').default);
 Vue.component('hotel-select', require('./components/Hotels/HotelSelect.vue').default);
 Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default);
 Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default);

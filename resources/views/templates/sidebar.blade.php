@@ -141,6 +141,12 @@
         <span>@lang('notes.title')</span></a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('tags.index') }}">
+        <i class="fas fa-fw fa-tags"></i>
+        <span>Tags</span></a>
+    </li>
+
     @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="#">

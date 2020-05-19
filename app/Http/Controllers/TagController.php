@@ -119,4 +119,20 @@ class TagController extends Controller
     {
         //
     }
+
+    /**
+     * Tag searching
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        // Clean parameters
+        $query = param_clean($request->get('query', null));
+
+        return response()->json([
+            'results' => $this->tag->search($query)
+        ]);
+    }
 }

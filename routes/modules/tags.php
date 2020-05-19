@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('tags/search', 'TagController@search')
+		->name('tags.search');
+
 	Route::post('tags', 'TagController@store')
 		->name('tags.store');
 
