@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Helpers\{Customer, Fields, Parameter, Random};
+use App\Helpers\{Customer, Fields, Random};
 use App\Welkome\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
 use App\Http\Requests\{
     AddGuests,
@@ -396,7 +396,7 @@ class VoucherController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Parameter::clean($request->get('query', null));
+        $query = param_clean($request->get('query', null));
 
         if (empty($query)) {
             return back();
@@ -1554,7 +1554,7 @@ class VoucherController extends Controller
      */
     public function showFormToAddServices($id, $type = 'all')
     {
-        $type = Parameter::clean($type);
+        $type = param_clean($type);
 
         if (!in_array($type, ['all', 'dining'])) {
             abort(400);

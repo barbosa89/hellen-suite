@@ -238,7 +238,7 @@
                 _.each(hashtags, hashtag => {
                     let number = hashtag.replace('#', '')
 
-                    if (number.length > 6) {
+                    if (number.length == 12) {
                         axios.get('/vouchers/search?query=' + number)
                         .then(response => {
                             if (response.data.data.length == 0) {

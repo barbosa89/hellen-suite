@@ -4,8 +4,8 @@ namespace App\Helpers;
 
 use App\User;
 use App\Welkome\Voucher;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Random
 {
@@ -34,17 +34,20 @@ class Random
 	/**
      * Create an unique consecutive from vouchers table.
      *
-     * @param  int		$lenght
-     * @return string	$token
+     * @return string
      */
-	public static function consecutive()
+	public static function consecutive(): string
 	{
 		$consecutive = '';
 
 		while (empty($consecutive)) {
-			$temp = date('y') . date('m') . date('d') . random_int(0, 99999);
+			// Temporary consecutive
+			$temp = date('ymd') . (string) Str::of(Str::random(6))->upper();
+
+			// Query if consecutive exists
 			$voucher = Voucher::where('number', $temp)->first(['id', 'number']);
 
+			// If the voucher is empty, the consecutive does not exist in the database
 			if (empty($voucher)) {
 				$consecutive = $temp;
 			}
