@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Helpers\Parameter;
 use Carbon\Carbon;
 class AccountController extends Controller
 {
@@ -15,8 +14,8 @@ class AccountController extends Controller
      */
     public function verify($email = '', $token = '')
     {
-        $email = Parameter::clean($email);
-        $token = Parameter::clean($token);
+        $email = param_clean($email);
+        $token = param_clean($token);
 
         $user = User::where('email', $email)
             ->where('token', $token)

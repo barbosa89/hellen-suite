@@ -6,7 +6,7 @@ use App\Exports\CompaniesReport;
 use Carbon\Carbon;
 use App\Welkome\Company;
 use Illuminate\Http\Request;
-use App\Helpers\{Chart, Fields, Parameter, Response};
+use App\Helpers\{Chart, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
 use App\Welkome\IdentificationType;
 use App\Welkome\Voucher;
@@ -25,7 +25,7 @@ class CompanyController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('created_at', '>=', $month->toDateTimeString())
-            ->paginate(config('welkome.paginate'), Fields::get('companies'))
+            ->paginate(config('welkome.paginate'), fields_get('companies'))
             ->sortByDesc('created_at');
 
         return view('app.companies.index', compact('companies'));
@@ -84,7 +84,7 @@ class CompanyController extends Controller
             ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -108,7 +108,7 @@ class CompanyController extends Controller
             ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -148,7 +148,7 @@ class CompanyController extends Controller
     {
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('companies'));
+            ->first(fields_get('companies'));
 
         if (empty($company)) {
             abort(404);
@@ -157,7 +157,7 @@ class CompanyController extends Controller
         $company->load([
             'vouchers' => function ($query)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC');
             },
@@ -184,7 +184,7 @@ class CompanyController extends Controller
     {
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('companies'));
+            ->first(fields_get('companies'));
 
         if (empty($company)) {
             abort(404);
@@ -204,7 +204,7 @@ class CompanyController extends Controller
     {
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('companies'));
+            ->first(fields_get('companies'));
 
         if (empty($company)) {
             abort(404);
@@ -240,7 +240,7 @@ class CompanyController extends Controller
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($id))
             ->whereDoesntHave('vouchers')
-            ->first(Fields::get('companies'));
+            ->first(fields_get('companies'));
 
         if (empty($company)) {
             flash(trans('common.notRemovable'))->info();
@@ -267,14 +267,14 @@ class CompanyController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Parameter::clean($request->get('query'));
+        $query = param_clean($request->get('query'));
         $companies = Company::whereLike(['business_name', 'tin'], $query)
             ->where('user_id', id_parent())
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         if ($request->ajax()) {
-            $format = Parameter::clean($request->get('format'));
-            $template = 'app.companies.search.' . Parameter::clean($request->get('template'));
+            $format = param_clean($request->get('format'));
+            $template = 'app.companies.search.' . param_clean($request->get('template'));
             $response = new Response($format, $template, $companies);
 
             return response()->json([
@@ -293,7 +293,7 @@ class CompanyController extends Controller
     public function export()
     {
         $companies = Company::where('user_id', id_parent())
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         if ($companies->isEmpty()) {
             flash(trans('common.noRecords'))->info();

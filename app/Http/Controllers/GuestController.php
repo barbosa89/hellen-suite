@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use App\Helpers\{Chart, Customer, Fields, Parameter};
+use App\Helpers\{Chart, Customer};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
@@ -24,7 +24,7 @@ class GuestController extends Controller
         $guests = Guest::where('user_id', id_parent())
             ->orderBy('created_at', 'DESC')
             ->limit('200')
-            ->paginate(config('welkome.paginate'), Fields::get('guests'));
+            ->paginate(config('welkome.paginate'), fields_get('guests'));
 
         return view('app.guests.index', compact('guests'));
     }
@@ -101,15 +101,15 @@ class GuestController extends Controller
                         ->wherePivot('voucher_id', $id);
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
             ])->first(['id', 'number']);
 
@@ -208,7 +208,7 @@ class GuestController extends Controller
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('guests'));
+            ->first(fields_get('guests'));
 
         if (empty($guest)) {
             abort(404);
@@ -217,7 +217,7 @@ class GuestController extends Controller
         $guest->load([
             'vouchers' => function ($query)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC');
             },
@@ -248,7 +248,7 @@ class GuestController extends Controller
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('guests'));
+            ->first(fields_get('guests'));
 
         if (empty($guest)) {
             abort(404);
@@ -285,7 +285,7 @@ class GuestController extends Controller
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('guests'));
+            ->first(fields_get('guests'));
 
         if (empty($guest)) {
             abort(404);
@@ -335,7 +335,7 @@ class GuestController extends Controller
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
             ->whereDoesntHave('vouchers')
-            ->first(Fields::get('guests'));
+            ->first(fields_get('guests'));
 
         if (empty($guest)) {
             flash(trans('common.notRemovable'))->info();
@@ -362,7 +362,7 @@ class GuestController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Parameter::clean($request->get('query', null));
+        $query = param_clean($request->get('query', null));
 
         if (empty($query)) {
             return back();
@@ -370,7 +370,7 @@ class GuestController extends Controller
 
         $guests = Guest::where('user_id', id_parent())
             ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
-            ->get(Fields::get('guests'));
+            ->get(fields_get('guests'));
 
         return view('app.guests.search', compact('guests', 'query'));
     }
@@ -384,12 +384,12 @@ class GuestController extends Controller
     public function searchUnregistered(Request $request)
     {
         if ($request->ajax()) {
-            $query = Parameter::clean($request->get('query', null));
+            $query = param_clean($request->get('query', null));
 
             $guests = Guest::where('user_id', id_parent())
                 ->where('status', false)
                 ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
-                ->get(Fields::get('guests'));
+                ->get(fields_get('guests'));
 
             return response()->json([
                 'guests' => $this->renderToTemplate(
@@ -443,7 +443,7 @@ class GuestController extends Controller
                     $query->select(['id', 'name']);
                 }
             ])
-            ->get(Fields::get('guests'));
+            ->get(fields_get('guests'));
 
         if ($guests->isEmpty()) {
             flash(trans('common.noRecords'))->info();
@@ -468,16 +468,16 @@ class GuestController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->where('responsible_adult', false)
                         ->withPivot('main', 'active');
                 },
                 'guests.rooms' => function ($query) use ($voucher) {
-                    $query->select(Fields::parsed('rooms'))
+                    $query->select(fields_dotted('rooms'))
                         ->wherePivot('voucher_id', $voucher);
                 },
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'))
+                    $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
             ])->first(['id']);

@@ -1,7 +1,10 @@
 <?php
 
+use App\Helpers\Fields;
 use App\Helpers\Id;
+use App\Helpers\Notary;
 use App\Helpers\Parameter;
+use App\Welkome\Hotel;
 
 if (!function_exists('id_encode')) {
     function id_encode(string $id)
@@ -35,5 +38,37 @@ if (!function_exists('param_clean')) {
     function param_clean($value = null)
     {
         return Parameter::clean($value);
+    }
+}
+
+if (!function_exists('notary')) {
+    function notary(Hotel $hotel)
+    {
+        return Notary::create($hotel);
+    }
+}
+
+if (!function_exists('fields_get')) {
+    function fields_get(string $model)
+    {
+        return Fields::get($model);
+    }
+}
+
+if (!function_exists('fields_dotted')) {
+    function fields_dotted(string $model)
+    {
+        return Fields::parsed($model);
+    }
+}
+
+if (!function_exists('argument_array')) {
+    function argument_array($args)
+    {
+        if (is_array($args[0])) {
+            return $args[0];
+        }
+
+        return $args;
     }
 }

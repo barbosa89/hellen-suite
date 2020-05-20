@@ -6,8 +6,6 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Welkome\Prop;
 use App\Welkome\Hotel;
-use App\Helpers\Parameter;
-use App\Helpers\Fields;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
 use App\Helpers\Chart;
@@ -36,9 +34,9 @@ class PropController extends Controller
             ->with([
                 'props' => function ($query)
                 {
-                    $query->select(Fields::get('props'));
+                    $query->select(fields_get('props'));
                 }
-            ])->get(Fields::get('hotels'));
+            ])->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -90,7 +88,7 @@ class PropController extends Controller
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -100,7 +98,7 @@ class PropController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         return view('app.props.create', compact('hotels', 'companies'));
     }
@@ -172,7 +170,7 @@ class PropController extends Controller
     {
         $prop = User::find(id_parent(), ['id'])->props()
             ->where('id', id_decode($id))
-            ->first(Fields::get('props'));
+            ->first(fields_get('props'));
 
         if (empty($prop)) {
             abort(404);
@@ -185,7 +183,7 @@ class PropController extends Controller
             },
             'vouchers' => function ($query)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity');
@@ -214,7 +212,7 @@ class PropController extends Controller
                 {
                     $query->select(['id', 'business_name']);
                 }
-            ])->first(Fields::get('props'));
+            ])->first(fields_get('props'));
 
         if (empty($prop)) {
             abort(404);
@@ -293,12 +291,12 @@ class PropController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Parameter::clean($request->get('query', null));
+            $query = param_clean($request->get('query', null));
 
             $props = Prop::where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())
                 ->whereLike('description', $query)
-                ->get(Fields::get('props'));
+                ->get(fields_get('props'));
 
             $props = $props->map(function ($prop)
             {
@@ -326,7 +324,7 @@ class PropController extends Controller
     {
         $prop = User::find(id_parent(), ['id'])->props()
             ->where('id', id_decode($id))
-            ->first(Fields::get('props'));
+            ->first(fields_get('props'));
 
         if (empty($prop)) {
             abort(404);
@@ -353,7 +351,7 @@ class PropController extends Controller
     {
         $prop = User::find(id_parent(), ['id'])->props()
             ->where('id', id_decode($id))
-            ->first(Fields::get('props'));
+            ->first(fields_get('props'));
 
         if (empty($prop)) {
             abort(404);
@@ -366,14 +364,14 @@ class PropController extends Controller
             },
             'vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [$request->start, $request->end])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
             'vouchers.company' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('companies'));
+                $query->select(fields_dotted('companies'));
             },
         ]);
 
@@ -394,7 +392,7 @@ class PropController extends Controller
     public function showReportForm()
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -422,22 +420,22 @@ class PropController extends Controller
 
         $query->with([
             'props' => function($query) {
-                $query->select(Fields::get('props'));
+                $query->select(fields_get('props'));
             },
             'props.vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [$request->start, $request->end])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
             'props.vouchers.company' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('companies'));
+                $query->select(fields_dotted('companies'));
             }
         ]);
 
-        $hotels = $query->get(Fields::get('hotels'));
+        $hotels = $query->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -457,7 +455,7 @@ class PropController extends Controller
     // {
     //     $hotels = Hotel::where('user_id', id_parent(), ['id'])
     //         ->where('status', true)
-    //         ->get(Fields::get('hotels'));
+    //         ->get(fields_get('hotels'));
 
     //     if($hotels->isEmpty()) {
     //         flash(trans('hotels.no.registered'))->info();
@@ -492,18 +490,18 @@ class PropController extends Controller
     //         ->with([
     //             'props' => function ($query)
     //             {
-    //                 $query->select(Fields::get('props'));
+    //                 $query->select(fields_get('props'));
     //             }
-    //         ])->first(Fields::get('hotels'));
+    //         ])->first(fields_get('hotels'));
 
     //     $toHotel = Hotel::where('user_id', id_parent())
     //         ->where('id', id_decode($to))
     //         ->with([
     //             'props' => function ($query)
     //             {
-    //                 $query->select(Fields::get('props'));
+    //                 $query->select(fields_get('props'));
     //             }
-    //         ])->first(Fields::get('hotels'));
+    //         ])->first(fields_get('hotels'));
     //     $diff = $fromHotel->props->pluck('description');
     //     dd($fromHotel, $toHotel, $diff);
     // }
@@ -518,7 +516,7 @@ class PropController extends Controller
     // {
     //     // $props = Prop::where('user_id', id_parent())
     //     //     ->where('hotel_id', id_decode($request->from))
-    //     //     ->get(Fields::get('props'));
+    //     //     ->get(fields_get('props'));
 
     //     // $replicas = collect();
     //     // $props->each(function ($prop) use (&$replicas, $request)

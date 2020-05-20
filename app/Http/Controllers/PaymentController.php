@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Customer;
-use App\Helpers\Fields;
 use App\Http\Requests\StorePayment;
 use App\Welkome\Voucher;
 use App\Welkome\Payment;
@@ -23,7 +22,7 @@ class PaymentController extends Controller
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', id_decode($voucherId))
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -31,18 +30,18 @@ class PaymentController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::get('guests'))
+                $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -62,7 +61,7 @@ class PaymentController extends Controller
             ->where('id', id_decode($voucherId))
             ->where('status', true)
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -76,18 +75,18 @@ class PaymentController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::get('guests'))
+                $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -115,7 +114,7 @@ class PaymentController extends Controller
             ->where('id', id_decode($voucherId))
             ->where('status', true)
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -124,7 +123,7 @@ class PaymentController extends Controller
         $voucher->load([
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             },
             'hotel' => function ($query)
             {
@@ -222,7 +221,7 @@ class PaymentController extends Controller
             ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -236,18 +235,18 @@ class PaymentController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::get('guests'))
+                $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -272,7 +271,7 @@ class PaymentController extends Controller
             ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -287,7 +286,7 @@ class PaymentController extends Controller
         $voucher->load([
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -355,7 +354,7 @@ class PaymentController extends Controller
                     $voucher->load([
                         'payments' => function ($query)
                         {
-                            $query->select(Fields::get('payments'));
+                            $query->select(fields_get('payments'));
                         }
                     ]);
 
@@ -399,7 +398,7 @@ class PaymentController extends Controller
             ->where('id', id_decode($voucher))
             ->where('status', true)
             ->where('type', '!=', 'loss')
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -414,7 +413,7 @@ class PaymentController extends Controller
         $voucher->load([
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -451,7 +450,7 @@ class PaymentController extends Controller
                     $voucher->load([
                         'payments' => function ($query)
                         {
-                            $query->select(Fields::get('payments'));
+                            $query->select(fields_get('payments'));
                         }
                     ]);
 

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exports\VehiclesReport;
-use App\Helpers\Fields;
-use App\Helpers\Parameter;
 use App\Http\Requests\StoreVehicle;
 use App\Http\Requests\StoreVehicleForVoucher;
 use App\Http\Requests\UpdateVehicle;
@@ -32,7 +30,7 @@ class VehicleController extends Controller
                 }
             ])->orderBy('created_at', 'DESC')
             ->limit(100)
-            ->paginate(config('welkome.paginate'), Fields::get('vehicles'));
+            ->paginate(config('welkome.paginate'), fields_get('vehicles'));
 
         return view('app.vehicles.index', compact('vehicles'));
     }
@@ -88,10 +86,10 @@ class VehicleController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
+                    $query->select(fields_get('guests'))
                         ->withPivot('main');
                 }
-            ])->first(Fields::get('vouchers'));
+            ])->first(fields_get('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -116,14 +114,14 @@ class VehicleController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::get('guests'))
+                    $query->select(fields_get('guests'))
                         ->withPivot('main');
                 },
                 'guests.vehicles' => function ($query) use ($id) {
-                    $query->select(Fields::parsed('vehicles'))
+                    $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
                 }
-            ])->first(Fields::get('vouchers'));
+            ])->first(fields_get('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -189,7 +187,7 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('vehicles'));
+            ->first(fields_get('vehicles'));
 
         if (empty($vehicle)) {
             abort(404);
@@ -219,7 +217,7 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(Fields::get('vehicles'));
+            ->first(fields_get('vehicles'));
 
         if (empty($vehicle)) {
             abort(404);
@@ -252,7 +250,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($id))
             ->whereDoesntHave('guests')
-            ->first(Fields::get('vehicles'));
+            ->first(fields_get('vehicles'));
 
         if (empty($vehicle)) {
             flash(trans('common.notRemovable'))->info();
@@ -279,7 +277,7 @@ class VehicleController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Parameter::clean($request->get('query', null));
+        $query = param_clean($request->get('query', null));
 
         if (empty($query)) {
             abort(404);
@@ -287,7 +285,7 @@ class VehicleController extends Controller
 
         $vehicles = Vehicle::where('user_id', id_parent())
             ->whereLike(['registration', 'brand', 'color', 'type.type'], $query)
-            ->get(Fields::get('vehicles'));
+            ->get(fields_get('vehicles'));
 
         if ($request->ajax()) {
             $vehicles = $vehicles->map(function ($vehicle)
@@ -323,7 +321,7 @@ class VehicleController extends Controller
                 {
                     $query->select(['id', 'name', 'last_name']);
                 }
-            ])->get(Fields::get('vehicles'));
+            ])->get(fields_get('vehicles'));
 
         if ($vehicles->isEmpty()) {
             flash(trans('common.noRecords'))->info();

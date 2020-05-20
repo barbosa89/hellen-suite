@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exports\ShiftReport;
 use App\Welkome\Shift;
-use App\Helpers\Fields;
 use App\Welkome\Note;
 use App\Welkome\Room;
 use Illuminate\Support\Collection;
@@ -27,9 +26,9 @@ class ShiftController extends Controller
             })->with([
                 'hotel' => function ($query)
                 {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 }
-            ])->get(Fields::get('shifts'));
+            ])->get(fields_get('shifts'));
 
         return view('app.shifts.index', compact('shifts'));
     }
@@ -50,15 +49,15 @@ class ShiftController extends Controller
             ->with([
                 'vouchers' => function($query)
                 {
-                    $query->select(Fields::get('vouchers'));
+                    $query->select(fields_get('vouchers'));
                 },
                 'vouchers.payments' => function($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 },
                 'hotel' => function($query)
                 {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 },
                 'notes' => function ($query)
                 {
@@ -69,7 +68,7 @@ class ShiftController extends Controller
                 {
                     $query->select(['id', 'slug']);
                 }
-            ])->first(Fields::get('shifts'));
+            ])->first(fields_get('shifts'));
 
         $cash = $this->filterByPaymentMethod($shift, 'cash');
         $transfer = $this->filterByPaymentMethod($shift, 'transfer');
@@ -128,15 +127,15 @@ class ShiftController extends Controller
             ->with([
                 'vouchers' => function($query)
                 {
-                    $query->select(Fields::get('vouchers'));
+                    $query->select(fields_get('vouchers'));
                 },
                 'vouchers.payments' => function($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 },
                 'hotel' => function($query)
                 {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 },
                 'notes' => function ($query)
                 {
@@ -147,7 +146,7 @@ class ShiftController extends Controller
                 {
                     $query->select(['id', 'slug']);
                 }
-            ])->first(Fields::get('shifts'));
+            ])->first(fields_get('shifts'));
 
         $rooms = Room::where('user_id', id_parent())
                     ->where('hotel_id', $shift->hotel->id)
@@ -177,7 +176,7 @@ class ShiftController extends Controller
             ->where('id', id_decode($id))
             ->where('open', true)
             ->where('closed_at', null)
-            ->first(Fields::get('shifts'));
+            ->first(fields_get('shifts'));
 
         abort_if(empty($shift), 404);
 

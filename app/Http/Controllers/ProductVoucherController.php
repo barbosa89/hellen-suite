@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Fields;
 use App\Helpers\Random;
 use App\User;
 use App\Welkome\Company;
@@ -33,7 +32,7 @@ class ProductVoucherController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         return view('app.products.vouchers.create', compact('hotels', 'companies'));
     }
@@ -49,7 +48,7 @@ class ProductVoucherController extends Controller
             $user = auth()->user()->load([
                 'headquarters' => function ($query)
                 {
-                    $query->select(Fields::parsed('hotels'))
+                    $query->select(fields_dotted('hotels'))
                         ->where('status', true);
                 }
             ]);
@@ -60,7 +59,7 @@ class ProductVoucherController extends Controller
         $hotels = User::find(id_parent(), ['id'])
             ->hotels()
             ->where('status', true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         return $hotels;
     }
@@ -182,7 +181,7 @@ class ProductVoucherController extends Controller
             ->where('hotel_id', id_decode($request->hotel))
             ->whereIn('id', id_decode_recursive($ids))
             ->where('status', true)
-            ->get(Fields::get('products'));
+            ->get(fields_get('products'));
 
         return $products;
     }

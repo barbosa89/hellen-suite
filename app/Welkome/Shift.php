@@ -63,7 +63,7 @@ class Shift extends Model
         $shift = static::where('open', true)
             ->where('hotel_id', $hotel_id)
             ->where('user_id', id_parent())
-            ->first(Fields::get('shifts'));
+            ->first(fields_get('shifts'));
 
         if (empty($shift)) {
             $shift = self::start($hotel_id);

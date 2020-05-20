@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Helpers\{Customer, Fields, Random};
+use App\Helpers\{Customer, Random};
 use App\Welkome\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
 use App\Http\Requests\{
     AddGuests,
@@ -19,6 +19,7 @@ use App\Http\Requests\{
     StoreVoucher,
     StoreRoute
 };
+use App\Repository\VoucherRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -29,6 +30,24 @@ use Illuminate\Support\Facades\Storage;
 // TODO: Agregar Hora hotelera
 class VoucherController extends Controller
 {
+
+    /**
+     * Voucher repository Eloquent based
+     *
+     * @var VoucherRepository
+     */
+    public VoucherRepository $voucher;
+
+    /**
+     * Construct function
+     *
+     * @param \App\Repository\VoucherRepository $voucher
+     */
+    public function __construct(VoucherRepository $voucher)
+    {
+        $this->voucher = $voucher;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,32 +55,12 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $query = Voucher::query();
-        $query->where('user_id', id_parent())
-            ->where('status', true)
-            ->where('type', 'lodging')
-            ->with([
-                'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
-                },
-                'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
-                        ->wherePivot('main', true)
-                        ->withPivot('main', 'active');
-                },
-                'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
-                },
-                'payments' => function ($query) {
-                    $query->select(Fields::get('payments'));
-                }
-            ]);
+        $vouchers = $this->voucher->query()
+            ->loader(['hotel', 'guests', 'company', 'payments'])
+            ->builder() // Get Eloquent Builder to apply scopes
+            ->lodging()
+            ->get(fields_dotted('vouchers'));
 
-        if (auth()->user()->hasRole('receptionist')) {
-            $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
-        }
-
-        $vouchers = $query->get(Fields::parsed('vouchers'));
         $vouchers = $vouchers->sortByDesc('created_at');
 
         return view('app.vouchers.index', compact('vouchers'));
@@ -81,9 +80,9 @@ class VoucherController extends Controller
                 {
                     $ids = explode(',', session('rooms'));
                     $query->whereIn('id', id_decode_recursive($ids))
-                        ->select(Fields::parsed('rooms'));
+                        ->select(fields_dotted('rooms'));
                 }
-            ])->first(Fields::get('hotels'));
+            ])->first(fields_get('hotels'));
 
 
         return view('app.vouchers.create', compact('hotel'));
@@ -116,7 +115,7 @@ class VoucherController extends Controller
                     ->whereIn('number', $numbers->pluck('number')->toArray())
                     ->where('hotel_id', id_decode($request->hotel))
                     ->where('status', '1')
-                    ->get(Fields::parsed('rooms'));
+                    ->get(fields_dotted('rooms'));
 
                 foreach ($rooms as $room) {
                     $selected = $numbers->where('number', $room->number)->first();
@@ -224,7 +223,7 @@ class VoucherController extends Controller
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -232,15 +231,15 @@ class VoucherController extends Controller
 
         $voucher->load([
             'guests' => function ($query) use ($id) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
             'guests.vehicles' => function ($query) use ($id) {
-                $query->select(Fields::parsed('vehicles'))
+                $query->select(fields_dotted('vehicles'))
                     ->wherePivot('voucher_id', $id);
             },
             'guests.rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
             'guests.parent' => function ($query) {
@@ -250,18 +249,18 @@ class VoucherController extends Controller
                 $query->select('id', 'type');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'products' => function ($query) {
-                $query->select(Fields::parsed('products'))
+                $query->select(fields_dotted('products'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'services' => function ($query) {
-                $query->select(Fields::parsed('services'))
+                $query->select(fields_dotted('services'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'additionals' => function ($query) {
@@ -269,10 +268,10 @@ class VoucherController extends Controller
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             },
             'props' => function ($query) {
-                $query->select(Fields::parsed('props'))
+                $query->select(fields_dotted('props'))
                     ->withPivot('quantity', 'value', 'created_at');
             },
         ]);
@@ -305,20 +304,20 @@ class VoucherController extends Controller
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
+                    $query->select(fields_dotted('rooms'));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'));
+                    $query->select(fields_dotted('guests'));
                 },
                 'products' => function ($query) {
-                    $query->select(Fields::parsed('products'))
+                    $query->select(fields_dotted('products'))
                         ->withPivot('id', 'quantity', 'value');
                 },
                 'props' => function ($query) {
-                    $query->select(Fields::parsed('props'))
+                    $query->select(fields_dotted('props'))
                         ->withPivot('quantity');
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -412,7 +411,7 @@ class VoucherController extends Controller
                 'hotel.business_name'
             ], $query)->paginate(
                 config('welkome.paginate'),
-                Fields::parsed('vouchers')
+                fields_dotted('vouchers')
             );
 
         if ($request->ajax()) {
@@ -436,20 +435,20 @@ class VoucherController extends Controller
             ->where('status', true)
             ->with([
                 'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -457,7 +456,7 @@ class VoucherController extends Controller
 
         $rooms = Room::where('hotel_id', $voucher->hotel->id)
             ->where('status', '1') // It is free
-            ->get(Fields::parsed('rooms'));
+            ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
             // flash('No hay habitaciones disponibles')->info();
@@ -491,15 +490,15 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->with([
                         'hotel' => function ($query) {
-                            $query->select(Fields::get('hotels'));
+                            $query->select(fields_get('hotels'));
                         }
-                    ])->first(Fields::parsed('vouchers'));
+                    ])->first(fields_dotted('vouchers'));
 
                 $room = Room::where('user_id', id_parent())
                     ->where('number', $request->number)
                     ->where('hotel_id', $voucher->hotel->id)
                     ->where('status', '1')
-                    ->first(Fields::parsed('rooms'));
+                    ->first(fields_dotted('rooms'));
 
                 $start = Carbon::createFromFormat('Y-m-d', $request->start);
 
@@ -585,7 +584,7 @@ class VoucherController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -593,26 +592,26 @@ class VoucherController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'rooms.guests' => function ($query) use ($id) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->wherePivot('voucher_id', $id);
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -629,7 +628,7 @@ class VoucherController extends Controller
 
         $rooms = Room::where('hotel_id', $voucher->hotel->id)
             ->where('status', '1') // It is free
-            ->get(Fields::parsed('rooms'));
+            ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
             flash('No hay habitaciones disponibles')->info();
@@ -662,7 +661,7 @@ class VoucherController extends Controller
                     ->where('id', $id)
                     ->where('open', true)
                     ->where('status', true)
-                    ->first(Fields::parsed('vouchers'));
+                    ->first(fields_dotted('vouchers'));
 
                 if (empty($voucher)) {
                     abort(404);
@@ -670,21 +669,21 @@ class VoucherController extends Controller
 
                 $voucher->load([
                     'hotel' => function ($query) {
-                        $query->select(Fields::get('hotels'));
+                        $query->select(fields_get('hotels'));
                     },
                     'guests' => function ($query) {
-                        $query->select(Fields::parsed('guests'))
+                        $query->select(fields_dotted('guests'))
                             ->withPivot('main', 'active');
                     },
                     'company' => function ($query) {
-                        $query->select(Fields::get('companies'));
+                        $query->select(fields_get('companies'));
                     },
                     'rooms' => function ($query) {
-                        $query->select(Fields::parsed('rooms'))
+                        $query->select(fields_dotted('rooms'))
                             ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                     },
                     'rooms.guests' => function ($query) use ($id) {
-                        $query->select(Fields::parsed('guests'))
+                        $query->select(fields_dotted('guests'))
                             ->wherePivot('voucher_id', $id);
                     }
                 ]);
@@ -700,7 +699,7 @@ class VoucherController extends Controller
                     $room = Room::where('hotel_id', $voucher->hotel->id)
                         ->where('number', $request->number)
                         ->where('status', '1') // It is free
-                        ->first(Fields::parsed('rooms'));
+                        ->first(fields_dotted('rooms'));
 
                     ### Rooms ###
 
@@ -798,7 +797,7 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->where('losses', false)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -806,18 +805,18 @@ class VoucherController extends Controller
 
         $voucher->load([
             'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'rooms.guests' => function ($query) use ($id) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->wherePivot('voucher_id', $id);
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             }
         ]);
@@ -909,17 +908,17 @@ class VoucherController extends Controller
                         ->wherePivot('voucher_id', id_decode($id));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -962,17 +961,17 @@ class VoucherController extends Controller
                         ->wherePivot('voucher_id', $id);
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         $guest = Guest::where('id', id_decode($guest))
             ->where('status', false) // Not in hotel
@@ -980,7 +979,7 @@ class VoucherController extends Controller
                 'identificationType' => function ($query) {
                     $query->select('id', 'type');
                 },
-            ])->first(Fields::parsed('guests'));
+            ])->first(fields_dotted('guests'));
 
         if (empty($voucher) or empty($guest)) {
             abort(404);
@@ -1020,19 +1019,11 @@ class VoucherController extends Controller
      */
     public function addGuests(AddGuests $request, $id)
     {
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', id_decode($id))
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select('id');
-                },
-                'rooms' => function ($query) {
-                    $query->select('id', 'number', 'status')
-                        ->withPivot('enabled');
-                }
-            ])->first(['id']);
+        $voucher = $this->voucher->query()
+            ->loader(['guests', 'rooms'])
+            ->builder()
+            ->open(id_decode($id))
+            ->first(['id']);
 
         $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
@@ -1040,7 +1031,7 @@ class VoucherController extends Controller
             // The guest to add to the voucher
             $guest = Guest::where('id', id_decode($request->guest))
                 ->where('status', false) // Not in hotel
-                ->first(Fields::parsed('guests'));
+                ->first(fields_dotted('guests'));
         }
 
         if (empty($voucher) or empty($guest)) {
@@ -1125,7 +1116,7 @@ class VoucherController extends Controller
                         ->wherePivot('voucher_id', id_decode($id));
                 },
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'))
+                    $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
             ])->first(['id']);
@@ -1206,7 +1197,7 @@ class VoucherController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1214,27 +1205,27 @@ class VoucherController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
             'guests.rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->wherePivot('enabled', true)
                     ->withPivot('enabled');
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             }
         ]);
 
@@ -1299,7 +1290,7 @@ class VoucherController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1307,21 +1298,21 @@ class VoucherController extends Controller
 
         $voucher->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'guests' => function ($query) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
             'guests.rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'rooms' => function ($query) use ($id) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(fields_dotted('rooms'));
             }
         ]);
 
@@ -1389,20 +1380,20 @@ class VoucherController extends Controller
                     $query->select('id', 'number');
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1412,7 +1403,7 @@ class VoucherController extends Controller
             ->where('hotel_id', $voucher->hotel->id)
             ->where('quantity', '>', 0)
             ->where('status', true)
-            ->get(Fields::get('products'));
+            ->get(fields_get('products'));
 
         if ($products->isEmpty()) {
             flash('No hay productos disponibles')->info();
@@ -1448,16 +1439,16 @@ class VoucherController extends Controller
                     ->where('reservation', false)
                     ->with([
                         'hotel' => function ($query) {
-                            $query->select(Fields::get('hotels'));
+                            $query->select(fields_get('hotels'));
                         }
-                    ])->first(Fields::parsed('vouchers'));
+                    ])->first(fields_dotted('vouchers'));
 
                 $product = Product::where('user_id', id_parent())
                     ->where('id', id_decode($request->product))
                     ->where('hotel_id', $voucher->hotel->id)
                     ->where('quantity', '>', 0)
                     ->where('status', true)
-                    ->first(Fields::get('products'));
+                    ->first(fields_get('products'));
 
                 $value = (int) $request->quantity * $product->price;
 
@@ -1512,11 +1503,11 @@ class VoucherController extends Controller
                     ->where('reservation', false)
                     ->with([
                         'products' => function ($query) use ($record) {
-                            $query->select(Fields::parsed('products'))
+                            $query->select(fields_dotted('products'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
                         }
-                    ])->first(Fields::parsed('vouchers'));
+                    ])->first(fields_dotted('vouchers'));
 
                 $product = $voucher->products->first();
 
@@ -1567,21 +1558,21 @@ class VoucherController extends Controller
             ->where('reservation', false)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
             ])
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1594,7 +1585,7 @@ class VoucherController extends Controller
             ->where('hotel_id', $voucher->hotel->id)
             ->whereStatus(true)
             ->where('is_dining_service', $serviceType)
-            ->get(Fields::get('services'));
+            ->get(fields_get('services'));
 
         if ($services->isEmpty()) {
             flash('No hay servicios disponibles')->info();
@@ -1629,15 +1620,15 @@ class VoucherController extends Controller
                     ->where('reservation', false)
                     ->with([
                         'hotel' => function ($query) {
-                            $query->select(Fields::get('hotels'));
+                            $query->select(fields_get('hotels'));
                         }
-                    ])->first(Fields::parsed('vouchers'));
+                    ])->first(fields_dotted('vouchers'));
 
                 $service = Service::where('user_id', id_parent())
                     ->where('id', id_decode($request->service))
                     ->where('hotel_id', $voucher->hotel->id)
                     ->whereStatus(true)
-                    ->first(Fields::get('services'));
+                    ->first(fields_get('services'));
 
                 $value = (int) $request->quantity * $service->price;
 
@@ -1689,11 +1680,11 @@ class VoucherController extends Controller
                     ->where('reservation', false)
                     ->with([
                         'services' => function ($query) use ($record) {
-                            $query->select(Fields::parsed('services'))
+                            $query->select(fields_dotted('services'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
                         }
-                    ])->first(Fields::parsed('vouchers'));
+                    ])->first(fields_dotted('vouchers'));
 
                 $service = $voucher->services->first();
 
@@ -1734,18 +1725,18 @@ class VoucherController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
             ])
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1773,7 +1764,7 @@ class VoucherController extends Controller
 
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($company))
-            ->first(Fields::get('companies'));
+            ->first(fields_get('companies'));
 
         if (empty($voucher) or empty($company)) {
             abort(404);
@@ -1812,7 +1803,7 @@ class VoucherController extends Controller
             ->with([
                 'company' => function ($query) use ($company)
                 {
-                    $query->select(Fields::get('companies'))
+                    $query->select(fields_get('companies'))
                         ->where('id', id_decode($company));
                 }
             ])->first(['id', 'company_id']);
@@ -1860,17 +1851,17 @@ class VoucherController extends Controller
                         ->wherePivot('voucher_id', id_decode($id));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -1914,18 +1905,18 @@ class VoucherController extends Controller
             ->where('reservation', false)
             ->with([
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'guests.vehicles' => function ($query) use ($id) {
-                    $query->select(Fields::parsed('vehicles'))
+                    $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($vehicleId))
-            ->first(Fields::get('vehicles'));
+            ->first(fields_get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
             abort(404);
@@ -1983,14 +1974,14 @@ class VoucherController extends Controller
             ->where('reservation', false)
             ->with([
                 'guests' => function ($query) use ($guest) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->where('id', id_decode($guest));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($vehicle))
-            ->first(Fields::get('vehicles'));
+            ->first(fields_get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
             abort(404);
@@ -2025,17 +2016,17 @@ class VoucherController extends Controller
                     $query->select('id');
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2064,7 +2055,7 @@ class VoucherController extends Controller
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
-                    ->first(Fields::parsed('vouchers'));
+                    ->first(fields_dotted('vouchers'));
 
                 // Create new additional for the voucher
                 $additional = new Additional();
@@ -2112,7 +2103,7 @@ class VoucherController extends Controller
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
-                    ->first(Fields::parsed('vouchers'));
+                    ->first(fields_dotted('vouchers'));
 
                 if (empty($voucher)) {
                     abort(404);
@@ -2167,17 +2158,17 @@ class VoucherController extends Controller
                     $query->select('id');
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2206,7 +2197,7 @@ class VoucherController extends Controller
                     ->where('open', true)
                     ->where('status', true)
                     ->where('reservation', false)
-                    ->first(Fields::parsed('vouchers'));
+                    ->first(fields_dotted('vouchers'));
 
                 // Create new additional for the voucher
                 $additional = new Additional();
@@ -2247,12 +2238,12 @@ class VoucherController extends Controller
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
+                    $query->select(fields_dotted('rooms'));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'));
+                    $query->select(fields_dotted('guests'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2310,7 +2301,7 @@ class VoucherController extends Controller
             ->where('id', id_decode($id))
             ->where('open', false)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2345,9 +2336,9 @@ class VoucherController extends Controller
             ->with([
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2406,16 +2397,16 @@ class VoucherController extends Controller
             ->where('losses', false)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'));
+                    $query->select(fields_dotted('rooms'));
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'));
+                    $query->select(fields_dotted('guests'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2491,17 +2482,17 @@ class VoucherController extends Controller
                     $query->select('id');
                 },
                 'guests' => function ($query) {
-                    $query->select(Fields::parsed('guests'))
+                    $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
                 'company' => function ($query) {
-                    $query->select(Fields::get('companies'));
+                    $query->select(fields_get('companies'));
                 },
                 'payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
-            ])->first(Fields::parsed('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2526,7 +2517,7 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2583,7 +2574,7 @@ class VoucherController extends Controller
         // Load vouchers with relateds
         $hotels->with([
                 'vouchers' => function ($query) {
-                    $query->select(Fields::parsed('vouchers'))
+                    $query->select(fields_dotted('vouchers'))
                         ->where('user_id', id_parent())
                         ->where('open', true)
                         ->where('status', true)
@@ -2597,7 +2588,7 @@ class VoucherController extends Controller
                 },
                 'vouchers.rooms' => function ($query)
                 {
-                    $query->select(Fields::parsed('rooms'))
+                    $query->select(fields_dotted('rooms'))
                         ->wherePivot('enabled', true)
                         ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
@@ -2606,12 +2597,12 @@ class VoucherController extends Controller
                 },
                 'vouchers.payments' => function ($query)
                 {
-                    $query->select(Fields::get('payments'));
+                    $query->select(fields_get('payments'));
                 }
             ]);
 
         // Get results
-        $hotels = $hotels->get(Fields::get('hotels'));
+        $hotels = $hotels->get(fields_get('hotels'));
 
         if ($hotels->isEmpty()) {
             flash(trans('vouchers.nothingToProcess'))->info();
@@ -2701,11 +2692,11 @@ class VoucherController extends Controller
                     ->with([
                         'rooms' => function ($query)
                         {
-                            $query->select(Fields::parsed('rooms'))
+                            $query->select(fields_dotted('rooms'))
                                 ->wherePivot('enabled', true)
                                 ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                         }
-                    ])->get(Fields::parsed('vouchers'));
+                    ])->get(fields_dotted('vouchers'));
 
                 if ($vouchers->isNotEmpty()) {
                     $vouchers->each(function ($voucher) use (&$processed)
@@ -2790,7 +2781,7 @@ class VoucherController extends Controller
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', $id)
             ->where('status', true)
-            ->first(Fields::parsed('vouchers'));
+            ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -2798,22 +2789,22 @@ class VoucherController extends Controller
 
         $voucher->load([
             'guests' => function ($query) {
-                $query->select(Fields::parsed('guests'))
+                $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
             'company' => function ($query) {
-                $query->select(Fields::get('companies'));
+                $query->select(fields_get('companies'));
             },
             'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'))
+                $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
             'products' => function ($query) {
-                $query->select(Fields::parsed('products'))
+                $query->select(fields_dotted('products'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'services' => function ($query) {
-                $query->select(Fields::parsed('services'))
+                $query->select(fields_dotted('services'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'additionals' => function ($query) {
@@ -2822,10 +2813,10 @@ class VoucherController extends Controller
             },
             'payments' => function ($query)
             {
-                $query->select(Fields::get('payments'));
+                $query->select(fields_get('payments'));
             },
             'props' => function ($query) {
-                $query->select(Fields::parsed('props'))
+                $query->select(fields_dotted('props'))
                     ->withPivot('quantity', 'value', 'created_at');
             },
         ]);

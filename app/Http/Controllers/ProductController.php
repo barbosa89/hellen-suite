@@ -6,8 +6,6 @@ use App\Exports\ProductReport;
 use App\Exports\ProductsReport;
 use App\Helpers\Chart;
 use App\User;
-use App\Helpers\Fields;
-use App\Helpers\Parameter;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
 use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
@@ -32,9 +30,9 @@ class ProductController extends Controller
             $query->where('id', id_parent());
         })->with([
             'products' => function ($query) {
-                $query->select(Fields::get('products'));
+                $query->select(fields_get('products'));
             }
-        ])->get(Fields::get('hotels'));
+        ])->get(fields_get('hotels'));
 
         if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -81,7 +79,7 @@ class ProductController extends Controller
         $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', id_parent());
         })->whereStatus(true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -91,7 +89,7 @@ class ProductController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         return view('app.products.create', compact('hotels', 'companies'));
     }
@@ -166,7 +164,7 @@ class ProductController extends Controller
         $product = User::find(id_parent(), ['id'])
             ->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -174,10 +172,10 @@ class ProductController extends Controller
 
         $product->load([
             'hotel' => function ($query) {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'vouchers' => function ($query) {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->whereYear('vouchers.created_at', \date('Y'))
                     ->withPivot('quantity', 'value');
@@ -204,9 +202,9 @@ class ProductController extends Controller
             ->where('id', id_decode($id))
             ->with([
                 'hotel' => function ($query) {
-                    $query->select(Fields::get('hotels'));
+                    $query->select(fields_get('hotels'));
                 }
-            ])->first(Fields::get('products'));
+            ])->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -227,7 +225,7 @@ class ProductController extends Controller
         $product = User::find(id_parent(), ['id'])
             ->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -261,7 +259,7 @@ class ProductController extends Controller
     {
         $product = User::find(id_parent(), ['id'])->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -329,7 +327,7 @@ class ProductController extends Controller
         $product = User::find(id_parent(), ['id'])
             ->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             return abort(404);
@@ -357,12 +355,12 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Parameter::clean($request->get('query', null));
+            $query = param_clean($request->get('query', null));
 
             $products = Product::where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())
                 ->whereLike(['description', 'brand', 'reference'], $query)
-                ->get(Fields::get('products'));
+                ->get(fields_get('products'));
 
             $products = $products->map(function ($product) {
                 $product->hotel_id = id_encode($product->hotel_id);
@@ -389,7 +387,7 @@ class ProductController extends Controller
     {
         $product = User::find(id_parent(), ['id'])->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -416,7 +414,7 @@ class ProductController extends Controller
     {
         $product = User::find(id_parent(), ['id'])->products()
             ->where('id', id_decode($id))
-            ->first(Fields::get('products'));
+            ->first(fields_get('products'));
 
         if (empty($product)) {
             abort(404);
@@ -429,14 +427,14 @@ class ProductController extends Controller
             },
             'vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [$request->start, $request->end])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
             'vouchers.company' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('companies'));
+                $query->select(fields_dotted('companies'));
             },
         ]);
 
@@ -457,7 +455,7 @@ class ProductController extends Controller
     public function showReportForm()
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -485,22 +483,22 @@ class ProductController extends Controller
 
         $query->with([
             'products' => function($query) {
-                $query->select(Fields::get('products'));
+                $query->select(fields_get('products'));
             },
             'products.vouchers' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [$request->start, $request->end])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
             'products.vouchers.company' => function ($query) use ($request)
             {
-                $query->select(Fields::parsed('companies'));
+                $query->select(fields_dotted('companies'));
             }
         ]);
 
-        $hotels = $query->get(Fields::get('hotels'));
+        $hotels = $query->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();

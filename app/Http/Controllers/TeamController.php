@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Welkome\Hotel;
-use App\Helpers\Fields;
 use App\Helpers\Permissions;
 use App\Helpers\Random;
 use App\Http\Requests\AssignTeamMember;
@@ -34,7 +33,7 @@ class TeamController extends Controller
                 {
                     $query->select(['id', 'name']);
                 }
-            ])->get(Fields::get('users'));
+            ])->get(fields_get('users'));
 
         return view('app.team.index', compact('team'));
     }
@@ -48,7 +47,7 @@ class TeamController extends Controller
     {
         $hotels = User::find(auth()->user()->id)->hotels()
             ->where('status', true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         // Check if is empty
         if ($hotels->isEmpty()) {
@@ -119,7 +118,7 @@ class TeamController extends Controller
     {
         $member = User::where('parent', auth()->user()->id)
             ->where('id', id_decode($id))
-            ->first(Fields::get('users'));
+            ->first(fields_get('users'));
 
         if (empty($member)) {
             abort(404);
@@ -135,11 +134,11 @@ class TeamController extends Controller
             },
             'shifts' => function ($query)
             {
-                $query->select(Fields::get('shifts'));
+                $query->select(fields_get('shifts'));
             },
             'shifts.hotel' => function ($query)
             {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             }
         ]);
 
@@ -183,7 +182,7 @@ class TeamController extends Controller
                 'roles' => function($query) {
                     $query->select(['id', 'name']);
                 }
-            ])->first(Fields::get('users'));
+            ])->first(fields_get('users'));
 
         $member->removeRole($member->roles()->first()->name);
 
@@ -212,7 +211,7 @@ class TeamController extends Controller
                 'headquarters' => function($query) {
                     $query->select(['id', 'business_name']);
                 }
-            ])->first(Fields::get('users'));
+            ])->first(fields_get('users'));
 
         // Check if the team member has an assigned headquarters,
         // if the team member has a headquarters, then all headquarters are queried
@@ -223,7 +222,7 @@ class TeamController extends Controller
             ->when($hasHeadquarters, function ($query) use ($member)
             {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
-            })->get(Fields::get('hotels'));
+            })->get(fields_get('hotels'));
 
         // Check if is empty
         if ($hotels->isEmpty() and $member->headquarters->isNotEmpty()) {
@@ -253,7 +252,7 @@ class TeamController extends Controller
     {
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
-            ->first(Fields::get('users'));
+            ->first(fields_get('users'));
 
         // Delete the old relationship
         $member->headquarters()->sync([]);
@@ -285,7 +284,7 @@ class TeamController extends Controller
                 'permissions' => function($query) {
                     $query->select(['id', 'name', 'guard_name']);
                 }
-            ])->first(Fields::get('users'));
+            ])->first(fields_get('users'));
 
         // All permissions from database
         $allPermissions = Permission::get(['id', 'name', 'guard_name']);
@@ -310,7 +309,7 @@ class TeamController extends Controller
         // Team member receiving permissions
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
-            ->first(Fields::get('users'));
+            ->first(fields_get('users'));
 
         // Checked permissions from database
         $permissions = Permission::whereIn('id', id_decode($request->permissions))

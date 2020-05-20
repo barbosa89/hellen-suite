@@ -8,7 +8,7 @@ use App\Welkome\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
-use App\Helpers\{Chart, Fields, Parameter};
+use App\Helpers\Chart;
 use App\Http\Requests\ChangeRoomStatus;
 use Illuminate\Support\Collection;
 
@@ -75,11 +75,11 @@ class RoomController extends Controller
             $user = auth()->user()->load([
                 'headquarters' => function ($query)
                 {
-                    $query->select(Fields::parsed('hotels'))
+                    $query->select(fields_dotted('hotels'))
                         ->where('status', true);
                 },
                 'headquarters.rooms' => function ($query) {
-                    $query->select(Fields::parsed('rooms'))
+                    $query->select(fields_dotted('rooms'))
                         ->orderBy('number');
                 }
             ]);
@@ -91,10 +91,10 @@ class RoomController extends Controller
             ->where('status', true)
             ->with([
                 'rooms' => function ($query) {
-                    $query->select(Fields::get('rooms'))
+                    $query->select(fields_get('rooms'))
                         ->orderBy('number');
                 }
-            ])->get(Fields::get('hotels'));
+            ])->get(fields_get('hotels'));
 
         return $hotels;
     }
@@ -108,7 +108,7 @@ class RoomController extends Controller
     {
         $hotels = User::find(id_parent(), ['id'])
             ->hotels()
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         // Check if is empty
         if ($hotels->isEmpty()) {
@@ -166,7 +166,7 @@ class RoomController extends Controller
     {
         $room = User::find(id_parent(), ['id'])->rooms()
             ->where('id', id_decode($id))
-            ->first(Fields::get('rooms'));
+            ->first(fields_get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -175,19 +175,19 @@ class RoomController extends Controller
         $room->load([
             'hotel' => function ($query)
             {
-                $query->select(Fields::get('hotels'));
+                $query->select(fields_get('hotels'));
             },
             'assets' => function ($query)
             {
-                $query->select(Fields::parsed('assets'));
+                $query->select(fields_dotted('assets'));
             },
             'products' => function ($query)
             {
-                $query->select(Fields::parsed('products'));
+                $query->select(fields_dotted('products'));
             },
             'vouchers' => function ($query)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('value');
@@ -216,7 +216,7 @@ class RoomController extends Controller
                 {
                     $query->select(['id', 'business_name']);
                 }
-            ])->first(Fields::get('rooms'));
+            ])->first(fields_get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -236,7 +236,7 @@ class RoomController extends Controller
     {
         $room = User::find(id_parent(), ['id'])->rooms()
             ->where('id', id_decode($id))
-            ->first(Fields::get('rooms'));
+            ->first(fields_get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -282,7 +282,7 @@ class RoomController extends Controller
     {
         $room = User::find(id_parent(), ['id'])->rooms()
             ->where('id', id_decode($id))
-            ->first(Fields::get('rooms'));
+            ->first(fields_get('rooms'));
 
         if (empty($room)) {
             abort(404);
@@ -327,7 +327,7 @@ class RoomController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Parameter::clean($request->get('query', null));
+        $query = param_clean($request->get('query', null));
 
         if (empty($query)) {
             return redirect()->route('rooms.index');
@@ -335,7 +335,7 @@ class RoomController extends Controller
 
         $rooms = User::find(id_parent(), ['id'])->rooms()
             ->whereLike(['number', 'description'], $query)
-            ->paginate(20, Fields::get('rooms'));
+            ->paginate(20, fields_get('rooms'));
 
         return view('app.rooms.admin.search', compact('rooms', 'query'));
     }
@@ -351,7 +351,7 @@ class RoomController extends Controller
         if ($request->ajax()) {
             $rooms = Room::where('user_id', id_parent())
                 ->where('hotel_id', id_decode($request->hotel))
-                ->get(Fields::get('rooms'));
+                ->get(fields_get('rooms'));
 
             $rooms = $rooms->map(function ($room, $index)
             {
@@ -382,7 +382,7 @@ class RoomController extends Controller
                 ->where('hotel_id', id_decode($request->hotel))
                 ->where('number', $request->number)
                 ->where('status', '1') // It is free
-                ->first(Fields::get('rooms'));
+                ->first(fields_get('rooms'));
 
             return response()->json([
                 'price' => $room->price,
@@ -405,7 +405,7 @@ class RoomController extends Controller
         $room = Room::where('user_id', id_parent())
             ->where('hotel_id', id_decode($request->hotel))
             ->where('id', id_decode($request->room))
-            ->first(Fields::get('rooms'));
+            ->first(fields_get('rooms'));
 
         if (empty($room)) {
             abort(404);

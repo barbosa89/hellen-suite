@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\Chart;
 use App\User;
 use App\Welkome\Hotel;
-use App\Helpers\Fields;
 use Illuminate\Http\Request;
 use App\Http\Requests\{StoreHotel, UpdateHotel};
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +19,7 @@ class HotelController extends Controller
     public function index()
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->paginate(config('welkome.paginate', Fields::get('hotels')))
+            ->paginate(config('welkome.paginate', fields_get('hotels')))
             ->sort();
 
         return view('app.hotels.index', compact('hotels'));
@@ -35,7 +34,7 @@ class HotelController extends Controller
     {
         $hotels = User::find(auth()->user()->id)->hotels()
             ->where('main_hotel', null)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         return view('app.hotels.create', compact('hotels'));
     }
@@ -91,7 +90,7 @@ class HotelController extends Controller
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
-            ->first(Fields::get('hotels'));
+            ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
             return abort(404);
@@ -104,7 +103,7 @@ class HotelController extends Controller
             },
             'vouchers' => function ($query)
             {
-                $query->select(Fields::parsed('vouchers'))
+                $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC');
             }
@@ -132,7 +131,7 @@ class HotelController extends Controller
                 {
                     $query->select(['id', 'business_name']);
                 }
-            ])->first(Fields::get('hotels'));
+            ])->first(fields_get('hotels'));
 
         if (empty($hotel)) {
             return abort(404);
@@ -152,7 +151,7 @@ class HotelController extends Controller
     {
         $hotel = User::find(auth()->user()->id, ['id'])->hotels()
             ->where('id', id_decode($id))
-            ->first(Fields::get('hotels'));
+            ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
             return abort(404);
@@ -203,7 +202,7 @@ class HotelController extends Controller
             ->whereDoesntHave('vouchers', function ($query)
             {
                 $query->select(['id', 'hotel_id']);
-            })->first(Fields::get('hotels'));
+            })->first(fields_get('hotels'));
 
         if (empty($hotel)) {
             flash('El hotel que intenta eliminar, tiene registros asociados como sedes y recibos, intente con deshabilitar')->error();
@@ -235,7 +234,7 @@ class HotelController extends Controller
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
-            ->first(Fields::get('hotels'));
+            ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
             return abort(404);
@@ -284,7 +283,7 @@ class HotelController extends Controller
     public function getAssigned()
     {
         // Using assigned scoped
-        $hotels = Hotel::assigned()->get(Fields::get('hotels'));
+        $hotels = Hotel::assigned()->get(fields_get('hotels'));
 
         return response()->json($hotels);
     }

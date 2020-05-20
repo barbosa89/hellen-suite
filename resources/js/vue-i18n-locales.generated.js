@@ -694,7 +694,15 @@ export default {
             "add": "Add note to shift",
             "author": "Author",
             "content": "Content",
-            "check": "Please check this note before sending, there are some errors"
+            "check": "Please check this note before sending, there are some errors",
+            "checkin": {
+                "of": "According to voucher No. {link}, check in of"
+            },
+            "checkout": {
+                "of": "According to voucher No. {link}, check out of"
+            },
+            "vehicle": "On voucher No. {link}, vehicle entry, registration",
+            "owner": "the owner is"
         },
         "companies": {
             "company": "Company",
@@ -1456,7 +1464,15 @@ export default {
             "add": "Agregar la nota al turno",
             "content": "Contenido",
             "author": "Autor(a)",
-            "check": "Por favor revise esta nota antes de enviar, hay algunos errores"
+            "check": "Por favor revise esta nota antes de enviar, hay algunos errores",
+            "checkin": {
+                "of": "Según el recibo No. {link}, registro de ingreso de"
+            },
+            "checkout": {
+                "of": "Según el recibo No. {link}, registro de salida de"
+            },
+            "vehicle": "En el recibo No. {link}, se registra vehículo con matrícula",
+            "owner": "el propietario(a) es"
         },
         "companies": {
             "title": "Empresas",

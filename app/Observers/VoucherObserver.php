@@ -40,10 +40,10 @@ class VoucherObserver
     {
         $voucher->load([
             'guests' => function ($query) {
-                $query->select(Fields::get('guests'));
+                $query->select(fields_get('guests'));
             },
             'rooms' => function ($query) {
-                $query->select(Fields::parsed('rooms'));
+                $query->select(fields_dotted('rooms'));
             },
         ]);
 

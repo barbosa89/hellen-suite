@@ -88,4 +88,34 @@ class Voucher extends Model
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
+
+    /**
+     * Scope a query to get lodging vouchers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLodging($query)
+    {
+        return $query->where('type', 'lodging')
+            ->when(auth()->user()->hasRole('receptionist'), function ($query)
+            {
+                $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
+            });
+    }
+
+    /**
+     * Scope a query to get lodging vouchers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOpen($query, int $id)
+    {
+        return $query->where('user_id', id_parent())
+            ->where('id', $id)
+            ->where('open', true)
+            ->where('status', true);
+    }
 }

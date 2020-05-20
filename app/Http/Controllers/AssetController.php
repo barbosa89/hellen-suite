@@ -7,8 +7,6 @@ use App\User;
 use App\Welkome\Room;
 use App\Welkome\Asset;
 use App\Welkome\Hotel;
-use App\Helpers\Fields;
-use App\Helpers\Parameter;
 use Illuminate\Http\Request;
 use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
 use App\Welkome\Maintenance;
@@ -32,9 +30,9 @@ class AssetController extends Controller
         })->with([
             'assets' => function ($query)
             {
-                $query->select(Fields::get('assets'));
+                $query->select(fields_get('assets'));
             }
-        ])->get(Fields::get('hotels'));
+        ])->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -88,9 +86,9 @@ class AssetController extends Controller
         ->with([
             'rooms' => function ($query)
             {
-                $query->select(Fields::get('rooms'));
+                $query->select(fields_get('rooms'));
             }
-        ])->get(Fields::get('hotels'));
+        ])->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -168,7 +166,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -183,7 +181,7 @@ class AssetController extends Controller
             },
             'maintenances' => function ($query)
             {
-                $query->select(Fields::get('maintenances'))
+                $query->select(fields_get('maintenances'))
                     ->orderBy('date', 'DESC');
             }
         ]);
@@ -201,7 +199,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -222,7 +220,7 @@ class AssetController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->where('id', '!=', $asset->hotel->id)
             ->where('status', true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         return view('app.assets.edit', compact('asset', 'hotels'));
     }
@@ -239,7 +237,7 @@ class AssetController extends Controller
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
             ->where('hotel_id', id_decode($request->hotel))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -318,12 +316,12 @@ class AssetController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = Parameter::clean($request->get('query', null));
+            $query = param_clean($request->get('query', null));
 
             $assets = Asset::where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())
                 ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
-                ->get(Fields::get('assets'));
+                ->get(fields_get('assets'));
 
             $assets = $assets->map(function ($asset)
             {
@@ -349,7 +347,7 @@ class AssetController extends Controller
     public function showReportForm()
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -372,25 +370,25 @@ class AssetController extends Controller
             $hotels = Hotel::where('user_id', id_parent())
                 ->with([
                     'assets' => function($query) {
-                        $query->select(Fields::get('assets'));
+                        $query->select(fields_get('assets'));
                     },
                     'assets.room' => function ($query)
                     {
-                        $query->select(Fields::get('rooms'));
+                        $query->select(fields_get('rooms'));
                     }
-                ])->get(Fields::get('hotels'));
+                ])->get(fields_get('hotels'));
         } else {
             $hotels = Hotel::where('user_id', id_parent())
                 ->where('id', id_decode($request->hotel))
                 ->with([
                     'assets' => function($query) {
-                        $query->select(Fields::get('assets'));
+                        $query->select(fields_get('assets'));
                     },
                     'assets.room' => function ($query)
                     {
-                        $query->select(Fields::get('rooms'));
+                        $query->select(fields_get('rooms'));
                     }
-                ])->get(Fields::get('hotels'));
+                ])->get(fields_get('hotels'));
         }
 
         if($hotels->isEmpty()) {
@@ -411,7 +409,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -439,7 +437,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -482,7 +480,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -497,7 +495,7 @@ class AssetController extends Controller
             },
             'maintenances' => function ($query) use ($id, $maintenance)
             {
-                $query->select(Fields::get('maintenances'))
+                $query->select(fields_get('maintenances'))
                     ->where('maintainable_id', id_decode($id))
                     ->where('id', id_decode($maintenance));
             }
@@ -516,7 +514,7 @@ class AssetController extends Controller
     {
         $asset = User::find(id_parent(), ['id'])->assets()
             ->where('id', id_decode($id))
-            ->first(Fields::get('assets'));
+            ->first(fields_get('assets'));
 
         if (empty($asset)) {
             abort(404);
@@ -525,7 +523,7 @@ class AssetController extends Controller
         $asset->load([
             'maintenances' => function ($query) use ($id, $maintenance)
             {
-                $query->select(Fields::get('maintenances'))
+                $query->select(fields_get('maintenances'))
                     ->where('maintainable_id', id_decode($id))
                     ->where('id', id_decode($maintenance));
             }
@@ -572,7 +570,7 @@ class AssetController extends Controller
         $maintenance = Maintenance::where('user_id', id_parent())
             ->where('id', id_decode($maintenanceId))
             ->where('maintainable_id', id_decode($id))
-            ->first(Fields::get('maintenances'));
+            ->first(fields_get('maintenances'));
 
         if (empty($maintenance)) {
             abort(404);

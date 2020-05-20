@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Fields;
 use App\Helpers\Random;
 use App\Welkome\Company;
 use App\Welkome\Hotel;
@@ -24,7 +23,7 @@ class PropVoucherController extends Controller
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
-            ->get(Fields::get('hotels'));
+            ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
@@ -38,7 +37,7 @@ class PropVoucherController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('is_supplier', true)
-            ->get(Fields::get('companies'));
+            ->get(fields_get('companies'));
 
         $hotels = $this->encodeIds($hotels);
 
@@ -162,7 +161,7 @@ class PropVoucherController extends Controller
             ->where('hotel_id', id_decode($request->hotel))
             ->whereIn('id', id_decode_recursive($ids))
             ->where('status', true)
-            ->get(Fields::get('props'));
+            ->get(fields_get('props'));
 
         return $props;
     }
