@@ -1,6 +1,6 @@
 <template>
     <select name="hotel" id="hotel" class="form-control" @change="selectedHotel" v-model="hotel">
-        <option :value="''" disabled selected>{{ $t('common.chooseOption') }}</option>
+        <option :value="''" disabled selected>{{ $t('hotels.choose') }}</option>
         <option v-for="(hotel, index) in hotels" :key="index" :value="hotel.hash">
             {{ hotel.business_name }}
         </option>

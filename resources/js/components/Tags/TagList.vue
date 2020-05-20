@@ -1,12 +1,10 @@
 <template>
     <div>
-        <div class="row my-2">
+        <div class="row mt-2 mb-4">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                <label for="hotel">Hotel:</label>
                 <hotel-select @hotel="hotel = $event"></hotel-select>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                <label for="hotel">{{ $t('common.search') }}:</label>
                 <search-input @results="showResults" @reset="reset" :hotel="'not-required'" :url="'/tags/search'"></search-input>
             </div>
         </div>

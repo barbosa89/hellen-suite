@@ -1047,10 +1047,10 @@ class VoucherController extends Controller
             abort(404);
         }
 
-        // Selected room
+        // Selected room from attached rooms to voucher
         $room = $voucher->rooms->where('id', id_decode($request->room))->first();
 
-        // Check if selected room is disabled in the current voucher
+        // Check if selected room is disabled in the voucher
         if ($room->pivot->enabled == false) {
             flash(trans('vouchers.delivered.room'))->info();
 
@@ -1059,13 +1059,13 @@ class VoucherController extends Controller
             ]);
         }
 
-        // Check if the guest to add exists in the current guest
+        // Check if the guest to add exists in the voucher
         if ($voucher->guests->where('id', $guest->id)->count() == 0) {
-            $responsible = id_decode($request->get('responsible_adult', null));
+            $responsible = $request->get('responsible_adult', null);
 
             // Assign a responsible adult
             if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
-                $guest->responsible_adult = $responsible;
+                $guest->responsible_adult = id_decode($responsible);
             }
 
             $voucher->guests()->attach($guest->id, [
@@ -1073,7 +1073,7 @@ class VoucherController extends Controller
                 'active' => true
             ]);
         } else {
-            // Refresh curren relationship voucher - guest
+            // Refresh relationship voucher - guest
             $voucher->guests()->updateExistingPivot(
                 $guest,
                 ['active' => true]

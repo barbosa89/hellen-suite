@@ -10,19 +10,8 @@
         @include('partials.page-header', [
             'title' => 'Tags',
             'url' => route('tags.index'),
-            'options' => [
-                [
-                    'option' => trans('common.back'),
-                    'url' => route('tags.index'),
-                ],
-            ]
+            'options' => []
         ])
-
-        <div class="row">
-            <div class="col">
-                <h2>Tags</h2>
-            </div>
-        </div>
 
         @if ($tags->isNotEmpty())
             <tag-list :tags=@json($tags)></tag-list>

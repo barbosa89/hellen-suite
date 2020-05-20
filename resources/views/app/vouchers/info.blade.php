@@ -17,7 +17,6 @@
                         </span>
                     </div>
                     <div class="col-md-12">
-                        <span class="d-block font-weight-bold">@common('common.tin')</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}
@@ -136,7 +135,6 @@
                         </span>
                     </div>
                     <div class="col-md-12 dont-break-out">
-                        <span class="d-block font-weight-bold">@lang('common.tin')</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->tin }}

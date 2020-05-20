@@ -15,7 +15,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    abort(403);
+    // abort(403);
+    $checkin = 'Checking of GUEST, room no. NUMBER, of voucher NUMBER';
+    $checkout = 'Checkout of GUEST, room no. NUMBER, of voucher NUMBER';
+    // checking(Voucher $voucher)->guest(Guest $guest)->room(Room $room)->withCustomer()->write();
+    // checkout(Voucher $voucher)->guest(Guest $guest)->room(Room $room)->withCustomer()->withVehicle()->write();
+
+    // Ingresa vehículo con matrícula PLACA, tipo TIPO, propietario GUEST, voucher NUMBER
+    // vehicle(Vehicle $vehicle)->entry()->owner(Guest $guest)->write()
+
+    // Salida del vehículo con matrícula PLACA, tipo TIPO, propietario GUEST, voucher NUMBER
+    // vehicle(Vehicle $vehicle)->departure()->owner(Guest $guest)->write()
+
+    // company(Voucher $voucher)->
+
+    dd($checkin, $checkout);
 });
 
 Route::get('/', function () {
