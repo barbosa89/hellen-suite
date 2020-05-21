@@ -11,17 +11,35 @@
 
         <div class="row my-2">
             <div class="col">
-                <a href="#" v-for="(tag, index) in list" :key="index" @click.prevent="go(tag)">
+                <a href="#" v-for="(tag, index) in list" :key="index" @click.prevent="go(tag)" @contextmenu.prevent="$refs.menu.open($event, { tag })">
                     <h3 class="btn btn-outline-info m-1">
-                        {{ tag.slug }}
+                        {{ tag.description }}
                     </h3>
                 </a>
             </div>
         </div>
+
+
+        <vue-context ref="menu">
+            <template slot-scope="child">
+                <li>
+                    <a href="#" @click.prevent="edit($event.target.innerText, child.data)">
+                        {{ $t('common.edit') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="destroy($event.target.innerText, child.data)">
+                        {{ $t('common.delete.item') }}
+                    </a>
+                </li>
+            </template>
+        </vue-context>
     </div>
 </template>
 
 <script>
+    import { VueContext } from 'vue-context';
+
     export default {
         props: {
             tags: Array
@@ -31,6 +49,9 @@
                 hotel: '',
                 list: this.tags
             }
+        },
+        components: {
+            VueContext
         },
         methods: {
             go(tag) {
@@ -49,6 +70,29 @@
             },
             reset() {
                 this.list = this.tags
+            },
+            edit(text, data) {
+                window.location.href = `/tags/${data.tag.hash}/edit`
+            },
+            destroy(text, data) {
+                axios.delete(`tags/${data.tag.hash}`)
+                    .then(response => {
+                        if (response.data.status) {
+                            this.list = _.filter(this.list, tag => {
+                                return tag.hash != data.tag.hash
+                            })
+
+                            toastr.success(
+                                this.$root.$t('common.deletedSuccessfully'),
+                                this.$root.$t('common.great'),
+                            )
+                        }
+                    }).catch(error => {
+                        toastr.info(
+                            this.$root.$t('common.error'),
+                            'Error',
+                        )
+                    })
             }
         },
     }

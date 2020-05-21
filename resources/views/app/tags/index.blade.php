@@ -14,7 +14,7 @@
         ])
 
         @if ($tags->isNotEmpty())
-            <tag-list :tags=@json($tags)></tag-list>
+            <tag-list :tags='@json($tags)'></tag-list>
         @else
             @include('partials.no-records')
         @endif

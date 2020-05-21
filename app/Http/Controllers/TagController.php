@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTag;
+use App\Http\Requests\UpdateTag;
 use App\Repository\TagRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
@@ -68,7 +69,7 @@ class TagController extends Controller
     {
         $tag = $this->tag->get(id_decode($id));
 
-        // TODO: Cargar por repositorio
+        // TODO: How load from repository?
         $hotel = Hotel::whereUserId(id_parent())
             ->whereId(id_decode($hotel))
             ->first(['id', 'business_name']);
@@ -94,7 +95,9 @@ class TagController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $tag = $this->tag->get(id_decode($id));
+
+        return view('app.tags.edit', compact('tag'));
     }
 
     /**
@@ -104,9 +107,13 @@ class TagController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTag $request, string $id)
     {
-        //
+        $this->tag->update($request, id_decode($id));
+
+        flash(trans('common.updatedSuccessfully'))->success();
+
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -117,7 +124,21 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if ($this->tag->destroy(id_decode($id))) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => true
+                ]);
+            }
+
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return redirect()->route('tags.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('tags.index');
     }
 
     /**

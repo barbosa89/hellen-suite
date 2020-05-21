@@ -156,6 +156,10 @@ class AppServiceProvider extends ServiceProvider
 
             // Update method: Only must be exists one record in the table
             if (!empty($exception)) {
+                if ($results->isEmpty()) {
+                    return true;
+                }
+
                 if ($results->count() === 1 and $results->first()->id === $exception) {
                     return true;
                 }

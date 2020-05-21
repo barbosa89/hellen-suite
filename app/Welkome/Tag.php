@@ -28,7 +28,7 @@ class Tag extends Model
      *
      * @var array
      */
-    protected $hidden = ['id', 'pivot', 'description', 'user_id'];
+    protected $hidden = ['id', 'pivot', 'user_id'];
 
     /**
      * Return the sluggable configuration array for this model.

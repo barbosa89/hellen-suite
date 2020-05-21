@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNote extends FormRequest
+class UpdateTag extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,10 @@ class StoreNote extends FormRequest
      */
     public function rules()
     {
+        $id = id_decode($this->route('id'));
+
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id|open_shift',
-            'content' => 'required|string|max:2400',
-            'tags.*.hash' => 'required|string|hashed_exists:tags,id',
-            'add' => 'required|boolean'
+            'description' => 'required|string|max:30|unique_per_user:tags,description,' . $id,
         ];
     }
 }

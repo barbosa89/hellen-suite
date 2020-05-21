@@ -221,6 +221,7 @@ return [
         'vehicles',
         'props',
         'dining',
+        'tags'
     ],
 
     /*
@@ -271,7 +272,8 @@ return [
             'props'     => ['*', 'vouchers'],
             'dining'    => ['*', 'sale'],
             'payments'  => ['*', 'close'],
-            'transactions'  => ['sale', 'entry', 'loss', 'discard']
+            'transactions'  => ['sale', 'entry', 'loss', 'discard'],
+            'tags' => '*'
         ],
         'admin' => [
             'assets'    => '*',
@@ -287,7 +289,8 @@ return [
             'props'     => ['*', 'vouchers'],
             'dining'    => ['*', 'sale'],
             'payments'  => ['*', 'close'],
-            'transactions'  => ['sale', 'entry', 'loss', 'discard']
+            'transactions'  => ['sale', 'entry', 'loss', 'discard'],
+            'tags' => '*'
         ],
         'receptionist'  => [
             'companies'     => ['index', 'create', 'show', 'edit'],
@@ -300,7 +303,8 @@ return [
             'services'      => ['index'],
             'shifts'        => ['index', 'create', 'show', 'close'],
             'vehicles'      => ['index', 'create', 'show', 'edit'],
-            'transactions'  => ['sale', 'loss']
+            'transactions'  => ['sale', 'loss'],
+            'tags'          => ['index', 'show'],
         ],
         'accountant' => [
             'assets'        => ['index'],
