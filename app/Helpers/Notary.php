@@ -76,7 +76,7 @@ class Notary
     {
         $writer = new Writer();
         $writer->checkout($voucher)
-            ->guest($voucher->guests);
+            ->guests($voucher->guests);
 
         $this->createNote($writer->write(), 'check-out');
     }
@@ -105,7 +105,7 @@ class Notary
      * @param string $tag
      * @return void
      */
-    public function createNote(string $content, string $tag): void
+    private function createNote(string $content, string $tag): void
     {
         $note = new Note();
         $note->content = $content;
@@ -125,12 +125,16 @@ class Notary
      * @param string $tag
      * @return \App\Welkome\Tag
      */
-    public function getTag(string $tag): Tag
+    private function getTag(string $tag): Tag
     {
-        return Tag::firstOrCreate(
-            ['description' => $tag],
-            ['user_id' => id_parent()]
-        );
+        $tag = Tag::firstOrNew([
+            'description' => $tag
+        ]);
+
+        $tag->user()->associate(id_parent());
+        $tag->saveOrFail();
+
+        return $tag;
     }
 
     /**

@@ -120,8 +120,14 @@ class VehicleController extends Controller
                 'guests.vehicles' => function ($query) use ($id) {
                     $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
+                },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
                 }
-            ])->first(fields_get('vouchers'));
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -155,6 +161,13 @@ class VehicleController extends Controller
                     'voucher_id' => $voucher->id,
                     'created_at' => Carbon::now()->toDateTimeString()
                 ]);
+
+                // Create note
+                notary($voucher->hotel)->vehicleEntry(
+                    $voucher,
+                    $voucher->guests->where('id', id_decode($request->guest))->first(),
+                    $vehicle
+                );
 
                 flash(trans('common.createdSuccessfully'))->success();
 

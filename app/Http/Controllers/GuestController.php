@@ -9,7 +9,7 @@ use App\Helpers\{Chart, Customer};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
-use App\Welkome\{Country, Guest, IdentificationType, Voucher};
+use App\Welkome\{Country, Guest, IdentificationType, Room, Voucher};
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
@@ -111,7 +111,7 @@ class GuestController extends Controller
                 {
                     $query->select(fields_get('payments'));
                 }
-            ])->first(['id', 'number']);
+            ])->first(fields_get('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -123,7 +123,7 @@ class GuestController extends Controller
 
         $voucher->rooms->each(function ($room) use (&$guests)
         {
-            $guests += $room->guests()->count();
+            $guests += $room->guests->count();
         });
 
         $customer = Customer::get($voucher);
@@ -148,7 +148,10 @@ class GuestController extends Controller
                 'guests' => function ($query) {
                     $query->select('id');
                 },
-            ])->first(['id']);
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             abort(404);
@@ -171,10 +174,10 @@ class GuestController extends Controller
         $guest->country()->associate(id_decode($request->nationality));
 
         $isMinor = Customer::isMinor($request->get('birthdate', null));
-        $responsible = id_decode($request->get('responsible_adult', null));
+        $responsible = $request->get('responsible_adult', null);
 
         if ($isMinor and !empty($responsible)) {
-            $guest->responsible_adult = $responsible;
+            $guest->responsible_adult = id_decode($responsible);
         }
 
         if ($guest->save()) {
@@ -187,6 +190,13 @@ class GuestController extends Controller
             $guest->rooms()->attach(id_decode($request->room), [
                 'voucher_id' => $voucher->id
             ]);
+
+            // Create Note
+            notary($voucher->hotel)->checkinGuest(
+                $voucher,
+                $guest,
+                Room::find(id_decode($request->room))
+            );
 
             flash(trans('common.successful'))->success();
 
@@ -476,11 +486,17 @@ class GuestController extends Controller
                     $query->select(fields_dotted('rooms'))
                         ->wherePivot('voucher_id', $voucher);
                 },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
                 'rooms' => function ($query) {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
-            ])->first(['id']);
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                }
+            ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
             return abort(404);
@@ -527,6 +543,9 @@ class GuestController extends Controller
             }
 
             if ($guest->save()) {
+                // Create Note
+                notary($voucher->hotel)->checkoutGuest($voucher, $guest, $room);
+
                 // Check if is the main guest
                 if ($guest->pivot->main) {
                     // Update main guest in the voucher

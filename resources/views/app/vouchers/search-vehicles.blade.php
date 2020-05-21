@@ -107,7 +107,7 @@
             Swal.fire({
                 title: translator.trans('common.attention'),
                 text: translator.trans('common.confirmAction'),
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

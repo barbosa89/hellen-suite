@@ -1020,10 +1020,11 @@ class VoucherController extends Controller
     public function addGuests(AddGuests $request, $id)
     {
         $voucher = $this->voucher->query()
-            ->loader(['guests', 'rooms'])
+            ->loader(['guests', 'guests.identificationType', 'rooms', 'hotel'])
             ->builder()
             ->open(id_decode($id))
-            ->first(['id']);
+            ->first(fields_dotted('vouchers'));
+
 
         $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
@@ -1071,6 +1072,9 @@ class VoucherController extends Controller
             );
         }
 
+        // Create Note
+        notary($voucher->hotel)->checkinGuest($voucher, $guest, $room);
+
         // Remove old relationships guest - room
         $guest->rooms()
             ->wherePivot('voucher_id', $voucher->id)
@@ -1107,7 +1111,7 @@ class VoucherController extends Controller
             ->where('status', true)
             ->with([
                 'guests' => function ($query) {
-                    $query->select('id')
+                    $query->select(fields_get('guests'))
                         ->where('responsible_adult', false)
                         ->withPivot('active');
                 },
@@ -1115,11 +1119,17 @@ class VoucherController extends Controller
                     $query->select('id', 'number')
                         ->wherePivot('voucher_id', id_decode($id));
                 },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
                 'rooms' => function ($query) {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
-            ])->first(['id']);
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                }
+            ])->first(fields_dotted('vouchers'));
 
         // Check if the voucher only has a guest
         if ($voucher->guests->count() == 1 or $voucher->guests->where('pivot.active', true)->count() == 1) {
@@ -1152,6 +1162,9 @@ class VoucherController extends Controller
 
         // Detach the guest from voucher
         $voucher->guests()->detach($guest->id);
+
+        // Create Note
+        notary($voucher->hotel)->checkoutGuest($voucher, $guest, $guest->rooms->first());
 
         // Refresh the guests relationship to select the main guest
         $voucher->load([
@@ -1760,7 +1773,7 @@ class VoucherController extends Controller
             ->where('id', id_decode($id))
             ->where('open', true)
             ->where('status', true)
-            ->first(['id']);
+            ->first(fields_dotted('vouchers'));
 
         $company = Company::where('user_id', id_parent())
             ->where('id', id_decode($company))
@@ -1908,15 +1921,26 @@ class VoucherController extends Controller
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
                 'guests.vehicles' => function ($query) use ($id) {
                     $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
                 }
             ])->first(fields_dotted('vouchers'));
 
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($vehicleId))
-            ->first(fields_get('vehicles'));
+            ->with([
+                'type' => function ($query)
+                {
+                    $query->select(['id', 'type']);
+                }
+            ])->first(fields_get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
             abort(404);
@@ -1942,6 +1966,13 @@ class VoucherController extends Controller
                 'voucher_id' => $voucher->id,
                 'created_at' => Carbon::now()->toDateTimeString()
             ]);
+
+            // Create note
+            notary($voucher->hotel)->vehicleEntry(
+                $voucher,
+                $voucher->guests->where('id', id_decode($guestId))->first(),
+                $vehicle
+            );
 
             flash(trans('common.successful'))->success();
 
@@ -2242,7 +2273,17 @@ class VoucherController extends Controller
                 },
                 'guests' => function ($query) {
                     $query->select(fields_dotted('guests'));
-                }
+                },
+                'guests.rooms' => function ($query) use ($id) {
+                    $query->select(fields_dotted('rooms'))
+                        ->wherePivot('voucher_id', id_decode($id));
+                },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2269,6 +2310,8 @@ class VoucherController extends Controller
                                     ->where('created_at', '>', $voucher->created_at);
                             })->update(['status' => false]);
                     }
+
+                    notary($voucher->hotel)->checkoutGuests($voucher);
 
                     $status = true;
                 }
