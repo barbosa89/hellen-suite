@@ -17,7 +17,7 @@
         ]
     ])
 
-    <h3 class="text-center">Agregar habitaciones</h3>
+    <h3 class="text-center">@lang('rooms.title')</h3>
 
     <div class="row mt-4 mb-4">
         <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
@@ -25,7 +25,7 @@
             <h4>{{ $hotel->business_name }}</h4>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
-            <span>NIT:</span>
+            <span>@lang('common.tin'):</span>
             <h4>{{ $hotel->tin }}</h4>
         </div>
     </div>
@@ -51,7 +51,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
                         @if ($loop->first)
-                            <label for="number">Habitación:</label>
+                            <label for="number">@lang('rooms.room'):</label>
                         @endif
 
                         <div class="input-group mb-2">
@@ -74,7 +74,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
                         @if ($loop->first)
-                            <label for="room">Precio:</label>
+                            <label for="room">@lang('common.price'):</label>
                         @endif
 
                         <div class="input-group mb-2">
@@ -146,10 +146,10 @@
         @endforeach
 
         <div class="form-group{{ $errors->has('registry') ? ' has-error' : '' }} mt-4">
-            <label for="start">Registro:</label>
+            <label for="start">@lang('common.register'):</label>
             <select class="form-control selectpicker" title="Tipo de registro" name="registry" id="registry" required>
-                <option value="checkin">Registro de ingreso</option>
-                <option value="reservation">Reservación</option>
+                <option value="checkin">@lang('vouchers.checkin')</option>
+                <option value="reservation">@lang('common.reservation')</option>
             </select>
 
             @if ($errors->has('registry'))
@@ -161,7 +161,7 @@
 
         <div id="route" style="display:none;">
             <div class="form-group{{ $errors->has('origin') ? ' has-error' : '' }}">
-                <label for="origin">Origen:</label>
+                <label for="origin">@lang('vouchers.origin'):</label>
                 <input type="text" class="form-control" name="origin" id="origin" value="{{ old('origin') }}">
 
                 @if ($errors->has('origin'))
@@ -172,7 +172,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('destination') ? ' has-error' : '' }}">
-                <label for="destination">Destino:</label>
+                <label for="destination">@lang('vouchers.destination'):</label>
                 <input type="text" class="form-control" name="destination" id="destination" value="{{ old('destination') }}">
 
                 @if ($errors->has('destination'))
@@ -183,8 +183,12 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Agregar</button>
-        <a href="{{ route('rooms.index') }}" class="btn btn-link">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+            @lang('common.add')
+        </button>
+        <a href="{{ route('rooms.index') }}" class="btn btn-link">
+            @lang('common.cancel')
+        </a>
     </form>
 
     @include('partials.spacer', ['size' => 'md'])

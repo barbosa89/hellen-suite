@@ -12,14 +12,14 @@ use App\Http\Requests\{
     AddRooms,
     AddServices,
     ChangeGuestRoom,
-    Multiple,
     ChangeRoom,
+    CreateVoucher,
     VouchersProcessing,
     StoreAdditional,
     StoreVoucher,
     StoreRoute
 };
-use App\Repository\VoucherRepository;
+use App\Repositories\VoucherRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 // TODO: Agregar edad limite para ser adulto
-// TODO: Agregar Hora hotelera
 class VoucherController extends Controller
 {
 
@@ -37,11 +36,10 @@ class VoucherController extends Controller
      * @var VoucherRepository
      */
     public VoucherRepository $voucher;
-
     /**
      * Construct function
      *
-     * @param \App\Repository\VoucherRepository $voucher
+     * @param \App\Repositories\VoucherRepository $voucher
      */
     public function __construct(VoucherRepository $voucher)
     {
@@ -71,19 +69,20 @@ class VoucherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreateVoucher $request)
     {
+        $rooms = collect($request->rooms)->flatten();
+        $rooms = id_decode_recursive($rooms->toArray());
+
         $hotel = Hotel::where('user_id', id_parent())
-            ->where('id', id_decode(session('hotel')))
+            ->where('id', id_decode($request->hotel))
             ->with([
-                'rooms' => function ($query)
+                'rooms' => function ($query) use ($rooms)
                 {
-                    $ids = explode(',', session('rooms'));
-                    $query->whereIn('id', id_decode_recursive($ids))
+                    $query->whereIn('id', $rooms)
                         ->select(fields_dotted('rooms'));
                 }
             ])->first(fields_get('hotels'));
-
 
         return view('app.vouchers.create', compact('hotel'));
     }
@@ -96,93 +95,87 @@ class VoucherController extends Controller
      */
     public function store(StoreVoucher $request)
     {
-        $status = false;
         $numbers = collect($request->room);
-        $voucherId = null;
 
-        DB::transaction(function () use (&$status, &$voucherId, $request, $numbers) {
-            try {
-                $voucher = $this->newVoucher();
-                $voucher->origin = $request->get('origin', null);
-                $voucher->destination = $request->get('destination', null);
-                $voucher->hotel()->associate(id_decode($request->hotel));
+        DB::beginTransaction();
 
-                if ($request->registry == 'reservation') {
-                    $voucher->reservation = true;
-                }
+        try {
+            $voucher = $this->newVoucher();
+            $voucher->origin = $request->get('origin', null);
+            $voucher->destination = $request->get('destination', null);
+            $voucher->hotel()->associate(id_decode($request->hotel));
 
-                $rooms = Room::where('user_id', id_parent())
-                    ->whereIn('number', $numbers->pluck('number')->toArray())
-                    ->where('hotel_id', id_decode($request->hotel))
-                    ->where('status', '1')
-                    ->get(fields_dotted('rooms'));
-
-                foreach ($rooms as $room) {
-                    $selected = $numbers->where('number', $room->number)->first();
-                    $start = Carbon::createFromFormat('Y-m-d', $selected['start']);
-
-                    if (empty($selected['end'])) {
-                        $end = $start->copy()->addDay();
-                    } else {
-                        $end = Carbon::createFromFormat('Y-m-d', $selected['end']);
-                    }
-
-                    $quantity = $start->diffInDays($end);
-                    $discount = ($room->price - $selected['price']) * $quantity;
-                    $taxes = ($selected['price'] * $room->tax) * $quantity;
-                    $subvalue = $selected['price'] * $quantity;
-
-                    $attach[$room->id] = [
-                        'price' => $selected['price'],
-                        'quantity' => $quantity,
-                        'discount' => $discount,
-                        'subvalue' => $subvalue,
-                        'taxes' => $taxes,
-                        'value' => $subvalue + $taxes,
-                        'start' => $start->toDateString(),
-                        'end' => $end->toDateString(),
-                        'enabled' => true
-                    ];
-                }
-
-                foreach ($attach as $key => $item) {
-                    $voucher->discount += $item['discount'];
-                    $voucher->subvalue += $item['subvalue'];
-                    $voucher->taxes += $item['taxes'];
-                    $voucher->value += $item['value'];
-                }
-
-                if ($voucher->save()) {
-                    Room::where('user_id', id_parent())
-                        ->whereIn('number', $numbers->pluck('number')->toArray())
-                        ->where('hotel_id', id_decode($request->hotel))
-                        ->update(['status' => '0']);
-
-                    // Get the shift
-                    $shift = Shift::current(id_decode($request->hotel));
-
-                    // Add the voucher to shift
-                    $voucher->shifts()->attach($shift);
-
-                    // Attach rooms
-                    $voucher->rooms()->sync($attach);
-                    $voucherId = $voucher->id;
-                    $status = true;
-
-                    session()->forget('hotel');
-                    session()->forget('rooms');
-                }
-            } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+            if ($request->registry == 'reservation') {
+                $voucher->reservation = true;
             }
-        });
 
-        if ($status) {
+            $rooms = Room::where('user_id', id_parent())
+                ->whereIn('number', $numbers->pluck('number')->toArray())
+                ->where('hotel_id', id_decode($request->hotel))
+                ->where('status', '1')
+                ->get(fields_dotted('rooms'));
+
+            foreach ($rooms as $room) {
+                $selected = $numbers->where('number', $room->number)->first();
+                $start = Carbon::createFromFormat('Y-m-d', $selected['start']);
+
+                if (empty($selected['end'])) {
+                    $end = $start->copy()->addDay();
+                } else {
+                    $end = Carbon::createFromFormat('Y-m-d', $selected['end']);
+                }
+
+                $quantity = $start->diffInDays($end);
+                $discount = ($room->price - $selected['price']) * $quantity;
+                $taxes = ($selected['price'] * $room->tax) * $quantity;
+                $subvalue = $selected['price'] * $quantity;
+
+                $attach[$room->id] = [
+                    'price' => $selected['price'],
+                    'quantity' => $quantity,
+                    'discount' => $discount,
+                    'subvalue' => $subvalue,
+                    'taxes' => $taxes,
+                    'value' => $subvalue + $taxes,
+                    'start' => $start->toDateString(),
+                    'end' => $end->toDateString(),
+                    'enabled' => true
+                ];
+            }
+
+            foreach ($attach as $key => $item) {
+                $voucher->discount += $item['discount'];
+                $voucher->subvalue += $item['subvalue'];
+                $voucher->taxes += $item['taxes'];
+                $voucher->value += $item['value'];
+            }
+
+            $voucher->save();
+
+            // Occupied rooms
+            Room::where('user_id', id_parent())
+                ->whereIn('number', $numbers->pluck('number')->toArray())
+                ->where('hotel_id', id_decode($request->hotel))
+                ->update(['status' => '0']);
+
+            // Get the shift
+            $shift = Shift::current(id_decode($request->hotel));
+
+            // Add the voucher to shift
+            $voucher->shifts()->attach($shift);
+
+            // Attach rooms
+            $voucher->rooms()->sync($attach);
+
+            DB::commit();
+
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.guests.search', [
-                'id' => id_encode($voucherId)
+                'id' => id_encode($voucher->id)
             ]);
+        } catch (\Throwable $e) {
+            DB::rollback();
         }
 
         flash(trans('common.error'))->error();
@@ -549,25 +542,6 @@ class VoucherController extends Controller
         }
 
         return back();
-    }
-
-    /**
-     * Redirect to create new voucher with many rooms.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function createWithMultipleRooms(Multiple $request)
-    {
-        $rooms = collect($request->rooms);
-
-        session()->put('hotel', $request->hotel);
-        session()->put('rooms', $rooms->implode('hash', ','));
-
-        // TODO: Change to common link in view component, cambiar este método de creación
-        return response()->json([
-            'redirect' => '/vouchers/create'
-        ]);
     }
 
     /**

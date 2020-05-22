@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTag;
 use App\Http\Requests\UpdateTag;
-use App\Repository\TagRepository;
+use App\Repositories\TagRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class TagController extends Controller
     /**
      * Construct function
      *
-     * @param \App\Repository\TagRepository $tag
+     * @param \App\Repositories\TagRepository $tag
      */
     public function __construct(TagRepository $tag)
     {

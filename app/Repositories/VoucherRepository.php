@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repositories;
 
-use App\Repository\Repository;
+use App\Repositories\Repository;
 use App\Welkome\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -86,29 +86,26 @@ class VoucherRepository implements Repository
         return $this->model;
     }
 
-    public function loader()
+    public function loader(array $relationships, int $id = null)
     {
-        $args = argument_array(func_get_args());
-
         // Get required relationships in args
-        $loads = $this->getRequiredRelationships($args);
+        $loads = $this->getRequiredRelationships($relationships, $id);
 
         $this->model->with($loads);
 
         return $this;
     }
 
-    public function load(Model $model, ...$args): Model
+    public function load(Model $model, $relationships, int $id = null): Model
     {
-        $args = argument_array($args);
-        $model->load($this->getRequiredRelationships($args));
+        $model->load($this->getRequiredRelationships($relationships, $id));
 
         return $model;
     }
 
-    public function getRequiredRelationships(array $relationshipNames)
+    public function getRequiredRelationships(array $relationshipNames, int $id = null)
     {
-        $relationships = $this->getRelationships();
+        $relationships = $this->getRelationships($id);
         $loads = [];
 
         foreach ($relationshipNames as $relationship) {

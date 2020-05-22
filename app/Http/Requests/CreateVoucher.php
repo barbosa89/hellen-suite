@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Multiple extends FormRequest
+class CreateVoucher extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class Multiple extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id'
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'rooms.*' => 'required|string|hashed_exists:rooms,id'
         ];
     }
 }

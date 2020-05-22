@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repositories;
 
-use App\Repository\Repository;
+use App\Repositories\Repository;
 use App\Welkome\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

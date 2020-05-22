@@ -267,7 +267,7 @@
             assign(text, data) {
                 if (data.room.status == '1') {
                     this.pushSelected(data.room);
-                    this.send(this.selectedHotel, [data.room])
+                    window.location.href = this.buildLink(this.selectedHotel, [data.room])
                 } else {
                     toastr.info(
                         this.$root.$t('rooms.cannot.add'),
@@ -276,22 +276,16 @@
                 }
             },
             pool() {
-                this.send(this.selectedHotel, this.selectedRooms)
+                window.location.href = this.buildLink(this.selectedHotel, this.selectedRooms)
             },
-            send(hotel, rooms) {
-                axios.post('/vouchers/multiple', {
-                    hotel: hotel,
-                    rooms: rooms
-                }).then(response => {
-                    this.selectedRooms = []
+            buildLink(hotel, rooms) {
+                let params = ''
 
-                    window.location.href = response.data.redirect;
-                }).catch(e => {
-                    toastr.error(
-                        this.$root.$t('common.try'),
-                        'Error'
-                    );
-                });
+                rooms.forEach(room => {
+                    params += `&rooms[]=${room.hash}`
+                })
+
+                return `/vouchers/create?hotel=${hotel}${params}`
             },
             changeStatus(data, status) {
                 if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {

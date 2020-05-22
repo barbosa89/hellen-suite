@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNote;
-use App\Repository\NoteRepository;
+use App\Repositories\NoteRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class NoteController extends Controller
     /**
      * Construct function
      *
-     * @param \App\Repository\NoteRepository $note
+     * @param \App\Repositories\NoteRepository $note
      */
     public function __construct(NoteRepository $note)
     {
