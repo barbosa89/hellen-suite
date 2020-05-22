@@ -71,4 +71,22 @@ class Note extends Model
     {
         return $this->belongsTo(\App\Welkome\Hotel::class);
     }
+
+    /**
+     * Scope a query to get all notes by a hotel and a tag.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Welkome\Hotel $hotel
+     * @param  \App\Welkome\Tag $tag
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForTag($query, Hotel $hotel, Tag $tag)
+    {
+        return $query->whereUserId(id_parent())
+            ->whereHotelId($hotel->id)
+            ->whereHas('tags', function ($query) use ($tag)
+            {
+                $query->where('id', $tag->id);
+            });
+    }
 }

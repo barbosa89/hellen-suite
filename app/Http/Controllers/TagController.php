@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateTag;
 use App\Repository\TagRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
-use App\welkome\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -69,17 +68,10 @@ class TagController extends Controller
     {
         $tag = $this->tag->get(id_decode($id));
 
-        // TODO: How load from repository?
-        $hotel = Hotel::whereUserId(id_parent())
-            ->whereId(id_decode($hotel))
-            ->first(['id', 'business_name']);
+        $hotel = Hotel::byId(id_decode($hotel));
 
-        $notes = Note::whereUserId(id_parent())
-            ->whereHotelId($hotel->id)
-            ->whereHas('tags', function ($query) use ($tag)
-            {
-                $query->where('id', $tag->id);
-            })->paginate(
+        $notes = Note::ForTag($hotel, $tag)
+            ->paginate(
                 config('welkome.paginate'),
                 Note::getColumnNames()
             );

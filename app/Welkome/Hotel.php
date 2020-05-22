@@ -128,4 +128,18 @@ class Hotel extends Model
                 });
             });
     }
+
+    /**
+     * Scope a query to get a hotel by id.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeById($query, int $id)
+    {
+        return $query->whereUserId(id_parent())
+            ->whereId($id)
+            ->first(fields_get('hotels'));
+    }
 }

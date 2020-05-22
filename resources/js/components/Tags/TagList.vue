@@ -19,7 +19,6 @@
             </div>
         </div>
 
-
         <vue-context ref="menu">
             <template slot-scope="child">
                 <li>
