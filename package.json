@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
-        "@tinymce/tinymce-vue": "^3.2.1",
+        "@tinymce/tinymce-vue": "^3.2.2",
         "@voerro/vue-tagsinput": "^2.2.0",
         "axios": "^0.19.2",
         "bootstrap": "^4.5.0",
@@ -38,15 +38,15 @@
         "popper.js": "^1.16.1",
         "pretty-checkbox": "^3.0.3",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.26.5",
+        "sass": "^1.26.7",
         "sass-loader": "^8.0.0",
-        "sweetalert2": "^9.11.0",
-        "tinymce": "^5.2.2",
+        "sweetalert2": "^9.14.0",
+        "tinymce": "^5.3.1",
         "toastr": "^2.1.2",
         "vue": "^2.6.11",
         "vue-context": "^4.1.1",
-        "vue-i18n": "^8.17.7",
-        "vue-router": "^3.2.0",
+        "vue-i18n": "^8.18.1",
+        "vue-router": "^3.3.2",
         "vue-template-compiler": "^2.6.11"
     }
 }
