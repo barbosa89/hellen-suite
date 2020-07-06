@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Mews\Purifier\Facades\Purifier;
 
 class StoreNote extends FormRequest
 {
@@ -24,10 +25,39 @@ class StoreNote extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id|open_shift',
+            'hotel_id' => 'required|integer|exists:hotels,id|open_shift',
             'content' => 'required|string|max:2400',
-            'tags.*.hash' => 'required|string|hashed_exists:tags,id',
+            'tags.*' => 'required|integer|exists:tags,id',
             'add' => 'required|boolean'
         ];
+    }
+
+    /**
+     * Get data to be validated from the request.
+     *
+     * @return array
+     */
+    public function validationData()
+    {
+        $data = $this->all();
+
+        $data['content'] = Purifier::clean($data['content']);
+        $data['hotel_id'] = id_decode($this->hotel_id);
+        $data['tags'] = id_decode_recursive(collect($this->tags)->pluck('hash')->toArray());
+
+        return $data;
+    }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @return array
+     */
+    public function validated()
+    {
+        return array_merge(parent::validated(), [
+            'team_member_name' => auth()->user()->name,
+            'team_member_email' => auth()->user()->email
+        ]);
     }
 }

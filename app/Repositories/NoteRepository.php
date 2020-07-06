@@ -2,44 +2,33 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Repository;
+use App\Contracts\BaseRepository;
 use App\Welkome\Note;
-use App\Welkome\Shift;
-use Illuminate\Http\Request;
-use Mews\Purifier\Facades\Purifier;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Pure Eloquent Repository
  */
-class NoteRepository implements Repository
+class NoteRepository implements BaseRepository
 {
     /**
-     * Create new Note
+     * Store new model
      *
-     * @param   \Illuminate\Http\Request $request
-     * @return  \App\Welkome\Note
+     * @param array data
+     * @return \App\Welkome\Note
      */
-    public function create(Request $request): Note
+    public function create(array $data): Note
     {
         $note = new Note();
-        $note->content = Purifier::clean($request->content);
-        $note->team_member_name = auth()->user()->name;
-        $note->team_member_email = auth()->user()->email;
-        $note->hotel()->associate(id_decode($request->hotel));
+        $note->fill($data);
+        $note->hotel()->associate($data['hotel_id']);
         $note->user()->associate(id_parent());
         $note->saveOrFail();
 
-        // Get all Tag Ids
-        $ids = collect($request->tags)->pluck('hash')->toArray();
-        $note->tags()->sync(id_decode_recursive($ids));
-
-        // If add is true
-        // The note is attached to Shift
-        if ($request->add) {
-            Shift::current(id_decode($request->hotel))
-                ->notes()
-                ->attach($note);
-        }
+        // Sync note tags
+        $note->tags()->sync($data['tags']);
 
         return $note;
     }
@@ -62,14 +51,14 @@ class NoteRepository implements Repository
     /**
      * Update model
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  array $data
      * @param  integer $id
      * @return \App\Welkome\Note
      */
-    public function update(Request $request, int $id): Note
+    public function update(array $data, int $id): Note
     {
         $note = $this->get($id);
-        $note->content = $request->content;
+        $note->content = $data['content'];
         $note->saveOrFail();
 
         return $note;
@@ -86,5 +75,66 @@ class NoteRepository implements Repository
         $note = $this->get($id);
 
         return $note->delete();
+    }
+
+    /**
+     * Return a paginated Note collection
+     *
+     * @param integer $hotel
+     * @param string $start
+     * @param string $end
+     * @param string $text
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function search(int $hotel, string $start, string $end, string $text = null): LengthAwarePaginator
+    {
+        return $this->filter($hotel, $start, $end, $text)
+            ->paginate(
+                config('welkome.paginate'),
+                Note::getColumnNames(['user_id', 'hotel_id'])
+            );
+    }
+
+    /**
+     * Return a Note collection
+     *
+     * @param integer $hotel
+     * @param string $start
+     * @param string $end
+     * @param string $text
+     * @return \Illuminate\Support\Collection
+     */
+    public function list(int $hotel, string $start, string $end, string $text = null): Collection
+    {
+        return $this->filter($hotel, $start, $end, $text)
+            ->get(Note::getColumnNames(['user_id', 'hotel_id']));
+    }
+
+    /**
+     * Prepare query by parameters
+     *
+     * @param integer $hotel
+     * @param string $start
+     * @param string $end
+     * @param string $text
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function filter(int $hotel, string $start, string $end, string $text = null): Builder
+    {
+        return Note::query()
+            ->whereUserId(id_parent())
+            ->whereHotelId($hotel)
+            ->whereDate('created_at', '>=', $start)
+            ->whereDate('created_at', '<=', $end)
+            ->when(!empty($text), function ($query) use ($text) {
+                $query->whereLike(['content'], $text);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->with([
+                'tags' => function ($query)
+                {
+                    $query->select(['id', 'slug']);
+                }
+            ]);
     }
 }

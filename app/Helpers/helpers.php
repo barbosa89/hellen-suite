@@ -5,6 +5,8 @@ use App\Helpers\Id;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
 use App\Welkome\Hotel;
+use Barryvdh\Snappy\PdfWrapper;
+use Illuminate\Support\Facades\App;
 
 if (!function_exists('id_encode')) {
     function id_encode(string $id)
@@ -70,5 +72,27 @@ if (!function_exists('argument_array')) {
         }
 
         return $args;
+    }
+}
+
+if (!function_exists('get_pdf_printer')) {
+    /**
+     * Build Snappy PDF Printer
+     *
+     * @param array $margins
+     * @return Barryvdh\Snappy\PdfWrapper
+     */
+    function get_pdf_printer(array $margins = [5, 5, 5, 5]): PdfWrapper
+    {
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->setOption('enable-javascript', true);
+        $pdf->setOption('images', true);
+        $pdf->setOption('enable-smart-shrinking', true);
+        $pdf->setOption('margin-top', $margins[0] ??= 5);
+        $pdf->setOption('margin-bottom', $margins[1] ??= 5);
+        $pdf->setOption('margin-left', $margins[2] ??= 5);
+        $pdf->setOption('margin-right', $margins[3] ??= 5);
+
+        return $pdf;
     }
 }

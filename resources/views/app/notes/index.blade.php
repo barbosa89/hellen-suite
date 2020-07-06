@@ -18,19 +18,13 @@
             ]
         ])
 
-        <form action="{{ route('notes.search') }}" method="get">
+        <form method="get" id="data-form">
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
                         <label for="hotel">Hotel:</label>
 
-                        <select name="hotel" id="hotel" class="form-control @error('hotel') is-invalid @enderror" required>
-                            @foreach ($hotels as $hotel)
-                                <option value="{{ id_encode($hotel->id) }} ">
-                                    {{ $hotel->business_name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <select name="hotel" id="hotel" class="form-control @error('hotel') is-invalid @enderror" required></select>
 
                         @error ('hotel')
                             <span class="invalid-feedback d-block" role="alert">
@@ -86,12 +80,23 @@
 
             <div class="row my-4">
                 <div class="col-12">
-                    <button type="submit" role="button" class="btn btn-primary">
-                        {{ trans('common.query') }}
+                    <button type="submit" role="button" class="btn btn-primary" onclick="javascript: form.action='{{ route('notes.search') }}';">
+                        <i class="fas fa-search"></i> {{ trans('common.query') }}
+                    </button>
+                    <button type="submit" role="button" class="btn btn-outline-info" onclick="javascript: form.action='{{ route('notes.export') }}';">
+                        <i class="fas fa-arrow-down"></i> {{ trans('common.export') }}
                     </button>
                 </div>
             </div>
         </form>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            buildHotelSelect('hotel')
+        })
+    </script>
 @endsection

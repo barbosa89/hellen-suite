@@ -89,7 +89,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
             // Query the open shifts
             $shift = Shift::where('open', true)
-                ->where('hotel_id', id_decode($value))
+                ->where('hotel_id', $value)
                 ->first(['id', 'open', 'hotel_id', 'team_member']);
 
             // True if there are no open shifts

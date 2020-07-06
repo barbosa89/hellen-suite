@@ -373,3 +373,25 @@ function generate_chart(id, datasets) {
         }
     });
 }
+
+function buildHotelSelect(id) {
+    let select = document.getElementById(id)
+
+    axios.get('/hotels/assigned')
+        .then(response => {
+            if (response.data.length) {
+                response.data.forEach(hotel => {
+                    let text = document.createTextNode(hotel.business_name)
+
+                    let node = document.createElement('option')
+                    node.appendChild(text)
+                    node.value = hotel.hash
+
+                    select.appendChild(node)
+                })
+            } else {
+                // Redirect if the parent user has not created hotels
+                window.location.href = '/home'
+            }
+        })
+}

@@ -167,7 +167,7 @@
             },
             send() {
                 axios.post('/notes', {
-                    hotel: this.hotel,
+                    hotel_id: this.hotel,
                     content: this.content,
                     tags: this.selected_tags,
                     add: this.add
@@ -182,7 +182,7 @@
                     }
                 }).catch(error => {
                     toastr.error(
-                        this.$root.$t('notes.error'),
+                        this.$root.$t('common.error'),
                         'Error'
                     )
                 })

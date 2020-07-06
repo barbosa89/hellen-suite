@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
+	Route::get('notes/export', 'NoteController@export')
+		->name('notes.export');
+
 	Route::get('notes/search', 'NoteController@search')
 		->name('notes.search');
 

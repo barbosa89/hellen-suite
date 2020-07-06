@@ -18,6 +18,7 @@ mix.js('resources/js/app.js', 'public/js')
     .copy('node_modules/tinymce/themes', 'public/js/themes')
     .copy('node_modules/tinymce/skins', 'public/js/skins')
     .copy('node_modules/tinymce/plugins', 'public/js/plugins')
+    .copy('node_modules/tinymce/icons', 'public/js/icons')
     .styles([
         'public/css/sb-admin.css',
         'node_modules/toastr/build/toastr.min.css',

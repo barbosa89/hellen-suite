@@ -6,8 +6,11 @@ use App\Http\Requests\StoreNote;
 use App\Repositories\NoteRepository;
 use App\Welkome\Hotel;
 use App\Welkome\Note;
+use App\Welkome\Shift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidationValidator;
 
 class NoteController extends Controller
 {
@@ -35,9 +38,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::assigned()->get(Hotel::getColumnNames());
-
-        return view('app.notes.index', compact('hotels'));
+        return view('app.notes.index');
     }
 
     /**
@@ -47,8 +48,6 @@ class NoteController extends Controller
      */
     public function create()
     {
-        // This view has a Vue component: NoteCreate <note-create></note-create>
-        // In the component the hotel data and the tag data will be loaded
         return view('app.notes.create');
     }
 
@@ -60,7 +59,14 @@ class NoteController extends Controller
      */
     public function store(StoreNote $request)
     {
-        $note = $this->note->create($request);
+        $note = $this->note->create($request->validated());
+
+        // If add is true, the note is attached to Shift
+        if ($request->add) {
+            Shift::current(id_decode($request->hotel_id))
+                ->notes()
+                ->attach($note);
+        }
 
         return response()->json([
             'status' => $note instanceof Note
@@ -70,15 +76,12 @@ class NoteController extends Controller
     /**
      * Search notes between dates and hotel.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'hotel' => 'required|string|hashed_exists:hotels,id',
-            'start' => 'required|date|before_or_equal:today',
-            'end' => 'required|date|after_or_equal:start|before_or_equal:today'
-        ]);
+        $validator = $this->validation($request->toArray());
 
         if ($validator->fails()) {
             return redirect(url()->previous())
@@ -94,24 +97,58 @@ class NoteController extends Controller
             ->whereId(id_decode($request->hotel))
             ->first(['id', 'business_name']);
 
-        $notes = Note::whereUserId(id_parent())
-            ->whereHotelId(id_decode($request->hotel))
-            ->whereDate('created_at', '>=', $start)
-            ->whereDate('created_at', '<=', $end)
-            ->when(!empty($text), function ($query) use ($text)
-            {
-                $query->whereLike(['content'], $text);
-            })->orderBy('created_at', 'DESC')
-            ->with([
-                'tags' => function ($query)
-                {
-                    $query->select(['id', 'slug']);
-                }
-            ])->paginate(
-                config('welkome.paginate'),
-                Note::getColumnNames(['user_id', 'hotel_id'])
-            );
+        $notes = $this->note->search(id_decode($request->hotel), $start, $end, $text);
 
         return view('app.notes.search', compact('notes', 'start', 'end', 'hotel', 'text'));
+    }
+
+
+    /**
+     * Export the notes between dates and hotel in PDF format.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export(Request $request)
+    {
+        $validator = $this->validation($request->toArray());
+
+        if ($validator->fails()) {
+            return redirect(url()->previous())
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $start = param_clean($request->start);
+        $end = param_clean($request->end);
+        $text = param_clean($request->get('query', null));
+
+        $hotel = Hotel::whereUserId(id_parent())
+            ->whereId(id_decode($request->hotel))
+            ->first(['id', 'business_name']);
+
+        $notes = $this->note->list(id_decode($request->hotel), $start, $end, $text);
+
+        $view = view('app.notes.exports.template', compact('notes', 'hotel'))->render();
+
+        $pdf = get_pdf_printer([5, 5, 6, 6]);
+        $pdf->loadHTML($view);
+
+        return $pdf->download(trans('notes.title') . '.pdf');
+    }
+
+    /**
+     * Validate data query
+     *
+     * @param array $data
+     * @return \Illuminate\Validation\ValidationValidator
+     */
+    public function validation(array $data = null): ValidationValidator
+    {
+        return Validator::make($data, [
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'start' => 'required|date|before_or_equal:today',
+            'end' => 'required|date|after_or_equal:start|before_or_equal:today'
+        ]);
     }
 }
