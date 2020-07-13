@@ -85,22 +85,19 @@ class AppServiceProvider extends ServiceProvider
             return true;
         });
 
-        // Check if exists an open shift at the headquarters
+        // Check if exists an open shift
         Validator::extend('open_shift', function ($attribute, $value, $parameters, $validator) {
-            // Query the open shifts
-            $shift = Shift::where('open', true)
-                ->where('hotel_id', $value)
-                ->first(['id', 'open', 'hotel_id', 'team_member']);
+            // Query all open shifts for authenticated user
+            $shifts = Shift::open()->get(['id', 'open', 'hotel_id']);
 
             // True if there are no open shifts
             // Shift will be created
-            if (empty($shift)) {
+            if ($shifts->isEmpty()) {
                 return true;
             }
 
-            // Check if user ID is equal to shift user ID
-            // The user has a shift
-            if (auth()->user()->id == $shift->team_member) {
+            // Check if the user owns the shiftin the hotel
+            if ($shifts->where('hotel_id', $value)->count() === 1) {
                 return true;
             }
 

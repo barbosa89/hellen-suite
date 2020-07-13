@@ -186,7 +186,7 @@ class ShiftController extends Controller
         if ($shift->save()) {
             flash(trans('common.successful'))->success();
 
-            return redirect()->route('shifts.close', [
+            return redirect()->route('shifts.show', [
                 'id' => id_encode($shift->id)
             ]);
         }

@@ -39,7 +39,7 @@
                     </a>
 
                     @if ($row->open)
-                        <a href="{{ route('shifts.close', ['id' => id_encode($row->id)]) }}" class="btn btn-link" alt="{{ trans('shifts.close') }}">
+                        <a href="#" title="{{ trans('common.delete.item') }}" onclick="confirmRedirect(event, '{{ route('shifts.close', ['id' => id_encode($row->id)]) }}')" class="btn btn-link" alt="{{ trans('shifts.close') }}">
                             <i class="fas fa-unlock"></i>
                         </a>
                     @endif

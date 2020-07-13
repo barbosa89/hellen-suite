@@ -89,4 +89,17 @@ class Shift extends Model
 
         return $shift;
     }
+
+    /**
+     * Scope a query to get open shifts.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOpen($query)
+    {
+        return $query->where('open', true)
+            ->where('team_member', auth()->user()->id)
+            ->where('user_id', id_parent());
+    }
 }

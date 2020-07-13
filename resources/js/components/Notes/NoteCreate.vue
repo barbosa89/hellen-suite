@@ -181,10 +181,17 @@
                         )
                     }
                 }).catch(error => {
-                    toastr.error(
-                        this.$root.$t('common.error'),
-                        'Error'
-                    )
+                    if (error.response.status == '422') {
+                        toastr.info(
+                            error.response.data.errors.hotel_id,
+                            this.$root.$t('common.sorry'),
+                        )
+                    } else {
+                        toastr.error(
+                            this.$root.$t('common.error'),
+                            'Error'
+                        )
+                    }
                 })
             },
             createTag(tag) {

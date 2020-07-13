@@ -59,6 +59,8 @@ function changeIcon(el, e, first, second) {
 }
 
 function confirmAction(el, e) {
+    e.preventDefault()
+
     var data = {
         '{url}': el.getAttribute('data-url'),
         '{method}': el.getAttribute('data-method'),
