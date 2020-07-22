@@ -9,11 +9,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::post('vouchers/{id}/guests', 'GuestController@storeForvoucher')
         ->name('vouchers.guests.store')
-        ->middleware(['permission:guests.create']);
+        ->middleware(['permission:guests.create', 'open_shift']);
 
     Route::get('vouchers/{id}/guests/create', 'GuestController@createForvoucher')
         ->name('vouchers.guests.create')
-        ->middleware(['permission:guests.create']);
+        ->middleware(['permission:guests.create', 'open_shift']);
 
 	Route::get('guests/export', 'GuestController@export')
 		->name('guests.export')

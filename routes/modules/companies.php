@@ -13,11 +13,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('vouchers/{id}/companies/create', 'CompanyController@createForvoucher')
         ->name('vouchers.companies.create')
-        ->middleware('permission:companies.create');
+        ->middleware('permission:companies.create', 'open_shift');
 
     Route::post('vouchers/{id}/companies', 'CompanyController@storeForvoucher')
         ->name('vouchers.companies.store')
-        ->middleware('permission:companies.create');
+        ->middleware('permission:companies.create', 'open_shift');
 
 	Route::delete('companies/{id}', 'CompanyController@destroy')
 		->name('companies.destroy')

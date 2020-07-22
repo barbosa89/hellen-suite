@@ -99,7 +99,7 @@ class CompanyController extends Controller
      * Store a newly created company in storage and attaching to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function storeForVoucher(StoreCompany $request, $id)

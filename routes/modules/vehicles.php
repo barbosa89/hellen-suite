@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('vouchers/{id}/vehicles', 'VehicleController@storeForvoucher')
 		->name('vouchers.vehicles.store')
-		->middleware(['permission:vouchers.edit']);
+		->middleware(['permission:vouchers.edit', 'open_shift']);
 
     Route::get('vouchers/{id}/vehicles/create', 'VehicleController@createForvoucher')
 		->name('vouchers.vehicles.create')
-		->middleware(['permission:vouchers.edit']);
+		->middleware(['permission:vouchers.edit', 'open_shift']);
 
 	Route::get('vehicles/export', 'VehicleController@export')
 		->name('vehicles.export')

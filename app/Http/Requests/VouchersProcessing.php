@@ -24,7 +24,7 @@ class VouchersProcessing extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'hotel' => 'required|string|hashed_exists:hotels,id|open_shift',
             'numbers.*' => 'required|string|exists:vouchers,number'
         ];
     }

@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.13.1",
+        "@fortawesome/fontawesome-free": "^5.14.0",
         "@tinymce/tinymce-vue": "^3.2.2",
         "@voerro/vue-tagsinput": "^2.2.0",
         "axios": "^0.19.2",
@@ -19,7 +19,7 @@
         "bootstrap-sass": "^3.4.1",
         "bootstrap-select": "^1.13.18",
         "bootstrap-social": "^5.1.1",
-        "browser-sync": "^2.24.7",
+        "browser-sync": "^2.26.10",
         "browser-sync-webpack-plugin": "^2.2.2",
         "chart.js": "^2.9.3",
         "cross-env": "^7.0.2",
@@ -40,7 +40,7 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.26.10",
         "sass-loader": "^8.0.0",
-        "sweetalert2": "^9.15.3",
+        "sweetalert2": "^9.17.0",
         "tinymce": "^5.4.1",
         "toastr": "^2.1.2",
         "vue": "^2.6.11",
