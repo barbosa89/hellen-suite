@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Contracts\BaseRepository;
 use App\Welkome\Note;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,7 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * Pure Eloquent Repository
  */
-class NoteRepository implements BaseRepository
+class NoteRepository implements Repository
 {
     /**
      * Store new model
@@ -43,7 +42,7 @@ class NoteRepository implements BaseRepository
     {
         $note = Note::whereUserId(id_parent())
             ->whereId($id)
-            ->get(Note::getColumnNames());
+            ->first(Note::getColumnNames());
 
         return $note;
     }
@@ -51,11 +50,11 @@ class NoteRepository implements BaseRepository
     /**
      * Update model
      *
-     * @param  array $data
      * @param  integer $id
+     * @param  array $data
      * @return \App\Welkome\Note
      */
-    public function update(array $data, int $id): Note
+    public function update(int $id, array $data): Note
     {
         $note = $this->get($id);
         $note->content = $data['content'];

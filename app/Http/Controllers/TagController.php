@@ -52,7 +52,7 @@ class TagController extends Controller
      */
     public function store(StoreTag $request)
     {
-        $tag = $this->tag->create($request);
+        $tag = $this->tag->create($request->validated());
 
         return response()->json($tag);
     }
@@ -101,7 +101,7 @@ class TagController extends Controller
      */
     public function update(UpdateTag $request, string $id)
     {
-        $this->tag->update($request, id_decode($id));
+        $this->tag->update(id_decode($id), $request->validated());
 
         flash(trans('common.updatedSuccessfully'))->success();
 
@@ -141,7 +141,6 @@ class TagController extends Controller
      */
     public function search(Request $request)
     {
-        // Clean parameters
         $query = param_clean($request->get('query', null));
 
         return response()->json([

@@ -2,12 +2,15 @@
 
 namespace App\Welkome;
 
+use App\Traits\ColumnList;
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Room extends Model
 {
     use LogsActivity;
+    use Queryable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +34,17 @@ class Room extends Model
      * @var array
      */
     protected $hidden = ['id'];
+
+    /**
+     * Hashing Room ID.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getHashAttribute()
+    {
+        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+    }
 
     public function vouchers()
     {
@@ -71,13 +85,14 @@ class Room extends Model
     }
 
     /**
-     * Hashing Room ID.
+     * Scope a query to query by Id.
      *
-     * @param  string  $value
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getHashAttribute()
+    public function scopeById($query, int $id)
     {
-        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+        return $query->where('user_id', id_parent())
+            ->where('id', $id);
     }
 }

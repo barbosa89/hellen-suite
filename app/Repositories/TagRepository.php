@@ -15,13 +15,13 @@ class TagRepository implements Repository
     /**
      * Create new Tag
      *
-     * @param   \Illuminate\Http\Request $request
-     * @return  \App\Welkome\Tag
+     * @param array $data
+     * @return \App\Welkome\Tag
      */
-    public function create(Request $request): Tag
+    public function create(array $data): Tag
     {
         $tag = new Tag();
-        $tag->description = $request->tag;
+        $tag->description = $data['tag'];
         $tag->user()->associate(id_parent());
         $tag->saveOrFail();
 
@@ -48,14 +48,14 @@ class TagRepository implements Repository
     /**
      * Update model
      *
-     * @param  Illuminate\Http\Request $request
-     * @param  integer $id
+     * @param int $id
+     * @param array $data
      * @return \App\Welkome\Tag
      */
-    public function update(Request $request, int $id): Tag
+    public function update(int $id, array $data): Tag
     {
         $tag = $this->get($id);
-        $tag->description = $request->description;
+        $tag->description = $data['description'];
         $tag->saveOrFail();
 
         return $tag;

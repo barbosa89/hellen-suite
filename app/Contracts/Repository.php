@@ -5,6 +5,7 @@ namespace App\Contracts;
 /**
  * Standard repository
  */
-interface Repository extends BaseRepository, ListRepository
+interface Repository extends WritingRepository, ReadingRepository
 {
+    // ..
 }

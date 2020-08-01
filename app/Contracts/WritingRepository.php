@@ -5,9 +5,9 @@ namespace App\Contracts;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Standard repository
+ * Writing repository
  */
-interface BaseRepository
+interface WritingRepository
 {
     /**
      * Create a new model
@@ -18,21 +18,13 @@ interface BaseRepository
     public function create(array $data): Model;
 
     /**
-     * Get model
-     *
-     * @param int $id
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function get(int $id): Model;
-
-    /**
      * Update model
      *
-     * @param array $data
      * @param int $id
+     * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(array $data, int $id): Model;
+    public function update(int $id, array $data): Model;
 
     /**
      * Destroy model

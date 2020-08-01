@@ -13,10 +13,10 @@ interface Repository
     /**
      * Create a new model
      *
-     * @param Illuminate\Http\Request $request
+     * @param array $data
      * @return Illuminate\Database\Eloquent\Model
      */
-    public function create(Request $request): Model;
+    public function create(array $data): Model;
 
     /**
      * Get model
@@ -29,11 +29,11 @@ interface Repository
     /**
      * Update model
      *
-     * @param Illuminate\Http\Request $request
      * @param int $id
+     * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(Request $request, int $id): Model;
+    public function update(int $id, array $data): Model;
 
     /**
      * Destroy model
