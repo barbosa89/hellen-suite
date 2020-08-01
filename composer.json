@@ -39,6 +39,7 @@
         "barryvdh/laravel-debugbar": "^3.3",
         "beyondcode/laravel-dump-server": "^1.4",
         "beyondcode/laravel-query-detector": "^1.2",
+        "bpocallaghan/generators": "^6.0",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.9.1",
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.46",

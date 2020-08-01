@@ -19,7 +19,7 @@
         "bootstrap-sass": "^3.4.1",
         "bootstrap-select": "^1.13.18",
         "bootstrap-social": "^5.1.1",
-        "browser-sync": "^2.26.10",
+        "browser-sync": "^2.26.12",
         "browser-sync-webpack-plugin": "^2.2.2",
         "chart.js": "^2.9.3",
         "cross-env": "^7.0.2",
@@ -40,12 +40,12 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.26.10",
         "sass-loader": "^8.0.0",
-        "sweetalert2": "^9.17.0",
+        "sweetalert2": "^9.17.1",
         "tinymce": "^5.4.1",
         "toastr": "^2.1.2",
         "vue": "^2.6.11",
         "vue-context": "^4.1.1",
-        "vue-i18n": "^8.18.2",
+        "vue-i18n": "^8.20.0",
         "vue-router": "^3.3.4",
         "vue-template-compiler": "^2.6.11"
     }
