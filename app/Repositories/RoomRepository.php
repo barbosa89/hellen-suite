@@ -49,7 +49,7 @@ class RoomRepository implements Repository
      * @param int $perPage
      * @return \Illuminate\Support\Collection
      */
-    public function list(array $filters = []): Collection
+    public function all(array $filters = []): Collection
     {
         return Room::where('user_id', id_parent())
             ->theseColumns()

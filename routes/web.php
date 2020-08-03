@@ -11,11 +11,14 @@
 |
 */
 
+use App\Facades\RoomRepository;
+use App\Helpers\Columns;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    abort(403);
+    // abort(403);
+    dd(Columns::get('users'));
 });
 
 Route::get('/', function () {

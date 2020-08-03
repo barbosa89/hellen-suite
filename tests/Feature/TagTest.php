@@ -5,9 +5,14 @@ namespace Tests\Feature;
 use App\User;
 use App\Welkome\Hotel;
 use App\Welkome\Tag;
+use AssignmentsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
+use PermissionsTableSeeder;
+use RolesTableSeeder;
+use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
+use UsersTableSeeder;
 
 class TagTest extends TestCase
 {
@@ -17,8 +22,15 @@ class TagTest extends TestCase
     {
         parent::setUp();
 
+        Artisan::call('db:seed', ['--class' => UsersTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => RolesTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => PermissionsTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => AssignmentsSeeder::class]);
+
         // Create user
         $this->user = factory(User::class)->create();
+        $this->user->assignRole('manager');
+        $this->user->syncPermissions(Permission::all());
 
         // User login
         $this->be($this->user);
@@ -36,9 +48,10 @@ class TagTest extends TestCase
         $response->assertOk()
             ->assertJsonFragment([
                 [
+                    'description' => $tag->description,
+                    'slug' => $tag->slug,
                     'hash' => id_encode($tag->id),
-                    'value' => $tag->description,
-                    'slug' => $tag->slug
+                    'value' => $tag->description
                 ]
             ]);
 

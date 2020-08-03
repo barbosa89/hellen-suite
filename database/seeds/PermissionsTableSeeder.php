@@ -117,5 +117,21 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'props.vouchers',
             'guard_name' => config('auth.defaults.guard')
         ]);
+
+        // Notes permissions
+        Permission::insert([
+            [
+                'name' => 'notes.index',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+            [
+                'name' => 'notes.create',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+            [
+                'name' => 'notes.show',
+                'guard_name' => config('auth.defaults.guard')
+            ],
+        ]);
     }
 }

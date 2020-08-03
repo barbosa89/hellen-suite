@@ -31,7 +31,7 @@ class AssignmentsSeeder extends Seeder
         $recepUser = User::where('name', 'Receptionist')->first(['id', 'name']);
         $recepUser->assignRole('receptionist');
 
-        $cashierUser = User::where('name', 'cashier')->first(['id', 'name']);
+        $cashierUser = User::where('name', 'Cashier')->first(['id', 'name']);
         $cashierUser->assignRole('cashier');
 
         // Assign permissions to users

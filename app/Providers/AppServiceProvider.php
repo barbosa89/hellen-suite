@@ -237,6 +237,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('RoomRepository', \App\Repositories\RoomRepository::class);
+        //
     }
 }

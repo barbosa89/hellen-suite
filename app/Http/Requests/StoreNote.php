@@ -42,8 +42,8 @@ class StoreNote extends FormRequest
         $data = $this->all();
 
         $data['content'] = Purifier::clean($data['content']);
-        $data['hotel_id'] = id_decode($this->hotel_id);
-        $data['tags'] = id_decode_recursive(collect($this->tags)->pluck('hash')->toArray());
+        $data['hotel_id'] = id_decode($data['hotel_id']);
+        $data['tags'] = id_decode_recursive(collect($data['tags'])->pluck('hash')->toArray());
 
         return $data;
     }

@@ -3,12 +3,17 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Welkome\Hotel;
-use App\Welkome\Note;
-use App\Welkome\Tag;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Welkome\Tag;
+use App\Welkome\Note;
+use RolesTableSeeder;
+use UsersTableSeeder;
+use App\Welkome\Hotel;
+use AssignmentsSeeder;
+use PermissionsTableSeeder;
+use Illuminate\Support\Facades\Artisan;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NoteTest extends TestCase
 {
@@ -18,8 +23,15 @@ class NoteTest extends TestCase
     {
         parent::setUp();
 
+        Artisan::call('db:seed', ['--class' => UsersTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => RolesTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => PermissionsTableSeeder::class]);
+        Artisan::call('db:seed', ['--class' => AssignmentsSeeder::class]);
+
         // Create user
         $this->user = factory(User::class)->create();
+        $this->user->assignRole('manager');
+        $this->user->syncPermissions(Permission::all());
 
         // Create hotel
         $this->hotel = factory(Hotel::class)->create([
@@ -81,21 +93,18 @@ class NoteTest extends TestCase
 
     public function test_user_can_store_note()
     {
-        $this->withExceptionHandling();
+        $this->withoutExceptionHandling();
 
-        // Prepate tags
         $tags = factory(Tag::class, 3)->create([
             'user_id' => $this->user->id
         ]);
 
         $response = $this->post('/notes', [
-            'hotel' => id_encode($this->hotel->id),
+            'hotel_id' => id_encode($this->hotel->id),
             'content' => 'content',
             'tags' => $tags->toArray(),
             'add' => false
         ]);
-
-        $response->dump();
 
         $response->assertOk()
             ->assertJson([
@@ -103,7 +112,7 @@ class NoteTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('notes', [
-            'content' => 'content'
+            'content' => '<p>content</p>'
         ])->assertDatabaseHas('note_tag', [
             'note_id' => 1,
             'tag_id' => 1
@@ -126,13 +135,11 @@ class NoteTest extends TestCase
         ]);
 
         $response = $this->post('/notes', [
-            'hotel' => id_encode($this->hotel->id),
+            'hotel_id' => id_encode($this->hotel->id),
             'content' => 'content',
             'tags' => $tags->toArray(),
             'add' => true
         ]);
-
-        $response->dump();
 
         $response->assertOk()
             ->assertJson([

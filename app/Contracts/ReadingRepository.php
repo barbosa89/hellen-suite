@@ -33,5 +33,5 @@ interface ReadingRepository
      * @param int $perPage
      * @return \Illuminate\Support\Collection
      */
-    public function list(array $filters = []): Collection;
+    public function all(array $filters = []): Collection;
 }
