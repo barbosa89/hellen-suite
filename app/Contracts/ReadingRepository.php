@@ -23,6 +23,7 @@ interface ReadingRepository
      * Get paginated model collection
      *
      * @param int $perPage
+     * @param array $filters
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
@@ -30,7 +31,7 @@ interface ReadingRepository
     /**
      * Get complete model collection
      *
-     * @param int $perPage
+     * @param array $filters
      * @return \Illuminate\Support\Collection
      */
     public function all(array $filters = []): Collection;

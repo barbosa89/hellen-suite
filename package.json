@@ -14,7 +14,7 @@
         "@tinymce/tinymce-vue": "^3.2.2",
         "@voerro/vue-tagsinput": "^2.2.0",
         "axios": "^0.19.2",
-        "bootstrap": "^4.5.0",
+        "bootstrap": "^4.5.2",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-sass": "^3.4.1",
         "bootstrap-select": "^1.13.18",
@@ -33,7 +33,7 @@
         "jquery.easing": "^1.4.1",
         "jquery.flot.tooltip": "0.9.0",
         "laravel-mix": "^5.0.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.20",
         "moment": "^2.27.0",
         "popper.js": "^1.16.1",
         "pretty-checkbox": "^3.0.3",
@@ -45,8 +45,8 @@
         "toastr": "^2.1.2",
         "vue": "^2.6.11",
         "vue-context": "^4.1.1",
-        "vue-i18n": "^8.20.0",
-        "vue-router": "^3.3.4",
+        "vue-i18n": "^8.21.0",
+        "vue-router": "^3.4.3",
         "vue-template-compiler": "^2.6.11"
     }
 }
