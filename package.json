@@ -32,7 +32,7 @@
         "jquery": "^3.5.1",
         "jquery.easing": "^1.4.1",
         "jquery.flot.tooltip": "0.9.0",
-        "laravel-mix": "^5.0.1",
+        "laravel-mix": "^5.0.5",
         "lodash": "^4.17.20",
         "moment": "^2.27.0",
         "popper.js": "^1.16.1",
@@ -43,10 +43,10 @@
         "sweetalert2": "^9.17.1",
         "tinymce": "^5.4.1",
         "toastr": "^2.1.2",
-        "vue": "^2.6.11",
+        "vue": "^2.6.12",
         "vue-context": "^4.1.1",
         "vue-i18n": "^8.21.0",
         "vue-router": "^3.4.3",
-        "vue-template-compiler": "^2.6.11"
+        "vue-template-compiler": "^2.6.12"
     }
 }
