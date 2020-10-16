@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -37,27 +37,27 @@ class Guest extends Model
 
     public function children()
     {
-        return $this->hasMany(\App\Welkome\Guest::class, 'responsible_adult');
+        return $this->hasMany(\App\Models\Guest::class, 'responsible_adult');
     }
 
     public function parent()
     {
-        return $this->belongsTo(\App\Welkome\Guest::class, 'responsible_adult');
+        return $this->belongsTo(\App\Models\Guest::class, 'responsible_adult');
     }
 
     public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Voucher::class);
+        return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
     public function identificationType()
     {
-        return $this->belongsTo(\App\Welkome\IdentificationType::class, 'identification_type_id');
+        return $this->belongsTo(\App\Models\IdentificationType::class, 'identification_type_id');
     }
 
     public function vehicles()
     {
-        return $this->belongsToMany(\App\Welkome\Vehicle::class);
+        return $this->belongsToMany(\App\Models\Vehicle::class);
     }
 
     public function user()
@@ -67,12 +67,12 @@ class Guest extends Model
 
     public function rooms()
     {
-        return $this->belongsToMany(\App\Welkome\Room::class);
+        return $this->belongsToMany(\App\Models\Room::class);
     }
 
     public function country()
     {
-        return $this->belongsTo(\App\Welkome\Country::class);
+        return $this->belongsTo(\App\Models\Country::class);
     }
 
     /**

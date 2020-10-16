@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Welkome\Hotel;
+use App\Models\Hotel;
 use Faker\Generator as Faker;
 
 $factory->define(Hotel::class, function (Faker $faker) {

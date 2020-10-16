@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +17,6 @@ class Country extends Model
 
     public function citizens()
     {
-        return $this->hasMany(\App\Welkome\Guest::class);
+        return $this->hasMany(\App\Models\Guest::class);
     }
 }

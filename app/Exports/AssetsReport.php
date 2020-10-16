@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Asset;
+use App\Models\Asset;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;

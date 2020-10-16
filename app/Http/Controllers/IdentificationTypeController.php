@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\IdentificationType;
+use App\Models\IdentificationType;
 use Illuminate\Http\Request;
 
 class IdentificationTypeController extends Controller

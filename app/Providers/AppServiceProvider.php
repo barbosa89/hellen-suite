@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\User;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Observers\VoucherObserver;
-use App\Welkome\Shift;
+use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;

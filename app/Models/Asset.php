@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Company extends Model
+class Asset extends Model
 {
     use LogsActivity;
 
@@ -23,9 +23,11 @@ class Company extends Model
      */
     protected $hidden = ['id'];
 
-    public function vouchers()
+    use LogsActivity;
+
+    public function room()
     {
-        return $this->hasMany(\App\Welkome\Voucher::class);
+        return $this->belongsTo(\App\Models\Room::class);
     }
 
     public function user()
@@ -33,8 +35,21 @@ class Company extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    public function hotel()
+    {
+        return $this->belongsTo(\App\Models\Hotel::class);
+    }
+
     /**
-     * Hashing ID.
+     * Get all of the asset's maintenances.
+     */
+    public function maintenances()
+    {
+        return $this->morphMany(\App\Models\Maintenance::class, 'maintainable');
+    }
+
+    /**
+     * Hashing Product ID.
      *
      * @param  string  $value
      * @return void

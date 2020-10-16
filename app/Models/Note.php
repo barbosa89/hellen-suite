@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +45,7 @@ class Note extends Model
      */
     public function shifts()
     {
-        return $this->belongsToMany(\App\Welkome\Shift::class);
+        return $this->belongsToMany(\App\Models\Shift::class);
     }
 
     /**
@@ -53,7 +53,7 @@ class Note extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany(\App\Welkome\Tag::class);
+        return $this->belongsToMany(\App\Models\Tag::class);
     }
 
     /**
@@ -69,15 +69,15 @@ class Note extends Model
      */
     public function hotel()
     {
-        return $this->belongsTo(\App\Welkome\Hotel::class);
+        return $this->belongsTo(\App\Models\Hotel::class);
     }
 
     /**
      * Scope a query to get all notes by a hotel and a tag.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \App\Welkome\Hotel $hotel
-     * @param  \App\Welkome\Tag $tag
+     * @param  \App\Models\Hotel $hotel
+     * @param  \App\Models\Tag $tag
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForTag($query, Hotel $hotel, Tag $tag)

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\User;
-use App\Welkome\Prop;
-use App\Welkome\Hotel;
+use App\Models\Prop;
+use App\Models\Hotel;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
 use App\Helpers\Chart;
@@ -15,8 +15,8 @@ use App\Http\Requests\ReportQuery;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
-use App\Welkome\Company;
-use App\Welkome\Voucher;
+use App\Models\Company;
+use App\Models\Voucher;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 

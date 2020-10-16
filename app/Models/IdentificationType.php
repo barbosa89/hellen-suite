@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -11,6 +11,6 @@ class IdentificationType extends Model
 
     public function guest()
     {
-        return $this->hasMany(\App\Welkome\Guest::class, 'identification_type_id');
+        return $this->hasMany(\App\Models\Guest::class, 'identification_type_id');
     }
 }

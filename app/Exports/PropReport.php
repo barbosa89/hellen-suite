@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Prop;
+use App\Models\Prop;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
@@ -11,7 +11,7 @@ class PropReport implements FromView
     /**
      * The Prop instance.
      *
-     * @var \App\Welkome\Prop
+     * @var \App\Models\Prop
      */
     protected $prop;
 

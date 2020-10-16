@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repository;
-use App\Welkome\Room;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -17,7 +17,7 @@ class RoomRepository implements Repository
      * Get model
      *
      * @param int $id
-     * @return \App\Welkome\Room
+     * @return \App\Models\Room
      */
     public function findById(int $id): Room
     {
@@ -60,7 +60,7 @@ class RoomRepository implements Repository
      * Store new model
      *
      * @param array data
-     * @return \App\Welkome\Room
+     * @return \App\Models\Room
      */
     public function create(array $data): Room
     {
@@ -81,7 +81,7 @@ class RoomRepository implements Repository
      *
      * @param  integer $id
      * @param  array $data
-     * @return \App\Welkome\Room
+     * @return \App\Models\Room
      */
     public function update(int $id, array $data): Room
     {

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ShiftReport;
-use App\Welkome\Shift;
-use App\Welkome\Note;
-use App\Welkome\Room;
+use App\Models\Shift;
+use App\Models\Note;
+use App\Models\Room;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Facades\Excel;
@@ -93,7 +93,7 @@ class ShiftController extends Controller
     /**
      * Filter vouchers by payment method
      *
-     * @param \App\Welkome\Shift $shift
+     * @param \App\Models\Shift $shift
      * @param string $method
      * @return \Illuminate\Support\Collection
      */

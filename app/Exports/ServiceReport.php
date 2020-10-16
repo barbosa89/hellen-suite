@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Service;
+use App\Models\Service;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
@@ -11,7 +11,7 @@ class ServiceReport implements FromView
     /**
      * The Service instance.
      *
-     * @var \App\Welkome\Service
+     * @var \App\Models\Service
      */
     protected $service;
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Welkome\Room;
-use App\Welkome\Hotel;
+use App\Models\Room;
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;

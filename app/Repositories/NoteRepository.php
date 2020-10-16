@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Welkome\Note;
+use App\Models\Note;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -16,7 +16,7 @@ class NoteRepository implements Repository
      * Store new model
      *
      * @param array data
-     * @return \App\Welkome\Note
+     * @return \App\Models\Note
      */
     public function create(array $data): Note
     {
@@ -36,7 +36,7 @@ class NoteRepository implements Repository
      * Retrieve model by ID
      *
      * @param  integer $id
-     * @return \App\Welkome\Note
+     * @return \App\Models\Note
      */
     public function get(int $id): Note
     {
@@ -52,7 +52,7 @@ class NoteRepository implements Repository
      *
      * @param  integer $id
      * @param  array $data
-     * @return \App\Welkome\Note
+     * @return \App\Models\Note
      */
     public function update(int $id, array $data): Note
     {

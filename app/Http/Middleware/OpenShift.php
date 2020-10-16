@@ -18,7 +18,7 @@ class OpenShift
         $hotelId = $request->route('id');
 
         // Query all open shifts for authenticated user
-        $shifts = \App\Welkome\Shift::open()->get(['id', 'open', 'hotel_id']);
+        $shifts = \App\Models\Shift::open()->get(['id', 'open', 'hotel_id']);
 
         if ($shifts->isEmpty() or $shifts->where('hotel_id', $hotelId)->count() === 1) {
             return $next($request);

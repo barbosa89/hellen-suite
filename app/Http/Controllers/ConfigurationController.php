@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\Configuration;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 
 class ConfigurationController extends Controller
@@ -41,7 +41,7 @@ class ConfigurationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\Configuration  $configuration
+     * @param  \App\Models\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
     public function show(Configuration $configuration)
@@ -52,7 +52,7 @@ class ConfigurationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\Configuration  $configuration
+     * @param  \App\Models\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
     public function edit(Configuration $configuration)
@@ -64,7 +64,7 @@ class ConfigurationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\Configuration  $configuration
+     * @param  \App\Models\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Configuration $configuration)
@@ -75,7 +75,7 @@ class ConfigurationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\Configuration  $configuration
+     * @param  \App\Models\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
     public function destroy(Configuration $configuration)

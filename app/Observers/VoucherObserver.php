@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Helpers\Fields;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
 class VoucherObserver
@@ -11,7 +11,7 @@ class VoucherObserver
     /**
      * Handle to the voucher "created" event.
      *
-     * @param  \App\Welkome\Voucher  $voucher
+     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function created(Voucher $voucher)
@@ -22,7 +22,7 @@ class VoucherObserver
     /**
      * Handle the voucher "updated" event.
      *
-     * @param  \App\Welkome\Voucher  $voucher
+     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function updated(Voucher $voucher)
@@ -33,7 +33,7 @@ class VoucherObserver
     /**
      * Handle the voucher "deleting" event.
      *
-     * @param  \App\Welkome\Voucher  $voucher
+     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleting(Voucher $voucher)
@@ -71,7 +71,7 @@ class VoucherObserver
     /**
      * Handle the voucher "deleted" event.
      *
-     * @param  \App\Welkome\Voucher  $voucher
+     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleted(Voucher $voucher)

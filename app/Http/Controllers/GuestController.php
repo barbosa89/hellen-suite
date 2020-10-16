@@ -9,7 +9,7 @@ use App\Helpers\{Chart, Customer};
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
-use App\Welkome\{Country, Guest, IdentificationType, Room, Voucher};
+use App\Models\{Country, Guest, IdentificationType, Room, Voucher};
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller

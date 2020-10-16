@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
@@ -54,17 +54,17 @@ class Hotel extends Model
 
     public function vouchers()
     {
-        return $this->hasMany(\App\Welkome\Voucher::class);
+        return $this->hasMany(\App\Models\Voucher::class);
     }
 
     public function shifts()
     {
-        return $this->hasMany(\App\Welkome\Shift::class);
+        return $this->hasMany(\App\Models\Shift::class);
     }
 
     public function rooms()
     {
-        return $this->hasMany(\App\Welkome\Room::class);
+        return $this->hasMany(\App\Models\Room::class);
     }
 
     public function main()
@@ -84,22 +84,22 @@ class Hotel extends Model
 
     public function products()
     {
-        return $this->hasMany(\App\Welkome\Product::class);
+        return $this->hasMany(\App\Models\Product::class);
     }
 
     public function services()
     {
-        return $this->hasMany(\App\Welkome\Service::class);
+        return $this->hasMany(\App\Models\Service::class);
     }
 
     public function assets()
     {
-        return $this->hasMany(\App\Welkome\Asset::class);
+        return $this->hasMany(\App\Models\Asset::class);
     }
 
     public function props()
     {
-        return $this->hasMany(\App\Welkome\Prop::class);
+        return $this->hasMany(\App\Models\Prop::class);
     }
 
     /**
@@ -107,7 +107,7 @@ class Hotel extends Model
      */
     public function notes()
     {
-        return $this->hasMany(\App\Welkome\Note::class);
+        return $this->hasMany(\App\Models\Note::class);
     }
 
     /**

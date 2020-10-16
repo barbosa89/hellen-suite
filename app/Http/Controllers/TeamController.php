@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Welkome\Hotel;
+use App\Models\Hotel;
 use App\Helpers\Permissions;
 use App\Helpers\Random;
 use App\Http\Requests\AssignTeamMember;

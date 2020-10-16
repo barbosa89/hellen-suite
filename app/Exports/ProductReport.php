@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Product;
+use App\Models\Product;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
@@ -11,7 +11,7 @@ class ProductReport implements FromView
     /**
      * The Product instance.
      *
-     * @var \App\Welkome\Product
+     * @var \App\Models\Product
      */
     protected $product;
 

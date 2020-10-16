@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNote;
 use App\Repositories\NoteRepository;
-use App\Welkome\Hotel;
-use App\Welkome\Note;
-use App\Welkome\Shift;
+use App\Models\Hotel;
+use App\Models\Note;
+use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;

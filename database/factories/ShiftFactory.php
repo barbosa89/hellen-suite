@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Welkome\Shift::class, function (Faker $faker) {
+$factory->define(App\Models\Shift::class, function (Faker $faker) {
     return [
         //
     ];

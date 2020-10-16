@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -25,27 +25,27 @@ class Voucher extends Model
 
     public function rooms()
     {
-        return $this->belongsToMany(\App\Welkome\Room::class);
+        return $this->belongsToMany(\App\Models\Room::class);
     }
 
     public function payments()
     {
-        return $this->hasMany(\App\Welkome\Payment::class);
+        return $this->hasMany(\App\Models\Payment::class);
     }
 
     public function products()
     {
-        return $this->belongsToMany(\App\Welkome\Product::class);
+        return $this->belongsToMany(\App\Models\Product::class);
     }
 
     public function props()
     {
-        return $this->belongsToMany(\App\Welkome\Prop::class);
+        return $this->belongsToMany(\App\Models\Prop::class);
     }
 
     public function services()
     {
-        return $this->belongsToMany(\App\Welkome\Service::class);
+        return $this->belongsToMany(\App\Models\Service::class);
     }
 
     public function user()
@@ -55,27 +55,27 @@ class Voucher extends Model
 
     public function company()
     {
-        return $this->belongsTo(\App\Welkome\Company::class);
+        return $this->belongsTo(\App\Models\Company::class);
     }
 
     public function guests()
     {
-        return $this->belongsToMany(\App\Welkome\Guest::class);
+        return $this->belongsToMany(\App\Models\Guest::class);
     }
 
     public function hotel()
     {
-        return $this->belongsTo(\App\Welkome\Hotel::class);
+        return $this->belongsTo(\App\Models\Hotel::class);
     }
 
     public function additionals()
     {
-        return $this->hasMany(\App\Welkome\Additional::class);
+        return $this->hasMany(\App\Models\Additional::class);
     }
 
     public function shifts()
     {
-        return $this->belongsToMany(\App\Welkome\Shift::class);
+        return $this->belongsToMany(\App\Models\Shift::class);
     }
 
     /**

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Random;
-use App\Welkome\Company;
-use App\Welkome\Hotel;
-use App\Welkome\Prop;
-use App\Welkome\Voucher;
+use App\Models\Company;
+use App\Models\Hotel;
+use App\Models\Prop;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;

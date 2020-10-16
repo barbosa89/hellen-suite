@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\User;
-use App\Welkome\Hotel;
+use App\Models\Hotel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Notifications\Notification;
@@ -24,7 +24,7 @@ class VerifyTeamMemberEmail extends Notification
     /**
      * The hotel headquarters
      *
-     * @var App\Welkome\Hotel
+     * @var App\Models\Hotel
      */
     public $hotel;
 

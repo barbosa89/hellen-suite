@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -34,7 +34,7 @@ class Prop extends Model
 
     public function hotel()
     {
-        return $this->belongsTo(\App\Welkome\Hotel::class);
+        return $this->belongsTo(\App\Models\Hotel::class);
     }
 
     public function user()
@@ -44,7 +44,7 @@ class Prop extends Model
 
     public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Voucher::class);
+        return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
     /**

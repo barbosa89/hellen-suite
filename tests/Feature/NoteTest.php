@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use App\User;
 use Tests\TestCase;
-use App\Welkome\Tag;
-use App\Welkome\Note;
+use App\Models\Tag;
+use App\Models\Note;
 use RolesTableSeeder;
 use UsersTableSeeder;
-use App\Welkome\Hotel;
+use App\Models\Hotel;
 use AssignmentsSeeder;
 use PermissionsTableSeeder;
 use Illuminate\Support\Facades\Artisan;

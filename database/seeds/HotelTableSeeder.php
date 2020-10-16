@@ -1,12 +1,12 @@
 <?php
 
 use App\User;
-use App\Welkome\Hotel;
-use App\Welkome\Note;
-use App\Welkome\Product;
-use App\Welkome\Room;
-use App\Welkome\Service;
-use App\Welkome\Tag;
+use App\Models\Hotel;
+use App\Models\Note;
+use App\Models\Product;
+use App\Models\Room;
+use App\Models\Service;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class HotelTableSeeder extends Seeder

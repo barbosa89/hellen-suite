@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Helpers\{Customer, Random};
-use App\Welkome\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
+use App\Models\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
 use App\Http\Requests\{
     AddGuests,
     AddProducts,
@@ -186,7 +186,7 @@ class VoucherController extends Controller
     /**
      * Return a newly Voucher instance.
      *
-     * @return \App\Welkome\Voucher
+     * @return \App\Models\Voucher
      */
     private function newVoucher()
     {
@@ -969,7 +969,7 @@ class VoucherController extends Controller
     /**
      * Return number of guests in all rooms.
      *
-     * @param  \App\Welkome\Voucher  $voucher
+     * @param  \App\Models\Voucher  $voucher
      * @return int
      */
     private function countGuestsPerRoom(Voucher $voucher): int

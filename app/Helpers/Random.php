@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\User;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 

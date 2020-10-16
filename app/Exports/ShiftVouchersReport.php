@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Shift;
+use App\Models\Shift;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -12,7 +12,7 @@ class ShiftVouchersReport implements FromView, WithTitle
     /**
      * The shift to export.
      *
-     * @var \App\Welkome\Shift
+     * @var \App\Models\Shift
      */
     protected $shift;
 

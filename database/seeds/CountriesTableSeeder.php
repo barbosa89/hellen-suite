@@ -1,6 +1,6 @@
 <?php
 
-use App\Welkome\Country;
+use App\Models\Country;
 use Illuminate\Database\Seeder;
 
 class CountriesTableSeeder extends Seeder

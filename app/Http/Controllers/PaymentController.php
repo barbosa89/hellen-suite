@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Customer;
 use App\Http\Requests\StorePayment;
-use App\Welkome\Voucher;
-use App\Welkome\Payment;
-use App\Welkome\Shift;
+use App\Models\Voucher;
+use App\Models\Payment;
+use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

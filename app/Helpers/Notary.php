@@ -3,27 +3,27 @@
 namespace App\Helpers;
 
 use App\Helpers\Writer;
-use App\Welkome\Guest;
-use App\Welkome\Hotel;
-use App\Welkome\Note;
-use App\Welkome\Room;
-use App\Welkome\Tag;
-use App\Welkome\Vehicle;
-use App\Welkome\Voucher;
+use App\Models\Guest;
+use App\Models\Hotel;
+use App\Models\Note;
+use App\Models\Room;
+use App\Models\Tag;
+use App\Models\Vehicle;
+use App\Models\Voucher;
 
 class Notary
 {
     /**
      * Hotel owner of the new note
      *
-     * @var \App\Welkome\Hotel
+     * @var \App\Models\Hotel
      */
     private Hotel $hotel;
 
     /**
      * Construct function
      *
-     * @param \App\Welkome\Hotel $hotel
+     * @param \App\Models\Hotel $hotel
      */
     public function __construct(Hotel $hotel)
     {
@@ -33,9 +33,9 @@ class Notary
     /**
      * Create note for guest check in
      *
-     * @param \App\Welkome\Voucher $voucher
-     * @param \App\Welkome\Guest $guest
-     * @param \App\Welkome\Room $room
+     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Guest $guest
+     * @param \App\Models\Room $room
      * @return void
      */
     public function checkinGuest(Voucher $voucher, Guest $guest, Room $room): void
@@ -51,9 +51,9 @@ class Notary
     /**
      * Create note for guest check out
      *
-     * @param \App\Welkome\Voucher $voucher
-     * @param \App\Welkome\Guest $guest
-     * @param \App\Welkome\Room $room
+     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Guest $guest
+     * @param \App\Models\Room $room
      * @return void
      */
     public function checkoutGuest(Voucher $voucher, Guest $guest, Room $room): void
@@ -69,7 +69,7 @@ class Notary
     /**
      * Create note for check out of many guests
      *
-     * @param \App\Welkome\Voucher $voucher
+     * @param \App\Models\Voucher $voucher
      * @return void
      */
     public function checkoutGuests(Voucher $voucher): void
@@ -84,9 +84,9 @@ class Notary
     /**
      * Create note for vehicle entry
      *
-     * @param \App\Welkome\Voucher $voucher
-     * @param \App\Welkome\Guest $guest
-     * @param \App\Welkome\Vehicle $vehicle
+     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Guest $guest
+     * @param \App\Models\Vehicle $vehicle
      * @return void
      */
     public function vehicleEntry(Voucher $voucher, Guest $guest, Vehicle $vehicle)
@@ -123,7 +123,7 @@ class Notary
      * Return a existing Tag or create Tag
      *
      * @param string $tag
-     * @return \App\Welkome\Tag
+     * @return \App\Models\Tag
      */
     private function getTag(string $tag): Tag
     {
@@ -140,7 +140,7 @@ class Notary
     /**
      * Create new Notary object
      *
-     * @param \App\Welkome\Hotel $hotel
+     * @param \App\Models\Hotel $hotel
      * @return \App\Helpers\Notary
      */
     public static function create(Hotel $hotel): Notary

@@ -1,7 +1,7 @@
 <?php
 
 use App\User;
-use App\Welkome\Guest;
+use App\Models\Guest;
 use Illuminate\Database\Seeder;
 
 class GuestTableSeeder extends Seeder

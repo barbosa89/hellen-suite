@@ -1,7 +1,7 @@
 <?php
 
 use App\User;
-use App\Welkome\Vehicle;
+use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
 class VehicleTableSeeder extends Seeder

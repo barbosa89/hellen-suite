@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Welkome\CashFlow;
+use App\Models\CashFlow;
 use Illuminate\Http\Request;
 
 class CashFlowController extends Controller
@@ -41,7 +41,7 @@ class CashFlowController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Welkome\CashFlow  $cashFlow
+     * @param  \App\Models\CashFlow  $cashFlow
      * @return \Illuminate\Http\Response
      */
     public function show(CashFlow $cashFlow)
@@ -52,7 +52,7 @@ class CashFlowController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Welkome\CashFlow  $cashFlow
+     * @param  \App\Models\CashFlow  $cashFlow
      * @return \Illuminate\Http\Response
      */
     public function edit(CashFlow $cashFlow)
@@ -64,7 +64,7 @@ class CashFlowController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Welkome\CashFlow  $cashFlow
+     * @param  \App\Models\CashFlow  $cashFlow
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, CashFlow $cashFlow)
@@ -75,7 +75,7 @@ class CashFlowController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Welkome\CashFlow  $cashFlow
+     * @param  \App\Models\CashFlow  $cashFlow
      * @return \Illuminate\Http\Response
      */
     public function destroy(CashFlow $cashFlow)

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Repository;
-use App\Welkome\Tag;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -16,7 +16,7 @@ class TagRepository implements Repository
      * Create new Tag
      *
      * @param array $data
-     * @return \App\Welkome\Tag
+     * @return \App\Models\Tag
      */
     public function create(array $data): Tag
     {
@@ -32,7 +32,7 @@ class TagRepository implements Repository
      * Retrieve model by ID
      *
      * @param  integer $id
-     * @return \App\Welkome\Tag
+     * @return \App\Models\Tag
      */
     public function get(int $id): Tag
     {
@@ -50,7 +50,7 @@ class TagRepository implements Repository
      *
      * @param int $id
      * @param array $data
-     * @return \App\Welkome\Tag
+     * @return \App\Models\Tag
      */
     public function update(int $id, array $data): Tag
     {

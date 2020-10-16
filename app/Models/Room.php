@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use App\Traits\ColumnList;
 use App\Traits\Queryable;
@@ -48,17 +48,17 @@ class Room extends Model
 
     public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Voucher::class);
+        return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
     public function assets()
     {
-        return $this->hasMany(\App\Welkome\Asset::class);
+        return $this->hasMany(\App\Models\Asset::class);
     }
 
     public function products()
     {
-        return $this->belongsToMany(\App\Welkome\Product::class);
+        return $this->belongsToMany(\App\Models\Product::class);
     }
 
     public function user()
@@ -68,12 +68,12 @@ class Room extends Model
 
     public function guests()
     {
-        return $this->belongsToMany(\App\Welkome\Guest::class);
+        return $this->belongsToMany(\App\Models\Guest::class);
     }
 
     public function hotel()
     {
-        return $this->belongsTo(\App\Welkome\Hotel::class);
+        return $this->belongsTo(\App\Models\Hotel::class);
     }
 
     /**
@@ -81,7 +81,7 @@ class Room extends Model
      */
     public function maintenances()
     {
-        return $this->morphMany(\App\Welkome\Maintenance::class, 'maintainable');
+        return $this->morphMany(\App\Models\Maintenance::class, 'maintainable');
     }
 
     /**

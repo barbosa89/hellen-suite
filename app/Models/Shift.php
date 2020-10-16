@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use App\Helpers\Fields;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +33,7 @@ class Shift extends Model
 
     public function hotel()
     {
-        return $this->belongsTo(\App\Welkome\Hotel::class);
+        return $this->belongsTo(\App\Models\Hotel::class);
     }
 
     /**
@@ -41,7 +41,7 @@ class Shift extends Model
      */
     public function vouchers()
     {
-        return $this->belongsToMany(\App\Welkome\Voucher::class);
+        return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
     /**
@@ -49,14 +49,14 @@ class Shift extends Model
      */
     public function notes()
     {
-        return $this->belongsToMany(\App\Welkome\Note::class);
+        return $this->belongsToMany(\App\Models\Note::class);
     }
 
     /**
      * Get the current shift
      *
      * @param integer $hotel_id
-     * @return \App\Welkome\Shift
+     * @return \App\Models\Shift
      */
     public static function current(int $hotel_id): Shift
     {
@@ -76,7 +76,7 @@ class Shift extends Model
      * Create new Shift
      *
      * @param integer $hotel_id
-     * @return \App\Welkome\Shift
+     * @return \App\Models\Shift
      */
     public static function start(int $hotel_id): Shift
     {

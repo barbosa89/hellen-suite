@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Vehicle extends Model
+class Service extends Model
 {
     use LogsActivity;
 
@@ -23,14 +23,9 @@ class Vehicle extends Model
      */
     protected $hidden = ['id'];
 
-    public function type()
+    public function vouchers()
     {
-        return $this->belongsTo(\App\Welkome\VehicleType::class, 'vehicle_type_id');
-    }
-
-    public function guests()
-    {
-        return $this->belongsToMany(\App\Welkome\Guest::class);
+        return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
     public function user()
@@ -38,8 +33,13 @@ class Vehicle extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    public function hotel()
+    {
+        return $this->belongsTo(\App\Models\Hotel::class);
+    }
+
     /**
-     * Hashing Vehicle ID.
+     * Hashing Product ID.
      *
      * @param  string  $value
      * @return void

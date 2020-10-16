@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Welkome\Guest::class, function (Faker $faker) {
+$factory->define(App\Models\Guest::class, function (Faker $faker) {
     $gender = ['x', 'y'];
 
 
@@ -15,11 +15,11 @@ $factory->define(App\Welkome\Guest::class, function (Faker $faker) {
         'phone' => $faker->e164PhoneNumber,
         'identification_type_id' => function ()
         {
-            return \App\Welkome\IdentificationType::inRandomOrder()->first(['id'])->id;
+            return \App\Models\IdentificationType::inRandomOrder()->first(['id'])->id;
         },
         'country_id' => function ()
         {
-            return \App\Welkome\Country::inRandomOrder()->first(['id'])->id;
+            return \App\Models\Country::inRandomOrder()->first(['id'])->id;
         },
     ];
 });

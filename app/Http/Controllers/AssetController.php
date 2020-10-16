@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exports\AssetsReport;
 use App\User;
-use App\Welkome\Room;
-use App\Welkome\Asset;
-use App\Welkome\Hotel;
+use App\Models\Room;
+use App\Models\Asset;
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
-use App\Welkome\Maintenance;
+use App\Models\Maintenance;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;

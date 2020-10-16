@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTag;
 use App\Http\Requests\UpdateTag;
 use App\Repositories\TagRepository;
-use App\Welkome\Hotel;
-use App\Welkome\Note;
+use App\Models\Hotel;
+use App\Models\Note;
 use Illuminate\Http\Request;
 
 class TagController extends Controller

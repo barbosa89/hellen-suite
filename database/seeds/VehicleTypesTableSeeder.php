@@ -1,6 +1,6 @@
 <?php
 
-use App\Welkome\VehicleType;
+use App\Models\VehicleType;
 use Illuminate\Database\Seeder;
 
 class VehicleTypesTableSeeder extends Seeder

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -69,7 +69,7 @@ class Tag extends Model
      */
     public function notes()
     {
-        return $this->belongsToMany(\App\Welkome\Note::class);
+        return $this->belongsToMany(\App\Models\Note::class);
     }
 
     /**

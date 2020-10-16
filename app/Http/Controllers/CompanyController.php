@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exports\CompaniesReport;
 use Carbon\Carbon;
-use App\Welkome\Company;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Helpers\{Chart, Response};
 use App\Http\Requests\{StoreCompany, UpdateCompany};
-use App\Welkome\IdentificationType;
-use App\Welkome\Voucher;
+use App\Models\IdentificationType;
+use App\Models\Voucher;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller

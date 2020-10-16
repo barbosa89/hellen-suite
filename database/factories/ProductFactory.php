@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Welkome\Product::class, function (Faker $faker) {
+$factory->define(App\Models\Product::class, function (Faker $faker) {
     $faker->addProvider(new \Bezhanov\Faker\Provider\Commerce($faker));
 
     return [

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\VoucherRepository;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

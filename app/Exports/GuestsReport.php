@@ -11,7 +11,7 @@ class GuestsReport implements FromView
     /**
      * The Company collection.
      *
-     * @var \App\Welkome\Company
+     * @var \App\Models\Company
      */
     protected $guests;
 

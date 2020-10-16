@@ -2,10 +2,10 @@
 
 namespace App\Helpers;
 
-use App\Welkome\Guest;
-use App\Welkome\Room;
-use App\Welkome\Vehicle;
-use App\Welkome\Voucher;
+use App\Models\Guest;
+use App\Models\Room;
+use App\Models\Vehicle;
+use App\Models\Voucher;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -40,7 +40,7 @@ class Writer
     /**
      * Build text for guest check in
      *
-     * @param \App\Welkome\Voucher $voucher
+     * @param \App\Models\Voucher $voucher
      * @return \App\Helpers\Writer
      */
     public function checkin(Voucher $voucher): Writer
@@ -60,7 +60,7 @@ class Writer
     /**
      * Build text for guest check out
      *
-     * @param \App\Welkome\Voucher $voucher
+     * @param \App\Models\Voucher $voucher
      * @return \App\Helpers\Writer
      */
     public function checkout(Voucher $voucher): Writer
@@ -80,7 +80,7 @@ class Writer
     /**
      * Build text about guest personal data
      *
-     * @param \App\Welkome\Guest $guest
+     * @param \App\Models\Guest $guest
      * @return \App\Helpers\Writer
      */
     public function guest(Guest $guest): Writer
@@ -119,7 +119,7 @@ class Writer
     /**
      * Build text about assigned hotel room
      *
-     * @param \App\Welkome\\App\Welkome\Room $room
+     * @param \App\Models\\App\Models\Room $room
      * @return \App\Helpers\Writer
      */
     public function room(Room $room): Writer
@@ -134,8 +134,8 @@ class Writer
     /**
      * Build text about vehicle entry
      *
-     * @param \App\Welkome\Voucher $voucher
-     * @param \App\Welkome\Vehicle $vehicle
+     * @param \App\Models\Voucher $voucher
+     * @param \App\Models\Vehicle $vehicle
      * @return \App\Helpers\Writer
      */
     public function vehicle(Voucher $voucher, Vehicle $vehicle): Writer
@@ -160,7 +160,7 @@ class Writer
      * Build text about vehicle owner
      * This method wraps Writer->guest() method
      *
-     * @param \App\Welkome\Guest $guest
+     * @param \App\Models\Guest $guest
      * @return \App\Helpers\Writer
      */
     public function owner(Guest $guest): Writer

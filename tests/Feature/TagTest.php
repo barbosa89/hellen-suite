@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Welkome\Hotel;
-use App\Welkome\Tag;
+use App\Models\Hotel;
+use App\Models\Tag;
 use AssignmentsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;

@@ -171,7 +171,7 @@
                     <!-- items -->
                     <div class="items">
                         @foreach ($page as $item)
-                            @if ($item instanceof \App\Welkome\Room)
+                            @if ($item instanceof \App\Models\Room)
                                 <div class="row mt-2 list-content">
                                     <div class="col-xs-6">
                                         <p class="without-margin">@lang('rooms.room') {{ $item->number }}</p>
@@ -190,7 +190,7 @@
                                 </div>
                             @endif
 
-                            @if ($item instanceof \App\Welkome\Product)
+                            @if ($item instanceof \App\Models\Product)
                                 <div class="row mt-2 list-content">
                                     <div class="col-xs-6">
                                         <p class="without-margin">{{ $item->description }}</p>
@@ -209,7 +209,7 @@
                                 </div>
                             @endif
 
-                            @if ($item instanceof \App\Welkome\Service)
+                            @if ($item instanceof \App\Models\Service)
                                 <div class="row mt-2 list-content">
                                     <div class="col-xs-6">
                                         <p class="without-margin">{{ $item->description }}</p>
@@ -228,7 +228,7 @@
                                 </div>
                             @endif
 
-                            @if ($item instanceof \App\Welkome\Additional)
+                            @if ($item instanceof \App\Models\Additional)
                                 <div class="row mt-2 list-content">
                                     <div class="col-xs-6">
                                         <p class="without-margin">{{ $item->description }}</p>
@@ -247,7 +247,7 @@
                                 </div>
                             @endif
 
-                            @if ($item instanceof \App\Welkome\Prop)
+                            @if ($item instanceof \App\Models\Prop)
                                 <div class="row mt-2 list-content">
                                     <div class="col-xs-6">
                                         <p class="without-margin">{{ $item->description }}</p>

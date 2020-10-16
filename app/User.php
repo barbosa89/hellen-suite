@@ -130,7 +130,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function tags()
     {
-        return $this->hasMany(\App\Welkome\Tag::class);
+        return $this->hasMany(\App\Models\Tag::class);
     }
 
 	/**

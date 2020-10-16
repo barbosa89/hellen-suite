@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Welkome;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Payment extends Model
+class Company extends Model
 {
     use LogsActivity;
 
@@ -23,9 +23,14 @@ class Payment extends Model
      */
     protected $hidden = ['id'];
 
-    public function voucher()
+    public function vouchers()
     {
-        return $this->belongsTo(\App\Welkome\Voucher::class);
+        return $this->hasMany(\App\Models\Voucher::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
     }
 
     /**

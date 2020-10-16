@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Repository;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class VoucherRepository implements Repository
      * Create new Note
      *
      * @param   \Illuminate\Http\Request $request
-     * @return  \App\Welkome\Voucher
+     * @return  \App\Models\Voucher
      */
     public function create(Request $request): Voucher
     {
@@ -31,7 +31,7 @@ class VoucherRepository implements Repository
      * Retrieve model by ID
      *
      * @param  integer $id
-     * @return \App\Welkome\Voucher
+     * @return \App\Models\Voucher
      */
     public function get(int $id): Voucher
     {
@@ -47,7 +47,7 @@ class VoucherRepository implements Repository
      *
      * @param  Illuminate\Http\Request $request
      * @param  integer $id
-     * @return \App\Welkome\Voucher
+     * @return \App\Models\Voucher
      */
     public function update(Request $request, int $id): Voucher
     {

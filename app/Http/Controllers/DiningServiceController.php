@@ -6,7 +6,7 @@ use App\Exports\ServiceReport;
 use App\Exports\ServicesReport;
 use App\Helpers\Chart;
 use App\User;
-use App\Welkome\{Hotel, Service};
+use App\Models\{Hotel, Service};
 use Illuminate\Http\Request;
 use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
 use Maatwebsite\Excel\Facades\Excel;

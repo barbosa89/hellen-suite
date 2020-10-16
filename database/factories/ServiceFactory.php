@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Welkome\Service::class, function (Faker $faker) {
+$factory->define(App\Models\Service::class, function (Faker $faker) {
     $faker->addProvider(new \Bezhanov\Faker\Provider\Food($faker));
 
     return [

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Welkome\IdentificationType;
+use App\Models\IdentificationType;
 
 class IdentificationTypesTableSeeder extends Seeder
 {

@@ -3,14 +3,14 @@
 namespace App\Helpers;
 
 use App\Helpers\Age;
-use App\Welkome\Voucher;
+use App\Models\Voucher;
 
 class Customer
 {
     /**
      * Return the voucher customer.
      *
-     * @param  \App\Welkome\Voucher
+     * @param  \App\Models\Voucher
      * @return array
      */
     public static function get(Voucher $voucher): array

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Welkome\Shift;
+use App\Models\Shift;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -14,7 +14,7 @@ class ShiftReport implements WithMultipleSheets
     /**
      * The shift to export.
      *
-     * @var \App\Welkome\Shift
+     * @var \App\Models\Shift
      */
     protected Shift $shift;
 

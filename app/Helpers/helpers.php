@@ -4,7 +4,7 @@ use App\Helpers\Fields;
 use App\Helpers\Id;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
-use App\Welkome\Hotel;
+use App\Models\Hotel;
 use Barryvdh\Snappy\PdfWrapper;
 use Illuminate\Support\Facades\App;
 

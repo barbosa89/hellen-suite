@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Random;
 use App\User;
-use App\Welkome\Company;
-use App\Welkome\Payment;
-use App\Welkome\Product;
-use App\Welkome\Shift;
-use App\Welkome\Voucher;
+use App\Models\Company;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\Shift;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
