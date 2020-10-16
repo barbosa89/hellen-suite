@@ -118,7 +118,7 @@ class RoomRepository implements Repository
     {
         return $this->filter($hotel, $start, $end, $text)
             ->paginate(
-                config('welkome.paginate'),
+                config('settings.paginate'),
                 Room::getColumnNames(['user_id', 'hotel_id'])
             );
     }

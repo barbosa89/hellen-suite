@@ -30,7 +30,7 @@ class VehicleController extends Controller
                 }
             ])->orderBy('created_at', 'DESC')
             ->limit(100)
-            ->paginate(config('welkome.paginate'), fields_get('vehicles'));
+            ->paginate(config('settings.paginate'), fields_get('vehicles'));
 
         return view('app.vehicles.index', compact('vehicles'));
     }

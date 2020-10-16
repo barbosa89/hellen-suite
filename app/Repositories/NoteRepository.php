@@ -89,7 +89,7 @@ class NoteRepository implements Repository
     {
         return $this->filter($hotel, $start, $end, $text)
             ->paginate(
-                config('welkome.paginate'),
+                config('settings.paginate'),
                 Note::getColumnNames(['user_id', 'hotel_id'])
             );
     }

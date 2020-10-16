@@ -24,7 +24,7 @@ class GuestController extends Controller
         $guests = Guest::where('user_id', id_parent())
             ->orderBy('created_at', 'DESC')
             ->limit('200')
-            ->paginate(config('welkome.paginate'), fields_get('guests'));
+            ->paginate(config('settings.paginate'), fields_get('guests'));
 
         return view('app.guests.index', compact('guests'));
     }

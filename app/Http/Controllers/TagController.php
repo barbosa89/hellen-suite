@@ -72,7 +72,7 @@ class TagController extends Controller
 
         $notes = Note::ForTag($hotel, $tag)
             ->paginate(
-                config('welkome.paginate'),
+                config('settings.paginate'),
                 Note::getColumnNames()
             );
 

@@ -42,27 +42,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hotels()
     {
-        return $this->hasMany(Welkome\Hotel::class);
+        return $this->hasMany(Models\Hotel::class);
     }
 
     public function configurations()
     {
-        return $this->belongsToMany(Welkome\Configuration::class);
+        return $this->belongsToMany(Models\Configuration::class);
     }
 
     public function headquarters()
     {
-        return $this->belongsToMany(Welkome\Hotel::class);
+        return $this->belongsToMany(Models\Hotel::class);
     }
 
     public function shifts()
     {
-        return $this->hasMany(Welkome\Shift::class);
+        return $this->hasMany(Models\Shift::class);
     }
 
     public function vouchers()
     {
-        return $this->hasMany(Welkome\Voucher::class);
+        return $this->hasMany(Models\Voucher::class);
     }
 
     public function employees()
@@ -79,42 +79,42 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function guests()
     {
-        return $this->hasMany(Welkome\Guest::class);
+        return $this->hasMany(Models\Guest::class);
     }
 
     public function services()
     {
-        return $this->hasMany(Welkome\Service::class);
+        return $this->hasMany(Models\Service::class);
     }
 
     public function rooms()
     {
-        return $this->hasMany(Welkome\Room::class);
+        return $this->hasMany(Models\Room::class);
     }
 
     public function vehicles()
     {
-        return $this->hasMany(Welkome\Vehicle::class);
+        return $this->hasMany(Models\Vehicle::class);
     }
 
     public function assets()
     {
-        return $this->hasMany(Welkome\Asset::class);
+        return $this->hasMany(Models\Asset::class);
     }
 
     public function products()
     {
-        return $this->hasMany(Welkome\Product::class);
+        return $this->hasMany(Models\Product::class);
     }
 
     public function companies()
     {
-        return $this->hasMany(Welkome\Company::class);
+        return $this->hasMany(Models\Company::class);
     }
 
     public function props()
     {
-        return $this->hasMany(Welkome\Prop::class);
+        return $this->hasMany(Models\Prop::class);
     }
 
     /**
@@ -122,7 +122,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function notes()
     {
-        return $this->hasMany(Welkome\Note::class);
+        return $this->hasMany(Models\Note::class);
     }
 
     /**

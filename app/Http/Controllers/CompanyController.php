@@ -25,7 +25,7 @@ class CompanyController extends Controller
 
         $companies = Company::where('user_id', id_parent())
             ->where('created_at', '>=', $month->toDateTimeString())
-            ->paginate(config('welkome.paginate'), fields_get('companies'))
+            ->paginate(config('settings.paginate'), fields_get('companies'))
             ->sortByDesc('created_at');
 
         return view('app.companies.index', compact('companies'));

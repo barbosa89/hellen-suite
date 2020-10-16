@@ -202,8 +202,8 @@ class Chart
 
             // Fill background color and border color of chart bars by voucher type
             for ($i=0; $i < count($set['data']); $i++) {
-                $set['backgroundColor'][] = config('welkome.colors')[$type]['bar'];
-                $set['borderColor'][] = config('welkome.colors')[$type]['border'];
+                $set['backgroundColor'][] = config('settings.colors')[$type]['bar'];
+                $set['borderColor'][] = config('settings.colors')[$type]['border'];
             }
 
             // Set border size

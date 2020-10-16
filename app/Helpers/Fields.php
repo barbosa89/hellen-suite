@@ -12,7 +12,7 @@ class Fields
 	 */
 	public static function get(string $model): array
 	{
-		return config('welkome.fields.' . $model);
+		return config('settings.fields.' . $model);
 	}
 
 	/**

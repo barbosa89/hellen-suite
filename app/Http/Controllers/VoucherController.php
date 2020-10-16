@@ -403,7 +403,7 @@ class VoucherController extends Controller
                 'company.business_name',
                 'hotel.business_name'
             ], $query)->paginate(
-                config('welkome.paginate'),
+                config('settings.paginate'),
                 fields_dotted('vouchers')
             );
 

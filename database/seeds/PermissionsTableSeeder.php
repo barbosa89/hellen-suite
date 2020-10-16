@@ -12,7 +12,7 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        foreach (config('welkome.modules') as $module) {
+        foreach (config('settings.modules') as $module) {
             Permission::insert([
                 [
                     'name' => $module . '.index',

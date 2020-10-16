@@ -22,7 +22,7 @@ Route::get('/test', function () {
 });
 
 Route::get('/', function () {
-    if (config('welkome.env') == 'desktop') {
+    if (config('settings.env') == 'desktop') {
         return redirect(route('login'));
     }
 

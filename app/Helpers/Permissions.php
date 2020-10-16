@@ -51,6 +51,6 @@ class Permissions
      */
 	public static function get(string $role)
 	{
-		return config('welkome.permissions.' . $role);
+		return config('settings.permissions.' . $role);
 	}
 }

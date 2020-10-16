@@ -1,12 +1,12 @@
-# Welkome App
+# Hellen Suite
 
 A Laravel application to hotel managment, the managment made easy.
 
-Website: [Welkome](http://test.omarbarbosa.com)
+Website: [Hellen Suite](http://test.omarbarbosa.com)
 
-## About Welkome
+## About Hellen Suite
 
-Welkome is a web application for the administration of hotels and similar business models, it is aimed at facilitating operational controls, and the execution of administrative and management functions.
+Hellen Suite is a web application for the administration of hotels and similar business models, it is aimed at facilitating operational controls, and the execution of administrative and management functions.
 
 ## Important
 

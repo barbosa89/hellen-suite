@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            @if($data->count() >= config('welkome.paginate'))
+            @if($data->count() >= config('settings.paginate'))
                 <div class="row">
                     <div class="col-md-12">
                         <div class="text-center">
