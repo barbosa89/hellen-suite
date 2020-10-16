@@ -27,7 +27,7 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
         'node_modules/sweetalert2/dist/sweetalert2.css',
         'node_modules/@voerro/vue-tagsinput/dist/style.css'
-    ], 'public/css/welkome.css')
+    ], 'public/css/styles.css')
     .scripts([
         'node_modules/moment/min/moment.min.js',
         'node_modules/toastr/build/toastr.min.js',
@@ -38,7 +38,7 @@ mix.js('resources/js/app.js', 'public/js')
         'public/js/sb-admin.js',
         'node_modules/chart.js/dist/Chart.bundle.js',
         'public/js/common.js'
-    ], 'public/js/welkome.js')
+    ], 'public/js/scripts.js')
     .styles([
         'public/css/animation-aos.css',
         'public/css/aos.css',
@@ -55,5 +55,5 @@ mix.js('resources/js/app.js', 'public/js')
     ], 'public/js/editor.js')
     .sourceMaps()
     .browserSync({
-        proxy: 'welkome.app'
+        proxy: 'app.local'
     });

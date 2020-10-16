@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Welkome') }}</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -16,7 +16,7 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/welkome.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/styles.css') }}" rel="stylesheet">
 </head>
 <body id="page-top">
     <div id="app">
@@ -65,7 +65,7 @@
     @translations
     @yield('editor')
     <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/welkome.js') }}"></script>
+    <script src="{{ mix('js/scripts.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

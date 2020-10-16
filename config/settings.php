@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Welkome app configuration
+ * App secondary configuration file
  */
 
 return [

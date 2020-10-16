@@ -53,7 +53,7 @@ class Welcome extends Mailable implements ShouldQueue
             }
         ]);
 
-        return $this->view('emails.welkome.' . $this->user->roles->first()->name)
+        return $this->view('emails.welcome.' . $this->user->roles->first()->name)
             ->subject(trans('email.active'))
             ->with([
                 'user' => $this->user,

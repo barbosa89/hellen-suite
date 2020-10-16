@@ -13,22 +13,22 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => 'Welkome',
-            'email' => 'root@welkome.com',
+            'name' => 'Root',
+            'email' => 'root@dev.com',
             'password' => bcrypt('root'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
 
         User::create([
             'name' => 'Manager',
-            'email' => 'manager@welkome.com',
+            'email' => 'manager@dev.com',
             'password' => bcrypt('manager'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
         ]);
 
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@welkome.com',
+            'email' => 'admin@dev.com',
             'password' => bcrypt('admin'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
 
         User::create([
             'name' => 'Accountant',
-            'email' => 'accountant@welkome.com',
+            'email' => 'accountant@dev.com',
             'password' => bcrypt('accountant'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
 
         User::create([
             'name' => 'Receptionist',
-            'email' => 'receptionist@welkome.com',
+            'email' => 'receptionist@dev.com',
             'password' => bcrypt('receptionist'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2
@@ -52,7 +52,7 @@ class UsersTableSeeder extends Seeder
 
         User::create([
             'name' => 'Cashier',
-            'email' => 'cashier@welkome.com',
+            'email' => 'cashier@dev.com',
             'password' => bcrypt('cashier'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'parent' => 2

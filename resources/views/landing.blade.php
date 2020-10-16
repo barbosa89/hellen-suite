@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>{{ config('app.name', 'Welkome') }}</title>
+    <title>{{ config('app.name') }}</title>
     <meta charset="utf-8">
     <meta name="keywords" content="Hotel" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -227,8 +227,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-5">
                 <div class="row process-grids">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h4 class="mb-4">¿Qué es Welkome?</h4>
-                        <p class="mb-3">Welkome es una aplicación web para la administración de hoteles y modelos de negocio similares,
+                        <h4 class="mb-4">¿Qué es {{ config('app.name') }}?</h4>
+                        <p class="mb-3">{{ config('app.name') }} es una aplicación web para la administración de hoteles y modelos de negocio similares,
                             está orientada a facilitar controles operativos, y desarrollo de funciones administrativas y de gerencia.
                         </p>
                         <p>
@@ -249,7 +249,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <h4 class="mb-4">Filosofía</h4>
                         <p class="mb-3">
                                 La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado
-                                de satisfacción en sus clientes; Welkome, permite la optimización de todos los procesos, y asegura la
+                                de satisfacción en sus clientes; {{ config('app.name') }}, permite la optimización de todos los procesos, y asegura la
                                 continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
                         </p>
                         <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan básico y después
@@ -711,7 +711,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Aprende sobre Welkome</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Aprende sobre {{ config('app.name') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>

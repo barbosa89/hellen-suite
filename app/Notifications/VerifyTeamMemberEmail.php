@@ -82,7 +82,7 @@ class VerifyTeamMemberEmail extends Notification
                     ->line('Tu contraseña temporal es: ' . $this->password)
                     ->line('Por favor, haz clic en el siguiente enlace para verificar tu correo.')
                     ->action('Verificar correo', $url)
-                    ->line('Gracias por ser parte de Welkome!');
+                    ->line('Gracias por ser parte de ' . config('app.name'));
     }
 
     /**
