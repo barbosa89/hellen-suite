@@ -37,7 +37,7 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/sweetalert2/dist/sweetalert2.all.js',
         'public/js/sb-admin.js',
         'node_modules/chart.js/dist/Chart.bundle.js',
-        'public/js/common.js'
+        'resources/js/common.js'
     ], 'public/js/scripts.js')
     .styles([
         'public/css/animation-aos.css',

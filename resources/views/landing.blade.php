@@ -52,7 +52,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 </div>
                                 <div id="word-mark">
                                     <h1>
-                                        <a href="{{ url('/') }}">{{ config('app.name') }}</a>
+                                        <a href="{{ url('/') }}" id="app-name">
+                                            <span class="font-weight-bold">Hellen</span><span class="font-weight-light">Suite</span>
+                                        </a>
                                     </h1>
                                 </div>
                             </div>
@@ -69,9 +71,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <ul id="menu-list" class="text-center nav-agile">
                                     <li>
                                         <a href="{{ url('/') }}" class="active">Inicio</a>
-                                    </li>
-                                    <li>
-                                        <a href="#choose" class="scroll">Por qué elegirnos</a>
                                     </li>
                                     <li>
                                         <a href="#overview" class="scroll">La aplicación</a>
@@ -111,7 +110,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <h3 class="txt-w3_agile">para administrar tu hotel de manera fácil.</h3>
                         <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">Leer más</a>
-                        <a class="btn mt-4 text-capitalize"  href="#" data-toggle="modal" data-target="#exampleModal" role="button">Ver vídeo<i class="fa fa-play-circle"></i></a>
+                        <a class="btn mt-4 text-capitalize" href="#contact" role="button">Contacto</a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
                         <h5><i class="fas mr-2 fa-laptop"></i> Regístrate</h5>
@@ -154,33 +153,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //banner -->
     </header>
     <!-- //header -->
-        <!-- banner bottom -->
-        <section class="banner-bottom py-5">
-            <div class="container py-md-3">
-                <h4 class="text-center">Con el respaldo de las mejores tecnologías</h4>
-                <ul class="list-unstyled pt-5 partners-icon text-center">
-                    <li>
-                        <i class="fab fa-laravel clr2"></i>
-                    </li>
-                    <li>
-                        <i class="fab fa-vuejs clr5"></i>
-                    </li>
-                    <li>
-                        <i class="fab fa-html5 clr4"></i>
-                    </li>
-                    <li>
-                        <i class="fab fa-css3-alt clr3"></i>
-                    </li>
-                    <li>
-                        <i class="fab fa-bootstrap clr6"></i>
-                    </li>
-                    <li>
-                        <i class="fab fa-linux clr1"></i>
-                    </li>
-                </ul>
+        <!-- process -->
+        <section class="process py-5" id="overview">
+            <div class="container py-md-5">
+                <div class="row process-grids">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <h4 class="mb-4">¿Qué es {{ config('app.name') }}?</h4>
+                        <p class="mb-3">{{ config('app.name') }} es una aplicación web para la administración de hoteles y modelos de negocio similares,
+                            está orientada a facilitar controles operativos, y desarrollo de funciones administrativas y de gerencia.
+                        </p>
+                        <p>
+                            Está compuesta por diferentes módulos especializados y también comunes de la empresa, como lo son facturación,
+                            inventarios y demás. Entre los módulos especializados, se encuentran el potente paquete de bitácora y el de utilería,
+                            con los cuales tendrás información valiosa, y en tiempo real, de los acontecimientos del día a día.
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
+                        <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
+                    </div>
+                </div>
+                <div class="row process-grids mt-5">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
+                        <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <h4 class="mb-4">Filosofía</h4>
+                        <p class="mb-3">
+                                La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado
+                                de satisfacción en sus clientes; {{ config('app.name') }}, permite la optimización de todos los procesos, y asegura la
+                                continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
+                        </p>
+                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan básico y después
+                            abonarte a un mejor plan con todas las funcionalidades.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
-        <!-- //banner bottom -->
+        <!-- //process -->
         <!-- why choose us -->
         <section class="choose py-5" id="choose">
             <div class="container py-md-3">
@@ -222,44 +232,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
         </section>
         <!-- //quote -->
-        <!-- process -->
-        <section class="process py-5" id="overview">
-            <div class="container py-md-5">
-                <div class="row process-grids">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h4 class="mb-4">¿Qué es {{ config('app.name') }}?</h4>
-                        <p class="mb-3">{{ config('app.name') }} es una aplicación web para la administración de hoteles y modelos de negocio similares,
-                            está orientada a facilitar controles operativos, y desarrollo de funciones administrativas y de gerencia.
-                        </p>
-                        <p>
-                            Está compuesta por diferentes módulos especializados y también comunes de la empresa, como lo son facturación,
-                            inventarios y demás. Entre los módulos especializados, se encuentran el potente paquete de bitácora y el de utilería,
-                            con los cuales tendrás información valiosa, y en tiempo real, de los acontecimientos del día a día.
-                        </p>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
-                    </div>
-                </div>
-                <div class="row process-grids mt-5">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h4 class="mb-4">Filosofía</h4>
-                        <p class="mb-3">
-                                La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado
-                                de satisfacción en sus clientes; {{ config('app.name') }}, permite la optimización de todos los procesos, y asegura la
-                                continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
-                        </p>
-                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan básico y después
-                            abonarte a un mejor plan con todas las funcionalidades.
-                        </p>
-                    </div>
-                </div>
+        <!-- banner bottom -->
+        <section class="banner-bottom py-5">
+            <div class="container py-md-3">
+                <h4 class="text-center">Con el respaldo de las mejores tecnologías</h4>
+                <ul class="list-unstyled pt-5 partners-icon text-center">
+                    <li>
+                        <i class="fab fa-laravel clr2"></i>
+                    </li>
+                    <li>
+                        <i class="fab fa-vuejs clr5"></i>
+                    </li>
+                    <li>
+                        <i class="fab fa-html5 clr4"></i>
+                    </li>
+                    <li>
+                        <i class="fab fa-css3-alt clr3"></i>
+                    </li>
+                    <li>
+                        <i class="fab fa-bootstrap clr6"></i>
+                    </li>
+                    <li>
+                        <i class="fab fa-linux clr1"></i>
+                    </li>
+                </ul>
             </div>
         </section>
-        <!-- //process -->
+        <!-- //banner bottom -->
         <!--/pricing -->
         <section class="pricing bg-light py-5" id="pricing">
             <div class="container py-lg-3">
@@ -706,26 +705,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </p>
         </div>
         <!-- //copyright -->
-        <!-- video Modal Popup -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Aprende sobre {{ config('app.name') }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body video">
-                        <iframe src="https://player.vimeo.com/video/43982091"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- //video Model Popup -->
     </div>
 
     <!-- Bootstrap core JavaScript -->
