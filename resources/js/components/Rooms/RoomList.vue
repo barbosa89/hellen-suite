@@ -1,3 +1,4 @@
+
 <template>
     <div class="container-fluid">
         <div class="row mb-4">
@@ -69,11 +70,7 @@
                             <small class="d-block noselect">$ {{ new Intl.NumberFormat("de-DE").format(room.price) }}</small>
                         </p>
                         <p class="text-center mb-2">
-                            <i class="text-info fa" v-if="room.status == '0'" :class="room.status == '0' ? 'fa-tags' : ''"></i>
-                            <i class="text-info fa" v-else-if="room.status == '1'" :class="room.status == '1' ? 'fa-check' : ''"></i>
-                            <i class="text-info fa" v-else-if="room.status == '2'" :class="room.status == '2' ? 'fa-broom' : ''"></i>
-                            <i class="text-info fa" v-else-if="room.status == '4'" :class="room.status == '4' ? 'fa-wrench' : ''"></i>
-                            <i class="text-info fa" v-else :class="room.status == '3' ? 'fa-lock' : ''"></i>
+                            <i class="text-info fa" :class="getStatusIcon(room)"></i>
                             <span class="d-inline-block">{{ room.capacity }}</span>
                         </p>
                     </div>
@@ -347,6 +344,29 @@
                         this.$root.$t('common.not.allowed')
                     );
                 }
+            },
+            getStatusIcon(room) {
+                if (room.status == '0') {
+                    return 'fa-tags'
+                }
+
+                if (room.status == '1') {
+                    return 'fa-check'
+                }
+
+                if (room.status == '2') {
+                    return 'fa-broom'
+                }
+
+                if (room.status == '3') {
+                    return 'fa-lock'
+                }
+
+                if (room.status == '4') {
+                    return 'fa-wrench'
+                }
+
+                return 'fa-lock'
             }
         },
     }

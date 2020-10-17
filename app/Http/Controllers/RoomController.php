@@ -246,14 +246,11 @@ class RoomController extends Controller
         $room->description = $request->description;
         $room->min_price = (float) $request->min_price;
         $room->description = $request->description;
-        $room->status = '1';
         $room->capacity = (int) $request->capacity;
 
-        if (in_array((int) $request->tax_status, [1,2])) {
-            $room->tax_status = $request->tax_status;
+        if ((int) $request->tax_status == 1) {
             $room->tax = (float) $request->tax;
         } else {
-            $room->tax_status = "0";
             $room->tax = 0.0;
         }
 
@@ -263,7 +260,7 @@ class RoomController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('rooms.show', [
-                'room' => id_encode($room->id)
+                'id' => id_encode($room->id)
             ]);
         }
 

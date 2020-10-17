@@ -19,7 +19,7 @@ class CreateRoomsTable extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->decimal('min_price', 10, 2);
-            $table->decimal('tax', 8, 4)->default(0.0);
+            $table->decimal('tax', 4, 2)->default(0.0);
             $table->boolean('is_suite')->default(false);
             $table->mediumInteger('capacity');
             $table->mediumInteger('floor');
