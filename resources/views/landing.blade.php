@@ -16,7 +16,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Icon -->
-    <link href="{{ asset('images/icon.png') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -45,9 +45,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="row">
                         <div class="col-8 col-sm-8 col-md-8 col-lg-4 col-xl-4">
                             <div id="brand">
-                                <div id="logo">
+                                <div id="logo" class="text-center pt-2">
                                     <a href="{{ url('/') }}">
-                                        <i class="fa fa-bed"></i>
+                                        <img src="{{ asset('images/white-logo.png') }}" width="40" height="40" alt="{{ config('app.name') }}">
                                     </a>
                                 </div>
                                 <div id="word-mark">
@@ -108,7 +108,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 La suite más completa
                             </h2>
                         </div>
-                        <h3 class="txt-w3_agile">para administrar tu hotel de manera fácil.</h3>
+                        <h3 class="txt-w3_agile">para administrar tu hotel.</h3>
                         <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">Leer más</a>
                         <a class="btn mt-4 text-capitalize" href="#contact" role="button">Contacto</a>
                     </div>

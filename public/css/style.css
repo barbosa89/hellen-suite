@@ -73,7 +73,7 @@ ul {
 /*** Header Styles ***/
 
 header.index-banner {
-    /* width: 100vw; 
+    /* width: 100vw;
   height: 100vh;*/
 }
 
@@ -130,7 +130,7 @@ ul.nav-agile {
 #logo {
     width: 55px;
     height: 55px;
-    background: #00BCD4;
+    /* background: #00BCD4; */
     border-radius: 50%;
     cursor: pointer;
 }
