@@ -634,7 +634,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="container py-md-4">
                     <div class="footer-grid_section text-center">
                         <div class="footer-title mb-3">
-                            <a href="{{ url('/') }}"><i class="fa fa-bed mr-2"></i> {{ config('app.name') }}</a>
+                            <a href="{{ url('/') }}">
+                                <img src="{{ asset('images/blue-logo.png') }}" alt="{{ config('app.name') }}">
+                                <span class="font-weight-bold">Hellen</span><span class="font-weight-light">Suite</span>
+                            </a>
                         </div>
                         <div class="footer-text">
                             <p>
@@ -661,7 +664,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="col-lg-4 col-md-6 mt-md-0 mt-4 footer-grid_section_1its_w3">
                             <div class="footer-title">
-                                <h3>Quick Links</h3>
+                                <h3>Enlaces rápidos</h3>
                             </div>
                             <div class="row">
                                 <ul class="col-6 links">

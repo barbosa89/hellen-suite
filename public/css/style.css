@@ -1219,12 +1219,12 @@ ul.links li a:hover {
     color: #eee;
 }
 
-.footer-title a i {
+.footer-title a img {
     font-size: 1em;
     width: 55px;
     height: 55px;
-    background: #00BCD4;
-    border-radius: 50%;
+    /* background: #00BCD4;
+    border-radius: 50%; */
     cursor: pointer;
     text-align: center;
     line-height: 1.7;
