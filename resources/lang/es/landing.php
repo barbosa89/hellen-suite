@@ -28,4 +28,12 @@ return array (
   'phone' => 'Teléfono',
   'copyright' => 'Derechos de autor',
   'demo' => 'Demostración en vídeo',
+  'subscribers' => 
+  array (
+    'pending' => 'Un mensaje fue enviado a su dirección de correo electrónico para verificar tu suscripción',
+    'exists' => 'Ya estás suscrito a este boletin',
+    'leaves' => 'Tu suscripción ha sido eliminada',
+    'title' => 'Boletines',
+    'unknown' => 'No está suscrito a nuestro boletín, le invitamos a suscribirse',
+  ),
 );

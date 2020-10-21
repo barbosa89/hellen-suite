@@ -18,13 +18,7 @@ Route::get('/test', function () {
     abort(403);
 });
 
-Route::get('/', function () {
-    if (config('settings.env') == 'desktop') {
-        return redirect(route('login'));
-    }
-
-    return view('landing');
-});
+Route::view('/', 'landing');
 
 Route::get('/account/verify/{email}/{token}', 'AccountController@verify')
     ->name('account.verify')
@@ -35,6 +29,13 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('language/{locale}', 'LanguageController@locale');
+
+Route::post('/subscribe', 'SubscriberController@subscribe')
+    ->name('subscribe')
+    ->middleware(['sanitize', 'honeypot']);
+
+Route::get('/unsubscribe/{email}', 'SubscriberController@unsubscribe')
+    ->name('unsubscribe');
 
 require __DIR__ . '/root.php';
 

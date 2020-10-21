@@ -37,6 +37,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
     <div id="app">
+        @include('flash::message')
+
     <!-- header -->
     <header class="index-banner">
         <!-- nav -->
@@ -689,9 +691,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                             <div class="footer-text">
                                 <p>Recibe por correo electrónico, todas las novedades del sitio.</p>
-                                <form action="#" method="post">
-                                    <input type="email" name="Email" placeholder="Ingresa tu correo.." required="">
-                                    <button class="btn1"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                <form action="{{ route('subscribe') }}" method="post">
+                                    @csrf
+                                    @honeypot
+
+                                    <input type="email" name="email" id="email" placeholder="{{ trans('common.email') }}" required="">
+                                    <button class="btn1" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                     <div class="clearfix"> </div>
                                 </form>
                             </div>
@@ -756,6 +761,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
 
         });
+
+        $('#flash-overlay-modal').modal();
     </script>
 </body>
 </html>

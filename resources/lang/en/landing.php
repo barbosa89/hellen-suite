@@ -28,4 +28,12 @@ return array (
   'phone' => 'Phone',
   'copyright' => 'Copyright',
   'demo' => 'Video demonstration',
+  'subscribers' => 
+  array (
+    'exists' => 'You are already subscribed',
+    'leaves' => 'Your subscription has been deleted',
+    'pending' => 'A message was sent to your email address to verify your subscription',
+    'title' => 'Newsletters',
+    'unknown' => 'You are not subscribed to our newsletter, we invite you to subscribe',
+  ),
 );
