@@ -975,6 +975,7 @@ ul.faq p {
 }
 
 .contact input[type="text"],
+.contact input[type="tel"],
 .contact input[type="email"],
 .contact textarea {
     color: #333;

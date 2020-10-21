@@ -37,6 +37,10 @@ Route::post('/subscribe', 'SubscriberController@subscribe')
 Route::get('/unsubscribe/{email}', 'SubscriberController@unsubscribe')
     ->name('unsubscribe');
 
+Route::post('/message', 'ContactController@message')
+    ->name('message')
+    ->middleware(['sanitize', 'honeypot']);
+
 require __DIR__ . '/root.php';
 
 // Modules

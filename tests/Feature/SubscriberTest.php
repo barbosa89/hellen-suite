@@ -36,7 +36,7 @@ class SubscriberTest extends TestCase
         $this->assertEquals(true, $message->overlay);
     }
 
-    public function test_it_check_the_user_is_already_subscribed()
+    public function test_it_check_the_guest_is_already_subscribed()
     {
         $email = 'contacto@omarbarbosa.com';
 
@@ -59,7 +59,7 @@ class SubscriberTest extends TestCase
         $this->assertEquals(true, $message->overlay);
     }
 
-    public function test_user_can_unsubscribe()
+    public function test_guest_can_unsubscribe()
     {
         $email = 'contacto@omarbarbosa.com';
 
@@ -81,7 +81,7 @@ class SubscriberTest extends TestCase
         $this->assertEquals(true, $message->overlay);
     }
 
-    public function test_user_cannot_unsubscribe_because_is_not_subscribed()
+    public function test_guest_cannot_unsubscribe_because_is_not_subscribed()
     {
         $email = 'contacto@omarbarbosa.com';
 

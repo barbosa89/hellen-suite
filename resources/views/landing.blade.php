@@ -603,28 +603,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <section class="contact py-5" id="contact">
             <div class="container py-lg-3">
                 <h3 class="heading mb-5 text-center"> Contacto</h3>
-                <form action="#" method="post">
+                <form action="{{ route('message') }}" method="post">
+                    @csrf
+                    @honeypot
+
                     <div class="row">
                         <div class="col-md-6 styled-input mt-0">
-                            <input type="text" name="Name" placeholder="Nombre" required="">
+                            <input type="text" name="name" placeholder="{{ trans('common.name') }}" required="" min="3" max="100">
                         </div>
                         <div class="col-md-6 styled-input mt-md-0">
-                            <input type="text" name="Name" placeholder="Apellido" required="">
+                            <input type="text" name="lastname" placeholder="{{ trans('common.lastName') }}" required="" min="3" max="100">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 styled-input">
-                            <input type="email" name="Email" placeholder="Correo electrónico" required="">
+                            <input type="email" name="email" placeholder="{{ trans('common.email') }}" required="">
                         </div>
                         <div class="col-md-6 styled-input">
-                            <input type="text" name="phone" placeholder="Número telefónico" required="">
+                            <input type="tel" name="phone" placeholder="{{ trans('common.mobile') }}" required="">
                         </div>
                     </div>
                     <div class="styled-input">
-                        <textarea name="Message" placeholder="Mensaje" required=""></textarea>
+                        <textarea name="message" placeholder="{{ trans('notes.content') }}" required="" minlength="20" maxlength="500"></textarea>
                     </div>
                     <div class="click text-center mt-3">
-                        <input type="submit" value="Enviar">
+                        <input type="submit" value="{{ trans('email.send') }}">
                     </div>
                 </form>
             </div>
