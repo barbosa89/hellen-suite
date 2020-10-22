@@ -37,12 +37,12 @@ class ContactMessage extends Mailable
     public function build()
     {
         return $this->view('emails.message')
-            ->replyTo($this->message->email)
+            ->replyTo($this->message->contact_email)
             ->with([
-                'name' => $this->message->name,
-                'email' => $this->message->email,
-                'phone' => $this->message->phone,
-                'msg' => $this->message->message,
+                'name' => $this->message->contact_name,
+                'email' => $this->message->contact_email,
+                'phone' => $this->message->contact_phone,
+                'msg' => $this->message->contact_message,
             ]);
     }
 }

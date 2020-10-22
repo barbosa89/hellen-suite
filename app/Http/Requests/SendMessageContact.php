@@ -24,11 +24,11 @@ class SendMessageContact extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:100|min:3',
-            'lastname' => 'required|string|max:100|min:3',
-            'email' => 'required|email:rfc,dns,spoof,filter,strict',
-            'phone' => 'required|numeric|digits_between:7,13',
-            'message' => 'required|string|max:500|min:20',
+            'contact_name' => 'required|string|alpha|max:100|min:3',
+            'contact_lastname' => 'required|string|alpha|max:100|min:3',
+            'contact_email' => 'required|email:rfc,dns,spoof,filter,strict',
+            'contact_phone' => 'required|numeric|digits_between:7,13',
+            'contact_message' => 'required|string|max:500|min:20',
         ];
     }
 }

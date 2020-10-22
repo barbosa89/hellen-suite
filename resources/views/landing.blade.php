@@ -609,22 +609,52 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     <div class="row">
                         <div class="col-md-6 styled-input mt-0">
-                            <input type="text" name="name" placeholder="{{ trans('common.name') }}" required="" min="3" max="100">
+                            <input type="text" name="contact_name" value="{{ old('contact_name') }}" placeholder="{{ trans('common.name') }}" required="" min="3" max="100" pattern="[a-zA-Z]+">
+
+                            @error('contact_name')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="col-md-6 styled-input mt-md-0">
-                            <input type="text" name="lastname" placeholder="{{ trans('common.lastName') }}" required="" min="3" max="100">
+                            <input type="text" name="contact_lastname" value="{{ old('contact_lastname') }}" placeholder="{{ trans('common.lastName') }}" required="" min="3" max="100" pattern="[a-zA-Z]+">
+
+                            @error('contact_lastname')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 styled-input">
-                            <input type="email" name="email" placeholder="{{ trans('common.email') }}" required="">
+                            <input type="email" name="contact_email" value="{{ old('contact_email') }}" placeholder="{{ trans('common.email') }}" required="">
+
+                            @error('contact_email')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="col-md-6 styled-input">
-                            <input type="tel" name="phone" placeholder="{{ trans('common.mobile') }}" required="">
+                            <input type="tel" name="contact_phone" value="{{ old('contact_phone') }}" placeholder="{{ trans('common.mobile') }}" required="">
+
+                            @error('contact_phone')
+                                <span class="error-message invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                     </div>
                     <div class="styled-input">
-                        <textarea name="message" placeholder="{{ trans('notes.content') }}" required="" minlength="20" maxlength="500"></textarea>
+                        <textarea name="contact_message" value="{{ old('contact_message') }}" placeholder="{{ trans('notes.content') }}" required="" minlength="20" maxlength="500"></textarea>
+
+                        @error('contact_message')
+                            <span class="error-message invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="click text-center mt-3">
                         <input type="submit" value="{{ trans('email.send') }}">

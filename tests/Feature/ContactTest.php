@@ -16,11 +16,11 @@ class ContactTest extends TestCase
         Mail::fake();
 
         $data = [
-            'name' => $this->faker->name,
-            'lastname' => $this->faker->lastName,
-            'email' => 'contacto@omarbarbosa.com',
-            'phone' => '1231231230',
-            'message' => $this->faker->sentence(20)
+            'contact_name' => $this->faker->firstName(),
+            'contact_lastname' => $this->faker->lastName,
+            'contact_email' => 'contacto@omarbarbosa.com',
+            'contact_phone' => '1231231230',
+            'contact_message' => $this->faker->sentence(20)
         ];
 
         $this->post('/message', $data)
@@ -35,7 +35,7 @@ class ContactTest extends TestCase
         $this->assertEquals(true, $message->overlay);
 
         Mail::assertSent(function (ContactMessage $mail) use ($data) {
-            return $mail->message->email === $data['email'];
+            return $mail->message->contact_email === $data['contact_email'];
         });
     }
 }
