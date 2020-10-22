@@ -681,12 +681,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <ul class="social_section_1info">
                             <li class="mb-2 facebook">
-                                <a href="https://www.facebook.com/HellenSuite" target=”_blank” rel=”noopener noreferrer”>
+                                <a href="https://www.facebook.com/HellenSuite" target="_blank" rel="noopener noreferrer">
                                     <i class="fab mr-1 fa-facebook-f"></i>facebook
                                 </a>
                             </li>
                             <li class="mb-2 twitter">
-                                <a href="https://twitter.com/@Hellen_Suite" target=”_blank” rel=”noopener noreferrer”>
+                                <a href="https://twitter.com/@Hellen_Suite" target="_blank" rel="noopener noreferrer">
                                     <i class="fab mr-1 fa-twitter"></i>twitter
                                 </a>
                             </li>
@@ -734,7 +734,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     @csrf
                                     @honeypot
 
-                                    <input type="email" name="email" id="email" placeholder="{{ trans('common.email') }}" required="">
+                                    <input type="email" name="email" placeholder="{{ trans('common.email') }}" required="">
                                     <button class="btn1" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                     <div class="clearfix"> </div>
                                 </form>
