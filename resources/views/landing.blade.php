@@ -680,8 +680,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                         <ul class="social_section_1info">
-                            <li class="mb-2 facebook"><a href="https://www.facebook.com/HellenSuite"><i class="fab mr-1 fa-facebook-f"></i>facebook</a></li>
-                            <li class="mb-2 twitter"><a href="https://twitter.com/@Hellen_Suite"><i class="fab mr-1 fa-twitter"></i>twitter</a></li>
+                            <li class="mb-2 facebook">
+                                <a href="https://www.facebook.com/HellenSuite" target=”_blank” rel=”noopener noreferrer”>
+                                    <i class="fab mr-1 fa-facebook-f"></i>facebook
+                                </a>
+                            </li>
+                            <li class="mb-2 twitter">
+                                <a href="https://twitter.com/@Hellen_Suite" target=”_blank” rel=”noopener noreferrer”>
+                                    <i class="fab mr-1 fa-twitter"></i>twitter
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="row footer-top mt-md-5 mt-4">
