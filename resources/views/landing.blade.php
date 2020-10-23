@@ -19,8 +19,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/landing.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/landing.css') }}" rel="stylesheet">
 
     <script>
         addEventListener("load", function () {
@@ -755,8 +755,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </div>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/landing.js') }}"></script>
+    <script src="{{ asset('js/theme.js') }}"></script>
+    <script src="{{ asset('js/landing.js') }}"></script>
     <script>
 		$(() => {
             //On Scroll Functionality
