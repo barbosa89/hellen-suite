@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'env' => env('ENVIRONMENT', 'web'),
+    'tel' => env('APP_TEL', ''),
 
     'paginate' => 20,
 
@@ -221,7 +221,8 @@ return [
         'vehicles',
         'props',
         'dining',
-        'tags'
+        'tags',
+        'plans',
     ],
 
     /*

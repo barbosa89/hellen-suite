@@ -23,7 +23,7 @@ class ContactTest extends TestCase
             'contact_message' => $this->faker->sentence(20)
         ];
 
-        $this->post('/message', $data)
+        $this->post(route('message'), $data)
             ->assertRedirect('/');
 
         $message = session('flash_notification')->first();

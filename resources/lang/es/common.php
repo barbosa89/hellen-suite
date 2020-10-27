@@ -175,4 +175,7 @@ return array (
   array (
     'tax' => 'Con impuesto',
   ),
+  'lang' => 'Lenguaje',
+  'month' => 'Mes',
+  'months' => 'Meses',
 );

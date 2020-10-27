@@ -29,6 +29,18 @@
             <i class="fas fa-fw fa-users"></i>
             <span>@lang('users.title')</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/translations') }}">
+            <i class="fas fa-fw fa-language"></i>
+            <span>@lang('common.lang')</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('plans.index') }}">
+            <i class="fas fa-fw fa-star"></i>
+            <span>@lang('plans.title')</span></a>
+        </li>
     @endrole
 
     @can('hotels.index')
@@ -135,17 +147,21 @@
         </li>
     @endcan
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('notes.index') }}">
-        <i class="fas fa-fw fa-book"></i>
-        <span>@lang('notes.title')</span></a>
-    </li>
+    @can('notes.index')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('notes.index') }}">
+            <i class="fas fa-fw fa-book"></i>
+            <span>@lang('notes.title')</span></a>
+        </li>
+    @endcan
 
+    @can('tags.index')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('tags.index') }}">
         <i class="fas fa-fw fa-tags"></i>
         <span>Tags</span></a>
     </li>
+    @endcan
 
     @role('manager')
         <li class="nav-item">

@@ -265,179 +265,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <section class="pricing bg-light py-5" id="pricing">
             <div class="container py-lg-3">
                 <div class="inner-sec">
-                    <h3 class="heading mb-5 text-center"> Precios de los planes</h3>
+                    <h3 class="heading mb-5 text-center">
+                        @lang('plans.prices')
+                    </h3>
                     <div class="price-right">
-                        <div class="tabs">
-                            <ul class="nav nav-pills my-md-5 my-3 justify-content-center" id="pills-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Web</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Escritorio</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                    <div class="menu-grids">
-                                        <div class="row t-in">
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Básico</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class=""></span>Gratis<span>/siempre</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-check"></i> 1 hotel</li>
-                                                            <li><i class="fas fa-check"></i> 3 usuarios</li>
-                                                            <li><i class="fas fa-check"></i> 30 habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> Soporte por email</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Intermedio</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>80.000<span>/semestre</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
-                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
-                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Estándar</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>120.000<span>/anual</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
-                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
-                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-times"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Completo</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>240.000<span>/anual</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
-                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
-                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-check"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                        <div class="menu-grids">
+                            <div class="row t-in">
+                                @foreach ($plans as $plan)
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 price-main-info">
+                                        <div class="price-inner card box-shadow p-4">
+                                            <div class="card-body">
+                                                <h4 class="">{{ trans('plans.type.' . Str::lower($plan->type)) }}</h4>
+                                                <h5 class="card-title pricing-card-title">
+                                                    <span class=""></span>$ {{ number_format($plan->price, 0, '.', ',') }}<span>/{{ $plan->months }} @lang('common.months')</span>
+                                                </h5>
+
+                                                @includeFirst([
+                                                    'app.plans.types.' . Str::lower($plan->type),
+                                                    'app.plans.types.default'
+                                                ])
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <div class="menu-grids">
-                                        <div class="row t-in">
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Un equipo</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>500.000<span>/siempre</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
-                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
-                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-infinity"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Notas</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            Un equipo
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-check-circle"></i> Se realizará una única instalación</li>
-                                                            <li><i class="fas fa-check-circle"></i> El costo indicado es por instalación realizada</li>
-                                                            <li><i class="fas fa-check-circle"></i> No hay garantías por pérdidas de la información</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Red local</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            <span class="">$</span>1.000.000<span>/siempre</span>
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-infinity"></i> Sedes</li>
-                                                            <li><i class="fas fa-infinity"></i> Usuarios</li>
-                                                            <li><i class="fas fa-infinity"></i> Habitaciones</li>
-                                                            <li><i class="fas fa-infinity"></i> Módulos</li>
-                                                            <li><i class="fas fa-check"></i> 24/7 soporte</li>
-                                                        </ul>
-                                                        <div class="log-in mt-md-3 mt-2">
-                                                            <a class="btn scroll" href="#contact">Seleccionar</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 price-main-info">
-                                                <div class="price-inner card box-shadow p-4">
-                                                    <div class="card-body">
-                                                        <h4 class="">Notas</h4>
-                                                        <h5 class="card-title pricing-card-title">
-                                                            Red local
-                                                        </h5>
-                                                        <ul class="list-unstyled mt-3 mb-4">
-                                                            <li><i class="fas fa-check-circle"></i> No incluye el costo del montaje, servidor, cableado o equipos</li>
-                                                            <li><i class="fas fa-check-circle"></i> Sólo incluye la configuración de servidor y el despliegue de la aplicación</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -602,7 +452,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- contact -->
         <section class="contact py-5" id="contact">
             <div class="container py-lg-3">
-                <h3 class="heading mb-5 text-center"> Contacto</h3>
+                <h3 class="heading mb-5 text-center"> @lang('landing.contact')</h3>
                 <form action="{{ route('message') }}" method="post">
                     @csrf
                     @honeypot
@@ -695,12 +545,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="row footer-top mt-md-5 mt-4">
                         <div class="col-lg-4 col-md-6 footer-grid_section_1its_w3">
                             <div class="footer-title">
-                                <h3>Dirección</h3>
+                                <h3>@lang('common.address')</h3>
                             </div>
                             <div class="footer-text">
-                                <p>Dirección : Bucaramanga - Santander</p>
-                                <p>Móvil : <i class="fab fa-whatsapp"></i> +57 310 650 2285</p>
-                                <p>Correo : <a href="mailto:contacto@omarbarbosa.com">contacto@omarbarbosa.com</a></p>
+                                <p>@lang('common.address') : Bucaramanga - Santander</p>
+                                <p>@lang('common.mobile') : <i class="fab fa-whatsapp"></i> <a href="tel:+57{{ config('settings.tel') }}">{{ config('settings.tel') }}</a></p>
+                                <p>@lang('common.emailOnly') : <a href="mailto:{{ config('mail.from.address') }}">{{ config('mail.from.address') }}</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 mt-md-0 mt-4 footer-grid_section_1its_w3">

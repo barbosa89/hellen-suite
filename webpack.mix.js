@@ -56,5 +56,5 @@ mix.js('resources/js/app.js', 'public/js')
     ], 'public/js/editor.js')
     .sourceMaps()
     .browserSync({
-        proxy: process.env.APP_URL
+        proxy: 'hellen.localhost'
     });

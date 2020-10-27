@@ -18,7 +18,7 @@ Route::get('/test', function () {
     abort(403);
 });
 
-Route::view('/', 'landing');
+Route::get('/', 'LandingController@index');
 
 Route::get('/account/verify/{email}/{token}', 'AccountController@verify')
     ->name('account.verify')
@@ -60,3 +60,4 @@ require __DIR__ . '/modules/dining.php';
 require __DIR__ . '/modules/shifts.php';
 require __DIR__ . '/modules/tags.php';
 require __DIR__ . '/modules/notes.php';
+require __DIR__ . '/modules/plans.php';

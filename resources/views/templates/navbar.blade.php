@@ -48,7 +48,11 @@
                 <a class="dropdown-item" href="#">Configuraciones</a>
                 @hasanyrole('root|manager')
                     <a class="dropdown-item" href="#">Registros de actividad</a>
-                @endhasanyrole                <div class="dropdown-divider"></div>
+                @endhasanyrole
+                @role('manager')
+                    <a class="dropdown-item" href="#">Mi plan</a>
+                @endrole
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">@lang('login.logout')</a>
 

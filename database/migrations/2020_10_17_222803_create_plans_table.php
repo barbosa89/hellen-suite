@@ -15,10 +15,10 @@ class CreatePlansTable extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->enum('type', ['FREE', 'BASIC', 'PREMIUM', 'PARTNER']);
+            $table->float('price');
+            $table->integer('months');
+            $table->enum('type', ['FREE', 'BASIC', 'PREMIUM', 'SPONSOR']);
             $table->boolean('status')->default(true);
-            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
     }

@@ -171,3 +171,8 @@ Breadcrumbs::for('tag', function ($trail, $tag) {
     $trail->parent('tags');
     $trail->push($tag->slug, route('tags.index'));
 });
+
+Breadcrumbs::for('plans', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('plans.title'), route('plans.index'));
+});

@@ -1,10 +1,10 @@
 <div class="crud-list-row">
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-            <p><a href="{{ route('users.show', ['id' => id_encode($row->id)]) }}">{{ $row->name }}</a></p>
+            <p><a href="{{ route('users.show', ['user' => id_encode($row->id)]) }}">{{ $row->name }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <p><a href="{{ route('users.show', ['id' => id_encode($row->id)]) }}">{{ $row->email }}</a></p>
+            <p><a href="{{ route('users.show', ['user' => id_encode($row->id)]) }}">{{ $row->email }}</a></p>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
             <p>
@@ -21,13 +21,13 @@
                 'options' => [
                     [
                         'option' => trans('common.show'),
-                        'url' => route('users.show', ['id' => id_encode($row->id)]),
+                        'url' => route('users.show', ['user' => id_encode($row->id)]),
                     ],
                     [
                         'type' => 'confirm',
                         'option' => trans('common.delete.item'),
                         'url' => route('users.destroy', [
-                            'id' => id_encode($row->id)
+                            'user' => id_encode($row->id)
                         ]),
                         'method' => 'DELETE'
                     ],

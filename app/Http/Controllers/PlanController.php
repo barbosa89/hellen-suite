@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePlan;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 
@@ -14,72 +15,49 @@ class PlanController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $plans = Plan::allColumns()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Plan  $plan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Plan $plan)
-    {
-        //
+        return view('app.plans.index', compact('plans'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Plan  $plan
+     * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Plan $plan)
+    public function edit(string $id)
     {
-        //
+        $plan = Plan::allColumns()
+            ->where('id', id_decode($id))
+            ->first();
+
+        return view('app.plans.edit', compact('plan'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Plan  $plan
+     * @param  \App\Http\Requests\UpdatePlan  $request
+     * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Plan $plan)
+    public function update(UpdatePlan $request, string $id)
     {
-        //
-    }
+        $plan = Plan::allColumns()
+            ->where('id', id_decode($id))
+            ->first();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Plan  $plan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Plan $plan)
-    {
-        //
+        $plan->fill($request->validated());
+
+        if ($plan->save()) {
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('plans.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 }

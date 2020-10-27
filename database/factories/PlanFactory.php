@@ -6,7 +6,7 @@ use App\Models\Plan;
 use Faker\Generator as Faker;
 
 $factory->define(Plan::class, function (Faker $faker) {
-    $types = [Plan::FREE, Plan::BASIC, Plan::PREMIUM, Plan::PARTNER];
+    $types = [Plan::FREE, Plan::BASIC, Plan::PREMIUM, Plan::SPONSOR];
 
     return [
         'description' => $faker->text(8),

@@ -22,7 +22,7 @@ class RoomRepository implements Repository
     public function findById(int $id): Room
     {
         $room = Room::byId($id)
-            ->theseColumns()
+            ->allColumns()
             ->firstOrFail();
 
         // $room->load();
@@ -39,7 +39,7 @@ class RoomRepository implements Repository
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Room::where('user_id', id_parent())
-            ->theseColumns()
+            ->allColumns()
             ->paginate($perPage);
     }
 
@@ -52,7 +52,7 @@ class RoomRepository implements Repository
     public function all(array $filters = []): Collection
     {
         return Room::where('user_id', id_parent())
-            ->theseColumns()
+            ->allColumns()
             ->get();
     }
 

@@ -32,7 +32,7 @@ trait Queryable {
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeTheseColumns($query, bool $dotted = false)
+    public function scopeAllColumns($query, bool $dotted = false)
     {
         if ($dotted) {
             $columns = [];
