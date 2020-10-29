@@ -12,7 +12,7 @@
         "barryvdh/laravel-snappy": "^0.4.7",
         "barryvdh/laravel-translation-manager": "^0.5.8",
         "cviebrock/eloquent-sluggable": "^7.0",
-        "davejamesmiller/laravel-breadcrumbs": "^5.3",
+        "diglactic/laravel-breadcrumbs": "^6.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "genealabs/laravel-model-caching": "0.10.2",
@@ -35,7 +35,7 @@
         "spatie/laravel-honeypot": "2.3",
         "spatie/laravel-newsletter": "^4.8",
         "spatie/laravel-permission": "^3.11",
-        "thepinecode/i18n": "^0.8.0",
+        "thepinecode/i18n": "^1.0",
         "vinkla/hashids": "^8.1"
     },
     "require-dev": {

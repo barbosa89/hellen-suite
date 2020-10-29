@@ -19,12 +19,12 @@ class VoucherRepository implements Repository
     /**
      * Create new Note
      *
-     * @param   \Illuminate\Http\Request $request
+     * @param   array $data
      * @return  \App\Models\Voucher
      */
-    public function create(Request $request): Voucher
+    public function create(array $data): Voucher
     {
-
+        return Voucher::create($data);
     }
 
     /**
@@ -35,27 +35,23 @@ class VoucherRepository implements Repository
      */
     public function get(int $id): Voucher
     {
-        // $note = Note::whereUserId(id_parent())
-        //     ->whereId($id)
-        //     ->get(Note::getColumnNames());
-
-        // return $note;
+        return Voucher::findOrFail($id);
     }
 
     /**
      * Update model
      *
-     * @param  Illuminate\Http\Request $request
      * @param  integer $id
+     * @param  array $data
      * @return \App\Models\Voucher
      */
-    public function update(Request $request, int $id): Voucher
+    public function update(int $id, array $data): Voucher
     {
-        // $note = $this->get($id);
-        // $note->content = $request->content;
-        // $note->saveOrFail();
+        $voucher = $this->get($id);
+        $voucher->fill($data);
+        $voucher->saveOrFail();
 
-        // return $note;
+        return $voucher;
     }
 
     /**
