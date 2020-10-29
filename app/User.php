@@ -40,6 +40,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function plans()
+    {
+        return $this->belongsToMany(Models\Plan::class)
+            ->withPivot('ends_at')
+            ->withTimestamps();
+    }
+
     public function hotels()
     {
         return $this->hasMany(Models\Hotel::class);

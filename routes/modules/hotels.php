@@ -33,11 +33,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	Route::post('hotels', 'HotelController@store')
         ->name('hotels.store')
-        ->middleware(['permission:hotels.create']);
+        ->middleware(['verify_plan', 'permission:hotels.create']);
 
 	Route::get('hotels/create', 'HotelController@create')
         ->name('hotels.create')
-        ->middleware(['permission:hotels.create']);
+        ->middleware(['verify_plan', 'permission:hotels.create']);
 
 	Route::get('hotels/{id}', 'HotelController@show')
         ->name('hotels.show')
@@ -45,5 +45,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	Route::get('hotels', 'HotelController@index')
         ->name('hotels.index')
-        ->middleware(['permission:hotels.index']);
+        ->middleware(['verify_plan', 'permission:hotels.index']);
 });

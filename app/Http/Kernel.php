@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'sanitize' => \App\Http\Middleware\SanitizeInput::class,
         'open_shift' => \App\Http\Middleware\OpenShift::class,
         'honeypot' => \Spatie\Honeypot\ProtectAgainstSpam::class,
+        'verify_plan' => \App\Http\Middleware\VerifyUserPlan::class,
     ];
 }

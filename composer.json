@@ -15,6 +15,7 @@
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
+        "genealabs/laravel-model-caching": "0.10.2",
         "guzzlehttp/guzzle": "^6.3",
         "h4cc/wkhtmltoimage-amd64": "^0.12.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",

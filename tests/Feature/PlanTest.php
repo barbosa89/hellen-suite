@@ -6,13 +6,8 @@ use App\User;
 use PlanSeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use App\Models\Hotel;
 use RolesTableSeeder;
-use UsersTableSeeder;
-use AssignmentsSeeder;
-use PermissionsTableSeeder;
 use Illuminate\Support\Facades\Artisan;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

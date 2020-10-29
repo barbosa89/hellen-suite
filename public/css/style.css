@@ -479,7 +479,8 @@ h3.txt-w3_agile {
 
 .banner-form input[type="text"],
 .banner-form input[type="email"],
-.banner-form input[type="password"] {
+.banner-form input[type="password"],
+.banner-form select {
     width: 100%;
     color: #eee;
     outline: none;

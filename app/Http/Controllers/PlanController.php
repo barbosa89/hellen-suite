@@ -60,4 +60,14 @@ class PlanController extends Controller
 
         return back();
     }
+
+    public function choose()
+    {
+        # code...
+    }
+
+    public function renew()
+    {
+        # code...
+    }
 }
