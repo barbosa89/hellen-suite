@@ -38,7 +38,7 @@ class VerifyUserPlanMiddlewareTest extends TestCase
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
         $this->actingAs($user)
-            ->get('/hotels')
+            ->get('/home')
             ->assertRedirect(route('plans.choose'));
 
         $this->actingAs($user)
@@ -66,7 +66,7 @@ class VerifyUserPlanMiddlewareTest extends TestCase
         $user->plans()->attach($this->plan, ['ends_at' => now()->subDay()]);
 
         $this->actingAs($user)
-            ->get('/hotels')
+            ->get('/home')
             ->assertRedirect(route('plans.renew'));
 
         $this->actingAs($user)
@@ -94,7 +94,7 @@ class VerifyUserPlanMiddlewareTest extends TestCase
         $user->plans()->attach($this->plan, ['ends_at' => now()->addMonth()]);
 
         $this->actingAs($user)
-            ->get('/hotels')
+            ->get('/home')
             ->assertOk();
 
         $this->actingAs($user)

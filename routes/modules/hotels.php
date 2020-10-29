@@ -45,5 +45,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 	Route::get('hotels', 'HotelController@index')
         ->name('hotels.index')
-        ->middleware(['verify_plan', 'permission:hotels.index']);
+        ->middleware(['permission:hotels.index']);
 });

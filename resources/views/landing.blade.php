@@ -112,12 +112,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <h3 class="txt-w3_agile">para administrar tu hotel.</h3>
                         <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">Leer más</a>
-                        <a class="btn mt-4 text-capitalize" href="#contact" role="button">Contacto</a>
+                        <a class="btn mt-4 text-capitalize" href="#contact" role="button">@lang('landing.contact')</a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
                         <h5><i class="fas mr-2 fa-laptop"></i> Regístrate</h5>
                         <form action="{{ route('register') }}" class="mt-4" method="post">
                             @csrf
+                            @honeypot
+
                             <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="Nombre" required="" />
                             @error('name')
                                 <span class="error-message invalid-feedback" role="alert">
@@ -146,7 +148,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 </span>
                             @enderror
 
-                            <input class="form-control text-capitalize" type="submit" value="Registrar cuenta">
+                            <input class="form-control text-capitalize" type="submit" value="{{ trans('common.register') }}">
                         </form>
                     </div>
                 </div>
@@ -185,7 +187,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 de satisfacción en sus clientes; {{ config('app.name') }}, permite la optimización de todos los procesos, y asegura la
                                 continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
                         </p>
-                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan básico y después
+                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan gratuito y después
                             abonarte a un mejor plan con todas las funcionalidades.
                         </p>
                     </div>
@@ -635,9 +637,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
 		});
 
-        jQuery(document).ready(function ($) {
+        $(document).ready(function ($) {
             $(".scroll").click(function (event) {
                 event.preventDefault();
+
                 $('html,body').animate({
                     scrollTop: $(this.hash).offset().top
                 }, 900);

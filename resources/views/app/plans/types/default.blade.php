@@ -5,7 +5,7 @@
 </ul>
 
 <div class="log-in mt-md-3 mt-2">
-    <a class="btn scroll" href="tel:+57{{ config('settings.tel') }}">
+    <a class="btn" href="tel:+57{{ config('settings.tel') }}">
         @lang('landing.contact')
     </a>
 </div>

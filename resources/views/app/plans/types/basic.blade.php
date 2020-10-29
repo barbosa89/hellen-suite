@@ -5,5 +5,5 @@
 </ul>
 
 <div class="log-in mt-md-3 mt-2">
-    <a class="btn scroll" href="#contact">@lang('common.select')</a>
+    <a class="btn" href="{{ route('register') }}">@lang('common.select')</a>
 </div>
