@@ -7,6 +7,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('plans.renew')
         ->middleware('role:manager');
 
+    Route::post('plans/buy', 'PlanController@buy')
+        ->name('plans.buy')
+        ->middleware('role:manager');
+
     Route::get('plans/choose', 'PlanController@choose')
         ->name('plans.choose')
         ->middleware('role:manager');

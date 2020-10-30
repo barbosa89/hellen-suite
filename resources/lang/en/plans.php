@@ -17,7 +17,7 @@ return array (
     'basic' => 'All modules for 12 months',
     'free' => 'All modules for 2 months',
     'premium' => 'All modules and electronic invoicing for 12 months',
-    'sponsor' => 'All the features of the platform, including electronic invoicing, with no time limit',
+    'sponsor' => 'All platform features without time limit',
   ),
   'prices' => 'Plan prices',
   'features' => 

@@ -1,7 +1,5 @@
 <ul class="list-unstyled mt-3 mb-4">
-    <li><i class="fas fa-check"></i> @lang('plans.features.unique', ['months' => 2])</li>
-    <li><i class="fas fa-check"></i> @lang('plans.features.all')</li>
-    <li><i class="fas fa-check"></i> @lang('plans.features.support.mail')</li>
+    @include('app.plans.types.features.free')
 </ul>
 
 <div class="log-in mt-md-3 mt-2">

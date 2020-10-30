@@ -17,7 +17,7 @@ return array (
     'free' => 'Todos los módulos por 2 meses',
     'basic' => 'Todos los módulos por 12 meses',
     'premium' => 'Todos los módulos y facturación electrónica por 12 meses',
-    'sponsor' => 'Todas las características de la plataforma, incluyendo facturación electrónica, sin límite de tiempo',
+    'sponsor' => 'Todas las características de la plataforma sin límite de tiempo',
   ),
   'prices' => 'Precios de los planes',
   'features' => 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BuyPlan;
 use App\Http\Requests\UpdatePlan;
 use App\Models\Plan;
 use Illuminate\Http\Request;
@@ -63,7 +64,25 @@ class PlanController extends Controller
 
     public function choose()
     {
-        # code...
+        // All active plans
+        $plans = Plan::active()->get();
+
+        return view('app.plans.choose', compact('plans'));
+    }
+
+    public function buy(BuyPlan $request)
+    {
+        dd($request->toArray());
+        $plan = Plan::find($request->plan_id);
+
+        auth()->user()->plans()->attatch($plan, [
+            'ends_at' => now()->addMonths($plan->months)
+        ]);
+
+        // faltan los datos
+
+        // Si es free sólo attach
+        // si es basic crear invoice
     }
 
     public function renew()
