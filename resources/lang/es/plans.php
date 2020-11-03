@@ -14,15 +14,15 @@ return array (
   'duration' => 'Tiempo de duración en meses',
   'descriptions' => 
   array (
-    'free' => 'Todos los módulos por 2 meses',
-    'basic' => 'Todos los módulos por 12 meses',
+    'free' => 'Todos los módulos por :months mes',
+    'basic' => 'Todos los módulos por :months meses',
     'premium' => 'Todos los módulos y facturación electrónica por 12 meses',
     'sponsor' => 'Todas las características de la plataforma sin límite de tiempo',
   ),
   'prices' => 'Precios de los planes',
   'features' => 
   array (
-    'unique' => ':months meses por única vez',
+    'unique' => ':months mes por única vez',
     'all' => 'Todos los módulos',
     'support' => 
     array (
@@ -33,4 +33,5 @@ return array (
     'renewable' => ':months meses renovable',
     'default' => 'Por favor, contáctanos para adquirir este plan',
   ),
+  'ready' => 'Tu plan :plan fue activado',
 );

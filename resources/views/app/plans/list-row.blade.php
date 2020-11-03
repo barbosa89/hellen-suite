@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
             <p>
-                {{ trans('plans.descriptions.' . Str::lower($row->type)) }}
+                {{ trans('plans.descriptions.' . $row->getType()) }}
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3   col-lg-3  align-self-center">

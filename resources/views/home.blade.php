@@ -1,9 +1,14 @@
 @extends('layouts.panel')
 
 @section('content')
-{{-- <div class="container">
-    <div class="row justify-content-center"
-</div> --}}
+    <div class="row">
+        <div class="col">
+            <div class="mt-4">
+                @include('flash::message')
+            </div>
+        </div>
+    </div>
+
     <!-- Icon Cards-->
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-3">

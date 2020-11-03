@@ -52,7 +52,7 @@
                         <label for="type">@lang('plans.types'): <small>{{ trans('common.required') }}</small></label>
                         <select class="form-control selectpicker" name="type" id="type" required>
                                 <option value="{{ $plan->type }}" selected>
-                                    @lang('plans.type.' . Str::lower($plan->type))
+                                    @lang('plans.type.' . $plan->getType())
                                 </option>
                         </select>
 

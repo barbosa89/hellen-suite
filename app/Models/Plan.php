@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Support\Str;
+use App\Services\ExchangeRate;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 
 class Plan extends Model
 {
@@ -26,9 +28,23 @@ class Plan extends Model
      */
     protected $fillable = ['price', 'months', 'status'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'price' => 'float',
+    ];
+
     public function users()
     {
         return $this->belongsToMany(\App\User::class);
+    }
+
+    public function invoices()
+    {
+        return $this->belongsToMany(\App\Models\Invoice::class);
     }
 
     /**
@@ -56,6 +72,19 @@ class Plan extends Model
     }
 
     /**
+     * Scope a query to plans not related to the authenticated user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotRelatedToUser($query)
+    {
+        return $query->whereDoesntHave('users', function ($query) {
+            $query->where('users.id', auth()->id());
+        });
+    }
+
+    /**
      * Check plan is expired
      *
      * @return boolean
@@ -77,5 +106,28 @@ class Plan extends Model
         $ends = Carbon::parse($this->pivot->ends_at);
 
         return now()->lessThan($ends);
+    }
+
+    /**
+     * Return the plan type in lower case string
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return Str::lower($this->type);
+    }
+
+
+    /**
+     * Get the plan's price in USD currency.
+     *
+     * @return float
+     */
+    public function getDollarPrice(): float
+    {
+        $dollarPrice = (float) ExchangeRate::convert(1, 'USD', 'COP');
+
+        return $this->price / $dollarPrice;
     }
 }

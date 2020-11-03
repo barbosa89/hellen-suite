@@ -18,6 +18,18 @@ return [
 
     'tel' => env('APP_TEL', ''),
 
+    'currency' => [
+        'url' => env('CURRENCY_CONVERTER_URL'),
+        'key' => env('CURRENCY_CONVERTER_KEY')
+    ],
+
+    'payments' => [
+        'url' => env('PAYMENTS_URL'),
+        'key' => env('PAYMENTS_PUBLIC_KEY'),
+        'redirect' => env('PAYMENTS_REDIRECT_URL'),
+        'confirm' => env('PAYMENTS_CONFIRM_URL')
+    ],
+
     'paginate' => 20,
 
     'fields' => [

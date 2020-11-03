@@ -13,4 +13,9 @@ class IdentificationType extends Model
     {
         return $this->hasMany(\App\Models\Guest::class, 'identification_type_id');
     }
+
+    public function invoice()
+    {
+        return $this->hasMany(\App\Models\Guest::class, 'identification_type_id');
+    }
 }

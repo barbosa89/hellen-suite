@@ -38,7 +38,7 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.index')
-            ->assertSeeText(trans('plans.descriptions.' . strtolower($plan->type)))
+            ->assertSeeText(trans('plans.descriptions.' . $plan->getType()))
             ->assertSeeText(number_format($plan->price, 2, '.', ','))
             ->assertSeeText($plan->months)
             ->assertSee($plan->status)

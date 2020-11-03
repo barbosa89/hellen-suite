@@ -3,8 +3,7 @@
 namespace App\Helpers;
 
 use App\User;
-use App\Models\Voucher;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Random
@@ -36,7 +35,7 @@ class Random
      *
      * @return string
      */
-	public static function consecutive(): string
+	public static function consecutive(string $table = 'vouchers'): string
 	{
 		$consecutive = '';
 
@@ -45,7 +44,7 @@ class Random
 			$temp = date('ymd') . (string) Str::of(Str::random(6))->upper();
 
 			// Query if consecutive exists
-			$voucher = Voucher::where('number', $temp)->first(['id', 'number']);
+			$voucher = DB::table($table)->where('number', $temp)->first(['id', 'number']);
 
 			// If the voucher is empty, the consecutive does not exist in the database
 			if (empty($voucher)) {

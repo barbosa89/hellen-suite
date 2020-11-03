@@ -14,20 +14,20 @@ class PlanSeeder extends Seeder
     {
         Plan::create([
             'price' => 0,
-            'months' => 2,
+            'months' => 1,
             'type' => Plan::FREE,
             'status' => true
         ]);
 
         Plan::create([
-            'price' => 180000,
+            'price' => 365000,
             'months' => 12,
             'type' => Plan::BASIC,
             'status' => true
         ]);
 
         Plan::create([
-            'price' => 500000,
+            'price' => 700000,
             'months' => 12,
             'type' => Plan::PREMIUM,
             'status' => false

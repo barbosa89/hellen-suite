@@ -24,7 +24,11 @@ class BuyPlan extends FormRequest
     public function rules()
     {
         return [
-            'plan_id' => 'required|integer|exists:plans,id'
+            'plan_id' => 'required|integer|exists:plans,id',
+            'type_id' => 'required|integer|exists:identification_types,id',
+            'customer_dni' => 'required|numeric|digits_between:5,20|min:1',
+            'customer_name' => 'required|string|min:3|max:120',
+            'currency_id' => 'required|integer|exists:currencies,id'
         ];
     }
 
@@ -37,6 +41,8 @@ class BuyPlan extends FormRequest
     {
         $this->merge([
             'plan_id' => id_decode($this->plan_id),
+            'type_id' => id_decode($this->type_id),
+            'currency_id' => id_decode($this->currency_id)
         ]);
     }
 }

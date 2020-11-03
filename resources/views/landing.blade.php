@@ -277,13 +277,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 price-main-info">
                                         <div class="price-inner card box-shadow p-4">
                                             <div class="card-body">
-                                                <h4 class="">{{ trans('plans.type.' . Str::lower($plan->type)) }}</h4>
+                                                <h4 class="">{{ trans('plans.type.' . $plan->getType()) }}</h4>
                                                 <h5 class="card-title pricing-card-title">
                                                     <span class=""></span>$ {{ number_format($plan->price, 0, '.', ',') }}<span>/{{ $plan->months }} @lang('common.months')</span>
                                                 </h5>
 
                                                 @includeFirst([
-                                                    'app.plans.types.' . Str::lower($plan->type),
+                                                    'app.plans.types.' . $plan->getType(),
                                                     'app.plans.types.default'
                                                 ])
                                             </div>

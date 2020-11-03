@@ -14,4 +14,11 @@ return array (
   'status' => 'Estado del pago',
   'unpaid' => 'Pendientes de pago',
   'automatic' => 'Registro de pago automático',
+  'confirmation' => 
+  array (
+    'error' => 'Ocurrió un error al confirmar el pago de la factura número :number',
+    'pending' => 'La factura número :number está pendiente de pago',
+    'success' => 'El pago de la factura :number ha sido confirmado satisfactoriamente',
+    'cancel' => 'El proceso de pago de la factura :number fue cancelado',
+  ),
 );

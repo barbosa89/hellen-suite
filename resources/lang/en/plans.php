@@ -14,8 +14,8 @@ return array (
   'duration' => 'Duration time in months',
   'descriptions' => 
   array (
-    'basic' => 'All modules for 12 months',
-    'free' => 'All modules for 2 months',
+    'basic' => 'All modules for :months months',
+    'free' => 'All modules for :months month',
     'premium' => 'All modules and electronic invoicing for 12 months',
     'sponsor' => 'All platform features without time limit',
   ),
@@ -29,8 +29,9 @@ return array (
       'mail' => 'Email support only',
       'priority' => 'Priority technical support',
     ),
-    'unique' => ':months months one time',
+    'unique' => ':months month one time',
     'renewable' => ':months months renewable',
     'default' => 'Please, contact us to purchase this plan',
   ),
+  'ready' => 'Your :plan plan was activated',
 );

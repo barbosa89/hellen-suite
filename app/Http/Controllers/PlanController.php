@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BuyPlan;
 use App\Http\Requests\UpdatePlan;
+use App\Models\Currency;
+use App\Models\IdentificationType;
 use App\Models\Plan;
-use Illuminate\Http\Request;
 
 class PlanController extends Controller
 {
@@ -16,7 +17,7 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $plans = Plan::allColumns()->get();
+        $plans = Plan::all(['id', 'price', 'months', 'type', 'status']);
 
         return view('app.plans.index', compact('plans'));
     }
@@ -29,9 +30,7 @@ class PlanController extends Controller
      */
     public function edit(string $id)
     {
-        $plan = Plan::allColumns()
-            ->where('id', id_decode($id))
-            ->first();
+        $plan = Plan::findOrFail(id_decode($id), ['id', 'price', 'months', 'type', 'status']);
 
         return view('app.plans.edit', compact('plan'));
     }
@@ -45,9 +44,7 @@ class PlanController extends Controller
      */
     public function update(UpdatePlan $request, string $id)
     {
-        $plan = Plan::allColumns()
-            ->where('id', id_decode($id))
-            ->first();
+        $plan = Plan::findOrFail(id_decode($id), ['id', 'price', 'months', 'type', 'status']);
 
         $plan->fill($request->validated());
 
@@ -62,27 +59,55 @@ class PlanController extends Controller
         return back();
     }
 
+    /**
+     * View to choose the plan
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function choose()
     {
         // All active plans
-        $plans = Plan::active()->get();
+        $plans = Plan::active()
+            ->notRelatedToUser()
+            ->get(['id', 'price', 'months', 'type', 'status']);
+
+        if ($plans->isEmpty()) {
+            return redirect()->route('home');
+        }
 
         return view('app.plans.choose', compact('plans'));
     }
 
-    public function buy(BuyPlan $request)
+    /**
+     * Undocumented function
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
+    public function buy(string $id)
     {
-        dd($request->toArray());
-        $plan = Plan::find($request->plan_id);
+        $plan = Plan::active()
+            ->notRelatedToUser()
+            ->where('id', id_decode($id))
+            ->firstOrFail(['id', 'price', 'months', 'type', 'status']);
 
-        auth()->user()->plans()->attatch($plan, [
-            'ends_at' => now()->addMonths($plan->months)
-        ]);
+        if ($plan->type == Plan::FREE) {
+            auth()
+                ->user()
+                ->plans()
+                ->attach($plan, ['ends_at' => now()->addMonth()]);
 
-        // faltan los datos
+            $type = trans('plans.type.' . $plan->getType());
 
-        // Si es free sólo attach
-        // si es basic crear invoice
+            flash(trans('plans.ready', ['plan' => $type]))->success();
+
+            return redirect()->route('home');
+        }
+
+        $types = IdentificationType::all(['id', 'type']);
+        $currencies = Currency::all(['id', 'code']);
+
+        return view('app.plans.buy', compact('plan', 'types', 'currencies'));
     }
 
     public function renew()

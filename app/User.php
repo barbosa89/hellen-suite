@@ -42,34 +42,39 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function plans()
     {
-        return $this->belongsToMany(Models\Plan::class)
+        return $this->belongsToMany(\App\Models\Plan::class)
             ->withPivot('ends_at')
             ->withTimestamps();
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(\App\Models\Invoice::class);
+    }
+
     public function hotels()
     {
-        return $this->hasMany(Models\Hotel::class);
+        return $this->hasMany(\App\Models\Hotel::class);
     }
 
     public function configurations()
     {
-        return $this->belongsToMany(Models\Configuration::class);
+        return $this->belongsToMany(\App\Models\Configuration::class);
     }
 
     public function headquarters()
     {
-        return $this->belongsToMany(Models\Hotel::class);
+        return $this->belongsToMany(\App\Models\Hotel::class);
     }
 
     public function shifts()
     {
-        return $this->hasMany(Models\Shift::class);
+        return $this->hasMany(\App\Models\Shift::class);
     }
 
     public function vouchers()
     {
-        return $this->hasMany(Models\Voucher::class);
+        return $this->hasMany(\App\Models\Voucher::class);
     }
 
     public function employees()
@@ -82,46 +87,44 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(User::class, 'parent');
     }
 
-    #####################################
-
     public function guests()
     {
-        return $this->hasMany(Models\Guest::class);
+        return $this->hasMany(\App\Models\Guest::class);
     }
 
     public function services()
     {
-        return $this->hasMany(Models\Service::class);
+        return $this->hasMany(\App\Models\Service::class);
     }
 
     public function rooms()
     {
-        return $this->hasMany(Models\Room::class);
+        return $this->hasMany(\App\Models\Room::class);
     }
 
     public function vehicles()
     {
-        return $this->hasMany(Models\Vehicle::class);
+        return $this->hasMany(\App\Models\Vehicle::class);
     }
 
     public function assets()
     {
-        return $this->hasMany(Models\Asset::class);
+        return $this->hasMany(\App\Models\Asset::class);
     }
 
     public function products()
     {
-        return $this->hasMany(Models\Product::class);
+        return $this->hasMany(\App\Models\Product::class);
     }
 
     public function companies()
     {
-        return $this->hasMany(Models\Company::class);
+        return $this->hasMany(\App\Models\Company::class);
     }
 
     public function props()
     {
-        return $this->hasMany(Models\Prop::class);
+        return $this->hasMany(\App\Models\Prop::class);
     }
 
     /**
@@ -129,7 +132,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function notes()
     {
-        return $this->hasMany(Models\Note::class);
+        return $this->hasMany(\App\Models\Note::class);
     }
 
     /**

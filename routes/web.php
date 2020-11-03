@@ -61,3 +61,4 @@ require __DIR__ . '/modules/shifts.php';
 require __DIR__ . '/modules/tags.php';
 require __DIR__ . '/modules/notes.php';
 require __DIR__ . '/modules/plans.php';
+require __DIR__ . '/modules/invoices.php';
