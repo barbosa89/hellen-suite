@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use PlanSeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LandingTest extends TestCase
@@ -16,7 +15,7 @@ class LandingTest extends TestCase
     {
         parent::setUp();
 
-        Artisan::call('db:seed', ['--class' => PlanSeeder::class]);
+        $this->seed(PlanSeeder::class);
     }
 
     public function test_landing_page_is_ok()

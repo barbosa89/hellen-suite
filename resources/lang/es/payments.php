@@ -20,5 +20,11 @@ return array (
     'pending' => 'La factura número :number está pendiente de pago',
     'success' => 'El pago de la factura :number ha sido confirmado satisfactoriamente',
     'cancel' => 'El proceso de pago de la factura :number fue cancelado',
+    'status' => 
+    array (
+      'approved' => 'Aprobado',
+      'declined' => 'Declinado',
+      'error' => 'Error',
+    ),
   ),
 );

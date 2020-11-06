@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan;
-use App\Helpers\Random;
 use App\Models\Invoice;
-use App\Models\Currency;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuyPlan;
 use App\Models\InvoicePayment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use App\Repositories\InvoiceRepository;
+use App\Services\PaymentGateway;
 use Exception;
 
 class InvoiceController extends Controller
@@ -23,7 +20,7 @@ class InvoiceController extends Controller
     public InvoiceRepository $repository;
 
     /**
-     * Invoice repository
+     * Constructor
      *
      * @param InvoiceRepository $invoice
      */
@@ -39,7 +36,9 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return $this->invoice->all();
+        $invoices = $this->invoice->paginate();
+
+        return view('app.invoices.index', compact('invoices'));
     }
 
     /**
@@ -50,73 +49,60 @@ class InvoiceController extends Controller
      */
     public function store(BuyPlan $request)
     {
+        // Get pending invoices with the plan to buy
+        $pending = $this->invoice->pendingWithPlan($request->plan_id);
+
+        // Redirect to check pending invoices
+        if ($pending->isNotEmpty()) {
+            return redirect()->route('invoices.index');
+        }
+
         $invoice = $this->invoice->create($request->validated());
 
-        return redirect()->away($this->buildPaymentUrl($invoice));
-
-    }
-
-    /**
-     * Build the URL to the payment gateway.
-     *
-     * @param \App\Models\Invoice $invoice
-     * @return string
-     */
-    public function buildPaymentUrl(Invoice $invoice): string
-    {
-        return external_url(config('settings.payments.url'), [
-            'public-key' => config('settings.payments.key'),
-            'currency' => $invoice->currency->code,
-            'amount-in-cents' => number_format($invoice->total, 2, '', ''),
-            'reference' => $invoice->number,
-            'redirect-url' => route(config('settings.payments.redirect'), ['number' => $invoice->number])
-        ]);
+        return PaymentGateway::create($invoice)->redirect();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  string  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show(string $invoice)
     {
-        //
+        $invoice = $this->invoice->findById(id_decode($invoice));
+
+        return view('app.invoices.show', compact('invoice'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  string  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(string $invoice)
     {
-        //
+        if ($this->invoice->destroy(id_decode($invoice))) {
+            flash(trans('common.deletedSuccessfully'))->success();
+
+            return redirect()->route('invoices.index');
+        }
+
+        flash(trans('common.error'))->error();
+
+        return back();
     }
 
     /**
      * Check the invoice payment status.
      *
-     * @param  \App\Models\Invoice  $invoice
+     * @param  string  $number
      * @return \Illuminate\Http\Response
      */
     public function confirmPayment(Request $request, string $number)
     {
-        $response = Http::get(config('settings.payments.confirm') . $request->id);
-
-        $invoice = Invoice::where('number', $number)
-            ->with([
-                'plans' => function ($query)
-                {
-                    return $query->select(get_columns('plans', true));
-                },
-                'user' => function ($query)
-                {
-                    return $query->select(['users.id']);
-                }
-            ])
-            ->firstOrFail(get_columns('invoices', true));
+        $response = PaymentGateway::confirm($request->id);
 
         if ($response->ok()) {
             $data = json_decode(json_encode($response->json()));
@@ -125,27 +111,13 @@ class InvoiceController extends Controller
                 DB::beginTransaction();
 
                 try {
-                    $payment = new InvoicePayment();
-                    $payment->number = $data->data->id;
-                    $payment->value = $data->data->amount_in_cents;
-                    $payment->payment_method = $data->data->payment_method_type;
-                    $payment->status = InvoicePayment::APPROVED;
-                    $payment->invoice()->associate($invoice);
-                    $payment->save();
-
-                    $invoice->status = Invoice::PAID;
-                    $invoice->save();
-
-                    $plan = $invoice->plans->first();
-                    $plan->users()->attach($invoice->user->id, [
-                        'ends_at' => now()->addMonths($plan->months)
-                    ]);
+                    $invoice = $this->invoice->processPayment($number, $data);
 
                     DB::commit();
 
-                    Log::info(trans('payments.confirmation.success', ['number' => $invoice->number]));
+                    Log::info(trans('payments.confirmation.success', ['number' => $number]));
 
-                    $type = trans('plans.type.' . $plan->getType());
+                    $type = trans('plans.type.' . $invoice->plans->first()->getType());
 
                     flash(trans('plans.ready', ['plan' => $type]))->success();
 
@@ -155,18 +127,22 @@ class InvoiceController extends Controller
 
                     report($e);
 
-                    Log::error(trans('payments.confirmation.error', ['number' => $invoice->number]));
+                    Log::error(trans('payments.confirmation.error', ['number' => $number]), [
+                        'message' => $e->getMessage(),
+                        'line' => $e->getLine(),
+                        'file' => $e->getFile()
+                    ]);
 
-                    flash(trans('payments.confirmation.pending', ['number' => $invoice->number]))->info();
+                    flash(trans('payments.confirmation.pending', ['number' => $number]))->info();
 
                     return redirect()->route('invoices.index');
                 }
             }
         }
 
-        Log::info(trans('payments.confirmation.error', ['number' => $invoice->number]), $response->json());
+        Log::info(trans('payments.confirmation.error', ['number' => $number]), $response->json());
 
-        flash(trans('payments.confirmation.pending', ['number' => $invoice->number]))->info();
+        flash(trans('payments.confirmation.pending', ['number' => $number]))->info();
 
         return redirect()->route('invoices.index');
     }

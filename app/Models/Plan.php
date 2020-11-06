@@ -26,7 +26,7 @@ class Plan extends Model
      *
      * @var array
      */
-    protected $fillable = ['price', 'months', 'status'];
+    protected $fillable = ['price', 'months', 'type', 'status'];
 
     /**
      * The attributes that should be cast.

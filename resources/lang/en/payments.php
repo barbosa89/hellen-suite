@@ -20,5 +20,11 @@ return array (
     'pending' => 'Invoice number :number is pending payment',
     'success' => 'Payment of invoice :number has been successfully confirmed',
     'cancel' => 'The payment process for invoice :number was canceled',
+    'status' => 
+    array (
+      'approved' => 'Approved',
+      'declined' => 'Declined',
+      'error' => 'Error',
+    ),
   ),
 );

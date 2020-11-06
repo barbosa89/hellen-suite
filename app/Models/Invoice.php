@@ -43,4 +43,41 @@ class Invoice extends Model
     {
         return $this->belongsToMany(\App\Models\Plan::class);
     }
+
+    /**
+     * Scope a query to select all columns.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSelectAll($query)
+    {
+        return $query->select([
+            'id',
+            'number',
+            'customer_name',
+            'customer_dni',
+            'value',
+            'discount',
+            'taxes',
+            'total',
+            'status',
+            'identification_type_id',
+            'currency_id',
+            'user_id',
+            'created_at',
+            'updated_at'
+        ]);
+    }
+
+    /**
+     * Scope a query to owner user invoices.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOwner($query)
+    {
+        return $query->where('user_id', auth()->id());
+    }
 }

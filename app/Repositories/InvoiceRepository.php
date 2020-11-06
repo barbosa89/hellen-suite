@@ -2,11 +2,14 @@
 
 namespace App\Repositories;
 
+use stdClass;
 use App\Models\Plan;
 use App\Helpers\Random;
 use App\Models\Invoice;
 use App\Models\Currency;
 use App\Contracts\Repository;
+use App\Models\InvoicePayment;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -23,7 +26,28 @@ class InvoiceRepository implements Repository
      */
     public function findById(int $id): Invoice
     {
-        return Invoice::findOrFail('id', $id);
+        return Invoice::owner()
+            ->where('id', $id)
+            ->with([
+                'currency' => function ($query)
+                {
+                    $query->select(['id', 'code']);
+                },
+                'identificationType' => function ($query)
+                {
+                    $query->select(['id', 'type']);
+                },
+                'plans' => function ($query)
+                {
+                    $query->select(['plans.id', 'plans.price', 'plans.months', 'plans.type']);
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(['id', 'number', 'value', 'payment_method', 'status', 'invoice_id', 'created_at']);
+                }
+            ])
+            ->selectAll()
+            ->firstOrFail();
     }
 
     /**
@@ -34,7 +58,20 @@ class InvoiceRepository implements Repository
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Invoice::paginate($perPage);
+        return Invoice::owner()
+            ->latest()
+            ->with([
+                'currency' => function ($query)
+                {
+                    $query->select(['id', 'code']);
+                },
+                'identificationType' => function ($query)
+                {
+                    $query->select(['id', 'type']);
+                }
+            ])
+            ->selectAll()
+            ->paginate($perPage);
     }
 
     /**
@@ -45,7 +82,11 @@ class InvoiceRepository implements Repository
      */
     public function all(array $filters = []): Collection
     {
-        return Invoice::all();
+        return Invoice::owner()
+            ->latest()
+            ->selectAll()
+            ->limit(100)
+            ->get();
     }
 
     /**
@@ -112,8 +153,93 @@ class InvoiceRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $invoice = $this->findById($id);
+        $invoice = Invoice::owner()
+            ->where('id', $id)
+            ->where('status', '!=', Invoice::PAID)
+            ->selectAll()
+            ->first();
+
+        if (empty($invoice)) {
+            return false;
+        }
 
         return $invoice->delete();
+    }
+
+    /**
+     * Get all pending invoices related to a plan
+     *
+     * @param integer $planId
+     * @return \Illuminate\Support\Collection
+     */
+    public function pendingWithPlan(int $planId): Collection
+    {
+        return Invoice::owner()
+            ->where('status', Invoice::PENDING)
+            ->whereHas('plans', function ($query) use ($planId) {
+                return $query->where('plans.id', $planId);
+            })
+            ->selectAll()
+            ->get();
+    }
+
+    /**
+     * Process an approved payment
+     *
+     * @param string $number
+     * @param stdClass $data
+     * @return \App\Models\Invoice
+     */
+    public function processPayment(string $number, stdClass $data): Invoice
+    {
+        $invoice = Invoice::owner()
+            ->where('number', $number)
+            ->where('status', Invoice::PENDING)
+            ->with([
+                'plans' => function ($query)
+                {
+                    return $query->select(get_columns('plans', true));
+                },
+                'user' => function ($query)
+                {
+                    return $query->select(['users.id']);
+                },
+                'user.plans' => function ($query)
+                {
+                    return $query->select(get_columns('plans', true));
+                }
+            ])
+            ->selectAll()
+            ->firstOrFail();
+
+        $payment = new InvoicePayment();
+        $payment->number = $data->data->id;
+        $payment->value = cents_to_float($data->data->amount_in_cents);
+        $payment->payment_method = $data->data->payment_method_type;
+        $payment->status = InvoicePayment::APPROVED;
+        $payment->invoice()->associate($invoice);
+        $payment->save();
+
+        $invoice->status = Invoice::PAID;
+        $invoice->save();
+
+        $plan = $invoice->plans->first();
+
+        // Check if the plan is attached to user
+        if ($invoice->user->plans->contains('id', $plan->id)) {
+            $plan = $invoice->user->plans->firstWhere('id', $plan->id);
+
+            $ends_at = Carbon::parse($plan->pivot->ends_at);
+
+            $plan->users()->updateExistingPivot($invoice->user->id, [
+                'ends_at' => $ends_at->addMonths($plan->months)
+            ]);
+        } else {
+            $plan->users()->attach($invoice->user->id, [
+                'ends_at' => now()->addMonths($plan->months)
+            ]);
+        }
+
+        return $invoice;
     }
 }

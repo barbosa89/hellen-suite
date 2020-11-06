@@ -176,3 +176,13 @@ Breadcrumbs::for('plans', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('plans.title'), route('plans.index'));
 });
+
+Breadcrumbs::for('invoices', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('invoices.title'), route('invoices.index'));
+});
+
+Breadcrumbs::for('invoice', function ($trail, $invoice) {
+    $trail->parent('invoices');
+    $trail->push($invoice->number, route('invoices.show', ['invoice' => id_encode($invoice->id)]));
+});

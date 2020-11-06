@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Helpers\Columns;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ColumnsTest extends TestCase
@@ -14,7 +13,8 @@ class ColumnsTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Artisan::call('migrate');
+
+        $this->artisan('migrate');
     }
 
     public function test_get_model_columns_in_array_format()

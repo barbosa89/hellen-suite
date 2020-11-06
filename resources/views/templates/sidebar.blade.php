@@ -43,6 +43,14 @@
         </li>
     @endrole
 
+    @role('manager')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('invoices.index') }}">
+            <i class="fas fa-file-invoice"></i>
+            <span>@lang('invoices.title')</span></a>
+        </li>
+    @endrole
+
     @can('hotels.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('hotels.index') }}">
@@ -70,7 +78,7 @@
     @can('vouchers.index')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('vouchers.index') }}">
-            <i class="fas fa-file-invoice"></i>
+            <i class="fas fa-receipt"></i>
             <span>@lang('vouchers.title')</span></a>
         </li>
     @endcan

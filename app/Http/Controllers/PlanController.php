@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BuyPlan;
 use App\Http\Requests\UpdatePlan;
 use App\Models\Currency;
 use App\Models\IdentificationType;
