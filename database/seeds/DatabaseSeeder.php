@@ -11,15 +11,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
-        $this->call(AssignmentsSeeder::class);
         $this->call(VehicleTypesTableSeeder::class);
         $this->call(IdentificationTypesTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
-        $this->call(HotelTableSeeder::class);
-        $this->call(GuestTableSeeder::class);
-        $this->call(VehicleTableSeeder::class);
+        $this->call(CurrencySeeder::class);
+        $this->call(PlanSeeder::class);
+
+        if (app()->environment('local')) {
+            $this->call(UsersTableSeeder::class);
+            $this->call(AssignmentsSeeder::class);
+            $this->call(HotelTableSeeder::class);
+            $this->call(GuestTableSeeder::class);
+            $this->call(VehicleTableSeeder::class);
+        }
     }
 }
