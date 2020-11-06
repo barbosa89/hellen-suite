@@ -15,7 +15,7 @@ class CreateVehiclesTable extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id('id');
-            $table->string('registration', 12);
+            $table->string('registration', 20);
             $table->string('brand')->nullable();
             $table->string('color')->nullable();
 
