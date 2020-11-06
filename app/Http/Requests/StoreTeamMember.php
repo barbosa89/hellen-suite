@@ -26,7 +26,7 @@ class StoreTeamMember extends FormRequest
         return [
             'hotel' => 'required|string|max:50|hashed_exists:hotels,id',
             'name' => 'required|string|max:191',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email:rfc,dns,spoof,filter|unique:users,email',
             'role' => 'required|string|max:50|exists:roles,name'
         ];
     }
