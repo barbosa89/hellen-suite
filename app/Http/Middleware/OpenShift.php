@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Shift;
+use App\Models\Voucher;
 
 class OpenShift
 {
@@ -15,12 +17,14 @@ class OpenShift
      */
     public function handle($request, Closure $next)
     {
-        $hotelId = $request->route('id');
+        $voucher = Voucher::where('id', id_decode($request->route('id')))
+            ->with('hotel:id')
+            ->first(['id', 'hotel_id']);
 
         // Query all open shifts for authenticated user
-        $shifts = \App\Models\Shift::open()->get(['id', 'open', 'hotel_id']);
+        $shifts = Shift::open()->get(['id', 'open', 'hotel_id']);
 
-        if ($shifts->isEmpty() or $shifts->where('hotel_id', $hotelId)->count() === 1) {
+        if ($shifts->isEmpty() or $shifts->where('hotel_id', $voucher->hotel->id)->count() === 1) {
             return $next($request);
         }
 
