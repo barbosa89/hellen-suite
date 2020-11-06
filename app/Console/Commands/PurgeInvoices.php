@@ -41,6 +41,7 @@ class PurgeInvoices extends Command
     {
         $rows = Invoice::whereIn('status', [Invoice::CANCELED, Invoice::PENDING])
             ->whereDate('created_at', '<=', now()->subDay())
+            ->selectAll()
             ->delete();
 
         $this->info("Affected records: {$rows}");
