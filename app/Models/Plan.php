@@ -80,8 +80,30 @@ class Plan extends Model
     public function scopeNotRelatedToUser($query)
     {
         return $query->whereDoesntHave('users', function ($query) {
-            $query->where('users.id', auth()->id());
+            return $query->where('users.id', auth()->id());
         });
+    }
+
+    /**
+     * Scope a query to non free plans.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNonFree($query)
+    {
+        return $query->where('type', '!=', self::FREE);
+    }
+
+    /**
+     * Scope a query to the free plan.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFree($query)
+    {
+        return $query->where('type', self::FREE);
     }
 
     /**

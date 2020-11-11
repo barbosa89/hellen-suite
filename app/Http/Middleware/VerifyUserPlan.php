@@ -18,7 +18,7 @@ class VerifyUserPlan
     public function handle($request, Closure $next)
     {
         if (Auth::check() && !Auth::user()->hasRole('root')) {
-            $user = Auth::user()->load('plans');
+            $user = Auth::user()->load('plans:id,price,months,type,status');
 
             if ($user->plans->isEmpty()) {
                 return redirect()->route('plans.choose');

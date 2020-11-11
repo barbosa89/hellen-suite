@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdatePlan;
-use App\Models\Currency;
-use App\Models\IdentificationType;
 use App\Models\Plan;
+use App\Models\Currency;
+use App\Http\Requests\UpdatePlan;
+use App\Models\IdentificationType;
+use Illuminate\Support\Collection;
 
 class PlanController extends Controller
 {
@@ -68,7 +69,7 @@ class PlanController extends Controller
         // All active plans
         $plans = Plan::active()
             ->notRelatedToUser()
-            ->get(['id', 'price', 'months', 'type', 'status']);
+            ->get(['plans.id', 'plans.price', 'plans.months', 'plans.type', 'plans.status']);
 
         if ($plans->isEmpty()) {
             return redirect()->route('home');
@@ -78,7 +79,7 @@ class PlanController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Form to buy a plan.
      *
      * @param string $id
      * @return \Illuminate\Http\Response
@@ -86,7 +87,6 @@ class PlanController extends Controller
     public function buy(string $id)
     {
         $plan = Plan::active()
-            ->notRelatedToUser()
             ->where('id', id_decode($id))
             ->firstOrFail(['id', 'price', 'months', 'type', 'status']);
 
@@ -109,8 +109,56 @@ class PlanController extends Controller
         return view('app.plans.buy', compact('plan', 'types', 'currencies'));
     }
 
+    /**
+     * Form to renew a plan.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function renew()
     {
-        # code...
+        $user = auth()->user()->load('plans:id,price,months,type,status');
+
+        // If user has active plans
+        if ($this->hasActivePlans($user->plans)) {
+            return redirect()->route('home');
+        }
+
+        // If the user plans are empty or the unique plan is the free plan
+        // the user must select a paid plan
+        if ($user->plans->isEmpty() or $this->hasFreeExpiredPlan($user->plans)) {
+            return redirect()->route('plans.choose');
+        }
+
+        $plans = Plan::active()
+            ->nonFree()
+            ->get(['id', 'price', 'months', 'type', 'status']);
+
+        return view('app.plans.choose', compact('plans'));
+    }
+
+    /**
+     * Check if user has active plans.
+     *
+     * @param \Illuminate\Support\Collection $plans
+     * @return boolean
+     */
+    public function hasActivePlans(Collection $plans): bool
+    {
+        $actives = $plans->filter(function ($plan) {
+            return $plan->isActive();
+        });
+
+        return $actives->isNotEmpty();
+    }
+
+    /**
+     * Check if user has free expired plan.
+     *
+     * @param \Illuminate\Support\Collection $plans
+     * @return boolean
+     */
+    public function hasFreeExpiredPlan(Collection $plans): bool
+    {
+        return $plans->count() == 1 and $plans->first()->type == Plan::FREE;
     }
 }

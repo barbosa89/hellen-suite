@@ -31,7 +31,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_all_plans()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('root');
 
@@ -50,7 +49,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_plan_edition_form()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('root');
 
@@ -65,7 +63,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_update_a_plan()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('root');
 
@@ -87,7 +84,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_form_to_choose_a_plan()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('manager');
 
@@ -100,7 +96,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_free_plan()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('manager');
 
@@ -127,7 +122,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_basic_plan()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('manager');
 
@@ -147,7 +141,6 @@ class PlanTest extends TestCase
 
     public function test_user_can_buy_the_basic_plan()
     {
-        // Create user
         $user = factory(User::class)->create();
         $user->assignRole('manager');
 
@@ -163,5 +156,71 @@ class PlanTest extends TestCase
             ->assertViewHas('plan', $plan)
             ->assertViewHas('currencies', $currencies)
             ->assertViewHas('types', $types);
+    }
+
+    public function test_user_can_not_renew_with_active_plans()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('manager');
+
+        $plan = Plan::where('type', Plan::BASIC)->first();
+
+        $user->plans()->attach($plan, ['ends_at' => now()->addWeek()]);
+
+        $response = $this->actingAs($user)
+            ->get(route('plans.renew'));
+
+        $response->assertRedirect(route('home'));
+    }
+
+    public function test_user_without_plans_is_redirected_to_choose_plans()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('manager');
+
+        $response = $this->actingAs($user)
+            ->get(route('plans.renew'));
+
+        $response->assertRedirect(route('plans.choose'));
+    }
+
+    public function test_user_with_free_expired_plan_is_redirected_to_choose_plans()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('manager');
+
+        $plan = Plan::where('type', Plan::FREE)->first();
+
+        $user->plans()->attach($plan, ['ends_at' => now()->subWeek()]);
+
+        $response = $this->actingAs($user)
+            ->get(route('plans.renew'));
+
+        $response->assertRedirect(route('plans.choose'));
+    }
+
+    public function test_user_can_see_the_form_to_renew_plans()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('manager');
+
+        $free = Plan::where('type', Plan::FREE)->first();
+        $basic = Plan::where('type', Plan::BASIC)->first();
+
+        $user->plans()->attach($free, ['ends_at' => now()->subWeek()]);
+        $user->plans()->attach($basic, ['ends_at' => now()->subWeek()]);
+
+        $response = $this->actingAs($user)
+            ->get(route('plans.renew'));
+
+        $plans = Plan::active()
+            ->nonFree()
+            ->get(['id', 'price', 'months', 'type', 'status']);
+
+        $response->assertOk()
+            ->assertViewIs('app.plans.choose')
+            ->assertViewHas('plans', $plans)
+            ->assertSeeText(trans('plans.type.basic'))
+            ->assertSeeText(trans('plans.type.sponsor'));
     }
 }

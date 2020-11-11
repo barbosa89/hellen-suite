@@ -20,9 +20,9 @@ class VerifyUserPlanMiddlewareTest extends TestCase
     {
         parent::setUp();
 
-        Artisan::call('db:seed', ['--class' => PermissionsTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => RolesTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => PlanSeeder::class]);
+        $this->seed(PermissionsTableSeeder::class);
+        $this->seed(RolesTableSeeder::class);
+        $this->seed(PlanSeeder::class);
 
         // Create hotel
         $this->hotel = factory(Hotel::class)->make();
