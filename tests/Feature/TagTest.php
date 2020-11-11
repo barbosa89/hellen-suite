@@ -7,7 +7,6 @@ use App\Models\Hotel;
 use App\Models\Tag;
 use AssignmentsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
 use PermissionsTableSeeder;
 use RolesTableSeeder;
 use Spatie\Permission\Models\Permission;
@@ -22,10 +21,10 @@ class TagTest extends TestCase
     {
         parent::setUp();
 
-        Artisan::call('db:seed', ['--class' => UsersTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => RolesTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => PermissionsTableSeeder::class]);
-        Artisan::call('db:seed', ['--class' => AssignmentsSeeder::class]);
+        $this->seed(UsersTableSeeder::class);
+        $this->seed(RolesTableSeeder::class);
+        $this->seed(PermissionsTableSeeder::class);
+        $this->seed(AssignmentsSeeder::class);
 
         // Create user
         $this->user = factory(User::class)->create();
