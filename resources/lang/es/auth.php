@@ -1,19 +1,14 @@
 <?php
 
-return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
-    'throttle' => 'Demasiados intentos de inicio de sesión. Vuelva a intentarlo en :seconds segundos.',
-
-];
+return array (
+  'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+  'throttle' => 'Demasiados intentos de inicio de sesión. Vuelva a intentarlo en :seconds segundos.',
+  'verify' => 
+  array (
+    'title' => 'Verifica tu dirección de correo electrónico',
+    'reset' => 'Un nuevo enlace de verificación ha sido enviado a tu dirección de correo electrónico.',
+    'link' => 'Antes de continuar, por favor verifica en tu correo electrónico un mensaje con un enlace de verificación.',
+    'receive' => 'Si no recibiste el correo electrónico',
+    'click' => 'clic aquí para enviar otro.',
+  ),
+);
