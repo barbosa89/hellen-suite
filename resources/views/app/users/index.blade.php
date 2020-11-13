@@ -40,6 +40,8 @@
                 ])
             </div>
         </div>
+
+        @include('partials.modal-confirm')
     </div>
 
 @endsection

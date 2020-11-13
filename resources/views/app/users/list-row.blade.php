@@ -31,6 +31,14 @@
                         ]),
                         'method' => 'DELETE'
                     ],
+                    [
+                        'type' => 'confirm',
+                        'option' => trans('common.assign'),
+                        'url' => route('users.assign', [
+                            'user' => id_encode($row->id)
+                        ]),
+                        'method' => 'POST'
+                    ],
                 ]
             ])
         </div>

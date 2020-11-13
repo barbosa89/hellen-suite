@@ -8,6 +8,7 @@ use App\Mail\Welcome;
 use App\Helpers\Random;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUser;
+use App\Models\Plan;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -117,5 +118,23 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $id
+     * @return \Illuminate\Http\Response
+     */
+    public function assign(string $id)
+    {
+        $user = User::find(id_decode($id), ['id']);
+        $plan = Plan::where('type', Plan::SPONSOR)->first(['id']);
+
+        $user->plans()->attach($plan, ['ends_at' => now()->addYears(5)]);
+
+        flash(trans('common.updatedSuccessfully'))->success();
+
+        return redirect()->route('users.index');
     }
 }
