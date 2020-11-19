@@ -67,7 +67,7 @@ class VerifyTeamMemberEmail extends Notification
     public function toMail($notifiable)
     {
         $url = URL::temporarySignedRoute(
-            'account.verify',
+            'accounts.verify',
             now()->addDay(1),
             [
                 'email' => $this->user->email,

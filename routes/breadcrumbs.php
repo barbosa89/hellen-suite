@@ -186,3 +186,8 @@ Breadcrumbs::for('invoice', function ($trail, $invoice) {
     $trail->parent('invoices');
     $trail->push($invoice->number, route('invoices.show', ['invoice' => id_encode($invoice->id)]));
 });
+
+Breadcrumbs::for('accounts', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('accounts.title'), route('home'));
+});

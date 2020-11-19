@@ -14,15 +14,19 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    abort(403);
-});
-
 Route::get('/', 'LandingController@index');
 
-Route::get('/account/verify/{email}/{token}', 'AccountController@verify')
-    ->name('account.verify')
+Route::get('/accounts/verify/{email}/{token}', 'AccountController@verify')
+    ->name('accounts.verify')
     ->middleware(['guest', 'signed']);
+
+Route::post('/accounts/password', 'AccountController@updatePassword')
+    ->name('accounts.password.update')
+    ->middleware('auth');
+
+Route::get('/accounts/password', 'AccountController@changePassword')
+    ->name('accounts.password.change')
+    ->middleware('auth');
 
 Auth::routes(['verify' => true]);
 
