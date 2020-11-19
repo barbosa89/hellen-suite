@@ -9,7 +9,17 @@
         </div>
     </div>
 
-    <!-- Icon Cards-->
+    <div class="card">
+        <div class="card-header">
+            Hola, {{ auth()->user()->name }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Bienvenid@,</h5>
+            <p class="card-text">En poco tiempo verás que aparecen los datos y estadísticas relevantes para la operación del negocio.</p>
+        </div>
+    </div>
+
+    {{-- <!-- Icon Cards-->
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-3">
             <div class="card text-white bg-primary o-hidden h-100">
@@ -362,5 +372,5 @@
             </div>
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-    </div>
+    </div> --}}
 @endsection
