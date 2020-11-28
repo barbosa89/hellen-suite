@@ -90,7 +90,7 @@ class InvoiceRepository implements Repository
     }
 
     /**
-     * Create new Note
+     * Create new Invoice
      *
      * @param   array $data
      * @return  \App\Models\Invoice

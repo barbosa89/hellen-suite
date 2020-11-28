@@ -69,7 +69,7 @@ class PlanController extends Controller
         // All active plans
         $plans = Plan::active()
             ->notRelatedToUser()
-            ->get(['plans.id', 'plans.price', 'plans.months', 'plans.type', 'plans.status']);
+            ->get();
 
         if ($plans->isEmpty()) {
             return redirect()->route('home');
