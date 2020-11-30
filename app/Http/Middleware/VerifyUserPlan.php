@@ -17,7 +17,7 @@ class VerifyUserPlan
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && !Auth::user()->hasRole('root')) {
+        if (Auth::check() && Auth::user()->hasRole('manager')) {
             $user = Auth::user()->load('plans:id,price,months,type,status');
 
             if ($user->plans->isEmpty()) {

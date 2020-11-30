@@ -18,7 +18,7 @@ Route::get('/', 'LandingController@index');
 
 Route::get('/accounts/verify/{email}/{token}', 'AccountController@verify')
     ->name('accounts.verify')
-    ->middleware(['guest', 'signed']);
+    ->middleware('signed');
 
 Route::post('/accounts/password', 'AccountController@updatePassword')
     ->name('accounts.password.update')
