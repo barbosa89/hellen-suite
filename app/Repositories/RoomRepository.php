@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Repository;
+use App\Contracts\RoomRepository as Repository;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,59 +14,52 @@ use Illuminate\Support\Collection;
 class RoomRepository implements Repository
 {
     /**
-     * Get model
-     *
      * @param int $id
+     * @throws Exception
      * @return \App\Models\Room
      */
-    public function findById(int $id): Room
+    public function find(int $id): Room
     {
-        $room = Room::byId($id)
-            ->allColumns()
-            ->firstOrFail();
-
-        // $room->load();
-
-        return $room;
+        return Room::findOrFail($id);
     }
 
     /**
-     * Get paginated model collection
-     *
-     * @param int $perPage
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @param integer $hotel
+     * @param integer $perPage
+     * @param array $filters
+     * @return LengthAwarePaginator
      */
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Room::where('user_id', id_parent())
-            ->allColumns()
+            ->where('hotel_id', $hotel)
+            ->latest()
             ->paginate($perPage);
     }
 
     /**
-     * Get complete model collection
-     *
-     * @param int $perPage
-     * @return \Illuminate\Support\Collection
+     * @param integer $hotel
+     * @param array $filters
+     * @return Collection
      */
-    public function all(array $filters = []): Collection
+    public function all(int $hotel, array $filters = []): Collection
     {
         return Room::where('user_id', id_parent())
-            ->allColumns()
+            ->where('hotel_id', $hotel)
             ->get();
     }
 
     /**
-     * Store new model
-     *
-     * @param array data
+     * @param integer $hotel
+     * @param array $data
+     * @throws Exception
      * @return \App\Models\Room
      */
-    public function create(array $data): Room
+    public function create(int $hotel, array $data): Room
     {
         $room = new Room();
         $room->fill($data);
-        $room->hotel()->associate($data['hotel_id']);
+        $room->hotel()->associate($hotel);
         $room->user()->associate(id_parent());
         $room->saveOrFail();
 
@@ -77,16 +70,15 @@ class RoomRepository implements Repository
     }
 
     /**
-     * Update model
-     *
      * @param  integer $id
      * @param  array $data
+     * @throws Exception
      * @return \App\Models\Room
      */
     public function update(int $id, array $data): Room
     {
-        $room = $this->findById($id);
-        $room->content = $data['content'];
+        $room = $this->find($id);
+        $room->fill($data);
         $room->saveOrFail();
 
         return $room;
@@ -100,7 +92,7 @@ class RoomRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $room = $this->findById($id);
+        $room = $this->find($id);
 
         return $room->delete();
     }
@@ -122,21 +114,6 @@ class RoomRepository implements Repository
                 Room::getColumnNames(['user_id', 'hotel_id'])
             );
     }
-
-    /**
-     * Return a Room collection
-     *
-     * @param integer $hotel
-     * @param string $start
-     * @param string $end
-     * @param string $text
-     * @return \Illuminate\Support\Collection
-     */
-    // public function list(int $hotel, string $start, string $end, string $text = null): Collection
-    // {
-    //     return $this->filter($hotel, $start, $end, $text)
-    //         ->get(Room::getColumnNames(['user_id', 'hotel_id']));
-    // }
 
     /**
      * Prepare query by parameters
