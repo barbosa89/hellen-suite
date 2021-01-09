@@ -17,4 +17,10 @@ return array (
   array (
     'registered' => 'No hay empresas registradas',
   ),
+  'new' => 
+  array (
+    'none' => 'No hay registros recientes de empresas',
+    'one' => 'nueva empresa',
+    'many' => 'nuevas empresas',
+  ),
 );

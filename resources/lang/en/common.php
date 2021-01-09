@@ -178,4 +178,8 @@ return array (
   'lang' => 'Language',
   'month' => 'Month',
   'months' => 'Months',
+  'view' => 
+  array (
+    'details' => 'View details',
+  ),
 );

@@ -97,4 +97,10 @@ return array (
   ),
   'back' => 'Back to voucher',
   'notfound' => 'Voucher not found',
+  'new' => 
+  array (
+    'many' => 'new vouchers',
+    'none' => 'No recent vouchers created',
+    'one' => 'new voucher',
+  ),
 );

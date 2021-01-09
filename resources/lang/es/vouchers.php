@@ -97,4 +97,10 @@ return array (
   ),
   'back' => 'Volver al recibo',
   'notfound' => 'Comprobante no encontrado',
+  'new' => 
+  array (
+    'none' => 'No se han creado recibos recientemente',
+    'one' => 'nuevo recibo',
+    'many' => 'nuevos recibos',
+  ),
 );

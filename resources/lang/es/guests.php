@@ -17,4 +17,10 @@ return array (
   array (
     'country' => 'País de nacimiento',
   ),
+  'new' => 
+  array (
+    'none' => 'No hay nuevos registros',
+    'one' => 'nuevo huésped',
+    'many' => 'nuevos huéspedes',
+  ),
 );
