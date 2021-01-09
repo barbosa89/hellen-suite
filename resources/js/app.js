@@ -19,7 +19,7 @@ import Permissions from './mixins/Permissions';
 
 // Commom
 Vue.component('search-input', require('./components/SearchInput.vue').default);
-Vue.component('hotel-select', require('./components/Hotels/HotelSelect.vue').default);
+Vue.component('hotel-select', require('./components/Hotels/Select.vue').default);
 Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default);
 Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default);
 
@@ -28,6 +28,7 @@ Vue.component('dining-service-list', require('./components/Services/DiningServic
 
 Vue.component('product-transactions', require('./components/Products/ProductTransactions.vue').default);
 Vue.component('product-list', require('./components/Products/ProductList.vue').default);
+
 Vue.component('room-list', require('./components/Rooms/RoomList.vue').default);
 
 Vue.component('prop-transactions', require('./components/Props/PropTransactions.vue').default);
@@ -39,6 +40,8 @@ Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').d
 
 Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
 Vue.component('tag-list', require('./components/Tags/TagList.vue').default);
+
+Vue.component('home-index', require('./components/Home/Index.vue').default);
 
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';
