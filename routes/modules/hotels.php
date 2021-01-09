@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::get('hotels/assigned', 'HotelController@getAssigned')
+	Route::post('hotels/assigned', 'HotelController@getAssigned')
         ->name('hotels.assigned')
         ->middleware(['permission:hotels.index']);
 
