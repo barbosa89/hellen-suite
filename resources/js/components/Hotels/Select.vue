@@ -14,21 +14,29 @@
         },
         data() {
             return {
-                hotels: Array,
+                hotels: [],
                 hotel: ''
             }
         },
         methods: {
             loadHotels() {
-                axios.get('/hotels/assigned')
+                axios
+                    .post(route('hotels.assigned'))
                     .then(response => {
-                        if (response.data.length) {
-                            this.hotels = response.data
-                        } else {
-                            // Redirect if the parent user has not created hotels
-                            window.location.href = '/home'
+                        if (response.data.hotels.length) {
+                            this.hotels = response.data.hotels
                         }
                     })
+                    .finally(() => {
+                        this.selectFirst()
+                    })
+            },
+            selectFirst() {
+                if (this.hotels.length) {
+                    this.hotel = _.first(this.hotels).hash
+
+                    this.selectedHotel()
+                }
             },
             selectedHotel() {
                 this.$emit('hotel', this.hotel)

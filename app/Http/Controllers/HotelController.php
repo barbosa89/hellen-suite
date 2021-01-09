@@ -285,6 +285,8 @@ class HotelController extends Controller
         // Using assigned scoped
         $hotels = Hotel::assigned()->get(fields_get('hotels'));
 
-        return response()->json($hotels);
+        return response()->json([
+            'hotels' =>$hotels
+        ]);
     }
 }
