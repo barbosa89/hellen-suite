@@ -36,6 +36,7 @@
         "spatie/laravel-newsletter": "^4.8",
         "spatie/laravel-permission": "^3.11",
         "thepinecode/i18n": "^1.0",
+        "tightenco/ziggy": "^1.0",
         "vinkla/hashids": "^8.1"
     },
     "require-dev": {
