@@ -70,7 +70,7 @@ class InvoiceController extends Controller
      */
     public function show(string $invoice)
     {
-        $invoice = $this->invoice->findById(id_decode($invoice));
+        $invoice = $this->invoice->find(id_decode($invoice));
 
         return view('app.invoices.show', compact('invoice'));
     }

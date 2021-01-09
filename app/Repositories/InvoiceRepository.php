@@ -24,7 +24,7 @@ class InvoiceRepository implements Repository
      * @param int $id
      * @return \App\Models\Invoice
      */
-    public function findById(int $id): Invoice
+    public function find(int $id): Invoice
     {
         return Invoice::owner()
             ->where('id', $id)
@@ -138,7 +138,7 @@ class InvoiceRepository implements Repository
      */
     public function update(int $id, array $data): Invoice
     {
-        $invoice = $this->findById($id);
+        $invoice = $this->find($id);
         $invoice->fill($data);
         $invoice->saveOrFail();
 
