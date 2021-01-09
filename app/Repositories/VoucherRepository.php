@@ -6,7 +6,6 @@ use App\Repositories\Repository;
 use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use InvalidArgumentException;
 
 /**
