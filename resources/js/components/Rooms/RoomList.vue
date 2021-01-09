@@ -3,11 +3,7 @@
         <div class="row mb-4">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 without-padding">
                 <div class="form-group">
-                    <select name="hotel" id="hotel" class="form-control" v-model="selectedHotel" @change="updateRoomList">
-                        <option v-for="(hotel, index) in hotels" :key="hotel.hash" :selected="index === 0" :value="hotel.hash">
-                            {{ hotel.business_name }}
-                        </option>
-                    </select>
+                    <hotel-select @hotel='hotelId = $event'></hotel-select>
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -128,19 +124,20 @@
     import { VueContext } from 'vue-context';
 
     export default {
-        mounted() {
-            this.prepare()
-        },
         data() {
             return {
-                selectedHotel: '',
+                hotelId: '',
                 rooms: [],
                 filteredRooms: [],
                 selectedRooms: [],
                 showStatus: false
             }
         },
-        props: ['hotels'],
+        watch: {
+            hotelId() {
+                this.queryRooms()
+            }
+        },
         computed: {
             chunkedItems() {
                 return _.chunk(this.filteredRooms, 6)
@@ -150,11 +147,23 @@
             VueContext
         },
         methods: {
-            prepare() {
-                if (this.hotels.length > 0) {
-                    this.selectedHotel = _.first(this.hotels).hash
-                    this.rooms = _.first(this.hotels).rooms
+            queryRooms() {
+                axios
+                    .get(route('api.web.rooms.index', this.hotelId))
+                    .then(response => {
+                        this.rooms = response.data.rooms
 
+                        this.prepare()
+                    })
+                    .catch(e => {
+                        toastr.error(
+                            this.$root.$t('common.try'),
+                            'Error'
+                        )
+                    })
+            },
+            prepare() {
+                if (this.rooms.length > 0) {
                     // Add custom property to selected items
                     this.rooms = _.each(this.rooms, function (room) {
                         room.selected = false
@@ -177,14 +186,6 @@
 
                 let button = document.getElementById(id)
                 button.classList.add('pressed')
-            },
-            updateRoomList() {
-                _.map(this.hotels, (hotel) => {
-                    if (hotel.hash == this.selectedHotel) {
-                        this.filteredRooms = hotel.rooms
-                        this.rooms = hotel.rooms
-                    }
-                })
             },
             showAll(event) {
                 this.filteredRooms = this.rooms
@@ -257,22 +258,24 @@
                 this.selectedRooms = []
             },
             show(text, data) {
-                let url = '/rooms/' + data.room.hash;
-                window.location.href = url;
+                let url = '/rooms/' + data.room.hash
+
+                window.location.href = url
             },
             assign(text, data) {
                 if (data.room.status == '1') {
-                    this.pushSelected(data.room);
-                    window.location.href = this.buildLink(this.selectedHotel, [data.room])
+                    this.pushSelected(data.room)
+
+                    window.location.href = this.buildLink(this.hotelId, [data.room])
                 } else {
                     toastr.info(
                         this.$root.$t('rooms.cannot.add'),
                         this.$root.$t('common.not.allowed')
-                    );
+                    )
                 }
             },
             pool() {
-                window.location.href = this.buildLink(this.selectedHotel, this.selectedRooms)
+                window.location.href = this.buildLink(this.hotelId, this.selectedRooms)
             },
             buildLink(hotel, rooms) {
                 let params = ''
@@ -286,7 +289,7 @@
             changeStatus(data, status) {
                 if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
                     axios.post('/rooms/toggle', {
-                        hotel: data.room.hotel_id,
+                        hotel: data.room.hotel,
                         room: data.room.hash,
                         status: status
                     }).then(response => {

@@ -47,6 +47,8 @@ Route::post('/message', 'ContactController@message')
 
 require __DIR__ . '/root.php';
 
+require __DIR__ . '/api/web/rooms.php';
+
 // Modules
 require __DIR__ . '/modules/hotels.php';
 require __DIR__ . '/modules/rooms.php';
@@ -66,3 +68,5 @@ require __DIR__ . '/modules/tags.php';
 require __DIR__ . '/modules/notes.php';
 require __DIR__ . '/modules/plans.php';
 require __DIR__ . '/modules/invoices.php';
+
+

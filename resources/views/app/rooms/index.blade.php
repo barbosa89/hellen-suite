@@ -20,7 +20,7 @@
             ]
         ])
 
-        <room-list :hotels="{{ $hotels->toJson() }}"></room-list>
+        <room-list></room-list>
 
         @include('partials.modal-confirm')
     </div>
