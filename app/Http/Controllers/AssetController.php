@@ -98,7 +98,7 @@ class AssetController extends Controller
 
         $rooms = $hotels->sum(function ($hotel)
         {
-            return $hotel->rooms()->count();
+            return $hotel->rooms->count();
         });
 
         if($rooms == 0) {
