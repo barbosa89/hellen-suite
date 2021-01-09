@@ -2,31 +2,34 @@
 
 namespace App\Contracts;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 /**
- * Standard repository
+ * Standard repository for nested resources
  */
-interface Repository
+interface NestedRepository
 {
     /**
      * Get paginated model collection
      *
+     * @param int $parent
      * @param int $perPage
      * @param array $filters
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator;
+    public function paginate(int $parent, int $perPage = 15, array $filters = []): LengthAwarePaginator;
+
 
     /**
      * Get complete model collection
      *
+     * @param int $parent
      * @param array $filters
      * @return \Illuminate\Support\Collection
      */
-    public function all(array $filters = []): Collection;
+    public function all(int $parent, array $filters = []): Collection;
 
     /**
      * Get model
@@ -39,10 +42,11 @@ interface Repository
     /**
      * Create a new model
      *
+     * @param int $parent
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create(array $data): Model;
+    public function create(int $parent, array $data): Model;
 
     /**
      * Update model
