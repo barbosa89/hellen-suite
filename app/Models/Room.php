@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\ColumnList;
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -12,13 +11,23 @@ class Room extends Model
     use LogsActivity;
     use Queryable;
 
+    public const OCCUPIED = '0';
+
+    public const AVAILABLE = '1';
+
+    public const CLEANING = '2';
+
+    public const DISABLED = '3';
+
+    public const MAINTENANCE = '4';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'number', 'description', 'price', 'status', 'user_id', 'tax_included', 'is_suite', 'capacity', 'floors'
+        'number', 'description', 'price', 'min_price', 'status', 'user_id', 'is_suite', 'capacity', 'floor'
     ];
 
     /**
@@ -26,14 +35,14 @@ class Room extends Model
      *
      * @var array
      */
-    protected $appends = ['hash'];
+    protected $appends = ['hash', 'hotel'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = ['id'];
+    protected $hidden = ['id', 'hotel_id', 'user_id'];
 
     /**
      * Hashing Room ID.
@@ -44,6 +53,17 @@ class Room extends Model
     public function getHashAttribute()
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+    }
+
+    /**
+     * Hashing Hotel ID.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getHotelAttribute()
+    {
+        return $this->attributes['hotel'] = (string) id_encode($this->attributes['hotel_id']);
     }
 
     public function vouchers()
@@ -85,14 +105,24 @@ class Room extends Model
     }
 
     /**
-     * Scope a query to query by Id.
+     * Scope a query by owner.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeById($query, int $id)
+    public function scopeWhereOwner($query)
     {
-        return $query->where('user_id', id_parent())
-            ->where('id', $id);
+        return $query->where('user_id', id_parent());
+    }
+
+    /**
+     * Scope a query to select all columns.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSelectAll($query)
+    {
+        return $query->select(['id', 'user_id', 'hotel_id', ...$this->fillable]);
     }
 }
