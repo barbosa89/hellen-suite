@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Models\Room;
-use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use App\Helpers\Chart;
 use App\Http\Requests\ChangeRoomStatus;
-use Illuminate\Support\Collection;
 
 class RoomController extends Controller
 {
@@ -21,82 +19,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $hotels = $this->getHotels();
-
-        // Check if is empty
-        if ($hotels->isEmpty()) {
-            flash(trans('hotels.no.registered'))->info();
-
-            if (auth()->user()->can('hotels.index')) {
-                return redirect()->route('hotels.index');
-            }
-
-            return redirect()->route('home');
-        }
-
-        $hotels = $this->prepare($hotels);
-
-        return view('app.rooms.index', compact('hotels'));
-    }
-
-    /**
-     * Return hotel list to attach to voucher.
-     *
-     * @param  \Illuminate\Support\Collection
-     * @return  \Illuminate\Support\Collection
-     */
-    public function prepare(Collection $hotels = null)
-    {
-        $hotels = $hotels->map(function ($hotel, $index)
-        {
-            $hotel->user_id = id_encode($hotel->user_id);
-            $hotel->rooms = $hotel->rooms->map(function ($room)
-            {
-                $room->hotel_id = id_encode($room->hotel_id);
-                $room->user_id = id_encode($room->user_id);
-
-                return $room;
-            });
-
-            return $hotel;
-        });
-
-        return $hotels;
-    }
-
-    /**
-     * Return hotel list to attach to voucher.
-     *
-     * @return  \Illuminate\Support\Collection
-     */
-    private function getHotels()
-    {
-        if (auth()->user()->hasRole('receptionist')) {
-            $user = auth()->user()->load([
-                'headquarters' => function ($query)
-                {
-                    $query->select(fields_dotted('hotels'))
-                        ->where('status', true);
-                },
-                'headquarters.rooms' => function ($query) {
-                    $query->select(fields_dotted('rooms'))
-                        ->orderBy('number');
-                }
-            ]);
-
-            return $user->headquarters;
-        }
-
-        $hotels = Hotel::where('user_id', id_parent())
-            ->where('status', true)
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select(fields_get('rooms'))
-                        ->orderBy('number');
-                }
-            ])->get(fields_get('hotels'));
-
-        return $hotels;
+        return view('app.rooms.index');
     }
 
     /**
