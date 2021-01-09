@@ -183,6 +183,12 @@ export default {
             "select": "Select room",
             "with": {
                 "tax": "With tax"
+            },
+            "lang": "Language",
+            "month": "Month",
+            "months": "Months",
+            "view": {
+                "details": "View details"
             }
         },
         "dining": {
@@ -274,6 +280,37 @@ export default {
             "discard": "Discard",
             "lodging": "Lodging"
         },
+        "plans": {
+            "title": "Plans",
+            "own": "My plan",
+            "type": {
+                "basic": "Basic",
+                "free": "Free",
+                "premium": "Premium",
+                "sponsor": "Sponsor"
+            },
+            "types": "Plans type",
+            "duration": "Duration time in months",
+            "descriptions": {
+                "basic": "All modules for {months} months",
+                "free": "All modules for {months} month",
+                "premium": "All modules and electronic invoicing for 12 months",
+                "sponsor": "All platform features without time limit"
+            },
+            "prices": "Plan prices",
+            "features": {
+                "all": "All modules",
+                "sponsor": "If you want to support the platform development. This plan is assignable in direct negotiation.",
+                "support": {
+                    "mail": "Email support only",
+                    "priority": "Priority technical support"
+                },
+                "unique": "{months} month one time",
+                "renewable": "{months} months renewable",
+                "default": "Please, contact us to purchase this plan"
+            },
+            "ready": "Your {plan} plan was activated"
+        },
         "maintenances": {
             "maintenance": "Maintenance",
             "title": "Maintenances"
@@ -310,7 +347,10 @@ export default {
             "notification": "Notification",
             "terms": "When you activate your account, the terms and conditions of the site are understood to be accepted. {app} is committed to the protection of the personal data supplied, which will not be sold or transferred to third parties; everything is done in compliance with the legal framework of Data Protection of Colombia, law 1581 of 2012.",
             "asCollaborator": "has added you as his collaborator.",
-            "welcome": "Welcome to {app}; To confirm your email and activate your account, please click on the \"Activate account\" button."
+            "welcome": "Welcome to {app}; To confirm your email and activate your account, please click on the \"Activate account\" button.",
+            "fail": "Unable to send your message",
+            "send": "Send",
+            "sent": "Your message was sent successfully"
         },
         "companies": {
             "company": "Company",
@@ -325,6 +365,11 @@ export default {
             },
             "no": {
                 "registered": "There are no registered companies"
+            },
+            "new": {
+                "many": "new companies",
+                "none": "No recent company registrations",
+                "one": "new company"
             }
         },
         "reports": {
@@ -356,6 +401,22 @@ export default {
             "role": "Role",
             "permissions": "Permissions",
             "cashier": "Cashier"
+        },
+        "invoices": {
+            "title": "Invoices",
+            "status": {
+                "canceled": "Canceled",
+                "paid": "Paid",
+                "pending": "Pending"
+            }
+        },
+        "accounts": {
+            "title": "Account",
+            "password": {
+                "updated": "The password was updated",
+                "wrong": "Wrong password",
+                "new": "New password"
+            }
         },
         "assets": {
             "title": "Assets",
@@ -450,6 +511,11 @@ export default {
             "hosted": "Hosted",
             "birth": {
                 "country": "Birth country"
+            },
+            "new": {
+                "many": "new guests",
+                "none": "No new registrations",
+                "one": "new guest"
             }
         },
         "login": {
@@ -476,7 +542,14 @@ export default {
         },
         "auth": {
             "failed": "These credentials do not match our records.",
-            "throttle": "Too many login attempts. Please try again in {seconds} seconds."
+            "throttle": "Too many login attempts. Please try again in {seconds} seconds.",
+            "verify": {
+                "click": "click here to request another.",
+                "receive": "If you did not receive the email",
+                "link": "Before proceeding, please check your email for a verification link.",
+                "reset": "A fresh verification link has been sent to your email address.",
+                "title": "Verify Your Email Address"
+            }
         },
         "vouchers": {
             "title": "Vouchers",
@@ -563,7 +636,12 @@ export default {
                 }
             },
             "back": "Back to voucher",
-            "notfound": "Voucher not found"
+            "notfound": "Voucher not found",
+            "new": {
+                "many": "new vouchers",
+                "none": "No recent vouchers created",
+                "one": "new voucher"
+            }
         },
         "products": {
             "add": "Add productos",
@@ -577,6 +655,15 @@ export default {
             "transactions": "Products transactions",
             "current": {
                 "stock": "Current stock"
+            }
+        },
+        "currencies": {
+            "cop": "Colombian peso",
+            "usd": "American dollar",
+            "title": "Currencies",
+            "currency": "Currency",
+            "exchange": {
+                "error": "The currency conversion service is not available"
             }
         },
         "notes": {
@@ -624,7 +711,14 @@ export default {
             "address": "Address",
             "phone": "Phone",
             "copyright": "Copyright",
-            "demo": "Video demonstration"
+            "demo": "Video demonstration",
+            "subscribers": {
+                "exists": "You are already subscribed",
+                "leaves": "Your subscription has been deleted",
+                "pending": "A message was sent to your email address to verify your subscription",
+                "title": "Newsletters",
+                "unknown": "You are not subscribed to our newsletter, we invite you to subscribe"
+            }
         },
         "payments": {
             "payment": "Payment",
@@ -639,7 +733,18 @@ export default {
             "incomplete": "Payment is incomplete",
             "status": "Payment status",
             "unpaid": "Unpaid bills",
-            "automatic": "Automatic payment record"
+            "automatic": "Automatic payment record",
+            "confirmation": {
+                "error": "An error occurred while confirming payment of invoice number {number}",
+                "pending": "Invoice number {number} is pending payment",
+                "success": "Payment of invoice {number} has been successfully confirmed",
+                "cancel": "The payment process for invoice {number} was canceled",
+                "status": {
+                    "approved": "Approved",
+                    "declined": "Declined",
+                    "error": "Error"
+                }
+            }
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -953,6 +1058,12 @@ export default {
             "select": "Seleccionar",
             "with": {
                 "tax": "Con impuesto"
+            },
+            "lang": "Lenguaje",
+            "month": "Mes",
+            "months": "Meses",
+            "view": {
+                "details": "Ver detalles"
             }
         },
         "dining": {
@@ -1044,6 +1155,37 @@ export default {
             "discard": "Descarga",
             "lodging": "Alojamiento"
         },
+        "plans": {
+            "title": "Planes",
+            "own": "Mi plan",
+            "types": "Tipo de planes",
+            "type": {
+                "free": "Gratuito",
+                "basic": "Básico",
+                "premium": "Premium",
+                "sponsor": "Patrocinador"
+            },
+            "duration": "Tiempo de duración en meses",
+            "descriptions": {
+                "free": "Todos los módulos por {months} mes",
+                "basic": "Todos los módulos por {months} meses",
+                "premium": "Todos los módulos y facturación electrónica por 12 meses",
+                "sponsor": "Todas las características de la plataforma sin límite de tiempo"
+            },
+            "prices": "Precios de los planes",
+            "features": {
+                "unique": "{months} mes por única vez",
+                "all": "Todos los módulos",
+                "support": {
+                    "mail": "Soporte por correo",
+                    "priority": "Soporte técnico prioritario"
+                },
+                "sponsor": "Si desea apoyar el desarrollo de la plataforma. Este plan se puede asignar en negociación directa.",
+                "renewable": "{months} meses renovable",
+                "default": "Por favor, contáctanos para adquirir este plan"
+            },
+            "ready": "Tu plan {plan} fue activado"
+        },
         "maintenances": {
             "title": "Mantenimientos",
             "maintenance": "Mantenimiento"
@@ -1080,7 +1222,10 @@ export default {
             "notification": "Notificación",
             "terms": "Al activar tu cuenta, se entienden por aceptados los términos y condiciones del sitio. app: se compromete con la protección de los datos personales suministrados, los cuales no serán vendidos, ni cedidos a terceros; todo se realiza en cumplimiento del marco legal de Protección de Datos de Colombia, ley 1581 de 2012. También se ajusta a las leyes de protección de datos personales a nivel internacional.",
             "asCollaborator": "te ha agregado como su colaborador.",
-            "welcome": "Bienvenido al equipo de {app}; para confirmar tu correo y activar tu cuenta, por favor pulsa en el botón \"Activar cuenta\"."
+            "welcome": "Bienvenido al equipo de {app}; para confirmar tu correo y activar tu cuenta, por favor pulsa en el botón \"Activar cuenta\".",
+            "fail": "No es posible enviar su mensaje",
+            "send": "Enviar",
+            "sent": "Su mensaje fue enviado exitosamente"
         },
         "companies": {
             "title": "Empresas",
@@ -1095,6 +1240,11 @@ export default {
             },
             "no": {
                 "registered": "No hay empresas registradas"
+            },
+            "new": {
+                "none": "No hay registros recientes de empresas",
+                "one": "nueva empresa",
+                "many": "nuevas empresas"
             }
         },
         "reports": {
@@ -1126,6 +1276,22 @@ export default {
             "role": "Rol",
             "permissions": "Permisos",
             "cashier": "Cajero"
+        },
+        "invoices": {
+            "title": "Facturas",
+            "status": {
+                "paid": "Pagada",
+                "pending": "Pendiente",
+                "canceled": "Cancelada"
+            }
+        },
+        "accounts": {
+            "title": "Tu cuenta",
+            "password": {
+                "updated": "La contraseña fue actualizada",
+                "wrong": "Contraseña incorrecta",
+                "new": "Nueva contraseña"
+            }
         },
         "assets": {
             "title": "Activos",
@@ -1220,6 +1386,11 @@ export default {
             "hosted": "Hospedados",
             "birth": {
                 "country": "País de nacimiento"
+            },
+            "new": {
+                "none": "No hay nuevos registros",
+                "one": "nuevo huésped",
+                "many": "nuevos huéspedes"
             }
         },
         "login": {
@@ -1246,7 +1417,14 @@ export default {
         },
         "auth": {
             "failed": "Estas credenciales no coinciden con nuestros registros.",
-            "throttle": "Demasiados intentos de inicio de sesión. Vuelva a intentarlo en {seconds} segundos."
+            "throttle": "Demasiados intentos de inicio de sesión. Vuelva a intentarlo en {seconds} segundos.",
+            "verify": {
+                "title": "Verifica tu dirección de correo electrónico",
+                "reset": "Un nuevo enlace de verificación ha sido enviado a tu dirección de correo electrónico.",
+                "link": "Antes de continuar, por favor verifica en tu correo electrónico un mensaje con un enlace de verificación.",
+                "receive": "Si no recibiste el correo electrónico",
+                "click": "clic aquí para enviar otro."
+            }
         },
         "vouchers": {
             "title": "Recibos",
@@ -1333,7 +1511,12 @@ export default {
                 }
             },
             "back": "Volver al recibo",
-            "notfound": "Comprobante no encontrado"
+            "notfound": "Comprobante no encontrado",
+            "new": {
+                "none": "No se han creado recibos recientemente",
+                "one": "nuevo recibo",
+                "many": "nuevos recibos"
+            }
         },
         "products": {
             "title": "Productos",
@@ -1347,6 +1530,15 @@ export default {
             "transactions": "Transacciones de productos",
             "current": {
                 "stock": "Cantidad actual"
+            }
+        },
+        "currencies": {
+            "cop": "Peso colombiano",
+            "usd": "Dólar americano",
+            "title": "Monedas",
+            "currency": "Moneda",
+            "exchange": {
+                "error": "El servicio de conversión de moneda no está disponible"
             }
         },
         "notes": {
@@ -1394,7 +1586,14 @@ export default {
             "address": "Dirección",
             "phone": "Teléfono",
             "copyright": "Derechos de autor",
-            "demo": "Demostración en vídeo"
+            "demo": "Demostración en vídeo",
+            "subscribers": {
+                "pending": "Un mensaje fue enviado a su dirección de correo electrónico para verificar tu suscripción",
+                "exists": "Ya estás suscrito a este boletin",
+                "leaves": "Tu suscripción ha sido eliminada",
+                "title": "Boletines",
+                "unknown": "No está suscrito a nuestro boletín, le invitamos a suscribirse"
+            }
         },
         "payments": {
             "title": "Pagos",
@@ -1409,7 +1608,18 @@ export default {
             "incomplete": "El pago está incompleto",
             "status": "Estado del pago",
             "unpaid": "Pendientes de pago",
-            "automatic": "Registro de pago automático"
+            "automatic": "Registro de pago automático",
+            "confirmation": {
+                "error": "Ocurrió un error al confirmar el pago de la factura número {number}",
+                "pending": "La factura número {number} está pendiente de pago",
+                "success": "El pago de la factura {number} ha sido confirmado satisfactoriamente",
+                "cancel": "El proceso de pago de la factura {number} fue cancelado",
+                "status": {
+                    "approved": "Aprobado",
+                    "declined": "Declinado",
+                    "error": "Error"
+                }
+            }
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",
