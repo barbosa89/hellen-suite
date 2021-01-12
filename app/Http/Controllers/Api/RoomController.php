@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoom;
 use App\Contracts\RoomRepository;
 use App\Http\Controllers\Controller;
 
@@ -26,18 +27,8 @@ class RoomController extends Controller
         $rooms = $this->room->all(id_decode($hotel));
 
         return response()->json([
-            'rooms' => $rooms
+            'rooms' => $rooms,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -46,9 +37,13 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoom $request)
     {
-        //
+        $room = $this->room->create($request->hotel_id, $request->validated());
+
+        return response()->json([
+            'room' => $room,
+        ]);
     }
 
     /**

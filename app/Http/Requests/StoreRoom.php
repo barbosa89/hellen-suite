@@ -24,16 +24,16 @@ class StoreRoom extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'required|string|unique_with:rooms,hotel#hotel_id',
+            'number' => 'required|string|unique_with:rooms,hotel_id',
             'description' => 'required|string|max:500',
             'price' => 'required|integer|min:1|max:999999',
-            'type' => 'required|in:0,1',
+            'is_suite' => 'required|numeric|in:0,1',
             'min_price' => 'required|integer|lte:price',
             'capacity' => 'required|integer|min:1|max:12',
             'floor' => 'required|integer|min:1|max:500',
             'tax_status' => 'required|in:0,1',
             'tax' => 'nullable|numeric|min:0.01|max:0.5',
-            'hotel' => 'required|string|hashed_exists:hotels,id'
+            'hotel_id' => 'required|int|exists:hotels,id'
         ];
     }
 
@@ -47,5 +47,17 @@ class StoreRoom extends FormRequest
         return [
             'number.unique_with' => 'El número ya existe en el hotel seleccionado.',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'hotel_id' => id_decode($this->hotel_id),
+        ]);
     }
 }

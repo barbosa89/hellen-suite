@@ -12,10 +12,11 @@ use AssignmentsSeeder;
 use PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use NunoMaduro\LaravelMojito\InteractsWithViews;
 
 class RoomTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, InteractsWithViews;
 
     /**
      * @var \App\User
@@ -188,7 +189,7 @@ class RoomTest extends TestCase
                         'tax' => $room->tax,
                     ]
                 ]
-            ]);;
+            ]);
     }
 
     public function test_cashier_can_get_the_list_rooms_from_api()
@@ -198,5 +199,109 @@ class RoomTest extends TestCase
         $this->actingAs($cashier)
             ->get(route('api.web.rooms.index', ['hotel' => id_encode($this->hotel->id)]))
             ->assertStatus(403);
+    }
+
+    public function test_manager_can_see_form_to_create_rooms()
+    {
+        $this->actingAs($this->manager)
+            ->get(route('rooms.create'))
+            ->assertViewIs('app.rooms.create')
+            ->assertView()
+            ->has('select[name=hotel_id]')
+            ->has('input[name=floor]')
+            ->has('input[name=number]')
+            ->has('textarea[name=description]')
+            ->has('select[name=is_suite]')
+            ->has('input[name=price]')
+            ->has('input[name=min_price]')
+            ->has('input[name=capacity]')
+            ->has('select[name=tax_status]')
+            ->has('input[name=tax]');
+
+    }
+
+    public function test_manager_can_store_rooms()
+    {
+        $room = factory(Room::class)->make([
+            'hotel_id' => $this->hotel->id,
+        ]);
+
+        $data = [
+            'number' => (string) $room->number,
+            'description' => $room->description,
+            'price' => $room->price,
+            'min_price' => $room->min_price,
+            'capacity' => $room->capacity,
+            'floor' => $room->floor,
+            'is_suite' => (int) $room->is_suite,
+            'tax' => 0.19,
+            'hotel_id' => id_encode($this->hotel->id),
+        ];
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.store'), array_merge($data, ['tax_status' => 1]))
+            ->assertStatus(302);
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.createdSuccessfully'), $message->message);
+        $this->assertEquals('success', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $data['capacity'] = (string) $data['capacity'];
+        $data['floor'] = (string) $data['floor'];
+        $data['is_suite'] = (string) $data['is_suite'];
+        $data['tax'] = (string) $data['tax'];
+        $data['price'] = (string) $data['price'];
+        $data['min_price'] = (string) $data['min_price'];
+        $data['hotel_id'] = id_decode($data['hotel_id']);
+
+        $this->assertDatabaseHas('rooms', $data);
+    }
+
+    public function test_manager_can_store_rooms_from_api()
+    {
+        $room = factory(Room::class)->make([
+            'hotel_id' => $this->hotel->id,
+        ]);
+
+        $data = [
+            'number' => (string) $room->number,
+            'description' => $room->description,
+            'price' => $room->price,
+            'min_price' => $room->min_price,
+            'capacity' => $room->capacity,
+            'floor' => $room->floor,
+            'is_suite' => (int) $room->is_suite,
+            'tax' => 0.19,
+            'hotel_id' => id_encode($this->hotel->id),
+        ];
+
+        $response = $this->actingAs($this->manager)
+            ->post(route('api.web.rooms.store'), array_merge($data, ['tax_status' => 1]));
+
+        $response->assertJsonFragment([
+            'number' => (string) $room->number,
+            'hotel' => id_encode($this->hotel->id),
+            'description' => $room->description,
+            'price' => $room->price,
+            'min_price' => $room->min_price,
+            'capacity' => 2,
+            'floor' => 1,
+            'is_suite' => $room->is_suite,
+            'status' => (string) $room->status,
+            'tax' => 0.19,
+        ]);
+
+        $data['capacity'] = (string) $data['capacity'];
+        $data['floor'] = (string) $data['floor'];
+        $data['is_suite'] = (string) $data['is_suite'];
+        $data['tax'] = (string) $data['tax'];
+        $data['price'] = (string) $data['price'];
+        $data['min_price'] = (string) $data['min_price'];
+        $data['hotel_id'] = id_decode($data['hotel_id']);
+
+        $this->assertDatabaseHas('rooms', $data);
     }
 }

@@ -27,7 +27,7 @@ class Room extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'description', 'price', 'min_price', 'status', 'user_id', 'is_suite', 'capacity', 'floor'
+        'number', 'description', 'price', 'min_price', 'status', 'is_suite', 'capacity', 'floor'
     ];
 
     /**
@@ -43,6 +43,20 @@ class Room extends Model
      * @var array
      */
     protected $hidden = ['id', 'hotel_id', 'user_id'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'price' => 'float',
+        'min_price' => 'float',
+        'capacity' => 'integer',
+        'floor' => 'integer',
+        'is_suite' => 'boolean',
+        'tax' => 'float',
+    ];
 
     /**
      * Hashing Room ID.

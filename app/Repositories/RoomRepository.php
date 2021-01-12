@@ -59,12 +59,15 @@ class RoomRepository implements Repository
     {
         $room = new Room();
         $room->fill($data);
+        $room->status = Room::AVAILABLE;
+
+        if ((int) $data['tax_status'] == 1) {
+            $room->tax = (float) $data['tax'];
+        }
+
         $room->hotel()->associate($hotel);
         $room->user()->associate(id_parent());
         $room->saveOrFail();
-
-        // Sync Room tags
-        $room->tags()->sync($data['tags']);
 
         return $room;
     }

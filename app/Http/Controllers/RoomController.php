@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Models\Room;
+use App\Helpers\Chart;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
+use App\Contracts\RoomRepository;
 use App\Http\Requests\UpdateRoom;
-use App\Helpers\Chart;
 use App\Http\Requests\ChangeRoomStatus;
 
 class RoomController extends Controller
 {
+    public RoomRepository $room;
+
+    public function __construct(RoomRepository $room)
+    {
+        $this->room = $room;
+    }
+
     /**
-     * Display a listing of the resource for admin users.
+     * Display a listing of the resources.
      *
      * @return \Illuminate\Http\Response
      */
@@ -51,32 +59,11 @@ class RoomController extends Controller
      */
     public function store(StoreRoom $request)
     {
-        $room = new Room();
-        $room->floor = (int) $request->floor;
-        $room->number = $request->number;
-        $room->price = (float) $request->price;
-        $room->min_price = (float) $request->min_price;
-        $room->description = $request->description;
-        $room->status = '1';
-        $room->capacity = (int) $request->capacity;
-        $room->hotel()->associate(id_decode($request->hotel));
+        $room = $this->room->create($request->hotel_id, $request->validated());
 
-        if ((int) $request->tax_status == 1) {
-            $room->tax = (float) $request->tax;
-        }
+        flash(trans('common.createdSuccessfully'))->success();
 
-        $room->user()->associate(id_parent());
-        $room->is_suite = (int) $request->type;
-
-        if ($room->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
-
-            return redirect()->route('rooms.index');
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', ['id' => id_encode($room->id)]);
     }
 
     /**
@@ -89,11 +76,7 @@ class RoomController extends Controller
     {
         $room = User::find(id_parent(), ['id'])->rooms()
             ->where('id', id_decode($id))
-            ->first(fields_get('rooms'));
-
-        if (empty($room)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('rooms'));
 
         $room->load([
             'hotel' => function ($query)
@@ -145,7 +128,7 @@ class RoomController extends Controller
             abort(404);
         }
 
-        return view('app.rooms.admin.edit', compact('room'));
+        return view('app.rooms.edit', compact('room'));
     }
 
     /**
