@@ -72,16 +72,16 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                        <label for="type">@lang('rooms.type'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('rooms.type') }}" name="type" id="type" required>
+                    <div class="form-group{{ $errors->has('is_suite') ? ' has-error' : '' }}">
+                        <label for="is_suite">@lang('rooms.type'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('rooms.type') }}" name="is_suite" id="is_suite" required>
                             <option value="0" selected>@lang('common.no')</option>
                             <option value="1">@lang('common.yes')</option>
                         </select>
 
-                        @if ($errors->has('type'))
+                        @if ($errors->has('is_suite'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('type') }}</strong>
+                                <strong>{{ $errors->first('is_suite') }}</strong>
                             </span>
                         @endif
                     </div>
