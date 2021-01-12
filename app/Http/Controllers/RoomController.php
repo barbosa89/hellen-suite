@@ -261,35 +261,6 @@ class RoomController extends Controller
     }
 
     /**
-     * Return a rooms list by hotel ID.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function listByHotel(Request $request)
-    {
-        if ($request->ajax()) {
-            $rooms = Room::where('user_id', id_parent())
-                ->where('hotel_id', id_decode($request->hotel))
-                ->get(fields_get('rooms'));
-
-            $rooms = $rooms->map(function ($room, $index)
-            {
-                $room->hotel_id = id_encode($room->hotel_id);
-                $room->user_id = id_encode($room->user_id);
-
-                return $room;
-            });
-
-            return response()->json([
-                'rooms' => $rooms->toJson()
-            ]);
-        }
-
-        abort(404);
-    }
-
-    /**
      * Return the price and min price of a room.
      *
      * @param  \Illuminate\Http\Request  $request
