@@ -60,10 +60,12 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Permiso denegado
+                    @lang('common.not.allowed')
                 </div>
                 <div class="links">
-                        <a href="{{ url()->previous() }}">Volver</a>
+                        <a href="{{ url()->previous() }}">
+                            @lang('common.back')
+                        </a>
                     </div>
             </div>
         </div>
