@@ -30,14 +30,14 @@
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-12">Piso:</div>
+                    <div class="col-12">@lang('common.floor')):</div>
                     <div class="col-12 mt-2">
-                        <h4>Número {{ $room->floor }}</h4>
+                        <h4>@lang('common.number') {{ $room->floor }}</h4>
                     </div>
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-12">Número:</div>
+                    <div class="col-12">@lang('common.number'):</div>
                     <div class="col-12 mt-2">
                         <h4>{{ $room->number }}</h4>
                     </div>
@@ -135,8 +135,12 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary">
+                        @lang('common.update')
+                    </button>
+                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">
+                        @lang('common.back')
+                    </a>
                 </form>
             </div>
         </div>
