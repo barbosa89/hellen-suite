@@ -58,16 +58,16 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                        <label for="pwd">Indica si es una suite:</label>
-                        <select class="form-control selectpicker" title="Es una suite?" name="type" id="type" required>
-                            <option value="0" {{ !$room->is_suite ? 'selected' : '' }}>No</option>
-                            <option value="1" {{ $room->is_suite ? 'selected' : '' }}>Si</option>
+                    <div class="form-group{{ $errors->has('is_suite') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('rooms.type'):</label>
+                        <select class="form-control selectpicker" title="Es una suite?" name="is_suite" id="is_suite" required>
+                            <option value="0" {{ !$room->is_suite ? 'selected' : '' }}>@lang('common.no')</option>
+                            <option value="1" {{ $room->is_suite ? 'selected' : '' }}>@lang('common.yes')</option>
                         </select>
 
-                        @if ($errors->has('type'))
+                        @if ($errors->has('is_suite'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('type') }}</strong>
+                                <strong>{{ $errors->first('is_suite') }}</strong>
                             </span>
                         @endif
                     </div>
