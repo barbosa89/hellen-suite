@@ -63,10 +63,10 @@
                     @lang('common.not.allowed')
                 </div>
                 <div class="links">
-                        <a href="{{ url()->previous() }}">
-                            @lang('common.back')
-                        </a>
-                    </div>
+                    <a href="{{ url()->previous() }}">
+                        @lang('common.back')
+                    </a>
+                </div>
             </div>
         </div>
     </body>
