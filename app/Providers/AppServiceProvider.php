@@ -118,7 +118,7 @@ class AppServiceProvider extends ServiceProvider
             // $alias[1]: Parent field name in table table
             $alias = explode('#', $parameters[1]);
             $parentField = isset($alias[1]) ? $alias[1] : $alias[0];
-            $parentId = id_decode($data[$alias[0]]);
+            $parentId = is_string($data[$parentField]) ? id_decode($data[$parentField]) : $data[$parentField];
             $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
 
             $results = DB::table($parameters[0])
