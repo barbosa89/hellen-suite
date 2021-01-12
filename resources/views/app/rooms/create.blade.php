@@ -24,17 +24,17 @@
                 <form action="{{ route('rooms.store') }}" method="POST" id="room-form">
                     @csrf()
 
-                    <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
-                        <label for="hotel">Hotel:</label>
-                        <select class="form-control selectpicker" title="{{ trans('hotels.choose') }}" name="hotel" id="hotel" required>
+                    <div class="form-group{{ $errors->has('hotel_id') ? ' has-error' : '' }}">
+                        <label for="hotel_id">Hotel:</label>
+                        <select class="form-control selectpicker" title="{{ trans('hotels.choose') }}" name="hotel_id" id="hotel_id" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
                         </select>
 
-                        @if ($errors->has('hotel'))
+                        @if ($errors->has('hotel_id'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('hotel') }}</strong>
+                                <strong>{{ $errors->first('hotel_id') }}</strong>
                             </span>
                         @endif
                     </div>
