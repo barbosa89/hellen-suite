@@ -145,13 +145,13 @@ $("#tax_status").on('change', function(e) {
 
 function listRoomsByHotel(hotel) {
     $.ajax({
-        type: 'POST',
-        url: '/rooms/list',
+        type: 'GET',
+        url: route('api.web.rooms.index', hotel),
         data: {
             hotel: hotel
         },
         success: function(result) {
-            var rooms = JSON.parse(result.rooms);
+            var rooms = result.rooms;
             $('#room').empty();
 
             if (rooms.length) {
