@@ -12,6 +12,9 @@ $factory->define(Room::class, function (Faker $faker) {
         'price' => $faker->numberBetween(40000, 50000),
         'min_price' => $faker->numberBetween(30000, 39000),
         'capacity' => 2,
-        'floor' => 1
+        'floor' => 1,
+        'is_suite' => 0,
+        'status' => Room::AVAILABLE,
+        'tax' => 0,
     ];
 });

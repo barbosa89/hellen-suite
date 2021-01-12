@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        User::create([
+        $manager = User::create([
             'name' => 'Manager',
             'email' => 'manager@dev.com',
             'password' => bcrypt('manager'),
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@dev.com',
             'password' => bcrypt('admin'),
             'email_verified_at' => now(),
-            'parent' => 2
+            'parent' => $manager->id,
         ]);
 
         User::create([
@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'accountant@dev.com',
             'password' => bcrypt('accountant'),
             'email_verified_at' => now(),
-            'parent' => 2
+            'parent' => $manager->id,
         ]);
 
         User::create([
@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'receptionist@dev.com',
             'password' => bcrypt('receptionist'),
             'email_verified_at' => now(),
-            'parent' => 2
+            'parent' => $manager->id,
         ]);
 
         User::create([
@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'cashier@dev.com',
             'password' => bcrypt('cashier'),
             'email_verified_at' => now(),
-            'parent' => 2
+            'parent' => $manager->id,
         ]);
     }
 }
