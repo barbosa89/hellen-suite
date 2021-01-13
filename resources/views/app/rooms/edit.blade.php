@@ -22,30 +22,24 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('common.editionOf') @lang('rooms.title')</h2>
 
-                <div class="row mb-4">
-                    <div class="col-12">Hotel:</div>
-                    <div class="col-12 mt-2">
-                        <h4>{{ $room->hotel->business_name }}</h4>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-12">@lang('common.floor')):</div>
-                    <div class="col-12 mt-2">
-                        <h4>@lang('common.number') {{ $room->floor }}</h4>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-12">@lang('common.number'):</div>
-                    <div class="col-12 mt-2">
-                        <h4>{{ $room->number }}</h4>
-                    </div>
-                </div>
-
                 <form action="{{ route('rooms.update', ['id' => id_encode($room->id)]) }}" method="POST">
                     @csrf()
                     @method('PUT')
+
+                    <div class="form-group">
+                        <label for="hotel">Hotel:</label>
+                        <input type="text" class="form-control" name="hotel" id="hotel" value="{{ $room->hotel->business_name }}" readonly>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('floor') ? ' has-error' : '' }}">
+                        <label for="floor">@lang('common.floor'):</label>
+                        <input type="number" class="form-control" name="floor" id="floor" value="{{ $room->floor }}" readonly>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
+                        <label for="number">@lang('common.number'):</label>
+                        <input type="text" class="form-control" name="number" id="number" value="{{ $room->number }}" readonly>
+                    </div>
 
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                         <label for="description">@lang('common.description'):</label>
