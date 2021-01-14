@@ -1,10 +1,3 @@
-{{--
-    - 0: Occupied
-    - 1: Free
-    - 2: Maintenance
-    - 3: Disabled
---}}
-
 @switch($status)
     @case(0)
         @lang('rooms.occupied')

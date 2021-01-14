@@ -859,7 +859,8 @@ export default {
             "capacity": "Number of people to stay in the room",
             "cannot": {
                 "enable": "You cannot enable this room",
-                "add": "You cannot add this room"
+                "add": "You cannot add this room",
+                "destroy": "It is not possible to delete the room if it has associated vouchers, you can disable it."
             }
         }
     },
@@ -1734,7 +1735,8 @@ export default {
             "capacity": "Cantidad de personas a hospedar en la habitación",
             "cannot": {
                 "enable": "Tú no puedes habilitar esta habitación",
-                "add": "Tú no puedes agregar esta habitación"
+                "add": "Tú no puedes agregar esta habitación",
+                "destroy": "No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla."
             }
         }
     }

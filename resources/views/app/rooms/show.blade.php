@@ -18,26 +18,26 @@
                     'option' => trans('common.options'),
                     'type' => 'dropdown',
                     'url' => [
-                        // [
-                        //     'option' => trans('assets.add'),
-                        //     'url' => '#'
-                        // ],
-                        // [
-                        //     'option' => trans('products.add'),
-                        //     'url' => '#'
-                        // ],
-                        // [
-                        //     'option' => 'Asignar',
-                        //     'url' => '#'
-                        // ],
-                        // [
-                        //     'option' => 'Marca como inhabilitada',
-                        //     'url' => '#'
-                        // ],
-                        // [
-                        //     'option' => 'Está en mantenimiento',
-                        //     'url' => '#'
-                        // ],
+                        [
+                            'option' => trans('assets.add'),
+                            'url' => '#'
+                        ],
+                        [
+                            'option' => trans('products.add'),
+                            'url' => '#'
+                        ],
+                        [
+                            'option' => trans('common.assign'),
+                            'url' => '#'
+                        ],
+                        [
+                            'option' => trans('common.enable'),
+                            'url' => '#'
+                        ],
+                        [
+                            'option' => trans('rooms.maintenance'),
+                            'url' => '#'
+                        ],
                         [
                             'option' => trans('common.edit'),
                             'url' => route('rooms.edit', [
@@ -81,23 +81,7 @@
             <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">
                 <h3>@lang('common.status'):</h3>
                 <p>
-                    @switch($room->status)
-                        @case('0')
-                            @lang('rooms.occupied')
-                            @break
-                        @case('1')
-                            @lang('rooms.available')
-                            @break
-                        @case('2')
-                            @lang('rooms.cleaning')
-                            @break
-                        @case('3')
-                            @lang('rooms.disabled')
-                            @break
-                        @case('4')
-                            @lang('rooms.maintenance')
-                            @break
-                    @endswitch
+                    @include('app.rooms.status', ['status' => $room->status])
                 </p>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-md-3">

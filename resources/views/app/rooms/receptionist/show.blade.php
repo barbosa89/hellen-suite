@@ -43,7 +43,7 @@
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-md-6">
                 <h3>@lang('common.status')</h3>
-                <p>@include('partials.room-status', ['status' => $room->status])</p>
+                <p>@include('app.rooms.status', ['status' => $room->status])</p>
             </div>
         </div>
         <div class="row">

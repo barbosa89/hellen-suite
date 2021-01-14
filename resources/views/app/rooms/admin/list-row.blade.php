@@ -33,7 +33,7 @@
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 visible-md visible-lg">
             <p>
                 <a href="{{ route('rooms.show', ['id' => id_encode($row->id)]) }}">
-                    @include('partials.room-status', ['status' => $row->status])
+                    @include('app.rooms.status', ['status' => $row->status])
                 </a>
             </p>
         </div>
