@@ -289,7 +289,7 @@
             changeStatus(data, status) {
                 if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
                     axios.post('/rooms/toggle', {
-                        hotel: data.room.hotel,
+                        hotel: data.room.hotel_hash,
                         room: data.room.hash,
                         status: status
                     }).then(response => {
