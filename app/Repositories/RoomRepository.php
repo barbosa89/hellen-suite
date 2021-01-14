@@ -20,7 +20,14 @@ class RoomRepository implements Repository
      */
     public function find(int $id): Room
     {
-        return Room::findOrFail($id);
+        return Room::owner()
+            ->where('id', $id)
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id', 'business_name']);
+                }
+            ])->firstOrFail(fields_get('rooms'));
     }
 
     /**
@@ -31,7 +38,7 @@ class RoomRepository implements Repository
      */
     public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Room::where('user_id', id_parent())
+        return Room::owner()
             ->where('hotel_id', $hotel)
             ->latest()
             ->paginate($perPage);
@@ -44,7 +51,7 @@ class RoomRepository implements Repository
      */
     public function all(int $hotel, array $filters = []): Collection
     {
-        return Room::where('user_id', id_parent())
+        return Room::owner()
             ->where('hotel_id', $hotel)
             ->get();
     }
@@ -82,6 +89,16 @@ class RoomRepository implements Repository
     {
         $room = $this->find($id);
         $room->fill($data);
+
+
+        if ((int) $data['tax_status'] == 1) {
+            $room->tax = (float) $data['tax'];
+        } else {
+            $room->tax = 0.0;
+        }
+
+        $room->is_suite = (int) $data['is_suite'];
+
         $room->saveOrFail();
 
         return $room;
@@ -95,7 +112,14 @@ class RoomRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $room = $this->find($id);
+        $room = Room::owner()
+            ->where('id', $id)
+            ->doesntHave('vouchers')
+            ->first(fields_get('rooms'));
+
+        if (empty($room)) {
+            return false;
+        }
 
         return $room->delete();
     }
@@ -130,8 +154,8 @@ class RoomRepository implements Repository
     public function filter(int $hotel, string $start, string $end, string $text = null): Builder
     {
         return Room::query()
-            ->whereUserId(id_parent())
-            ->whereHotelId($hotel)
+            ->owner()
+            ->where('hotel_id', $hotel)
             ->whereDate('created_at', '>=', $start)
             ->whereDate('created_at', '<=', $end)
             ->when(!empty($text), function ($query) use ($text) {
