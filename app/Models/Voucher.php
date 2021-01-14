@@ -9,6 +9,27 @@ class Voucher extends Model
 {
     use LogsActivity;
 
+    public const SALE = 'sale';
+
+    public const ENTRY = 'entry';
+
+    public const LOSS = 'loss';
+
+    public const DISCARD = 'discard';
+
+    public const LODGING = 'lodging';
+
+    public const DINING = 'dining';
+
+    public const TYPES = [
+        self::SALE,
+        self::ENTRY,
+        self::LOSS,
+        self::DISCARD,
+        self::LODGING,
+        self::DINING,
+    ];
+
     /**
      * The accessors to append to the model's array form.
      *

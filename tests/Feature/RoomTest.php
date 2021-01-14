@@ -9,10 +9,11 @@ use App\Models\Hotel;
 use RolesTableSeeder;
 use UsersTableSeeder;
 use AssignmentsSeeder;
+use App\Models\Voucher;
 use PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RoomTest extends TestCase
 {
@@ -103,7 +104,7 @@ class RoomTest extends TestCase
                     [
                         'hash' => id_encode($room->id),
                         'number' => (string) $room->number,
-                        'hotel' => id_encode($this->hotel->id),
+                        'hotel_hash' => id_encode($this->hotel->id),
                         'description' => $room->description,
                         'price' => $room->price,
                         'min_price' => $room->min_price,
@@ -135,7 +136,7 @@ class RoomTest extends TestCase
                     [
                         'hash' => id_encode($room->id),
                         'number' => (string) $room->number,
-                        'hotel' => id_encode($this->hotel->id),
+                        'hotel_hash' => id_encode($this->hotel->id),
                         'description' => $room->description,
                         'price' => $room->price,
                         'min_price' => $room->min_price,
@@ -176,7 +177,7 @@ class RoomTest extends TestCase
                     [
                         'hash' => id_encode($room->id),
                         'number' => (string) $room->number,
-                        'hotel' => id_encode($this->hotel->id),
+                        'hotel_hash' => id_encode($this->hotel->id),
                         'description' => $room->description,
                         'price' => $room->price,
                         'min_price' => $room->min_price,
@@ -206,6 +207,7 @@ class RoomTest extends TestCase
         $this->actingAs($this->manager)
             ->get(route('rooms.create'))
             ->assertViewIs('app.rooms.create')
+            ->assertSee(route('rooms.store'))
             ->assertView()
             ->has('select[name=hotel_id]')
             ->has('input[name=floor]')
@@ -283,7 +285,7 @@ class RoomTest extends TestCase
 
         $response->assertJsonFragment([
             'number' => (string) $room->number,
-            'hotel' => id_encode($this->hotel->id),
+            'hotel_hash' => id_encode($this->hotel->id),
             'description' => $room->description,
             'price' => $room->price,
             'min_price' => $room->min_price,
@@ -303,5 +305,144 @@ class RoomTest extends TestCase
         $data['hotel_id'] = id_decode($data['hotel_id']);
 
         $this->assertDatabaseHas('rooms', $data);
+    }
+
+    public function test_manager_can_see_form_to_edit_rooms()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->get(route('rooms.edit', ['id' => id_encode($room->id)]))
+            ->assertViewIs('app.rooms.edit')
+            ->assertViewHas('room', $room)
+            ->assertSee(route('rooms.update', ['id' => id_encode($room->id)]))
+            ->assertView()
+            ->has('textarea[name=description]')
+            ->has('select[name=is_suite]')
+            ->has('input[name=price]')
+            ->has('input[name=min_price]')
+            ->has('input[name=capacity]')
+            ->has('select[name=tax_status]')
+            ->has('input[name=tax]');
+    }
+
+    public function test_manager_can_update_rooms()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $data = [
+            'description' => $this->faker->sentence(3),
+            'price' => $room->price * 1.1,
+            'min_price' => $room->min_price * 1.1,
+            'capacity' => $room->capacity,
+            'is_suite' => (int) $room->is_suite,
+            'tax' => 0.19,
+        ];
+
+        $this->actingAs($this->manager)
+            ->put(route('rooms.update', ['id' => id_encode($room->id)]), array_merge($data, ['tax_status' => 1]))
+            ->assertStatus(302);
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.updatedSuccessfully'), $message->message);
+        $this->assertEquals('success', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $data['capacity'] = (string) $data['capacity'];
+        $data['is_suite'] = (string) $data['is_suite'];
+        $data['tax'] = (string) $data['tax'];
+        $data['price'] = (string) $data['price'];
+        $data['min_price'] = (string) $data['min_price'];
+
+        $this->assertDatabaseHas('rooms', $data);
+    }
+
+    public function test_manager_can_see_room_details()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->get(route('rooms.show', ['id' => id_encode($room->id)]))
+            ->assertViewIs('app.rooms.show')
+            ->assertViewHas('room', $room)
+            ->assertSee(route('rooms.edit', ['id' => id_encode($room->id)]))
+            ->assertSee(route('rooms.destroy', ['id' => id_encode($room->id)]));
+    }
+
+    public function test_manager_can_delete_rooms()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->delete(route('rooms.destroy', ['id' => id_encode($room->id)]))
+            ->assertStatus(302);
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.deletedSuccessfully'), $message->message);
+        $this->assertEquals('success', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $this->assertDatabaseMissing('rooms', [
+            'id' => $room->id,
+            'number' => $room->number,
+            'hotel_id' => $room->hotel_id,
+        ]);
+    }
+
+    public function test_manager_can_not_delete_room_when_it_has_vouchers()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::OCCUPIED,
+        ]);
+
+        $voucher = factory(Voucher::class)->create();
+
+        $voucher->rooms()->attach($room, [
+            'quantity' => 1,
+            'price' => $room->price,
+            'discount' => 0,
+            'subvalue' => $room->price,
+            'taxes' => 0,
+            'value' => $room->price,
+            'start' => now()->toDateString(),
+            'end' => now()->toDateString(),
+            'enabled' => true
+        ]);
+
+        $this->actingAs($this->manager)
+            ->delete(route('rooms.destroy', ['id' => id_encode($room->id)]))
+            ->assertRedirect(route('rooms.show', ['id' => id_encode($room->id)]));
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('rooms.cannot.destroy'), $message->message);
+        $this->assertEquals('danger', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $room->id,
+            'number' => $room->number,
+            'hotel_id' => $room->hotel_id,
+            'status' => Room::OCCUPIED,
+        ]);
     }
 }

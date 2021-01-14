@@ -35,7 +35,7 @@ class Room extends Model
      *
      * @var array
      */
-    protected $appends = ['hash', 'hotel'];
+    protected $appends = ['hash', 'hotel_hash'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -75,7 +75,7 @@ class Room extends Model
      * @param  string  $value
      * @return void
      */
-    public function getHotelAttribute()
+    public function getHotelHashAttribute()
     {
         return $this->attributes['hotel'] = (string) id_encode($this->attributes['hotel_id']);
     }
@@ -124,7 +124,7 @@ class Room extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWhereOwner($query)
+    public function scopeOwner($query)
     {
         return $query->where('user_id', id_parent());
     }

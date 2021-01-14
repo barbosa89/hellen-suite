@@ -26,9 +26,9 @@ class StoreRoom extends FormRequest
         return [
             'number' => 'required|string|unique_with:rooms,hotel_id',
             'description' => 'required|string|max:500',
-            'price' => 'required|integer|min:1|max:999999',
+            'price' => 'required|numeric|min:1|max:999999',
             'is_suite' => 'required|numeric|in:0,1',
-            'min_price' => 'required|integer|lte:price',
+            'min_price' => 'required|numeric|lte:price',
             'capacity' => 'required|integer|min:1|max:12',
             'floor' => 'required|integer|min:1|max:500',
             'tax_status' => 'required|in:0,1',

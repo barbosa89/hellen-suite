@@ -29,5 +29,6 @@ return array (
   array (
     'enable' => 'You cannot enable this room',
     'add' => 'You cannot add this room',
+    'destroy' => 'It is not possible to delete the room if it has associated vouchers, you can disable it.',
   ),
 );

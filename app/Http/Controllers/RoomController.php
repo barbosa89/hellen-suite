@@ -110,23 +110,12 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $room = User::find(id_parent(), ['id'])->rooms()
-            ->where('id', id_decode($id))
-            ->with([
-                'hotel' => function ($query)
-                {
-                    $query->select(['id', 'business_name']);
-                }
-            ])->first(fields_get('rooms'));
-
-        if (empty($room)) {
-            abort(404);
-        }
+        $room = $this->room->find(id_decode($id));
 
         return view('app.rooms.edit', compact('room'));
     }
@@ -135,90 +124,39 @@ class RoomController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRoom $request, $id)
+    public function update(UpdateRoom $request, string $id)
     {
-        $room = User::find(id_parent(), ['id'])->rooms()
-            ->where('id', id_decode($id))
-            ->first(fields_get('rooms'));
+        $room = $this->room->update(id_decode($id), $request->validated());
 
-        if (empty($room)) {
-            abort(404);
-        }
+        flash(trans('common.updatedSuccessfully'))->success();
 
-        $room->price = $request->price;
-        $room->description = $request->description;
-        $room->min_price = (float) $request->min_price;
-        $room->description = $request->description;
-        $room->capacity = (int) $request->capacity;
-
-        if ((int) $request->tax_status == 1) {
-            $room->tax = (float) $request->tax;
-        } else {
-            $room->tax = 0.0;
-        }
-
-        $room->is_suite = (int) $request->type;
-
-        if ($room->update()) {
-            flash(trans('common.updatedSuccessfully'))->success();
-
-            return redirect()->route('rooms.show', [
-                'id' => id_encode($room->id)
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', [
+            'id' => id_encode($room->id)
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $room = User::find(id_parent(), ['id'])->rooms()
-            ->where('id', id_decode($id))
-            ->first(fields_get('rooms'));
+        if ($this->room->destroy(id_decode($id))) {
+            flash(trans('common.deletedSuccessfully'))->success();
 
-        if (empty($room)) {
-            abort(404);
+            return redirect()->route('rooms.index');
         }
 
-        $room->load([
-            'vouchers' => function ($query)
-            {
-                $query->select('id');
-            },
+        flash(trans('rooms.cannot.destroy'))->error();
+
+        return redirect()->route('rooms.show', [
+            'id' => $id
         ]);
-
-        if ($room->vouchers->count() > 0) {
-            $room->status = '3';
-
-            if ($room->update()) {
-                flash(trans('rooms.wasDisabled'))->success();
-
-                return redirect()->route('rooms.show', [
-                    'room' => id_encode($room->id)
-                ]);
-            }
-        } else {
-            if ($room->delete()) {
-                flash(trans('common.deletedSuccessfully'))->success();
-
-                return redirect()->route('rooms.index');
-            }
-        }
-
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('rooms.index');
     }
 
     /**

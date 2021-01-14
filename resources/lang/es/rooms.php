@@ -29,5 +29,6 @@ return array (
   array (
     'enable' => 'Tú no puedes habilitar esta habitación',
     'add' => 'Tú no puedes agregar esta habitación',
+    'destroy' => 'No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla.',
   ),
 );
