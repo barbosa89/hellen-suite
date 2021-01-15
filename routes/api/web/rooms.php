@@ -7,6 +7,10 @@ Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['au
         ->name('rooms.store')
         ->middleware('permission:rooms.create');
 
+    Route::get('rooms/{id}', 'Api\RoomController@show')
+		->name('rooms.show')
+		->middleware('permission:rooms.show');
+
     Route::get('hotels/{hotel}/rooms', 'Api\RoomController@index')
         ->name('rooms.index')
         ->middleware('permission:rooms.index');

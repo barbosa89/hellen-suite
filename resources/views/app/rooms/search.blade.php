@@ -26,8 +26,8 @@
             <div class="col-md-12">
                 @include('partials.list', [
                     'data' => $rooms,
-                    'listHeading' => 'app.rooms.admin.list-heading',
-                    'listRow' => 'app.rooms.admin.list-row',
+                    'listHeading' => 'app.rooms.list-heading',
+                    'listRow' => 'app.rooms.list-row',
                     'where' => null
                 ])
             </div>

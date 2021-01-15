@@ -49,12 +49,16 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $id)
     {
-        //
+        $room = $this->room->find(id_decode($id));
+
+        return response()->json([
+            'room' => $room,
+        ]);
     }
 
     /**

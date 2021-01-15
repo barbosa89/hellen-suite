@@ -45,7 +45,7 @@ class RoomController extends Controller
         if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
-            return back();
+            return redirect()->route('hotels.index');
         }
 
         return view('app.rooms.create', compact('hotels'));
@@ -69,20 +69,14 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $room = User::find(id_parent(), ['id'])->rooms()
-            ->where('id', id_decode($id))
-            ->firstOrFail(fields_get('rooms'));
+        $room = $this->room->find(id_decode($id));
 
         $room->load([
-            'hotel' => function ($query)
-            {
-                $query->select(fields_get('hotels'));
-            },
             'assets' => function ($query)
             {
                 $query->select(fields_dotted('assets'));
@@ -174,11 +168,9 @@ class RoomController extends Controller
             return redirect()->route('rooms.index');
         }
 
-        $rooms = User::find(id_parent(), ['id'])->rooms()
-            ->whereLike(['number', 'description'], $query)
-            ->paginate(20, fields_get('rooms'));
+        $rooms = $this->room->search($query);
 
-        return view('app.rooms.admin.search', compact('rooms', 'query'));
+        return view('app.rooms.search', compact('rooms', 'query'));
     }
 
     /**
@@ -189,21 +181,17 @@ class RoomController extends Controller
      */
     public function getPrice(Request $request)
     {
-        if ($request->ajax()) {
-            $room = Room::where('user_id', id_parent())
-                ->where('hotel_id', id_decode($request->hotel))
-                ->where('number', $request->number)
-                ->where('status', '1') // It is free
-                ->first(fields_get('rooms'));
+        $room = Room::where('user_id', id_parent())
+            ->where('hotel_id', id_decode($request->hotel))
+            ->where('number', $request->number)
+            ->where('status', Room::AVAILABLE) // It is free
+            ->firstOrFail(fields_get('rooms'));
 
-            return response()->json([
-                'price' => $room->price,
-                'min_price' => $room->min_price,
-                'tax' => $room->tax
-            ]);
-        }
-
-        abort(404);
+        return response()->json([
+            'price' => $room->price,
+            'min_price' => $room->min_price,
+            'tax' => $room->tax
+        ]);
     }
 
     /**
@@ -217,31 +205,27 @@ class RoomController extends Controller
         $room = Room::where('user_id', id_parent())
             ->where('hotel_id', id_decode($request->hotel))
             ->where('id', id_decode($request->room))
-            ->first(fields_get('rooms'));
+            ->firstOrFail(fields_get('rooms'));
 
-        if (empty($room)) {
-            abort(404);
-        }
-
-        if ($room->status == '0') {
+        if ($room->status == Room::OCCUPIED) {
             abort(403);
         }
 
-        if ($request->status == '1') {
-            if (in_array($room->status, ['2', '3', '4'])) {
-                $room->status = '1';
+        if ($request->status == Room::AVAILABLE) {
+            if (in_array($room->status, [Room::CLEANING, Room::DISABLED, Room::MAINTENANCE])) {
+                $room->status = Room::AVAILABLE;
             }
         }
 
-        if ($request->status == '3') {
-            if (in_array($room->status, ['1', '2', '4'])) {
-                $room->status = '3';
+        if ($request->status == Room::DISABLED) {
+            if (in_array($room->status, [Room::AVAILABLE, Room::CLEANING, Room::MAINTENANCE])) {
+                $room->status = Room::DISABLED;
             }
         }
 
-        if ($request->status == '4') {
-            if (in_array($room->status, ['1', '2', '3'])) {
-                $room->status = '4';
+        if ($request->status == Room::MAINTENANCE) {
+            if (in_array($room->status, [Room::AVAILABLE, Room::CLEANING, Room::DISABLED])) {
+                $room->status = Room::MAINTENANCE;
             }
         }
 
@@ -250,7 +234,5 @@ class RoomController extends Controller
                 'result' => true
             ]);
         }
-
-        abort(500);
     }
 }

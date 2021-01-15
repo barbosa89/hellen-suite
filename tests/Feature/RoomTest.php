@@ -222,6 +222,22 @@ class RoomTest extends TestCase
 
     }
 
+    public function test_manager_is_redirected_if_there_are_no_hotels()
+    {
+        Hotel::where('user_id', $this->manager->id)->delete();
+
+        $this->actingAs($this->manager)
+            ->get(route('rooms.create'))
+            ->assertRedirect(route('hotels.index'));
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('hotels.no.registered'), $message->message);
+        $this->assertEquals('info', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+    }
+
     public function test_manager_can_store_rooms()
     {
         $room = factory(Room::class)->make([
@@ -444,5 +460,148 @@ class RoomTest extends TestCase
             'hotel_id' => $room->hotel_id,
             'status' => Room::OCCUPIED,
         ]);
+    }
+
+    public function test_user_can_search_rooms()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $query = $room->number;
+
+        $this->actingAs($this->manager)
+            ->get(route('rooms.search') . "?query={$query}")
+            ->assertViewIs('app.rooms.search')
+            ->assertViewHas('query', $query)
+            ->assertSee($this->hotel->business_name)
+            ->assertSee($room->number)
+            ->assertSee(number_format($room->price, 2, ',', '.'))
+            ->assertSee($room->capacity)
+            ->assertSee(trans('rooms.occupied'))
+            ->assertSee(route('rooms.create'))
+            ->assertSee(route('rooms.index'))
+            ->assertSee(route('rooms.search'))
+            ->assertSee(route('rooms.show', ['id' => id_encode($room->id)]))
+            ->assertSee(route('rooms.edit', ['id' => id_encode($room->id)]))
+            ->assertSee(route('rooms.destroy', ['id' => id_encode($room->id)]));
+    }
+
+    public function test_it_check_redirection_on_empty_query_search()
+    {
+        $this->actingAs($this->manager)
+            ->get(route('rooms.search') . "?query=")
+            ->assertRedirect(route('rooms.index'));
+    }
+
+    public function test_user_can_get_room_price_and_tax_data()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.price'), [
+                'hotel' => id_encode($this->hotel->id),
+                'number' => $room->number,
+            ])
+            ->assertJsonFragment([
+                'price' => $room->price,
+                'min_price' => $room->min_price,
+                'tax' => $room->tax,
+            ]);
+    }
+
+    public function test_user_cannot_change_room_status_when_it_is_occupied()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::OCCUPIED,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.toggle'), [
+                'hotel' => id_encode($this->hotel->id),
+                'room' => id_encode($room->id),
+                'status' => Room::AVAILABLE,
+            ])
+            ->assertStatus(403);
+    }
+
+    public function test_user_can_change_room_status_to_available_when_not_occupied()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::MAINTENANCE,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.toggle'), [
+                'hotel' => id_encode($this->hotel->id),
+                'room' => id_encode($room->id),
+                'status' => Room::AVAILABLE,
+            ])
+            ->assertJsonFragment([
+                'result' => true
+            ]);
+    }
+
+    public function test_user_can_change_room_status_to_disabled_when_not_occupied()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::AVAILABLE,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.toggle'), [
+                'hotel' => id_encode($this->hotel->id),
+                'room' => id_encode($room->id),
+                'status' => Room::DISABLED,
+            ])
+            ->assertJsonFragment([
+                'result' => true
+            ]);
+    }
+
+    public function test_user_can_change_room_status_to_under_maintenance_when_not_occupied()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::AVAILABLE,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->post(route('rooms.toggle'), [
+                'hotel' => id_encode($this->hotel->id),
+                'room' => id_encode($room->id),
+                'status' => Room::MAINTENANCE,
+            ])
+            ->assertJsonFragment([
+                'result' => true
+            ]);
+    }
+
+    public function test_user_can_room_data_from_api()
+    {
+        $room = factory(Room::class)->create([
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::AVAILABLE,
+        ]);
+
+        $this->actingAs($this->manager)
+            ->get(route('api.web.rooms.show', ['id' => id_encode($room->id)]))
+            ->assertJsonFragment([
+                'hash' => id_encode($room->id),
+                'number' => (string) $room->number,
+                'hotel_hash' => id_encode($this->hotel->id),
+            ]);
     }
 }

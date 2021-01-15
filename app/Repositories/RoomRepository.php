@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Contracts\RoomRepository as Repository;
 use App\Models\Room;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -25,9 +24,10 @@ class RoomRepository implements Repository
             ->with([
                 'hotel' => function ($query)
                 {
-                    $query->select(['id', 'business_name']);
+                    $query->select(fields_get('hotels'));
                 }
-            ])->firstOrFail(fields_get('rooms'));
+            ])
+            ->firstOrFail(fields_get('rooms'));
     }
 
     /**
@@ -125,48 +125,19 @@ class RoomRepository implements Repository
     }
 
     /**
-     * Return a paginated Room collection
-     *
-     * @param integer $hotel
-     * @param string $start
-     * @param string $end
-     * @param string $text
+     * @param string $query
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function search(int $hotel, string $start, string $end, string $text = null): LengthAwarePaginator
+    public function search(string $query): LengthAwarePaginator
     {
-        return $this->filter($hotel, $start, $end, $text)
-            ->paginate(
-                config('settings.paginate'),
-                Room::getColumnNames(['user_id', 'hotel_id'])
-            );
-    }
-
-    /**
-     * Prepare query by parameters
-     *
-     * @param integer $hotel
-     * @param string $start
-     * @param string $end
-     * @param string $text
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function filter(int $hotel, string $start, string $end, string $text = null): Builder
-    {
-        return Room::query()
-            ->owner()
-            ->where('hotel_id', $hotel)
-            ->whereDate('created_at', '>=', $start)
-            ->whereDate('created_at', '<=', $end)
-            ->when(!empty($text), function ($query) use ($text) {
-                $query->whereLike(['content'], $text);
-            })
-            ->orderBy('created_at', 'DESC')
+        return Room::owner()
+            ->whereLike(['number', 'description'], $query)
             ->with([
-                'tags' => function ($query)
+                'hotel' => function ($query)
                 {
-                    $query->select(['id', 'slug']);
+                    $query->select(['id', 'business_name']);
                 }
-            ]);
+            ])
+            ->paginate(config('settings.paginate'), fields_get('rooms'));
     }
 }
