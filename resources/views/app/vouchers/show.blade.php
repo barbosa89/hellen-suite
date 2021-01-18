@@ -14,6 +14,7 @@
                 [
                     'option' => trans('common.export'),
                     'url' => route('vouchers.export', ['id' => id_encode($voucher->id)]),
+                    'target' => '_blank',
                     'permission' => 'vouchers.show'
                 ],
                 [

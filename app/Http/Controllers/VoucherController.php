@@ -2792,7 +2792,7 @@ class VoucherController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function export($id)
+    public function export(string $id)
     {
         $id = id_decode($id);
         $voucher = Voucher::where('user_id', id_parent())
@@ -2843,17 +2843,7 @@ class VoucherController extends Controller
 
         $view = view('app.vouchers.exports.template', compact('voucher', 'customer', 'pages'))->render();
 
-        $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->setOption('enable-javascript', true);
-        $pdf->setOption('images', true);
-        $pdf->setOption('enable-smart-shrinking', true);
-        $pdf->setOption('margin-top', 3);
-        $pdf->setOption('margin-bottom', 3);
-        $pdf->setOption('margin-left', 1);
-        $pdf->setOption('margin-right', 1);
-        $pdf->loadHTML($view);
-
-        return $pdf->download('voucher.pdf');
+        return response_pdf($view);
     }
 
     public function prepareItems(Voucher $voucher)

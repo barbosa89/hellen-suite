@@ -13,7 +13,7 @@
         "@fortawesome/fontawesome-free": "^5.15.1",
         "@tinymce/tinymce-vue": "^3.2.6",
         "@voerro/vue-tagsinput": "^2.4.3",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "bootstrap": "^4.5.3",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-sass": "^3.4.1",
@@ -48,5 +48,8 @@
         "vue-i18n": "^8.22.1",
         "vue-router": "^3.4.9",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "puppeteer": "^5.5.0"
     }
 }

@@ -131,10 +131,7 @@ class NoteController extends Controller
 
         $view = view('app.notes.exports.template', compact('notes', 'hotel'))->render();
 
-        $pdf = get_pdf_printer([5, 5, 6, 6]);
-        $pdf->loadHTML($view);
-
-        return $pdf->download(trans('notes.title') . '.pdf');
+        return response_pdf($view);
     }
 
     /**

@@ -45,7 +45,7 @@
     <div class="data-box">
         <img class="img-fluid image" style="width: 50%;" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
     </div>
-    <div class="data-box align-text-bottom">
-        <h2 class="font-weight-bold text-center">{{ $voucher->hotel->business_name }}</h2>
+    <div class="align-text-bottom">
+        <h3 class="font-weight-bold text-center">{{ $voucher->hotel->business_name }}</h3>
     </div>
 </div>
