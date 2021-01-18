@@ -31,4 +31,5 @@ return array (
     'add' => 'You cannot add this room',
     'destroy' => 'It is not possible to delete the room if it has associated vouchers, you can disable it.',
   ),
+  'number' => 'Room No. :number',
 );

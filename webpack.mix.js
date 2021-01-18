@@ -14,7 +14,6 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/theme.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
-    .sass('resources/sass/pdf.scss', 'public/css')
     .copy('node_modules/font-awesome/fonts', 'public/fonts')
     .copy('node_modules/tinymce/themes', 'public/js/themes')
     .copy('node_modules/tinymce/skins', 'public/js/skins')

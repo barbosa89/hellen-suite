@@ -1,5 +1,4 @@
-<div class="col-xs-4 data py-4">
-    <div class="spacer-lg">&nbsp;</div>
+<div class="data mt-4">
     <div class="line mb-4"></div>
     <h1 class="text-uppercase">@lang('vouchers.voucher')</h1>
     @if ($voucher->reservation)
@@ -42,10 +41,8 @@
             @endif
         </div>
     @endif
-    <div class="data-box">
-        <img class="img-fluid image" style="width: 50%;" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
-    </div>
-    <div class="align-text-bottom">
+    <div class="data-box text-center">
+        <img class="img-fluid image" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
         <h3 class="font-weight-bold text-center">{{ $voucher->hotel->business_name }}</h3>
     </div>
 </div>
