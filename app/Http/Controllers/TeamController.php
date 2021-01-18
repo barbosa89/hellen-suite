@@ -312,7 +312,7 @@ class TeamController extends Controller
             ->first(fields_get('users'));
 
         // Checked permissions from database
-        $permissions = Permission::whereIn('id', id_decode($request->permissions))
+        $permissions = Permission::whereIn('id', id_decode_recursive($request->permissions))
             ->get(['id', 'name', 'guard_name']);
 
         // Delete all old permissions
