@@ -17,6 +17,7 @@ use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
 use App\Models\Company;
 use App\Models\Voucher;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -365,7 +366,10 @@ class PropController extends Controller
             'vouchers' => function ($query) use ($request)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->whereBetween('vouchers.created_at', [
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay()
+                    ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
@@ -411,39 +415,32 @@ class PropController extends Controller
      */
     public function exportReport(ReportQuery $request)
     {
-        $query = Hotel::query();
-        $query->where('user_id', id_parent());
+        $props = Prop::where('user_id', id_parent())
+            ->when($request->hotel, function ($query) use ($request) {
+                $query->where('id', id_decode($request->hotel));
+            })
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(fields_dotted('hotels'));
+                },
+                'vouchers' => function ($query) use ($request)
+                {
+                    $query->whereBetween('vouchers.created_at', [
+                            Carbon::parse($request->start)->startOfDay(),
+                            Carbon::parse($request->end)->endOfDay()
+                        ])
+                        ->orderBy('vouchers.created_at', 'DESC')
+                        ->withPivot('quantity', 'value');
+                },
+                'vouchers.company' => function ($query)
+                {
+                    $query->select(fields_dotted('companies'));
+                }
+            ])
+            ->get();
 
-        if (!empty($request->hotel)) {
-            $query->where('id', id_decode($request->hotel));
-        }
-
-        $query->with([
-            'props' => function($query) {
-                $query->select(fields_get('props'));
-            },
-            'props.vouchers' => function ($query) use ($request)
-            {
-                $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
-                    ->orderBy('vouchers.created_at', 'DESC')
-                    ->withPivot('quantity', 'value');
-            },
-            'props.vouchers.company' => function ($query) use ($request)
-            {
-                $query->select(fields_dotted('companies'));
-            }
-        ]);
-
-        $hotels = $query->get(fields_get('hotels'));
-
-        if($hotels->isEmpty()) {
-            flash(trans('hotels.no.registered'))->info();
-
-            return back();
-        }
-
-        return Excel::download(new PropsReport($hotels), trans('props.title') . '.xlsx');
+        return Excel::download(new PropsReport($props), trans('props.title') . '.xlsx');
     }
 
     // /**

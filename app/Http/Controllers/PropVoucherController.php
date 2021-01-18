@@ -23,6 +23,7 @@ class PropVoucherController extends Controller
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
+            ->with('props')
             ->get(fields_get('hotels'));
 
         if($hotels->isEmpty()) {
@@ -52,8 +53,7 @@ class PropVoucherController extends Controller
      */
     public function encodeIds(Collection $hotels)
     {
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
             $hotel->props = $hotel->props->map(function ($prop)

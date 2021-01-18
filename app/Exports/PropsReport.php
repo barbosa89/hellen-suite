@@ -13,17 +13,17 @@ class PropsReport implements FromView
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $hotels;
+    protected $props;
 
-    public function __construct(Collection $hotels)
+    public function __construct(Collection $props)
     {
-        $this->hotels = $hotels;
+        $this->props = $props;
     }
 
     public function view(): View
     {
         return view('app.props.exports.props', [
-            'hotels' => $this->hotels
+            'props' => $this->props
         ]);
     }
 }
