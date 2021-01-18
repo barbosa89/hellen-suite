@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ProductReport;
-use App\Exports\ProductsReport;
-use App\Helpers\Chart;
 use App\User;
-use App\Helpers\Random;
-use Illuminate\Http\Request;
-use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
-use App\Models\Company;
 use App\Models\Hotel;
+use App\Helpers\Chart;
+use App\Helpers\Random;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\Voucher;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use App\Exports\ProductReport;
+use Illuminate\Support\Carbon;
+use App\Exports\ProductsReport;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
 
 class ProductController extends Controller
 {
@@ -428,7 +429,10 @@ class ProductController extends Controller
             'vouchers' => function ($query) use ($request)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->whereBetween('vouchers.created_at', [
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay()
+                    ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
@@ -488,7 +492,10 @@ class ProductController extends Controller
             'products.vouchers' => function ($query) use ($request)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->whereBetween('vouchers.created_at', [
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay()
+                    ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },

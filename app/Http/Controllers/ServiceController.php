@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ServiceReport;
-use App\Exports\ServicesReport;
-use App\Helpers\Chart;
 use App\User;
 use App\Models\Hotel;
+use App\Helpers\Chart;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
+use App\Exports\ServiceReport;
+use Illuminate\Support\Carbon;
+use App\Exports\ServicesReport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
 
 class ServiceController extends Controller
 {
@@ -373,7 +374,10 @@ class ServiceController extends Controller
             'vouchers' => function ($query) use ($request)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->whereBetween('vouchers.created_at', [
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay()
+                    ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
@@ -434,7 +438,10 @@ class ServiceController extends Controller
             'services.vouchers' => function ($query) use ($request)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereBetween('vouchers.created_at', [$request->start, $request->end])
+                    ->whereBetween('vouchers.created_at', [
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay()
+                    ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
