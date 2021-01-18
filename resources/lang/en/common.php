@@ -170,7 +170,7 @@ return array (
     'allowed' => 'Action not allowed',
   ),
   'show' => 'Show',
-  'select' => 'Select room',
+  'select' => 'Select',
   'with' => 
   array (
     'tax' => 'With tax',

@@ -55,7 +55,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <div id="word-mark">
                                     <h1>
                                         <a href="{{ url('/') }}" id="app-name">
-                                            <span class="font-weight-bold">Hellen</span><span class="font-weight-light">Suite</span>
+                                            @include('partials.name')
                                         </a>
                                     </h1>
                                 </div>
@@ -72,25 +72,39 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 </div>
                                 <ul id="menu-list" class="text-center nav-agile">
                                     <li>
-                                        <a href="{{ url('/') }}" class="active">Inicio</a>
+                                        <a href="{{ url('/') }}" class="active">
+                                            @lang('landing.home')
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#overview" class="scroll">La aplicación</a>
+                                        <a href="#overview" class="scroll">
+                                            @lang('landing.about')
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#pricing" class="scroll">Precios</a>
+                                        <a href="#pricing" class="scroll">
+                                            @lang('landing.plans')
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#faq" class="scroll">Preguntas</a>
+                                        <a href="#faq" class="scroll">
+                                            @lang('landing.questions')
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#contact" class="scroll">Contacto</a>
+                                        <a href="#contact" class="scroll">
+                                            @lang('landing.contact')
+                                        </a>
                                     </li>
                                     <li>
                                         @if (auth()->check())
-                                            <a href="{{ url('/home') }}" class="btn w3ls-btn" href="#contact" class="scroll">Panel</a>
+                                            <a href="{{ url('/home') }}" class="btn w3ls-btn" href="#contact" class="scroll">
+                                                @lang('dashboard.dashboard')
+                                            </a>
                                         @else
-                                            <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">Iniciar sesión</a>
+                                            <a href="{{ url('/login') }}" class="btn w3ls-btn" href="#contact" class="scroll">
+                                                @lang('login.identification')
+                                            </a>
                                         @endif
                                     </li>
                                 </ul>
@@ -107,41 +121,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="slider-info col-lg-8">
                         <div class="agileinfo-logo mt-5">
                             <h2>
-                                La suite más completa
+                                @lang('landing.slogan.section.one')
                             </h2>
                         </div>
-                        <h3 class="txt-w3_agile">para administrar tu hotel.</h3>
-                        <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">Leer más</a>
+                        <h3 class="txt-w3_agile">@lang('landing.slogan.section.two')</h3>
+                        <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">@lang('landing.more')</a>
                         <a class="btn mt-4 text-capitalize" href="#contact" role="button">@lang('landing.contact')</a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
-                        <h5><i class="fas mr-2 fa-laptop"></i> Regístrate</h5>
+                        <h5><i class="fas mr-2 fa-laptop"></i> @lang('common.register')</h5>
                         <form action="{{ route('register') }}" class="mt-4" method="post">
                             @csrf
                             @honeypot
 
-                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="Nombre" required="" />
+                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="{{ trans('common.name') }}" required="" />
                             @error('name')
                                 <span class="error-message invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
-                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Correo electrónico" required="" />
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="{{ trans('common.email') }}" required="" />
                             @error('email')
                                 <span class="error-message invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
-                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" placeholder="Contraseña" required="" />
+                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" placeholder="{{ trans('common.password') }}" required="" />
                             @error('password')
                                 <span class="error-message invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
 
-                            <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirma contraseña" required="" />
+                            <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" placeholder="{{ trans('login.confirmPassword') }}" required="" />
                             @error('password_confirmation')
                                 <span class="error-message invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -162,14 +176,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-5">
                 <div class="row process-grids">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h4 class="mb-4">¿Qué es {{ config('app.name') }}?</h4>
-                        <p class="mb-3">{{ config('app.name') }} es una aplicación web para la administración de hoteles y modelos de negocio similares,
-                            está orientada a facilitar controles operativos, y desarrollo de funciones administrativas y de gerencia.
+                        <h4 class="mb-4">@lang('landing.what', ['name' => config('app.name')])</h4>
+                        <p class="mb-3">
+                            @lang('landing.paragraphs.about.one', ['name' => config('app.name')])
                         </p>
                         <p>
-                            Está compuesta por diferentes módulos especializados y también comunes de la empresa, como lo son facturación,
-                            inventarios y demás. Entre los módulos especializados, se encuentran el potente paquete de bitácora y el de utilería,
-                            con los cuales tendrás información valiosa, y en tiempo real, de los acontecimientos del día a día.
+                            @lang('landing.paragraphs.about.two')
                         </p>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
@@ -183,12 +195,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <h4 class="mb-4">Filosofía</h4>
                         <p class="mb-3">
-                                La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado
-                                de satisfacción en sus clientes; {{ config('app.name') }}, permite la optimización de todos los procesos, y asegura la
-                                continuidad operativa, con el único objetivo que la administración sea literalmente fácil.
+                            @lang('landing.paragraphs.philosophy.one', ['name' => config('app.name')])
                         </p>
-                        <p>Para ello, existen diferentes planes de acceso a la plataforma, puedes elegir el plan gratuito y después
-                            abonarte a un mejor plan con todas las funcionalidades.
+                        <p>
+                            @lang('landing.paragraphs.philosophy.two')
                         </p>
                     </div>
                 </div>
@@ -198,27 +208,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- why choose us -->
         <section class="choose py-5" id="choose">
             <div class="container py-md-3">
-                <h3 class="heading mb-5 text-center"> Por qué elegirnos</h3>
+                <h3 class="heading mb-5 text-center"> @lang('landing.why.choose')</h3>
                 <div class="feature-grids row">
                     <div class="col-lg-4 col-md-6">
                         <div class="f1 icon1 p-4">
                             <i class="fas fa-cubes"></i>
-                            <h3 class="my-3">Componentes</h3>
-                            <p>Puedes administrar inventarios de productos, activos, utilería, asignación y reservación de habitaciones, sedes, empleados, vehículos y más.</p>
+                            <h3 class="my-3">
+                                @lang('landing.why.components.title')
+                            </h3>
+                            <p>
+                                @lang('landing.why.components.description')
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="f1 icon2 p-4">
                             <i class="fas fa-shield-alt"></i>
-                            <h3 class="my-3">Velocidad & seguridad</h3>
-                            <p>La estructura de la aplicación es simple y potente. Toda la información está asegurada por múltiples capas para garantizar su disponibilidad.</p>
+                            <h3 class="my-3">@lang('landing.why.security.title')</h3>
+                            <p>
+                                @lang('landing.why.security.description')
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
                         <div class="f1 icon3 p-4">
                             <i class="fas fa-palette"></i>
-                            <h3 class="my-3">Diseño moderno</h3>
-                            <p>Adaptable a cualquier dispositivo, interfaz elegante e intuitiva, integra un panel de control, gráficas e informes, para que tomes decisiones basadas en datos.</p>
+                            <h3 class="my-3">@lang('landing.why.design.title')</h3>
+                            <p>
+                                @lang('landing.why.design.description')
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -228,9 +246,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- quote -->
         <section class="quote bg-light py-5">
             <div class="container py-md-3">
-                <h4>Todas las ventajas de la web en una suite para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.</h4>
+                <h4>
+                    @lang('landing.advantage')
+                </h4>
                 <div class="start text-right mt-4">
-                    <a href="#contact" class="scroll">Contacto</a>
+                    <a href="#contact" class="scroll">@lang('landing.contact')</a>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -239,7 +259,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- banner bottom -->
         <section class="banner-bottom py-5">
             <div class="container py-md-3">
-                <h4 class="text-center">Con el respaldo de las mejores tecnologías</h4>
+                <h4 class="text-center">
+                    @lang('landing.technologies')
+                </h4>
                 <ul class="list-unstyled pt-5 partners-icon text-center">
                     <li>
                         <i class="fab fa-laravel clr2"></i>
@@ -300,34 +322,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- faqs -->
         <section class="faq-w3l py-5" id="faq">
             <div class="container py-lg-3">
-                <h3 class="heading mb-5 text-center"> Preguntas frecuentes</h3>
+                <h3 class="heading mb-5 text-center">
+                    @lang('landing.faq.title')
+                </h3>
                 <div class="row faq-info">
                     <div class=" col-md-6 faq-w3agile">
                         <ul class="faq pl-sm-4 pl-3">
                             <li class="item1 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Cuál es el soporte del plan básico? </h4>
+                                <h4>
+                                    @lang('landing.faq.support.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Se proporciona un correo de soporte técnico, a través del cual se solventan los inconvenientes en la plataforma.
-                                            Las respuestas se darán en un plazo no mayor a 24 horas.
+                                        <p>
+                                            @lang('landing.faq.support.answer')
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item2 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Cuáles medios de pago están soportados? </h4>
+                                <h4>
+                                    @lang('landing.faq.payment.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Tarjetas de crédito, débito, Efecty, Baloto, consignación, PSE, Daviplata, Puntored. Estos medios son los más comunes que ofrece el botón de pago de Epayco.
+                                        <p>
+                                            @lang('landing.faq.payment.answer')
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item3 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Puedo administrar desde el teléfono o tableta? </h4>
+                                <h4>
+                                    @lang('landing.faq.devices.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> El diseño de sistema está orientado a funcionar en cualquer dispositivo, un característica conocida como diseño web responsivo.
+                                        <p>
+                                            @lang('landing.faq.devices.answer')
                                         </p>
                                     </li>
                                 </ul>
@@ -337,29 +369,37 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class=" col-md-6 faq-w3agile">
                         <ul class="faq pl-sm-4 pl-3">
                             <li class="item5 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>Como puedo iniciar? </h4>
+                                <h4>
+                                    @lang('landing.faq.register.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Puedes registrarte con algún plan, el correo usado será el de la cuenta principal, luego puedes crear hoteles y sedes, agregar colaboradores. Haz click aquí para <a href="#">ver el tutorial de registro</a>.
+                                        <p>
+                                            @lang('landing.faq.register.answer')
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item6 item mt-sm-4 mt-3 pt-3 pl-2"></li>
-                                <h4>De qué se trata el servicio de comedor? </h4>
+                                <h4>
+                                    @lang('landing.faq.dinning.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
-                                        <p> Los hoteles pueden tener servicios de comedor o restaurante, puedes asociar los consumos de tus clientes a través de este módulo con una simple huella o un pin.
+                                        <p>
+                                            @lang('landing.faq.dinning.answer')
                                         </p>
                                     </li>
                                 </ul>
                             </li>
                             <li class="item7 item mt-sm-4 mt-3 pt-3 pl-2">
-                                <h4>De que se traran los módulos? </h4>
+                                <h4>
+                                    @lang('landing.faq.modules.question')
+                                </h4>
                                 <ul>
                                     <li class="subitem1 mt-3">
                                         <p>
-                                            Es en conjunto de herramientas administrativas que comprenden control de productos, servicios, activos y utilería.
+                                            @lang('landing.faq.modules.answer')
                                         </p>
                                     </li>
                                 </ul>
@@ -523,12 +563,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="footer-title mb-3">
                             <a href="{{ url('/') }}">
                                 <img src="{{ asset('images/blue-logo.png') }}" alt="{{ config('app.name') }}">
-                                <span class="font-weight-bold">Hellen</span><span class="font-weight-light">Suite</span>
+                                @include('partials.name')
                             </a>
                         </div>
                         <div class="footer-text">
                             <p>
-                                La suite para que la administración de tu hotel sea fácil
+                                @lang('landing.slogan.section.one') @lang('landing.slogan.section.two')
                             </p>
                         </div>
                         <ul class="social_section_1info">
@@ -561,27 +601,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                             <div class="row">
                                 <ul class="col-6 links">
-                                    <li><a href="#choose" class="scroll">Por qué elergirnos</a></li>
-                                    <li><a href="#overview" class="scroll">La aplicación </a></li>
-                                    <li><a href="#pricing" class="scroll">Precios</a></li>
-                                    <li><a href="#faq" class="scroll">Preguntas</a></li>
-                                    <li><a href="#testimonials" class="scroll">Testimonios </a></li>
-                                    <li><a href="#contact" class="scroll">Contacto </a></li>
+                                    <li><a href="#choose" class="scroll">@lang('landing.why.choose')</a></li>
+                                    <li><a href="#overview" class="scroll">@lang('landing.about')</a></li>
+                                    <li><a href="#pricing" class="scroll">@lang('plans.prices')</a></li>
+                                    <li><a href="#faq" class="scroll">@lang('landing.questions')</a></li>
+                                    {{-- <li><a href="#testimonials" class="scroll">@lang('landing.testimonials.title') </a></li> --}}
+                                    <li><a href="#contact" class="scroll">@lang('landing.contact') </a></li>
                                 </ul>
                                 <ul class="col-6 links">
-                                    <li><a href="#">Políticas de privacidad </a></li>
-                                    <li><a href="#">Términos de uso </a></li>
-                                    <li><a href="#faq" class="scroll">Preguntas</a></li>
-                                    <li><a href="#">Tutoriales </a></li>
+                                    <li><a href="#">@lang('landing.privacy')</a></li>
+                                    <li><a href="#">@lang('landing.terms')</a></li>
+                                    <li><a href="#">@lang('landing.tutorials')</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-12 mt-lg-0 mt-4 col-sm-12 footer-grid_section_1its_w3"  style="max-width: 100%;">
                             <div class="footer-title">
-                                <h3>Boletines</h3>
+                                <h3>@lang('landing.subscribers.title')</h3>
                             </div>
                             <div class="footer-text">
-                                <p>Recibe por correo electrónico, todas las novedades del sitio.</p>
+                                <p>@lang('landing.subscribe')</p>
                                 <form action="{{ route('subscribe') }}" method="post">
                                     @csrf
                                     @honeypot
@@ -599,7 +638,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //footer -->
         <!-- copyright -->
         <div class="cpy-right text-center py-3">
-            <p class="">© {{ date('Y') }} {{ config('app.name') }}. Todos los derechos reservados | Diseñado por
+            <p class="">© {{ date('Y') }} {{ config('app.name') }}. {{ trans('landing.copyright') }} | {{ trans('landing.design') }}
                 <a href="http://w3layouts.com"> W3layouts.</a>
             </p>
         </div>

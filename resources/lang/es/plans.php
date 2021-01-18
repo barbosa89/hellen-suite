@@ -30,7 +30,7 @@ return array (
       'priority' => 'Soporte técnico prioritario',
     ),
     'sponsor' => 'Si desea apoyar el desarrollo de la plataforma. Este plan se puede asignar en negociación directa.',
-    'renewable' => ':months meses renovable',
+    'renewable' => ':months meses',
     'default' => 'Por favor, contáctanos para adquirir este plan',
   ),
   'ready' => 'Tu plan :plan fue activado',

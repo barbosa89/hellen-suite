@@ -30,7 +30,7 @@ return array (
       'priority' => 'Priority technical support',
     ),
     'unique' => ':months month one time',
-    'renewable' => ':months months renewable',
+    'renewable' => ':months months',
     'default' => 'Please, contact us to purchase this plan',
   ),
   'ready' => 'Your :plan plan was activated',

@@ -180,7 +180,7 @@ export default {
                 "allowed": "Action not allowed"
             },
             "show": "Show",
-            "select": "Select room",
+            "select": "Select",
             "with": {
                 "tax": "With tax"
             },
@@ -306,7 +306,7 @@ export default {
                     "priority": "Priority technical support"
                 },
                 "unique": "{months} month one time",
-                "renewable": "{months} months renewable",
+                "renewable": "{months} months",
                 "default": "Please, contact us to purchase this plan"
             },
             "ready": "Your {plan} plan was activated"
@@ -685,7 +685,7 @@ export default {
             "owner": "the owner is"
         },
         "landing": {
-            "about": "About",
+            "about": "App",
             "contact": "Contact",
             "home": "Home",
             "images": "Images",
@@ -694,23 +694,13 @@ export default {
             "services": "Services",
             "excerpt": "Built to make the management of your hotel simple and dynamic.",
             "more": "Learn more",
-            "services_description": "The application is available in a web version as a subscription service and for installation on desktop computers compatible with Windows and soon on Linux. In the following section, you can find the available plans that best suit the requirements of your business.",
             "plans": "Plans",
-            "free_plan": "Free plan",
-            "full_plan": "Full plan",
-            "free_plan_description": "You will have access to the reservation control and room allocation module, useful for small establishments, and aimed at supporting the growth of tourism in the regions.",
-            "full_plan_description": "Complete access to all modules, with this plan you can make data-driven decisions and control the complete operation of your hotel.",
-            "full_plan_price": "60 / Year",
-            "desktop_plan": "Desktop plan",
-            "desktop_plan_description": "You will receive the executable of the application to install on the computer, ideal for hotels that wish to centralize their administration at the reception. All modules are included.",
             "buy": "Buy",
-            "desktop_plan_price": "180 - Unique payment",
             "subscribe": "Subscribe to receive updates!",
             "subscription": "Subscription",
-            "enter_email": "Enter email address",
             "address": "Address",
             "phone": "Phone",
-            "copyright": "Copyright",
+            "copyright": "All rights reserved",
             "demo": "Video demonstration",
             "subscribers": {
                 "exists": "You are already subscribed",
@@ -718,7 +708,77 @@ export default {
                 "pending": "A message was sent to your email address to verify your subscription",
                 "title": "Newsletters",
                 "unknown": "You are not subscribed to our newsletter, we invite you to subscribe"
-            }
+            },
+            "questions": "Questions",
+            "slogan": {
+                "section": {
+                    "one": "The most complete suite",
+                    "two": "to manage your hotel."
+                }
+            },
+            "what": "What is {name}?",
+            "paragraphs": {
+                "about": {
+                    "one": "{name} is a web application for the administration of hotels and similar business models, it is aimed at facilitating operational controls, and the execution of administrative and management functions.",
+                    "two": "It is composed of different specialized modules and also common to the company, such as vouchers, inventories and others. Among the specialized modules are the powerful logs and props package, with which you will have valuable information on day-to-day events."
+                },
+                "philosophy": {
+                    "one": "Hotel logistics demands the management of a large amount of resources in order to achieve a high level of customer satisfaction; {name}, allows the optimization of all processes, and ensures operational continuity, with the sole objective that administration is literally easy.",
+                    "two": "Therefore, there are different access plans to the platform, you can choose the free plan and then subscribe to a better plan with all the functionalities."
+                }
+            },
+            "philosophy": "Philosophy",
+            "why": {
+                "choose": "Why choose us?",
+                "components": {
+                    "title": "Components",
+                    "description": "You can manage product inventories, assets, props, room assignment and reservation, hotel locations, employees, vehicles, and more."
+                },
+                "security": {
+                    "title": "Speed and safety",
+                    "description": "The structure of the application is simple and powerful. All information is secured by multiple layers to guarantee its availability."
+                },
+                "design": {
+                    "description": "Adaptable to any device, elegant and intuitive interface, integrates a control panel, graphs and reports, so that you can make decisions based on data.",
+                    "title": "Modern design"
+                }
+            },
+            "advantage": "All the advantages of the web in one suite to support administration tasks. Easy, powerful and from anywhere.",
+            "technologies": "With the support of the best technologies",
+            "faq": {
+                "title": "Frequent questions",
+                "support": {
+                    "question": "What is the support of the basic plan?",
+                    "answer": "A technical support email is provided, through which the inconveniences on the platform are solved. Answers will be given within a period of no more than 24 hours."
+                },
+                "modules": {
+                    "question": "What are the modules about?",
+                    "answer": "It is a set of administrative tools that include control of products, services, assets and utilities."
+                },
+                "payment": {
+                    "question": "What types of payment methods are supported?",
+                    "answer": "Paypal, Credit and debit cards, Efecty, Baloto, consignment, PSE, Daviplata, Puntored. These means are the most common."
+                },
+                "devices": {
+                    "question": "Can I manage from the phone or tablet?",
+                    "answer": "The system design is geared to run on any device, a feature known as responsive web design."
+                },
+                "register": {
+                    "question": "How can I start?",
+                    "answer": "You can register with the free plan and then improve it, the registered email will be the main and owner of the account, then you can create hotels and venues, add collaborators."
+                },
+                "dinning": {
+                    "question": "What is dining service about?",
+                    "answer": "Hotels can have dining room or restaurant services, you can associate the consumption of your clients to the hotel account."
+                }
+            },
+            "testimonials": {
+                "title": "Testimonials"
+            },
+            "privacy": "Privacy policies",
+            "terms": "Terms of use",
+            "tutorials": "Tutorials",
+            "design": "Design by"
         },
         "payments": {
             "payment": "Payment",
@@ -1182,7 +1242,7 @@ export default {
                     "priority": "Soporte técnico prioritario"
                 },
                 "sponsor": "Si desea apoyar el desarrollo de la plataforma. Este plan se puede asignar en negociación directa.",
-                "renewable": "{months} meses renovable",
+                "renewable": "{months} meses",
                 "default": "Por favor, contáctanos para adquirir este plan"
             },
             "ready": "Tu plan {plan} fue activado"
@@ -1562,7 +1622,7 @@ export default {
         },
         "landing": {
             "home": "Inicio",
-            "about": "Acerca de",
+            "about": "La aplicación",
             "support": "Soporte",
             "images": "Imágenes",
             "contact": "Contacto",
@@ -1570,23 +1630,13 @@ export default {
             "services": "Servicios",
             "excerpt": "Construido para que la administración de su hotel sea sencilla y dinámica.",
             "more": "Conoce más",
-            "services_description": "La aplicación está disponible en versión web como servicio de suscripción y para instalación en equipos de escritorio compatible con Windows y próximamente en Linux. En el siguiente apartado, puede encontrar los planes disponibles que mejor se adapten a los requerimientos de tu negocio.",
             "plans": "Planes",
-            "free_plan": "Plan básico",
-            "full_plan": "Plan completo",
-            "free_plan_description": "Tendrá acceso al módulo de control de reservas y asignación de habitaciones, útil para pequeños establecimientos, y orientado a apoyar el crecimiento del turismo de las regiones.",
-            "full_plan_description": "Acceso completo a todos los módulos, con este plan puede tomar decisiones basadas en datos y controlar la operación completa de su hotel.",
-            "full_plan_price": "180.000 anuales",
-            "desktop_plan": "Plan de escritorio",
-            "desktop_plan_description": "Recibirás el ejecutable de la aplicación para instalar en la computadora, ideal para los hoteles que deseen centralizar su administración en la recepción. Todos los módulos están incluidos.",
             "buy": "Comprar",
-            "desktop_plan_price": "540.000 - Pago único",
             "subscribe": "Suscríbete para recibir actualizaciones!",
             "subscription": "Subscripción",
-            "enter_email": "Ingrese la dirección de correo",
             "address": "Dirección",
             "phone": "Teléfono",
-            "copyright": "Derechos de autor",
+            "copyright": "Todos los derechos reservados",
             "demo": "Demostración en vídeo",
             "subscribers": {
                 "pending": "Un mensaje fue enviado a su dirección de correo electrónico para verificar tu suscripción",
@@ -1594,7 +1644,77 @@ export default {
                 "leaves": "Tu suscripción ha sido eliminada",
                 "title": "Boletines",
                 "unknown": "No está suscrito a nuestro boletín, le invitamos a suscribirse"
-            }
+            },
+            "questions": "Preguntas",
+            "slogan": {
+                "section": {
+                    "one": "La suite más completa",
+                    "two": "para administrar tu hotel."
+                }
+            },
+            "what": "¿Qué es {name}?",
+            "paragraphs": {
+                "about": {
+                    "one": "{name} es una aplicación web para la administración de hoteles y modelos de negocio similares, está orientada a facilitar controles operativos, y la ejecución de funciones administrativas y de gerencia.",
+                    "two": "Está compuesta por diferentes módulos especializados y también comunes de la empresa, como lo son recibos, inventarios y demás. Entre los módulos especializados, se encuentran el potente paquete de bitácora y el de utilería, con los cuales tendrás información valiosa de los acontecimientos del día a día."
+                },
+                "philosophy": {
+                    "one": "La logística hotelera demanda el manejo de una gran cantidad de recursos con el fin de alcanzar alto grado de satisfacción en sus clientes; {name}, permite la optimización de todos los procesos, y asegura la continuidad operativa, con el único objetivo que la administración sea literalmente fácil.",
+                    "two": "Por lo anterior, existen diferentes planes de acceso a la plataforma, puedes elegir el plan gratuito y después abonarte a un mejor plan con todas las funcionalidades."
+                }
+            },
+            "philosophy": "Filosofía",
+            "why": {
+                "choose": "¿Por qué elegirnos?",
+                "components": {
+                    "title": "Componentes",
+                    "description": "Puedes administrar inventarios de productos, activos, utilería, asignación y reservación de habitaciones, sedes, empleados, vehículos y más."
+                },
+                "security": {
+                    "title": "Velocidad y seguridad",
+                    "description": "La estructura de la aplicación es simple y potente. Toda la información está asegurada por múltiples capas para garantizar su disponibilidad."
+                },
+                "design": {
+                    "title": "Diseño moderno",
+                    "description": "Adaptable a cualquier dispositivo, interfaz elegante e intuitiva, integra un panel de control, gráficas e informes, para que tomes decisiones basadas en datos."
+                }
+            },
+            "advantage": "Todas las ventajas de la web en una suite para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.",
+            "technologies": "Con el respaldo de las mejores tecnologías",
+            "faq": {
+                "title": "Preguntas frecuentes",
+                "dinning": {
+                    "question": "¿De qué se trata el servicio de comedor?",
+                    "answer": "Los hoteles pueden tener servicios de comedor o restaurante, puedes asociar los consumos de tus clientes a la cuenta del hotel."
+                },
+                "devices": {
+                    "answer": "El diseño de sistema está orientado a funcionar en cualquier dispositivo, un característica conocida como diseño web responsivo.",
+                    "question": "¿Puedo administrar desde el teléfono o tableta?"
+                },
+                "modules": {
+                    "question": "¿De que se tratan los módulos?",
+                    "answer": "Es en conjunto de herramientas administrativas que comprenden control de productos, servicios, activos y utilería."
+                },
+                "payment": {
+                    "answer": "Paypal, Tarjetas de crédito, débito, Efecty, Baloto, consignación, PSE, Daviplata, Puntored. Estos medios son los más comunes.",
+                    "question": "¿Cuáles tipos de medios de pago están soportados?"
+                },
+                "register": {
+                    "question": "¿Cómo puedo iniciar?",
+                    "answer": "Puedes registrarte con el plan gratuito y luego mejorarlo, el correo registrado será el principal y dueño de la cuenta, luego puedes crear hoteles y sedes, agregar colaboradores."
+                },
+                "support": {
+                    "answer": "Se proporciona un correo de soporte técnico, a través del cual se solventan los inconvenientes en la plataforma. Las respuestas se darán en un plazo no mayor a 24 horas.",
+                    "question": "¿Cuál es el soporte del plan básico?"
+                }
+            },
+            "testimonials": {
+                "title": "Testimonios"
+            },
+            "privacy": "Políticas de privacidad",
+            "terms": "Términos de uso",
+            "tutorials": "Tutoriales",
+            "design": "Diseñado por"
         },
         "payments": {
             "title": "Pagos",
