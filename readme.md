@@ -2,7 +2,7 @@
 
 A Laravel application to hotel managment, the managment made easy.
 
-Website: [Hellen Suite](http://test.omarbarbosa.com)
+Website: [Hellen Suite](https://hellensuite.com)
 
 ## About Hellen Suite
 
