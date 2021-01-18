@@ -148,24 +148,50 @@ class TeamController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        //
+        $member = User::where('parent', auth()->user()->id)
+            ->where('id', id_decode($id))
+            ->with('roles')
+            ->first(fields_get('users'));
+
+        $roles = Role::whereNotIn('name', ['root', 'manager', $member->roles->first()->name])
+            ->get(['id', 'name']);
+
+        return view('app.team.edit', compact('member', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        //
+        $member = User::where('parent', auth()->user()->id)
+            ->where('id', id_decode($id))
+            ->first(fields_get('users'));
+
+        $member->name = $request->name;
+
+        if ($member->save()) {
+            $member->roles()->sync([]);
+
+            $member->assignRole($request->role);
+
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('team.show', ['id' => id_encode($member->id)]);
+        }
+
+        flash(trans('common.error'))->error();
+
+        return redirect()->route('team.index');
     }
 
     /**
