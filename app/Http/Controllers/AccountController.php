@@ -15,9 +15,9 @@ class AccountController extends Controller
      * @param  string  $email
      * @return string  $token
      */
-    public function verify($email = '', $token = '')
+    public function verify(string $email = null, string $token = null)
     {
-        $email = param_clean($email);
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_SANITIZE_EMAIL);
         $token = param_clean($token);
 
         $user = User::where('email', $email)
