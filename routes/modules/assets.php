@@ -3,12 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	# Asset transactions
-
-	Route::get('assets/{id}/transactions', 'AssetTransactionController@index')
-		->name('assets.transactions.index')
-		->middleware('permission:assets.edit');
-
 	# Basic resource routes
 
 	Route::delete('assets/{id}/maintenance/{maintenance}', 'AssetController@destroyMaintenance')
