@@ -193,7 +193,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h4 class="mb-4">Filosofía</h4>
+                        <h4 class="mb-4">
+                            @lang('landing.philosophy')
+                        </h4>
                         <p class="mb-3">
                             @lang('landing.paragraphs.philosophy.one', ['name' => config('app.name')])
                         </p>
