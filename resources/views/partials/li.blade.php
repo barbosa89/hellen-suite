@@ -79,7 +79,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ $option['url'] }}"
                             {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                            {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>
+                            {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+                            rel="noopener noreferrer">
                                 {{ $option['option'] }}
                             </a>
                         </li>
@@ -90,7 +91,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ $option['url'] }}"
                         {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>
+                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+                        rel="noopener noreferrer">
                             {{ $option['option'] }}
                         </a>
                     </li>
@@ -130,12 +132,23 @@
             @if (isset($option['permission']))
                 @can($option['permission'])
                     <li class="nav-item">
-                        <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+                        <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
+                        href="{{ $option['url'] }}"
+                        {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
+                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+                        rel="noopener noreferrer">
+                            {{ $option['option'] }}
+                        </a>
                     </li>
                 @endcan
             @else
                 <li class="nav-item">
-                    <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+                    <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
+                    href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
+                    {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+                    rel="noopener noreferrer">
+                        {{ $option['option'] }}
+                    </a>
                 </li>
             @endif
     @endswitch
@@ -143,12 +156,24 @@
     @if (isset($option['permission']))
         @can($option['permission'])
             <li class="nav-item">
-                <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+                <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
+                href="{{ $option['url'] }}"
+                {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
+                {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+                rel="noopener noreferrer">
+                    {{ $option['option'] }}
+                </a>
             </li>
         @endcan
     @else
         <li class="nav-item">
-            <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+            <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
+            href="{{ $option['url'] }}"
+            {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
+            {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
+            rel="noopener noreferrer">
+                {{ $option['option'] }}
+            </a>
         </li>
     @endif
 @endif
