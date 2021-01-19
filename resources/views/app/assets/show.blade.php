@@ -54,7 +54,9 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h3>Mantenimientos</h3>
+                <h3>
+                    @lang('maintenances.title')
+                </h3>
                 @include('partials.list', [
                     'data' => $asset->maintenances,
                     'listHeading' => 'app.assets.maintenance-list-heading',

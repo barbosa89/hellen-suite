@@ -9,4 +9,8 @@ return array (
   'assignTo' => 'Asignar a',
   'serialNumber' => 'Serie',
   'registered' => 'Se registró un nuevo activo',
+  'rooms' => 
+  array (
+    'remove' => 'Quitar habitación',
+  ),
 );

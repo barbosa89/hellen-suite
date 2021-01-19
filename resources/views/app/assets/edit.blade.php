@@ -156,8 +156,12 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <button type="button" class="btn btn-default" id="remove-room">Quitar habitación</button>
+                    <button type="submit" class="btn btn-primary">
+                        @lang('common.update')
+                    </button>
+                    <button type="button" class="btn btn-default" id="remove-room">
+                        @lang('assets.rooms.remove')
+                    </button>
                     <a href="{{ url()->previous() }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
