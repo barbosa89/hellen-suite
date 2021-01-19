@@ -151,9 +151,15 @@
                 axios
                     .get(route('api.web.rooms.index', this.hotelId))
                     .then(response => {
-                        this.rooms = response.data.rooms
+                        if (response.data.rooms.length) {
+                            this.rooms = response.data.rooms
 
-                        this.prepare()
+                            this.prepare()
+                        } else {
+                            this.rooms = []
+
+                            this.filteredRooms = []
+                        }
                     })
                     .catch(e => {
                         toastr.error(
