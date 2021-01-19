@@ -204,7 +204,7 @@ $('#remove-room').click(function() {
     $("#room").selectpicker('refresh');
 });
 
-$('#hotel').change(function() {
+$('#hotel').on('change', function() {
     $('#room-list').fadeOut();
     $('#any-place').fadeOut();
 
@@ -212,7 +212,7 @@ $('#hotel').change(function() {
     $("#assign").selectpicker('refresh');
 });
 
-$('#assign').change(function() {
+$('#assign').on('change', function() {
     if (this.value == 'room') {
         listRoomsByHotel($('#hotel').val());
 

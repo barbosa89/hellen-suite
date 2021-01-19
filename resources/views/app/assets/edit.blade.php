@@ -80,13 +80,13 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
-                        <label for="location">@lang('common.location'):</label>
-                        <input type="text" class="form-control" name="location" id="location" value="{{ $asset->location }}" maxlength="50">
+                    <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+                        <label for="price">@lang('common.price'):</label>
+                        <input type="number" class="form-control" name="price" id="price" value="{{ $asset->price }}" min="1" max="999999999" step="0.01" required>
 
-                        @if ($errors->has('location'))
+                        @if ($errors->has('price'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('location') }}</strong>
+                                <strong>{{ $errors->first('price') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -108,10 +108,24 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list">
+                    <div class="form-group{{ $errors->has('assign') ? ' has-error' : '' }}">
+                        <label for="pwd">@lang('assets.assignTo'):</label>
+                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
+                            <option value="room" @if(empty($asset->location)) selected @endif>@lang('rooms.room')</option>
+                            <option value="any" @if(empty($asset->room_id)) selected @endif>@lang('assets.anyPlace')</option>
+                        </select>
+
+                        @if ($errors->has('assign'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('assign') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list" @if ($asset->location) style="display:none;" @endif>
                         <label for="pwd">{{ trans('rooms.room') }} No.:</label>
                         <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
-                            @if (!empty($asset->room))
+                            @if ($asset->room)
                                 <option value="{{ id_encode($asset->room->id) }}" selected>
                                     {{ $asset->room->number }}
                                 </option>
@@ -127,6 +141,17 @@
                         @if ($errors->has('room'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('room') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}" id="any-place" @if ($asset->room) style="display:none;" @endif>
+                        <label for="location">@lang('common.location'):</label>
+                        <input type="text" class="form-control" name="location" id="location" value="{{ $asset->location ?? null }}" maxlength="50">
+
+                        @if ($errors->has('location'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('location') }}</strong>
                             </span>
                         @endif
                     </div>

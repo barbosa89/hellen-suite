@@ -31,10 +31,25 @@ class UpdateAsset extends FormRequest
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',
             'serial_number' => 'nullable|string|max:50',
+            'price' => 'required|numeric|min:1|max:999999999',
+            'assign' => 'required|string|in:any,room',
             'location' => 'nullable|string|max:50',
             'room' => 'nullable|string|hashed_exists:rooms,id',
             'hotel' => 'required|string|hashed_exists:hotels,id',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'location' => $this->assign == 'room' ? null : $this->location,
+            'room' => $this->assign == 'any' ? null : $this->room,
+        ]);
     }
 
     /**
@@ -45,7 +60,7 @@ class UpdateAsset extends FormRequest
     public function messages()
     {
         return [
-            'description.unique_with' => 'El número ya existe en el hotel seleccionado.',
+            'number.unique_with' => 'El número ya existe en el hotel seleccionado.',
         ];
     }
 }

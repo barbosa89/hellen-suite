@@ -79,6 +79,17 @@
                         @endif
                     </div>
 
+                    <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+                        <label for="price">@lang('common.price'):</label>
+                        <input type="number" class="form-control" name="price" id="price" value="{{ old('price') }}" min="1" max="999999999" step="0.01" required>
+
+                        @if ($errors->has('price'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('price') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
                         <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>

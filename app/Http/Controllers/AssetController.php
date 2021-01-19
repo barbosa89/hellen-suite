@@ -61,7 +61,7 @@ class AssetController extends Controller
             {
                 $asset->hotel_id = id_encode($asset->hotel_id);
                 $asset->user_id = id_encode($asset->user_id);
-                $asset->room_id = id_encode($asset->room_id);
+                $asset->room_id = $asset->room_id ? id_encode($asset->room_id) : null;
 
                 return $asset;
             });
@@ -124,27 +124,17 @@ class AssetController extends Controller
         $asset->brand = $request->get('brand', null);
         $asset->model = $request->get('model', null);
         $asset->serial_number = $request->get('serial_number', null);
+        $asset->price = (float) $request->price;
         $asset->location = $request->get('location', null);
         $asset->user()->associate(id_parent());
         $asset->hotel()->associate(id_decode($request->hotel));
 
         if (!empty($request->get('room', null))) {
-            $room = Room::where('id', id_decode($request->room))
-                ->where('hotel_id', id_decode($request->hotel))
-                ->where('user_id', id_parent())
-                ->first(['id']);
-
-            if (empty($room)) {
-                flash('La habitación seleccionada no corresponde al hotel')->error();
-
-                return back();
-            }
-
-            $asset->room()->associate($room->id);
+            $asset->room()->associate(id_decode($request->room));
         }
 
         if ($asset->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
+            flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('assets.show', [
                 'id' => id_encode($asset->id)
@@ -247,6 +237,7 @@ class AssetController extends Controller
         $asset->brand = $request->get('brand', null);
         $asset->model = $request->get('model', null);
         $asset->serial_number = $request->get('serial_number', null);
+        $asset->price = (float) $request->price;
         $asset->location = $request->get('location', null);
         $asset->hotel()->associate(id_decode($request->hotel));
 

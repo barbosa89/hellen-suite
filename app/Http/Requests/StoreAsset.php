@@ -29,6 +29,7 @@ class StoreAsset extends FormRequest
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',
             'serial_number' => 'nullable|string|max:150',
+            'price' => 'required|numeric|min:1|max:999999999',
             'location' => 'nullable|string|max:50',
             'room' => 'nullable|string|hashed_exists:rooms,id',
             'hotel' => 'required|string|hashed_exists:hotels,id',
@@ -43,7 +44,7 @@ class StoreAsset extends FormRequest
     public function messages()
     {
         return [
-            'description.unique_with' => 'El número ya existe en el hotel seleccionado.',
+            'number.unique_with' => 'El número ya existe en el hotel seleccionado.',
         ];
     }
 }
