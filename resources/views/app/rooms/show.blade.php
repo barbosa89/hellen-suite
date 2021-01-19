@@ -31,12 +31,34 @@
                             'url' => '#'
                         ],
                         [
+                            'type' => $room->canEnable() ? 'post' : 'hideable',
                             'option' => trans('common.enable'),
-                            'url' => '#'
+                            'url' => route('rooms.toggle'),
+                            'inputs' => [
+                                'room' => id_encode($room->id),
+                                'status' => $room->available,
+                            ],
+                            'show' => $room->canEnable()
                         ],
                         [
-                            'option' => trans('rooms.maintenance'),
-                            'url' => '#'
+                            'type' => $room->canDisable() ? 'post' : 'hideable',
+                            'option' => trans('common.disable'),
+                            'url' => route('rooms.toggle'),
+                            'inputs' => [
+                                'room' => id_encode($room->id),
+                                'status' => $room->disabled,
+                            ],
+                            'show' => $room->canDisable()
+                        ],
+                        [
+                            'type' => $room->canDoMaintenance() ? 'post' : 'hideable',
+                            'option' =>  trans('rooms.maintenance'),
+                            'url' => route('rooms.toggle'),
+                            'inputs' => [
+                                'room' => id_encode($room->id),
+                                'status' => $room->maintenance,
+                            ],
+                            'show' => $room->canDoMaintenance()
                         ],
                         [
                             'option' => trans('common.edit'),

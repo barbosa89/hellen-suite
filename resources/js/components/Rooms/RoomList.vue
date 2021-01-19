@@ -294,19 +294,18 @@
             },
             changeStatus(data, status) {
                 if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
-                    axios.post('/rooms/toggle', {
-                        hotel: data.room.hotel_hash,
+                    axios.post(route('api.web.rooms.toggle'), {
                         room: data.room.hash,
                         status: status
                     }).then(response => {
                         this.rooms = _.each(this.rooms, (room) => {
-                            if (data.room.hash == room.hash) {
+                            if (response.data.room.hash == room.hash) {
                                 room.status = status
                             }
                         })
 
                         this.filteredRooms = _.each(this.filteredRooms, (room) => {
-                            if (data.room.hash == room.hash) {
+                            if (response.data.room.hash == room.hash) {
                                 room.status = status
                             }
                         })

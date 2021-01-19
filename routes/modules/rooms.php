@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::post('rooms/toggle', 'RoomController@changeStatus')
+	Route::post('rooms/toggle', 'RoomController@toggle')
 		->name('rooms.toggle')
 		->middleware('permission:rooms.edit');
 

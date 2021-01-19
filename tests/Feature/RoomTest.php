@@ -528,7 +528,7 @@ class RoomTest extends TestCase
                 'room' => id_encode($room->id),
                 'status' => Room::AVAILABLE,
             ])
-            ->assertStatus(403);
+            ->assertStatus(404);
     }
 
     public function test_user_can_change_room_status_to_available_when_not_occupied()
@@ -540,13 +540,14 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($this->manager)
-            ->post(route('rooms.toggle'), [
+            ->post(route('api.web.rooms.toggle'), [
                 'hotel' => id_encode($this->hotel->id),
                 'room' => id_encode($room->id),
                 'status' => Room::AVAILABLE,
             ])
             ->assertJsonFragment([
-                'result' => true
+                'hash' => id_encode($room->id),
+                'status' => Room::AVAILABLE,
             ]);
     }
 
@@ -559,13 +560,14 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($this->manager)
-            ->post(route('rooms.toggle'), [
+            ->post(route('api.web.rooms.toggle'), [
                 'hotel' => id_encode($this->hotel->id),
                 'room' => id_encode($room->id),
                 'status' => Room::DISABLED,
             ])
             ->assertJsonFragment([
-                'result' => true
+                'hash' => id_encode($room->id),
+                'status' => Room::DISABLED,
             ]);
     }
 
@@ -578,13 +580,14 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($this->manager)
-            ->post(route('rooms.toggle'), [
+            ->post(route('api.web.rooms.toggle'), [
                 'hotel' => id_encode($this->hotel->id),
                 'room' => id_encode($room->id),
                 'status' => Room::MAINTENANCE,
             ])
             ->assertJsonFragment([
-                'result' => true
+                'hash' => id_encode($room->id),
+                'status' => Room::MAINTENANCE,
             ]);
     }
 
