@@ -7,50 +7,30 @@
         @case('confirm')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <a class="dropdown-item" href="#" data-url="{{ $option['url'] }}" data-method="{{ $option['method'] }}" id="modal-confirm" onclick="confirmAction(this, event)">
-                        {{ $option['option'] }}
-                    </a>
+                    @include('partials.options.items.confirm')
                 @endcan
             @else
-                <a class="dropdown-item" href="#" data-url="{{ $option['url'] }}" data-method="{{ $option['method'] }}" id="modal-confirm" onclick="confirmAction(this, event)">
-                    {{ $option['option'] }}
-                </a>
+                @include('partials.options.items.confirm')
             @endif
             @break
 
         @case('modal')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#{{ $option['id'] }}">
-                        {{ $option['option'] }}
-                    </a>
+                    @include('partials.options.items.modal')
                 @endcan
             @else
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#{{ $option['id'] }}">
-                    {{ $option['option'] }}
-                </a>
+                @include('partials.options.items.modal')
             @endif
             @break
 
         @case('post')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <a class="dropdown-item" href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">
-                        {{ $option['option'] }}
-                    </a>
-
-                    <form id="post-form" action="{{ $option['url'] }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
+                    @include('partials.options.items.post')
                 @endcan
             @else
-                <a class="dropdown-item" href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">
-                    {{ $option['option'] }}
-                </a>
-
-                <form id="post-form" action="{{ $option['url'] }}" method="POST" style="display: none;">
-                    {{ csrf_field() }}
-                </form>
+                @include('partials.options.items.post')
             @endif
             @break
 
@@ -58,20 +38,12 @@
             @if (isset($option['permission']))
                 @can($option['permission'])
                     @if($option['show'])
-                        <a class="dropdown-item" href="{{ $option['url'] }}"
-                        {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>
-                            {{ $option['option'] }}
-                        </a>
+                        @include('partials.options.items.hideable')
                     @endif
                 @endcan
             @else
                 @if($option['show'])
-                    <a class="dropdown-item" href="{{ $option['url'] }}"
-                    {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                    {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>
-                        {{ $option['option'] }}
-                    </a>
+                    @include('partials.options.items.hideable')
                 @endif
             @endif
             @break
@@ -79,18 +51,18 @@
         @default
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <a class="dropdown-item" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+                    @include('partials.options.items.default')
                 @endcan
             @else
-                <a class="dropdown-item" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+                @include('partials.options.items.default')
             @endif
     @endswitch
 @else
     @if (isset($option['permission']))
         @can($option['permission'])
-            <a class="dropdown-item" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+            @include('partials.options.items.default')
         @endcan
     @else
-        <a class="dropdown-item" href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }} {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}>{{ $option['option'] }}</a>
+        @include('partials.options.items.default')
     @endif
 @endif

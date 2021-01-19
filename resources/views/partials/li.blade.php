@@ -7,68 +7,31 @@
         @case('confirm')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <li class="nav-item">
-                        @include('partials.modal-btn', [
-                            'url' => $option['url'],
-                            'option' => $option['option'],
-                            'method' => $option['method']
-                        ])
-                    </li>
+                    @include('partials.options.confirm')
                 @endcan
             @else
-                <li class="nav-item">
-                    @include('partials.modal-btn', [
-                        'url' => $option['url'],
-                        'option' => $option['option'],
-                        'method' => $option['method']
-                    ])
-                </li>
+                @include('partials.options.confirm')
             @endif
             @break
 
         @case('modal')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <li class="nav-item">
-                        @include('partials.modal-form-btn', [
-                            'option' => $option['option'],
-                            'id' => $option['id']
-                        ])
-                    </li>
+                    @include('partials.options.modal')
                 @endcan
             @else
-                <li class="nav-item">
-                    @include('partials.modal-form-btn', [
-                        'option' => $option['option'],
-                        'id' => $option['id']
-                    ])
-                </li>
+                @include('partials.options.modal')
             @endif
             @break
 
         @case('post')
+            {{ dd($option['option']) }}
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">
-                            {{ $option['option'] }}
-                        </a>
-
-                        <form id="post-form" action="{{ $option['url'] }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    </li>
+                    @include('partials.options.post')
                 @endcan
             @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ $option['url'] }}" onclick="event.preventDefault(); document.getElementById('post-form').submit();">
-                        {{ $option['option'] }}
-                    </a>
-
-                    <form id="post-form" action="{{ $option['url'] }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                </li>
+                @include('partials.options.post')
             @endif
             @break
 
@@ -76,26 +39,12 @@
             @if (isset($option['permission']))
                 @can($option['permission'])
                     @if($option['show'])
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ $option['url'] }}"
-                            {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                            {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-                            rel="noopener noreferrer">
-                                {{ $option['option'] }}
-                            </a>
-                        </li>
+                        @include('partials.options.hideable')
                     @endif
                 @endcan
             @else
                 @if($option['show'])
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ $option['url'] }}"
-                        {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-                        rel="noopener noreferrer">
-                            {{ $option['option'] }}
-                        </a>
-                    </li>
+                    @include('partials.options.hideable')
                 @endif
             @endif
             @break
@@ -103,77 +52,28 @@
         @case('dropdown')
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ $option['option'] }} <i class="fa fa-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            @foreach($option['url'] as $suboption)
-                                @include('partials.li-dropdown', ['option' => $suboption])
-                            @endforeach
-                        </div>
-                    </li>
+                    @include('partials.options.dropdown')
                 @endcan
             @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ $option['option'] }} <i class="fa fa-chevron-down"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        @foreach($option['url'] as $suboption)
-                            @include('partials.li-dropdown', ['option' => $suboption])
-                        @endforeach
-                    </div>
-                </li>
+                @include('partials.options.dropdown')
             @endif
             @break
 
         @default
             @if (isset($option['permission']))
                 @can($option['permission'])
-                    <li class="nav-item">
-                        <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
-                        href="{{ $option['url'] }}"
-                        {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                        {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-                        rel="noopener noreferrer">
-                            {{ $option['option'] }}
-                        </a>
-                    </li>
+                    @include('partials.options.default')
                 @endcan
             @else
-                <li class="nav-item">
-                    <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
-                    href="{{ $option['url'] }}" {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                    {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-                    rel="noopener noreferrer">
-                        {{ $option['option'] }}
-                    </a>
-                </li>
+                @include('partials.options.default')
             @endif
     @endswitch
 @else
     @if (isset($option['permission']))
         @can($option['permission'])
-            <li class="nav-item">
-                <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
-                href="{{ $option['url'] }}"
-                {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-                {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-                rel="noopener noreferrer">
-                    {{ $option['option'] }}
-                </a>
-            </li>
+            @include('partials.options.default')
         @endcan
     @else
-        <li class="nav-item">
-            <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
-            href="{{ $option['url'] }}"
-            {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
-            {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}
-            rel="noopener noreferrer">
-                {{ $option['option'] }}
-            </a>
-        </li>
+        @include('partials.options.default')
     @endif
 @endif
