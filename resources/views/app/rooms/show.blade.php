@@ -27,8 +27,15 @@
                             'url' => '#'
                         ],
                         [
+                            'type' => 'hideable',
                             'option' => trans('common.assign'),
-                            'url' => '#'
+                            'url' => route('vouchers.create', [
+                                'hotel' => id_encode($room->hotel->id),
+                                'rooms' => [
+                                    id_encode($room->id)
+                                ]
+                            ]),
+                            'show' => $room->isFree(),
                         ],
                         [
                             'type' => $room->canEnable() ? 'post' : 'hideable',

@@ -193,4 +193,12 @@ class Room extends Model
     {
         return $this->status != self::OCCUPIED;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isFree(): bool
+    {
+        return $this->status == self::AVAILABLE;
+    }
 }
