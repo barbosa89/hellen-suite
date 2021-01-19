@@ -200,39 +200,12 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function changeStatus(ChangeRoomStatus $request)
+    public function toggle(ChangeRoomStatus $request)
     {
-        $room = Room::where('user_id', id_parent())
-            ->where('hotel_id', id_decode($request->hotel))
-            ->where('id', id_decode($request->room))
-            ->firstOrFail(fields_get('rooms'));
+        $room = $this->room->toggle(id_decode($request->room), $request->status);
 
-        if ($room->status == Room::OCCUPIED) {
-            abort(403);
-        }
-
-        if ($request->status == Room::AVAILABLE) {
-            if (in_array($room->status, [Room::CLEANING, Room::DISABLED, Room::MAINTENANCE])) {
-                $room->status = Room::AVAILABLE;
-            }
-        }
-
-        if ($request->status == Room::DISABLED) {
-            if (in_array($room->status, [Room::AVAILABLE, Room::CLEANING, Room::MAINTENANCE])) {
-                $room->status = Room::DISABLED;
-            }
-        }
-
-        if ($request->status == Room::MAINTENANCE) {
-            if (in_array($room->status, [Room::AVAILABLE, Room::CLEANING, Room::DISABLED])) {
-                $room->status = Room::MAINTENANCE;
-            }
-        }
-
-        if ($room->save()) {
-            return response()->json([
-                'result' => true
-            ]);
-        }
+        return redirect()->route('rooms.show', [
+            'id' => id_encode($room->id),
+        ]);
     }
 }

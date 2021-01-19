@@ -70,14 +70,36 @@ class Room extends Model
     }
 
     /**
-     * Hashing Hotel ID.
-     *
      * @param  string  $value
      * @return void
      */
     public function getHotelHashAttribute()
     {
         return $this->attributes['hotel'] = (string) id_encode($this->attributes['hotel_id']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvailableAttribute(): string
+    {
+        return self::AVAILABLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisabledAttribute(): string
+    {
+        return self::DISABLED;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaintenanceAttribute(): string
+    {
+        return self::MAINTENANCE;
     }
 
     public function vouchers()
@@ -138,5 +160,37 @@ class Room extends Model
     public function scopeSelectAll($query)
     {
         return $query->select(['id', 'user_id', 'hotel_id', ...$this->fillable]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canDisable(): bool
+    {
+        return in_array($this->status, [self::AVAILABLE, self::CLEANING, self::MAINTENANCE]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canEnable(): bool
+    {
+        return in_array($this->status, [self::CLEANING, self::DISABLED, self::MAINTENANCE]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canDoMaintenance(): bool
+    {
+        return in_array($this->status, [self::AVAILABLE, self::CLEANING, self::DISABLED]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isToggleable(): bool
+    {
+        return $this->status != self::OCCUPIED;
     }
 }

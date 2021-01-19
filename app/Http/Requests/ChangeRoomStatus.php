@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Room;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeRoomStatus extends FormRequest
@@ -24,9 +26,16 @@ class ChangeRoomStatus extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|hashed_exists:hotels,id',
             'room' => 'required|string|hashed_exists:rooms,id',
-            'status' => 'required|numeric|min:0|max:4|in:1,3,4'
+            'status' => [
+                'required',
+                'numeric',
+                Rule::in([
+                    Room::AVAILABLE,
+                    Room::DISABLED,
+                    Room::MAINTENANCE,
+                ])
+            ]
         ];
     }
 }

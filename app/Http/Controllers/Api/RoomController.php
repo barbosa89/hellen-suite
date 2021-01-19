@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoom;
 use App\Contracts\RoomRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangeRoomStatus;
 
 class RoomController extends Controller
 {
@@ -93,5 +94,20 @@ class RoomController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Change room status
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle(ChangeRoomStatus $request)
+    {
+        $room = $this->room->toggle(id_decode($request->room), $request->status);
+
+        return response()->json([
+            'room' => $room
+        ]);
     }
 }
