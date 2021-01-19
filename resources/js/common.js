@@ -190,7 +190,7 @@ function listRoomsByHotel(hotel) {
     });
 }
 
-$('#remove-room').click(function() {
+$('#remove-room').on('click', function() {
     options = [];
     $("#room").children().each(function(index, item) {
         item.removeAttribute('selected');
