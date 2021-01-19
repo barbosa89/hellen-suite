@@ -2,10 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Contracts\RoomRepository as Repository;
+use Exception;
 use App\Models\Room;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use App\Contracts\RoomRepository as Repository;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Pure Eloquent Repository
@@ -139,5 +140,37 @@ class RoomRepository implements Repository
                 }
             ])
             ->paginate(config('settings.paginate'), fields_get('rooms'));
+    }
+
+    /**
+     * Change Room status
+     *
+     * @param integer $id
+     * @param string $status
+     * @throws Exception
+     * @return \App\Models\Room
+     */
+    public function toggle(int $id, string $status): Room
+    {
+        $room = Room::owner()
+            ->where('id', $id)
+            ->where('status', '!=', Room::OCCUPIED)
+            ->firstOrFail(fields_get('rooms'));
+
+        if ($status == Room::AVAILABLE and $room->canEnable()) {
+            $room->status = Room::AVAILABLE;
+        }
+
+        if ($status == Room::DISABLED and $room->canDisable()) {
+            $room->status = Room::DISABLED;
+        }
+
+        if ($status == Room::MAINTENANCE and $room->canDoMaintenance()) {
+            $room->status = Room::MAINTENANCE;
+        }
+
+        $room->saveOrFail();
+
+        return $room;
     }
 }
