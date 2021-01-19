@@ -8,7 +8,7 @@
         @break
 
     @case(2)
-        @lang('rooms.maintenance')
+        @lang('rooms.cleaning')
         @break
 
     @case(3)
@@ -16,7 +16,7 @@
         @break
 
     @case(4)
-        @lang('rooms.cleaning')
+        @lang('rooms.maintenance')
         @break
 
 @endswitch
