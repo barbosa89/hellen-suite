@@ -2559,7 +2559,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * Change an voucher reservation to check-in reservation, includes origin and destination route.
+     * Change an reservation voucher to check-in reservation, includes origin and destination route.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $id
@@ -2696,7 +2696,7 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->where('reservation', false)
                     ->where('payment_status', false)
-                    ->where('losses', false)
+                    ->where('type', '!=', Voucher::LOSS)
                     ->with([
                         'rooms' => function ($query)
                         {
