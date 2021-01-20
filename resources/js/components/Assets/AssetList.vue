@@ -25,16 +25,16 @@
             <div class="crud-list-heading mt-2">
                 <div class="row">
                     <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                        <h5>Número</h5>
+                        <h5>{{ $t('common.number') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
                         <h5>{{ $t('common.description') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
-                        <h5>Marca</h5>
+                        <h5>{{ $t('common.brand') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 visible-md visible-lg">
-                        <h5>Modelo</h5>
+                        <h5>{{ $t('common.model') }}</h5>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 visible-md visible-lg">
                         <h5>{{ $t('common.options') }}</h5>
@@ -61,14 +61,14 @@
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <p>
                                 <a :href="'/assets/' + asset.hash">
-                                    {{ asset.brand || 'Sin datos' }}
+                                    {{ asset.brand || $t('common.noData') }}
                                 </a>
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <p>
                                 <a :href="'/assets/' + asset.hash">
-                                    {{ asset.model || 'Sin datos' }}
+                                    {{ asset.model || $t('common.noData') }}
                                 </a>
                             </p>
                         </div>
