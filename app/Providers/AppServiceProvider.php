@@ -96,6 +96,10 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
+            if (is_string($value)) {
+                $value = id_decode($value);
+            }
+
             // Check if the user owns the shiftin the hotel
             if ($shifts->where('hotel_id', $value)->count() === 1) {
                 return true;
