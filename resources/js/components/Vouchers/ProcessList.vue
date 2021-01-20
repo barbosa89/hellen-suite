@@ -38,25 +38,25 @@
             <div class="crud-list-heading mt-2">
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
-                        <h5>Número</h5>
+                        <h5>{{ $t('common.number') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
                         <h5>Hotel</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-                        <h5>Cliente</h5>
+                        <h5>{{ $t('vouchers.customer') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-                        <h5>Valor</h5>
+                        <h5>{{ $t('common.value') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
-                        <h5>Pago</h5>
+                        <h5>{{ $t('payments.payment') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
-                        <h5>Tipo</h5>
+                        <h5>{{ $t('common.type') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
-                        <h5>Fecha</h5>
+                        <h5>{{ $t('common.date') }}</h5>
                     </div>
                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
                         <h5>{{ $t('common.status') }}</h5>
@@ -69,7 +69,7 @@
             <div class="crud-list-items" v-if="vouchers.length != 0">
                 <div class="crud-list-row" v-for="voucher in vouchers" :key="voucher.hash">
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+                        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center dont-break-out">
                             <p>
                                 <a :href="'/vouchers/' +voucher.hash">
                                     {{voucher.number }}
@@ -107,7 +107,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
                             <p>
-                                {{voucher.reservation ? 'Reserva' : 'Ingreso' }}
+                                {{ voucher.reservation ? $t('vouchers.reservation') : $t('vouchers.checkin') }}
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
@@ -177,7 +177,7 @@ export default {
     data() {
         return {
             hotel: null, // The current hotel hash
-           vouchers: []
+            vouchers: []
         }
     },
     methods: {
@@ -193,11 +193,11 @@ export default {
         },
         hasRooms() {
             this.vouchers = _.filter(this.vouchers, (voucher) => {
-               voucher.rooms = _.filter(voucher.rooms, (room) => {
+                voucher.rooms = _.filter(voucher.rooms, (room) => {
                     return this.checkRoomIsEnabled(room)
                 })
 
-                returnvoucher.rooms.length > 0
+                return voucher.rooms.length > 0
             })
         },
         checkRoomIsEnabled(room) {
@@ -243,7 +243,7 @@ export default {
 
                     processed.forEach((number, index) => {
                         this.vouchers = _.filter(this.vouchers, (voucher) => {
-                            returnvoucher.number != number
+                            return voucher.number != number
                         })
                     })
 
