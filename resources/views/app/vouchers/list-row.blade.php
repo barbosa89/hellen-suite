@@ -1,6 +1,6 @@
 <div class="crud-list-row">
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center">
+        <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 align-self-center dont-break-out">
             <p>
                 <a href="{{ route('vouchers.show', ['id' => id_encode($row->id)]) }}">
                     {{ $row->number }}
