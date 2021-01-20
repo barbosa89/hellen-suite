@@ -770,7 +770,7 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->where('reservation', false)
-            ->where('losses', false)
+            ->where('type', '!=', Voucher::LOSS)
             ->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2399,8 +2399,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * Open a closed voucher.
-     * Only a manager could open a closed voucher.
+     * Open a closed voucher. Only a manager could open a closed voucher.
      *
      * @param  string  $id
      * @return \Illuminate\Http\Response
@@ -2411,7 +2410,7 @@ class VoucherController extends Controller
             ->where('id', id_decode($id))
             ->where('status', true)
             ->where('payment_status', false)
-            ->where('losses', false)
+            ->where('type', '!=', Voucher::LOSS)
             ->with([
                 'rooms' => function ($query) {
                     $query->select(fields_dotted('rooms'));
@@ -2569,15 +2568,8 @@ class VoucherController extends Controller
     public function showFormToProcess()
     {
         // Query hotels with vouchers to process
-        $hotels = Hotel::query();
-
-        // Only hotels of parent user
-        $hotels->where('user_id', id_parent());
-
-        // Check if is receptionist
-        if (auth()->user()->hasRole('receptionist')) {
-            $hotels->where('hotel_id', auth()->user()->headquarters()->first()->id);
-        }
+        $hotels = Hotel::query()
+            ->assigned();
 
         // Check if hotels have vouchers to process
         $hotels->whereHas('vouchers', function ($query) {
@@ -2585,7 +2577,7 @@ class VoucherController extends Controller
                 ->where('status', true)
                 ->where('reservation', false)
                 ->where('payment_status', false)
-                ->where('losses', false);
+                ->where('type', '!=', Voucher::LOSS);
         });
 
         // Load vouchers with relateds
@@ -2597,7 +2589,7 @@ class VoucherController extends Controller
                         ->where('status', true)
                         ->where('reservation', false)
                         ->where('payment_status', false)
-                        ->where('losses', false);
+                        ->where('type', '!=', Voucher::LOSS);
                 },
                 'vouchers.guests' => function ($query) {
                     $query->select(['id', 'name', 'last_name'])
@@ -2624,7 +2616,7 @@ class VoucherController extends Controller
         if ($hotels->isEmpty()) {
             flash(trans('vouchers.nothingToProcess'))->info();
 
-            return back();
+            return redirect()->route('vouchers.index');
         }
 
         // Hashing IDs before convert to JSON format
@@ -2661,7 +2653,6 @@ class VoucherController extends Controller
                 $voucher->rooms = $voucher->rooms->map(function ($room)
                 {
                     $room->user_id = id_encode($room->user_id);
-                    $room->hotel_id = id_encode($room->hotel_id);
                     $room->pivot->voucher_id = id_encode($room->pivot->voucher_id);
                     $room->pivot->room_id = id_encode($room->pivot->room_id);
 
