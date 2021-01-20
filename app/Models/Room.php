@@ -75,7 +75,7 @@ class Room extends Model
      */
     public function getHotelHashAttribute()
     {
-        return $this->attributes['hotel'] = (string) id_encode($this->attributes['hotel_id']);
+        return $this->attributes['hotel_hash'] = id_encode($this->attributes['hotel_id']);
     }
 
     /**
