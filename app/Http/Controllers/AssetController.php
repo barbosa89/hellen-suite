@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AssetsReport;
 use App\User;
 use App\Models\Room;
 use App\Models\Asset;
 use App\Models\Hotel;
-use Illuminate\Http\Request;
-use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
 use App\Models\Maintenance;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use App\Exports\AssetsReport;
+use App\Contracts\RoomRepository;
+use App\Http\Requests\AssignAsset;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
 
 class AssetController extends Controller
 {
+    public RoomRepository $room;
+
+    public function __construct(RoomRepository $room)
+    {
+        $this->room = $room;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -580,5 +589,53 @@ class AssetController extends Controller
         flash(trans('common.error'))->error();
 
         return back();
+    }
+
+    /**
+     * @param string $room
+     * @return \Illuminate\Http\Response
+     */
+    public function assignment(string $room)
+    {
+        $room = $this->room->find(id_decode($room));
+
+        $assets = Asset::where('hotel_id', $room->hotel->id)
+            ->doesntHave('room')
+            ->get(fields_get('assets'));
+
+        return view('app.assets.assign', compact('room', 'assets'));
+    }
+
+    /**
+     * @param \App\Http\Requests\AssignAsset $request
+     * @param string $room
+     * @return \Illuminate\Http\Response
+     */
+    public function assign(AssignAsset $request, string $room)
+    {
+        try {
+            $room = $this->room->find(id_decode($room));
+
+            $asset = Asset::where('hotel_id', $room->hotel->id)
+                ->where('id', $request->asset)
+                ->doesntHave('room')
+                ->first(fields_get('assets'));
+
+            $asset->location = null;
+            $asset->room()->associate($room);
+            $asset->saveOrFail();
+
+            flash(trans('common.updatedSuccessfully'))->success();
+
+            return redirect()->route('assets.assignment', [
+                'room' => id_encode($room->id),
+            ]);
+        } catch (\Throwable $th) {
+            flash(trans('common.error'))->error();
+
+            return redirect()->route('assets.assignment', [
+                'room' => id_encode($room->id),
+            ]);
+        }
     }
 }

@@ -20,12 +20,14 @@
                     'url' => [
                         [
                             'option' => trans('assets.add'),
-                            'url' => '#'
+                            'url' => route('assets.assignment', [
+                                'room' => id_encode($room->id),
+                            ])
                         ],
-                        [
-                            'option' => trans('products.add'),
-                            'url' => '#'
-                        ],
+                        // [
+                        //     'option' => trans('products.add'),
+                        //     'url' => '#'
+                        // ],
                         [
                             'type' => 'hideable',
                             'option' => trans('common.assign'),
@@ -172,20 +174,44 @@
                 <canvas id="myChart"></canvas>
             </div>
             <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="assets-tab">
-                @include('partials.list', [
-                    'data' => $room->assets,
-                    'listHeading' => 'app.assets.list-heading',
-                    'listRow' => 'app.assets.list-row',
-                    'where' => null,
-                ])
+                <x-table
+                    :headers="[
+                        trans('common.number'),
+                        trans('common.description'),
+                        trans('common.brand'),
+                        trans('common.model'),
+                    ]">
+
+                    @foreach ($room->assets as $asset)
+                        <tr>
+                            <td>
+                                <a href="{{ route('assets.show', ['id' => id_encode($asset->id)]) }}">
+                                    {{ $asset->number }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ $asset->description }}
+                            </td>
+                            <td>
+                                {{ $asset->brand }}
+                            </td>
+                            <td>
+                                {{ $asset->model }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </x-table>
             </div>
             <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
-                @include('partials.list', [
-                    'data' => $room->products,
-                    'listHeading' => 'app.products.list-heading',
-                    'listRow' => 'app.products.list-row',
-                    'where' => null,
-                ])
+                <x-table
+                    :headers="[
+                        trans('common.description'),
+                        trans('common.brand'),
+                        trans('common.reference'),
+                        trans('common.price'),
+                        trans('common.existence'),
+                    ]">
+                </x-table>
             </div>
         </div>
 

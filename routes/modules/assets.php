@@ -3,7 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
-	# Basic resource routes
+    Route::post('rooms/{room}/assets/assign', 'AssetController@assign')
+        ->name('assets.assign')
+        ->middleware('permission:assets.edit');
+
+    Route::get('rooms/{room}/assets/assign', 'AssetController@assignment')
+        ->name('assets.assignment')
+        ->middleware('permission:assets.edit');
 
 	Route::delete('assets/{id}/maintenance/{maintenance}', 'AssetController@destroyMaintenance')
 		->name('assets.maintenance.destroy')
@@ -35,11 +41,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::post('assets/search', 'AssetController@search')
 		->name('assets.search')
-		->middleware('permission:assets.index');
+        ->middleware('permission:assets.index');
 
-	Route::get('assets/{id}/assign', 'AssetController@assign')
-		->name('assets.assign')
-		->middleware('permission:assets.edit');
+	# Basic resource routes
 
 	Route::delete('assets/{id}', 'AssetController@destroy')
 		->name('assets.destroy')
