@@ -103,4 +103,12 @@ return array (
     'one' => 'nuevo recibo',
     'many' => 'nuevos recibos',
   ),
+  'add' => 
+  array (
+    'companies' => 'Agregar empresas',
+  ),
+  'register' => 
+  array (
+    'vehicles' => 'Registrar vehículos',
+  ),
 );

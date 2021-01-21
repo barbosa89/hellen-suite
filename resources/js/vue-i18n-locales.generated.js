@@ -426,7 +426,10 @@ export default {
             "anyPlace": "Any place",
             "assignTo": "Assign to",
             "serialNumber": "Serial number",
-            "registered": "A new asset was registered"
+            "registered": "A new asset was registered",
+            "rooms": {
+                "remove": "Remove room"
+            }
         },
         "permissions": {
             "add": "Add",
@@ -516,6 +519,10 @@ export default {
                 "many": "new guests",
                 "none": "No new registrations",
                 "one": "new guest"
+            },
+            "status": {
+                "hosted": "Hosted",
+                "out": "Not hosted"
             }
         },
         "login": {
@@ -641,6 +648,12 @@ export default {
                 "many": "new vouchers",
                 "none": "No recent vouchers created",
                 "one": "new voucher"
+            },
+            "add": {
+                "companies": "Add companies"
+            },
+            "register": {
+                "vehicles": "Register vehicles"
             }
         },
         "products": {
@@ -804,7 +817,8 @@ export default {
                     "declined": "Declined",
                     "error": "Error"
                 }
-            }
+            },
+            "close": "Close payments"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -921,6 +935,10 @@ export default {
                 "enable": "You cannot enable this room",
                 "add": "You cannot add this room",
                 "destroy": "It is not possible to delete the room if it has associated vouchers, you can disable it."
+            },
+            "number": "Room No. {number}",
+            "change": {
+                "disabled": "The room cannot be changed"
             }
         }
     },
@@ -1362,7 +1380,10 @@ export default {
             "anyPlace": "Cualquier lugar",
             "assignTo": "Asignar a",
             "serialNumber": "Serie",
-            "registered": "Se registró un nuevo activo"
+            "registered": "Se registró un nuevo activo",
+            "rooms": {
+                "remove": "Quitar habitación"
+            }
         },
         "permissions": {
             "index": "Listar",
@@ -1452,6 +1473,10 @@ export default {
                 "none": "No hay nuevos registros",
                 "one": "nuevo huésped",
                 "many": "nuevos huéspedes"
+            },
+            "status": {
+                "hosted": "Hospedado",
+                "out": "No hospedado"
             }
         },
         "login": {
@@ -1577,6 +1602,12 @@ export default {
                 "none": "No se han creado recibos recientemente",
                 "one": "nuevo recibo",
                 "many": "nuevos recibos"
+            },
+            "add": {
+                "companies": "Agregar empresas"
+            },
+            "register": {
+                "vehicles": "Registrar vehículos"
             }
         },
         "products": {
@@ -1740,7 +1771,8 @@ export default {
                     "declined": "Declinado",
                     "error": "Error"
                 }
-            }
+            },
+            "close": "Cerrar pagos"
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",
@@ -1857,6 +1889,10 @@ export default {
                 "enable": "Tú no puedes habilitar esta habitación",
                 "add": "Tú no puedes agregar esta habitación",
                 "destroy": "No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla."
+            },
+            "number": "Habitación No. {number}",
+            "change": {
+                "disabled": "La habitación no puede ser cambiada"
             }
         }
     }

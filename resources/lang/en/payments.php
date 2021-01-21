@@ -27,4 +27,5 @@ return array (
       'error' => 'Error',
     ),
   ),
+  'close' => 'Close payments',
 );

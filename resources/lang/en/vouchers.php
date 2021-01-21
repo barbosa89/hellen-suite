@@ -103,4 +103,12 @@ return array (
     'none' => 'No recent vouchers created',
     'one' => 'new voucher',
   ),
+  'add' => 
+  array (
+    'companies' => 'Add companies',
+  ),
+  'register' => 
+  array (
+    'vehicles' => 'Register vehicles',
+  ),
 );
