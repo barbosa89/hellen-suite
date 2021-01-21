@@ -13,12 +13,12 @@
         ]),
         'options' => [
             [
-                'type' => (float) $voucher->value == (float) $voucher->payments->sum('value') ? 'confirm' : 'hideable',
-                'option' => trans('common.close') . ' ' . strtolower(trans('payments.title')),
+                'type' => $voucher->canClosePayments() ? 'confirm' : 'hideable',
+                'option' => trans('payments.close'),
                 'url' => route('vouchers.payments.close', [
                     'id' => id_encode($voucher->id)
                 ]),
-                'show' => (float) $voucher->value == (float) $voucher->payments->sum('value') and !$voucher->payment_status,
+                'show' => $voucher->canClosePayments(),
                 'method' => 'POST',
                 'permission' => 'payments.close'
             ],

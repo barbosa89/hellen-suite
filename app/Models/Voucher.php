@@ -139,4 +139,18 @@ class Voucher extends Model
             ->where('open', true)
             ->where('status', true);
     }
+
+    /**
+     * @return boolean
+     */
+    public function canClosePayments(): bool
+    {
+        if ($this->payments->isNotEmpty()) {
+            $payments = (float) $this->payments->sum('value');
+
+            return (float) $this->value == $payments  and $this->payment_status == false;
+        }
+
+        return false;
+    }
 }
