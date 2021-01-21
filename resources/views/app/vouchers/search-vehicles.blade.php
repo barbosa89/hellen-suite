@@ -16,7 +16,7 @@
                     'url' => route('vouchers.vehicles.create', ['id' => id_encode($voucher->id)])
                 ],
                 [
-                    'option' => 'Agregar empresa',
+                    'option' => trans('vouchers.add.companies'),
                     'url' => route('vouchers.companies.search', [
                         'id' => id_encode($voucher->id)
                     ])
@@ -31,6 +31,8 @@
         ])
 
         @include('app.vouchers.info')
+
+        <h3 class="text-center m-4">@lang('vouchers.register.vehicles')</h3>
 
         <div class="form-group{{ $errors->has('guest') ? ' has-error' : '' }}">
             <label for="pwd">@lang('guests.guest'):</label>
@@ -50,11 +52,6 @@
         <div class="row mt-4" id="search-input" style="display:none;">
             <div class="col-md-12">
                 @include('partials.form', [
-                    'title' => [
-                        'title' => trans('common.search') . ' ' . trans('vehicles.title'),
-                        'align' => 'text-center',
-                        'size' => 'h3'
-                    ],
                     'url' => '#',
                     'method' => 'GET',
                     'fields' => [

@@ -1,7 +1,9 @@
 
-<{{ isset($title['size']) ? $title['size'] : 'h2' }} class="{{ isset($title['align']) ? $title['align'] : 'text-left' }}">
-    {{ $title['title'] }}
-</{{ isset($title['size']) ? $title['size'] : 'h2' }}>
+@if (isset($title))
+    <{{ isset($title['size']) ? $title['size'] : 'h2' }} class="{{ isset($title['align']) ? $title['align'] : 'text-left' }}">
+        {{ $title['title'] }}
+    </{{ isset($title['size']) ? $title['size'] : 'h2' }}>
+@endif
 <form action="{{ $url }}"
     {{ isset($horizontal) ? 'class=form-horizontal' : '' }}
     method="POST"
