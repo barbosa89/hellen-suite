@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Prop;
+use App\Models\Hotel;
 use App\Helpers\Random;
 use App\Models\Company;
-use App\Models\Hotel;
-use App\Models\Prop;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PropVoucherController extends Controller
@@ -139,7 +140,11 @@ class PropVoucherController extends Controller
                     $voucher->props()->sync($attach);
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage() . ' Line: ' . $e->getLine());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 

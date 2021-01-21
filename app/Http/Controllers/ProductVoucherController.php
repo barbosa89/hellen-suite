@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Random;
 use App\User;
+use App\Models\Shift;
+use App\Helpers\Random;
 use App\Models\Company;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\Shift;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProductVoucherController extends Controller
@@ -159,7 +160,11 @@ class ProductVoucherController extends Controller
                     }
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage() . ' Line: ' . $e->getLine());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
