@@ -77,7 +77,7 @@
                         ],
                         [
                             'type' => 'hideable',
-                            'option' => trans('common.register') . ' ' . trans('vehicles.vehicle'),
+                            'option' => trans('vouchers.register.vehicles'),
                             'url' => route('vouchers.vehicles.search', ['id' => id_encode($voucher->id)]),
                             'show' => !$voucher->reservation and $voucher->open,
                             'permission' => 'vouchers.edit'
