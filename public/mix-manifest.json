@@ -4,10 +4,5 @@
     "/js/app.js.map": "/js/app.js.map",
     "/css/app.css.map": "/css/app.css.map",
     "/js/theme.js": "/js/theme.js",
-    "/js/theme.js.map": "/js/theme.js.map",
-    "/css/styles.css": "/css/styles.css",
-    "/js/scripts.js": "/js/scripts.js",
-    "/css/landing.css": "/css/landing.css",
-    "/js/landing.js": "/js/landing.js",
-    "/js/editor.js": "/js/editor.js"
+    "/js/theme.js.map": "/js/theme.js.map"
 }
