@@ -30,6 +30,11 @@ return [
         'confirm' => env('PAYMENTS_CONFIRM_URL')
     ],
 
+    'browsershot' => [
+        'node' => env('NODE_PATH'),
+        'npm' => env('NPM_PATH'),
+    ],
+
     'paginate' => 20,
 
     'fields' => [

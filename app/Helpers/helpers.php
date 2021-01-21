@@ -85,7 +85,18 @@ if (!function_exists('response_pdf')) {
     function response_pdf(string $html): StreamedResponse
     {
         return response()->stream(function () use ($html) {
-            echo Browsershot::html($html)->pdf();
+            $nodePath = config('settings.browsershot.node');
+            $npmPath = config('settings.browsershot.npm');
+
+            if (!empty($nodePath) and !empty($npmPath)) {
+                echo Browsershot::html($html)
+                        ->setNodeBinary($nodePath)
+                        ->setNpmBinary($npmPath)
+                        ->pdf();
+            } else {
+                echo Browsershot::html($html)->pdf();
+            }
+
         }, 200, ['Content-Type' => 'application/pdf']);
     }
 }
