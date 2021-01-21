@@ -8,6 +8,7 @@ use App\Models\Voucher;
 use App\Models\Payment;
 use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
@@ -193,7 +194,11 @@ class PaymentController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('payment.log', $e->getMessage());
+                Log::error('payments store', [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -367,7 +372,11 @@ class PaymentController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('payment.log', $e->getMessage());
+                Log::error('payments update', [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -465,7 +474,11 @@ class PaymentController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('payment.log', $e->getMessage());
+                Log::error('payments destroy', [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
