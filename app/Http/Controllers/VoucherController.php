@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 // TODO: Agregar edad limite para ser adulto
@@ -364,7 +365,11 @@ class VoucherController extends Controller
                 $voucher->delete();
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -531,7 +536,11 @@ class VoucherController extends Controller
                 $room->save();
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -741,7 +750,11 @@ class VoucherController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -1457,7 +1470,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -1511,7 +1528,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -1634,7 +1655,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -1685,7 +1710,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2077,7 +2106,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2132,7 +2165,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2214,7 +2251,11 @@ class VoucherController extends Controller
 
                 $status = true;
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2290,7 +2331,11 @@ class VoucherController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2383,7 +2428,11 @@ class VoucherController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2465,7 +2514,11 @@ class VoucherController extends Controller
                     $status = true;
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
@@ -2762,7 +2815,11 @@ class VoucherController extends Controller
                     });
                 }
             } catch (\Throwable $e) {
-                Storage::append('voucher.log', $e->getMessage());
+                Log::error(trans('common.error'), [
+                    'file' => $e->getFile(),
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]);
             }
         });
 
