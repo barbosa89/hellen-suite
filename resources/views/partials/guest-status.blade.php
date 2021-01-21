@@ -1,10 +1,10 @@
 @switch($status)
     @case(0)
-        Sin ingreso
+        @lang('guests.status.out')
         @break
 
     @case(1)
-        Hospedado
+        @lang('guests.status.hosted')
         @break
 
 

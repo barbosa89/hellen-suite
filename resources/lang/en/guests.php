@@ -23,4 +23,9 @@ return array (
     'none' => 'No new registrations',
     'one' => 'new guest',
   ),
+  'status' => 
+  array (
+    'hosted' => 'Hosted',
+    'out' => 'Not hosted',
+  ),
 );

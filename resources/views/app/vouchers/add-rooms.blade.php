@@ -21,7 +21,7 @@
                 ]),
             ],
             [
-                'option' => 'Volver al recibo',
+                'option' => trans('vouchers.back'),
                 'url' => route('vouchers.show', [
                     'id' => id_encode($voucher->id)
                 ])
@@ -31,7 +31,7 @@
 
     @include('app.vouchers.info')
 
-    <h3 class="text-center">Agregar habitación</h3>
+    <h3 class="text-center">@lang('rooms.addRoom')</h3>
     <form class="mt-4" action="{{ route('vouchers.rooms.add', ['id' => id_encode($voucher->id)]) }}" method="POST" accept-charset="utf-8">
         @csrf
         <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
@@ -94,8 +94,12 @@
                 </span>
             @endif
         </div>
-        <button type="submit" class="btn btn-primary">Agregar</button>
-        <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}" class="btn btn-link">Finalizar</a>
+        <button type="submit" class="btn btn-primary">
+            @lang('common.add')
+        </button>
+        <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}" class="btn btn-link">
+            @lang('common.finalize')
+        </a>
     </form>
 
     @include('partials.spacer', ['size' => 'md'])

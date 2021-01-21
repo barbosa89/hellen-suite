@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Helpers\{Customer, Random};
@@ -453,7 +454,7 @@ class VoucherController extends Controller
         }
 
         $rooms = Room::where('hotel_id', $voucher->hotel->id)
-            ->where('status', '1') // It is free
+            ->where('status', Room::AVAILABLE)
             ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
@@ -610,7 +611,7 @@ class VoucherController extends Controller
         }
 
         $rooms = Room::where('hotel_id', $voucher->hotel->id)
-            ->where('status', '1') // It is free
+            ->where('status', Room::AVAILABLE)
             ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
@@ -637,136 +638,137 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $request, $id, $roomId) {
-            try {
-                $id = id_decode($id);
-                $voucher = Voucher::where('user_id', id_parent())
-                    ->where('id', $id)
-                    ->where('open', true)
-                    ->where('status', true)
-                    ->first(fields_dotted('vouchers'));
+        DB::beginTransaction();
 
-                if (empty($voucher)) {
-                    abort(404);
+        try {
+            $voucher = Voucher::where('user_id', id_parent())
+                ->where('id', id_decode($id))
+                ->where('open', true)
+                ->where('status', true)
+                ->firstOrFail(fields_dotted('vouchers'));
+
+            $voucher->load([
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'company' => function ($query) {
+                    $query->select(fields_get('companies'));
+                },
+                'rooms' => function ($query) {
+                    $query->select(fields_dotted('rooms'))
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+                },
+                'rooms.guests' => function ($query) use ($id) {
+                    $query->select(fields_dotted('guests'))
+                        ->wherePivot('voucher_id', $id);
                 }
+            ]);
 
-                $voucher->load([
-                    'hotel' => function ($query) {
-                        $query->select(fields_get('hotels'));
-                    },
-                    'guests' => function ($query) {
-                        $query->select(fields_dotted('guests'))
-                            ->withPivot('main', 'active');
-                    },
-                    'company' => function ($query) {
-                        $query->select(fields_get('companies'));
-                    },
-                    'rooms' => function ($query) {
-                        $query->select(fields_dotted('rooms'))
-                            ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
-                    },
-                    'rooms.guests' => function ($query) use ($id) {
-                        $query->select(fields_dotted('guests'))
-                            ->wherePivot('voucher_id', $id);
-                    }
-                ]);
+            // The room to change from the voucher
+            $current = $voucher->rooms->where('id', id_decode($roomId))
+                ->where('hotel_id', $voucher->hotel->id)
+                ->first();
 
-                // The room to change from the voucher
-                $current = $voucher->rooms->where('id', id_decode($roomId))
-                    ->where('hotel_id', $voucher->hotel->id)
-                    ->first();
-
-                    // Check if room is enabled to changes
-                if ($current->pivot->enabled == false) {
-                    // The new room to add to the voucher
-                    $room = Room::where('hotel_id', $voucher->hotel->id)
-                        ->where('number', $request->number)
-                        ->where('status', '1') // It is free
-                        ->first(fields_dotted('rooms'));
-
-                    ### Rooms ###
-
-                    // Current values are subtracted
-                    $voucher->discount -= $current->pivot->discount;
-                    $voucher->subvalue -= $current->pivot->subvalue;
-                    $voucher->taxes -= $current->pivot->taxes;
-                    $voucher->value -= $current->pivot->value;
-
-                    // Detach current room
-                    $voucher->rooms()->detach($current->id);
-
-                    // Calculating the new values
-                    $discount = ($room->price - $request->price) * $current->pivot->quantity;
-                    $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
-                    $subvalue = $request->price * $current->pivot->quantity;
-
-                    $voucher->rooms()->attach(
-                        $room->id,
-                        [
-                            'price' => $request->price,
-                            'quantity' => $current->pivot->quantity, // This is same that before
-                            'discount' => $discount,
-                            'subvalue' => $subvalue,
-                            'taxes' => $taxes,
-                            'value' => $subvalue + $taxes,
-                            'start' => $current->pivot->start, // This is same that before
-                            'end' => $current->pivot->end, // This is same that before
-                            'enabled' => true
-                        ]
-                    );
-
-                    // Summing the new values
-                    $voucher->discount += $discount;
-                    $voucher->subvalue += $subvalue;
-                    $voucher->taxes += $taxes;
-                    $voucher->value += $subvalue + $taxes;
-                    $voucher->save();
-
-                    ### Guests ###
-
-                    // Check the room has guests
-                    if ($current->guests->isNotEmpty()) {
-                        foreach ($current->guests as $guest) {
-                            // Detach room of the guests
-                            $guest->rooms()
-                                ->wherePivot('voucher_id', $voucher->id)
-                                ->detach($current->id);
-
-                            // Attach the new room of the guests
-                            $guest->rooms()->attach($room->id, [
-                                'voucher_id' => $voucher->id
-                            ]);
-                        }
-                    }
-
-                    // Change status of the current room
-                    $current->status = '2';
-                    $current->save();
-
-                    // Change status of the new room
-                    $room->status = '0';
-                    $room->save();
-
-                    $status = true;
-                }
-            } catch (\Throwable $e) {
-                Log::error(trans('common.error'), [
-                    'file' => $e->getFile(),
-                    'message' => $e->getMessage(),
-                    'line' => $e->getLine(),
-                ]);
+                // Check if room is enabled to changes
+            if ($current->pivot->enabled == false) {
+                throw new Exception(trans('rooms.change.disabled'));
             }
-        });
 
-        if ($status) {
+            // The new room to add to the voucher
+            $room = Room::where('hotel_id', $voucher->hotel->id)
+                ->where('number', $request->number)
+                ->where('status', Room::AVAILABLE)
+                ->first(fields_dotted('rooms'));
+
+            ### Rooms ###
+
+            // Current values are subtracted
+            $voucher->discount -= $current->pivot->discount;
+            $voucher->subvalue -= $current->pivot->subvalue;
+            $voucher->taxes -= $current->pivot->taxes;
+            $voucher->value -= $current->pivot->value;
+
+            // Detach current room
+            $voucher->rooms()->detach($current->id);
+
+            // Calculating the new values
+            $discount = ($room->price - $request->price) * $current->pivot->quantity;
+            $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
+            $subvalue = $request->price * $current->pivot->quantity;
+
+            $voucher->rooms()->attach(
+                $room->id,
+                [
+                    'price' => $request->price,
+                    'quantity' => $current->pivot->quantity, // This is same that before
+                    'discount' => $discount,
+                    'subvalue' => $subvalue,
+                    'taxes' => $taxes,
+                    'value' => $subvalue + $taxes,
+                    'start' => $current->pivot->start, // This is same that before
+                    'end' => $current->pivot->end, // This is same that before
+                    'enabled' => true
+                ]
+            );
+
+            // Summing the new values
+            $voucher->discount += $discount;
+            $voucher->subvalue += $subvalue;
+            $voucher->taxes += $taxes;
+            $voucher->value += $subvalue + $taxes;
+            $voucher->save();
+
+            ### Guests ###
+
+            // Check the room has guests
+            if ($current->guests->isNotEmpty()) {
+                foreach ($current->guests as $guest) {
+                    // Detach room of the guests
+                    $guest->rooms()
+                        ->wherePivot('voucher_id', $voucher->id)
+                        ->detach($current->id);
+
+                    // Attach the new room of the guests
+                    $guest->rooms()->attach($room->id, [
+                        'voucher_id' => $voucher->id
+                    ]);
+                }
+            }
+
+            // Change status of the current room
+            $current->status = Room::CLEANING;
+            $current->save();
+
+            // Change status of the new room
+            $room->status = Room::OCCUPIED;
+            $room->save();
+
+            DB::commit();
+
             flash(trans('common.successful'))->success();
-        } else {
-            flash(trans('common.error'))->error();
-        }
 
-        return redirect()->route('vouchers.show', [
-            'id' => $id
-        ]);
+            return redirect()->route('vouchers.show', [
+                'id' => id_encode($voucher->id),
+            ]);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error(trans('common.error'), [
+                'file' => $e->getFile(),
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+
+            flash(trans('common.error'))->error();
+
+            return redirect()->route('vouchers.show', [
+                'id' => id_encode($voucher->id),
+            ]);
+        }
     }
 
     /**

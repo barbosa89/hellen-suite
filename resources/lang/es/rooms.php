@@ -32,4 +32,8 @@ return array (
     'destroy' => 'No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla.',
   ),
   'number' => 'Habitación No. :number',
+  'change' => 
+  array (
+    'disabled' => 'La habitación no puede ser cambiada',
+  ),
 );

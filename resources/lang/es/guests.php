@@ -23,4 +23,9 @@ return array (
     'one' => 'nuevo huésped',
     'many' => 'nuevos huéspedes',
   ),
+  'status' => 
+  array (
+    'hosted' => 'Hospedado',
+    'out' => 'No hospedado',
+  ),
 );
