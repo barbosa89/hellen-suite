@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -241,6 +242,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(\App\Contracts\VoucherPrinter::class, \App\Services\VoucherPrinter::class);
     }
 }
