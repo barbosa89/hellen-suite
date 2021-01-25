@@ -28,7 +28,6 @@
         "orangehill/iseed": "^2.6",
         "owen-it/laravel-auditing": "^10.0",
         "shetabit/visitor": "^2.1",
-        "spatie/browsershot": "^3.42",
         "spatie/laravel-activitylog": "^3.14",
         "spatie/laravel-backup": "^6.9",
         "spatie/laravel-honeypot": "2.3",
