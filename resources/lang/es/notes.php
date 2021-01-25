@@ -20,4 +20,5 @@ return array (
   ),
   'vehicle' => 'En el recibo No. {link}, se registra vehículo con matrícula',
   'owner' => 'el propietario(a) es',
+  'tags' => 'Etiquetas',
 );

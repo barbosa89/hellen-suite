@@ -131,7 +131,10 @@ class NoteController extends Controller
 
         $view = view('app.notes.exports.template', compact('notes', 'hotel'))->render();
 
-        return response_pdf($view);
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($view);
+
+        return $pdf->stream();
     }
 
     /**
