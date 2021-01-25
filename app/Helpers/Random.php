@@ -41,7 +41,7 @@ class Random
 
 		while (empty($consecutive)) {
 			// Temporary consecutive
-			$temp = date('ymd') . (string) Str::of(Str::random(6))->upper();
+			$temp = date('ymd') . random_int(1000, 10000);
 
 			// Query if consecutive exists
 			$voucher = DB::table($table)->where('number', $temp)->first(['id', 'number']);

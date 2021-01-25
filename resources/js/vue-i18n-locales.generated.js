@@ -695,7 +695,8 @@ export default {
                 "of": "According to voucher No. {link}, check out of"
             },
             "vehicle": "On voucher No. {link}, vehicle entry, registration",
-            "owner": "the owner is"
+            "owner": "the owner is",
+            "tags": "Tags"
         },
         "landing": {
             "about": "App",
@@ -1649,7 +1650,8 @@ export default {
                 "of": "Según el recibo No. {link}, registro de salida de"
             },
             "vehicle": "En el recibo No. {link}, se registra vehículo con matrícula",
-            "owner": "el propietario(a) es"
+            "owner": "el propietario(a) es",
+            "tags": "Etiquetas"
         },
         "landing": {
             "home": "Inicio",

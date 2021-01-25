@@ -9,6 +9,8 @@ class Voucher extends Model
 {
     use LogsActivity;
 
+    public const PREFIX = 'V';
+
     public const SALE = 'sale';
 
     public const ENTRY = 'entry';

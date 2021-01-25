@@ -77,32 +77,6 @@ if (!function_exists('argument_array')) {
     }
 }
 
-if (!function_exists('response_pdf')) {
-    /**
-     * @param $string $html
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
-     */
-    function response_pdf(string $html): StreamedResponse
-    {
-        return response()->stream(function () use ($html) {
-            $nodePath = config('settings.browsershot.node');
-            $npmPath = config('settings.browsershot.npm');
-
-            if (!empty($nodePath) and !empty($npmPath)) {
-                echo Browsershot::html($html)
-                        ->setNodeBinary($nodePath)
-                        ->setNpmBinary($npmPath)
-                        ->pdf();
-            } else {
-                echo Browsershot::html($html)->pdf();
-            }
-
-        }, 200, ['Content-Type' => 'application/pdf']);
-    }
-}
-
-
-
 if (!function_exists('get_columns')) {
     /**
      * Get all table column names from schema

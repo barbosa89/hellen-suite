@@ -20,4 +20,5 @@ return array (
   ),
   'vehicle' => 'On voucher No. {link}, vehicle entry, registration',
   'owner' => 'the owner is',
+  'tags' => 'Tags',
 );

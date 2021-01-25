@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\VoucherPrinter;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,20 +33,14 @@ use Illuminate\Support\Facades\Storage;
 class VoucherController extends Controller
 {
 
-    /**
-     * Voucher repository Eloquent based
-     *
-     * @var VoucherRepository
-     */
     public VoucherRepository $voucher;
-    /**
-     * Construct function
-     *
-     * @param \App\Repositories\VoucherRepository $voucher
-     */
-    public function __construct(VoucherRepository $voucher)
+
+    public VoucherPrinter $printer;
+
+    public function __construct(VoucherRepository $voucher, VoucherPrinter $printer)
     {
         $this->voucher = $voucher;
+        $this->printer = $printer;
     }
 
     /**
@@ -2886,93 +2881,14 @@ class VoucherController extends Controller
                 $query->select(fields_dotted('props'))
                     ->withPivot('quantity', 'value', 'created_at');
             },
+            'hotel' => function ($query) {
+                $query->select(fields_get('hotels'));
+            },
         ]);
 
-        $customer = Customer::get($voucher);
-        $pages = $this->prepareItems($voucher);
-
-        $view = view('app.vouchers.exports.template', compact('voucher', 'customer', 'pages'))->render();
-
-        return response_pdf($view);
-    }
-
-    public function prepareItems(Voucher $voucher)
-    {
-        $items = collect();
-
-        foreach ($voucher->rooms as $room) {
-            $items->push($room);
-        }
-
-        foreach ($voucher->services as $service) {
-            $items->push($service);
-        }
-
-        foreach ($voucher->products as $product) {
-            $items->push($product);
-        }
-
-        foreach ($voucher->additionals as $additional) {
-            $items->push($additional);
-        }
-
-        foreach ($voucher->props as $prop) {
-            $items->push($prop);
-        }
-
-        return $this->chunkItems($items);
-    }
-
-    public function chunkItems(Collection $items)
-    {
-        $pages = $this->calculatePages($items);
-        $chunkedItems = [];
-
-        // Will be used the collection function named 'splice'
-        // The splice method removes and returns a slice of items starting at the specified index
-        for ($i=1; $i <= $pages; $i++) {
-            // Check if this is the first page
-            if ($i == 1) {
-                // The first page receives only 13 items of 18
-                $chunkedItems[$i] = $items->splice(0, 13);
-            } else {
-                // Check if this is the last page
-                if ($i == $pages) {
-                    // The last page receives only 10 items of 18
-                    $chunkedItems[$i] = $items->splice(0, 10);
-                } else {
-                    // This is a intermediate page, total items, 18 items
-                    $chunkedItems[$i] = $items->splice(0, 18);
-                }
-            }
-        }
-
-        return $chunkedItems;
-    }
-
-    /**
-     * Calculate pages total
-     *
-     * @return \Illuminate\Support\Collection  $items
-     * @return int
-     */
-    public function calculatePages(Collection $items): int
-    {
-        // The maximun quantity per page
-        $itemsPerPage = 18;
-
-        // The space for the voucher header and signature
-        // 5 items for the header
-        // 7 items for the signature, this section includes the questions section
-        $reservedSpace = 12;
-
-        // Calculate the total items, includes the reserved space (header, signature)
-        // This quantity is to calculate the pages
-        $quantity = $items->count() + $reservedSpace;
-
-        // The pages are round fractions up using ceil function
-        $pages = (int) ceil($quantity / $itemsPerPage);
-
-        return $pages;
+        return $this->printer
+            ->setVoucher($voucher)
+            ->buildDocument()
+            ->stream();
     }
 }
