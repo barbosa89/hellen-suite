@@ -17,7 +17,11 @@ export default {
             "users": "Users",
             "vehicles": "Vehicles",
             "dining": "Dining service",
-            "props": "Props"
+            "props": "Props",
+            "notes": "Notes",
+            "plans": "Plans",
+            "tags": "Tags",
+            "transactions": "Transactions"
         },
         "common": {
             "back": "Back",
@@ -972,7 +976,11 @@ export default {
             "subscriptions": "Suscripciones",
             "vehicles": "Vehículos",
             "props": "Utilería",
-            "dining": "Servicio de comedor"
+            "dining": "Servicio de comedor",
+            "tags": "Etiquetas",
+            "plans": "Planes",
+            "transactions": "Transacciones",
+            "notes": "Notas"
         },
         "common": {
             "create": "Crear",
