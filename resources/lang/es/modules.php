@@ -18,4 +18,8 @@ return array (
   'vehicles' => 'Vehículos',
   'props' => 'Utilería',
   'dining' => 'Servicio de comedor',
+  'tags' => 'Etiquetas',
+  'plans' => 'Planes',
+  'transactions' => 'Transacciones',
+  'notes' => 'Notas',
 );

@@ -18,4 +18,8 @@ return array (
   'vehicles' => 'Vehicles',
   'dining' => 'Dining service',
   'props' => 'Props',
+  'notes' => 'Notes',
+  'plans' => 'Plans',
+  'tags' => 'Tags',
+  'transactions' => 'Transactions',
 );
