@@ -258,10 +258,10 @@ class InvoiceTest extends TestCase
             'total' => $plan->price
         ]);
 
-        // $invoice->plans()->attach($plan);
+        $invoice->plans()->attach($plan);
 
         Http::fake(function ($request) use ($invoice) {
-            return Http::response($this->getPaymentGatewayResponse($invoice), 200);
+            return Http::response($this->getPaymentGatewayResponse($invoice, 'CARD', 'UNKNOWN'), 200);
         });
 
         $this->actingAs($user)
