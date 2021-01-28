@@ -6,9 +6,9 @@ use App\Helpers\Fields;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
 use Illuminate\Support\Str;
-use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Spatie\Permission\Models\Permission;
 
 if (!function_exists('id_encode')) {
     function id_encode(string $id)
@@ -135,5 +135,25 @@ if (!function_exists('cents_to_float')) {
         }
 
         throw new InvalidArgumentException("The value must be greater than zero", 1);
+    }
+}
+
+if (!function_exists('get_user_permissions')) {
+    /**
+     * Get all asigned user permissions
+     *
+     * @return array
+     */
+    function get_user_permissions(): array
+    {
+        if (Auth::check()) {
+            $permissions = Permission::whereHas('users', function ($query) {
+                $query->where('id', Auth::id());
+            })->get(['id', 'name']);
+
+            return $permissions->pluck('name')->toArray();
+        }
+
+        return [];
     }
 }
