@@ -37,6 +37,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="twitter:image" content="{{ asset('images/brand.jpg') }}">
     <meta name="twitter:title" content="{{ config('app.name') }}">
     <meta name="twitter:description" content="{{ trans('landing.meta.description') }}">
+    <meta name="twitter:site" content="@Hellen_Suite">
 
 
     <!-- Styles -->
