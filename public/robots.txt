@@ -1,3 +1,3 @@
-Sitemap: https://www.hellensuite.com/sitemap.xml
+Sitemap: https://hellensuite.com/sitemap.xml
 User-agent: *
 Disallow:
