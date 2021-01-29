@@ -800,7 +800,7 @@ export default {
             "design": "Design by",
             "keywords": "hotel, management, administration, rooms, guests, application, software, tool, web, reservation, inventory",
             "meta": {
-                "description": "Hotel management suite and similar business models, allows to control rooms, inventories, guests, shifts and roles such as receptionist and manager."
+                "description": "Hotel management suite, allows to control rooms, inventories, guests, shifts and roles such as receptionist and manager."
             }
         },
         "payments": {
@@ -1764,7 +1764,7 @@ export default {
             "design": "Diseñado por",
             "keywords": "hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva, inventario",
             "meta": {
-                "description": "Suite de administración de hoteles y modelos de negocios similares, permite controlar habitaciones, inventarios, huéspedes, turnos y roles como recepcionista y gerente."
+                "description": "Suite de administración de hoteles, te permite controlar habitaciones, inventarios, huéspedes, turnos y roles como recepcionista y gerente."
             }
         },
         "payments": {

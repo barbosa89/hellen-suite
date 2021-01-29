@@ -23,22 +23,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="keywords" content="{{ trans('landing.keywords') }}">
     <meta name="author" content="{{ config('app.name') }}">
 
+    <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:title" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
     <meta property="og:description" content="{{ trans('landing.meta.description') }}">
     <meta property="og:image" content="{{ asset('images/brand.jpg') }}">
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ config('app.url') }}">
+
     <meta name="twitter:card" content="summary_large_image">
-
-    <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta name="twitter:image:alt" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
-
-    <meta property="fb:app_id" content="1595428934178032" />
     <meta name="twitter:image" content="{{ asset('images/brand.jpg') }}">
     <meta name="twitter:title" content="{{ config('app.name') }}">
     <meta name="twitter:description" content="{{ trans('landing.meta.description') }}">
     <meta name="twitter:site" content="@Hellen_Suite">
 
+    <meta property="fb:app_id" content="1595428934178032" />
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -748,7 +747,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             "url": "{{ config('app.url') }}",
             "sameAs": [
                 "https://twitter.com/Hellen_Suite",
-                "https://www.facebook.com/HellenSuite",
+                "https://www.facebook.com/HellenSuite"
             ]
         }
     </script>
