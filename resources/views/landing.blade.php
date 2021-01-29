@@ -45,7 +45,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <nav class="main-header">
             <div class="container-fluid mt-4">
                 <div class="row">
-                        <div class="col-8 col-sm-8 col-md-8 col-lg-4 col-xl-4">
+                        <div class="col-8 col-sm-8 col-md-4 col-lg-4 col-xl-4">
                             <div id="brand">
                                 <div id="logo" class="text-center pt-2">
                                     <a href="{{ url('/') }}">
@@ -61,7 +61,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4 col-sm-4 col-md-4 col-lg-8 col-xl-8">
+                        <div class="col-4 col-sm-4 col-md-8 col-lg-8 col-xl-8">
                             <div id="menu">
                                 <div id="menu-toggle">
                                     <div id="menu-icon">
@@ -96,7 +96,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             @lang('landing.contact')
                                         </a>
                                     </li>
-                                    <li>
+                                    <li class="menu-list-button">
                                         @if (auth()->check())
                                             <a href="{{ url('/home') }}" class="btn w3ls-btn" href="#contact" class="scroll">
                                                 @lang('dashboard.dashboard')
@@ -212,7 +212,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-3">
                 <h3 class="heading mb-5 text-center"> @lang('landing.why.choose')</h3>
                 <div class="feature-grids row">
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
                         <div class="f1 icon1 p-4">
                             <i class="fas fa-cubes"></i>
                             <h3 class="my-3">
@@ -223,7 +223,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
                         <div class="f1 icon2 p-4">
                             <i class="fas fa-shield-alt"></i>
                             <h3 class="my-3">@lang('landing.why.security.title')</h3>
@@ -232,7 +232,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
                         <div class="f1 icon3 p-4">
                             <i class="fas fa-palette"></i>
                             <h3 class="my-3">@lang('landing.why.design.title')</h3>
@@ -298,7 +298,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="menu-grids">
                             <div class="row t-in">
                                 @foreach ($plans as $plan)
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 price-main-info">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 price-main-info mt-lg-0 mt-4">
                                         <div class="price-inner card box-shadow p-4">
                                             <div class="card-body">
                                                 <h4 class="">{{ trans('plans.type.' . $plan->getType()) }}</h4>
