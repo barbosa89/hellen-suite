@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} - {{ trans('landing.slogan.short') }}</title>
     <meta charset="utf-8">
     <meta name="keywords" content="Hotel" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,6 +17,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     <!-- Icon -->
     <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
+    <link rel="canonical" href="{{ config('app.url') }}">
+
+    <meta name="description" content="{{ trans('landing.app') }}">
+    <meta name="keywords" content="{{ trans('landing.keywords') }}">
+    <meta name="author" content="{{ config('app.name') }}">
+
+    <meta property="og:title" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
+    <meta property="og:description" content="{{ trans('landing.app') }}">
+    <meta property="og:image" content="{{ asset('images/brand.jpg') }}">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ config('app.url') }}">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta name="twitter:image:alt" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
+
+    <meta property="fb:app_id" content="1595428934178032" />
+    <meta name="twitter:site" content="@Hellen_Suite">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -706,6 +724,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         });
 
         $('#flash-overlay-modal').modal();
+    </script>
+    <script type="application/ld+json" async>
+        {
+            "@context": "http://schema.org/",
+            "@type": "WebSite",
+            "name": "{{ config('app.name') }}",
+            "alternateName": "{{ config('app.name') }} - {{ trans('landing.slogan.short') }}",
+            "url": "{{ config('app.url') }}",
+            "image": "{{ asset('images/brand.png') }}",
+            "description": "{{ trans('landing.app') }}"
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "name": "{{ config('app.name') }}",
+            "url": "{{ config('app.url') }}",
+            "sameAs": [
+                "https://twitter.com/Hellen_Suite",
+                "https://www.facebook.com/HellenSuite",
+            ],
+        }
     </script>
 </body>
 </html>

@@ -732,7 +732,8 @@ export default {
                 "section": {
                     "one": "The most complete suite",
                     "two": "to manage your hotel."
-                }
+                },
+                "short": "Hotel management"
             },
             "what": "What is {name}?",
             "paragraphs": {
@@ -796,7 +797,8 @@ export default {
             "privacy": "Privacy policies",
             "terms": "Terms of use",
             "tutorials": "Tutorials",
-            "design": "Design by"
+            "design": "Design by",
+            "keywords": "hotel, management, administration, rooms, guests, application, software, tool, web, reservation"
         },
         "payments": {
             "payment": "Payment",
@@ -1691,7 +1693,8 @@ export default {
                 "section": {
                     "one": "La suite más completa",
                     "two": "para administrar tu hotel."
-                }
+                },
+                "short": "Gestión hotelera"
             },
             "what": "¿Qué es {name}?",
             "paragraphs": {
@@ -1755,7 +1758,8 @@ export default {
             "privacy": "Políticas de privacidad",
             "terms": "Términos de uso",
             "tutorials": "Tutoriales",
-            "design": "Diseñado por"
+            "design": "Diseñado por",
+            "keywords": "hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva"
         },
         "payments": {
             "title": "Pagos",

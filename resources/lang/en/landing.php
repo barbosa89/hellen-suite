@@ -34,6 +34,7 @@ return array (
       'one' => 'The most complete suite',
       'two' => 'to manage your hotel.',
     ),
+    'short' => 'Hotel management',
   ),
   'what' => 'What is :name?',
   'paragraphs' => 
@@ -113,4 +114,5 @@ return array (
   'terms' => 'Terms of use',
   'tutorials' => 'Tutorials',
   'design' => 'Design by',
+  'keywords' => 'hotel, management, administration, rooms, guests, application, software, tool, web, reservation',
 );

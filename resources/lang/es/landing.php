@@ -34,6 +34,7 @@ return array (
       'one' => 'La suite más completa',
       'two' => 'para administrar tu hotel.',
     ),
+    'short' => 'Gestión hotelera',
   ),
   'what' => '¿Qué es :name?',
   'paragraphs' => 
@@ -113,4 +114,5 @@ return array (
   'terms' => 'Términos de uso',
   'tutorials' => 'Tutoriales',
   'design' => 'Diseñado por',
+  'keywords' => 'hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva',
 );
