@@ -114,5 +114,9 @@ return array (
   'terms' => 'Términos de uso',
   'tutorials' => 'Tutoriales',
   'design' => 'Diseñado por',
-  'keywords' => 'hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva',
+  'keywords' => 'hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva, inventario',
+  'meta' => 
+  array (
+    'description' => 'Suite de administración de hoteles y modelos de negocios similares, permite controlar habitaciones, inventarios, huéspedes, turnos y roles como recepcionista y gerente.',
+  ),
 );

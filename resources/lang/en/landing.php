@@ -114,5 +114,9 @@ return array (
   'terms' => 'Terms of use',
   'tutorials' => 'Tutorials',
   'design' => 'Design by',
-  'keywords' => 'hotel, management, administration, rooms, guests, application, software, tool, web, reservation',
+  'keywords' => 'hotel, management, administration, rooms, guests, application, software, tool, web, reservation, inventory',
+  'meta' => 
+  array (
+    'description' => 'Hotel management suite and similar business models, allows to control rooms, inventories, guests, shifts and roles such as receptionist and manager.',
+  ),
 );

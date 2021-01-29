@@ -19,12 +19,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
     <link rel="canonical" href="{{ config('app.url') }}">
 
-    <meta name="description" content="{{ trans('landing.app') }}">
+    <meta name="description" content="{{ trans('landing.meta.description') }}">
     <meta name="keywords" content="{{ trans('landing.keywords') }}">
     <meta name="author" content="{{ config('app.name') }}">
 
     <meta property="og:title" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
-    <meta property="og:description" content="{{ trans('landing.app') }}">
+    <meta property="og:description" content="{{ trans('landing.meta.description') }}">
     <meta property="og:image" content="{{ asset('images/brand.jpg') }}">
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ config('app.url') }}">
@@ -34,7 +34,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="twitter:image:alt" content="{{ config('app.name') }} - {{ trans('landing.slogan.short') }}">
 
     <meta property="fb:app_id" content="1595428934178032" />
-    <meta name="twitter:site" content="@Hellen_Suite">
+    <meta name="twitter:image" content="{{ asset('images/brand.jpg') }}">
+    <meta name="twitter:title" content="{{ config('app.name') }}">
+    <meta name="twitter:description" content="{{ trans('landing.meta.description') }}">
+
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -733,7 +736,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             "alternateName": "{{ config('app.name') }} - {{ trans('landing.slogan.short') }}",
             "url": "{{ config('app.url') }}",
             "image": "{{ asset('images/brand.png') }}",
-            "description": "{{ trans('landing.app') }}"
+            "description": "{{ trans('landing.meta.description') }}"
         }
     </script>
     <script type="application/ld+json">
@@ -745,7 +748,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             "sameAs": [
                 "https://twitter.com/Hellen_Suite",
                 "https://www.facebook.com/HellenSuite",
-            ],
+            ]
         }
     </script>
 </body>

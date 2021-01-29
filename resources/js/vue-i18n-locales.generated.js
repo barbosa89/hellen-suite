@@ -798,7 +798,10 @@ export default {
             "terms": "Terms of use",
             "tutorials": "Tutorials",
             "design": "Design by",
-            "keywords": "hotel, management, administration, rooms, guests, application, software, tool, web, reservation"
+            "keywords": "hotel, management, administration, rooms, guests, application, software, tool, web, reservation, inventory",
+            "meta": {
+                "description": "Hotel management suite and similar business models, allows to control rooms, inventories, guests, shifts and roles such as receptionist and manager."
+            }
         },
         "payments": {
             "payment": "Payment",
@@ -1759,7 +1762,10 @@ export default {
             "terms": "Términos de uso",
             "tutorials": "Tutoriales",
             "design": "Diseñado por",
-            "keywords": "hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva"
+            "keywords": "hotel, gestión, administración, habitaciones, huéspedes, aplicación, software, herramienta, web, reserva, inventario",
+            "meta": {
+                "description": "Suite de administración de hoteles y modelos de negocios similares, permite controlar habitaciones, inventarios, huéspedes, turnos y roles como recepcionista y gerente."
+            }
         },
         "payments": {
             "title": "Pagos",
