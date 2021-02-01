@@ -38,8 +38,8 @@ if (!function_exists('id_parent')) {
     }
 }
 
-if (!function_exists('param_clean')) {
-    function param_clean($value = null)
+if (!function_exists('clean_param')) {
+    function clean_param($value = null)
     {
         return Parameter::clean($value);
     }

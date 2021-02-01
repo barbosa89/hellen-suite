@@ -292,7 +292,7 @@ class PropController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            $query = param_clean($request->get('query', null));
+            $query = clean_param($request->get('query', null));
 
             $props = Prop::where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())

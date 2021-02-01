@@ -290,7 +290,7 @@ class VehicleController extends Controller
      */
     public function search(Request $request)
     {
-        $query = param_clean($request->get('query', null));
+        $query = clean_param($request->get('query', null));
 
         if (empty($query)) {
             abort(404);

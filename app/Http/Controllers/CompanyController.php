@@ -267,14 +267,14 @@ class CompanyController extends Controller
      */
     public function search(Request $request)
     {
-        $query = param_clean($request->get('query'));
+        $query = clean_param($request->get('query'));
         $companies = Company::whereLike(['business_name', 'tin'], $query)
             ->where('user_id', id_parent())
             ->get(fields_get('companies'));
 
         if ($request->ajax()) {
-            $format = param_clean($request->get('format'));
-            $template = 'app.companies.search.' . param_clean($request->get('template'));
+            $format = clean_param($request->get('format'));
+            $template = 'app.companies.search.' . clean_param($request->get('template'));
             $response = new Response($format, $template, $companies);
 
             return response()->json([

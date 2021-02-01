@@ -89,9 +89,9 @@ class NoteController extends Controller
                         ->withInput();
         }
 
-        $start = param_clean($request->start);
-        $end = param_clean($request->end);
-        $text = param_clean($request->get('query', null));
+        $start = clean_param($request->start);
+        $end = clean_param($request->end);
+        $text = clean_param($request->get('query', null));
 
         $hotel = Hotel::whereUserId(id_parent())
             ->whereId(id_decode($request->hotel))
@@ -119,9 +119,9 @@ class NoteController extends Controller
                         ->withInput();
         }
 
-        $start = param_clean($request->start);
-        $end = param_clean($request->end);
-        $text = param_clean($request->get('query', null));
+        $start = clean_param($request->start);
+        $end = clean_param($request->end);
+        $text = clean_param($request->get('query', null));
 
         $hotel = Hotel::whereUserId(id_parent())
             ->whereId(id_decode($request->hotel))

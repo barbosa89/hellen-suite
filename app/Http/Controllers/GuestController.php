@@ -372,7 +372,7 @@ class GuestController extends Controller
      */
     public function search(Request $request)
     {
-        $query = param_clean($request->get('query', null));
+        $query = clean_param($request->get('query', null));
 
         if (empty($query)) {
             return back();
@@ -394,7 +394,7 @@ class GuestController extends Controller
     public function searchUnregistered(Request $request)
     {
         if ($request->ajax()) {
-            $query = param_clean($request->get('query', null));
+            $query = clean_param($request->get('query', null));
 
             $guests = Guest::where('user_id', id_parent())
                 ->where('status', false)

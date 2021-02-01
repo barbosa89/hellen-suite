@@ -389,7 +389,7 @@ class VoucherController extends Controller
      */
     public function search(Request $request)
     {
-        $query = param_clean($request->get('query', null));
+        $query = clean_param($request->get('query', null));
 
         if (empty($query)) {
             return back();
@@ -1550,7 +1550,7 @@ class VoucherController extends Controller
      */
     public function showFormToAddServices($id, $type = 'all')
     {
-        $type = param_clean($type);
+        $type = clean_param($type);
 
         if (!in_array($type, ['all', 'dining'])) {
             abort(400);
