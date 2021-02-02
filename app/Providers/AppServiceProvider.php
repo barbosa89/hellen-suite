@@ -243,5 +243,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(\App\Contracts\VoucherPrinter::class, \App\Services\VoucherPrinter::class);
+        $this->app->bind(\App\Contracts\RoomRepository::class, \App\Repositories\RoomRepository::class);
+        $this->app->bind(\App\Contracts\GuestRepository::class, \App\Repositories\GuestRepository::class);
+
     }
 }
