@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+
 trait Queryable {
 
     /**
@@ -45,5 +47,36 @@ trait Queryable {
         }
 
         return $query->select($this->getTableColumns());
+    }
+
+    /**
+     * Scope a query by owner.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOwner($query)
+    {
+        return $query->where('user_id', id_parent());
+    }
+
+    /**
+     * Scope a query by filters.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilter($query, array $filters)
+    {
+        foreach ($filters as $filter => $value) {
+            $filter = clean_param(Str::camel($filter));
+            $value = clean_param($value);
+
+            if($query->hasNamedScope($filter)) {
+                $query->{$filter}($value);
+            }
+        }
+
+        return $query;
     }
 }
