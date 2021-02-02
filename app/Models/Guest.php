@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\Queryable;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Guest extends Model
 {
     use LogsActivity;
+    use Queryable;
 
-
+    public const SCOPE_FILTERS = [
+        'from_date',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -95,5 +100,19 @@ class Guest extends Model
     public function getHashAttribute()
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+    }
+
+    /**
+     * Scope a query by creation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param string $date
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFromDate($query, string $date)
+    {
+        $date = Carbon::parse($date);
+
+        return $query->where('created_at', '>=', $date->startOfDay());
     }
 }

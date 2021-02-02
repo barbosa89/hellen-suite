@@ -141,17 +141,6 @@ class Room extends Model
     }
 
     /**
-     * Scope a query by owner.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOwner($query)
-    {
-        return $query->where('user_id', id_parent());
-    }
-
-    /**
      * Scope a query to select all columns.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
