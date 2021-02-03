@@ -142,7 +142,22 @@ class VoucherRepository implements Repository
     {
         return Voucher::owner()
             ->lodging()
-            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+                'company' => function ($query) {
+                    $query->select(fields_get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(fields_get('payments'));
+                },
+            ])
             ->get(fields_dotted('vouchers'));
     }
 
@@ -155,7 +170,22 @@ class VoucherRepository implements Repository
         return Voucher::owner()
             ->id($id)
             ->open()
-            ->with(['guests', 'guests.identificationType', 'rooms', 'hotel'])
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
+                'rooms' => function ($query) {
+                    $query->select(fields_dotted('rooms'))
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+            ])
             ->first(fields_dotted('vouchers'));
     }
 }
