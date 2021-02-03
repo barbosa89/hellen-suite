@@ -5,21 +5,21 @@ return array (
   'company' => 'Empresa',
   'businessName' => 'Razón social',
   'tin' => 'Número de identificación tributaria',
-  'is' => 
+  'is' =>
   array (
     'supplier' => 'La empresa es proveedora',
   ),
-  'isnt' => 
+  'isnt' =>
   array (
     'supplier' => 'La empresa no es proveedora',
   ),
-  'no' => 
+  'no' =>
   array (
     'registered' => 'No hay empresas registradas',
   ),
-  'new' => 
+  'new' =>
   array (
-    'none' => 'No hay registros recientes de empresas',
+    'none' => 'No hay empresas recientes',
     'one' => 'nueva empresa',
     'many' => 'nuevas empresas',
   ),

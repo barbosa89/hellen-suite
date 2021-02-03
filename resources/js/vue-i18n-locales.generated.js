@@ -1335,7 +1335,7 @@ export default {
                 "registered": "No hay empresas registradas"
             },
             "new": {
-                "none": "No hay registros recientes de empresas",
+                "none": "No hay empresas recientes",
                 "one": "nueva empresa",
                 "many": "nuevas empresas"
             }
