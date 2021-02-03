@@ -27,7 +27,7 @@ class CompanyTest extends TestCase
         $this->seed(CountriesTableSeeder::class);
     }
 
-    public function test_access_is_denied_if_user_dont_have_guest_index_permissions()
+    public function test_access_is_denied_if_user_dont_have_companies_index_permissions()
     {
         /** @var User $user */
         $user = factory(User::class)->create();
