@@ -28,10 +28,14 @@ class CompanyController extends Controller
             'from_date' => 'bail|nullable|date|before_or_equal:today'
         ]);
 
-        return $this->company->paginate(
+        $companies = $this->company->paginate(
             request()->get('per_page', 15),
             Arr::only($validated, Company::SCOPE_FILTERS),
         );
+
+        return response()->json([
+            'companies' => $companies,
+        ]);
     }
 
     /**

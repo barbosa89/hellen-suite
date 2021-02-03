@@ -28,10 +28,14 @@ class GuestController extends Controller
             'from_date' => 'bail|nullable|date|before_or_equal:today'
         ]);
 
-        return $this->guest->paginate(
+        $guests = $this->guest->paginate(
             request()->get('per_page', 15),
             Arr::only($validated, Guest::SCOPE_FILTERS),
         );
+
+        return response()->json([
+            'guests' => $guests,
+        ]);
     }
 
     /**
