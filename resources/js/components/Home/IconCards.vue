@@ -41,6 +41,7 @@
     export default {
         mounted() {
             this.buildRoomData()
+
         },
         props: {
             hotelId: {
@@ -98,6 +99,63 @@
                             let assigned = _.filter(rooms, {status: '1'})
 
                             this.cards.rooms.content = `${assigned.length} / ${rooms.length} ${this.$root.$t('rooms.title')}`
+                        }
+                    })
+                    .finally(() => {
+                        if (this.cards.guests.content.length == 0) {
+                            this.builGuestData()
+                        }
+
+                        this.builVoucherData()
+                    })
+            },
+            builGuestData() {
+                axios
+                    .get(route('api.web.guests.index'))
+                    .then(response => {
+                        const quantity = response.data.guests.data.length
+
+                        if (quantity == 0) {
+                            this.cards.guests.content = this.$root.$t('guests.new.none')
+                        } else if (quantity == 1) {
+                            this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.one')}`
+                        } else {
+                            this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.many')}`
+                        }
+                    })
+                    .finally(() => {
+                        if (this.cards.companies.content.length == 0) {
+                            this.builCompanyData()
+                        }
+                    })
+            },
+            builCompanyData() {
+                axios
+                    .get(route('api.web.companies.index'))
+                    .then(response => {
+                        const quantity = response.data.companies.data.length
+
+                        if (quantity == 0) {
+                            this.cards.companies.content = this.$root.$t('companies.new.none')
+                        } else if (quantity == 1) {
+                            this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.one')}`
+                        } else {
+                            this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.many')}`
+                        }
+                    })
+            },
+            builVoucherData() {
+                axios
+                    .get(route('api.web.vouchers.index', this.hotelId))
+                    .then(response => {
+                        const quantity = response.data.vouchers.data.length
+
+                        if (quantity == 0) {
+                            this.cards.vouchers.content = this.$root.$t('vouchers.new.none')
+                        } else if (quantity == 1) {
+                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.one')}`
+                        } else {
+                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.many')}`
                         }
                     })
             }
