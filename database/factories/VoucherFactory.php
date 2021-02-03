@@ -18,7 +18,11 @@ $factory->define(Voucher::class, function (Faker $faker) {
         'subvalue' => $value,
         'value' => $value,
         'type' => Voucher::TYPES[$faker->numberBetween(0, 5)],
-        'hotel_id' => factory(Hotel::class)->create()->id,
-        'user_id' => factory(User::class)->create()->id,
+        'hotel_id' => function () {
+            return factory(Hotel::class)->create()->id;
+        },
+        'user_id' => function () {
+            return factory(\App\User::class)->create()->id;
+        },
     ];
 });

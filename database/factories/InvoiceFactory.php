@@ -18,7 +18,11 @@ $factory->define(Invoice::class, function (Faker $faker) {
         'value' => $value,
         'total' => $value,
         'status' => Invoice::PENDING,
-        'identification_type_id' => IdentificationType::inRandomOrder()->first(),
-        'currency_id' => Currency::where('code', Currency::COP)->first()->id
+        'identification_type_id' => function () {
+            return IdentificationType::inRandomOrder()->first()->id;
+        },
+        'currency_id' => function () {
+            return Currency::where('code', Currency::COP)->first()->id;
+        }
     ];
 });
