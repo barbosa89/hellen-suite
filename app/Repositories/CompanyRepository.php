@@ -18,6 +18,7 @@ class CompanyRepository implements Repository
     {
         return Company::query()
             ->owner()
+            ->latest()
             ->filter($filters)
             ->paginate($perPage);
     }

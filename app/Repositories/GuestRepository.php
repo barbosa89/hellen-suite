@@ -18,6 +18,7 @@ class GuestRepository implements Repository
     {
         return Guest::query()
             ->owner()
+            ->latest()
             ->filter($filters)
             ->paginate($perPage);
     }
