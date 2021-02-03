@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Company extends Model
 {
     use LogsActivity;
+    use Queryable;
+
+    public const SCOPE_FILTERS = [
+        'from_date',
+    ];
 
     /**
      * The accessors to append to the model's array form.

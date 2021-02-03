@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 trait Queryable {
 
@@ -78,5 +79,19 @@ trait Queryable {
         }
 
         return $query;
+    }
+
+    /**
+     * Scope a query by creation date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param string $date
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFromDate($query, string $date)
+    {
+        $date = Carbon::parse($date);
+
+        return $query->where('created_at', '>=', $date->startOfDay());
     }
 }

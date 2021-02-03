@@ -46,6 +46,4 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 	Route::get('companies', 'CompanyController@index')
 		->name('companies.index')
 		->middleware('permission:companies.index');
-
-
 });

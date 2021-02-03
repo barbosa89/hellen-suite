@@ -13,12 +13,10 @@ $factory->define(App\Models\Guest::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'address' => $faker->address,
         'phone' => $faker->e164PhoneNumber,
-        'identification_type_id' => function ()
-        {
+        'identification_type_id' => function () {
             return \App\Models\IdentificationType::inRandomOrder()->first(['id'])->id;
         },
-        'country_id' => function ()
-        {
+        'country_id' => function () {
             return \App\Models\Country::inRandomOrder()->first(['id'])->id;
         },
     ];
