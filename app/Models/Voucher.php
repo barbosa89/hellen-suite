@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Voucher extends Model
 {
+    use Queryable;
     use LogsActivity;
 
     public const PREFIX = 'V';
@@ -30,6 +32,10 @@ class Voucher extends Model
         self::DISCARD,
         self::LODGING,
         self::DINING,
+    ];
+
+    public const SCOPE_FILTERS = [
+        'from_date',
     ];
 
     /**
@@ -128,17 +134,26 @@ class Voucher extends Model
     }
 
     /**
-     * Scope a query to get lodging vouchers.
+     * Scope a query open vouchers.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOpen($query, int $id)
+    public function scopeOpen($query)
     {
-        return $query->where('user_id', id_parent())
-            ->where('id', $id)
-            ->where('open', true)
+        return $query->where('open', true)
+            ->where('status', true);
+    }
+
+    /**
+     * Scope a query closed vouchers.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeClosed($query)
+    {
+        return $query->where('open', false)
             ->where('status', true);
     }
 

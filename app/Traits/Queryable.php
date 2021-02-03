@@ -51,6 +51,18 @@ trait Queryable {
     }
 
     /**
+     * Scope a query by id.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeId($query, int $id)
+    {
+        return $query->where('id', $id);
+    }
+
+    /**
      * Scope a query by owner.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

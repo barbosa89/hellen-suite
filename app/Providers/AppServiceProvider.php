@@ -246,5 +246,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Contracts\RoomRepository::class, \App\Repositories\RoomRepository::class);
         $this->app->bind(\App\Contracts\GuestRepository::class, \App\Repositories\GuestRepository::class);
         $this->app->bind(\App\Contracts\CompanyRepository::class, \App\Repositories\CompanyRepository::class);
+        $this->app->bind(\App\Contracts\VoucherRepository::class, \App\Repositories\VoucherRepository::class);
     }
 }
