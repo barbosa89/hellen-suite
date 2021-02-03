@@ -2,51 +2,89 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Repository;
 use App\Models\Voucher;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Contracts\VoucherRepository as Repository;
 
-/**
- * Pure Eloquent Repository
- */
 class VoucherRepository implements Repository
 {
-    private Builder $model;
-
     /**
-     * Create new Note
-     *
-     * @param   array $data
-     * @return  \App\Models\Voucher
+     * @param integer $hotel
+     * @param integer $perPage
+     * @param array $filters
+     * @return LengthAwarePaginator
      */
-    public function create(array $data): Voucher
+    public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Voucher::create($data);
+        return Voucher::owner()
+            ->where('hotel_id', $hotel)
+            ->filter($filters)
+            ->latest()
+            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->paginate($perPage);
     }
 
     /**
-     * Retrieve model by ID
-     *
-     * @param  integer $id
+     * @param integer $hotel
+     * @param array $filters
+     * @return Collection
+     */
+    public function all(int $hotel, array $filters = []): Collection
+    {
+        return Voucher::owner()
+            ->where('hotel_id', $hotel)
+            ->filter($filters)
+            ->latest()
+            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->get();
+    }
+
+    /**
+     * @param int $id
+     * @throws Exception
      * @return \App\Models\Voucher
      */
-    public function get(int $id): Voucher
+    public function find(int $id): Voucher
     {
-        return Voucher::findOrFail($id);
+        return Voucher::owner()
+            ->where('id', $id)
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(fields_get('hotels'));
+                }
+            ])
+            ->firstOrFail(fields_get('vouchers'));
     }
 
     /**
-     * Update model
-     *
+     * @param integer $hotel
+     * @param array $data
+     * @throws Exception
+     * @return \App\Models\Voucher
+     */
+    public function create(int $hotel, array $data): Voucher
+    {
+        $voucher = new Voucher();
+        $voucher->fill($data);
+
+        $voucher->hotel()->associate($hotel);
+        $voucher->user()->associate(id_parent());
+        $voucher->saveOrFail();
+
+        return $voucher;
+    }
+
+    /**
      * @param  integer $id
      * @param  array $data
+     * @throws Exception
      * @return \App\Models\Voucher
      */
     public function update(int $id, array $data): Voucher
     {
-        $voucher = $this->get($id);
+        $voucher = $this->find($id);
         $voucher->fill($data);
         $voucher->saveOrFail();
 
@@ -61,109 +99,63 @@ class VoucherRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        // $note = $this->get($id);
+        $voucher = Voucher::owner()
+            ->id($id)
+            ->open()
+            ->first(fields_get('vouchers'));
 
-        // return $note->delete();
-        return true;
-    }
-
-    public function query()
-    {
-        $this->model = Voucher::query();
-        $this->model->where('user_id', id_parent())
-            ->where('status', true);
-
-        return $this;
-    }
-
-    public function builder()
-    {
-        return $this->model;
-    }
-
-    public function loader(array $relationships, int $id = null)
-    {
-        // Get required relationships in args
-        $loads = $this->getRequiredRelationships($relationships, $id);
-
-        $this->model->with($loads);
-
-        return $this;
-    }
-
-    public function load(Model $model, $relationships, int $id = null): Model
-    {
-        $model->load($this->getRequiredRelationships($relationships, $id));
-
-        return $model;
-    }
-
-    public function getRequiredRelationships(array $relationshipNames, int $id = null)
-    {
-        $relationships = $this->getRelationships($id);
-        $loads = [];
-
-        foreach ($relationshipNames as $relationship) {
-            if (key_exists($relationship, $relationships)) {
-                $loads[$relationship] = $relationships[$relationship];
-            } else {
-                throw new InvalidArgumentException("Relationship not exists: {$relationship}", 1);
-            }
+        if (empty($voucher)) {
+            return false;
         }
 
-        return $loads;
+        return $voucher->delete();
     }
 
-    private function getRelationships(int $id = null): array
+    /**
+     * @param string $query
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function search(string $query): LengthAwarePaginator
     {
-        return [
-            'hotel' => function ($query) {
-                $query->select(fields_get('hotels'));
-            },
-            'guests' => function ($query) use ($id) {
-                $query->select(fields_dotted('guests'))
-                    ->withPivot('main', 'active');
-            },
-            'guests.vehicles' => function ($query) use ($id) {
-                $query->select(fields_dotted('vehicles'))
-                    ->wherePivot('voucher_id', $id);
-            },
-            'guests.rooms' => function ($query) use ($id) {
-                $query->select(fields_dotted('rooms'))
-                    ->wherePivot('voucher_id', $id);
-            },
-            'guests.parent' => function ($query) {
-                $query->select('id', 'name', 'last_name');
-            },
-            'guests.identificationType' => function ($query) {
-                $query->select('id', 'type');
-            },
-            'company' => function ($query) {
-                $query->select(fields_get('companies'));
-            },
-            'rooms' => function ($query) {
-                $query->select(fields_dotted('rooms'))
-                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
-            },
-            'products' => function ($query) {
-                $query->select(fields_dotted('products'))
-                    ->withPivot('id', 'quantity', 'value', 'created_at');
-            },
-            'services' => function ($query) {
-                $query->select(fields_dotted('services'))
-                    ->withPivot('id', 'quantity', 'value', 'created_at');
-            },
-            'additionals' => function ($query) {
-                $query->select(['id', 'description', 'billable','value', 'voucher_id', 'created_at']);
-            },
-            'payments' => function ($query)
-            {
-                $query->select(fields_get('payments'));
-            },
-            'props' => function ($query) {
-                $query->select(fields_dotted('props'))
-                    ->withPivot('quantity', 'value', 'created_at');
-            },
-        ];
+        return Voucher::owner()
+            ->whereLike([
+                'number',
+                'guests.name',
+                'guests.last_name',
+                'guests.dni',
+                'company.business_name',
+                'hotel.business_name'
+            ], $query)
+            ->with([
+                'hotel' => function ($query)
+                {
+                    $query->select(['id', 'business_name']);
+                }
+            ])
+            ->paginate(config('settings.paginate'), fields_get('vouchers'));
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function list(): Collection
+    {
+        return Voucher::owner()
+            ->lodging()
+            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->get(fields_dotted('vouchers'));
+    }
+
+    /**
+     * @param int $id
+     * @return \App\Models\Voucher
+     */
+    public function first(int $id): Voucher
+    {
+        return Voucher::owner()
+            ->id($id)
+            ->open()
+            ->with(['guests', 'guests.identificationType', 'rooms', 'hotel'])
+            ->first(fields_dotted('vouchers'));
     }
 }
