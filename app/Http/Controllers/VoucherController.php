@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\VoucherPrinter;
+use App\Contracts\VoucherRepository;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,13 +22,11 @@ use App\Http\Requests\{
     StoreVoucher,
     StoreRoute
 };
-use App\Repositories\VoucherRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 // TODO: Agregar edad limite para ser adulto
 class VoucherController extends Controller
@@ -50,11 +49,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = $this->voucher->query()
-            ->loader(['hotel', 'guests', 'company', 'payments'])
-            ->builder() // Get Eloquent Builder to apply scopes
-            ->lodging()
-            ->get(fields_dotted('vouchers'));
+        $vouchers = $this->voucher->list();
 
         $vouchers = $vouchers->sortByDesc('created_at');
 
@@ -998,18 +993,12 @@ class VoucherController extends Controller
      * Add guests to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param $id
+     * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function addGuests(AddGuests $request, $id)
+    public function addGuests(AddGuests $request, string $id)
     {
-        $voucher = $this->voucher->query()
-            ->loader(['guests', 'guests.identificationType', 'rooms', 'hotel'])
-            ->builder()
-            ->open(id_decode($id))
-            ->first(fields_dotted('vouchers'));
-
-
+        $voucher = $this->voucher->first(id_decode($id));
         $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
         if (empty($guest)) {
