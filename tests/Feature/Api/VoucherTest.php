@@ -133,7 +133,7 @@ class VoucherTest extends TestCase
                 ]
             );
 
-        $response->dumpSession()->assertRedirect()
+        $response->assertRedirect()
             ->assertSessionHasErrors('from_date');
     }
 }
