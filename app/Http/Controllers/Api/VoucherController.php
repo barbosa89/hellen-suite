@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Contracts\VoucherRepository;
 use App\Http\Controllers\Controller;
+use App\Rules\MinDate;
 
 class VoucherController extends Controller
 {
@@ -26,7 +27,13 @@ class VoucherController extends Controller
     public function index(string $hotel)
     {
         $validated = request()->validate([
-            'from_date' => 'bail|nullable|date|before_or_equal:today'
+            'from_date' => [
+                'bail',
+                'nullable',
+                'date',
+                'before_or_equal:today',
+                new MinDate()
+            ]
         ]);
 
         $vouchers = $this->voucher->paginate(

@@ -112,4 +112,28 @@ class VoucherTest extends TestCase
                 'number' => (string) $oldVoucher->number,
             ]);
     }
+
+    public function test_the_date_cannot_be_older_than_one_year()
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create();
+
+        $hotelId = id_encode($hotel->id);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                "/api/v1/web/hotels/{$hotelId}/vouchers",
+                [
+                    'from_date' => now()->subYears(2),
+                ]
+            );
+
+        $response->dumpSession()->assertRedirect()
+            ->assertSessionHasErrors('from_date');
+    }
 }
