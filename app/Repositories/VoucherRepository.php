@@ -21,7 +21,22 @@ class VoucherRepository implements Repository
             ->where('hotel_id', $hotel)
             ->filter($filters)
             ->latest()
-            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+                'company' => function ($query) {
+                    $query->select(fields_get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(fields_get('payments'));
+                },
+            ])
             ->paginate($perPage);
     }
 
@@ -36,7 +51,22 @@ class VoucherRepository implements Repository
             ->where('hotel_id', $hotel)
             ->filter($filters)
             ->latest()
-            ->with(['hotel', 'guests', 'company', 'payments'])
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+                'company' => function ($query) {
+                    $query->select(fields_get('companies'));
+                },
+                'payments' => function ($query)
+                {
+                    $query->select(fields_get('payments'));
+                },
+            ])
             ->get();
     }
 

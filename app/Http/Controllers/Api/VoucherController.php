@@ -18,7 +18,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the paginate resource.
      *
      * @param  string $hotel
      * @return \Illuminate\Http\Response
