@@ -112,7 +112,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 align-self-center">
                             <p>
-                                {{voucher.created_at | formatDate }}
+                                {{ voucher.created_at }}
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-1 col-md-1 col-lg- align-self-center">
@@ -272,12 +272,5 @@ export default {
             }
         }
     },
-    filters: {
-        formatDate: function (value) {
-            if (value) {
-                return moment(String(value)).format('YY-MM-DD')
-            }
-        }
-    }
 };
 </script>

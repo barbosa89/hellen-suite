@@ -62,6 +62,14 @@ const router = new VueRouter({
     mode: 'history'
 });
 
+Vue.filter('date', function(value) {
+    if (value) {
+        return moment(String(value)).format('YY-MM-DD')
+    }
+
+    return ''
+})
+
 const app = new Vue({
     el: '#app',
     i18n,

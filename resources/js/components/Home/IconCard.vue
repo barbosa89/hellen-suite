@@ -2,20 +2,20 @@
     <div :class="['card', 'text-white', bg, 'o-hidden', 'h-100']">
         <div class="card-body">
             <div class="card-body-icon">
-                <i :class="['fa', 'fa-fw', icon]"></i>
+                <em :class="['fa', 'fa-fw', icon]"></em>
             </div>
             <div v-if="content.length != 0" class="mr-5">
                 {{ content }}!
             </div>
             <div v-else class="mr-5">
-                <i class="fas fa-spinner fa-pulse"></i>
+                <em class="fas fa-spinner fa-pulse"></em>
             </div>
         </div>
         <a class="card-footer text-white clearfix small z-1" :href="url">
-        <span class="float-left">{{ $t('common.view.details') }}</span>
-        <span class="float-right">
-        <i class="fa fa-angle-right"></i>
-        </span>
+            <span class="float-left">{{ $t('common.view.details') }}</span>
+            <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+            </span>
         </a>
     </div>
 </template>

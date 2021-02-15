@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@barbosa89/vue-table": "^0.1.24",
         "@fortawesome/fontawesome-free": "^5.15.2",
         "@tinymce/tinymce-vue": "^3.2.8",
         "@voerro/vue-tagsinput": "^2.4.3",

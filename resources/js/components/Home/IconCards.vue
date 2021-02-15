@@ -37,6 +37,7 @@
 
 <script>
     import IconCard from './IconCard'
+    import Bus from '../../Bus'
 
     export default {
         mounted() {
@@ -145,17 +146,27 @@
                     })
             },
             builVoucherData() {
+                const date = moment().subtract(1, 'days').format('Y-M-D')
+
                 axios
-                    .get(route('api.web.vouchers.index', this.hotelId))
+                    .get(route('api.web.vouchers.index', this.hotelId), {
+                        params: {
+                            from_date: date
+                        }
+                    })
                     .then(response => {
                         const quantity = response.data.vouchers.data.length
 
-                        if (quantity == 0) {
-                            this.cards.vouchers.content = this.$root.$t('vouchers.new.none')
-                        } else if (quantity == 1) {
-                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.one')}`
+                        if (quantity > 0) {
+                            if (quantity == 1) {
+                                this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.one')}`
+                            } else {
+                                this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.many')}`
+                            }
+
+                            Bus.$emit('last-vouchers', response.data.vouchers.data)
                         } else {
-                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.many')}`
+                            this.cards.vouchers.content = this.$root.$t('vouchers.new.none')
                         }
                     })
             }

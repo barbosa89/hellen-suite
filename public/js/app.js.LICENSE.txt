@@ -5,6 +5,12 @@
   */
 
 /*!
+ * @barbosa89/vue-table v0.1.24
+ * (c) Omar Barbosa
+ * Released under the MIT License.
+ */
+
+/*!
  * Sizzle CSS Selector Engine v2.3.5
  * https://sizzlejs.com/
  *
