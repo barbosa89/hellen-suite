@@ -83,7 +83,12 @@ trait Queryable {
     {
         foreach ($filters as $filter => $value) {
             $filter = clean_param(Str::camel($filter));
-            $value = clean_param($value);
+
+            if (Str::contains($value, '_')) {
+                $value = clean_param(Str::camel($value));
+            } else {
+                $value = clean_param($value);
+            }
 
             if($query->hasNamedScope($filter)) {
                 $query->{$filter}($value);

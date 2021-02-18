@@ -25,7 +25,8 @@ class GuestController extends Controller
     public function index()
     {
         $validated = request()->validate([
-            'from_date' => 'bail|nullable|date|before_or_equal:today'
+            'from_date' => 'bail|nullable|date|before_or_equal:today',
+            'status' => 'bail|nullable|string|in:is_staying,is_not_staying',
         ]);
 
         $guests = $this->guest->paginate(

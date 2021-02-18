@@ -11,7 +11,7 @@ $factory->define(App\Models\Guest::class, function (Faker $faker) {
         'name' => $faker->name,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
-        'address' => $faker->address,
+        'address' => $faker->streetAddress,
         'phone' => $faker->e164PhoneNumber,
         'identification_type_id' => function () {
             return \App\Models\IdentificationType::inRandomOrder()->first(['id'])->id;

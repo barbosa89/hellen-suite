@@ -3,16 +3,18 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Guest extends Model
 {
-    use LogsActivity;
     use Queryable;
+    use LogsActivity;
 
     public const SCOPE_FILTERS = [
         'from_date',
+        'status',
     ];
 
     /**
@@ -21,8 +23,16 @@ class Guest extends Model
      * @var array
      */
     protected $fillable = [
-        'dni', 'name', 'last_name', 'gender', 'birthdate', 'responsible_adult',
-        'identification_type_id', 'user_id', 'status', 'created_at'
+        'dni',
+        'name',
+        'last_name',
+        'gender',
+        'birthdate',
+        'responsible_adult',
+        'identification_type_id',
+        'user_id',
+        'status',
+        'created_at',
     ];
 
     /**
@@ -38,6 +48,28 @@ class Guest extends Model
      * @var array
      */
     protected $hidden = ['id'];
+
+    /**
+     * Get the guest's full name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->last_name}";
+    }
+
+    /**
+     * Hashing ID.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getHashAttribute()
+    {
+        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+    }
 
     public function children()
     {
@@ -80,24 +112,40 @@ class Guest extends Model
     }
 
     /**
-     * Get the guest's full name.
+     * Scope a query to guest(s) is staying in the hotel.
      *
-     * @param  string  $value
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getFullNameAttribute()
+    public function scopeIsStaying($query)
     {
-        return "{$this->name} {$this->last_name}";
+        return $query->where('status', true);
     }
 
     /**
-     * Hashing ID.
+     * Scope a query to guest(s) is not staying in the hotel.
      *
-     * @param  string  $value
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getHashAttribute()
+    public function scopeIsNotStaying($query)
     {
-        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+        return $query->where('status', false);
+    }
+
+    /**
+     * Scope a query to guest(s) by status.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string $status
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStatus($query, string $status)
+    {
+        if ($query->hasNamedScope($status)) {
+            $query->{$status}();
+        }
+
+        return $query;
     }
 }
