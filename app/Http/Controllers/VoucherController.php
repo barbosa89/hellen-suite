@@ -874,10 +874,10 @@ class VoucherController extends Controller
      */
     public function searchGuests($id)
     {
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', id_decode($id))
-            ->where('open', true)
-            ->where('status', true)
+        $voucher = Voucher::owner()
+            ->id(id_decode($id))
+            ->open()
+            ->has('rooms')
             ->with([
                 'rooms' => function ($query) {
                     $query->select('id');
@@ -897,19 +897,7 @@ class VoucherController extends Controller
                 {
                     $query->select(fields_get('payments'));
                 }
-            ])->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
-
-        if ($voucher->rooms->count() == 0) {
-            flash(trans('vouchers.firstStep'))->info();
-
-            return redirect()->route('vouchers.rooms.add', [
-                'id' => id_encode($voucher->id)
-            ]);
-        }
+            ])->firstOrFail(fields_dotted('vouchers'));
 
         $customer = Customer::get($voucher);
 
@@ -926,10 +914,9 @@ class VoucherController extends Controller
     public function showFormToAddGuests($id, $guest)
     {
         $id = id_decode($id);
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', $id)
-            ->where('open', true)
-            ->where('status', true)
+        $voucher = Voucher::owner()
+            ->id($id)
+            ->open()
             ->with([
                 'rooms' => function ($query) {
                     $query->select('id', 'number', 'status')
@@ -950,7 +937,7 @@ class VoucherController extends Controller
                 {
                     $query->select(fields_get('payments'));
                 }
-            ])->first(fields_dotted('vouchers'));
+            ])->firstOrFail(fields_dotted('vouchers'));
 
         $guest = Guest::where('id', id_decode($guest))
             ->where('status', false) // Not in hotel
@@ -958,11 +945,7 @@ class VoucherController extends Controller
                 'identificationType' => function ($query) {
                     $query->select('id', 'type');
                 },
-            ])->first(fields_dotted('guests'));
-
-        if (empty($voucher) or empty($guest)) {
-            abort(404);
-        }
+            ])->firstOrFail(fields_dotted('guests'));
 
         $guests = $this->countGuestsPerRoom($voucher);
 
@@ -998,30 +981,36 @@ class VoucherController extends Controller
      */
     public function addGuests(AddGuests $request, string $id)
     {
-        $voucher = $this->voucher->first(id_decode($id));
+        $voucher = Voucher::owner()
+            ->id(id_decode($id))
+            ->open()
+            ->with([
+                'guests' => function ($query) {
+                    $query->select(fields_dotted('guests'))
+                        ->withPivot('main', 'active');
+                },
+                'guests.identificationType' => function ($query) {
+                    $query->select('id', 'type');
+                },
+                'rooms' => function ($query) use ($request) {
+                    $query->select(fields_dotted('rooms'))
+                        ->where('id', id_decode($request->room))
+                        ->wherePivot('enabled', true)
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+                },
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                },
+            ])
+            ->firstOrFail(fields_dotted('vouchers'));
+
         $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
         if (empty($guest)) {
             // The guest to add to the voucher
             $guest = Guest::where('id', id_decode($request->guest))
                 ->where('status', false) // Not in hotel
-                ->first(fields_dotted('guests'));
-        }
-
-        if (empty($voucher) or empty($guest)) {
-            abort(404);
-        }
-
-        // Selected room from attached rooms to voucher
-        $room = $voucher->rooms->where('id', id_decode($request->room))->first();
-
-        // Check if selected room is disabled in the voucher
-        if ($room->pivot->enabled == false) {
-            flash(trans('vouchers.delivered.room'))->info();
-
-            return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
-            ]);
+                ->firstOrFail(fields_dotted('guests'));
         }
 
         // Check if the guest to add exists in the voucher
@@ -1046,7 +1035,7 @@ class VoucherController extends Controller
         }
 
         // Create Note
-        notary($voucher->hotel)->checkinGuest($voucher, $guest, $room);
+        notary($voucher->hotel)->checkinGuest($voucher, $guest, $voucher->rooms->first());
 
         // Remove old relationships guest - room
         $guest->rooms()
@@ -1054,7 +1043,7 @@ class VoucherController extends Controller
             ->detach();
 
         // Refresh relationships guest - room
-        $guest->rooms()->attach($room, [
+        $guest->rooms()->attach($voucher->rooms->first(), [
             'voucher_id' => $voucher->id
         ]);
 
@@ -1072,16 +1061,15 @@ class VoucherController extends Controller
     /**
      * Remove guests to voucher.
      *
-     * @param int $id
-     * @param int $guestId
+     * @param string $id
+     * @param string $guestId
      * @return \Illuminate\Http\Response
      */
-    public function removeGuests($id, $guestId)
+    public function removeGuests(string $id, string $guestId)
     {
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', id_decode($id))
-            ->where('open', true)
-            ->where('status', true)
+        $voucher = Voucher::owner()
+            ->id(id_decode($id))
+            ->open()
             ->with([
                 'guests' => function ($query) {
                     $query->select(fields_get('guests'))
@@ -1102,7 +1090,7 @@ class VoucherController extends Controller
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
                 }
-            ])->first(fields_dotted('vouchers'));
+            ])->firstOrFail(fields_dotted('vouchers'));
 
         // Check if the voucher only has a guest
         if ($voucher->guests->count() == 1 or $voucher->guests->where('pivot.active', true)->count() == 1) {
@@ -1126,11 +1114,6 @@ class VoucherController extends Controller
             flash(trans('vouchers.inactive.guest'))->error();
 
             return back();
-        }
-
-        // Check if voucher or guest are null
-        if (empty($voucher) or empty($guest)) {
-            abort(404);
         }
 
         // Detach the guest from voucher

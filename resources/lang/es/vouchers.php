@@ -24,7 +24,6 @@ return array (
   'reservation' => 'Reservación',
   'job' => 'Trabajo',
   'registerCompany' => 'Registrar empresa',
-  'firstStep' => 'Primero debes agregar habitaciones',
   'onlyOne' => 'Sólo hay un huesped',
   'linkCompany' => 'Vincular empresa',
   'linkNewCompany' => 'Vincular nueva empresa',
@@ -54,60 +53,60 @@ return array (
   'process' => 'Procesar',
   'nothingToProcess' => 'No hay facturas para procesar',
   'processing' => 'Procesamiento de recibos',
-  'has' => 
+  'has' =>
   array (
-    'one' => 
+    'one' =>
     array (
       'room' => 'Este recibo sólo cuenta con una habitación',
     ),
   ),
-  'delivered' => 
+  'delivered' =>
   array (
     'room' => 'La habitación fue entregada',
   ),
-  'impossible' => 
+  'impossible' =>
   array (
-    'room' => 
+    'room' =>
     array (
       'change' => 'No es posible cambiar al huésped de su habitación actual',
     ),
   ),
-  'inactive' => 
+  'inactive' =>
   array (
     'guest' => 'El invitado está inactivo en la factura actual',
   ),
-  'complete' => 
+  'complete' =>
   array (
     'processing' => 'Todos los recibos fueron procesados',
   ),
-  'incomplete' => 
+  'incomplete' =>
   array (
     'processing' => 'Quedaron recibos pendientes por procesar',
   ),
-  'load' => 
+  'load' =>
   array (
-    'external' => 
+    'external' =>
     array (
       'services' => 'Cargar servicios de terceros',
     ),
-    'dining' => 
+    'dining' =>
     array (
       'services' => 'Cargar servicios de comedor',
     ),
   ),
   'back' => 'Volver al recibo',
   'notfound' => 'Comprobante no encontrado',
-  'new' => 
+  'new' =>
   array (
     'none' => 'No se han creado recibos recientemente',
     'one' => 'nuevo recibo',
     'many' => 'nuevos recibos',
   ),
-  'add' => 
+  'add' =>
   array (
     'companies' => 'Agregar empresas',
   ),
-  'register' => 
+  'register' =>
   array (
     'vehicles' => 'Registrar vehículos',
   ),

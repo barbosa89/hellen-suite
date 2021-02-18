@@ -16,5 +16,8 @@ $factory->define(Room::class, function (Faker $faker) {
         'is_suite' => 0,
         'status' => Room::AVAILABLE,
         'tax' => 0,
+        'hotel_id' => function () {
+            return factory(Hotel::class)->create()->id;
+        },
     ];
 });

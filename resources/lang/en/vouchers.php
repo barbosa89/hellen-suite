@@ -24,7 +24,6 @@ return array (
   'reservation' => 'Reservation',
   'job' => 'Job',
   'registerCompany' => 'Register company',
-  'firstStep' => 'First you must add rooms',
   'onlyOne' => 'There is only one guest',
   'linkCompany' => 'Link company',
   'linkNewCompany' => 'Link new company',
@@ -54,60 +53,60 @@ return array (
   'process' => 'Process',
   'nothingToProcess' => 'There are no vouchers to process',
   'processing' => 'Voucher processing',
-  'has' => 
+  'has' =>
   array (
-    'one' => 
+    'one' =>
     array (
       'room' => 'This voucher only has one room',
     ),
   ),
-  'delivered' => 
+  'delivered' =>
   array (
     'room' => 'The room was delivered',
   ),
-  'impossible' => 
+  'impossible' =>
   array (
-    'room' => 
+    'room' =>
     array (
       'change' => 'It is not possible to change the guest of your current room',
     ),
   ),
-  'inactive' => 
+  'inactive' =>
   array (
     'guest' => 'The guest is inactive in the current voucher',
   ),
-  'complete' => 
+  'complete' =>
   array (
     'processing' => 'All vouchers were processed',
   ),
-  'incomplete' => 
+  'incomplete' =>
   array (
     'processing' => 'There are pending vouchers for processing',
   ),
-  'load' => 
+  'load' =>
   array (
-    'external' => 
+    'external' =>
     array (
       'services' => 'Load thirdparty services',
     ),
-    'dining' => 
+    'dining' =>
     array (
       'services' => 'Load dining services',
     ),
   ),
   'back' => 'Back to voucher',
   'notfound' => 'Voucher not found',
-  'new' => 
+  'new' =>
   array (
     'many' => 'new vouchers',
     'none' => 'No recent vouchers created',
     'one' => 'new voucher',
   ),
-  'add' => 
+  'add' =>
   array (
     'companies' => 'Add companies',
   ),
-  'register' => 
+  'register' =>
   array (
     'vehicles' => 'Register vehicles',
   ),
