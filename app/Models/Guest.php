@@ -111,6 +111,11 @@ class Guest extends Model
         return $this->belongsTo(\App\Models\Country::class);
     }
 
+    public function checks()
+    {
+        return $this->hasMany(\App\Models\Check::class);
+    }
+
     /**
      * Scope a query to guest(s) is staying in the hotel.
      *

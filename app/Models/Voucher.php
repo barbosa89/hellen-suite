@@ -107,6 +107,11 @@ class Voucher extends Model
         return $this->belongsToMany(\App\Models\Shift::class);
     }
 
+    public function checks()
+    {
+        return $this->hasMany(\App\Models\Check::class);
+    }
+
     /**
      * Hashing ID.
      *
