@@ -141,7 +141,7 @@ class TagController extends Controller
      */
     public function search(Request $request)
     {
-        $query = clean_param($request->get('query', null));
+        $query = clean_param($request->get('query_by', null));
 
         return response()->json([
             'results' => $this->tag->search($query)
