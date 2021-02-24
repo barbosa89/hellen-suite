@@ -34,7 +34,7 @@ class Writer
      */
     private function buildLink(string $url, string $text): string
     {
-        return "<a href='{$url}' target='_blank'>{$text}</a>";
+        return "<a href='{$url}' target='_blank' rel='noopener noreferrer'>{$text}</a>";
     }
 
     /**
