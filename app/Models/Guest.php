@@ -15,6 +15,7 @@ class Guest extends Model
     public const SCOPE_FILTERS = [
         'from_date',
         'status',
+        'query_by',
     ];
 
     /**
@@ -152,5 +153,17 @@ class Guest extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * Scope a query to guests by text search.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string $text
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeQueryBy($query, string $text)
+    {
+        return $query->whereLike(['name', 'last_name', 'dni', 'email'], $text);
     }
 }

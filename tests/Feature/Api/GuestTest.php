@@ -220,5 +220,49 @@ class GuestTest extends TestCase
             ],
         ];
     }
+
+    public function test_user_can_filter_guests_by_query()
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('guests.index');
+
+        /** @var Guest $oldGuest */
+        $oldGuest = factory(Guest::class)->create([
+            'user_id' => $manager->id,
+            'created_at' => now()->subDays(8),
+        ]);
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $manager->id,
+            'created_at' => now()->subDays(6)
+        ]);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                '/api/v1/web/guests',
+                [
+                    'query_by' => $guest->name,
+                ]
+            );
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'hash' => $guest->hash,
+                'dni' => (string) $guest->dni,
+                'name' => $guest->name,
+                'last_name' => $guest->last_name,
+                'email' => $guest->email,
+            ])
+            ->assertJsonMissing([
+                'hash' => $oldGuest->hash,
+                'dni' => (string) $oldGuest->dni,
+                'name' => $oldGuest->name,
+                'last_name' => $oldGuest->last_name,
+                'email' => $oldGuest->email,
+            ]);
+    }
 }
 
