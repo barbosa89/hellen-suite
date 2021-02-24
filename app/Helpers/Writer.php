@@ -28,13 +28,14 @@ class Writer
     /**
      * Return a link tag
      *
-     * @param string $url
-     * @param string $text
+     * @param Voucher $voucher
      * @return string
      */
-    private function buildLink(string $url, string $text): string
+    private function buildLink(Voucher $voucher): string
     {
-        return "<a href='{$url}' target='_blank' rel='noopener noreferrer'>{$text}</a>";
+        $url = route('vouchers.show', ['id' => $voucher->hash]);
+
+        return "<a href='{$url}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
     }
 
     /**
@@ -46,7 +47,7 @@ class Writer
     public function checkin(Voucher $voucher): Writer
     {
         // Get link to show voucher
-        $link = $this->buildLink(route('vouchers.show', ['id' => id_encode($voucher->id)]), $voucher->number);
+        $link = $this->buildLink($voucher);
 
         // Replace link in placeholder
         $text = str_replace('{link}', $link, trans('notes.checkin.of'));
@@ -66,7 +67,7 @@ class Writer
     public function checkout(Voucher $voucher): Writer
     {
         // Get link to show voucher
-        $link = $this->buildLink(route('vouchers.show', ['id' => id_encode($voucher->id)]), $voucher->number);
+        $link = $this->buildLink($voucher);
 
         // Replace link in placeholder
         $text = str_replace('{link}', $link, trans('notes.checkout.of'));
@@ -87,7 +88,7 @@ class Writer
     {
         $idType = strtoupper($guest->identificationType->type);
 
-        $text = "{$guest->full_name} {$idType} {$guest->dni}, ";
+        $text = "{$guest->full_name} {$idType} {$guest->dni}," . self::BLANK;
 
         $this->writte .= $text;
 
@@ -124,7 +125,7 @@ class Writer
      */
     public function room(Room $room): Writer
     {
-        $text = strtolower(trans('rooms.room')) . " No. {$room->number}, ";
+        $text = strtolower(trans('rooms.room')) . " No. {$room->number}," . self::BLANK;
 
         $this->writte .= $text;
 
@@ -141,7 +142,7 @@ class Writer
     public function vehicle(Voucher $voucher, Vehicle $vehicle): Writer
     {
         // Get link to show voucher
-        $link = $this->buildLink(route('vouchers.show', ['id' => id_encode($voucher->id)]), $voucher->number);
+        $link = $this->buildLink($voucher);
 
         // Replace link in placeholder
         $text = str_replace('{link}', $link, trans('notes.vehicle'));
