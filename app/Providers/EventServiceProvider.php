@@ -17,6 +17,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        \App\Events\CheckIn::class => [
+            \App\Listeners\RegisterCheckIn::class
+        ],
+        \App\Events\CheckOut::class => [
+            \App\Listeners\RegisterCheckOut::class
+        ]
         // Illuminate\Auth\Events\Login::class => [
         //     ShiftStart::class,
         // ],
