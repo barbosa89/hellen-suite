@@ -496,17 +496,15 @@ class GuestController extends Controller
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
                 }
-            ])->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            return abort(404);
-        }
+            ])->firstOrFail(fields_dotted('vouchers'));
 
         // Check if the voucher only has a guest
         if ($voucher->guests->count() == 1) {
             flash(trans('vouchers.onlyOne'))->error();
 
-            return back();
+            return redirect()->route('vouchers.show', [
+                'id' => $voucher->hash,
+            ]);
         }
 
         // The guest
@@ -528,6 +526,8 @@ class GuestController extends Controller
                         'active' => false
                     ]
                 );
+
+
             }
 
             // The guest enters the hotel at the same voucher
@@ -543,8 +543,11 @@ class GuestController extends Controller
             }
 
             if ($guest->save()) {
-                // Create Note
-                notary($voucher->hotel)->checkoutGuest($voucher, $guest, $room);
+                if ($guest->status) {
+                    notary($voucher->hotel)->checkinGuest($voucher, $guest, $room);
+                } else {
+                    notary($voucher->hotel)->checkoutGuest($voucher, $guest, $room);
+                }
 
                 // Check if is the main guest
                 if ($guest->pivot->main) {
@@ -569,12 +572,16 @@ class GuestController extends Controller
 
                 flash(trans('common.updatedSuccessfully'))->success();
 
-                return back();
+                return redirect()->route('vouchers.show', [
+                    'id' => $voucher->hash,
+                ]);
             }
         }
 
         flash(trans('common.error'))->error();
 
-        return back();
+        return redirect()->route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
     }
 }

@@ -5,16 +5,21 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use App\Models\Room;
+use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
 use RolesTableSeeder;
+use App\Events\CheckIn;
 use App\Models\Voucher;
+use App\Events\CheckOut;
 use CountriesTableSeeder;
+use Illuminate\Support\Str;
 use PermissionsTableSeeder;
 use IdentificationTypesTableSeeder;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class VoucherTest extends TestCase
 {
@@ -162,7 +167,7 @@ class VoucherTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can__see_the_form_to_add_guest_to_voucher()
+    public function test_user_can_see_the_form_to_add_guest_to_voucher()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -237,6 +242,7 @@ class VoucherTest extends TestCase
             'open' => true,
             'status' => true,
             'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
         ]);
 
         /** @var Room $room */
@@ -275,6 +281,11 @@ class VoucherTest extends TestCase
             'id' => $voucher->hash,
         ]));
 
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => true,
+        ]);
+
         $this->assertDatabaseHas('guest_room', [
             'voucher_id' => $voucher->id,
             'guest_id' => $guest->id,
@@ -287,6 +298,93 @@ class VoucherTest extends TestCase
             'main' => true,
             'active' => true,
         ]);
+
+        $this->assertDatabaseHas('checks', [
+            'in_at' => now(),
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $route = route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
+
+        $link = "<a href='{$route}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
+        $type = Str::upper($guest->identificationType->type);
+
+        $content = str_replace('{link}', $link, trans('notes.checkin.of'));
+        $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+
+        $this->assertDatabaseHas('notes', [
+            'content' => $content,
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+    }
+
+    public function test_it_dispatch_check_in_event()
+    {
+        Event::fake();
+
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post("vouchers/{$voucher->hash}/guests/add", [
+                'guest' => $guest->hash,
+                'room' => $room->hash,
+            ]);
+
+        Event::assertDispatched(CheckIn::class, function ($event) use ($guest) {
+            return $event->guest->id == $guest->id;
+        });
     }
 
     public function test_user_can_add_guest_to_voucher_with_responsible_adult()
@@ -392,6 +490,7 @@ class VoucherTest extends TestCase
             'open' => true,
             'status' => true,
             'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
         ]);
 
         /** @var Room $room */
@@ -423,7 +522,7 @@ class VoucherTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => false,
-            'active' => false
+            'active' => false,
         ]);
 
         $guest->rooms()->attach($room, [
@@ -457,10 +556,26 @@ class VoucherTest extends TestCase
             'id' => $guest->id,
             'status' => true,
         ]);
+
+        $this->assertDatabaseHas('checks', [
+            'in_at' => now(),
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $this->assertDatabaseHas('notes', [
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
     }
 
-    public function test_user_can_remove_guest_from_voucher()
+    public function test_it_dispatch_check_out_event()
     {
+        Event::fake();
+
         /** @var User $user */
         $user = factory(User::class)->create([
             'parent' => $this->manager->id,
@@ -478,6 +593,7 @@ class VoucherTest extends TestCase
             'open' => true,
             'status' => true,
             'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
         ]);
 
         /** @var Room $room */
@@ -525,12 +641,109 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get("vouchers/{$voucher->hash}/guests/{$guest->hash}/remove");
+
+        Event::assertDispatched(CheckOut::class, function ($event) use ($guest) {
+            return $event->guest->id == $guest->id;
+        });
+    }
+
+    public function test_user_can_remove_guest_from_voucher()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        /** @var Guest $secondaryGuest */
+        $secondaryGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($secondaryGuest->id, [
+            'main' => false,
+            'active' => true
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
         $response = $this->actingAs($user)
             ->get("vouchers/{$voucher->hash}/guests/{$guest->hash}/remove");
 
         $response->assertRedirect(route('vouchers.show', [
             'id' => $voucher->hash,
         ]));
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => false,
+        ]);
 
         $this->assertDatabaseMissing('guest_room', [
             'voucher_id' => $voucher->id,
@@ -543,6 +756,32 @@ class VoucherTest extends TestCase
             'guest_id' => $guest->id,
             'main' => true,
             'active' => true,
+        ]);
+
+        $this->assertDatabaseHas('checks', [
+            'in_at' => $now,
+            'out_at' => now(),
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $route = route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
+
+        $link = "<a href='{$route}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
+        $type = Str::upper($guest->identificationType->type);
+
+        $content = str_replace('{link}', $link, trans('notes.checkout.of'));
+        $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+
+        $this->assertDatabaseHas('notes', [
+            'content' => $content,
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
         ]);
     }
 
@@ -829,6 +1068,433 @@ class VoucherTest extends TestCase
             'guest_id' => $guest->id,
             'main' => true,
             'active' => false,
+        ]);
+    }
+
+    public function test_user_can_toggle_guest_status_when_guest_leaves_of_hotel()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('guests.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        $guest->update(['status' => true]);
+
+        /** @var Guest $secondaryGuest */
+        $secondaryGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($secondaryGuest->id, [
+            'main' => false,
+            'active' => true
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get("guests/{$guest->hash}/toggle/{$voucher->hash}");
+
+        $response->assertRedirect(route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]));
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => false,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $guest->id,
+            'main' => false,
+            'active' => false,
+        ]);
+
+        // $this->assertDatabaseHas('checks', [
+        //     'in_at' => $now,
+        //     'out_at' => now(),
+        //     'guest_id' => $guest->id,
+        //     'voucher_id' => $voucher->id,
+        // ]);
+
+        $route = route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
+
+        $link = "<a href='{$route}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
+        $type = Str::upper($guest->identificationType->type);
+
+        $content = str_replace('{link}', $link, trans('notes.checkout.of'));
+        $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+
+        $this->assertDatabaseHas('notes', [
+            'content' => $content,
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+    }
+
+    public function test_user_can_toggle_guest_status_when_room_is_active_to_enter_to_hotel()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('guests.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+            'status' => false,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => false,
+            'active' => false
+        ]);
+
+        /** @var Guest $mainGuest */
+        $mainGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($mainGuest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get("guests/{$guest->hash}/toggle/{$voucher->hash}");
+
+        $response->assertRedirect(route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]));
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => true,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $guest->id,
+            'main' => false,
+            'active' => true,
+        ]);
+
+        // $this->assertDatabaseHas('checks', [
+        //     'in_at' => $now,
+        //     'out_at' => now(),
+        //     'guest_id' => $guest->id,
+        //     'voucher_id' => $voucher->id,
+        // ]);
+
+        $route = route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
+
+        $link = "<a href='{$route}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
+        $type = Str::upper($guest->identificationType->type);
+
+        $content = str_replace('{link}', $link, trans('notes.checkin.of'));
+        $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+
+        $this->assertDatabaseHas('notes', [
+            'content' => $content,
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+    }
+
+    public function test_user_can_not_toggle_guest_status_when_room_is_disabled_to_changes()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('guests.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => false
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => false
+        ]);
+
+        /** @var Guest $secondaryGuest */
+        $secondaryGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($secondaryGuest->id, [
+            'main' => false,
+            'active' => false
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get("guests/{$guest->hash}/toggle/{$voucher->hash}");
+
+        $response->assertRedirect(route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]));
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.error'), $message->message);
+        $this->assertEquals('danger', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => false,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $guest->id,
+            'main' => true,
+            'active' => false,
+        ]);
+    }
+
+    public function test_user_can_not_toggle_guest_status_when_voucher_has_unique_guest()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('guests.edit');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        $guest->update(['status' => true]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get("guests/{$guest->hash}/toggle/{$voucher->hash}");
+
+        $response->assertRedirect(route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]));
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('vouchers.onlyOne'), $message->message);
+        $this->assertEquals('danger', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => true,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $guest->id,
+            'main' => true,
+            'active' => true,
         ]);
     }
 }

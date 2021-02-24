@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\VoucherPrinter;
 use App\Contracts\VoucherRepository;
+use App\Events\CheckIn;
+use App\Events\CheckOut;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1034,8 +1036,7 @@ class VoucherController extends Controller
             );
         }
 
-        // Create Note
-        notary($voucher->hotel)->checkinGuest($voucher, $guest, $voucher->rooms->first());
+        CheckIn::dispatch($guest, $voucher);
 
         // Remove old relationships guest - room
         $guest->rooms()
@@ -1119,8 +1120,7 @@ class VoucherController extends Controller
         // Detach the guest from voucher
         $voucher->guests()->detach($guest->id);
 
-        // Create Note
-        notary($voucher->hotel)->checkoutGuest($voucher, $guest, $guest->rooms->first());
+        CheckOut::dispatch($guest, $voucher);
 
         // Refresh the guests relationship to select the main guest
         $voucher->load([
