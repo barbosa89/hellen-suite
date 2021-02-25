@@ -19,10 +19,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('guests.export')
 		->middleware(['permission:guests.index']);
 
-    Route::post('guests/search/unregistered', 'GuestController@searchUnregistered')
-        ->name('guests.search.unregistered')
-        ->middleware(['permission:guests.index']);
-
     Route::get('guests/search', 'GuestController@search')
         ->name('guests.search')
         ->middleware(['permission:guests.index']);
