@@ -149,6 +149,7 @@ class GuestTest extends TestCase
                         "identification_type_id" => (string) $guest->identification_type_id,
                         "last_name" => $guest->last_name,
                         "name" => $guest->name,
+                        "full_name" => $guest->full_name,
                         "phone" => $guest->phone ?? null,
                         "profession" => $guest->profession ?? null,
                         "responsible_adult" => "0",

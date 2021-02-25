@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -41,7 +40,7 @@ class Guest extends Model
      *
      * @var array
      */
-    protected $appends = ['hash'];
+    protected $appends = ['hash', 'full_name'];
 
     /**
      * The attributes that should be hidden for arrays.
