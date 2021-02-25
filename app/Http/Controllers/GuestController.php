@@ -379,60 +379,10 @@ class GuestController extends Controller
         }
 
         $guests = Guest::where('user_id', id_parent())
-            ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
+            ->queryBy($query)
             ->get(fields_get('guests'));
 
         return view('app.guests.search', compact('guests', 'query'));
-    }
-
-    /**
-     * Display a JSON list with searched records.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function searchUnregistered(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = clean_param($request->get('query', null));
-
-            $guests = Guest::where('user_id', id_parent())
-                ->where('status', false)
-                ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
-                ->get(fields_get('guests'));
-
-            return response()->json([
-                'guests' => $this->renderToTemplate(
-                    $guests,
-                    'app.vouchers.guests.search',
-                    $request->voucher
-                    )
-            ]);
-        }
-
-        abort(403);
-    }
-
-    /**
-     * Render data collection in a view.
-     *
-     * @param Illuminate\Support\Collection  $results
-     * @return array
-     */
-    private function renderToTemplate(Collection $results, $template, $voucher)
-    {
-        $rendered = collect();
-
-        $results->each(function ($guest, $index) use (&$rendered, $template, $voucher) {
-            $render = view($template, [
-                'guest' => $guest,
-                'voucher' => $voucher
-            ])->render();
-
-            $rendered->push($render);
-        });
-
-        return $rendered->toArray();
     }
 
     /**
