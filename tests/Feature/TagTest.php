@@ -66,8 +66,6 @@ class TagTest extends TestCase
 
         $response = $this->get('/tags');
 
-        $tags = Tag::all();
-
         $response->assertOk()
             ->assertViewIs('app.tags.index')
             ->assertSee($tag->slug);
