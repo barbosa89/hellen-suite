@@ -12,8 +12,18 @@
 <script>
     export default {
         props: {
-            url: '',
-            hotel: ''
+            url: {
+                type: String,
+                default: function () {
+                    return ''
+                }
+            },
+            hotel: {
+                type: String,
+                default: function () {
+                    return ''
+                }
+            },
         },
         data() {
             return {
@@ -25,15 +35,21 @@
             if (current.length == 0 || this.query.length == 0) {
                 this.$emit('reset')
             } else {
-                if (this.hotel.length == 0) {
-                    toastr.info(
-                        this.$root.$t('hotels.choose'),
-                        'Ey'
-                    )
-                } else {
-                    if (current.length >= 3 && this.hotel.length > 0) {
-                        axios.get(this.url + `?query=${this.query}&hotel=${this.hotel}`)
-                            .then(response => {
+                if (current.length >= 3) {
+                    let params = {
+                        query_by: this.query,
+                    }
+
+                    if (this.hotel.length > 0) {
+                        params.hotel = this.hotel
+                    }
+
+                    axios
+                        .get(this.url, {
+                            params: params
+                        })
+                        .then(response => {
+                            if (response.data.hasOwnProperty('results')) {
                                 let results = response.data.results
 
                                 if (results.length > 0) {
@@ -44,13 +60,16 @@
                                         this.$root.$t('common.sorry')
                                     )
                                 }
-                            }).catch(e => {
-                                toastr.error(
-                                    this.$root.$t('common.try'),
-                                    'Error'
-                                )
-                            })
-                    }
+                            } else {
+                                this.$emit('results', response.data)
+                            }
+
+                        }).catch(e => {
+                            toastr.error(
+                                this.$root.$t('common.try'),
+                                'Error'
+                            )
+                        })
                 }
             }
         }

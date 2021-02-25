@@ -146,25 +146,23 @@ class VoucherTest extends TestCase
             'user_id' => $this->manager->id,
         ]);
 
-        /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
-            'open' => true,
-            'status' => true,
-            'user_id' => $this->manager->id,
-        ]);
-
         $response = $this->actingAs($user)
-            ->post(
-                "/guests/search/unregistered?query={$guest->dni}",
+            ->call(
+                'GET',
+                '/api/v1/web/guests',
                 [
-                    'voucher' => $voucher->hash
-                ],
-                [
-                    'HTTP_X-Requested-With' => 'XMLHttpRequest'
-                ],
+                    'query_by' => $guest->name,
+                ]
             );
 
-        $response->assertOk();
+        $response->assertOk()
+            ->assertJsonFragment([
+                'hash' => $guest->hash,
+                'dni' => (string) $guest->dni,
+                'name' => $guest->name,
+                'last_name' => $guest->last_name,
+                'email' => $guest->email,
+            ]);
     }
 
     public function test_user_can_see_the_form_to_add_guest_to_voucher()

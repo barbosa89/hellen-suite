@@ -41,6 +41,8 @@ Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').d
 Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
 Vue.component('tag-list', require('./components/Tags/TagList.vue').default);
 
+Vue.component('search-guests', require('./components/Vouchers/SearchGuests.vue').default);
+
 Vue.component('home-index', require('./components/Home/Index.vue').default);
 
 import VueInternationalization from 'vue-i18n';
