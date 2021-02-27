@@ -60,7 +60,7 @@ class Chart
                 return $voucher->created_at->month;
             }
         ]);
-            // dd($this->data);
+
         return $this;
     }
 
