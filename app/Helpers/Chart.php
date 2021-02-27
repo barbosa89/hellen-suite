@@ -55,8 +55,7 @@ class Chart
         $this->data = $this->vouchers->groupBy([
             function($voucher) {
                 return $voucher->type;
-            }, function ($voucher)
-            {
+            }, function ($voucher) {
                 return $voucher->created_at->month;
             }
         ]);
@@ -105,8 +104,7 @@ class Chart
      */
     public function countItems()
     {
-        $this->process(function ($vouchers, $voucher)
-        {
+        $this->process(function ($vouchers, $voucher) {
             // Add quantity in the pivot table
             return $voucher['pivot']['quantity'];
         });
@@ -121,8 +119,7 @@ class Chart
      */
     public function countVouchers()
     {
-        $this->process(function ($vouchers, $voucher)
-        {
+        $this->process(function ($vouchers, $voucher) {
             return 1;
         });
 
@@ -136,8 +133,7 @@ class Chart
      */
     public function addValues()
     {
-        $this->process(function ($vouchers, $voucher)
-        {
+        $this->process(function ($vouchers, $voucher) {
             // Add voucher value
             return (float) $voucher['value'];
         });
@@ -152,8 +148,7 @@ class Chart
      */
     public function addItemValues()
     {
-        $this->process(function ($vouchers, $voucher)
-        {
+        $this->process(function ($vouchers, $voucher) {
             // Add voucher item value
             return (float) $voucher['pivot']['value'];
         });
