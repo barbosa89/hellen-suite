@@ -25,7 +25,6 @@
             @break
 
         @case('post')
-            {{ dd($option['option']) }}
             @if (isset($option['permission']))
                 @can($option['permission'])
                     @include('partials.options.post')
