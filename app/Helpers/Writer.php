@@ -11,12 +11,9 @@ use Illuminate\Support\Str;
 
 class Writer
 {
-    /**
-     * Blank space
-     *
-     * @var string
-     */
     private const BLANK = ' ';
+
+    private const COMMA = ', ';
 
     /**
      * The writte
@@ -105,7 +102,7 @@ class Writer
     {
         $text = '';
         foreach ($guests as $guest) {
-            $room = strtolower(trans('rooms.room')) . " No. {$guest->rooms->first()->number}, ";
+            $room = lcfirst(trans('rooms.number', ['number' => $guest->rooms->first()->number])) . self::COMMA;
 
             $idType = strtoupper($guest->identificationType->type);
 
@@ -125,7 +122,7 @@ class Writer
      */
     public function room(Room $room): Writer
     {
-        $text = strtolower(trans('rooms.room')) . " No. {$room->number}," . self::BLANK;
+        $text = lcfirst(trans('rooms.number', ['number' => $room->number])) . self::COMMA;
 
         $this->writte .= $text;
 
@@ -150,7 +147,8 @@ class Writer
         $type = trans('vehicles.' . $vehicle->type->type);
 
         // Add vehicle registration, vehicle type
-        $text .= " {$vehicle->registration}, {$type}, ";
+        $text .= " {$vehicle->registration}, {$type}";
+        $text .= self::COMMA;
 
         $this->writte .= $text;
 

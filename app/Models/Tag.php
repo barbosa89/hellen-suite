@@ -9,6 +9,10 @@ class Tag extends Model
 {
     use Sluggable;
 
+    public const CHECK_IN = 'check-in';
+    public const CHECK_OUT = 'check-out';
+    public const VEHICLE = 'vehicle';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -14,11 +14,14 @@ use App\Models\Voucher;
 class Notary
 {
     /**
-     * Hotel owner of the new note
-     *
      * @var \App\Models\Hotel
      */
     private Hotel $hotel;
+
+    /**
+     * @var \App\Helpers\Writer
+     */
+    private Writer $writer;
 
     /**
      * Construct function
@@ -28,6 +31,8 @@ class Notary
     public function __construct(Hotel $hotel)
     {
         $this->hotel = $hotel;
+        $this->writer = new Writer;
+
     }
 
     /**
@@ -40,12 +45,11 @@ class Notary
      */
     public function checkinGuest(Voucher $voucher, Guest $guest, Room $room): void
     {
-        $writer = new Writer();
-        $writer->checkin($voucher)
+        $this->writer->checkin($voucher)
             ->guest($guest)
             ->room($room);
 
-        $this->createNote($writer->write(), 'check-in');
+        $this->createNote(Tag::CHECK_IN);
     }
 
     /**
@@ -58,12 +62,11 @@ class Notary
      */
     public function checkoutGuest(Voucher $voucher, Guest $guest, Room $room): void
     {
-        $writer = new Writer();
-        $writer->checkout($voucher)
+        $this->writer->checkout($voucher)
             ->guest($guest)
             ->room($room);
 
-        $this->createNote($writer->write(), 'check-out');
+        $this->createNote(Tag::CHECK_OUT);
     }
 
     /**
@@ -74,11 +77,10 @@ class Notary
      */
     public function checkoutGuests(Voucher $voucher): void
     {
-        $writer = new Writer();
-        $writer->checkout($voucher)
+        $this->writer->checkout($voucher)
             ->guests($voucher->guests);
 
-        $this->createNote($writer->write(), 'check-out');
+        $this->createNote(Tag::CHECK_OUT);
     }
 
     /**
@@ -91,24 +93,22 @@ class Notary
      */
     public function vehicleEntry(Voucher $voucher, Guest $guest, Vehicle $vehicle)
     {
-        $writer = new Writer;
-        $writer->vehicle($voucher, $vehicle)
+        $this->writer->vehicle($voucher, $vehicle)
             ->owner($guest);
 
-        $this->createNote($writer->write(), 'vehicle');
+        $this->createNote(Tag::VEHICLE);
     }
 
     /**
      * Store new note
      *
-     * @param string $content
      * @param string $tag
      * @return void
      */
-    private function createNote(string $content, string $tag): void
+    private function createNote(string $tag): void
     {
         $note = new Note();
-        $note->content = $content;
+        $note->content = $this->writer->write();
         $note->team_member_name = auth()->user()->name;
         $note->team_member_email = auth()->user()->email;
         $note->hotel()->associate($this->hotel->id);
