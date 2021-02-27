@@ -157,7 +157,7 @@ class VoucherTest extends TestCase
                 'GET',
                 '/api/v1/web/guests',
                 [
-                    'query_by' => $guest->name,
+                    'query_by' => $guest->dni,
                 ]
             );
 

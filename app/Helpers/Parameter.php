@@ -18,7 +18,7 @@ class Parameter
 			return null;
 		}
 
-		return htmlentities($value, ENT_QUOTES | ENT_HTML5, $encoding);
+		return htmlentities((string) $value, ENT_QUOTES | ENT_HTML5, $encoding);
 	}
 
 	/**

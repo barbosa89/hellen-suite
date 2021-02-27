@@ -163,6 +163,6 @@ class Guest extends Model
      */
     public function scopeQueryBy($query, string $text)
     {
-        return $query->whereLike(['name', 'last_name', 'dni', 'email'], $text);
+        return $query->whereLike(['name', 'last_name', 'dni'], $text);
     }
 }
