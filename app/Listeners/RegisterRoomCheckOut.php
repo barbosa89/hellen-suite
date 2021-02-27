@@ -3,11 +3,11 @@
 namespace App\Listeners;
 
 use App\Models\Check;
-use App\Events\CheckOut;
+use App\Events\RoomCheckOut;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RegisterCheckOut
+class RegisterRoomCheckOut
 {
     /**
      * Create the event listener.
@@ -22,22 +22,17 @@ class RegisterCheckOut
     /**
      * Handle the event.
      *
-     * @param  CheckOut  $event
+     * @param  RoomCheckOut  $event
      * @return void
      */
-    public function handle(CheckOut $event)
+    public function handle(RoomCheckOut $event)
     {
         Check::where('voucher_id', $event->voucher->id)
-            ->where('guest_id', $event->guest->id)
+            ->whereIn('guest_id', $event->voucher->guests->pluck('id')->toArray())
             ->whereNotNull('in_at')
             ->whereNull('out_at')
             ->update(['out_at' => now()]);
 
-        notary($event->voucher->hotel)
-            ->checkoutGuest(
-                $event->voucher,
-                $event->guest,
-                $event->room
-            );
+        notary($event->voucher->hotel)->checkoutGuests($event->voucher);
     }
 }

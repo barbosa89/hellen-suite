@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Room;
 use App\Models\Guest;
 use App\Models\Voucher;
 use Illuminate\Broadcasting\Channel;
@@ -16,19 +17,25 @@ class CheckOut
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public Voucher $voucher;
+
     public Guest $guest;
 
-    public Voucher $voucher;
+    public Room $room;
 
     /**
      * Create a new event instance.
      *
+     * @param Voucher $voucher
+     * @param Guest $guest
+     * @param Room $room
      * @return void
      */
-    public function __construct(Guest $guest, Voucher $voucher)
+    public function __construct(Voucher $voucher, Guest $guest, Room $room)
     {
         $this->guest = $guest;
         $this->voucher = $voucher;
+        $this->room = $room;
     }
 
     /**

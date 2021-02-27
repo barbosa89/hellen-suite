@@ -2,40 +2,29 @@
 
 namespace App\Events;
 
-use App\Models\Guest;
-use App\Models\Room;
 use App\Models\Voucher;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class CheckIn
+class RoomCheckOut
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Voucher $voucher;
 
-    public Guest $guest;
-
-    public Room $room;
-
     /**
      * Create a new event instance.
      *
-     * @param Voucher $voucher
-     * @param Guest $guest
-     * @param Room $room
      * @return void
      */
-    public function __construct(Voucher $voucher, Guest $guest, Room $room)
+    public function __construct(Voucher $voucher)
     {
-        $this->guest = $guest;
         $this->voucher = $voucher;
-        $this->room = $room;
     }
 
     /**

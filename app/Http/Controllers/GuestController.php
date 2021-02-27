@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CheckIn;
+use App\Events\CheckOut;
 use App\Exports\GuestsReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -434,7 +436,7 @@ class GuestController extends Controller
                 },
                 'guests.rooms' => function ($query) use ($voucher) {
                     $query->select(fields_dotted('rooms'))
-                        ->wherePivot('voucher_id', $voucher);
+                        ->wherePivot('voucher_id', id_decode($voucher));
                 },
                 'guests.identificationType' => function ($query) {
                     $query->select('id', 'type');
@@ -461,7 +463,7 @@ class GuestController extends Controller
         $guest = $voucher->guests->where('id', id_decode($id))->first();
 
         // The guest room
-        $room = $voucher->rooms->where('id', $guest->rooms()->first()->id)->first();
+        $room = $voucher->rooms->where('id', $guest->rooms->first()->id)->first();
 
         // Check if the room is available in the voucher
         if ($room->pivot->enabled) {
@@ -494,9 +496,9 @@ class GuestController extends Controller
 
             if ($guest->save()) {
                 if ($guest->status) {
-                    notary($voucher->hotel)->checkinGuest($voucher, $guest, $room);
+                    CheckIn::dispatch($voucher, $guest, $room);
                 } else {
-                    notary($voucher->hotel)->checkoutGuest($voucher, $guest, $room);
+                    CheckOut::dispatch($voucher, $guest, $room);
                 }
 
                 // Check if is the main guest

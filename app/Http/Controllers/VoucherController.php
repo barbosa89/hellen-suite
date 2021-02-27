@@ -6,6 +6,7 @@ use App\Contracts\VoucherPrinter;
 use App\Contracts\VoucherRepository;
 use App\Events\CheckIn;
 use App\Events\CheckOut;
+use App\Events\RoomCheckOut;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -1036,7 +1037,7 @@ class VoucherController extends Controller
             );
         }
 
-        CheckIn::dispatch($guest, $voucher);
+        CheckIn::dispatch($voucher, $guest, $voucher->rooms->first());
 
         // Remove old relationships guest - room
         $guest->rooms()
@@ -1120,7 +1121,7 @@ class VoucherController extends Controller
         // Detach the guest from voucher
         $voucher->guests()->detach($guest->id);
 
-        CheckOut::dispatch($guest, $voucher);
+        CheckOut::dispatch($voucher, $guest, $guest->rooms->first());
 
         // Refresh the guests relationship to select the main guest
         $voucher->load([
@@ -2244,7 +2245,7 @@ class VoucherController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function close($id)
+    public function close(string $id)
     {
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', id_decode($id))
@@ -2258,65 +2259,54 @@ class VoucherController extends Controller
                 'guests' => function ($query) {
                     $query->select(fields_dotted('guests'));
                 },
-                'guests.rooms' => function ($query) use ($id) {
-                    $query->select(fields_dotted('rooms'))
-                        ->wherePivot('voucher_id', id_decode($id));
-                },
-                'guests.identificationType' => function ($query) {
-                    $query->select('id', 'type');
-                },
-                'hotel' => function ($query) {
-                    $query->select(fields_get('hotels'));
-                },
-            ])->first(fields_dotted('vouchers'));
+            ])->firstOrFail(fields_dotted('vouchers'));
 
-        if (empty($voucher)) {
-            abort(404);
-        }
+        DB::beginTransaction();
 
-        $status = false;
+        try {
+            $voucher->open = false;
 
-        DB::transaction(function () use (&$status, &$voucher) {
-            try {
-                $voucher->open = false;
+            if ($voucher->save()) {
+                // Change Room status to cleaning
+                Room::whereIn('id', $voucher->rooms->pluck('id')->toArray())->update(['status' => '2']);
 
-                if ($voucher->save()) {
-                    // Change Room status to cleaning
-                    Room::whereIn('id', $voucher->rooms->pluck('id')->toArray())->update(['status' => '2']);
-
-                    // Change Guest status to false: Guest is not in hotel
-                    if ($voucher->guests->isNotEmpty()) {
-                        Guest::whereIn('id', $voucher->guests->pluck('id')->toArray())
-                            ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher) {
-                                $query->where('open', true)
-                                    ->where('status', true)
-                                    ->where('reservation', false)
-                                    ->where('created_at', '>', $voucher->created_at);
-                            })->update(['status' => false]);
-                    }
-
-                    notary($voucher->hotel)->checkoutGuests($voucher);
-
-                    $status = true;
+                // Change Guest status to false: Guest is not in hotel
+                if ($voucher->guests->isNotEmpty()) {
+                    Guest::whereIn('id', $voucher->guests->pluck('id')->toArray())
+                        ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher) {
+                            $query->where('open', true)
+                                ->where('status', true)
+                                ->where('reservation', false)
+                                ->where('created_at', '>', $voucher->created_at);
+                        })->update(['status' => false]);
                 }
-            } catch (\Throwable $e) {
-                Log::error(trans('common.error'), [
-                    'file' => $e->getFile(),
-                    'message' => $e->getMessage(),
-                    'line' => $e->getLine(),
-                ]);
-            }
-        });
 
-        if ($status) {
+                RoomCheckOut::dispatch($voucher);
+            }
+
+            DB::commit();
+
             flash(trans('common.successful'))->success();
 
-            return back();
+            return redirect()->route('vouchers.show', [
+                'id' => $voucher->hash,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error(trans('common.error'), [
+                'file' => $e->getFile(),
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+            ]);
+
+            DB::rollBack();
+
+            flash(trans('common.error'))->error();
+
+            return redirect()->route('vouchers.show', [
+                'id' => $voucher->hash,
+            ]);
         }
 
-        flash(trans('common.error'))->error();
-
-        return back();
     }
 
     /**

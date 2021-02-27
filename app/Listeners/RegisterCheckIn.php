@@ -33,6 +33,6 @@ class RegisterCheckIn
         $checkIn->voucher()->associate($event->voucher);
         $checkIn->save();
 
-        notary($event->voucher->hotel)->checkinGuest($event->voucher, $event->guest, $event->voucher->rooms->first());
+        notary($event->voucher->hotel)->checkinGuest($event->voucher, $event->guest, $event->room);
     }
 }

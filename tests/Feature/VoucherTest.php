@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use Mockery;
 use App\User;
+use Exception;
 use Tests\TestCase;
 use App\Models\Room;
 use App\Models\Check;
@@ -15,6 +17,8 @@ use App\Events\CheckOut;
 use CountriesTableSeeder;
 use Illuminate\Support\Str;
 use PermissionsTableSeeder;
+use App\Events\RoomCheckOut;
+use Illuminate\Support\Carbon;
 use IdentificationTypesTableSeeder;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -39,6 +43,8 @@ class VoucherTest extends TestCase
         $this->seed(CountriesTableSeeder::class);
 
         $this->manager = factory(User::class)->create();
+
+        Carbon::setTestNow();
     }
 
     public function test_user_can_not_edit_a_voucher_without_permissions()
@@ -647,7 +653,7 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id,
         ]);
 
-        $response = $this->actingAs($user)
+        $this->actingAs($user)
             ->get("vouchers/{$voucher->hash}/guests/{$guest->hash}/remove");
 
         Event::assertDispatched(CheckOut::class, function ($event) use ($guest) {
@@ -1115,14 +1121,13 @@ class VoucherTest extends TestCase
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
             'user_id' => $this->manager->id,
+            'status' => true,
         ]);
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
             'active' => true
         ]);
-
-        $guest->update(['status' => true]);
 
         /** @var Guest $secondaryGuest */
         $secondaryGuest = factory(Guest::class)->create([
@@ -1138,10 +1143,8 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
-
         factory(Check::class)->create([
-            'in_at' => $now,
+            'in_at' => now(),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -1166,13 +1169,6 @@ class VoucherTest extends TestCase
             'active' => false,
         ]);
 
-        // $this->assertDatabaseHas('checks', [
-        //     'in_at' => $now,
-        //     'out_at' => now(),
-        //     'guest_id' => $guest->id,
-        //     'voucher_id' => $voucher->id,
-        // ]);
-
         $route = route('vouchers.show', [
             'id' => $voucher->hash,
         ]);
@@ -1191,6 +1187,14 @@ class VoucherTest extends TestCase
             'hotel_id' => $hotel->id,
             'user_id' => $this->manager->id,
         ]);
+
+        $checkOut = Check::where('guest_id', $guest->id)
+            ->where('voucher_id', $voucher->id)
+            ->whereNotNull('in_at')
+            ->whereNotNull('out_at')
+            ->first();
+
+        $this->assertTrue($checkOut instanceof Check);
     }
 
     public function test_user_can_toggle_guest_status_when_room_is_active_to_enter_to_hotel()
@@ -1261,10 +1265,8 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
-
         factory(Check::class)->create([
-            'in_at' => $now,
+            'in_at' => now(),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -1289,13 +1291,6 @@ class VoucherTest extends TestCase
             'active' => true,
         ]);
 
-        // $this->assertDatabaseHas('checks', [
-        //     'in_at' => $now,
-        //     'out_at' => now(),
-        //     'guest_id' => $guest->id,
-        //     'voucher_id' => $voucher->id,
-        // ]);
-
         $route = route('vouchers.show', [
             'id' => $voucher->hash,
         ]);
@@ -1314,6 +1309,14 @@ class VoucherTest extends TestCase
             'hotel_id' => $hotel->id,
             'user_id' => $this->manager->id,
         ]);
+
+        $checkOut = Check::where('guest_id', $guest->id)
+            ->where('voucher_id', $voucher->id)
+            ->whereNotNull('in_at')
+            ->whereNull('out_at')
+            ->first();
+
+        $this->assertTrue($checkOut instanceof Check);
     }
 
     public function test_user_can_not_toggle_guest_status_when_room_is_disabled_to_changes()
@@ -1456,14 +1459,13 @@ class VoucherTest extends TestCase
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
             'user_id' => $this->manager->id,
+            'status' => true,
         ]);
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
             'active' => true
         ]);
-
-        $guest->update(['status' => true]);
 
         $guest->rooms()->attach($room, [
             'voucher_id' => $voucher->id
@@ -1494,5 +1496,263 @@ class VoucherTest extends TestCase
             'main' => true,
             'active' => true,
         ]);
+    }
+
+    public function test_user_can_close_an_open_voucher()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.close');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+            'status' => true,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        /** @var Guest $secondaryGuest */
+        $secondaryGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+            'status' => true,
+        ]);
+
+        $voucher->guests()->attach($secondaryGuest->id, [
+            'main' => false,
+            'active' => true
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $secondaryGuest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $secondaryGuest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post("vouchers/{$voucher->hash}/close");
+
+        $response->assertRedirect(route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]));
+
+        $this->assertDatabaseHas('vouchers', [
+            'id' => $voucher->id,
+            'open' => false,
+            'status' => true,
+        ]);
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+            'status' => false,
+        ]);
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $secondaryGuest->id,
+            'status' => false,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $guest->id,
+            'main' => true,
+            'active' => true,
+        ]);
+
+        $this->assertDatabaseHas('guest_voucher', [
+            'voucher_id' => $voucher->id,
+            'guest_id' => $secondaryGuest->id,
+            'main' => false,
+            'active' => true,
+        ]);
+
+        $route = route('vouchers.show', [
+            'id' => $voucher->hash,
+        ]);
+
+        $link = "<a href='{$route}' target='_blank' rel='noopener noreferrer'>{$voucher->number}</a>";
+
+        $content = str_replace('{link}', $link, trans('notes.checkout.of'));
+
+        $type = Str::upper($guest->identificationType->type);
+        $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . ',';
+
+        $type = Str::upper($secondaryGuest->identificationType->type);
+        $content .= " {$secondaryGuest->full_name} {$type} {$secondaryGuest->dni}, ";
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+
+        $this->assertDatabaseHas('notes', [
+            'content' => $content,
+            'team_member_name' => $user->name,
+            'team_member_email' => $user->email,
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $checkOuts = Check::whereIn('guest_id', [$guest->id, $secondaryGuest->id])
+            ->where('voucher_id', $voucher->id)
+            ->whereNotNull('in_at')
+            ->whereNotNull('out_at')
+            ->get();
+
+        $this->assertEquals(2, $checkOuts->count());
+    }
+
+    public function test_it_dispatch_room_check_out_event_on_voucher_close()
+    {
+        Event::fake();
+
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.close');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $this->manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+            'status' => true,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true
+        ]);
+
+        /** @var Guest $secondaryGuest */
+        $secondaryGuest = factory(Guest::class)->create([
+            'user_id' => $this->manager->id,
+            'status' => true,
+        ]);
+
+        $voucher->guests()->attach($secondaryGuest->id, [
+            'main' => false,
+            'active' => true
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $secondaryGuest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        $now = now();
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        factory(Check::class)->create([
+            'in_at' => $now,
+            'out_at' => null,
+            'guest_id' => $secondaryGuest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $this->actingAs($user)
+            ->post("vouchers/{$voucher->hash}/close");
+
+        Event::assertDispatched(RoomCheckOut::class, function ($event) use ($voucher) {
+            return $event->voucher->id == $voucher->id;
+        });
     }
 }

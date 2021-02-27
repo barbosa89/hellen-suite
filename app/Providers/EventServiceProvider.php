@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\CheckOut::class => [
             \App\Listeners\RegisterCheckOut::class
+        ],
+        \App\Events\RoomCheckOut::class => [
+            \App\Listeners\RegisterRoomCheckOut::class
         ]
         // Illuminate\Auth\Events\Login::class => [
         //     ShiftStart::class,
