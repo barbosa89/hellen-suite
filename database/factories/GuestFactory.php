@@ -19,5 +19,8 @@ $factory->define(App\Models\Guest::class, function (Faker $faker) {
         'country_id' => function () {
             return \App\Models\Country::inRandomOrder()->first(['id'])->id;
         },
+        'user_id' => function () {
+            return factory(\App\User::class)->create()->id;
+        }
     ];
 });

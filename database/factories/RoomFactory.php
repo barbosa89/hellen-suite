@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Models\Room;
+use App\Models\Hotel;
 use Faker\Generator as Faker;
 
 $factory->define(Room::class, function (Faker $faker) {
