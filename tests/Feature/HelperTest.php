@@ -83,4 +83,36 @@ class HelperTest extends TestCase
 
         cents_to_float("-10");
     }
+
+    public function test_get_colors()
+    {
+        $colors = [
+            [
+                'bar' => 'rgba(255, 102, 102, 0.2)',
+                'border' => 'rgba(255, 102, 102, 1)'
+            ],
+            [
+                'bar' => 'rgba(5, 32, 74, 0.2)',
+                'border' => 'rgba(5, 32, 74, 1)'
+            ],
+            [
+                'bar' => 'rgba(117, 185, 190, 0.2)',
+                'border' => 'rgba(117, 185, 190, 1)'
+            ],
+            [
+                'bar' => 'rgba(245, 158, 62, 0.2)',
+                'border' => 'rgba(245, 158, 62, 1)'
+            ],
+            [
+                'bar' => 'rgba(255, 211, 218, 0.2)',
+                'border' => 'rgba(255, 211, 218, 1)'
+            ],
+            [
+                'bar' => 'rgba(35, 206, 107, 0.2)',
+                'border' => 'rgba(35, 206, 107, 1)'
+            ],
+        ];
+
+        $this->assertEquals($colors, get_colors());
+    }
 }

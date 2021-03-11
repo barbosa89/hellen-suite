@@ -157,3 +157,19 @@ if (!function_exists('get_user_permissions')) {
         return [];
     }
 }
+
+if (!function_exists('get_colors')) {
+    /**
+     * @return array
+     */
+    function get_colors(): array
+    {
+        $colors = [];
+
+        foreach (config('settings.colors') as $item) {
+            $colors[] = $item;
+        }
+
+        return $colors;
+    }
+}
