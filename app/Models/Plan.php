@@ -7,11 +7,11 @@ use Illuminate\Support\Str;
 use App\Services\ExchangeRate;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Plan extends Model
 {
-    use Queryable, Cachable;
+    use Queryable;
 
     public const FREE = 'FREE';
 
@@ -77,9 +77,9 @@ class Plan extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotRelatedToUser($query)
+    public function scopeNotRelatedToUser(Builder $query)
     {
-        return $query->whereDoesntHave('users', function ($query) {
+        return $query->whereDoesntHave('users', function (Builder $query) {
             return $query->where('users.id', auth()->id());
         });
     }

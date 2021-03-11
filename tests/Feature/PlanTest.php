@@ -91,7 +91,15 @@ class PlanTest extends TestCase
             ->get(route('plans.choose'));
 
         $response->assertOk()
-            ->assertViewIs('app.plans.choose');
+            ->assertViewIs('app.plans.choose')
+            ->assertSee(trans('plans.type.free'))
+            ->assertSee(trans('plans.type.basic'))
+            ->assertSee(trans('plans.type.sponsor'))
+            ->assertViewHas('plans', function ($data) {
+                return $data
+                    ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
+                    ->count() == 3;
+            });
     }
 
     public function test_user_can_choose_the_free_plan()
@@ -137,6 +145,27 @@ class PlanTest extends TestCase
             ->assertViewHas('plan', $plan)
             ->assertViewHas('currencies', $currencies)
             ->assertViewHas('types', $types);
+    }
+
+    public function test_user_can_not_see_expired_free_plan_on_choose_plan()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('manager');
+
+        $plan = Plan::where('type', Plan::FREE)->first();
+
+        $user->plans()->attach($plan, ['ends_at' => now()->subMonth()]);
+
+        $response = $this->actingAs($user)
+            ->get(route('plans.choose'));
+
+        $response->assertOk()
+            ->assertViewIs('app.plans.choose')
+            ->assertViewHas('plans', function ($data) {
+                return $data
+                    ->where('type', Plan::FREE)
+                    ->count() == 0;
+            });
     }
 
     public function test_user_can_buy_the_basic_plan()
