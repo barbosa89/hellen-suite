@@ -95,7 +95,7 @@ return array (
   'inactives' => 'Inactivos',
   'total' => 'Total',
   'subtotal' => 'Subtotal',
-  'tax' => 
+  'tax' =>
   array (
     'status' => 'Estado de impuestos',
     'title' => 'Impuesto',
@@ -127,58 +127,62 @@ return array (
   'sorry' => 'Lo siento',
   'disable' => 'Deshabilitar',
   'enable' => 'Habilitar',
-  'without' => 
+  'without' =>
   array (
     'results' => 'No hay resultados de búsqueda.',
     'tax' => 'Sin impuesto',
   ),
-  'created' => 
+  'created' =>
   array (
     'at' => 'Fecha de creación',
   ),
-  'closed' => 
+  'updated' =>
+  array (
+    'at' => 'Fecha de actualización',
+  ),
+  'closed' =>
   array (
     'at' => 'Fecha de cierre',
   ),
   'existence' => 'Existencia',
   'tin' => 'NIT',
   'process' => 'Procesar',
-  'delete' => 
+  'delete' =>
   array (
     'all' => 'Borrar todo',
     'item' => 'Eliminar',
   ),
-  'current' => 
+  'current' =>
   array (
     'stock' => 'Cantidad actual',
   ),
   'invoice' => 'Factura',
   'comments' => 'Comentarios',
   'supplier' => 'Proveedor',
-  'report' => 
+  'report' =>
   array (
     'of' => 'Reporte de',
   ),
   'reports' => 'Reportes',
-  'doesnt' => 
+  'doesnt' =>
   array (
     'apply' => 'No aplica',
   ),
-  'not' => 
+  'not' =>
   array (
     'assigned' => 'No asignado',
     'allowed' => 'Acción no permitida',
   ),
   'show' => 'Mostrar',
   'select' => 'Seleccionar',
-  'with' => 
+  'with' =>
   array (
     'tax' => 'Con impuesto',
   ),
   'lang' => 'Lenguaje',
   'month' => 'Mes',
   'months' => 'Meses',
-  'view' => 
+  'view' =>
   array (
     'details' => 'Ver detalles',
   ),

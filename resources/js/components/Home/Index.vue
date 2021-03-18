@@ -16,12 +16,11 @@
             </div>
             <div class="col-12 col-sm-6">
                 <guest-chart-card :hotel-id='hotelId'></guest-chart-card>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myAreaChart" width="100%" height="30"></canvas>
-                    </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                </div>
+            </div>
+        </div>
+        <div class="row" v-if="hotelId.length > 0">
+            <div class="col">
+                <note-card-list :hotel-id='hotelId'></note-card-list>
             </div>
         </div>
     </div>
@@ -31,6 +30,7 @@
     import IconCards from './IconCards'
     import VoucherCardList from '../Vouchers/CardList'
     import GuestChartCard from '../Guests/ChartCard'
+    import NoteCardList from '../Notes/CardList'
 
     export default {
         data() {
@@ -40,7 +40,9 @@
         },
         components: {
             IconCards,
+            VoucherCardList,
             GuestChartCard,
+            NoteCardList,
         }
     }
 </script>

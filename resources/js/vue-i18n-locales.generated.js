@@ -159,6 +159,9 @@ export default {
             "created": {
                 "at": "Created at"
             },
+            "updated": {
+                "at": "Updated at"
+            },
             "existence": "Existence",
             "tin": "TIN",
             "delete": {
@@ -1118,6 +1121,9 @@ export default {
             },
             "created": {
                 "at": "Fecha de creación"
+            },
+            "updated": {
+                "at": "Fecha de actualización"
             },
             "closed": {
                 "at": "Fecha de cierre"

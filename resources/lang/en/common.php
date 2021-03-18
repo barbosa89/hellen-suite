@@ -95,7 +95,7 @@ return array (
   'inactives' => 'Inactives',
   'discount' => 'Discount',
   'subtotal' => 'Subtotal',
-  'tax' => 
+  'tax' =>
   array (
     'status' => 'Tax status',
     'title' => 'Tax',
@@ -127,58 +127,62 @@ return array (
   'sorry' => 'Sorry',
   'disable' => 'Disable',
   'enable' => 'Enable',
-  'without' => 
+  'without' =>
   array (
     'results' => 'No search results',
     'tax' => 'Without tax',
   ),
-  'closed' => 
+  'closed' =>
   array (
     'at' => 'Closed at',
   ),
-  'created' => 
+  'created' =>
   array (
     'at' => 'Created at',
   ),
+  'updated' =>
+  array (
+    'at' => 'Updated at',
+  ),
   'existence' => 'Existence',
   'tin' => 'TIN',
-  'delete' => 
+  'delete' =>
   array (
     'all' => 'Delete all',
     'item' => 'Delete',
   ),
   'process' => 'Process',
-  'current' => 
+  'current' =>
   array (
     'stock' => 'Current stock',
   ),
   'invoice' => 'Invoice',
   'comments' => 'Comments',
   'supplier' => 'Supplier',
-  'report' => 
+  'report' =>
   array (
     'of' => 'Report of',
   ),
   'reports' => 'Reports',
-  'doesnt' => 
+  'doesnt' =>
   array (
     'apply' => 'Doesn\'t apply',
   ),
-  'not' => 
+  'not' =>
   array (
     'assigned' => 'Not assigned',
     'allowed' => 'Action not allowed',
   ),
   'show' => 'Show',
   'select' => 'Select',
-  'with' => 
+  'with' =>
   array (
     'tax' => 'With tax',
   ),
   'lang' => 'Language',
   'month' => 'Month',
   'months' => 'Months',
-  'view' => 
+  'view' =>
   array (
     'details' => 'View details',
   ),
