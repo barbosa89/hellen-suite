@@ -2,13 +2,18 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Hotel;
 use App\User;
 use Tests\TestCase;
+use App\Models\Room;
+use App\Models\Check;
+use App\Models\Guest;
+use App\Models\Hotel;
 use RolesTableSeeder;
 use App\Models\Voucher;
+use Carbon\CarbonPeriod;
 use CountriesTableSeeder;
 use PermissionsTableSeeder;
+use Illuminate\Support\Carbon;
 use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,12 +39,12 @@ class VoucherTest extends TestCase
         $user = factory(User::class)->create();
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create();
-
-        $hotelId = id_encode($hotel->id);
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $user->id,
+        ]);
 
         $response = $this->actingAs($user)
-            ->get("/api/v1/web/hotels/{$hotelId}/vouchers");
+            ->get("/api/v1/web/hotels/{$hotel->hash}/vouchers");
 
         $response->assertForbidden();
     }
@@ -51,7 +56,9 @@ class VoucherTest extends TestCase
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create();
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
 
         /** @var Voucher $voucher */
         $voucher = factory(Voucher::class)->create([
@@ -59,10 +66,8 @@ class VoucherTest extends TestCase
             'user_id' => $manager->id,
         ]);
 
-        $hotelId = id_encode($hotel->id);
-
         $response = $this->actingAs($manager)
-            ->get("/api/v1/web/hotels/{$hotelId}/vouchers");
+            ->get("/api/v1/web/hotels/{$hotel->hash}/vouchers");
 
         $response->assertOk()
             ->assertJsonFragment([
@@ -78,7 +83,9 @@ class VoucherTest extends TestCase
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create();
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
 
         /** @var Voucher $oldVoucher */
         $oldVoucher = factory(Voucher::class)->create([
@@ -93,12 +100,10 @@ class VoucherTest extends TestCase
             'user_id' => $manager->id,
         ]);
 
-        $hotelId = id_encode($hotel->id);
-
         $response = $this->actingAs($manager)
             ->call(
                 'GET',
-                "/api/v1/web/hotels/{$hotelId}/vouchers",
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
                 [
                     'from_date' => now()->subDays(7)->format('Y-m-d'),
                 ]
@@ -120,14 +125,14 @@ class VoucherTest extends TestCase
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create();
-
-        $hotelId = id_encode($hotel->id);
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
 
         $response = $this->actingAs($manager)
             ->call(
                 'GET',
-                "/api/v1/web/hotels/{$hotelId}/vouchers",
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
                 [
                     'from_date' => now()->subYears(2),
                 ]
@@ -135,5 +140,139 @@ class VoucherTest extends TestCase
 
         $response->assertRedirect()
             ->assertSessionHasErrors('from_date');
+    }
+
+    public function test_user_can_get_guest_datasets_from_vouchers_history()
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'open' => true,
+            'status' => true,
+            'user_id' => $manager->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+        ]);
+
+        $voucher->rooms()->attach(
+            $room->id,
+            [
+                'price' => $room->price,
+                'quantity' => 1,
+                'discount' => 0,
+                'subvalue' => $room->price,
+                'taxes' => 0,
+                'value' => $room->price,
+                'start' => now(),
+                'end' => now(),
+                'enabled' => true
+            ]
+        );
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $manager->id,
+            'status' => false,
+        ]);
+
+        $voucher->guests()->attach($guest->id, [
+            'main' => true,
+            'active' => true,
+        ]);
+
+        $guest->rooms()->attach($room, [
+            'voucher_id' => $voucher->id
+        ]);
+
+        factory(Check::class)->create([
+            'in_at' => now(),
+            'out_at' => null,
+            'guest_id' => $guest->id,
+            'voucher_id' => $voucher->id,
+        ]);
+
+        $date = now();
+
+        $response = $this->actingAs($manager)
+            ->get("/api/v1/web/hotels/{$hotel->hash}/vouchers/datasets/guests/{$date->format('Y-m-d')}");
+
+        $labels = $this->generateLabels($date);
+        $colors = $this->generateColors($labels);
+
+        $response->assertOk()
+            ->assertJson([
+                'labels' => $labels,
+                'datasets' => [
+                    [
+                        'label' => trans('guests.title'),
+                        'data' => $this->generateData($labels, $date),
+                        'backgroundColor' => $colors['backgroundColor'],
+                        'borderColor' => $colors['borderColor'],
+                    ]
+                ]
+            ]);
+    }
+
+    private function generateLabels(Carbon $date): array
+    {
+        $start = $date->copy()->startOfMonth();
+        $end = $date->copy()->endOfMonth();
+
+        $period = CarbonPeriod::create($start, $end);
+        $labels = [];
+
+        foreach ($period as $day) {
+            $labels[] = $day->format('Y-m-d');
+        }
+
+        return $labels;
+    }
+
+    private function generateData(array $labels, Carbon $date): array
+    {
+        $data = [];
+
+        foreach ($labels as $label) {
+            if ($label == $date->format('Y-m-d')) {
+                $data[] = 1;
+            } else {
+                $data[] = 0;
+            }
+        }
+
+        return $data;
+    }
+
+    private function generateColors(array $labels): array
+    {
+        $colors = get_colors();
+        $index = 0;
+        $chartColors = [];
+
+        foreach ($labels as $label) {
+            $chartColors['backgroundColor'][] = $colors[$index]['bar'];
+            $chartColors['borderColor'][] = $colors[$index]['border'];
+
+            $index++;
+
+            if ($index == 6) {
+                $index = 0;
+            }
+        }
+
+        return $chartColors;
     }
 }

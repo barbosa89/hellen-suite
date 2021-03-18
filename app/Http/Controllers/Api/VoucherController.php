@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Rules\MinDate;
 use App\Models\Voucher;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Contracts\VoucherRepository;
+use App\Helpers\GuestChart;
 use App\Http\Controllers\Controller;
-use App\Rules\MinDate;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class VoucherController extends Controller
 {
@@ -36,11 +39,10 @@ class VoucherController extends Controller
             ]
         ]);
 
-        $vouchers = $this->voucher->paginate(
-            id_decode($hotel),
-            request()->get('per_page', 15),
-            Arr::only($validated, Voucher::SCOPE_FILTERS),
-        );
+        $perPage = request()->input('per_page', config('settings.paginate'));
+        $filters = Arr::only($validated, Voucher::SCOPE_FILTERS);
+
+        $vouchers = $this->voucher->paginate(id_decode($hotel), $perPage, $filters);
 
         return response()->json([
             'vouchers' => $vouchers,
@@ -48,68 +50,24 @@ class VoucherController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * @param  string  $hotelId
+     * @param  string  $period
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getGuestDataset(string $hotelId, string $pediod)
     {
-        //
-    }
+        Validator::make(['period' => $pediod], [
+            'period' => 'required|date',
+        ])->validate();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $startDate = Carbon::parse($pediod)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $vouchers = $this->voucher->queryGuestChecks(id_decode($hotelId), $startDate, $endDate);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $guestChart = new GuestChart($vouchers, $startDate, $endDate);
+        $chartData = $guestChart->countChecks()->get();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json($chartData);
     }
 }

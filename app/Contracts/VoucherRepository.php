@@ -2,6 +2,7 @@
 
 namespace App\Contracts;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,4 +29,12 @@ interface VoucherRepository extends NestedRepository
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function first(int $id): Model;
+
+    /**
+     * @param integer $hotelId
+     * @param \Illuminate\Support\Carbon $startDate
+     * @param \Illuminate\Support\Carbon $endDate
+     * @return \Illuminate\Support\Collection
+     */
+    public function queryGuestChecks(int $hotelId, Carbon $startDate, Carbon $endDate): Collection;
 }

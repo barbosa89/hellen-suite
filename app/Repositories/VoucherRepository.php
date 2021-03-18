@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Voucher;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Contracts\VoucherRepository as Repository;
@@ -217,5 +218,41 @@ class VoucherRepository implements Repository
                 },
             ])
             ->first(fields_dotted('vouchers'));
+    }
+
+    /**
+     * @param integer $hotelId
+     * @param \Illuminate\Support\Carbon $startDate
+     * @param \Illuminate\Support\Carbon $endDate
+     * @return \Illuminate\Support\Collection
+     */
+    public function queryGuestChecks(int $hotelId, Carbon $startDate, Carbon $endDate): Collection
+    {
+        $lastMonth = $startDate->copy()->subMonth();
+
+        return Voucher::owner()
+            ->where('hotel_id', $hotelId)
+            ->where('status', true)
+            ->where(function ($query) use ($startDate, $endDate, $lastMonth) {
+                $query->whereBetween('created_at', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $lastMonth) {
+                        $query->open()
+                            ->whereYear('created_at', $startDate)
+                            ->whereMonth('created_at', $lastMonth);
+                    });
+            })
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(fields_dotted('rooms'))
+                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+                },
+                'rooms.guests' => function ($query) {
+                    $query->select(fields_dotted('guests'));
+                },
+                'checks' => function ($query) {
+                    $query->select('id', 'in_at', 'out_at', 'guest_id', 'voucher_id');
+                },
+            ])
+            ->get(['id', 'hotel_id', 'created_at']);
     }
 }
