@@ -11,14 +11,11 @@
         </template>
 
         <div class="row">
-            <div class="col">
+            <div class="col-12 col-sm-6">
                 <voucher-card-list></voucher-card-list>
             </div>
-            <div class="col">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fas fa-users"></i>
-                        {{ $t('guests.title') }}
+            <div class="col-12 col-sm-6">
+                <guest-chart-card :hotel-id='hotelId'></guest-chart-card>
                     </div>
                     <div class="card-body">
                         <canvas id="myAreaChart" width="100%" height="30"></canvas>
@@ -33,6 +30,7 @@
 <script>
     import IconCards from './IconCards'
     import VoucherCardList from '../Vouchers/CardList'
+    import GuestChartCard from '../Guests/ChartCard'
 
     export default {
         data() {
@@ -42,7 +40,7 @@
         },
         components: {
             IconCards,
-            VoucherCardList
+            GuestChartCard,
         }
     }
 </script>
