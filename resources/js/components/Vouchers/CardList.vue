@@ -11,7 +11,7 @@
                         <td>{{ record.created_at | date }}</td>
                         <td>
                             <a :href="'/vouchers/' +record.hash">
-                                {{record.number }}
+                                {{ record.number }}
                             </a>
                         </td>
                         <td>{{ record.hotel.business_name }}</td>
@@ -29,7 +29,7 @@
                 </div>
             </template>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="card-footer small text-muted">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
     </div>
 </template>
 
