@@ -2,28 +2,20 @@
 
 namespace App\Helpers;
 
+use App\Contracts\Chart as ChartInterface;
 use Closure;
 use Illuminate\Support\Collection;
 
-class Chart
+class Chart implements ChartInterface
 {
-    /**
-     * Voucher collection.
-     *
-     * @var \Illuminate\Support\Collection<Voucher>
-     */
-    protected $vouchers;
+    protected Collection $vouchers;
 
     /**
-     * Voucher data.
-     *
-     * @var \Illuminate\Support\Collection
+     * @var Collection|array
      */
     protected $data;
 
     /**
-     * Initialization
-     *
      * @param  \Illuminate\Support\Collection $vouchers
      * @return void
      */
@@ -32,13 +24,36 @@ class Chart
         $this->vouchers = $vouchers;
     }
 
+	/**
+     * Assign the default zero value for months that have no vouchers
+     *
+     * @param  array $data
+     * @return array $data
+     */
+    private function fillDataAnually(array $data): array
+    {
+        for ($i=1; $i <= 12; $i++) {
+            foreach (array_keys($data) as $type) {
+                // Check if the month exists in the array
+                if (!isset($data[$type][$i])) {
+                    $data[$type][$i] = 0;
+                }
+
+                // Order by keys
+                ksort($data[$type]);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * Return Chart object
      *
      * @param  \Illuminate\Support\Collection $vouchers
      * @return \App\Helpers\Chart
      */
-	public static function create(Collection $vouchers)
+	public static function create(Collection $vouchers): Chart
 	{
         $chart = new Chart($vouchers);
 
@@ -50,7 +65,7 @@ class Chart
      *
      * @return \App\Helpers\Chart
      */
-    public function group()
+    public function group(): Chart
     {
         $this->data = $this->vouchers->groupBy([
             function($voucher) {
@@ -69,7 +84,7 @@ class Chart
      * @param  \Closure $calc
      * @return void
      */
-    public function process(Closure $calc)
+    private function process(Closure $calc): void
     {
         $types = $this->data->toArray();
         $data = [];
@@ -94,7 +109,7 @@ class Chart
         }
 
         // Set new data
-        $this->data = $this->fillData($data);
+        $this->data = $this->fillDataAnually($data);
     }
 
     /**
@@ -102,7 +117,7 @@ class Chart
      *
      * @return \App\Helpers\Chart
      */
-    public function countItems()
+    public function countItems(): Chart
     {
         $this->process(function ($vouchers, $voucher) {
             // Add quantity in the pivot table
@@ -117,7 +132,7 @@ class Chart
      *
      * @return \App\Helpers\Chart
      */
-    public function countVouchers()
+    public function countVouchers(): Chart
     {
         $this->process(function ($vouchers, $voucher) {
             return 1;
@@ -131,7 +146,7 @@ class Chart
      *
      * @return \App\Helpers\Chart
      */
-    public function addValues()
+    public function addValues(): Chart
     {
         $this->process(function ($vouchers, $voucher) {
             // Add voucher value
@@ -146,7 +161,7 @@ class Chart
      *
      * @return \App\Helpers\Chart
      */
-    public function addItemValues()
+    public function addItemValues(): Chart
     {
         $this->process(function ($vouchers, $voucher) {
             // Add voucher item value
@@ -156,35 +171,12 @@ class Chart
         return $this;
     }
 
-	/**
-     * Assign the default zero value for months that have no vouchers
-     *
-     * @param  array $data
-     * @return array $data
-     */
-    public function fillData(array $data)
-    {
-        for ($i=1; $i <= 12; $i++) {
-            foreach (array_keys($data) as $type) {
-                // Check if the month exists in the array
-                if (!isset($data[$type][$i])) {
-                    $data[$type][$i] = 0;
-                }
-
-                // Order by keys
-                ksort($data[$type]);
-            }
-        }
-
-        return $data;
-    }
-
     /**
      * Build the array to generate the chart
      *
-     * @return array $datasets
+     * @return Collection $datasets
      */
-    public function get()
+    public function get(): Collection
     {
         $datasets = collect();
 
