@@ -69,11 +69,7 @@ class PlanController extends Controller
         // All active plans
         $plans = Plan::active()
             ->notRelatedToUser()
-            ->get();
-
-        if ($plans->isEmpty()) {
-            return redirect()->route('home');
-        }
+            ->get(['plans.id', 'plans.price', 'plans.months', 'plans.type', 'plans.status']);
 
         return view('app.plans.choose', compact('plans'));
     }
@@ -142,7 +138,7 @@ class PlanController extends Controller
      * @param \Illuminate\Support\Collection $plans
      * @return boolean
      */
-    public function hasActivePlans(Collection $plans): bool
+    private function hasActivePlans(Collection $plans): bool
     {
         $actives = $plans->filter(function ($plan) {
             return $plan->isActive();
@@ -157,7 +153,7 @@ class PlanController extends Controller
      * @param \Illuminate\Support\Collection $plans
      * @return boolean
      */
-    public function hasFreeExpiredPlan(Collection $plans): bool
+    private function hasFreeExpiredPlan(Collection $plans): bool
     {
         return $plans->count() == 1 and $plans->first()->type == Plan::FREE;
     }
