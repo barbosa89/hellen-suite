@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Guest;
 use App\User;
 use Tests\TestCase;
+use App\Models\Guest;
 use RolesTableSeeder;
 use CountriesTableSeeder;
-use IdentificationTypesTableSeeder;
 use PermissionsTableSeeder;
+use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
