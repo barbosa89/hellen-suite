@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 
 class VoucherTest extends TestCase
 {
@@ -226,6 +227,102 @@ class VoucherTest extends TestCase
             ]);
     }
 
+    /**
+     * @param string $column
+     * @param bool $status
+     * @param string $filterValue
+     * @dataProvider statusProvider
+     */
+    public function test_user_can_filter_vouchers_by_status(string $column, bool $status, string $filterValue)
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            $column => !$status,
+        ]);
+
+        /** @var Voucher $filterableVoucher */
+        $filterableVoucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            $column => $status,
+        ]);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
+                [
+                    'status' => [$filterValue],
+                ]
+            );
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'number' => (string) $filterableVoucher->number,
+            ])
+            ->assertJsonMissing([
+                'number' => (string) $voucher->number,
+            ]);
+    }
+
+    /**
+     * @param string $type
+     * @dataProvider typeProvider
+     */
+    public function test_user_can_filter_vouchers_by_type(string $type)
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            'type' => Arr::first(Voucher::TYPES, fn($t) => $t !== $type),
+        ]);
+
+        /** @var Voucher $filterableVoucher */
+        $filterableVoucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            'type' => $type,
+        ]);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
+                [
+                    'type' => [$type],
+                ]
+            );
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'number' => (string) $filterableVoucher->number,
+            ])
+            ->assertJsonMissing([
+                'number' => (string) $voucher->number,
+            ]);
+    }
+
     private function generateLabels(Carbon $date): array
     {
         $start = $date->copy()->startOfMonth();
@@ -274,5 +371,48 @@ class VoucherTest extends TestCase
         }
 
         return $chartColors;
+    }
+
+    public function statusProvider(): array
+    {
+        return [
+            'open vouchers' => [
+                'open',
+                true,
+                Voucher::OPEN,
+            ],
+            'closed vouchers' => [
+                'open',
+                false,
+                Voucher::CLOSED,
+            ],
+            'paid vouchers' => [
+                'payment_status',
+                true,
+                Voucher::PAID,
+            ],
+            'vouchers pending payment' => [
+                'payment_status',
+                false,
+                Voucher::PENDING,
+            ],
+            'reservation vouchers' => [
+                'reservation',
+                true,
+                Voucher::RESERVATION,
+            ],
+        ];
+    }
+
+    public function typeProvider(): array
+    {
+        return [
+            'vouchers of sale type' => [Voucher::SALE],
+            'vouchers of entry type' => [Voucher::ENTRY],
+            'vouchers of loss type' => [Voucher::LOSS],
+            'vouchers of discard type' => [Voucher::DISCARD],
+            'vouchers of sale lodging' => [Voucher::LODGING],
+            'vouchers of sale dining' => [Voucher::DINING],
+        ];
     }
 }

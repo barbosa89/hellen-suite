@@ -11,6 +11,7 @@ use App\Helpers\GuestChart;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class VoucherController extends Controller
 {
@@ -29,18 +30,29 @@ class VoucherController extends Controller
      */
     public function index(string $hotel)
     {
-        $validated = request()->validate([
+        $filters = request()->validate([
             'from_date' => [
                 'bail',
                 'nullable',
                 'date',
                 'before_or_equal:today',
-                new MinDate()
+                new MinDate(),
+            ],
+            'status.*' => [
+                'bail',
+                'nullable',
+                'string',
+                Rule::in(Voucher::STATUS),
+            ],
+            'type.*' => [
+                'bail',
+                'nullable',
+                'string',
+                Rule::in(Voucher::TYPES),
             ]
         ]);
 
         $perPage = request()->input('per_page', config('settings.paginate'));
-        $filters = Arr::only($validated, Voucher::SCOPE_FILTERS);
 
         $vouchers = $this->voucher->paginate(id_decode($hotel), $perPage, $filters);
 

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Voucher extends Model
@@ -12,18 +16,17 @@ class Voucher extends Model
     use LogsActivity;
 
     public const PREFIX = 'V';
-
     public const SALE = 'sale';
-
     public const ENTRY = 'entry';
-
     public const LOSS = 'loss';
-
     public const DISCARD = 'discard';
-
     public const LODGING = 'lodging';
-
     public const DINING = 'dining';
+    public const OPEN = 'open';
+    public const CLOSED = 'closed';
+    public const PAID = 'paid';
+    public const PENDING = 'pending';
+    public const RESERVATION = 'reservation';
 
     public const TYPES = [
         self::SALE,
@@ -34,102 +37,133 @@ class Voucher extends Model
         self::DINING,
     ];
 
-    public const SCOPE_FILTERS = [
-        'from_date',
+    public const STATUS = [
+        self::OPEN,
+        self::CLOSED,
+        self::PAID,
+        self::PENDING,
+        self::RESERVATION,
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
+    public const SCOPE_FILTERS = [
+        'from_date',
+        'type',
+        'status',
+    ];
+
     protected $appends = ['hash'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = ['id'];
 
-    public function rooms()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function rooms(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Room::class);
     }
 
-    public function payments()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments(): HasMany
     {
         return $this->hasMany(\App\Models\Payment::class);
     }
 
-    public function products()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Product::class);
     }
 
-    public function props()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function props(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Prop::class);
     }
 
-    public function services()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function services(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Service::class);
     }
 
-    public function user()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
     }
 
-    public function company()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Company::class);
     }
 
-    public function guests()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function guests(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Guest::class);
     }
 
-    public function hotel()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hotel(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Hotel::class);
     }
 
-    public function additionals()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function additionals(): HasMany
     {
         return $this->hasMany(\App\Models\Additional::class);
     }
 
-    public function shifts()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function shifts(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Shift::class);
     }
 
-    public function checks()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function checks(): HasMany
     {
         return $this->hasMany(\App\Models\Check::class);
     }
 
     /**
-     * Hashing ID.
-     *
-     * @param  string  $value
-     * @return void
+     * @return string
      */
-    public function getHashAttribute()
+    public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 
     /**
-     * Scope a query to get lodging vouchers.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeLodging($query)
+    public function scopeLodging(Builder $query): Builder
     {
         return $query->where('type', 'lodging')
             ->when(auth()->user()->hasRole('receptionist'), function ($query)
@@ -139,31 +173,81 @@ class Voucher extends Model
     }
 
     /**
-     * Scope a query open vouchers.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOpen($query)
+    public function scopeOpen(Builder $query): Builder
     {
         return $query->where('open', true)
             ->where('status', true);
     }
 
     /**
-     * Scope a query closed vouchers.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeClosed($query)
+    public function scopeClosed(Builder $query): Builder
     {
         return $query->where('open', false)
             ->where('status', true);
     }
 
     /**
-     * @return boolean
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePaid(Builder $query): Builder
+    {
+        return $query->where('payment_status', true)
+            ->where('status', true);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('payment_status', false)
+            ->where('status', true);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeReservation(Builder $query): Builder
+    {
+        return $query->where('reservation', true)
+            ->where('status', true);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $filter
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStatus(Builder $query, string $filter): Builder
+    {
+        if ($query->hasNamedScope($filter)) {
+            $query->{$filter}();
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeType(Builder $query, string $type): Builder
+    {
+        return $query->where('type', $type);
+    }
+
+    /**
+     * @return bool
      */
     public function canClosePayments(): bool
     {

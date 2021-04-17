@@ -6,12 +6,11 @@ namespace App\Traits;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
-trait Queryable {
-
+trait Queryable
+{
     /**
-     * Get the columns name to query
-     *
      * @return array
      */
     public static function getColumnNames(array $columns = [], array $default = ['id', 'created_at', 'updated_at']) : array
@@ -20,8 +19,6 @@ trait Queryable {
     }
 
     /**
-     * Get the columns name to query
-     *
      * @return array
      */
     public function getTableColumns(): array
@@ -30,12 +27,10 @@ trait Queryable {
     }
 
     /**
-     * Scope a query to select columns.
-     *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAllColumns($query, bool $dotted = false)
+    public function scopeAllColumns(Builder $query, bool $dotted = false): Builder
     {
         if ($dotted) {
             $columns = [];
@@ -51,47 +46,38 @@ trait Queryable {
     }
 
     /**
-     * Scope a query by id.
-     *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  int $id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeId($query, int $id)
+    public function scopeId(Builder $query, int $id): Builder
     {
         return $query->where('id', $id);
     }
 
     /**
-     * Scope a query by owner.
-     *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOwner($query)
+    public function scopeOwner(Builder $query): Builder
     {
         return $query->where('user_id', id_parent());
     }
 
     /**
-     * Scope a query by filters.
-     *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter($query, array $filters)
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         foreach ($filters as $filter => $value) {
-            $filter = clean_param(Str::camel($filter));
-
-            if (Str::contains($value, '_')) {
-                $value = clean_param(Str::camel($value));
+            if (is_array($value)) {
+                foreach ($value as $parameter) {
+                    $query = $this->applyFilter($query, $filter, $parameter);
+                }
             } else {
-                $value = clean_param($value);
-            }
+                $query = $this->applyFilter($query, $filter, $value);
 
-            if($query->hasNamedScope($filter)) {
-                $query->{$filter}($value);
             }
         }
 
@@ -99,13 +85,33 @@ trait Queryable {
     }
 
     /**
-     * Scope a query by creation date.
-     *
+     * @param string $filter
+     * @param mixed $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function applyFilter(Builder $query, string $filter, $value): Builder
+    {
+        $filter = clean_param(Str::camel($filter));
+
+        if (Str::contains($value, '_')) {
+            $value = clean_param(Str::camel($value));
+        } else {
+            $value = clean_param($value);
+        }
+
+        if($query->hasNamedScope($filter)) {
+            $query->{$filter}($value);
+        }
+
+        return $query;
+    }
+
+    /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param string $date
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFromDate($query, string $date)
+    public function scopeFromDate(Builder $query, string $date): Builder
     {
         $date = Carbon::parse($date);
 
