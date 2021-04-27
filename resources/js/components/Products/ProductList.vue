@@ -199,28 +199,29 @@ export default {
                 this.updateProductList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/products/search', {
-                        query: this.query,
-                        hotel: this.hotel
-                    }).then(response => {
-                        let products = JSON.parse(response.data.products);
+                    axios
+                        .get('/products/search', {
+                            query: this.query,
+                            hotel: this.hotel
+                        }).then(response => {
+                            let products = JSON.parse(response.data.products);
 
-                        if (products.length > 0) {
-                            this.products = products
-                        } else {
-                            this.products = []
+                            if (products.length > 0) {
+                                this.products = products
+                            } else {
+                                this.products = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
-                        }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
-                    });
+                                toastr.info(
+                                    this.$root.$t('common.without.results'),
+                                    this.$root.$t('common.sorry')
+                                );
+                            }
+                        }).catch(e => {
+                            toastr.error(
+                                this.$root.$t('common.try'),
+                                'Error'
+                            )
+                        })
                 }
             }
         }
