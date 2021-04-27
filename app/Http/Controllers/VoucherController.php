@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-// TODO: Agregar edad limite para ser adulto
 class VoucherController extends Controller
 {
 
@@ -620,7 +619,6 @@ class VoucherController extends Controller
         return view('app.vouchers.change-room', compact('voucher', 'rooms', 'customer', 'room'));
     }
 
-    // TODO: Procedimiento para actualizar quitar responsable a quienes hayan pasado el mínimo de edad
     /**
      * Change a room in the voucher with relationships.
      *
@@ -1397,7 +1395,6 @@ class VoucherController extends Controller
      */
     public function addProducts(AddProducts $request, $id)
     {
-        // TODO: Implementar el descuento (productos vendidos) de productos por habitación
         $status = false;
 
         DB::transaction(function () use (&$status, $request, $id) {
