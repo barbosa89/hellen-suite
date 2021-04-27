@@ -323,6 +323,61 @@ class VoucherTest extends TestCase
             ]);
     }
 
+    public function test_user_can_filter_vouchers_by_multiple_types()
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            'type' => Voucher::LODGING,
+        ]);
+
+        /** @var Voucher $diningVoucher */
+        $diningVoucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            'type' => Voucher::DINING,
+        ]);
+
+        /** @var Voucher $saleVoucher */
+        $saleVoucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+            'type' => Voucher::SALE,
+        ]);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
+                [
+                    'type' => [
+                        Voucher::DINING,
+                        Voucher::SALE
+                    ],
+                ]
+            );
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'number' => (string) $diningVoucher->number,
+            ])
+            ->assertJsonFragment([
+                'number' => (string) $saleVoucher->number,
+            ])
+            ->assertJsonMissing([
+                'number' => (string) $voucher->number,
+            ]);
+    }
 
     public function test_user_can_search_vouchers()
     {

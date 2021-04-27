@@ -49,6 +49,7 @@ class Voucher extends Model
         'from_date',
         'type',
         'status',
+        'search',
     ];
 
     protected $appends = ['hash'];
@@ -224,13 +225,15 @@ class Voucher extends Model
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $filter
+     * @param array $filters
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeStatus(Builder $query, string $filter): Builder
+    public function scopeStatus(Builder $query, array $filters): Builder
     {
-        if ($query->hasNamedScope($filter)) {
-            $query->{$filter}();
+        foreach ($filters as $filter) {
+            if ($query->hasNamedScope($filter)) {
+                $query->{$filter}();
+            }
         }
 
         return $query;
@@ -238,11 +241,14 @@ class Voucher extends Model
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $type
+     * @param array $types
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeType(Builder $query, string $type): Builder
+    public function scopeType(Builder $query, array $types): Builder
     {
+        return $query->whereIn('type', $types);
+    }
+
     /**
      * Scope a query to guests by text search.
      *

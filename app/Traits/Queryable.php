@@ -68,16 +68,14 @@ trait Queryable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter(Builder $query, array $filters): Builder
+    public function scopeFilter($query, array $filters)
     {
-        foreach ($filters as $filter => $value) {
-            if (is_array($value)) {
-                foreach ($value as $parameter) {
-                    $query = $this->applyFilter($query, $filter, $parameter);
-                }
-            } else {
-                $query = $this->applyFilter($query, $filter, $value);
+        foreach ($filters as $filter => $param) {
+            $filter = clean_param(Str::camel($filter));
+            $param = $this->parseParam($param);
 
+            if($query->hasNamedScope($filter)) {
+                $query->{$filter}($param);
             }
         }
 
@@ -85,25 +83,33 @@ trait Queryable
     }
 
     /**
-     * @param string $filter
      * @param mixed $value
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return mixed
      */
-    private function applyFilter(Builder $query, string $filter, $value): Builder
+    private function parseParam($value)
     {
-        $filter = clean_param(Str::camel($filter));
-
-        if (Str::contains($value, '_')) {
-            $value = clean_param(Str::camel($value));
+        if (is_array($value)) {
+            foreach ($value as $param) {
+                $parsed[] = $this->parseParam($param);
+            }
         } else {
-            $value = clean_param($value);
+            if (Str::contains($value, '_')) {
+                $parsed = clean_param(Str::camel($value));
+            } else {
+                $parsed = clean_param($value);
+            }
         }
 
-        if($query->hasNamedScope($filter)) {
-            $query->{$filter}($value);
-        }
+        return $parsed;
+    }
 
-        return $query;
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
+    public function normalizeParam($value)
+    {
+        # code...
     }
 
     /**
