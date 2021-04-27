@@ -201,8 +201,10 @@ export default {
                 if (current.length >= 3) {
                     axios
                         .get('/products/search', {
-                            query: this.query,
-                            hotel: this.hotel
+                            params: {
+                                query: this.query,
+                                hotel: this.hotel
+                            }
                         }).then(response => {
                             let products = JSON.parse(response.data.products);
 
