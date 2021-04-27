@@ -27,7 +27,7 @@ class GuestController extends Controller
         $validated = request()->validate([
             'from_date' => 'bail|nullable|date|before_or_equal:today',
             'status' => 'bail|nullable|string|in:is_staying,is_not_staying',
-            'query_by' => 'bail|nullable|alpha_num|min:3|max:50',
+            'query_by' => 'bail|nullable|alpha_num|min:3|max:30',
         ]);
 
         $guests = $this->guest->paginate(
