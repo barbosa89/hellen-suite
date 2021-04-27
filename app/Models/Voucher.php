@@ -243,7 +243,16 @@ class Voucher extends Model
      */
     public function scopeType(Builder $query, string $type): Builder
     {
-        return $query->where('type', $type);
+    /**
+     * Scope a query to guests by text search.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string $text
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, string $text)
+    {
+        return $query->whereLike(['number', 'origin', 'destination', 'made_by'], $text);
     }
 
     /**

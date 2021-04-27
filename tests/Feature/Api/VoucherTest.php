@@ -323,6 +323,48 @@ class VoucherTest extends TestCase
             ]);
     }
 
+
+    public function test_user_can_search_vouchers()
+    {
+        /** @var User $manager */
+        $manager = factory(User::class)->create();
+        $manager->givePermissionTo('vouchers.index');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+        ]);
+
+        /** @var Voucher $searchableVoucher */
+        $searchableVoucher = factory(Voucher::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $manager->id,
+        ]);
+
+        $response = $this->actingAs($manager)
+            ->call(
+                'GET',
+                "/api/v1/web/hotels/{$hotel->hash}/vouchers",
+                [
+                    'search' => $searchableVoucher->number,
+                ]
+            );
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'number' => (string) $searchableVoucher->number,
+            ])
+            ->assertJsonMissing([
+                'number' => (string) $voucher->number,
+            ]);
+    }
+
     private function generateLabels(Carbon $date): array
     {
         $start = $date->copy()->startOfMonth();

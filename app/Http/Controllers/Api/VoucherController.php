@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Rules\MinDate;
 use App\Models\Voucher;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Contracts\VoucherRepository;
 use App\Helpers\GuestChart;
 use App\Http\Controllers\Controller;
@@ -49,7 +47,14 @@ class VoucherController extends Controller
                 'nullable',
                 'string',
                 Rule::in(Voucher::TYPES),
-            ]
+            ],
+            'search' => [
+                'bail',
+                'nullable',
+                'alpha_num',
+                'max:30',
+                'min:3'
+            ],
         ]);
 
         $perPage = request()->input('per_page', config('settings.paginate'));
