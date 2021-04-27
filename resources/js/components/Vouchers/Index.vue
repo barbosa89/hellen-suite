@@ -41,7 +41,7 @@
                                 {{ record.number }}
                             </a>
                         </td>
-                        <td>{{ record.type }}</td>
+                        <td>{{ $t('transactions.' + record.type) }}</td>
                         <td>{{ record.value }}</td>
                     </template>
                 </vue-table>
