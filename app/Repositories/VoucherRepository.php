@@ -38,7 +38,8 @@ class VoucherRepository implements Repository
                     $query->select(fields_get('payments'));
                 },
             ])
-            ->paginate($perPage);
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     /**
