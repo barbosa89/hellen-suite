@@ -110,4 +110,5 @@ return array (
   array (
     'vehicles' => 'Registrar vehículos',
   ),
+  'filters' => 'Filtros de recibos',
 );

@@ -12,50 +12,51 @@ return array (
   'loss' => 'Pérdida',
   'sales' => 'Ventas',
   'losses' => 'Pérdidas',
-  'select' => 
+  'select' =>
   array (
     'type' => 'Seleccione el tipo de transacción',
   ),
-  'element' => 
+  'element' =>
   array (
     'exists' => 'Este elemento ya fue agregado',
   ),
-  'made' => 
+  'made' =>
   array (
     'by' => 'Hecho por',
   ),
-  'no' => 
+  'no' =>
   array (
     'stock' => 'El elemento no tiene existencias en el inventario',
     'item' => 'No hay ítem para procesar',
   ),
-  'choose' => 
+  'choose' =>
   array (
     'hotel' => 'Por elije un hotel',
     'type' => 'por favor elite un tipo de transacción',
     'company' => 'Por favor seleccione un proveedor',
   ),
   'incomplete' => 'Se detectaron campos incompletos',
-  'amount' => 
+  'amount' =>
   array (
     'zero' => 'La cantidad debe ser mayor a cero',
   ),
-  'has' => 
+  'has' =>
   array (
     'errors' => 'Hay errores y no puedes continuar',
   ),
-  'all' => 
+  'all' =>
   array (
     'processed' => 'Todos los ítem de la transacción fueron procesados',
   ),
-  'partial' => 
+  'partial' =>
   array (
     'processed' => 'Algunos ítem de la transacción no fueron procesados',
   ),
-  'active' => 
+  'active' =>
   array (
     'edition' => 'Un ítem está siendo modificado',
   ),
   'discard' => 'Descarga',
   'lodging' => 'Alojamiento',
+  'dining' => 'Comedor',
 );

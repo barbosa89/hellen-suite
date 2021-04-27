@@ -12,50 +12,51 @@ return array (
   'losses' => 'Losses',
   'sale' => 'Sale',
   'sales' => 'Sales',
-  'select' => 
+  'select' =>
   array (
     'type' => 'Select transaction type',
   ),
-  'element' => 
+  'element' =>
   array (
     'exists' => 'This item has already been added.',
   ),
-  'made' => 
+  'made' =>
   array (
     'by' => 'Made by',
   ),
-  'no' => 
+  'no' =>
   array (
     'stock' => 'The element has no stock in the inventory',
     'item' => 'There is no item to process',
   ),
-  'choose' => 
+  'choose' =>
   array (
     'hotel' => 'Please choose a hotel',
     'type' => 'Please choose a transaction type',
     'company' => 'Please select a supplier',
   ),
   'incomplete' => 'Incomplete fields were detected',
-  'amount' => 
+  'amount' =>
   array (
     'zero' => 'The quantity must be greater than zero',
   ),
-  'has' => 
+  'has' =>
   array (
     'errors' => 'Errors were detected',
   ),
-  'all' => 
+  'all' =>
   array (
     'processed' => 'All transaction item were processed.',
   ),
-  'partial' => 
+  'partial' =>
   array (
     'processed' => 'Some transaction item were not processed',
   ),
-  'active' => 
+  'active' =>
   array (
     'edition' => 'An item is being modified',
   ),
   'discard' => 'Discard',
   'lodging' => 'Lodging',
+  'dining' => 'Dining',
 );

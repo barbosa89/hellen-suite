@@ -110,4 +110,5 @@ return array (
   array (
     'vehicles' => 'Register vehicles',
   ),
+  'filters' => 'Voucher filters',
 );

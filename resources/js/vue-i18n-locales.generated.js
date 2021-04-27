@@ -196,7 +196,13 @@ export default {
             "months": "Months",
             "view": {
                 "details": "View details"
-            }
+            },
+            "filters": {
+                "filters": "Filters",
+                "apply": "Apply"
+            },
+            "clear": "Clear",
+            "types": "Types"
         },
         "dining": {
             "title": "Dining service",
@@ -285,7 +291,8 @@ export default {
                 "edition": "An item is being modified"
             },
             "discard": "Discard",
-            "lodging": "Lodging"
+            "lodging": "Lodging",
+            "dining": "Dining"
         },
         "plans": {
             "title": "Plans",
@@ -660,7 +667,8 @@ export default {
             },
             "register": {
                 "vehicles": "Register vehicles"
-            }
+            },
+            "filters": "Voucher filters"
         },
         "products": {
             "add": "Add productos",
@@ -1162,7 +1170,13 @@ export default {
             "months": "Meses",
             "view": {
                 "details": "Ver detalles"
-            }
+            },
+            "filters": {
+                "filters": "Filtros",
+                "apply": "Aplicar"
+            },
+            "clear": "Limpiar",
+            "types": "Tipos"
         },
         "dining": {
             "title": "Servicio de comedor",
@@ -1251,7 +1265,8 @@ export default {
                 "edition": "Un ítem está siendo modificado"
             },
             "discard": "Descarga",
-            "lodging": "Alojamiento"
+            "lodging": "Alojamiento",
+            "dining": "Comedor"
         },
         "plans": {
             "title": "Planes",
@@ -1626,7 +1641,8 @@ export default {
             },
             "register": {
                 "vehicles": "Registrar vehículos"
-            }
+            },
+            "filters": "Filtros de recibos"
         },
         "products": {
             "title": "Productos",

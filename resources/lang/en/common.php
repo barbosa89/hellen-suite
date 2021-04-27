@@ -186,4 +186,10 @@ return array (
   array (
     'details' => 'View details',
   ),
+  'filters' => [
+    'filters' => 'Filters',
+    'apply' => 'Apply',
+  ],
+  'clear' => 'Clear',
+  'types' => 'Types',
 );

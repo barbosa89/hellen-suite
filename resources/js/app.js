@@ -36,12 +36,12 @@ Vue.component('prop-list', require('./components/Props/PropList.vue').default);
 
 Vue.component('asset-list', require('./components/Assets/AssetList.vue').default);
 
-Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default);
-
 Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
 Vue.component('tag-list', require('./components/Tags/TagList.vue').default);
 
 Vue.component('search-guests', require('./components/Vouchers/SearchGuests.vue').default);
+Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default);
+Vue.component('vouchers-index', require('./components/Vouchers/Index.vue').default);
 
 Vue.component('home-index', require('./components/Home/Index.vue').default);
 
@@ -70,7 +70,13 @@ Vue.filter('date', function(value) {
     }
 
     return ''
-})
+});
+
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 const app = new Vue({
     el: '#app',
