@@ -171,11 +171,11 @@
     </li>
     @endcan
 
-    @role('manager')
+    {{-- @role('manager')
         <li class="nav-item">
             <a class="nav-link" href="#">
             <i class="fas fa-cogs"></i>
             <span>Configuración</span></a>
         </li>
-    @endrole
+    @endrole --}}
 </ul>
