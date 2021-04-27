@@ -308,7 +308,7 @@ class PropController extends Controller
             });
 
             return response()->json([
-                'results' => $props->toJson()
+                'props' => $props->toJson()
             ]);
         }
 

@@ -120,12 +120,14 @@ export default {
     watch: {
         query: function(current, old) {
             if (current.length == 0 || this.query.length == 0) {
-                this.updateServiceList()
+                this.updatePropList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/props/search', {
-                        query: this.query,
-                        hotel: this.hotel
+                    axios.get('/props/search', {
+                        params: {
+                            query: this.query,
+                            hotel: this.hotel
+                        }
                     }).then(response => {
                         let props = JSON.parse(response.data.props);
 
