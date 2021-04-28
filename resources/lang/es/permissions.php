@@ -17,4 +17,5 @@ return array (
   'loss' => 'Pérdida',
   'discard' => 'Salida',
   'vouchers' => 'Recibos',
+  'toggle' => 'Cambiar estado',
 );

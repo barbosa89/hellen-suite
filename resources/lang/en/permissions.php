@@ -17,4 +17,5 @@ return array (
   'loss' => 'Loss',
   'sale' => 'Sale',
   'vouchers' => 'Vouchers',
+  'toggle' => 'Toggle status',
 );
