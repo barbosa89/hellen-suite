@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['auth', 'verified']], function() {
 	Route::post('rooms/toggle', 'Api\RoomController@toggle')
 		->name('rooms.toggle')
-        ->middleware('permission:rooms.edit');
+        ->middleware('permission:rooms.toggle');
 
     Route::post('rooms', 'Api\RoomController@store')
         ->name('rooms.store')

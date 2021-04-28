@@ -133,5 +133,10 @@ class PermissionsTableSeeder extends Seeder
                 'guard_name' => config('auth.defaults.guard')
             ],
         ]);
+
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
     }
 }

@@ -523,7 +523,7 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($this->manager)
-            ->post(route('rooms.toggle'), [
+            ->post(route('api.web.rooms.toggle'), [
                 'hotel' => id_encode($this->hotel->id),
                 'room' => id_encode($room->id),
                 'status' => Room::AVAILABLE,
