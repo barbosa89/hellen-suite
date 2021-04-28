@@ -591,6 +591,44 @@ class RoomTest extends TestCase
             ]);
     }
 
+    public function test_user_can_enable_room()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('rooms.toggle');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+            'status' => Room::CLEANING,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->post(route('api.web.rooms.toggle'), [
+                'room' => $room->hash,
+                'status' => Room::AVAILABLE,
+            ]);
+
+        $response->dump()->assertJsonFragment([
+            'hash' => $room->hash,
+            'status' => Room::AVAILABLE,
+        ]);
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $room->id,
+            'status' => Room::AVAILABLE,
+        ]);
+    }
+
     public function test_user_can_room_data_from_api()
     {
         $room = factory(Room::class)->create([
