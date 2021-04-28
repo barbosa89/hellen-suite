@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -12,131 +13,140 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         foreach (config('settings.modules') as $module) {
-            Permission::insert([
-                [
-                    'name' => $module . '.index',
-                    'guard_name' => config('auth.defaults.guard')
-                ],
-                [
-                    'name' => $module . '.create',
-                    'guard_name' => config('auth.defaults.guard')
-                ],
-                [
-                    'name' => $module . '.edit',
-                    'guard_name' => config('auth.defaults.guard')
-                ],
-                [
-                    'name' => $module . '.destroy',
-                    'guard_name' => config('auth.defaults.guard')
-                ],
-                [
-                    'name' => $module . '.show',
-                    'guard_name' => config('auth.defaults.guard')
-                ],
-            ]);
+            Permission::findOrCreate(
+                $module . '.index',
+                config('auth.defaults.guard')
+            );
+
+            Permission::findOrCreate(
+                $module . '.create',
+                config('auth.defaults.guard')
+            );
+
+            Permission::findOrCreate(
+                $module . '.edit',
+                config('auth.defaults.guard')
+            );
+
+            Permission::findOrCreate(
+                $module . '.destroy',
+                config('auth.defaults.guard')
+            );
+
+            Permission::findOrCreate(
+                $module . '.show',
+                config('auth.defaults.guard')
+            );
         }
 
         // Shift permissions
-        Permission::insert([
-            [
-                'name' => 'shifts.index',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-            [
-                'name' => 'shifts.create',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-            [
-                'name' => 'shifts.close',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-            [
-                'name' => 'shifts.show',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-        ]);
+        Permission::findOrCreate(
+            'shifts.index',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'payments.close',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'shifts.index',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'vouchers.close',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'shifts.create',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'vouchers.open',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'shifts.close',
+            config('auth.defaults.guard')
+        );
 
-        ### Transaction permissions ###
+        Permission::findOrCreate(
+            'shifts.show',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'transactions.sale',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        // Payments
+        Permission::findOrCreate(
+            'payments.close',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'transactions.entry',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        // Vouchers
+        Permission::findOrCreate(
+            'vouchers.close',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'transactions.loss',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'vouchers.open',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'transactions.discard',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        // Transactions
+        Permission::findOrCreate(
+            'transactions.sale',
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            'transactions.entry',
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            'transactions.loss',
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            'transactions.discard',
+            config('auth.defaults.guard')
+        );
 
         // Products
-
         // Permissions to do vouchers
-        Permission::create([
-            'name' => 'products.vouchers',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'products.vouchers',
+            config('auth.defaults.guard')
+        );
 
         // Dining service
-
         // Only for dining service
-        Permission::create([
-            'name' => 'dining.sale',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'dining.sale',
+            config('auth.defaults.guard')
+        );
 
         // Props
-
         // Permissions to do vouchers
-        Permission::create([
-            'name' => 'props.vouchers',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'props.vouchers',
+            config('auth.defaults.guard')
+        );
 
         // Notes permissions
-        Permission::insert([
-            [
-                'name' => 'notes.index',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-            [
-                'name' => 'notes.create',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-            [
-                'name' => 'notes.show',
-                'guard_name' => config('auth.defaults.guard')
-            ],
-        ]);
+        Permission::findOrCreate(
+            'notes.index',
+            config('auth.defaults.guard')
+        );
 
-        Permission::create([
-            'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        Permission::findOrCreate(
+            'notes.create',
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            'notes.show',
+            config('auth.defaults.guard')
+        );
+
+        // Rooms
+        Permission::findOrCreate(
+            'rooms.toggle',
+            config('auth.defaults.guard')
+        );
     }
 }

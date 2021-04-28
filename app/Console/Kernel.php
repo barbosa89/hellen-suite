@@ -14,8 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\SaveTestData::class,
-        \App\Console\Commands\CreateRootUser::class,
         \App\Console\Commands\PurgeInvoices::class,
+        \App\Console\Commands\CreateRootUser::class,
+        \App\Console\Commands\UpdatePermissions::class,
     ];
 
     /**
