@@ -618,7 +618,7 @@ class RoomTest extends TestCase
                 'status' => Room::AVAILABLE,
             ]);
 
-        $response->dump()->assertJsonFragment([
+        $response->assertJsonFragment([
             'hash' => $room->hash,
             'status' => Room::AVAILABLE,
         ]);
