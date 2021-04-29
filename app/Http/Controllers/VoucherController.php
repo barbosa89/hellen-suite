@@ -120,14 +120,13 @@ class VoucherController extends Controller
                 }
 
                 $quantity = $start->diffInDays($end);
-                $discount = ($room->price - $selected['price']) * $quantity;
                 $taxes = ($selected['price'] * $room->tax) * $quantity;
                 $subvalue = $selected['price'] * $quantity;
 
                 $attach[$room->id] = [
                     'price' => $selected['price'],
                     'quantity' => $quantity,
-                    'discount' => $discount,
+                    'discount' => 0,
                     'subvalue' => $subvalue,
                     'taxes' => $taxes,
                     'value' => $subvalue + $taxes,
@@ -500,7 +499,6 @@ class VoucherController extends Controller
                 }
 
                 $quantity = $start->diffInDays($end);
-                $discount = ($room->price - $request->price) * $quantity;
                 $taxes = ($request->price * $room->tax) * $quantity;
                 $subvalue = $request->price * $quantity;
 
@@ -509,7 +507,7 @@ class VoucherController extends Controller
                     [
                         'price' => $request->price,
                         'quantity' => $quantity,
-                        'discount' => $discount,
+                        'discount' => 0,
                         'subvalue' => $subvalue,
                         'taxes' => $taxes,
                         'value' => $subvalue + $taxes,
@@ -519,7 +517,6 @@ class VoucherController extends Controller
                     ]
                 );
 
-                $voucher->discount += $discount;
                 $voucher->subvalue += $subvalue;
                 $voucher->taxes += $taxes;
                 $voucher->value += $subvalue + $taxes;
@@ -687,7 +684,6 @@ class VoucherController extends Controller
             $voucher->rooms()->detach($current->id);
 
             // Calculating the new values
-            $discount = ($room->price - $request->price) * $current->pivot->quantity;
             $taxes = ($request->price * $room->tax) * $current->pivot->quantity;
             $subvalue = $request->price * $current->pivot->quantity;
 
@@ -696,7 +692,7 @@ class VoucherController extends Controller
                 [
                     'price' => $request->price,
                     'quantity' => $current->pivot->quantity, // This is same that before
-                    'discount' => $discount,
+                    'discount' => 0,
                     'subvalue' => $subvalue,
                     'taxes' => $taxes,
                     'value' => $subvalue + $taxes,
@@ -707,7 +703,6 @@ class VoucherController extends Controller
             );
 
             // Summing the new values
-            $voucher->discount += $discount;
             $voucher->subvalue += $subvalue;
             $voucher->taxes += $taxes;
             $voucher->value += $subvalue + $taxes;
@@ -2740,7 +2735,6 @@ class VoucherController extends Controller
                                     $quantity = $end->diffInDays($newEnd);
 
                                     // Adding the new values
-                                    $discount = ((float) $room->price - (float) $room->pivot->price) * $quantity;
                                     $taxes = ((float) $room->pivot->price * $room->tax) * $quantity;
                                     $subvalue = (float) $room->pivot->price * $quantity;
                                     $value = $subvalue + $taxes;
@@ -2749,7 +2743,7 @@ class VoucherController extends Controller
                                         $room,
                                         [
                                             'quantity' => $room->pivot->quantity + $quantity,
-                                            'discount' => $room->pivot->discount + $discount,
+                                            'discount' => 0,
                                             'subvalue' => $room->pivot->subvalue + $subvalue,
                                             'taxes' => $room->pivot->taxes + $taxes,
                                             'value' => $room->pivot->value + $value,
@@ -2757,7 +2751,6 @@ class VoucherController extends Controller
                                         ]
                                     );
 
-                                    $voucher->discount += $discount;
                                     $voucher->subvalue += $subvalue;
                                     $voucher->taxes += $taxes;
                                     $voucher->value += $value;
