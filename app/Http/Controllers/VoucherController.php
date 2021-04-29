@@ -19,7 +19,6 @@ use App\Http\Requests\{
     AddServices,
     ChangeGuestRoom,
     ChangeRoom,
-    CreateVoucher,
     VouchersProcessing,
     StoreAdditional,
     StoreVoucher,
@@ -51,11 +50,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = $this->voucher->list();
-
-        $vouchers = $vouchers->sortByDesc('created_at');
-
-        return view('app.vouchers.index', compact('vouchers'));
+        return view('app.vouchers.index');
     }
 
     /**
@@ -63,13 +58,18 @@ class VoucherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CreateVoucher $request)
+    public function create()
     {
-        $rooms = collect($request->rooms)->flatten();
+        request()->validate([
+            'hotel' => 'required|string|hashed_exists:hotels,id',
+            'rooms.*' => 'required|string|hashed_exists:rooms,id'
+        ]);
+
+        $rooms = collect(request()->input('rooms'))->flatten();
         $rooms = id_decode_recursive($rooms->toArray());
 
         $hotel = Hotel::where('user_id', id_parent())
-            ->where('id', id_decode($request->hotel))
+            ->where('id', id_decode(request()->input('hotel')))
             ->with([
                 'rooms' => function ($query) use ($rooms)
                 {

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 
 class VoucherTest extends TestCase
 {
@@ -47,7 +48,110 @@ class VoucherTest extends TestCase
         Carbon::setTestNow();
     }
 
-    public function test_user_can_not_edit_a_voucher_without_permissions()
+    public function test_user_cannot_see_voucher_list_when_he_does_not_have_permission()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get('/vouchers');
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_user_can_see_voucher_list()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.index');
+
+        $response = $this->actingAs($user)
+            ->get('/vouchers');
+
+        $response->assertOk()
+            ->assertViewIs('app.vouchers.index');
+    }
+
+    public function test_user_cannot_see_form_to_create_a_voucher_when_he_does_not_have_permission()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get('/vouchers/create');
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    public function test_user_can_see_form_to_create_a_voucher()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.create');
+
+        /** @var Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $this->manager->id,
+        ]);
+
+        /** @var Room $room */
+        $room = factory(Room::class)->create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $this->manager->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->call(
+                'GET',
+                '/vouchers/create',
+                [
+                    'hotel' => $hotel->hash,
+                    'rooms' => [
+                        $room->hash,
+                    ],
+                ],
+            );
+
+        $response->assertOk()
+            ->assertViewIs('app.vouchers.create')
+            ->assertViewHas('hotel', function ($hotel) use ($room) {
+                return $hotel
+                    ->rooms
+                    ->where('id', $room->id)
+                    ->isNotEmpty();
+            });
+    }
+
+    public function test_user_cannot_see_form_to_create_a_voucher_when_params_are_wrong()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $user->givePermissionTo('vouchers.create');
+
+        $response = $this->actingAs($user)
+            ->call(
+                'GET',
+                '/vouchers/create',
+            );
+
+        $response->assertRedirect()
+            ->assertSessionHasErrors(['hotel']);
+    }
+
+    public function test_user_cannot_edit_a_voucher_without_permissions()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -116,7 +220,7 @@ class VoucherTest extends TestCase
             ->assertViewIs('app.vouchers.search-guests');
     }
 
-    public function test_user_can_not_see_the_guest_search_form_when_voucher_is_empty()
+    public function test_user_cannot_see_the_guest_search_form_when_voucher_is_empty()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -789,7 +893,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_not_remove_guest_when_voucher_has_one_guest()
+    public function test_user_cannot_remove_guest_when_voucher_has_one_guest()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -871,7 +975,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_not_remove_guest_when_guest_is_inactive()
+    public function test_user_cannot_remove_guest_when_guest_is_inactive()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -973,7 +1077,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_not_remove_guest_when_room_was_delivered()
+    public function test_user_cannot_remove_guest_when_room_was_delivered()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -1319,7 +1423,7 @@ class VoucherTest extends TestCase
         $this->assertTrue($checkOut instanceof Check);
     }
 
-    public function test_user_can_not_toggle_guest_status_when_room_is_disabled_to_changes()
+    public function test_user_cannot_toggle_guest_status_when_room_is_disabled_to_changes()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -1413,7 +1517,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_not_toggle_guest_status_when_voucher_has_unique_guest()
+    public function test_user_cannot_toggle_guest_status_when_voucher_has_unique_guest()
     {
         /** @var User $user */
         $user = factory(User::class)->create([
