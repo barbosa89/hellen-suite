@@ -37,4 +37,21 @@ class SyncUserPermissionsCommandTest extends TestCase
 
         $this->assertEquals(Permission::count(), $user->permissions->count());
     }
+
+    public function testPermissionsAreNotDuplicated()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $user->assignRole(Roles::MANAGER);
+
+        $user->syncPermissions(Permission::all(['id', 'name', 'guard_name']));
+
+        $this->artisan('permissions:sync')
+            ->assertExitCode(0);
+
+        $user->load('permissions');
+
+        $this->assertEquals(Permission::count(), $user->permissions->count());
+    }
 }
