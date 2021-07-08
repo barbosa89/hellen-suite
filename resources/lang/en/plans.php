@@ -3,7 +3,7 @@
 return array (
   'title' => 'Plans',
   'own' => 'My plan',
-  'type' => 
+  'type' =>
   array (
     'basic' => 'Basic',
     'free' => 'Free',
@@ -12,24 +12,24 @@ return array (
   ),
   'types' => 'Plans type',
   'duration' => 'Duration time in months',
-  'descriptions' => 
+  'descriptions' =>
   array (
     'basic' => 'All modules for :months months',
-    'free' => 'All modules for :months month',
+    'free' => 'All modules for :months month|All modules for :months months',
     'premium' => 'All modules and electronic invoicing for 12 months',
     'sponsor' => 'All platform features without time limit',
   ),
   'prices' => 'Plan prices',
-  'features' => 
+  'features' =>
   array (
     'all' => 'All modules',
     'sponsor' => 'If you want to support the platform development. This plan is assignable in direct negotiation.',
-    'support' => 
+    'support' =>
     array (
       'mail' => 'Email support only',
       'priority' => 'Priority technical support',
     ),
-    'unique' => ':months month one time',
+    'unique' => ':months month one time|:months months one time',
     'renewable' => ':months months',
     'default' => 'Please, contact us to purchase this plan',
   ),

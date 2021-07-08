@@ -181,7 +181,7 @@ return array (
   ),
   'lang' => 'Lenguaje',
   'month' => 'Mes',
-  'months' => 'Meses',
+  'months' => 'Mes|Meses',
   'view' =>
   array (
     'details' => 'Ver detalles',

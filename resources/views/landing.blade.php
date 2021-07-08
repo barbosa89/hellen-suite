@@ -334,7 +334,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             <div class="card-body">
                                                 <h4 class="">{{ trans('plans.type.' . $plan->getType()) }}</h4>
                                                 <h5 class="card-title pricing-card-title">
-                                                    <span class=""></span>$ {{ number_format($plan->price, 0, '.', ',') }}<span>/{{ $plan->months }} @lang('common.months')</span>
+                                                    <span class=""></span>$ {{ number_format($plan->price, 0, '.', ',') }}<span>/{{ $plan->months }} @choice('common.months', $plan->months)</span>
                                                 </h5>
 
                                                 @includeFirst([

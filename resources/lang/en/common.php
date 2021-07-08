@@ -181,7 +181,7 @@ return array (
   ),
   'lang' => 'Language',
   'month' => 'Month',
-  'months' => 'Months',
+  'months' => 'Month|Months',
   'view' =>
   array (
     'details' => 'View details',

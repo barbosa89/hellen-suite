@@ -4,7 +4,7 @@ return array (
   'title' => 'Planes',
   'own' => 'Mi plan',
   'types' => 'Tipo de planes',
-  'type' => 
+  'type' =>
   array (
     'free' => 'Gratuito',
     'basic' => 'Básico',
@@ -12,19 +12,19 @@ return array (
     'sponsor' => 'Patrocinador',
   ),
   'duration' => 'Tiempo de duración en meses',
-  'descriptions' => 
+  'descriptions' =>
   array (
-    'free' => 'Todos los módulos por :months mes',
+    'free' => 'Todos los módulos por :months mes|Todos los módulos por :months meses',
     'basic' => 'Todos los módulos por :months meses',
     'premium' => 'Todos los módulos y facturación electrónica por 12 meses',
     'sponsor' => 'Todas las características de la plataforma sin límite de tiempo',
   ),
   'prices' => 'Precios de los planes',
-  'features' => 
+  'features' =>
   array (
-    'unique' => ':months mes por única vez',
+    'unique' => ':months mes por única vez|:months meses por única vez',
     'all' => 'Todos los módulos',
-    'support' => 
+    'support' =>
     array (
       'mail' => 'Soporte por correo',
       'priority' => 'Soporte técnico prioritario',

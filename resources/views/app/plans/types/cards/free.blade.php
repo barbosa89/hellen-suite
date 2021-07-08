@@ -4,7 +4,7 @@
             {{ trans('plans.type.free') }}
         </h5>
         <h6 class="card-subtitle mb-2 text-muted mh-card-subtitle">
-            {{ trans('plans.descriptions.free', ['months' => $plan->months]) }}
+            {{ trans_choice('plans.descriptions.free', $plan->months, ['months' => $plan->months]) }}
         </h6>
         <p class="card-text">
             <ul class="list-unstyled">
