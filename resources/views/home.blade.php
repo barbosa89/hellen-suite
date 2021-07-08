@@ -5,15 +5,17 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col">
-            <div class="mt-4">
-                @include('flash::message')
+    @if (session()->has('flash_notification'))
+        <div class="row">
+            <div class="col">
+                <div class="mt-4">
+                    @include('flash::message')
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
     @unlessrole('root')
-        <home-index></home-index>
+        <home-index :user-name='"{{ auth()->user()->name }}"'></home-index>
     @endunlessrole
 @endsection

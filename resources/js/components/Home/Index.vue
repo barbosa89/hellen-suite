@@ -1,5 +1,13 @@
 <template>
     <div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <h1><small>{{ $t('common.hi') }}, {{ userName }}</small> <span id="v-step-0"></span></h1>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-4">
             <div class="col-12">
                 <hotel-select @hotel='hotelId = $event'></hotel-select>
@@ -28,21 +36,29 @@
 
 <script>
     import IconCards from './IconCards'
-    import VoucherCardList from '../Vouchers/CardList'
-    import GuestChartCard from '../Guests/ChartCard'
     import NoteCardList from '../Notes/CardList'
+    import GuestChartCard from '../Guests/ChartCard'
+    import VoucherCardList from '../Vouchers/CardList'
 
     export default {
+        components: {
+            IconCards,
+            NoteCardList,
+            GuestChartCard,
+            VoucherCardList,
+        },
+        props: {
+            userName: {
+                type: String,
+                default: function () {
+                    return ''
+                }
+            }
+        },
         data() {
             return {
                 hotelId: ''
             }
         },
-        components: {
-            IconCards,
-            VoucherCardList,
-            GuestChartCard,
-            NoteCardList,
-        }
     }
 </script>
