@@ -25,7 +25,7 @@ class StoreGuest extends FormRequest
     {
         return [
             'type' => 'required|string|hashed_exists:identification_types,id',
-            'dni' => 'required|alpha_num|min:5|max:20|unique_per_user:guests,dni',
+            'dni' => 'required|alpha_num|min:5|max:15|unique_per_user:guests,dni',
             'name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'nullable|email|unique_per_user:guests,email',
