@@ -2,10 +2,11 @@
 
 namespace App;
 
-use Spatie\Activitylog\Traits\LogsActivity;
-
+use App\Constants\Roles;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -142,5 +143,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tags()
     {
         return $this->hasMany(\App\Models\Tag::class);
+    }
+
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOwner(Builder $query): Builder
+    {
+        return $query->where('parent', null)
+            ->role(Roles::MANAGER);
     }
 }
