@@ -104,6 +104,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_free_plan()
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         $user->assignRole('manager');
 
@@ -117,7 +118,7 @@ class PlanTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => $plan->id,
             'user_id' => $user->id,
-            'ends_at' => now()->addMonth()
+            'ends_at' => now()->addMonths($plan->months)
         ]);
 
         $message = session('flash_notification')->first();

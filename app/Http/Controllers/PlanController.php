@@ -90,7 +90,7 @@ class PlanController extends Controller
             auth()
                 ->user()
                 ->plans()
-                ->attach($plan, ['ends_at' => now()->addMonth()]);
+                ->attach($plan, ['ends_at' => now()->addMonths($plan->months)]);
 
             $type = trans('plans.type.' . $plan->getType());
 
