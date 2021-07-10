@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 
 if (!function_exists('id_encode')) {
-    function id_encode(string $id)
+    function id_encode(string $id): string
     {
         return Id::encode($id);
     }
 }
 
 if (!function_exists('id_decode')) {
-    function id_decode(string $id)
+    function id_decode(string $id): int
     {
         return Id::decode($id);
     }
 }
 
 if (!function_exists('id_decode_recursive')) {
-    function id_decode_recursive(array $ids)
+    function id_decode_recursive(array $ids): array
     {
         return Id::pool($ids);
     }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Company extends Model
@@ -15,38 +17,22 @@ class Company extends Model
         'from_date',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
     protected $appends = ['hash'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = ['id'];
 
-    public function vouchers()
+    public function vouchers(): HasMany
     {
         return $this->hasMany(\App\Models\Voucher::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
     }
 
-    /**
-     * Hashing ID.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function getHashAttribute()
+    public function getHashAttribute(): string
     {
-        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+        return $this->attributes['hash'] = id_encode($this->attributes['id']);
     }
 }

@@ -293,7 +293,7 @@ class TeamController extends Controller
     }
 
     /**
-     * Show the form for assign a the team member to headquarte.
+     * Show the form for assign permissions to team member.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

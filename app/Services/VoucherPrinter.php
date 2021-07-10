@@ -46,12 +46,12 @@ class VoucherPrinter implements VoucherPrinterContract
         $customer = $this->getCustomer();
 
         $this->customer = new Party([
-            'name'          => $customer->name,
-            'address'       => $customer->address,
-            'code'          => $customer->tin,
-            'phone' => $customer->phone,
+            'name'          => $customer->name ?? '',
+            'address'       => $customer->address ?? '',
+            'code'          => $customer->tin ?? '',
+            'phone' => $customer->phone ?? '',
             'custom_fields' => [
-                trans('common.email') => $customer->email,
+                trans('common.email') => $customer->email ?? '',
             ],
         ]);
 

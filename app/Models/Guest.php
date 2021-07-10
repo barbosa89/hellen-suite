@@ -4,7 +4,11 @@ namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Guest extends Model
 {
@@ -17,11 +21,6 @@ class Guest extends Model
         'query_by',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'dni',
         'name',
@@ -35,117 +34,76 @@ class Guest extends Model
         'created_at',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
     protected $appends = ['hash', 'full_name'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = ['id'];
 
-    /**
-     * Get the guest's full name.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getFullNameAttribute()
+    public function getFullNameAttribute(): string
     {
         return "{$this->name} {$this->last_name}";
     }
 
-    /**
-     * Hashing ID.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function getHashAttribute()
+    public function getHashAttribute(): string
     {
-        return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
+        return $this->attributes['hash'] = id_encode($this->attributes['id']);
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(\App\Models\Guest::class, 'responsible_adult');
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Guest::class, 'responsible_adult');
     }
 
-    public function vouchers()
+    public function vouchers(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Voucher::class);
     }
 
-    public function identificationType()
+    public function identificationType(): BelongsTo
     {
         return $this->belongsTo(\App\Models\IdentificationType::class, 'identification_type_id');
     }
 
-    public function vehicles()
+    public function vehicles(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Vehicle::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
     }
 
-    public function rooms()
+    public function rooms(): BelongsToMany
     {
         return $this->belongsToMany(\App\Models\Room::class);
     }
 
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Country::class);
     }
 
-    public function checks()
+    public function checks(): HasMany
     {
         return $this->hasMany(\App\Models\Check::class);
     }
 
-    /**
-     * Scope a query to guest(s) is staying in the hotel.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeIsStaying($query)
+    public function scopeIsStaying(Builder $query): Builder
     {
         return $query->where('status', true);
     }
 
-    /**
-     * Scope a query to guest(s) is not staying in the hotel.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeIsNotStaying($query)
+    public function scopeIsNotStaying(Builder $query): Builder
     {
         return $query->where('status', false);
     }
 
-    /**
-     * Scope a query to guest(s) by status.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string $status
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeStatus($query, string $status)
+    public function scopeStatus(Builder $query, string $status): Builder
     {
         if ($query->hasNamedScope($status)) {
             $query->{$status}();
@@ -154,14 +112,7 @@ class Guest extends Model
         return $query;
     }
 
-    /**
-     * Scope a query to guests by text search.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string $text
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeQueryBy($query, string $text)
+    public function scopeQueryBy(Builder $query, string $text): Builder
     {
         return $query->whereLike(['name', 'last_name', 'dni'], $text);
     }

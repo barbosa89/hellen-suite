@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Helpers\Age;
 use App\Models\Voucher;
+use App\Data\Views\Customer as CustomerData;
 
 class Customer
 {
@@ -15,31 +16,9 @@ class Customer
      */
     public static function get(Voucher $voucher): array
     {
-        $customer = [];
+        $customer = new CustomerData($voucher);
 
-        if (empty($voucher->company)) {
-            if ($voucher->guests->isNotEmpty()) {
-                $main = $voucher->guests->first(function ($guest, $index) {
-                    return $guest->pivot->main == true;
-                });
-
-                $customer['name'] = $main->full_name;
-                $customer['tin'] = $main->dni;
-                $customer['route'] = route('guests.show', ['id' => id_encode($main->id)]);
-                $customer['email'] = $main->email ? $main->email : '';
-                $customer['address'] = $main->address ? $main->address : '';
-                $customer['phone'] = $main->phone ? $main->phone : '';
-            }
-        } else {
-            $customer['name'] = $voucher->company->business_name;
-            $customer['tin'] = $voucher->company->tin;
-            $customer['route'] = route('companies.show', ['id' => id_encode($voucher->company->id)]);
-            $customer['email'] = $voucher->company->email ? $voucher->company->email : '';
-            $customer['address'] = $voucher->company->address ? $voucher->company->address : '';
-            $customer['phone'] = $voucher->company->phone ? $voucher->company->phone : '';
-        }
-
-        return $customer;
+        return $customer->build()->toArray();
 	}
 
     /**
