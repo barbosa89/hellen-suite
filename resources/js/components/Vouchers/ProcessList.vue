@@ -89,10 +89,13 @@
                                     {{voucher.company.business_name }}
                                 </a>
                             </p>
-                            <p v-else>
-                                <a :href="'/guests/' + getGuest(voucher.guests).hash">
-                                    {{ getGuest(voucher.guests).name }} {{getGuest(voucher.guests).last_name }}
+                            <p v-else-if="voucher.guests.length > 0">
+                                <a :href="'/guests/' +voucher.guests[0].hash">
+                                    {{voucher.guests[0].name }} {{voucher.guests[0].last_name }}
                                 </a>
+                            </p>
+                            <p v-else>
+                                {{ $t('vouchers.registerGuests') }}
                             </p>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 align-self-center dont-break-out">
@@ -270,9 +273,6 @@ export default {
                     'Error'
                 );
             }
-        },
-        getGuest(guests) {
-            return guests.find($guest => $guest)
         }
     },
 };
