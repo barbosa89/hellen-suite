@@ -90,8 +90,8 @@
                                 </a>
                             </p>
                             <p v-else>
-                                <a :href="'/guests/' +voucher.guests[0].hash">
-                                    {{voucher.guests[0].name }} {{voucher.guests[0].last_name }}
+                                <a :href="'/guests/' + getGuest(voucher.guests).hash">
+                                    {{ getGuest(voucher.guests).name }} {{getGuest(voucher.guests).last_name }}
                                 </a>
                             </p>
                         </div>
@@ -270,6 +270,9 @@ export default {
                     'Error'
                 );
             }
+        },
+        getGuest(guests) {
+            return guests.find($guest => $guest)
         }
     },
 };
