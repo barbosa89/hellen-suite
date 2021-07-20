@@ -15,4 +15,4 @@ yarn-error.log
 .env.testing
 /.phpintel
 .phpunit.result.cache
-/tests/Coverage
+/tests/coverage
