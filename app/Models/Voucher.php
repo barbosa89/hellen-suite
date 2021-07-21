@@ -56,6 +56,10 @@ class Voucher extends Model
 
     protected $hidden = ['id'];
 
+    protected $casts = [
+        self::RESERVATION => 'boolean',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
