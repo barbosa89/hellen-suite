@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'role:root', 'verified']], function() {
+    Route::resource('configurations', 'Control\ConfigurationController');
+
     Route::post('users/{user}/plans', 'UserController@assign')
         ->name('users.assign');
+
     Route::resource('users', 'UserController');
 
     Route::resource('identifications', 'IdentificationTypeController');

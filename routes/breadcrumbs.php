@@ -191,3 +191,8 @@ Breadcrumbs::for('accounts', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('accounts.title'), route('home'));
 });
+
+Breadcrumbs::for('configurations', function ($trail) {
+    $trail->parent('home');
+    $trail->push(trans('configurations.title'), route('configurations.index'));
+});

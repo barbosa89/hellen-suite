@@ -41,6 +41,12 @@
             <i class="fas fa-fw fa-star"></i>
             <span>@lang('plans.title')</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('configurations.index') }}">
+            <i class="fas fa-fw fa-cogs"></i>
+            <span>@lang('configurations.title')</span></a>
+        </li>
     @endrole
 
     @role('manager')
