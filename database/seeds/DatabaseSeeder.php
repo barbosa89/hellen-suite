@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CountriesTableSeeder::class);
         $this->call(CurrencySeeder::class);
         $this->call(PlanSeeder::class);
+        $this->call(ConfigurationsTableSeeder::class);
 
         if (app()->environment('local')) {
             $this->call(UsersTableSeeder::class);

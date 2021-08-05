@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Configuration extends Model
 {
+    protected $fillable = [
+        'name', 'enabled_at'
+    ];
+
     protected $casts = [
         'enabled_at' => 'date',
     ];
