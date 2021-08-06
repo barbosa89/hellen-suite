@@ -10,12 +10,7 @@
         @include('partials.page-header', [
             'title' => trans('configurations.title'),
             'url' => route('configurations.index'),
-            'options' => [
-                [
-                    'option' => trans('common.new'),
-                    'url' => route('configurations.create'),
-                ],
-            ]
+            'options' => []
         ])
 
         <div class="row">
