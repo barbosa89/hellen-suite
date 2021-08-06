@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Control;
 use Illuminate\View\View;
 use App\Models\Configuration;
 use App\Http\Controllers\Controller;
-use App\Constants\Views\Control as Views;
 
 class ConfigurationController extends Controller
 {
@@ -13,7 +12,7 @@ class ConfigurationController extends Controller
     {
         $configurations = Configuration::all(['id', 'name', 'enabled_at']);
 
-        return view(Views::CONFIG_INDEX, compact('configurations'));
+        return view('control.configurations.index', compact('configurations'));
     }
 
     /**

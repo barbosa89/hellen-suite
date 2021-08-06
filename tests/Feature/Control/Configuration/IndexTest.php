@@ -3,9 +3,9 @@
 namespace Tests\Feature\Control\Configuration;
 
 use App\Constants\Roles;
-use App\Constants\Views\Control;
 use App\Models\Configuration;
 use App\User;
+use ConfigurationsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use RolesTableSeeder;
@@ -14,6 +14,9 @@ use Tests\TestCase;
 class IndexTest extends TestCase
 {
     use RefreshDatabase;
+
+    private const ROUTE = '/configurations';
+    private const VIEW = 'control.configurations.index';
 
     public function setUp(): void
     {
@@ -24,7 +27,7 @@ class IndexTest extends TestCase
 
     public function test_guest_user_is_redirected_to_login()
     {
-        $response = $this->get('/configurations');
+        $response = $this->get(self::ROUTE);
 
         $response->assertRedirect('/login');
     }
@@ -35,7 +38,7 @@ class IndexTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)
-            ->get('/configurations');
+            ->get(self::ROUTE);
 
         $response->assertForbidden();
     }
@@ -50,12 +53,28 @@ class IndexTest extends TestCase
         $configuration = factory(Configuration::class)->create();
 
         $response = $this->actingAs($user)
-            ->get('/configurations');
+            ->get(self::ROUTE);
 
         $response->assertOk()
-            ->assertViewIs(Control::CONFIG_INDEX)
+            ->assertViewIs(self::VIEW)
             ->assertViewHas('configurations', function ($data) use ($configuration) {
                 return $data->first()->id === $configuration->id;
             });
+    }
+
+    public function test_user_can_see_config_list()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->assignRole(Roles::ROOT);
+
+        $this->seed(ConfigurationsTableSeeder::class);
+
+        $response = $this->actingAs($user)
+            ->get(self::ROUTE);
+
+        $response->assertOk()
+            ->assertViewIs(self::VIEW)
+            ->assertSeeText(trans('configurations.out'));
     }
 }

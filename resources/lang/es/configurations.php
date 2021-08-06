@@ -2,4 +2,5 @@
 
 return [
     'title' => 'Configuraciones',
+    'out' => 'Hora hotelera',
 ];

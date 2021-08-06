@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface StaticArrayable
 {
-    public static function toArray();
+    public static function toArray(): array;
 }

@@ -20,7 +20,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                @if ($configurations)
+                @if ($configurations->isNotEmpty())
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -35,7 +35,7 @@
                                 @foreach ($configurations as $configuration)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $configuration->name }}</td>
+                                        <td>{{ $configuration->full_name }}</td>
                                         <td>{{ $configuration->getEnabledDate() }}</td>
                                         <td></td>
                                     </tr>

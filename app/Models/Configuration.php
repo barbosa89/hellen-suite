@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Config;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,11 @@ class Configuration extends Model
     protected $casts = [
         'enabled_at' => 'date',
     ];
+
+    public function getFullNameAttribute(): string
+    {
+        return Config::trans($this->attributes['name']);
+    }
 
     public function user()
     {
