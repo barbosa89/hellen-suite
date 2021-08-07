@@ -57,6 +57,16 @@ trait Queryable
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string $id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHash(Builder $query, string $id): Builder
+    {
+        return $query->where('id', id_decode($id));
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOwner(Builder $query): Builder
@@ -101,15 +111,6 @@ trait Queryable
         }
 
         return $parsed;
-    }
-
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function normalizeParam($value)
-    {
-        # code...
     }
 
     /**

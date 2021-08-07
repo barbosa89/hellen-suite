@@ -32,7 +32,20 @@
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $configuration->full_name }}</td>
                                         <td>{{ $configuration->getEnabledDate() }}</td>
-                                        <td></td>
+                                        <td>
+                                            @include('partials.dropdown-btn', [
+                                                'options' => [
+                                                    [
+                                                        'type' => 'confirm',
+                                                        'option' => $configuration->isEnabled() ? trans('common.disable') : trans('common.enable'),
+                                                        'url' => route('configurations.toggle', [
+                                                            'configuration' => $configuration->hash
+                                                        ]),
+                                                        'method' => 'PUT',
+                                                    ],
+                                                ]
+                                            ])
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'role:root', 'verified']], function() {
+    Route::put('configurations/{configuration}', 'Control\ConfigurationController@toggle')
+        ->name('configurations.toggle');
+
     Route::get('configurations', 'Control\ConfigurationController@index')
         ->name('configurations.index');
 
