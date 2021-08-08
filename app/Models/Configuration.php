@@ -40,7 +40,7 @@ class Configuration extends Model
         return $this->attributes['hash'] = id_encode($this->attributes['id']);
     }
 
-    public function user()
+    public function users()
     {
         return $this->belongsToMany(User::class);
     }
