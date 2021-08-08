@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\User;
-use App\Constants\Config;
 use App\Traits\Queryable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Laracasts\Presenter\PresentableTrait;
+use App\Presenters\ConfigurationPresenter;
 
 /**
  * @property int $id
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 class Configuration extends Model
 {
     use Queryable;
+    use PresentableTrait;
 
     protected $fillable = [
         'name', 'enabled_at'
@@ -31,26 +33,16 @@ class Configuration extends Model
         'enabled_at' => 'date',
     ];
 
+    protected string $presenter = ConfigurationPresenter::class;
+
     public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = id_encode($this->attributes['id']);
     }
 
-    public function getFullNameAttribute(): string
-    {
-        return Config::trans($this->attributes['name']);
-    }
-
     public function user()
     {
         return $this->belongsToMany(User::class);
-    }
-
-    public function getEnabledDate(): ?string
-    {
-        return $this->enabled_at
-            ? $this->enabled_at->format('Y-m-d')
-            : '';
     }
 
     public function isEnabled(): bool

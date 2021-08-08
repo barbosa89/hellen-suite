@@ -30,8 +30,8 @@
                                 @foreach ($configurations as $configuration)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $configuration->full_name }}</td>
-                                        <td>{{ $configuration->getEnabledDate() }}</td>
+                                        <td>{{ $configuration->present()->fullName }}</td>
+                                        <td>{{ $configuration->present()->enabledAt }}</td>
                                         <td>
                                             @include('partials.dropdown-btn', [
                                                 'options' => [

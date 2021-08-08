@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Control\Configuration;
 
+use App\Constants\Config;
 use App\Constants\Roles;
 use App\Models\Configuration;
 use App\User;
@@ -59,7 +60,8 @@ class IndexTest extends TestCase
             ->assertViewIs(self::VIEW)
             ->assertViewHas('configurations', function ($data) use ($configuration) {
                 return $data->first()->id === $configuration->id;
-            });
+            })
+            ->assertDontSeeText(now()->format('Y-m-d'));
     }
 
     public function test_user_can_see_config_list()
@@ -68,13 +70,19 @@ class IndexTest extends TestCase
         $user = factory(User::class)->create();
         $user->assignRole(Roles::ROOT);
 
-        $this->seed(ConfigurationsTableSeeder::class);
+        /** @var Configuration $configuration */
+        $configuration = factory(Configuration::class)
+            ->state('enabled')
+            ->create([
+                'name' => Config::CHECK_OUT,
+            ]);
 
         $response = $this->actingAs($user)
             ->get(self::ROUTE);
 
         $response->assertOk()
             ->assertViewIs(self::VIEW)
-            ->assertSeeText(trans('configurations.out'));
+            ->assertSeeText(trans('configurations.out'))
+            ->assertSeeText($configuration->enabled_at->format('Y-m-d'));
     }
 }
