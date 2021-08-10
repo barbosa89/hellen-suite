@@ -30,6 +30,7 @@ class HelperTest extends TestCase
             "email_verified_at",
             "created_at",
             "updated_at",
+            "timezone",
         ];
 
         $this->assertTrue(is_array(get_columns('users')));
@@ -50,6 +51,7 @@ class HelperTest extends TestCase
             "users.email_verified_at",
             "users.created_at",
             "users.updated_at",
+            "users.timezone",
         ];
 
         $this->assertTrue(is_array(get_columns('users')));
