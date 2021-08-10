@@ -6,9 +6,8 @@ use App\Helpers\Fields;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
+use App\Services\PermissionCache;
 use Illuminate\Support\Facades\Schema;
-use Spatie\Permission\Models\Permission;
 
 if (!function_exists('id_encode')) {
     function id_encode(string $id): string
@@ -146,15 +145,7 @@ if (!function_exists('get_user_permissions')) {
      */
     function get_user_permissions(): array
     {
-        if (Auth::check()) {
-            $permissions = Permission::whereHas('users', function ($query) {
-                $query->where('id', Auth::id());
-            })->get(['id', 'name']);
-
-            return $permissions->pluck('name')->toArray();
-        }
-
-        return [];
+        return PermissionCache::get();
     }
 }
 
