@@ -41,6 +41,12 @@
             <i class="fas fa-fw fa-star"></i>
             <span>@lang('plans.title')</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('logs.viewer') }}">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Logs</span></a>
+        </li>
     @endrole
 
     @role('manager')
