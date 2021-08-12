@@ -245,7 +245,7 @@
                                                     <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                                                         <p>
                                                             <a href="{{ route('guests.show', ['id' => id_encode($guest->id)]) }}">
-                                                                {{ number_format($guest->dni, 0, ',', '.') }}
+                                                                {{ $guest->dni }}
                                                             </a>
                                                         </p>
                                                     </div>
