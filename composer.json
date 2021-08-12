@@ -29,6 +29,7 @@
         "mews/purifier": "^3.2",
         "orangehill/iseed": "^2.6",
         "owen-it/laravel-auditing": "^10.0",
+        "rap2hpoutre/laravel-log-viewer": "^1.7",
         "shetabit/visitor": "^2.1",
         "spatie/laravel-activitylog": "^3.14",
         "spatie/laravel-backup": "^6.9",
