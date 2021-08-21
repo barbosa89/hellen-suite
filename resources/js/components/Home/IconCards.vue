@@ -112,9 +112,9 @@
             },
             builGuestData() {
                 axios
-                    .get(route('api.web.guests.index'))
+                    .get(route('api.v1.guests.index'))
                     .then(response => {
-                        const quantity = response.data.guests.data.length
+                        const quantity = response.data.data.length
 
                         if (quantity == 0) {
                             this.cards.guests.content = this.$root.$t('guests.new.none')

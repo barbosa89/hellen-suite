@@ -1,6 +1,6 @@
 <template>
     <div>
-        <search-input :url='url' @results='setData'></search-input>
+        <search-input :url='url' @response='setData'></search-input>
 
         <template v-if="guests.length > 0">
             <vue-table :headers='headers' :user-data='guests'>
@@ -39,7 +39,7 @@
         },
         data() {
             return {
-                url: route('api.web.guests.index', {status: 'is_not_staying'}),
+                url: route('api.v1.guests.index', {status: 'is_not_staying'}),
                 guests: [],
                 headers: [
                     {
@@ -60,8 +60,8 @@
         },
         methods: {
             setData(data) {
-                if (data.guests.data.length > 0) {
-                    this.guests = data.guests.data
+                if (data.data.length > 0) {
+                    this.guests = data.data
                 } else {
                     toastr.info(
                         this.$root.$t('common.without.results'),

@@ -1,9 +1,9 @@
 <template>
     <div class="input-group">
-        <input class="form-control" type="search" v-model="query" :placeholder='$t("common.search")'>
+        <input class="form-control" type="search" v-model="search" :placeholder='$t("common.search")'>
         <div class="input-group-append">
             <button class="input-group-text" id="btnGroupAddon">
-                <i class="fa fa-search"></i>
+                <em class="fa fa-search"></em>
             </button>
         </div>
     </div>
@@ -27,17 +27,17 @@
         },
         data() {
             return {
-                query: ''
+                search: ''
             }
         },
     watch: {
-        query: function(current, old) {
-            if (current.length == 0 || this.query.length == 0) {
+        search(current, old) {
+            if (current.length == 0 || this.search.length == 0) {
                 this.$emit('reset')
             } else {
                 if (current.length >= 3) {
                     let params = {
-                        query_by: this.query,
+                        search: this.search,
                     }
 
                     if (this.hotel.length > 0) {
@@ -49,22 +49,8 @@
                             params: params
                         })
                         .then(response => {
-                            if (response.data.hasOwnProperty('results')) {
-                                let results = response.data.results
-
-                                if (results.length > 0) {
-                                    this.$emit('results', results)
-                                } else {
-                                    toastr.info(
-                                        this.$root.$t('common.without.results'),
-                                        this.$root.$t('common.sorry')
-                                    )
-                                }
-                            } else {
-                                this.$emit('results', response.data)
-                            }
-
-                        }).catch(e => {
+                            this.$emit('response', response.data)
+                        }).catch(() => {
                             toastr.error(
                                 this.$root.$t('common.try'),
                                 'Error'
