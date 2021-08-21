@@ -16,8 +16,6 @@ class GuestController extends Controller
             ->filter($request->validated())
             ->paginate($request->input('per_page', config('settings.paginate')));
 
-        return response()->json([
-            'guests' => $guests,
-        ]);
+        return response()->json($guests);
     }
 }
