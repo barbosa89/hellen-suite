@@ -222,7 +222,7 @@ class GuestTest extends TestCase
         ];
     }
 
-    public function test_user_can_filter_guests_by_query()
+    public function test_user_can_search_guests()
     {
         /** @var User $manager */
         $manager = factory(User::class)->create();
@@ -245,7 +245,7 @@ class GuestTest extends TestCase
                 'GET',
                 '/api/v1/web/guests',
                 [
-                    'query_by' => $guest->dni,
+                    'search' => $guest->dni,
                 ]
             );
 
