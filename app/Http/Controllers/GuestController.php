@@ -16,17 +16,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Index $request): View
     {
         $guests = Guest::where('user_id', id_parent())
-            ->orderBy('created_at', 'DESC')
-            ->limit('200')
-            ->paginate(config('settings.paginate'), fields_get('guests'));
+            ->latest()
+            ->filter($request->validated())
+            ->paginate(10, fields_get('guests'));
 
         return view('app.guests.index', compact('guests'));
     }
@@ -364,27 +359,6 @@ class GuestController extends Controller
         flash(trans('common.error'))->error();
 
         return redirect()->route('guests.index');
-    }
-
-    /**
-     * Display a listing of searched records.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $query = clean_param($request->get('query', null));
-
-        if (empty($query)) {
-            return back();
-        }
-
-        $guests = Guest::where('user_id', id_parent())
-            ->queryBy($query)
-            ->get(fields_get('guests'));
-
-        return view('app.guests.search', compact('guests', 'query'));
     }
 
     /**
