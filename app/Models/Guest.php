@@ -15,10 +15,12 @@ class Guest extends Model
     use Queryable;
     use LogsActivity;
 
-    public const SCOPE_FILTERS = [
-        'from_date',
-        'status',
-        'query_by',
+    public const IS_STAYING = 'is_staying';
+    public const IS_NOT_STAYING = 'is_not_staying';
+
+    public const SCOPE_STATUS = [
+        self::IS_STAYING,
+        self::IS_NOT_STAYING,
     ];
 
     protected $fillable = [
@@ -112,7 +114,7 @@ class Guest extends Model
         return $query;
     }
 
-    public function scopeQueryBy(Builder $query, string $text): Builder
+    public function scopeSearch(Builder $query, string $text): Builder
     {
         return $query->whereLike(['name', 'last_name', 'dni'], $text);
     }

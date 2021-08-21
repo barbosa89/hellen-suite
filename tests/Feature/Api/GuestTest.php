@@ -8,6 +8,7 @@ use App\Models\Guest;
 use RolesTableSeeder;
 use CountriesTableSeeder;
 use PermissionsTableSeeder;
+use Laravel\Passport\Passport;
 use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,6 +17,9 @@ class GuestTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
+
+    private string $uri = '/api/v1/guests';
+    private string $permission = 'guests.index';
 
     public function setUp(): void
     {
@@ -32,25 +36,27 @@ class GuestTest extends TestCase
         /** @var User $user */
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user)
-            ->get('/api/v1/web/guests');
+        Passport::actingAs($user);
+
+        $response = $this->getJson($this->uri);
 
         $response->assertForbidden();
     }
 
     public function test_user_can_list_guests()
     {
-        /** @var User $manager */
-        $manager = factory(User::class)->create();
-        $manager->givePermissionTo('guests.index');
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($manager)
-            ->get('/api/v1/web/guests');
+        Passport::actingAs($user);
+
+        $response = $this->getJson($this->uri);
 
         $response->assertOk()
             ->assertJsonFragment([
@@ -64,26 +70,27 @@ class GuestTest extends TestCase
 
     public function test_user_can_filter_new_guests_by_date()
     {
-        /** @var User $manager */
-        $manager = factory(User::class)->create();
-        $manager->givePermissionTo('guests.index');
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo($this->permission);
 
         /** @var Guest $oldGuest */
         $oldGuest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
             'created_at' => now()->subDays(6)
         ]);
 
-        $response = $this->actingAs($manager)
-            ->call(
+        Passport::actingAs($user);
+
+        $response = $this->call(
                 'GET',
-                '/api/v1/web/guests',
+                $this->uri,
                 [
                     'from_date' => now()->subDays(7)->format('Y-m-d'),
                 ]
@@ -113,21 +120,22 @@ class GuestTest extends TestCase
      */
     public function test_user_can_filter_guests_by_status(bool $status, string $filter)
     {
-        /** @var User $manager */
-        $manager = factory(User::class)->create();
-        $manager->givePermissionTo('guests.index');
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
             'created_at' => now()->subDays(8),
             'status' => $status,
         ]);
 
-        $response = $this->actingAs($manager)
-            ->call(
+        Passport::actingAs($user);
+
+        $response = $this->call(
                 'GET',
-                '/api/v1/web/guests',
+                $this->uri,
                 [
                     'status' => $filter,
                 ]
@@ -166,11 +174,11 @@ class GuestTest extends TestCase
         return [
             'filter guests staying at the hotel' => [
                 true,
-                'is_staying'
+                Guest::IS_STAYING,
             ],
             'filter guests who are not staying at the hotel' => [
                 false,
-                'is_not_staying'
+                Guest::IS_NOT_STAYING,
             ],
         ];
     }
@@ -182,21 +190,21 @@ class GuestTest extends TestCase
      */
     public function test_user_can_not_filter_guests_with_opposite_status(bool $status, string $filter)
     {
-        /** @var User $manager */
-        $manager = factory(User::class)->create();
-        $manager->givePermissionTo('guests.index');
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo($this->permission);
 
-        /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+        factory(Guest::class)->create([
+            'user_id' => $user->id,
             'created_at' => now()->subDays(8),
             'status' => $status,
         ]);
 
-        $response = $this->actingAs($manager)
-            ->call(
+        Passport::actingAs($user);
+
+        $response = $this->call(
                 'GET',
-                '/api/v1/web/guests',
+                $this->uri,
                 [
                     'status' => $filter,
                 ]
@@ -213,37 +221,38 @@ class GuestTest extends TestCase
         return [
             'filter guests staying at the hotel' => [
                 false,
-                'is_staying'
+                Guest::IS_STAYING,
             ],
             'filter guests who are not staying at the hotel' => [
                 true,
-                'is_not_staying'
+                Guest::IS_NOT_STAYING,
             ],
         ];
     }
 
     public function test_user_can_search_guests()
     {
-        /** @var User $manager */
-        $manager = factory(User::class)->create();
-        $manager->givePermissionTo('guests.index');
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo($this->permission);
 
         /** @var Guest $oldGuest */
         $oldGuest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
-            'user_id' => $manager->id,
+            'user_id' => $user->id,
             'created_at' => now()->subDays(6)
         ]);
 
-        $response = $this->actingAs($manager)
-            ->call(
+        Passport::actingAs($user);
+
+        $response = $this->call(
                 'GET',
-                '/api/v1/web/guests',
+                $this->uri,
                 [
                     'search' => $guest->dni,
                 ]

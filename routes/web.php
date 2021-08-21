@@ -50,7 +50,6 @@ require __DIR__ . '/root.php';
 require __DIR__ . '/api/web/notes.php';
 require __DIR__ . '/api/web/vouchers.php';
 require __DIR__ . '/api/web/companies.php';
-require __DIR__ . '/api/web/guests.php';
 require __DIR__ . '/api/web/rooms.php';
 
 // Modules

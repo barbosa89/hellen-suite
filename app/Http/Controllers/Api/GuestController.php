@@ -11,8 +11,7 @@ class GuestController extends Controller
 {
     public function index(Index $request): JsonResponse
     {
-        $guests = Guest::query()
-            ->owner()
+        $guests = Guest::owner()
             ->latest()
             ->filter($request->validated())
             ->paginate($request->input('per_page', config('settings.paginate')));

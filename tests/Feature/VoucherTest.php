@@ -364,39 +364,6 @@ class VoucherTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_user_can_search_guests_to_add_to_voucher()
-    {
-        /** @var User $user */
-        $user = factory(User::class)->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('guests.index');
-
-        /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
-            'user_id' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->call(
-                'GET',
-                '/api/v1/web/guests',
-                [
-                    'query_by' => $guest->dni,
-                ]
-            );
-
-        $response->assertOk()
-            ->assertJsonFragment([
-                'hash' => $guest->hash,
-                'dni' => (string) $guest->dni,
-                'name' => $guest->name,
-                'last_name' => $guest->last_name,
-                'email' => $guest->email,
-            ]);
-    }
-
     public function test_user_can_see_the_form_to_add_guest_to_voucher()
     {
         /** @var User $user */
