@@ -17,6 +17,10 @@ $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;
 $text-default: white;
+[v-cloak] {
+    display: none;
+}
+
 .text-default {
     color: $text-default;
 }

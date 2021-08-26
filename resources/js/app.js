@@ -45,6 +45,11 @@ Vue.component('vouchers-index', require('./components/Vouchers/Index.vue').defau
 
 Vue.component('home-index', require('./components/Home/Index.vue').default);
 
+Vue.component('guests-index', require('./components/Guests/Index.vue').default);
+
+Vue.component('navigation', require('./components/Common/Navigation.vue').default);
+
+
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';
 

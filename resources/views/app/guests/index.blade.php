@@ -9,38 +9,27 @@
     <div id="page-wrapper">
         <x-navigation
             title="{{ trans('guests.title') }}"
-            url="{{ route('guests.index') }}"
-            search>
-            @can('guests.index')
-                @if ($guests->isNotEmpty())
+            url="{{ route('guests.index') }}">
+            <ul class="navbar-nav ml-auto">
+                @can('guests.index')
                     <li class="nav-item">
                         <a href="{{ route('guests.export') }}" class="nav-link">
-                            @lang('reports.list')
+                            {{ trans('reports.list') }}
                         </a>
                     </li>
-                @endif
-            @endcan
+                @endcan
 
-            @can('guests.create')
-                <li class="nav-item">
-                    <a href="{{ route('guests.create') }}" class="nav-link">
-                        @lang('common.new')
-                    </a>
-                </li>
-            @endcan
+                @can('guests.index')
+                    <li class="nav-item">
+                        <a href="{{ route('guests.create') }}" class="nav-link">
+                            {{ trans('common.new') }}
+                        </a>
+                    </li>
+                @endcan
+            </ul>
         </x-navigation>
 
-        <div class="row">
-            <div class="col-md-12">
-                @include('app.guests.table')
-            </div>
-        </div>
-
-        <div class="row my-4">
-            <div class="col-12">
-                {{ $guests->withQueryString()->links() }}
-            </div>
-        </div>
+        <guests-index></guests-index>
 
         @include('partials.modal-confirm')
     </div>

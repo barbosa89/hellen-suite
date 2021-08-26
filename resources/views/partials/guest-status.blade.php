@@ -7,6 +7,9 @@
         @lang('guests.status.hosted')
         @break
 
+    @default
+        @lang('guests.status.out')
+        @break
 
 @endswitch
 

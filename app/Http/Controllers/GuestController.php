@@ -16,14 +16,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
 {
-    public function index(Index $request): View
+    public function index(): View
     {
-        $guests = Guest::where('user_id', id_parent())
-            ->latest()
-            ->filter($request->validated())
-            ->paginate(10, fields_get('guests'));
-
-        return view('app.guests.index', compact('guests'));
+        return view('app.guests.index');
     }
 
     /**
