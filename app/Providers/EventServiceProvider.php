@@ -26,12 +26,6 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\RoomCheckOut::class => [
             \App\Listeners\RegisterRoomCheckOut::class
         ],
-        \Illuminate\Auth\Events\Login::class => [
-            \App\Listeners\StorePermissionsInCache::class,
-        ],
-        \Illuminate\Auth\Events\Logout::class => [
-            \App\Listeners\ForgetPermissionsFromCache::class,
-        ],
     ];
 
     /**

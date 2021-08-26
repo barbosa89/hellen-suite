@@ -6,7 +6,7 @@ use App\Helpers\Fields;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
 use Illuminate\Support\Str;
-use App\Services\PermissionCache;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
 if (!function_exists('id_encode')) {
@@ -145,7 +145,11 @@ if (!function_exists('get_user_permissions')) {
      */
     function get_user_permissions(): array
     {
-        return PermissionCache::get();
+        if (Auth::check()) {
+            return Auth::user()->getPermissionNames()->toArray();
+        }
+
+        return [];
     }
 }
 
