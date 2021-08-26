@@ -9,13 +9,13 @@ class Navigation extends Component
 {
     public string $title;
     public string $url;
-    public bool $search;
+    public bool $hotelSelect;
 
-    public function __construct(string $title, string $url, bool $search = false)
+    public function __construct(string $title, string $url, bool $hotelSelect = false)
     {
         $this->title = $title;
         $this->url = $url;
-        $this->search = $search;
+        $this->hotelSelect = $hotelSelect;
     }
 
     public function render(): View
