@@ -40,6 +40,7 @@
             },
             selectedHotel() {
                 this.$emit('hotel', this.hotel)
+                this.$root.$emit('hotel-selected', this.hotel)
             }
         },
     }
