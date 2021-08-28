@@ -48,6 +48,7 @@ Vue.component('home-index', require('./components/Home/Index.vue').default);
 Vue.component('guests-index', require('./components/Guests/Index.vue').default);
 
 Vue.component('navigation', require('./components/Common/Navigation.vue').default);
+Vue.component('dropdown-button', require('./components/Common/DropdownButton.vue').default);
 
 
 import VueInternationalization from 'vue-i18n';
