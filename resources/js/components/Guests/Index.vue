@@ -17,10 +17,20 @@
                             </a>
                     </td>
                     <td>
-                        Status
+                        {{ status(record.status) }}
                     </td>
                     <td>
-
+                        <dropdown-button>
+                            <a v-if="$can('guests.show')" :href="route('guests.show', record.hash)" class="dropdown-item">
+                                {{ $t('common.show') }}
+                            </a>
+                            <a v-if="$can('guests.edit')" :href="route('guests.edit', record.hash)" class="dropdown-item">
+                                {{ $t('common.edit') }}
+                            </a>
+                            <a v-if="$can('guests.destroy')" href="#" :data-url="route('guests.destroy', record.hash)" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                {{ $t('common.delete.item') }}
+                            </a>
+                        </dropdown-button>
                     </td>
                 </template>
             </vue-table>
@@ -29,7 +39,12 @@
 </template>
 
 <script>
+import Status from './Status'
+
 export default {
+    mixins: [
+        Status
+    ],
     data() {
         return {
             url: route('guests.index'),
@@ -47,6 +62,18 @@ export default {
                         description: this.$root.$t('common.options')
                     },
                 ]
+        }
+    },
+    methods: {
+        displayStatus(status) {
+            switch(status) {
+                case(0):
+                    return this.$root.trans('guests.status.out')
+                case(1):
+                    return this.$root.trans('guests.status.hosted')
+                default:
+                    return this.$root.trans('guests.status.out')
+            }
         }
     },
 }
