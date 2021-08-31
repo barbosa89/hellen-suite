@@ -1,26 +1,30 @@
 <?php
 
+use App\Constants\Genders;
+use App\User;
+use App\Models\Guest;
+use App\Models\Country;
 use Faker\Generator as Faker;
+use App\Models\IdentificationType;
 
-$factory->define(App\Models\Guest::class, function (Faker $faker) {
-    $gender = ['x', 'y'];
-
-
+$factory->define(Guest::class, function (Faker $faker) {
     return [
-        'dni' => $faker->randomNumber(7),
+        'dni' => (string) $faker->randomNumber(7),
         'name' => $faker->name,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'address' => $faker->streetAddress,
         'phone' => $faker->e164PhoneNumber,
+        'profession' => $faker->word,
+        'gender' => $faker->randomElement(Genders::toArray()),
         'identification_type_id' => function () {
-            return \App\Models\IdentificationType::inRandomOrder()->first(['id'])->id;
+            return IdentificationType::inRandomOrder()->first(['id'])->id;
         },
         'country_id' => function () {
-            return \App\Models\Country::inRandomOrder()->first(['id'])->id;
+            return Country::inRandomOrder()->first(['id'])->id;
         },
         'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
+            return factory(User::class)->create()->id;
         }
     ];
 });

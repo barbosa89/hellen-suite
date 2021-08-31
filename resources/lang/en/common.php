@@ -9,7 +9,7 @@ return array (
     'updateOf' => 'Update of',
     'address' => 'Address',
     'email' => 'Email address',
-    'lastName' => 'Last name',
+    'lastname' => 'Last name',
     'name' => 'Name',
     'password' => 'Password',
     'phone' => 'Phone number',
@@ -108,7 +108,7 @@ return array (
     'capacity' => 'Capacity',
     'floor' => 'Floor',
     'date' => 'Date',
-    'chooseOption' => 'Choose a option',
+    'chooseOption' => 'Choose an option',
     'query' => 'Query',
     'commentary' => 'Commentary',
     'x' => 'Other',
@@ -186,14 +186,19 @@ return array (
     'lang' => 'Language',
     'month' => 'Month',
     'months' => 'Month|Months',
-    'view' =>
-    array (
+    'view' => [
         'details' => 'View details',
-    ),
+    ],
     'filters' => [
         'filters' => 'Filters',
         'apply' => 'Apply',
     ],
     'clear' => 'Clear',
     'types' => 'Types',
+    'creating' => [
+        'of' => ':title creation'
+    ],
+    'choose' => [
+        'option' => 'Choose an option'
+    ],
 );

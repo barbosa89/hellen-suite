@@ -1,18 +1,16 @@
-<div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-    <label for="type">@lang('common.idType'):</label>
-    <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
-        @foreach($types as $type)
-            @if($loop->first)
-                <option selected value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
-            @else
-                <option value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
-            @endif
+<div class="form-group{{ $errors->has('identification_type_id') ? ' has-error' : '' }}">
+    <label for="identification_type_id">@lang('common.idType'):</label>
+    <select class="form-control selectpicker" title="{{ trans('users.choose.identification') }}" name="identification_type_id" id="identification_type_id" required>
+        @foreach($identificationTypes as $type)
+            <option value="{{ $type->hash }}" @if($loop->first) selected @endif>
+                {{ trans('common.' . $type->type) }}
+            </option>
         @endforeach
     </select>
 
-    @if ($errors->has('type'))
+    @if ($errors->has('identification_type_id'))
         <span class="help-block">
-            <strong>{{ $errors->first('type') }}</strong>
+            <strong>{{ $errors->first('identification_type_id') }}</strong>
         </span>
     @endif
 </div>
@@ -40,7 +38,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-    <label for="last_name">@lang('common.lastName')(s):</label>
+    <label for="last_name">@lang('common.lastname')(s):</label>
     <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('last_name') }}" required placeholder="{{ trans('common.required') }}">
 
     @if ($errors->has('last_name'))
@@ -96,10 +94,10 @@
 
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
-    <select class="form-control selectpicker" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
-        <option value="f">@lang('common.f')</option>
-        <option value="m">@lang('common.m')</option>
-        <option value="x">@lang('common.other')</option>
+    <select class="form-control selectpicker" title="{{ trans('guests.choose.gender') }}" name="gender" id="gender">
+        @foreach ($genders as $gender => $description)
+            <option value="{{ $gender }}">{{ $description }}</option>
+        @endforeach
     </select>
 
     @if ($errors->has('gender'))
@@ -109,17 +107,17 @@
     @endif
 </div>
 
-<div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
-    <label for="nationality">@lang('guests.birth.country'):</label>
-    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required placeholder="{{ trans('common.required') }}">
+<div class="form-group{{ $errors->has('country_id') ? ' has-error' : '' }}">
+    <label for="country_id">@lang('guests.birth.country'):</label>
+    <select class="form-control selectpicker" title="{{ trans('common.choose.option') }}" name="country_id" id="country_id" required placeholder="{{ trans('common.required') }}">
         @foreach ($countries as $country)
-        <option value="{{ id_encode($country->id) }}" {{ $country->name == 'Colombia' ? 'selected' : '' }}>{{ $country->name }}</option>
+            <option value="{{ $country->hash }}">{{ $country->name }}</option>
         @endforeach
     </select>
 
-    @if ($errors->has('nationality'))
+    @if ($errors->has('country_id'))
         <span class="help-block">
-            <strong>{{ $errors->first('nationality') }}</strong>
+            <strong>{{ $errors->first('country_id') }}</strong>
         </span>
     @endif
 </div>

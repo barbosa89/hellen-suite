@@ -13,6 +13,7 @@ use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
 use App\Models\{Country, Guest, IdentificationType, Room, Voucher};
 use Maatwebsite\Excel\Facades\Excel;
+use App\View\Models\Guests\Create as CreateViewModel;
 
 class GuestController extends Controller
 {
@@ -21,17 +22,9 @@ class GuestController extends Controller
         return view('app.guests.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        $types = IdentificationType::all(['id', 'type']);
-        $countries = Country::all(['id', 'name']);
-
-        return view('app.guests.create', compact('types', 'countries'));
+        return view('app.guests.create', new CreateViewModel());
     }
 
     /**

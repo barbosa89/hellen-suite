@@ -3,7 +3,6 @@
 return [
     'title' => 'Huéspedes',
     'guest' => 'Huésped',
-    'chooseGender' => 'Selecciona un género',
     'recently' => 'Recientemente registrados',
     'profession' => 'Profesión',
     'country' => 'País',
@@ -26,4 +25,7 @@ return [
         'out' => 'No hospedado',
     ],
     'filters' => 'Filtros de huéspedes',
+    'choose' => [
+        'gender' => 'Elija un género',
+    ],
 ];

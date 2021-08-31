@@ -32,7 +32,7 @@ export default {
             "updateOf": "Update of",
             "address": "Address",
             "email": "Email address",
-            "lastName": "Last name",
+            "lastname": "Last name",
             "name": "Name",
             "password": "Password",
             "phone": "Phone number",
@@ -130,7 +130,7 @@ export default {
             "capacity": "Capacity",
             "floor": "Floor",
             "date": "Date",
-            "chooseOption": "Choose a option",
+            "chooseOption": "Choose an option",
             "query": "Query",
             "commentary": "Commentary",
             "x": "Other",
@@ -206,7 +206,13 @@ export default {
                 "apply": "Apply"
             },
             "clear": "Clear",
-            "types": "Types"
+            "types": "Types",
+            "creating": {
+                "of": "{title} creation"
+            },
+            "choose": {
+                "option": "Choose an option"
+            }
         },
         "dining": {
             "title": "Dining service",
@@ -412,13 +418,16 @@ export default {
             "verified": "Verified",
             "wasDeleted": "User was deleted",
             "wasDisabled": "User was disabled because he has records in the system",
-            "chooseRole": "Choose a role",
             "accountant": "Accountant",
             "manager": "Manager",
             "team": "My team",
             "role": "Role",
             "permissions": "Permissions",
-            "cashier": "Cashier"
+            "cashier": "Cashier",
+            "choose": {
+                "identification": "Choose an identification type",
+                "role": "Choose a role"
+            }
         },
         "invoices": {
             "title": "Invoices",
@@ -521,7 +530,6 @@ export default {
         "guests": {
             "title": "Guests",
             "guest": "Guest",
-            "chooseGender": "Choose gender",
             "recently": "Recently registered",
             "profession": "Profession",
             "country": "Country",
@@ -543,7 +551,10 @@ export default {
                 "hosted": "Hosted",
                 "out": "Not hosted"
             },
-            "filters": "Guest filters"
+            "filters": "Guest filters",
+            "choose": {
+                "gender": "Choose gender"
+            }
         },
         "login": {
             "identification": "Sign in",
@@ -1023,7 +1034,7 @@ export default {
             "creationOf": "Creación de",
             "updateOf": "Actualización de",
             "name": "Nombre",
-            "lastName": "Apellido",
+            "lastname": "Apellido",
             "email": "Correo electrónico",
             "address": "Dirección",
             "phone": "Teléfono",
@@ -1198,7 +1209,13 @@ export default {
                 "apply": "Aplicar"
             },
             "clear": "Limpiar",
-            "types": "Tipos"
+            "types": "Tipos",
+            "creating": {
+                "of": "Creación de {title}"
+            },
+            "choose": {
+                "option": "Elija una opción"
+            }
         },
         "dining": {
             "title": "Servicio de comedor",
@@ -1404,13 +1421,16 @@ export default {
             "notVerified": "No verificado",
             "wasDeleted": "El usuario fue eliminado",
             "wasDisabled": "El usuario fue deshabilitado porque tiene registros en el sistema",
-            "chooseRole": "Elige un rol",
             "manager": "Gerente",
             "accountant": "Contador",
             "team": "Mi equipo",
             "role": "Rol",
             "permissions": "Permisos",
-            "cashier": "Cajero"
+            "cashier": "Cajero",
+            "choose": {
+                "identification": "Choose an identification type",
+                "role": "Choose a role"
+            }
         },
         "invoices": {
             "title": "Facturas",
@@ -1513,7 +1533,6 @@ export default {
         "guests": {
             "title": "Huéspedes",
             "guest": "Huésped",
-            "chooseGender": "Selecciona un género",
             "recently": "Recientemente registrados",
             "profession": "Profesión",
             "country": "País",
@@ -1535,7 +1554,10 @@ export default {
                 "hosted": "Hospedado",
                 "out": "No hospedado"
             },
-            "filters": "Filtros de huéspedes"
+            "filters": "Filtros de huéspedes",
+            "choose": {
+                "gender": "Elija un género"
+            }
         },
         "login": {
             "logout": "Salir",

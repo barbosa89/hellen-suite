@@ -3,7 +3,6 @@
 return [
     'title' => 'Guests',
     'guest' => 'Guest',
-    'chooseGender' => 'Choose gender',
     'recently' => 'Recently registered',
     'profession' => 'Profession',
     'country' => 'Country',
@@ -26,4 +25,7 @@ return [
         'out' => 'Not hosted',
     ],
     'filters' => 'Guest filters',
+    'choose' => [
+        'gender' => 'Choose gender',
+    ],
 ];

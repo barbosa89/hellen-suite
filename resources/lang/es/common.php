@@ -8,7 +8,7 @@ return array (
     'creationOf' => 'Creación de',
     'updateOf' => 'Actualización de',
     'name' => 'Nombre',
-    'lastName' => 'Apellido',
+    'lastname' => 'Apellido',
     'email' => 'Correo electrónico',
     'address' => 'Dirección',
     'phone' => 'Teléfono',
@@ -196,4 +196,10 @@ return array (
     ],
     'clear' => 'Limpiar',
     'types' => 'Tipos',
+    'creating' => [
+        'of' => 'Creación de :title'
+    ],
+    'choose' => [
+        'option' => 'Elija una opción'
+    ],
 );
