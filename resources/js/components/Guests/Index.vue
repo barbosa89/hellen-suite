@@ -12,9 +12,9 @@
                         </a>
                     </td>
                     <td>
-                            <a :href="route('guests.show', record.hash)">
-                                {{ record.dni }}
-                            </a>
+                        <a :href="route('guests.show', record.hash)">
+                            {{ record.dni }}
+                        </a>
                     </td>
                     <td>
                         {{ status(record.status) }}
@@ -63,18 +63,6 @@ export default {
                     },
                 ]
         }
-    },
-    methods: {
-        displayStatus(status) {
-            switch(status) {
-                case(0):
-                    return this.$root.trans('guests.status.out')
-                case(1):
-                    return this.$root.trans('guests.status.hosted')
-                default:
-                    return this.$root.trans('guests.status.out')
-            }
-        }
-    },
+    }
 }
 </script>
