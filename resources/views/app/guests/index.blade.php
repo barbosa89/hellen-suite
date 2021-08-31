@@ -21,6 +21,14 @@
 
                 @can('guests.index')
                     <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#guest-filters" class="nav-link">
+                            {{ trans('common.filters.filters') }}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('guests.index')
+                    <li class="nav-item">
                         <a href="{{ route('guests.create') }}" class="nav-link">
                             {{ trans('common.new') }}
                         </a>
