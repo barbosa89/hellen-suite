@@ -5,9 +5,12 @@ namespace App\Constants;
 use App\Contracts\Dictionary;
 use App\Contracts\Translatable;
 use App\Contracts\StaticArrayable;
+use App\Traits\CanTranslate;
 
 class Config implements StaticArrayable, Dictionary, Translatable
 {
+    use CanTranslate;
+
     public const CHECK_OUT= 'out';
 
     public static function toArray(): array
@@ -17,15 +20,10 @@ class Config implements StaticArrayable, Dictionary, Translatable
         ];
     }
 
-    public static function toDict(): array
+    public static function toDictionary(): array
     {
         return [
             self::CHECK_OUT => trans('configurations.out'),
         ];
-    }
-
-    public static function trans(string $key): string
-    {
-        return self::toDict()[$key] ?? '';
     }
 }

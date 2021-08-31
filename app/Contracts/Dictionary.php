@@ -4,5 +4,8 @@ namespace App\Contracts;
 
 interface Dictionary
 {
-    public static function toDict(): array;
+    /**
+     * @return array<string, string>
+     */
+    public static function toDictionary(): array;
 }
