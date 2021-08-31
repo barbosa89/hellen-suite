@@ -196,8 +196,9 @@ return array (
     ],
     'clear' => 'Limpiar',
     'types' => 'Tipos',
-    'creating' => [
-        'of' => 'Creación de :title'
+    'actions' => [
+        'create' => 'Creación de :model',
+        'edit' => 'Edición de :model',
     ],
     'choose' => [
         'option' => 'Elija una opción'

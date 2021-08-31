@@ -1,12 +1,12 @@
 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
     <label for="type">@lang('common.idType'):</label>
-    <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
-        <option value="{{ id_encode($guest->identificationType->id) }}" selected>
+    <select class="form-control selectpicker" title="{{ trans('users.choose.identification') }}" name="type" id="type" required>
+        <option value="{{ $guest->identificationType->hash }}" selected>
             {{ trans('common.' . $guest->identificationType->type) }}
         </option>
 
-        @foreach($types as $type)
-            <option value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
+        @foreach($identificationTypes as $type)
+            <option value="{{ $type->hash }}">{{ trans('common.' . $type->type) }}</option>
         @endforeach
     </select>
 
@@ -40,7 +40,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-    <label for="last_name">@lang('common.lastName')(s):</label>
+    <label for="last_name">@lang('common.lastname')(s):</label>
     <input type="text" class="form-control" name="last_name" id="last_name" value="{{ $guest->last_name }}" required>
 
     @if ($errors->has('last_name'))
@@ -84,7 +84,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('profession') ? ' has-error' : '' }}">
-    <label for="profession">Profesión:</label>
+    <label for="profession">@lang('guests.profession'):</label>
     <input type="text" class="form-control" name="profession" id="profession" value="{{ $guest->profession }}">
 
     @if ($errors->has('profession'))
@@ -96,19 +96,14 @@
 
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
-    <select class="form-control selectpicker" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
-        @if (empty($guest->gender))
-            <option value="f">@lang('common.f')</option>
-            <option value="m">@lang('common.m')</option>
-            <option value="x">@lang('common.other')</option>
-        @else
+    <select class="form-control selectpicker" title="{{ trans('guests.choose.gender') }}" name="gender" id="gender">
+        @if ($guest->gender)
             <option value="{{ $guest->gender }}" selected>{{ trans('common.' . $guest->gender) }}</option>
-
-            @foreach (array_diff(['f', 'm', 'x'], [$guest->gender]) as $item)
-                <option value="{{ $item }}">{{ trans('common.' . $item) }}</option>
-            @endforeach
         @endif
 
+        @foreach ($genders as $gender => $description)
+            <option value="{{ $gender }}">{{ $description }}</option>
+        @endforeach
     </select>
 
     @if ($errors->has('gender'))
@@ -119,8 +114,8 @@
 </div>
 
 <div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
-    <label for="nationality">Pais de nacimiento:</label>
-    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required>
+    <label for="nationality">@lang('guests.birth.country'):</label>
+    <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="nationality" id="nationality" required>
             <option value="{{ id_encode($guest->country->id) }}" selected>{{ $guest->country->name }}</option>
         @foreach ($countries as $country)
             <option value="{{ id_encode($country->id) }}">{{ $country->name }}</option>

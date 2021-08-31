@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
+use App\Models\Guest;
+use App\Helpers\Chart;
 use App\Events\CheckIn;
+use App\Models\Country;
+use App\Models\Voucher;
 use App\Events\CheckOut;
+use App\Helpers\Customer;
+use Illuminate\View\View;
 use App\Exports\GuestsReport;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use App\Helpers\{Chart, Customer};
 use App\Http\Requests\StoreGuest;
-use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
-use App\Models\{Country, Guest, IdentificationType, Room, Voucher};
+use App\Models\IdentificationType;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreVoucherGuest;
+use App\View\Models\Guests\Edit as EditViewModel;
 use App\View\Models\Guests\Create as CreateViewModel;
 
 class GuestController extends Controller
@@ -226,40 +232,9 @@ class GuestController extends Controller
         return view('app.guests.show', compact('guest', 'data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(string $id): View
     {
-        $guest = Guest::where('user_id', id_parent())
-            ->where('id', id_decode($id))
-            ->first(fields_get('guests'));
-
-        if (empty($guest)) {
-            abort(404);
-        }
-
-        $guest->load([
-            'identificationType' => function ($query)
-            {
-                $query->select(['id', 'type']);
-            },
-            'country' => function ($query)
-            {
-                $query->select(['id', 'name']);
-            }
-        ]);
-
-        $types = IdentificationType::where('id', '!=', $guest->identificationType->id)
-            ->get(['id', 'type']);
-
-        $countries = Country::where('id', '!=', $guest->country->id)
-            ->get(['id', 'name']);
-
-        return view('app.guests.edit', compact('guest', 'types', 'countries'));
+        return view('app.guests.edit', new EditViewModel(id_decode($id)));
     }
 
     /**

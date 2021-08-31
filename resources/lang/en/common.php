@@ -195,10 +195,11 @@ return array (
     ],
     'clear' => 'Clear',
     'types' => 'Types',
-    'creating' => [
-        'of' => ':title creation'
+    'actions' => [
+        'create' => ':model creation',
+        'edit' => ':model edition',
     ],
     'choose' => [
-        'option' => 'Choose an option'
+        'option' => 'Choose an option',
     ],
 );

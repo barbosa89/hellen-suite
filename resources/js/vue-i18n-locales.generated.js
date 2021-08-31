@@ -207,8 +207,9 @@ export default {
             },
             "clear": "Clear",
             "types": "Types",
-            "creating": {
-                "of": "{title} creation"
+            "actions": {
+                "create": "{model} creation",
+                "edit": "{model} edition"
             },
             "choose": {
                 "option": "Choose an option"
@@ -1210,8 +1211,9 @@ export default {
             },
             "clear": "Limpiar",
             "types": "Tipos",
-            "creating": {
-                "of": "Creación de {title}"
+            "actions": {
+                "create": "Creación de {model}",
+                "edit": "Edición de {model}"
             },
             "choose": {
                 "option": "Elija una opción"

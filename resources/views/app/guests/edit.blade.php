@@ -7,25 +7,28 @@
 @section('content')
 
     <div id="page-wrapper">
-        @include('partials.page-header', [
-            'title' => trans('guests.title'),
-            'url' => route('guests.index'),
-            'options' => [
-                [
-                    'option' => trans('common.back'),
-                    'url' => url()->previous()
-                ],
-            ]
-        ])
+        <x-navigation
+            title="{{ trans('guests.title') }}"
+            url="{{ route('guests.index') }}">
+            <ul class="navbar-nav ml-auto">
+                @can('guests.index')
+                    <li class="nav-item">
+                        <a href="{{ route('guests.index') }}" class="nav-link">
+                            @lang('common.back')
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </x-navigation>
 
         <div class="row">
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
-                        'title' => trans('common.editionOf') . ' ' . trans('guests.title'),
+                        'title' => trans('common.actions.edit', ['model' => trans('guests.guest')]),
                         'align' => 'text-center'
                     ],
-                    'url' => route('guests.update', ['id' => id_encode($guest->id)]),
+                    'url' => route('guests.update', ['id' => $guest->hash]),
                     'method' => 'PUT',
                     'fields' => [
                         'app.guests.edit-fields',
