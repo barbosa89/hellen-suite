@@ -135,6 +135,7 @@ return array (
     'created' =>
     array (
         'at' => 'Fecha de creación',
+        'successfully' => 'El registro fue creado exitosamente',
     ),
     'updated' =>
     array (

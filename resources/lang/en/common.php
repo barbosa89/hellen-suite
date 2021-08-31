@@ -139,6 +139,7 @@ return array (
     'created' =>
     array (
         'at' => 'Created at',
+        'successfully' => 'The record was created successfully',
     ),
     'updated' =>
     array (

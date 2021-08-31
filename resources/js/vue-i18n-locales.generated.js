@@ -157,10 +157,14 @@ export default {
                 "at": "Closed at"
             },
             "created": {
-                "at": "Created at"
+                "at": "Created at",
+                "successfully": "The record was created successfully"
             },
             "updated": {
                 "at": "Updated at"
+            },
+            "enabled": {
+                "at": "Enabled at"
             },
             "existence": "Existence",
             "tin": "TIN",
@@ -193,7 +197,7 @@ export default {
             },
             "lang": "Language",
             "month": "Month",
-            "months": "Months",
+            "months": "Month|Months",
             "view": {
                 "details": "View details"
             },
@@ -307,7 +311,7 @@ export default {
             "duration": "Duration time in months",
             "descriptions": {
                 "basic": "All modules for {months} months",
-                "free": "All modules for {months} month",
+                "free": "All modules for {months} month|All modules for {months} months",
                 "premium": "All modules and electronic invoicing for 12 months",
                 "sponsor": "All platform features without time limit"
             },
@@ -319,7 +323,7 @@ export default {
                     "mail": "Email support only",
                     "priority": "Priority technical support"
                 },
-                "unique": "{months} month one time",
+                "unique": "{months} month one time|{months} months one time",
                 "renewable": "{months} months",
                 "default": "Please, contact us to purchase this plan"
             },
@@ -461,7 +465,8 @@ export default {
             "entry": "Entry",
             "loss": "Loss",
             "sale": "Sale",
-            "vouchers": "Vouchers"
+            "vouchers": "Vouchers",
+            "toggle": "Toggle status"
         },
         "hotels": {
             "title": "Hotels",
@@ -682,6 +687,14 @@ export default {
             "transactions": "Products transactions",
             "current": {
                 "stock": "Current stock"
+            }
+        },
+        "configurations": {
+            "title": "Configurations",
+            "out": "Check out hour",
+            "toggle": {
+                "enabled": "The configuration was enabled",
+                "disabled": "The configuration was disabled"
             }
         },
         "currencies": {
@@ -925,7 +938,11 @@ export default {
             "unique_per_user": "There is already a record with the same information",
             "open_shift": "There is already an open shift",
             "has_headquarters": "The team member does not have an assigned headquarter",
-            "headquarters": "This unique number, as an independent hotel, is already in use."
+            "headquarters": "This unique number, as an independent hotel, is already in use.",
+            "attributes": {
+                "country_id": "country",
+                "identification_type_id": "identification type"
+            }
         },
         "rooms": {
             "title": "Rooms",
@@ -1128,13 +1145,17 @@ export default {
                 "tax": "Sin impuesto"
             },
             "created": {
-                "at": "Fecha de creación"
+                "at": "Fecha de creación",
+                "successfully": "El registro fue creado exitosamente"
             },
             "updated": {
                 "at": "Fecha de actualización"
             },
             "closed": {
                 "at": "Fecha de cierre"
+            },
+            "enabled": {
+                "at": "Fecha de habilitación"
             },
             "existence": "Existencia",
             "tin": "NIT",
@@ -1167,7 +1188,7 @@ export default {
             },
             "lang": "Lenguaje",
             "month": "Mes",
-            "months": "Meses",
+            "months": "Mes|Meses",
             "view": {
                 "details": "Ver detalles"
             },
@@ -1280,14 +1301,14 @@ export default {
             },
             "duration": "Tiempo de duración en meses",
             "descriptions": {
-                "free": "Todos los módulos por {months} mes",
+                "free": "Todos los módulos por {months} mes|Todos los módulos por {months} meses",
                 "basic": "Todos los módulos por {months} meses",
                 "premium": "Todos los módulos y facturación electrónica por 12 meses",
                 "sponsor": "Todas las características de la plataforma sin límite de tiempo"
             },
             "prices": "Precios de los planes",
             "features": {
-                "unique": "{months} mes por única vez",
+                "unique": "{months} mes por única vez|{months} meses por única vez",
                 "all": "Todos los módulos",
                 "support": {
                     "mail": "Soporte por correo",
@@ -1435,7 +1456,8 @@ export default {
             "entry": "Entrada",
             "loss": "Pérdida",
             "discard": "Salida",
-            "vouchers": "Recibos"
+            "vouchers": "Recibos",
+            "toggle": "Cambiar estado"
         },
         "hotels": {
             "title": "Hoteles",
@@ -1656,6 +1678,14 @@ export default {
             "transactions": "Transacciones de productos",
             "current": {
                 "stock": "Cantidad actual"
+            }
+        },
+        "configurations": {
+            "title": "Configuraciones",
+            "out": "Hora hotelera",
+            "toggle": {
+                "enabled": "La configuración fue habilitada",
+                "disabled": "La configuración fue deshabilitada"
             }
         },
         "currencies": {
@@ -1899,7 +1929,11 @@ export default {
             "unique_per_user": "Ya hay un registro con la misma información",
             "open_shift": "Ya hay un turno abierto",
             "has_headquarters": "No tienes una sede asignada",
-            "headquarters": "Este número único, como hotel independiente, ya está en uso."
+            "headquarters": "Este número único, como hotel independiente, ya está en uso.",
+            "attributes": {
+                "country_id": "país",
+                "identification_type_id": "tipo de identificación"
+            }
         },
         "rooms": {
             "title": "Habitaciones",
