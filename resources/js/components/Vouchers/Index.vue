@@ -1,26 +1,24 @@
 <template>
-    <div>
-        <div class="row mt-3" v-if="canDisplayList">
-            <div class="col">
-                <vue-table
-                    :url='url'
-                    :headers='headers'
-                    :data-key='"vouchers"'
-                    :lang='lang'
-                    :search-icon='"fas fa-search"'
-                    :params='params'>
-                    <template v-slot:record="{ record }">
-                        <td>{{ record.created_at | date }}</td>
-                        <td>
-                            <a :href='route("vouchers.show", record.hash)'>
-                                {{ record.number }}
-                            </a>
-                        </td>
-                        <td>{{ $t('transactions.' + record.type) }}</td>
-                        <td>{{ record.value }}</td>
-                    </template>
-                </vue-table>
-            </div>
+    <div class="row mt-3" v-if="canDisplayList">
+        <div class="col">
+            <vue-table
+                :url='url'
+                :headers='headers'
+                :data-key='"vouchers"'
+                :lang='lang'
+                :search-icon='"fas fa-search"'
+                :params='params'>
+                <template v-slot:record="{ record }">
+                    <td>{{ record.created_at | date }}</td>
+                    <td>
+                        <a :href='route("vouchers.show", record.hash)'>
+                            {{ record.number }}
+                        </a>
+                    </td>
+                    <td>{{ $t('transactions.' + record.type) }}</td>
+                    <td>{{ record.value }}</td>
+                </template>
+            </vue-table>
         </div>
 
         <filter-modal @filter='setFilters'></filter-modal>

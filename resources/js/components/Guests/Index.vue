@@ -4,7 +4,8 @@
             <vue-table
                 :headers="headers"
                 :url="route('api.v1.guests.index')"
-                search-icon="fa fa-search">
+                search-icon="fa fa-search"
+                :params="params">
                 <template v-slot:record="{ record }">
                     <td>
                         <a :href="route('guests.show', record.hash)">
@@ -35,34 +36,54 @@
                 </template>
             </vue-table>
         </div>
+
+        <filter-modal @filter='setFilters'></filter-modal>
     </div>
 </template>
 
 <script>
 import Status from './Status'
+import FilterModal from './FilterModal'
 
 export default {
     mixins: [
         Status
     ],
+    components: {
+        FilterModal
+    },
     data() {
         return {
             url: route('guests.index'),
-                headers: [
-                    {
-                        description: this.$root.$t('common.name')
-                    },
-                    {
-                        description: this.$root.$t('common.idNumber')
-                    },
-                    {
-                        description: this.$root.$t('common.status')
-                    },
-                    {
-                        description: this.$root.$t('common.options')
-                    },
-                ]
+            headers: [
+                {
+                    description: this.$root.$t('common.name')
+                },
+                {
+                    description: this.$root.$t('common.idNumber')
+                },
+                {
+                    description: this.$root.$t('common.status')
+                },
+                {
+                    description: this.$root.$t('common.options')
+                },
+            ],
+            params: {}
         }
-    }
+    },
+    methods: {
+        setFilters(filters) {
+            const params = {}
+
+            if (filters.hasOwnProperty('status') && filters.status.length) {
+                params.status = filters.status
+            }
+
+            this.params = Object.assign({}, params)
+
+            $('#guest-filters').modal('hide')
+        }
+    },
 }
 </script>

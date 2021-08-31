@@ -542,7 +542,8 @@ export default {
             "status": {
                 "hosted": "Hosted",
                 "out": "Not hosted"
-            }
+            },
+            "filters": "Guest filters"
         },
         "login": {
             "identification": "Sign in",
@@ -1533,7 +1534,8 @@ export default {
             "status": {
                 "hosted": "Hospedado",
                 "out": "No hospedado"
-            }
+            },
+            "filters": "Filtros de huéspedes"
         },
         "login": {
             "logout": "Salir",

@@ -18,7 +18,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="lodging"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.lodging') }}</label>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="sale"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.sale') }}</label>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="entry"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.entry') }}</label>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="loss"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.loss') }}</label>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="discard"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.discard') }}</label>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                 <div class="pretty p-icon p-smooth">
                                     <input type="checkbox" name="type[]" v-model="type" value="dining"/>
                                     <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
+                                        <em class="icon fa fa-check"></em>
                                         <label>{{ $t('transactions.dining') }}</label>
                                     </div>
                                 </div>
