@@ -27,34 +27,27 @@ class GuestController extends Controller
         return view('app.guests.create', new CreateViewModel());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreGuest $request)
+    public function store(StoreGuest $request): RedirectResponse
     {
         $guest = new Guest();
-        $guest->name = $request->name;
-        $guest->last_name = $request->last_name;
-        $guest->dni = $request->dni;
-        $guest->email = $request->get('email', null);
-        $guest->address = $request->get('address', null);
-        $guest->phone = $request->get('phone', null);
-        $guest->gender = $request->get('gender', null);
-        $guest->birthdate = $request->get('birthdate', null);
-        $guest->profession = $request->get('profession', null);
-        $guest->status = false; # Not in hotel
-        $guest->identificationType()->associate(id_decode($request->type));
+        $guest->name = $request->input('name');
+        $guest->last_name = $request->input('last_name');
+        $guest->dni = $request->input('dni');
+        $guest->email = $request->input('email');
+        $guest->address = $request->input('address');
+        $guest->phone = $request->input('phone');
+        $guest->gender = $request->input('gender');
+        $guest->birthdate = $request->input('birthdate');
+        $guest->profession = $request->input('profession');
+        $guest->identificationType()->associate($request->input('identification_type_id'));
         $guest->user()->associate(id_parent());
-        $guest->country()->associate(id_decode($request->nationality));
+        $guest->country()->associate($request->input('country_id'));
 
         if ($guest->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
+            flash(trans('common.created.successfully'))->success();
 
             return redirect()->route('guests.show', [
-                'id' => id_encode($guest->id)
+                'id' => $guest->hash,
             ]);
         }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Constants\Genders;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGuest extends FormRequest
@@ -24,17 +26,32 @@ class StoreGuest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|string|hashed_exists:identification_types,id',
-            'dni' => 'required|alpha_num|min:5|max:15|unique_per_user:guests,dni',
-            'name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'nullable|email|unique_per_user:guests,email',
-            'address' => 'nullable|string|max:191',
-            'phone' => 'nullable|string|max:10',
-            'gender' => 'nullable|string|in:f,m,x',
-            'birtdate' => 'nullable|date',
-            'profession' => 'nullable|string',
-            'nationality' => 'required|string|hashed_exists:countries,id'
+            'identification_type_id' => ['required', 'int', 'exists:identification_types,id'],
+            'dni' => [
+                'required',
+                'alpha_num',
+                'min:5',
+                'max:15',
+                Rule::unique('guests')
+                    ->where('user_id', id_parent())
+            ],
+            'name' => ['required', 'string', 'min:3', 'max:150'],
+            'last_name' => ['required', 'string', 'min:3', 'max:150'],
+            'email' => ['nullable', 'email'],
+            'address' => ['nullable', 'string', 'max:191'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'gender' => ['nullable', 'string', Rule::in(Genders::toArray())],
+            'birthdate' => ['nullable', 'date'],
+            'profession' => ['nullable', 'string'],
+            'country_id' => ['required', 'int', 'exists:countries,id']
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'identification_type_id' => id_decode($this->input('identification_type_id')),
+            'country_id' => id_decode($this->input('country_id')),
+        ]);
     }
 }
