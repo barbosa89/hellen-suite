@@ -29,7 +29,7 @@
 
                     <div class="form-group{{ $errors->has('type_id') ? ' has-error' : '' }}">
                         <label for="type_id">@lang('common.idType'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type_id" id="type_id" required>
+                        <select class="form-control selectpicker" title="{{ trans('users.choose.identification') }}" name="type_id" id="type_id" required>
                             @foreach($types as $type)
                                 @if($loop->first)
                                     <option selected value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>

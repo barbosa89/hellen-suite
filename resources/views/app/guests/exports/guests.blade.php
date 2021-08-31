@@ -10,7 +10,7 @@
             <th>@lang('common.idType')</th>
             <th>@lang('common.idNumber')</th>
             <th>@lang('common.name')</th>
-            <th>@lang('common.lastName')</th>
+            <th>@lang('common.lastname')</th>
             <th>@lang('guests.profession')</th>
             <th>@lang('common.gender')</th>
             <th>@lang('common.birthdate')</th>

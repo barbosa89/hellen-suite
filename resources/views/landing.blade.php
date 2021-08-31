@@ -543,7 +543,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             @enderror
                         </div>
                         <div class="col-md-6 styled-input mt-md-0">
-                            <input type="text" name="contact_lastname" value="{{ old('contact_lastname') }}" placeholder="{{ trans('common.lastName') }}" required="" min="3" max="100" pattern="[a-zA-Z]+">
+                            <input type="text" name="contact_lastname" value="{{ old('contact_lastname') }}" placeholder="{{ trans('common.lastname') }}" required="" min="3" max="100" pattern="[a-zA-Z]+">
 
                             @error('contact_lastname')
                                 <span class="error-message invalid-feedback" role="alert">
