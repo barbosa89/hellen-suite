@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 @include('partials.form', [
                     'title' => [
-                        'title' => trans('common.creating.of', ['title' => trans('guests.guest')]),
+                        'title' => trans('common.actions.create', ['model' => trans('guests.guest')]),
                         'align' => 'text-center'
                     ],
                     'url' => route('guests.store'),
