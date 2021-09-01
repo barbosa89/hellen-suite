@@ -149,13 +149,13 @@ class GuestTest extends TestCase
                         "address" => $guest->address,
                         "banned" => "0",
                         "birthdate" => $guest->birthdate ?? null,
-                        "country_id" => (string) $guest->country_id,
+                        "country_hash" => $guest->country->hash,
                         "created_at" => $guest->created_at,
                         "dni" => (string) $guest->dni,
                         "email" => $guest->email,
                         "gender" => $guest->gender ?? null,
                         "hash" => $guest->hash,
-                        "identification_type_id" => (string) $guest->identification_type_id,
+                        "identification_type_hash" => $guest->identificationType->hash,
                         "last_name" => $guest->last_name,
                         "name" => $guest->name,
                         "full_name" => $guest->full_name,
@@ -164,7 +164,7 @@ class GuestTest extends TestCase
                         "responsible_adult" => "0",
                         "status" => $status ? "1" : "0",
                         "updated_at" => $guest->updated_at,
-                        "user_id" => (string) $guest->user_id,
+                        "user_hash" => $user->hash,
                     ]
                 ]
             ]);

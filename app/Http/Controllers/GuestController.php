@@ -12,9 +12,10 @@ use App\Events\CheckOut;
 use App\Helpers\Customer;
 use Illuminate\View\View;
 use App\Exports\GuestsReport;
-use App\Http\Requests\StoreGuest;
+use App\Actions\Guests\Create;
 use App\Http\Requests\UpdateGuest;
 use App\Models\IdentificationType;
+use App\Http\Requests\Guests\Store;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreVoucherGuest;
@@ -33,33 +34,15 @@ class GuestController extends Controller
         return view('app.guests.create', new CreateViewModel());
     }
 
-    public function store(StoreGuest $request): RedirectResponse
+    public function store(Store $request): RedirectResponse
     {
-        $guest = new Guest();
-        $guest->name = $request->input('name');
-        $guest->last_name = $request->input('last_name');
-        $guest->dni = $request->input('dni');
-        $guest->email = $request->input('email');
-        $guest->address = $request->input('address');
-        $guest->phone = $request->input('phone');
-        $guest->gender = $request->input('gender');
-        $guest->birthdate = $request->input('birthdate');
-        $guest->profession = $request->input('profession');
-        $guest->identificationType()->associate($request->input('identification_type_id'));
-        $guest->user()->associate(id_parent());
-        $guest->country()->associate($request->input('country_id'));
+        $guest = Create::run($request->validated());
 
-        if ($guest->save()) {
-            flash(trans('common.created.successfully'))->success();
+        flash(trans('common.created.successfully'))->success();
 
-            return redirect()->route('guests.show', [
-                'id' => $guest->hash,
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
+        return redirect()->route('guests.show', [
+            'id' => $guest->hash,
+        ]);
     }
 
     /**

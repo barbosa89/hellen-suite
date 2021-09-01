@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Contracts\Execute;
-use Illuminate\Database\Eloquent\Model;
 
 abstract class Action implements Execute
 {
@@ -14,7 +13,11 @@ abstract class Action implements Execute
         $this->data = $data;
     }
 
-    public static function run(array $data): Model
+    /**
+     * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model|bool
+     */
+    public static function run(array $data)
     {
         $action = new static($data);
 
