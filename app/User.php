@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Constants\Roles;
+use App\Traits\Hashable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -14,14 +15,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles;
+    use Hashable;
     use Notifiable;
     use LogsActivity;
     use HasApiTokens;
 
-
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -29,22 +28,21 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['id', 'password', 'remember_token'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
+     * @var array
+     */
+    protected $appends = ['hash'];
+
+    /**
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'parent' => 'integer',
+        'email_verified_at' => 'datetime',
     ];
 
     public function plans()

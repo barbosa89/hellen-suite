@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Hashable;
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Guest extends Model
 {
+    use Hashable;
     use Queryable;
     use LogsActivity;
 
@@ -36,18 +38,39 @@ class Guest extends Model
         'created_at',
     ];
 
-    protected $appends = ['hash', 'full_name'];
+    protected $appends = [
+        'hash',
+        'user_hash',
+        'full_name',
+        'country_hash',
+        'identification_type_hash',
+    ];
 
-    protected $hidden = ['id'];
+    protected $hidden = [
+        'id',
+        'user_id',
+        'country_id',
+        'identification_type_id',
+    ];
 
     public function getFullNameAttribute(): string
     {
         return "{$this->name} {$this->last_name}";
     }
 
-    public function getHashAttribute(): string
+    public function getUserHashAttribute(): string
     {
-        return $this->attributes['hash'] = id_encode($this->attributes['id']);
+        return $this->attributes['user_hash'] = id_encode($this->attributes['user_id']);
+    }
+
+    public function getCountryHashAttribute(): string
+    {
+        return $this->attributes['country_hash'] = id_encode($this->attributes['country_id']);
+    }
+
+    public function getIdentificationTypeHashAttribute(): string
+    {
+        return $this->attributes['identification_type_hash'] = id_encode($this->attributes['identification_type_id']);
     }
 
     public function children(): HasMany

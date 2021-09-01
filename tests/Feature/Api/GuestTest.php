@@ -19,7 +19,8 @@ class GuestTest extends TestCase
     use RefreshDatabase;
 
     private string $uri = '/api/v1/guests';
-    private string $permission = 'guests.index';
+    private const GUESTS_INDEX = 'guests.index';
+    private const GUESTS_CREATE = 'guests.create';
 
     public function setUp(): void
     {
@@ -47,7 +48,7 @@ class GuestTest extends TestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        $user->givePermissionTo($this->permission);
+        $user->givePermissionTo(self::GUESTS_INDEX);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
@@ -72,7 +73,7 @@ class GuestTest extends TestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        $user->givePermissionTo($this->permission);
+        $user->givePermissionTo(self::GUESTS_INDEX);
 
         /** @var Guest $oldGuest */
         $oldGuest = factory(Guest::class)->create([
@@ -122,7 +123,7 @@ class GuestTest extends TestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        $user->givePermissionTo($this->permission);
+        $user->givePermissionTo(self::GUESTS_INDEX);
 
         /** @var Guest $guest */
         $guest = factory(Guest::class)->create([
@@ -192,7 +193,7 @@ class GuestTest extends TestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        $user->givePermissionTo($this->permission);
+        $user->givePermissionTo(self::GUESTS_INDEX);
 
         factory(Guest::class)->create([
             'user_id' => $user->id,
@@ -234,7 +235,7 @@ class GuestTest extends TestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        $user->givePermissionTo($this->permission);
+        $user->givePermissionTo(self::GUESTS_INDEX);
 
         /** @var Guest $oldGuest */
         $oldGuest = factory(Guest::class)->create([
@@ -273,6 +274,53 @@ class GuestTest extends TestCase
                 'last_name' => $oldGuest->last_name,
                 'email' => $oldGuest->email,
             ]);
+    }
+
+    public function test_user_can_store_guest()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo(self::GUESTS_CREATE);
+
+        /** @var Guest $guest */
+        $guest = factory(Guest::class)->make();
+
+        $data = [
+            'name' => $guest->name,
+            'last_name' => $guest->last_name,
+            'identification_type_id' => $guest->identificationType->hash,
+            'dni' => $guest->dni,
+            'email' => $guest->email,
+            'address' => $guest->address,
+            'phone' => $guest->phone,
+            'gender' => $guest->gender,
+            'birthdate' => $guest->birthdate,
+            'profession' => $guest->profession,
+            'country_id' => $guest->country->hash,
+        ];
+
+        Passport::actingAs($user);
+
+        $response = $this->postJson($this->uri, $data);
+
+        $jsonData = $data;
+        unset($jsonData['country_id']);
+        unset($jsonData['identification_type_id']);
+
+        $jsonData['user_hash'] = $user->hash;
+        $jsonData['country_hash'] = $guest->country->hash;
+        $jsonData['identification_type_hash'] = $guest->identificationType->hash;
+
+        $response->assertOk()
+            ->assertSessionDoesntHaveErrors()
+            ->assertJsonFragment($jsonData);
+
+        $data['user_id'] = $user->id;
+        $data['country_id'] = $guest->country_id;
+        $data['identification_type_id'] = $guest->identification_type_id;
+
+        $this->assertDatabaseCount('guests', 1);
+        $this->assertDatabaseHas('guests', $data);
     }
 }
 
