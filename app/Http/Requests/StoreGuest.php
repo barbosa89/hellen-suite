@@ -42,7 +42,7 @@ class StoreGuest extends FormRequest
             'phone' => ['nullable', 'string', 'max:20'],
             'gender' => ['nullable', 'string', Rule::in(Genders::toArray())],
             'birthdate' => ['nullable', 'date'],
-            'profession' => ['nullable', 'string'],
+            'profession' => ['nullable', 'string', 'max:100'],
             'country_id' => ['required', 'int', 'exists:countries,id']
         ];
     }

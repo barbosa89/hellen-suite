@@ -17,8 +17,12 @@ if (!function_exists('id_encode')) {
 }
 
 if (!function_exists('id_decode')) {
-    function id_decode(string $id): int
+    function id_decode(?string $id = null): ?int
     {
+        if (empty($id)) {
+            return null;
+        }
+
         return Id::decode($id);
     }
 }
