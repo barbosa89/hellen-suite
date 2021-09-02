@@ -3,7 +3,7 @@
     <select class="form-control selectpicker" title="{{ trans('users.choose.identification') }}" name="identification_type_id" id="identification_type_id" required>
         @foreach($identificationTypes as $type)
             <option value="{{ $type->hash }}" @if($loop->first) selected @endif>
-                {{ trans('common.' . $type->type) }}
+                {{ $type->description }}
             </option>
         @endforeach
     </select>

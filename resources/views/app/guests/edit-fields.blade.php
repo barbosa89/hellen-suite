@@ -2,11 +2,11 @@
     <label for="type">@lang('common.idType'):</label>
     <select class="form-control selectpicker" title="{{ trans('users.choose.identification') }}" name="type" id="type" required>
         <option value="{{ $guest->identificationType->hash }}" selected>
-            {{ trans('common.' . $guest->identificationType->type) }}
+            {{ $guest->identificationType->description }}
         </option>
 
         @foreach($identificationTypes as $type)
-            <option value="{{ $type->hash }}">{{ trans('common.' . $type->type) }}</option>
+            <option value="{{ $type->hash }}">{{ $type->description }}</option>
         @endforeach
     </select>
 
