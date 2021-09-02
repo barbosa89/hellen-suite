@@ -21,4 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('v1')
     ->name('api.v1.')
     ->middleware(['auth:api', 'verified'])
+    ->group(function () {
+        require __DIR__ . '/api/guests.php';
+        require __DIR__ . '/api/countries.php';
         require __DIR__ . '/api/identification_types.php';
+    });
