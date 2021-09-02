@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\IdentificationTypes;
 use Illuminate\Database\Seeder;
 use App\Models\IdentificationType;
 
@@ -12,13 +13,8 @@ class IdentificationTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        IdentificationType::create(['type' => 'cc']);
-        IdentificationType::create(['type' => 'ci']);
-        IdentificationType::create(['type' => 'dni']);
-        IdentificationType::create(['type' => 'dui']);
-        IdentificationType::create(['type' => 'ec']);
-        IdentificationType::create(['type' => 'it']);
-        IdentificationType::create(['type' => 'rc']);
-        IdentificationType::create(['type' => 'tp']);
+        foreach (IdentificationTypes::toArray() as $type) {
+            IdentificationType::create(['type' => $type]);
+        }
     }
 }

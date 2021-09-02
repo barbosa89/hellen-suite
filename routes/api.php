@@ -21,4 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('v1')
     ->name('api.v1.')
     ->middleware(['auth:api', 'verified'])
-    ->group(base_path('routes/api/guests.php'));
+        require __DIR__ . '/api/identification_types.php';

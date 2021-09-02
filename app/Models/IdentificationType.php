@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Hashable;
+use App\Constants\IdentificationTypes;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -16,9 +17,14 @@ class IdentificationType extends Model
     use Hashable;
     use LogsActivity;
 
-    protected $appends = ['hash'];
+    protected $appends = ['hash', 'description'];
 
     protected $hidden = ['id'];
+
+    public function getDescriptionAttribute(): string
+    {
+        return $this->attributes['description'] = IdentificationTypes::trans($this->attributes['type']);
+    }
 
     public function guest()
     {
