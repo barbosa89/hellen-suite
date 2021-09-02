@@ -2,10 +2,10 @@
 
 namespace App\Constants;
 
-use App\Contracts\Dictionary;
-use App\Contracts\StaticArrayable;
-use App\Contracts\Translatable;
 use App\Traits\CanTranslate;
+use App\Contracts\Dictionary;
+use App\Contracts\Translatable;
+use App\Contracts\StaticArrayable;
 
 class Genders implements StaticArrayable, Dictionary, Translatable
 {
