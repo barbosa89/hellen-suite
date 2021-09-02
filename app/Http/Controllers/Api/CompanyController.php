@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Contracts\CompanyRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
