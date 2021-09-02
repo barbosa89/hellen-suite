@@ -6,7 +6,7 @@ use App\Models\Guest;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class Index extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

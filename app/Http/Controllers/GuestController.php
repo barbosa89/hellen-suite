@@ -12,15 +12,15 @@ use App\Events\CheckOut;
 use App\Helpers\Customer;
 use Illuminate\View\View;
 use App\Exports\GuestsReport;
-use App\Actions\Guests\Create;
 use App\Http\Requests\UpdateGuest;
 use App\Models\IdentificationType;
-use App\Http\Requests\Guests\Store;
+use App\Actions\Guests\CreateAction;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreVoucherGuest;
-use App\View\Models\Guests\Edit as EditViewModel;
-use App\View\Models\Guests\Create as CreateViewModel;
+use App\View\Models\Guests\EditViewModel;
+use App\Http\Requests\Guests\StoreRequest;
+use App\View\Models\Guests\CreateViewModel;
 
 class GuestController extends Controller
 {
@@ -34,9 +34,9 @@ class GuestController extends Controller
         return view('app.guests.create', new CreateViewModel());
     }
 
-    public function store(Store $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
-        $guest = Create::run($request->validated());
+        $guest = CreateAction::run($request->validated());
 
         flash(trans('common.created.successfully'))->success();
 

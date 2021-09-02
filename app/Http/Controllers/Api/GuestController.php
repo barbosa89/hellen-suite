@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\Guests\Create;
+use App\Helpers\Page;
 use App\Models\Guest;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\Guests\Index;
-use App\Http\Requests\Guests\Store;
+use App\Actions\Guests\CreateAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Guests\IndexRequest;
+use App\Http\Requests\Guests\StoreRequest;
 
 class GuestController extends Controller
 {
-    public function index(Index $request): JsonResponse
+    public function index(IndexRequest $request): JsonResponse
     {
         $guests = Guest::owner()
             ->latest()
             ->filter($request->validated())
-            ->paginate($request->input('per_page', config('settings.paginate')));
+            ->paginate(Page::step());
 
         return response()->json($guests);
     }
 
-    public function store(Store $request): JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
-        return response()->json(Create::run($request->validated()));
+        return response()->json(CreateAction::run($request->validated()));
     }
 }

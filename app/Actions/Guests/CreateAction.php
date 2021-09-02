@@ -5,7 +5,7 @@ namespace App\Actions\Guests;
 use App\Models\Guest;
 use App\Actions\Action;
 
-class Create extends Action
+class CreateAction extends Action
 {
     public function execute(): Guest
     {

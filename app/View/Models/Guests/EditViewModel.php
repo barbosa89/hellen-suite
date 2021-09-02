@@ -7,10 +7,12 @@ use App\Models\Country;
 use App\Constants\Genders;
 use Illuminate\Support\Arr;
 use App\Models\IdentificationType;
+use App\Services\CountryCache;
+use App\Services\IdentificationTypeCache;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Edit implements Arrayable
+class EditViewModel implements Arrayable
 {
     private int $id;
 
@@ -39,14 +41,16 @@ class Edit implements Arrayable
 
     private function identificationTypes(IdentificationType $except): Collection
     {
-        return IdentificationType::where('id', '!=', $except->id)
-            ->get(['id', 'type']);
+        $identificationTypes = (new IdentificationTypeCache())->get();
+
+        return $identificationTypes->where('id', '!=', $except->id);
     }
 
     private function countries(Country $except): Collection
     {
-        return Country::where('id', '!=', $except->id)
-            ->get(['id', 'name']);
+        $countries = (new CountryCache)->get();
+
+        return $countries->where('id', '!=', $except->id);
     }
 
     private function genders(Guest $guest): array

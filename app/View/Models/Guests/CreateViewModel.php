@@ -2,22 +2,22 @@
 
 namespace App\View\Models\Guests;
 
-use App\Models\Country;
 use App\Constants\Genders;
-use App\Models\IdentificationType;
+use App\Services\CountryCache;
 use Illuminate\Support\Collection;
+use App\Services\IdentificationTypeCache;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Create implements Arrayable
+class CreateViewModel implements Arrayable
 {
     private function identificationTypes(): Collection
     {
-        return IdentificationType::all(['id', 'type']);
+        return (new IdentificationTypeCache())->get();
     }
 
     private function countries(): Collection
     {
-        return Country::all(['id', 'name']);
+        return (new CountryCache())->get();
     }
 
     private function genders(): array
