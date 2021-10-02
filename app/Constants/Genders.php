@@ -12,14 +12,12 @@ class Genders implements StaticArrayable, Dictionary, Translatable
     use CanTranslate;
 
     public const MALE = 'm';
-    public const OTHER = 'x';
     public const FEMALE = 'f';
 
     public static function toArray(): array
     {
         return [
             self::MALE,
-            self::OTHER,
             self::FEMALE,
         ];
     }
@@ -28,7 +26,6 @@ class Genders implements StaticArrayable, Dictionary, Translatable
     {
         return [
             self::MALE => trans('common.m'),
-            self::OTHER  => trans('common.other'),
             self::FEMALE  => trans('common.f'),
         ];
     }
