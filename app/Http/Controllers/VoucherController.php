@@ -2,33 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\VoucherPrinter;
-use App\Contracts\VoucherRepository;
-use App\Events\CheckIn;
-use App\Events\CheckOut;
-use App\Events\RoomCheckOut;
 use Exception;
 use Carbon\Carbon;
+use App\Models\Room;
+use App\Models\Guest;
+use App\Models\Hotel;
+use App\Models\Shift;
+use App\Events\CheckIn;
+use App\Helpers\Random;
+use App\Models\Company;
+use App\Models\Product;
+use App\Models\Service;
+use App\Models\Vehicle;
+use App\Models\Voucher;
+use App\Events\CheckOut;
+use App\Helpers\Customer;
+use App\Constants\Genders;
+use App\Models\Additional;
+use App\Events\RoomCheckOut;
 use Illuminate\Http\Request;
-use App\Helpers\{Customer, Random};
-use App\Models\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
-use App\Http\Requests\{
-    AddGuests,
-    AddProducts,
-    AddRooms,
-    AddServices,
-    ChangeGuestRoom,
-    ChangeRoom,
-    VouchersProcessing,
-    StoreAdditional,
-    StoreVoucher,
-    StoreRoute
-};
-use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\AddRooms;
+use App\Http\Requests\AddGuests;
+use App\Contracts\VoucherPrinter;
+use App\Http\Requests\ChangeRoom;
+use App\Http\Requests\StoreRoute;
+use App\Http\Requests\AddProducts;
+use App\Http\Requests\AddServices;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreVoucher;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Contracts\VoucherRepository;
+use App\Http\Requests\ChangeGuestRoom;
+use App\Http\Requests\StoreAdditional;
+use App\Http\Requests\VouchersProcessing;
+use Illuminate\Database\Eloquent\Builder;
 
 class VoucherController extends Controller
 {
@@ -896,8 +905,9 @@ class VoucherController extends Controller
             ])->firstOrFail(fields_dotted('vouchers'));
 
         $customer = Customer::get($voucher);
+        $genders = Genders::toDictionary();
 
-        return view('app.vouchers.search-guests', compact('voucher', 'customer'));
+        return view('app.vouchers.search-guests', compact('voucher', 'customer', 'genders'));
     }
 
     /**
