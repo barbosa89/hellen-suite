@@ -6,18 +6,19 @@ use App\Models\Room;
 use App\Models\Guest;
 use App\Helpers\Chart;
 use App\Events\CheckIn;
-use App\Models\Country;
 use App\Models\Voucher;
 use App\Events\CheckOut;
 use App\Helpers\Customer;
 use Illuminate\View\View;
+use App\Constants\Genders;
 use App\Exports\GuestsReport;
+use App\Services\CountryCache;
 use App\Http\Requests\UpdateGuest;
-use App\Models\IdentificationType;
 use App\Actions\Guests\CreateAction;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreVoucherGuest;
+use App\Services\IdentificationTypeCache;
 use App\View\Models\Guests\EditViewModel;
 use App\Http\Requests\Guests\StoreRequest;
 use App\View\Models\Guests\CreateViewModel;
@@ -84,8 +85,8 @@ class GuestController extends Controller
             abort(404);
         }
 
-        $types = IdentificationType::all(['id', 'type']);
-        $countries = Country::all(['id', 'name']);
+        $identificationTypes = (new IdentificationTypeCache())->get();
+        $countries = (new CountryCache())->get();
         $guests = 0;
 
         $voucher->rooms->each(function ($room) use (&$guests)
@@ -94,8 +95,9 @@ class GuestController extends Controller
         });
 
         $customer = Customer::get($voucher);
+        $genders = Genders::toDictionary();
 
-        return view('app.guests.create-for-voucher', compact('voucher', 'types', 'guests', 'countries', 'customer'));
+        return view('app.guests.create-for-voucher', compact('voucher', 'identificationTypes', 'guests', 'countries', 'customer', 'genders'));
     }
 
     /**

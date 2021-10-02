@@ -31,7 +31,7 @@ return array (
   ),
   'choose' =>
   array (
-    'hotel' => 'Por elije un hotel',
+    'hotel' => 'Por elige un hotel',
     'type' => 'por favor elite un tipo de transacción',
     'company' => 'Por favor seleccione un proveedor',
   ),

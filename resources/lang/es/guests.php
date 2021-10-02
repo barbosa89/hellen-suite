@@ -26,6 +26,6 @@ return [
     ],
     'filters' => 'Filtros de huéspedes',
     'choose' => [
-        'gender' => 'Elija un género',
+        'gender' => 'Eliga un género',
     ],
 ];

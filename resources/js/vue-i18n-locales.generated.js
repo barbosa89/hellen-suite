@@ -686,7 +686,10 @@ export default {
             "register": {
                 "vehicles": "Register vehicles"
             },
-            "filters": "Voucher filters"
+            "filters": "Voucher filters",
+            "link": {
+                "company": "Vincular empresa"
+            }
         },
         "products": {
             "add": "Add productos",
@@ -954,7 +957,16 @@ export default {
             "headquarters": "This unique number, as an independent hotel, is already in use.",
             "attributes": {
                 "country_id": "country",
-                "identification_type_id": "identification type"
+                "identification_type_id": "identification type",
+                "dni": "identification number",
+                "name": "name",
+                "last_name": "last name",
+                "gender": "gender",
+                "email": "email",
+                "address": "address",
+                "phone": "phone",
+                "profession": "profession",
+                "birthdate": "birthdate"
             }
         },
         "rooms": {
@@ -1216,7 +1228,7 @@ export default {
                 "edit": "Edición de {model}"
             },
             "choose": {
-                "option": "Elija una opción"
+                "option": "eliga una opción"
             }
         },
         "dining": {
@@ -1285,7 +1297,7 @@ export default {
                 "item": "No hay ítem para procesar"
             },
             "choose": {
-                "hotel": "Por elije un hotel",
+                "hotel": "Por elige un hotel",
                 "type": "por favor elite un tipo de transacción",
                 "company": "Por favor seleccione un proveedor"
             },
@@ -1430,8 +1442,8 @@ export default {
             "permissions": "Permisos",
             "cashier": "Cajero",
             "choose": {
-                "identification": "Choose an identification type",
-                "role": "Choose a role"
+                "identification": "Elige un tipo de identificación",
+                "role": "Elige un rol"
             }
         },
         "invoices": {
@@ -1486,7 +1498,7 @@ export default {
             "title": "Hoteles",
             "all": "Todos los hoteles",
             "one": "Un hotel o sede",
-            "choose": "Elije un hotel o sede",
+            "choose": "elige un hotel o sede",
             "no": {
                 "registered": "No hay hoteles registrados"
             },
@@ -1514,7 +1526,7 @@ export default {
         },
         "services": {
             "title": "Servicios",
-            "chooseService": "Elije un servicio",
+            "chooseService": "elige un servicio",
             "service": "Servicio",
             "wasDisabled": "El servicio no puede ser eliminado y fue deshabilitado",
             "quantity": "Este es un artículo ilimitado"
@@ -1558,7 +1570,7 @@ export default {
             },
             "filters": "Filtros de huéspedes",
             "choose": {
-                "gender": "Elija un género"
+                "gender": "Eliga un género"
             }
         },
         "login": {
@@ -1690,14 +1702,17 @@ export default {
             "register": {
                 "vehicles": "Registrar vehículos"
             },
-            "filters": "Filtros de recibos"
+            "filters": "Filtros de recibos",
+            "link": {
+                "company": "Vincular empresa"
+            }
         },
         "products": {
             "title": "Productos",
             "add": "Agregar productos",
             "increase": "Incrementar stock",
             "losses": "Registrar pérdidas",
-            "chooseProduct": "Elije un producto",
+            "chooseProduct": "elige un producto",
             "product": "Producto",
             "wasDisabled": "El producto no pudo ser eliminado y fue deshabilitado",
             "creation": "Creación del producto",
@@ -1958,7 +1973,16 @@ export default {
             "headquarters": "Este número único, como hotel independiente, ya está en uso.",
             "attributes": {
                 "country_id": "país",
-                "identification_type_id": "tipo de identificación"
+                "identification_type_id": "tipo de identificación",
+                "dni": "número de identificación",
+                "name": "nombre",
+                "last_name": "apellido",
+                "gender": "género",
+                "email": "correo electrónico",
+                "address": "dirección",
+                "phone": "teléfono",
+                "profession": "profesión",
+                "birthdate": "fecha de nacimiento"
             }
         },
         "rooms": {
@@ -1973,7 +1997,7 @@ export default {
             "intoMaintenance": "La habitación entro a mantenimiento",
             "reserve": "Reservar",
             "addRoom": "Agregar habitación",
-            "chooseRoom": "Elije una habitación",
+            "chooseRoom": "elige una habitación",
             "available": "Disponible",
             "cleaning": "Limpieza",
             "changeRoom": "Cambiar de habitación",

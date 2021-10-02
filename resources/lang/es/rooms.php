@@ -12,27 +12,27 @@ return array (
   'intoMaintenance' => 'La habitación entro a mantenimiento',
   'reserve' => 'Reservar',
   'addRoom' => 'Agregar habitación',
-  'chooseRoom' => 'Elije una habitación',
+  'chooseRoom' => 'elige una habitación',
   'available' => 'Disponible',
   'cleaning' => 'Limpieza',
   'changeRoom' => 'Cambiar de habitación',
   'currentRoom' => 'Habitación actual',
   'availableRooms' => 'Habitaciones disponibles',
   'deliver' => 'Entregar la habitación',
-  'no' => 
+  'no' =>
   array (
     'created' => 'No hay habitaciones creadas',
   ),
   'type' => 'Indica si la habitación es una suite',
   'capacity' => 'Cantidad de personas a hospedar en la habitación',
-  'cannot' => 
+  'cannot' =>
   array (
     'enable' => 'Tú no puedes habilitar esta habitación',
     'add' => 'Tú no puedes agregar esta habitación',
     'destroy' => 'No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla.',
   ),
   'number' => 'Habitación No. :number',
-  'change' => 
+  'change' =>
   array (
     'disabled' => 'La habitación no puede ser cambiada',
   ),

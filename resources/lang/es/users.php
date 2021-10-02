@@ -22,7 +22,7 @@ return array (
     'permissions' => 'Permisos',
     'cashier' => 'Cajero',
     'choose' => [
-        'identification' => 'Choose an identification type',
-        'role' => 'Choose a role',
+        'identification' => 'Elige un tipo de identificación',
+        'role' => 'Elige un rol',
     ]
 );

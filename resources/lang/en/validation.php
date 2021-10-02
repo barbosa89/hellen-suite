@@ -90,5 +90,14 @@ return [
     'attributes' => [
         'country_id' => 'country',
         'identification_type_id' => 'identification type',
+        'dni' => 'identification number',
+        'name' => 'name',
+        'last_name' => 'last name',
+        'gender' => 'gender',
+        'email' => 'email',
+        'address' => 'address',
+        'phone' => 'phone',
+        'profession' => 'profession',
+        'birthdate' => 'birthdate',
     ],
 ];

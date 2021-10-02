@@ -201,6 +201,6 @@ return array (
         'edit' => 'Edición de :model',
     ],
     'choose' => [
-        'option' => 'Elija una opción'
+        'option' => 'eliga una opción'
     ],
 );
