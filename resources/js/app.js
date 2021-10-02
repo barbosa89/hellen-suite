@@ -49,6 +49,7 @@ Vue.component('guests-index', require('./components/Guests/Index.vue').default);
 
 Vue.component('navigation', require('./components/Common/Navigation.vue').default);
 Vue.component('dropdown-button', require('./components/Common/DropdownButton.vue').default);
+Vue.component('invalid-feedback', require('./components/Common/InvalidFeedback.vue').default);
 
 
 import VueInternationalization from 'vue-i18n';
