@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "test": "npx jest",
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
@@ -14,7 +15,11 @@
         "@fortawesome/fontawesome-free": "^5.15.2",
         "@tinymce/tinymce-vue": "^3.2.8",
         "@voerro/vue-tagsinput": "^2.7.1",
+        "@vue/test-utils": "^1.2.2",
+        "@vue/vue2-jest": "*",
         "axios": "^0.21.1",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-jest": "^27.2.4",
         "bootstrap": "^4.6.0",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-select": "^1.13.18",
@@ -29,6 +34,7 @@
         "flot": "0.8.0-alpha",
         "font-awesome": "^4.7.0",
         "holderjs": "^2.9.9",
+        "jest": "^27.2.4",
         "jquery": "^3.6.0",
         "jquery.easing": "^1.4.1",
         "jquery.flot.tooltip": "0.9.0",
@@ -48,6 +54,7 @@
         "vue-context": "^4.1.1",
         "vue-i18n": "^8.24.5",
         "vue-router": "^3.5.2",
+        "vue-template-compiler": "^2.6.14",
         "vuejs-datepicker": "^1.6.2"
     }
 }
