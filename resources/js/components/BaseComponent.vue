@@ -1,5 +1,6 @@
 <script>
 export default {
+    template: '<div></div>',
     data() {
         return {
             errors: {}
@@ -45,21 +46,42 @@ export default {
             return value === null
         },
         isObject(value) {
-            return !Array.isArray(value) && typeof value === 'object'
+            return !this.isNull(value)
+                && !Array.isArray(value)
+                && typeof value === 'object'
         },
         isCollection(value) {
             return Array.isArray(value) && this.isObject(value[0])
         },
+        hasKeys(value) {
+            return Object.keys(value).length > 0
+        },
         blank(value) {
-            return this.isEmpty(value) || this.isNull(value)
+            if (this.isObject(value)) {
+                return !this.hasKeys(value)
+            }
+
+            if (this.isCollection(value)) {
+                return value.filter(item => this.hasKeys(item)).length === 0
+            }
+
+            return this.isUndefined(value) || this.isNull(value) || this.isEmpty(value)
         },
         required(value) {
             return !this.isUndefined(value) && !this.blank(value)
         },
         min(value, min) {
+            if (this.blank(value) || this.blank(min)) {
+                return false
+            }
+
             return value.length >= min
         },
         max(value, max) {
+            if (this.isUndefined(value) || this.isNull(value) || this.blank(max)) {
+                return false
+            }
+
             return value.length <= max
         },
         in(data, value, property=null) {
@@ -85,13 +107,21 @@ export default {
             return method === 'in'
         },
         email(value) {
+            if (this.blank(value)) {
+                return false
+            }
+
             return value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
         },
         date(value) {
             return new Date(value) > 0
         },
         regex(value, pattern) {
-            const regex = new RegExp(pattern)
+            if (this.blank(value) || this.blank(pattern)) {
+                return false
+            }
+
+            const regex = new RegExp(pattern, 'g')
 
             return regex.test(value)
         },
@@ -103,10 +133,11 @@ export default {
             const rules = this.rules()
 
             Object.entries(data).forEach(([key, value]) => {
-                const conditions = rules[key]
-                const skip = !conditions.includes('required') && this.blank(value)
+                let conditions = rules[key]
 
                 if (!this.isUndefined(conditions)) {
+                    let skip = !conditions.includes('required') && this.blank(value)
+
                     conditions.forEach(condition => {
                         let passes = true
                         let [method, params=null] = condition.split(':')
@@ -120,8 +151,8 @@ export default {
                         }
 
                         if (!passes && !skip) {
-                            const attribute = this.getAttribute(key)
-                            const message = this.getMessage(method, attribute)
+                            let attribute = this.getAttribute(key)
+                            let message = this.getMessage(method, attribute)
 
                             this.pushError(key, message)
                         }
