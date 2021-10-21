@@ -3,5 +3,5 @@
         "module": "commonjs",
         "target": "es6"
     },
-    "exclude": ["node_modules", "public/js"]
+    "exclude": ["node_modules", "public"]
 }
