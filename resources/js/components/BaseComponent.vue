@@ -7,6 +7,9 @@ export default {
         }
     },
     methods: {
+        isUnprocessableEntity (error) {
+            return Boolean(error.response) && error.response.status === 422
+        },
         pushErrors(errors) {
             this.errors = {}
 
@@ -52,6 +55,15 @@ export default {
         },
         isCollection(value) {
             return Array.isArray(value) && this.isObject(value[0])
+        },
+        isNumber(value) {
+            if (this.blank(value)) {
+                return false
+            }
+
+            value = Number(value)
+
+            return !Number.isNaN(value) && typeof value === 'number'
         },
         hasKeys(value) {
             return Object.keys(value).length > 0
@@ -152,7 +164,7 @@ export default {
 
                         if (!passes && !skip) {
                             let attribute = this.getAttribute(key)
-                            let message = this.getMessage(method, attribute)
+                            let message = this.getMessage(method, attribute, value, params)
 
                             this.pushError(key, message)
                         }
@@ -170,14 +182,66 @@ export default {
             // then, return attr
             return key === translation ? attr : translation
         },
-        getMessage(method, attr) {
-            let key = 'validation.' + method
+        getMessage(method, attr, value, params) {
+            let attributes = { attribute: attr }
+            const key = 'validation.' + this.matchMethodType(method, value)
+            const fallback = this.$root.$t('validation.required', attributes)
 
-            let translation = this.$root.$t(key, {attribute: attr})
-            let fallback = this.$root.$t('validation.required', {attribute: attr})
+            if (!this.blank(params)) {
+                attributes = Object.assign(attributes, this.combineParams(key, params))
+            }
+
+            let translation = this.$root.$t(key, attributes)
 
             // Same case for getAttribute method
             return key === translation ? fallback : translation
+        },
+        matchMethodType(method, value) {
+            const types = ['between', 'max', 'min', 'size']
+
+            if (types.includes(method)) {
+                return this.findMethodType(method, value)
+            }
+
+            return method
+        },
+        findMethodType(method, value) {
+            if (Array.isArray(value)) {
+                return method + '.' + 'array'
+            }
+
+            if (this.isNumber(value)) {
+                return method + '.' + 'numeric'
+            }
+
+            return method + '.' + 'string'
+        },
+        matchTranslationKeys(key) {
+            let translation = this.$root.$t(key)
+
+            const matches = translation.matchAll(/{([a-z}]+)}/g)
+
+            const keys = Array.from(matches, m => m[1])
+
+            return keys.filter(param => param !== 'attribute')
+        },
+        combineParams(key, params) {
+            let result = {}
+            let keys = this.matchTranslationKeys(key)
+
+            if (!this.isEmpty(keys)) {
+                let entries = []
+
+                params = params.split(',')
+
+                keys.forEach((value, index) => {
+                    entries.push([value, params[index]])
+                })
+
+                result = Object.assign(result, Object.fromEntries(entries))
+            }
+
+            return result
         },
         isValid() {
             return Object.keys(this.errors).length === 0
