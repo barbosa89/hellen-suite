@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="reset">
                         {{ $t('common.close') }}
                     </button>
                     <button type="button" class="btn btn-primary" @click="create()">
@@ -337,6 +337,19 @@ export default {
                         }
                     })
             }
+        },
+        reset() {
+            this.guest.identification_type_id = ""
+            this.guest.dni = ""
+            this.guest.name = ""
+            this.guest.last_name = ""
+            this.guest.email = ""
+            this.guest.address = ""
+            this.guest.phone = ""
+            this.guest.profession = ""
+            this.guest.gender = ""
+            this.guest.country_id = ""
+            this.guest.birthdate = ""
         },
         dateFormat(date) {
             return moment(date).format('YYYY-MM-DD');
