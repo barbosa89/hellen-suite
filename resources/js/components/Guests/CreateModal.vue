@@ -218,7 +218,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="reset">
                         {{ $t('common.close') }}
                     </button>
-                    <button type="button" class="btn btn-primary" @click="create()">
+                    <button type="button" class="btn btn-primary" @click="create">
                         {{ $t('common.create') }}
                     </button>
                 </div>
@@ -322,7 +322,7 @@ export default {
 
             if (this.isValid()) {
                 axios
-                    .post(route('api.v1.guests.store'), this.guest)
+                    .post(route('api.v1.guests.store'), this.formatData())
                     .then(response => {
                         window.location.href = route('vouchers.guests', {
                             id: this.voucherHash,
@@ -330,7 +330,7 @@ export default {
                         })
                     })
                     .catch(error => {
-                        if (error.response && error.response.status === 422) {
+                        if (this.isUnprocessableEntity(error)) {
                             this.pushErrors(error.response.data.errors)
                         } else {
                             this.displayServerError()
@@ -353,6 +353,13 @@ export default {
         },
         dateFormat(date) {
             return moment(date).format('YYYY-MM-DD');
+        },
+        formatData() {
+            let guest = this.guest
+
+            guest.birthdate = this.dateFormat(guest.birthdate)
+
+            return guest
         }
     }
 }
