@@ -9,6 +9,7 @@ use CountriesTableSeeder;
 use PermissionsTableSeeder;
 use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 
 class GuestTest extends TestCase
 {
@@ -278,10 +279,6 @@ class GuestTest extends TestCase
                 'name',
                 '',
             ],
-            'null name' => [
-                'name',
-                null,
-            ],
             'min name length' => [
                 'name',
                 'a',
@@ -294,10 +291,6 @@ class GuestTest extends TestCase
                 'last_name',
                 '',
             ],
-            'null last_name' => [
-                'last_name',
-                null,
-            ],
             'min last name length' => [
                 'last_name',
                 'a',
@@ -306,17 +299,17 @@ class GuestTest extends TestCase
                 'last_name',
                 str_repeat('long last_name ', 20),
             ],
-            'null identification type' => [
+            'empty identification type' => [
                 'identification_type_id',
-                null,
+                '',
             ],
             'unknown identification type' => [
                 'identification_type_id',
                 1000,
             ],
-            'null dni' => [
+            'empty dni' => [
                 'dni',
-                null,
+                '',
             ],
             'non alpha num dni' => [
                 'dni',
@@ -354,13 +347,17 @@ class GuestTest extends TestCase
                 'birthdate',
                 'date',
             ],
+            'wrong birthdate format' => [
+                'birthdate',
+                Carbon::now()->format('Y/m/d'),
+            ],
             'long profession' => [
                 'profession',
                 str_repeat('profession', 15),
             ],
-            'null country id' => [
+            'empty country id' => [
                 'country_id',
-                null,
+                '',
             ],
             'unknown country id' => [
                 'country_id',
