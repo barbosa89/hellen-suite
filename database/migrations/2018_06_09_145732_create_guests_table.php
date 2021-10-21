@@ -22,7 +22,7 @@ class CreateGuestsTable extends Migration
             $table->string('email', 120)->nullable();
             $table->string('address', 191)->nullable();
             $table->string('phone', 20)->nullable();
-            $table->enum('gender', [Genders::MALE, Genders::FEMALE, Genders::OTHER])->nullable();
+            $table->enum('gender', Genders::toArray())->nullable();
             $table->date('birthdate')->nullable();
             $table->string('profession', 100)->nullable();
 
