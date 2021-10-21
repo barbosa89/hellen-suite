@@ -182,7 +182,7 @@ export default {
             // then, return attr
             return key === translation ? attr : translation
         },
-        getMessage(method, attr, value, params) {
+        getMessage(method, attr, value, params=null) {
             let attributes = { attribute: attr }
             const key = 'validation.' + this.matchMethodType(method, value)
             const fallback = this.$root.$t('validation.required', attributes)
@@ -226,22 +226,16 @@ export default {
             return keys.filter(param => param !== 'attribute')
         },
         combineParams(key, params) {
-            let result = {}
+            let entries = []
             let keys = this.matchTranslationKeys(key)
 
-            if (!this.isEmpty(keys)) {
-                let entries = []
+            params = params.split(',')
 
-                params = params.split(',')
+            keys.forEach((value, index) => {
+                entries.push([value, params[index]])
+            })
 
-                keys.forEach((value, index) => {
-                    entries.push([value, params[index]])
-                })
-
-                result = Object.assign(result, Object.fromEntries(entries))
-            }
-
-            return result
+            return Object.fromEntries(entries)
         },
         isValid() {
             return Object.keys(this.errors).length === 0

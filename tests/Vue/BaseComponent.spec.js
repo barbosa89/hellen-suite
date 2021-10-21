@@ -17,7 +17,9 @@ config.mocks["$t"] = (key, params = {}) => {
     })
 
     if (params.hasOwnProperty('attribute')) {
-        trans = trans.replace('{attribute}', params.attribute)
+        Object.entries(params).forEach(([property, value]) => {
+            trans = trans.replace(`{${property}}`, value)
+        })
     }
 
     return trans
@@ -349,5 +351,52 @@ describe('BaseComponent.vue', () => {
 
         expect(wrapper.vm.getMessage('date', 'date')).toBe('The date is not a valid date.')
         expect(wrapper.vm.getMessage('unknown', 'date')).toBe('The date field is required.')
+    })
+
+    it('can get error message translation with extra parameters on validation', () => {
+        const wrapper = mount(BaseComponent)
+
+        expect(wrapper.vm.getMessage('min', 'name', 'Usr', '3')).toBe('The name must be at least 3 characters.')
+    })
+
+    it('can get error message translation with array data on validation', () => {
+        const wrapper = mount(BaseComponent)
+
+        expect(wrapper.vm.getMessage('min', 'categories', ['a', 'b'], '3')).toBe('The categories must have at least 3 items.')
+    })
+
+    it('can get error message translation with numeric data on validation', () => {
+        const wrapper = mount(BaseComponent)
+
+        expect(wrapper.vm.getMessage('min', 'price', 99, '100')).toBe('The price must be at least 100.')
+    })
+
+    it('check error is unprocessable entity', () => {
+        const wrapper = mount(BaseComponent)
+
+        expect(wrapper.vm.isUnprocessableEntity({})).toBeFalsy()
+        expect(wrapper.vm.isUnprocessableEntity({ response: {} })).toBeFalsy()
+        expect(wrapper.vm.isUnprocessableEntity({ response: { status: 500 } })).toBeFalsy()
+        expect(wrapper.vm.isUnprocessableEntity({ response: { status: 422 } })).toBeTruthy()
+    })
+
+    it('check is value is valid number', () => {
+        const wrapper = mount(BaseComponent)
+
+        expect(wrapper.vm.isNumber({})).toBeFalsy()
+        expect(wrapper.vm.isNumber([])).toBeFalsy()
+        expect(wrapper.vm.isNumber('')).toBeFalsy()
+        expect(wrapper.vm.isNumber('a')).toBeFalsy()
+        expect(wrapper.vm.isNumber(NaN)).toBeFalsy()
+        expect(wrapper.vm.isNumber(undefined)).toBeFalsy()
+        expect(wrapper.vm.isNumber(null)).toBeFalsy()
+
+        expect(wrapper.vm.isNumber(-1)).toBeTruthy()
+        expect(wrapper.vm.isNumber(0)).toBeTruthy()
+        expect(wrapper.vm.isNumber(1)).toBeTruthy()
+        expect(wrapper.vm.isNumber('1')).toBeTruthy()
+        expect(wrapper.vm.isNumber(1.1)).toBeTruthy()
+        expect(wrapper.vm.isNumber('1.1')).toBeTruthy()
+
     })
 })
