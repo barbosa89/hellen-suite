@@ -7,9 +7,9 @@ use Tests\TestCase;
 use App\Models\Guest;
 use CountriesTableSeeder;
 use PermissionsTableSeeder;
+use Illuminate\Support\Carbon;
 use IdentificationTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Carbon;
 
 class GuestTest extends TestCase
 {
