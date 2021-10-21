@@ -4,8 +4,6 @@ namespace App\Actions\Guests;
 
 use App\Models\Guest;
 use App\Actions\Action;
-use Illuminate\Support\Carbon;
-
 class CreateAction extends Action
 {
     public function execute(): Guest
@@ -18,7 +16,7 @@ class CreateAction extends Action
         $guest->address = $this->data['address'] ?? null;
         $guest->phone = $this->data['phone'] ?? null;
         $guest->gender = $this->data['gender'] ?? null;
-        $guest->birthdate = Carbon::parse($this->data['birthdate']) ?? null;
+        $guest->birthdate = $this->data['birthdate'] ?? null;
         $guest->profession = $this->data['profession'] ?? null;
         $guest->user()->associate(id_parent());
         $guest->country()->associate($this->data['country_id']);

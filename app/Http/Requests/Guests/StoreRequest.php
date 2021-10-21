@@ -41,7 +41,7 @@ class StoreRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:191'],
             'phone' => ['nullable', 'string', 'max:20'],
             'gender' => ['required', 'string', Rule::in(Genders::toArray())],
-            'birthdate' => ['nullable', 'date'],
+            'birthdate' => ['nullable', 'date', 'date_format:Y-m-d'],
             'profession' => ['nullable', 'string', 'max:100'],
             'country_id' => ['required', 'int', 'exists:countries,id']
         ];
