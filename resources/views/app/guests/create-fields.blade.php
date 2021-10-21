@@ -94,7 +94,7 @@
 
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
-    <select class="form-control selectpicker" title="{{ trans('guests.choose.gender') }}" name="gender" id="gender">
+    <select class="form-control selectpicker" title="{{ trans('guests.choose.gender') }}" name="gender" id="gender" required>
         @foreach ($genders as $gender => $description)
             <option value="{{ $gender }}">{{ $description }}</option>
         @endforeach

@@ -346,6 +346,10 @@ class GuestTest extends TestCase
                 'gender',
                 'a',
             ],
+            'empty gender' => [
+                'gender',
+                '',
+            ],
             'wrong birthdate' => [
                 'birthdate',
                 'date',
