@@ -24,6 +24,6 @@ class GuestController extends Controller
 
     public function store(StoreRequest $request): JsonResponse
     {
-        return response()->json(CreateAction::run($request->validated()));
+        return response()->json(CreateAction::execute($request->validated()));
     }
 }
