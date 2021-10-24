@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
             return (int) $value <= $product->quantity;
         });
 
+        // TODO: Delete
         // Check if encoded ID exists
         Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
             $value = id_decode($value);
