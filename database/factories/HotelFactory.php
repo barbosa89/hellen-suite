@@ -13,7 +13,7 @@ $factory->define(Hotel::class, function (Faker $faker) {
         'address' => $faker->address,
         'phone' => $faker->e164PhoneNumber,
         'mobile' => $faker->e164PhoneNumber,
-        'email' => $faker->unique()->safeEmail,
+        'email' => $faker->unique()->freeEmail,
         'user_id' => function () {
             return factory(\App\User::class)->create()->id;
         },
