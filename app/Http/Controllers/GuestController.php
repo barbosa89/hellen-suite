@@ -13,7 +13,6 @@ use App\Actions\Guests\CreateAction;
 use App\Actions\Guests\UpdateAction;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\Guests\UpdateGuest;
 use App\View\Models\Guests\EditViewModel;
 use App\Http\Requests\Guests\StoreRequest;
 use App\View\Models\Guests\CreateViewModel;
@@ -73,7 +72,7 @@ class GuestController extends Controller
         return view('app.guests.edit', new EditViewModel(id_decode($id)));
     }
 
-    public function update(UpdateGuest $request, string $id): RedirectResponse
+    public function update(StoreRequest $request, string $id): RedirectResponse
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
