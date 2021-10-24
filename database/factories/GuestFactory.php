@@ -12,7 +12,7 @@ $factory->define(Guest::class, function (Faker $faker) {
         'dni' => (string) $faker->randomNumber(7),
         'name' => $faker->name,
         'last_name' => $faker->lastName,
-        'email' => $faker->unique()->safeEmail,
+        'email' => $faker->unique()->freeEmail,
         'address' => $faker->streetAddress,
         'phone' => $faker->e164PhoneNumber,
         'profession' => $faker->word,

@@ -5,14 +5,22 @@ namespace Tests\Feature;
 use App\User;
 use Tests\TestCase;
 use App\Models\Guest;
+use App\Models\Hotel;
+use App\Models\Country;
+use App\Models\Voucher;
 use CountriesTableSeeder;
 use PermissionsTableSeeder;
+use App\Exports\GuestsReport;
 use Illuminate\Support\Carbon;
+use App\Models\IdentificationType;
 use IdentificationTypesTableSeeder;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GuestTest extends TestCase
 {
+    use WithFaker;
     use RefreshDatabase;
 
     public function setUp(): void
@@ -33,7 +41,7 @@ class GuestTest extends TestCase
 
     public function test_unauthorized_user_can_not_access_to_guest_list()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)
@@ -44,7 +52,7 @@ class GuestTest extends TestCase
 
     public function test_authorized_user_can_access_to_guest_list()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.index');
 
@@ -57,7 +65,7 @@ class GuestTest extends TestCase
 
     public function test_authorized_user_can_see_form_to_create_guest()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.create');
 
@@ -73,11 +81,11 @@ class GuestTest extends TestCase
 
     public function test_authorized_user_can_store_new_guest()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.create');
 
-        /** @var Guest $guest */
+        /** @var \App\Models\Guest $guest */
         $guest = factory(Guest::class)->make();
 
         $data = [
@@ -121,15 +129,15 @@ class GuestTest extends TestCase
     /**
      * @param string $field
      * @param mixed $value
-     * @dataProvider errorData
+     * @dataProvider validationProvider
      */
     public function test_check_validation_error_with_wrong_data(string $field, $value)
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.create');
 
-        /** @var Guest $guest */
+        /** @var \App\Models\Guest $guest */
         $guest = factory(Guest::class)->make();
 
         $data = [
@@ -158,11 +166,11 @@ class GuestTest extends TestCase
 
     public function test_user_can_store_a_guest_only_one()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.create');
 
-        /** @var Guest $guest */
+        /** @var \App\Models\Guest $guest */
         $guest = factory(Guest::class)->create([
             'user_id' => $user->id,
         ]);
@@ -191,11 +199,11 @@ class GuestTest extends TestCase
 
     public function test_same_guest_can_be_stored_by_different_users()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.create');
 
-        /** @var Guest $guest */
+        /** @var \App\Models\Guest $guest */
         $guest = factory(Guest::class)->create();
 
         $data = [
@@ -242,13 +250,71 @@ class GuestTest extends TestCase
         $this->assertDatabaseCount('guests', 2);
     }
 
+    public function test_authorized_user_can_see_a_guest()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.show');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        /** @var \App\Models\Hotel $hotel */
+        $hotel = factory(Hotel::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        /** @var \App\Models\Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'user_id' => $user->id,
+            'hotel_id' => $hotel->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, ['active' => true]);
+
+        $response = $this->actingAs($user)
+            ->get("/guests/{$guest->hash}");
+
+        $response->assertOk()
+            ->assertViewIs('app.guests.show')
+            ->assertViewHas('guest', function ($data) use ($guest, $voucher, $hotel) {
+                return $data->id === $guest->id
+                    && $data->country->id === $guest->country_id
+                    && $data->vouchers->first()->hash === $voucher->hash
+                    && $data->vouchers->first()->hotel->hash === $hotel->hash;
+            });
+    }
+
+    public function test_unauthorized_user_cannot_see_a_guest()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.show');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        /** @var \App\User $other */
+        $other = factory(User::class)->create();
+        $other->givePermissionTo('guests.show');
+
+        $response = $this->actingAs($other)
+            ->get("/guests/{$guest->hash}");
+
+        $response->assertNotFound();
+    }
+
     public function test_authorized_user_can_see_form_to_edit_guests()
     {
-        /** @var User $user */
+        /** @var \App\User $user */
         $user = factory(User::class)->create();
         $user->givePermissionTo('guests.edit');
 
-        /** @var Guest $guest */
+        /** @var \App\Models\Guest $guest */
         $guest = factory(Guest::class)->create([
             'user_id' => $user->id,
         ]);
@@ -272,7 +338,168 @@ class GuestTest extends TestCase
             ->assertViewHas('genders');
     }
 
-    public function errorData(): array
+    public function test_authorized_user_can_update_a_guest()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.edit');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        /** @var \App\Models\Country $country */
+        $country = Country::inRandomOrder()->first(['id']);
+
+        /** @var \App\Models\IdentificationType $identificationType */
+        $identificationType = IdentificationType::inRandomOrder()->first(['id']);
+
+        $data = [
+            'name' => $this->faker->name,
+            'last_name' => $this->faker->lastName,
+            'identification_type_id' => $identificationType->hash,
+            'dni' => (string) $this->faker->randomNumber(7),
+            'email' => $this->faker->unique()->freeEmail,
+            'address' => $this->faker->streetAddress,
+            'phone' => $this->faker->e164PhoneNumber,
+            'gender' => $guest->gender,
+            'birthdate' => now()->subYears(20)->format('Y-m-d'),
+            'profession' => $this->faker->word,
+            'country_id' => $country->hash,
+        ];
+
+        $response = $this->actingAs($user)
+            ->put("/guests/{$guest->hash}", $data);
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.updatedSuccessfully'), $message->message);
+        $this->assertEquals('success', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $data['id'] = $guest->id;
+        $data['status'] = false;
+        $data['user_id'] = $user->id;
+        $data['country_id'] = $country->id;
+        $data['identification_type_id'] = $identificationType->id;
+
+        $response->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('guests.show', ['id' => $guest->hash]));
+
+        $this->assertDatabaseHas('guests', $data);
+        $this->assertDatabaseCount('guests', 1);
+    }
+
+    public function test_authorized_user_can_delete_a_guest()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.destroy');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete("/guests/{$guest->hash}");
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.deletedSuccessfully'), $message->message);
+        $this->assertEquals('success', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $response->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('guests.index'));
+
+        $this->assertDatabaseMissing('guests', [
+            'id' => $guest->id,
+        ]);
+    }
+
+    public function test_authorized_user_can_download_guest_report()
+    {
+        Excel::fake();
+
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.index');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get("/guests/export");
+
+        Excel::assertDownloaded('Guests.xlsx', function(GuestsReport $export) use ($guest) {
+            $view = $export->view()->render();
+
+            return str_contains($view, $guest->dni);
+        });
+    }
+
+    public function test_authorized_user_can_not_download_when_guests_table_is_empty()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.index');
+
+        $response = $this->actingAs($user)
+            ->get("/guests/export");
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.noRecords'), $message->message);
+        $this->assertEquals('info', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $response->assertRedirect(route('guests.index'));
+    }
+
+    public function test_authorized_user_can_not_delete_a_guest_if_has_vouchers()
+    {
+        /** @var \App\User $user */
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('guests.destroy');
+
+        /** @var \App\Models\Guest $guest */
+        $guest = factory(Guest::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        /** @var \App\Models\Voucher $voucher */
+        $voucher = factory(Voucher::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $voucher->guests()->attach($guest->id, ['active' => true]);
+
+        $response = $this->actingAs($user)
+            ->delete("/guests/{$guest->hash}");
+
+        $message = session('flash_notification')->first();
+
+        $this->assertEquals(trans('common.notRemovable'), $message->message);
+        $this->assertEquals('info', $message->level);
+        $this->assertEquals(false, $message->important);
+        $this->assertEquals(false, $message->overlay);
+
+        $response->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('guests.show', ['id' => $guest->hash]));
+
+        $this->assertDatabaseHas('guests', [
+            'id' => $guest->id,
+        ]);
+    }
+
+    public function validationProvider(): array
     {
         return [
             'empty name' => [

@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
 use App\Models\Guest;
 use App\Helpers\Chart;
 use App\Events\CheckIn;
 use App\Models\Voucher;
 use App\Events\CheckOut;
-use App\Helpers\Customer;
 use Illuminate\View\View;
-use App\Constants\Genders;
 use App\Exports\GuestsReport;
-use App\Services\CountryCache;
-use App\Http\Requests\UpdateGuest;
 use App\Actions\Guests\CreateAction;
+use App\Actions\Guests\UpdateAction;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreVoucherGuest;
-use App\Services\IdentificationTypeCache;
+use App\Http\Requests\Guests\UpdateGuest;
 use App\View\Models\Guests\EditViewModel;
 use App\Http\Requests\Guests\StoreRequest;
 use App\View\Models\Guests\CreateViewModel;
@@ -37,7 +32,7 @@ class GuestController extends Controller
 
     public function store(StoreRequest $request): RedirectResponse
     {
-        $guest = CreateAction::run($request->validated());
+        $guest = CreateAction::execute($request->validated());
 
         flash(trans('common.created.successfully'))->success();
 
@@ -46,166 +41,22 @@ class GuestController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new voucher guest.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function createForVoucher($id)
-    {
-        $id = id_decode($id);
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', $id)
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'rooms' => function ($query) {
-                    $query->select('id', 'number', 'status')
-                        ->withPivot('enabled');
-                },
-                'rooms.guests' => function ($query) use ($id) {
-                    $query->select('id', 'name', 'last_name')
-                        ->wherePivot('voucher_id', $id);
-                },
-                'guests' => function ($query) {
-                    $query->select(fields_dotted('guests'))
-                        ->withPivot('main', 'active');
-                },
-                'company' => function ($query) {
-                    $query->select(fields_get('companies'));
-                },
-                'payments' => function ($query)
-                {
-                    $query->select(fields_get('payments'));
-                }
-            ])->first(fields_get('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
-
-        $identificationTypes = (new IdentificationTypeCache())->get();
-        $countries = (new CountryCache())->get();
-        $guests = 0;
-
-        $voucher->rooms->each(function ($room) use (&$guests)
-        {
-            $guests += $room->guests->count();
-        });
-
-        $customer = Customer::get($voucher);
-        $genders = Genders::toDictionary();
-
-        return view('app.guests.create-for-voucher', compact('voucher', 'identificationTypes', 'guests', 'countries', 'customer', 'genders'));
-    }
-
-    /**
-     * Store a newly created guest in storage and attaching to voucher.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function storeForVoucher(StoreVoucherGuest $request, $id)
-    {
-        $voucher = Voucher::where('user_id', id_parent())
-            ->where('id', id_decode($id))
-            ->where('open', true)
-            ->where('status', true)
-            ->with([
-                'guests' => function ($query) {
-                    $query->select('id');
-                },
-                'hotel' => function ($query) {
-                    $query->select(fields_get('hotels'));
-                },
-            ])->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
-
-        $guest = new Guest();
-        $guest->name = $request->name;
-        $guest->last_name = $request->last_name;
-        $guest->dni = $request->dni;
-        $guest->email = $request->get('email', null);
-        $guest->address = $request->get('address', null);
-        $guest->phone = $request->get('phone', null);
-        $guest->gender = $request->get('gender', null);
-        $guest->birthdate = $request->get('birthdate', null);
-        $guest->profession = $request->get('profession', null);
-        $guest->name = $request->get('name', null);
-        $guest->status = true; // In hotel
-        $guest->identificationType()->associate(id_decode($request->type));
-        $guest->user()->associate(id_parent());
-        $guest->country()->associate(id_decode($request->nationality));
-
-        $isMinor = Customer::isMinor($request->get('birthdate', null));
-        $responsible = $request->get('responsible_adult', null);
-
-        if ($isMinor and !empty($responsible)) {
-            $guest->responsible_adult = id_decode($responsible);
-        }
-
-        if ($guest->save()) {
-            $main = $voucher->guests->isEmpty() ? true : false;
-            $voucher->guests()->attach($guest->id, [
-                'main' => $main,
-                'active' => true
-            ]);
-
-            $guest->rooms()->attach(id_decode($request->room), [
-                'voucher_id' => $voucher->id
-            ]);
-
-            // Create Note
-            notary($voucher->hotel)->checkinGuest(
-                $voucher,
-                $guest,
-                Room::find(id_decode($request->room))
-            );
-
-            flash(trans('common.successful'))->success();
-
-            return back();
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($id): View
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(fields_get('guests'));
-
-        if (empty($guest)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('guests'));
 
         $guest->load([
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query) {
                 $query->select(fields_dotted('vouchers'))
                     ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC');
             },
-            'vouchers.hotel' => function ($query)
-            {
+            'vouchers.hotel' => function ($query) {
                 $query->select('id', 'business_name');
             },
-            'country' => function ($query)
-            {
+            'country' => function ($query) {
                 $query->select('id', 'name');
             },
         ]);
@@ -222,90 +73,45 @@ class GuestController extends Controller
         return view('app.guests.edit', new EditViewModel(id_decode($id)));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateGuest $request, $id)
+    public function update(UpdateGuest $request, string $id): RedirectResponse
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->first(fields_get('guests'));
+            ->firstOrFail(fields_get('guests'));
 
-        if (empty($guest)) {
-            abort(404);
-        }
+        UpdateAction::execute($request->validated(), $guest);
 
-        $guest->name = $request->name;
-        $guest->last_name = $request->last_name;
-        $guest->dni = $request->dni;
-        $guest->email = $request->get('email', null);
-        $guest->address = $request->get('address', null);
-        $guest->phone = $request->get('phone', null);
-        $guest->gender = $request->get('gender', null);
-        $guest->birthdate = $request->get('birthdate', null);
-        $guest->profession = $request->get('profession', null);
-
-        if (!empty($request->type)) {
-            $guest->identificationType()->associate(id_decode($request->type));
-        }
-
-        if (!empty($request->nationality)) {
-            $guest->country()->associate(id_decode($request->nationality));
-        }
-
-        if ($guest->save()) {
-            flash(trans('common.updatedSuccessfully'))->success();
-
-            return redirect()->route('guests.show', [
-                'id' => id_encode($guest->id)
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
+        flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('guests.show', [
-            'id' => id_encode($guest->id)
+            'id' => $guest->hash,
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(string $id): RedirectResponse
     {
         $guest = Guest::where('user_id', id_parent())
             ->where('id', id_decode($id))
-            ->whereDoesntHave('vouchers')
-            ->first(fields_get('guests'));
+            ->withCount('vouchers')
+            ->firstOrFail(fields_get('guests'));
 
-        if (empty($guest)) {
+        if ($guest->vouchers_count) {
             flash(trans('common.notRemovable'))->info();
 
-            return back();
+            return redirect()->route('guests.show', [
+                'id' => $guest->hash,
+            ]);
         }
 
-        if ($guest->delete()) {
-            flash(trans('common.deletedSuccessfully'))->success();
+        $guest->delete();
 
-            return redirect()->route('guests.index');
-        }
-
-        flash(trans('common.error'))->error();
+        flash(trans('common.deletedSuccessfully'))->success();
 
         return redirect()->route('guests.index');
     }
 
     /**
-     * Export a listing of guests in excel format.
-     *
-     * @return \Maatwebsite\Excel\Excel
+     * @return Illuminate\Http\RedirectResponse|\Maatwebsite\Excel\Excel
      */
     public function export()
     {
@@ -331,13 +137,7 @@ class GuestController extends Controller
         return Excel::download(new GuestsReport($guests), trans('guests.title') . '.xlsx');
     }
 
-    /**
-     * Toggle status for the specified resource from storage.
-     *
-     * @param  string   $id
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle($id, $voucher)
+    public function toggle(string $id, string $voucher): RedirectResponse
     {
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', id_decode($voucher))
