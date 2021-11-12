@@ -12,11 +12,13 @@ use App\Presenters\ConfigurationPresenter;
 /**
  * @property int $id
  * @property string $name
+ * @property string $module
  * @property Carbon $enabled_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @method string|null getEnabledDate()
  * @method bool isEnabled()
+ * @method void toggle()
  */
 class Configuration extends Model
 {
@@ -24,14 +26,16 @@ class Configuration extends Model
     use PresentableTrait;
 
     protected $fillable = [
-        'name', 'enabled_at'
+        'name', 'module', 'enabled_at'
     ];
 
     protected $appends = ['hash'];
 
     protected $casts = [
-        'enabled_at' => 'date',
+        'enabled_at' => 'datetime:Y-m-d',
     ];
+
+    protected $dates = ['enabled_at'];
 
     protected string $presenter = ConfigurationPresenter::class;
 
@@ -48,5 +52,14 @@ class Configuration extends Model
     public function isEnabled(): bool
     {
         return !empty($this->enabled_at);
+    }
+
+    public function toggle(): void
+    {
+        if ($this->isEnabled()) {
+            $this->enabled_at = null;
+        } else {
+            $this->enabled_at = now();
+        }
     }
 }

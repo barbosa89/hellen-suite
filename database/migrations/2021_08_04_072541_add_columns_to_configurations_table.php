@@ -1,10 +1,11 @@
 <?php
 
+use App\Constants\Modules;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEnabledAtColumnToConfigurationsTable extends Migration
+class AddColumnsToConfigurationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +15,14 @@ class AddEnabledAtColumnToConfigurationsTable extends Migration
     public function up()
     {
         Schema::table('configurations', function (Blueprint $table) {
+            $table->enum('module', Modules::toArray())
+                ->after('name');
+
             $table->timestamp('enabled_at')
                 ->nullable()
-                ->after('name');
+                ->after('module');
+
+            $table->unique(['name', 'module']);
         });
     }
 
@@ -28,7 +34,9 @@ class AddEnabledAtColumnToConfigurationsTable extends Migration
     public function down()
     {
         Schema::table('configurations', function (Blueprint $table) {
+            $table->dropUnique(['name', 'module']);
             $table->dropColumn('enabled_at');
+            $table->dropColumn('module');
         });
     }
 }

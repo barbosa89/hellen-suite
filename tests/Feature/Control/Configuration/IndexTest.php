@@ -2,15 +2,14 @@
 
 namespace Tests\Feature\Control\Configuration;
 
-use App\Constants\Config;
-use App\Constants\Roles;
-use App\Models\Configuration;
 use App\User;
-use ConfigurationsTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use RolesTableSeeder;
 use Tests\TestCase;
+use RolesTableSeeder;
+use App\Constants\Roles;
+use App\Constants\Config;
+use App\Constants\Modules;
+use App\Models\Configuration;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexTest extends TestCase
 {
@@ -51,26 +50,6 @@ class IndexTest extends TestCase
         $user->assignRole(Roles::ROOT);
 
         /** @var Configuration $configuration */
-        $configuration = factory(Configuration::class)->create();
-
-        $response = $this->actingAs($user)
-            ->get(self::ROUTE);
-
-        $response->assertOk()
-            ->assertViewIs(self::VIEW)
-            ->assertViewHas('configurations', function ($data) use ($configuration) {
-                return $data->first()->id === $configuration->id;
-            })
-            ->assertDontSeeText(now()->format('Y-m-d'));
-    }
-
-    public function test_user_can_see_config_list()
-    {
-        /** @var User $user */
-        $user = factory(User::class)->create();
-        $user->assignRole(Roles::ROOT);
-
-        /** @var Configuration $configuration */
         $configuration = factory(Configuration::class)
             ->state('enabled')
             ->create([
@@ -82,7 +61,15 @@ class IndexTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs(self::VIEW)
-            ->assertSeeText(trans('configurations.out'))
-            ->assertSeeText($configuration->enabled_at->format('Y-m-d'));
+            ->assertViewHas('configurations', function ($data) use ($configuration) {
+                /** @var Configuration $item */
+                $item = $data->first();
+
+                return $item->id === $configuration->id
+                    && $item->isEnabled();
+            })
+            ->assertSeeText(Config::trans($configuration->name))
+            ->assertSeeText(Modules::trans($configuration->module))
+            ->assertSeeText(now()->format('Y-m-d'));
     }
 }

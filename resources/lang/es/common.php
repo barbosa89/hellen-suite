@@ -140,6 +140,7 @@ return array (
     'updated' =>
     array (
         'at' => 'Fecha de actualización',
+        'successfully' => 'El registro fue actualizado exitosamente',
     ),
     'closed' =>
     array (
@@ -203,4 +204,5 @@ return array (
     'choose' => [
         'option' => 'eliga una opción'
     ],
+    'module' => 'Módulo',
 );

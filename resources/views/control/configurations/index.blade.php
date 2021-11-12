@@ -7,55 +7,54 @@
 @section('content')
 
     <div id="page-wrapper">
-        @include('partials.page-header', [
-            'title' => trans('configurations.title'),
-            'url' => route('configurations.index'),
-            'options' => []
-        ])
+        <x-navigation
+            title="{{ trans('configurations.title') }}"
+            url="{{ route('configurations.index') }}">
+        </x-navigation>
 
         <div class="row">
             <div class="col-md-12">
-                @if ($configurations->isNotEmpty())
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">@lang('common.name')</th>
+                                    <th scope="col">@lang('common.module')</th>
                                     <th scope="col">@lang('common.enabled.at')</th>
                                     <th scope="col">@lang('common.options')</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($configurations as $configuration)
+                                @if ($configurations->isNotEmpty())
+                                    @foreach ($configurations as $configuration)
+                                        <tr>
+                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td>{{ $configuration->present()->full_name }}</td>
+                                            <td>{{ $configuration->present()->module_name }}</td>
+                                            <td>{{ $configuration->present()->enabled_at }}</td>
+                                            <td>
+                                                <x-dropdown-button>
+                                                    <a href="#"
+                                                        data-url="{{ route('configurations.toggle', ['configuration' => $configuration->hash]) }}"
+                                                        data-method="PUT"
+                                                        id="modal-confirm"
+                                                        onclick="confirmAction(this, event)"
+                                                        class="dropdown-item">
+                                                        {{ $configuration->present()->action }}
+                                                    </a>
+                                                </x-dropdown-button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $configuration->present()->fullName }}</td>
-                                        <td>{{ $configuration->present()->enabledAt }}</td>
-                                        <td>
-                                            @include('partials.dropdown-btn', [
-                                                'options' => [
-                                                    [
-                                                        'type' => 'confirm',
-                                                        'option' => $configuration->isEnabled() ? trans('common.disable') : trans('common.enable'),
-                                                        'url' => route('configurations.toggle', [
-                                                            'configuration' => $configuration->hash
-                                                        ]),
-                                                        'method' => 'PUT',
-                                                    ],
-                                                ]
-                                            ])
-                                        </td>
+                                        <td colspan="5">@lang('common.noRecords')</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
-                @else
-                    <tr>
-                        <td colspan="4">@lang('common.noRecords')</td>
-                    </tr>
-                @endif
             </div>
         </div>
 

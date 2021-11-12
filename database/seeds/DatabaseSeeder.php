@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Env;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PlanSeeder::class);
         $this->call(ConfigurationsTableSeeder::class);
 
-        if (app()->environment('local')) {
+        if (app()->environment(Env::LOCAL)) {
             $this->call(UsersTableSeeder::class);
             $this->call(AssignmentsSeeder::class);
             $this->call(HotelTableSeeder::class);

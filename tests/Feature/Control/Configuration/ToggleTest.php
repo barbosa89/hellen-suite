@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Control\Configuration;
 
+use App\User;
+use Tests\TestCase;
+use RolesTableSeeder;
 use App\Constants\Roles;
 use App\Models\Configuration;
-use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use RolesTableSeeder;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ToggleTest extends TestCase
 {
@@ -68,7 +68,7 @@ class ToggleTest extends TestCase
 
         $message = session('flash_notification')->first();
 
-        $this->assertEquals(trans('configurations.toggle.enabled'), $message->message);
+        $this->assertEquals(trans('common.updated.successfully'), $message->message);
         $this->assertEquals('success', $message->level);
         $this->assertEquals(false, $message->important);
         $this->assertEquals(false, $message->overlay);
@@ -98,7 +98,7 @@ class ToggleTest extends TestCase
 
         $message = session('flash_notification')->first();
 
-        $this->assertEquals(trans('configurations.toggle.disabled'), $message->message);
+        $this->assertEquals(trans('common.updated.successfully'), $message->message);
         $this->assertEquals('success', $message->level);
         $this->assertEquals(false, $message->important);
         $this->assertEquals(false, $message->overlay);

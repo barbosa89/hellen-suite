@@ -144,6 +144,7 @@ return array (
     'updated' =>
     array (
         'at' => 'Updated at',
+        'successfully' => 'The record was updated successfully',
     ),
     'enabled' => [
         'at' => 'Enabled at',
@@ -202,4 +203,5 @@ return array (
     'choose' => [
         'option' => 'Choose an option',
     ],
+    'module' => 'Module',
 );
