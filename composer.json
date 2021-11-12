@@ -9,9 +9,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
-        "barryvdh/laravel-translation-manager": "^0.5.8",
         "cviebrock/eloquent-sluggable": "^7.0",
         "diglactic/laravel-breadcrumbs": "^6.0",
+        "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "genealabs/laravel-model-caching": "0.10.2",
@@ -97,7 +97,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --verbose --testdox --coverage-html ./tests/coverage"
+            "vendor/bin/phpunit --verbose --testdox --coverage-html ./tests/coverage/php"
         ]
     }
 }

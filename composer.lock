@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4012f5088b488cb329f62435a820805b",
+    "content-hash": "7aab799de7415470c683b0f33b8bcfd0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -127,65 +127,6 @@
                 }
             ],
             "time": "2020-09-07T11:50:18+00:00"
-        },
-        {
-            "name": "barryvdh/laravel-translation-manager",
-            "version": "v0.5.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-translation-manager.git",
-                "reference": "18ed550eb74f9e61d2fc72d06dfa576296d0d5cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-translation-manager/zipball/18ed550eb74f9e61d2fc72d06dfa576296d0d5cb",
-                "reference": "18ed550eb74f9e61d2fc72d06dfa576296d0d5cb",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^5.5|^6|^7|^8",
-                "illuminate/translation": "^5.5|^6|^7|^8",
-                "php": ">=7",
-                "symfony/finder": "^3|^4|^5",
-                "tanmuhittin/laravel-google-translate": "^2.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.5-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Barryvdh\\TranslationManager\\ManagerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\TranslationManager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Manage Laravel Translations",
-            "keywords": [
-                "laravel",
-                "translations",
-                "translator"
-            ],
-            "support": {
-                "issues": "https://github.com/barryvdh/laravel-translation-manager/issues",
-                "source": "https://github.com/barryvdh/laravel-translation-manager/tree/v0.5.10"
-            },
-            "time": "2021-01-25T20:11:29+00:00"
         },
         {
             "name": "brick/math",
@@ -398,6 +339,79 @@
             "time": "2021-06-07T13:58:28+00:00"
         },
         {
+            "name": "composer/package-versions-deprecated",
+            "version": "1.11.99.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/package-versions-deprecated.git",
+                "reference": "b174585d1fe49ceed21928a945138948cb394600"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
+                "reference": "b174585d1fe49ceed21928a945138948cb394600",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1.0 || ^2.0",
+                "php": "^7 || ^8"
+            },
+            "replace": {
+                "ocramius/package-versions": "1.11.99"
+            },
+            "require-dev": {
+                "composer/composer": "^1.9.3 || ^2.0@dev",
+                "ext-zip": "^1.13",
+                "phpunit/phpunit": "^6.5 || ^7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be"
+                }
+            ],
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "support": {
+                "issues": "https://github.com/composer/package-versions-deprecated/issues",
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-09-13T08:41:34+00:00"
+        },
+        {
             "name": "cviebrock/eloquent-sluggable",
             "version": "7.0.2",
             "source": {
@@ -603,6 +617,351 @@
                 "source": "https://github.com/diglactic/laravel-breadcrumbs/tree/v6.1.1"
             },
             "time": "2021-04-12T18:06:07+00:00"
+        },
+        {
+            "name": "doctrine/cache",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/cache.git",
+                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/331b4d5dbaeab3827976273e9356b3b453c300ce",
+                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.1 || ^8.0"
+            },
+            "conflict": {
+                "doctrine/common": ">2.2,<2.4"
+            },
+            "require-dev": {
+                "alcaeus/mongo-php-adapter": "^1.1",
+                "cache/integration-tests": "dev-master",
+                "doctrine/coding-standard": "^8.0",
+                "mongodb/mongodb": "^1.1",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "predis/predis": "~1.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "symfony/cache": "^4.4 || ^5.2 || ^6.0@dev",
+                "symfony/var-exporter": "^4.4 || ^5.2 || ^6.0@dev"
+            },
+            "suggest": {
+                "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "PHP Doctrine Cache library is a popular cache implementation that supports many different drivers such as redis, memcache, apc, mongodb and others.",
+            "homepage": "https://www.doctrine-project.org/projects/cache.html",
+            "keywords": [
+                "abstraction",
+                "apcu",
+                "cache",
+                "caching",
+                "couchdb",
+                "memcached",
+                "php",
+                "redis",
+                "xcache"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/cache/issues",
+                "source": "https://github.com/doctrine/cache/tree/2.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcache",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-17T14:49:29+00:00"
+        },
+        {
+            "name": "doctrine/dbal",
+            "version": "3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/dbal.git",
+                "reference": "96b0053775a544b4a6ab47654dac0621be8b4cf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/96b0053775a544b4a6ab47654dac0621be8b4cf8",
+                "reference": "96b0053775a544b4a6ab47654dac0621be8b4cf8",
+                "shasum": ""
+            },
+            "require": {
+                "composer/package-versions-deprecated": "^1.11.99",
+                "doctrine/cache": "^1.0|^2.0",
+                "doctrine/deprecations": "^0.5.3",
+                "doctrine/event-manager": "^1.0",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "9.0.0",
+                "jetbrains/phpstorm-stubs": "2021.1",
+                "phpstan/phpstan": "0.12.99",
+                "phpstan/phpstan-strict-rules": "^0.12.11",
+                "phpunit/phpunit": "9.5.10",
+                "psalm/plugin-phpunit": "0.16.1",
+                "squizlabs/php_codesniffer": "3.6.0",
+                "symfony/cache": "^5.2|^6.0",
+                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0|^6.0",
+                "vimeo/psalm": "4.10.0"
+            },
+            "suggest": {
+                "symfony/console": "For helpful console commands such as SQL execution and import of files."
+            },
+            "bin": [
+                "bin/doctrine-dbal"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\DBAL\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "Powerful PHP database abstraction layer (DBAL) with many features for database schema introspection and management.",
+            "homepage": "https://www.doctrine-project.org/projects/dbal.html",
+            "keywords": [
+                "abstraction",
+                "database",
+                "db2",
+                "dbal",
+                "mariadb",
+                "mssql",
+                "mysql",
+                "oci8",
+                "oracle",
+                "pdo",
+                "pgsql",
+                "postgresql",
+                "queryobject",
+                "sasql",
+                "sql",
+                "sqlite",
+                "sqlserver",
+                "sqlsrv"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/dbal/issues",
+                "source": "https://github.com/doctrine/dbal/tree/3.1.3"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-10-02T16:15:05+00:00"
+        },
+        {
+            "name": "doctrine/deprecations",
+            "version": "v0.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/deprecations.git",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/9504165960a1f83cc1480e2be1dd0a0478561314",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Deprecations\\": "lib/Doctrine/Deprecations"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A small layer on top of trigger_error(E_USER_DEPRECATED) or PSR-3 logging with options to disable all deprecations or selectively for packages.",
+            "homepage": "https://www.doctrine-project.org/",
+            "support": {
+                "issues": "https://github.com/doctrine/deprecations/issues",
+                "source": "https://github.com/doctrine/deprecations/tree/v0.5.3"
+            },
+            "time": "2021-03-21T12:59:47+00:00"
+        },
+        {
+            "name": "doctrine/event-manager",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/event-manager.git",
+                "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/41370af6a30faa9dc0368c4a6814d596e81aba7f",
+                "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "doctrine/common": "<2.9@dev"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Common\\": "lib/Doctrine/Common"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                },
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                }
+            ],
+            "description": "The Doctrine Event Manager is a simple PHP event system that was built to be used with the various Doctrine projects.",
+            "homepage": "https://www.doctrine-project.org/projects/event-manager.html",
+            "keywords": [
+                "event",
+                "event dispatcher",
+                "event manager",
+                "event system",
+                "events"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/event-manager/issues",
+                "source": "https://github.com/doctrine/event-manager/tree/1.1.x"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fevent-manager",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-05-29T18:28:51+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -1455,365 +1814,6 @@
             "time": "2020-02-29T18:56:56+00:00"
         },
         {
-            "name": "google/auth",
-            "version": "v1.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "21dd478e77b0634ed9e3a68613f74ed250ca9347"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/21dd478e77b0634ed9e3a68613f74ed250ca9347",
-                "reference": "21dd478e77b0634ed9e3a68613f74ed250ca9347",
-                "shasum": ""
-            },
-            "require": {
-                "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
-                "guzzlehttp/guzzle": "^5.3.1|^6.2.1|^7.0",
-                "guzzlehttp/psr7": "^1.7|^2.0",
-                "php": ">=5.4",
-                "psr/cache": "^1.0|^2.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "guzzlehttp/promises": "0.1.1|^1.3",
-                "kelvinmo/simplejwt": "^0.2.5|^0.5.1",
-                "phpseclib/phpseclib": "^2.0.31",
-                "phpunit/phpunit": "^4.8.36|^5.7",
-                "sebastian/comparator": ">=1.2.3"
-            },
-            "suggest": {
-                "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\Auth\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Google Auth Library for PHP",
-            "homepage": "http://github.com/google/google-auth-library-php",
-            "keywords": [
-                "Authentication",
-                "google",
-                "oauth2"
-            ],
-            "support": {
-                "docs": "https://googleapis.github.io/google-auth-library-php/master/",
-                "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.18.0"
-            },
-            "time": "2021-08-24T18:03:18+00:00"
-        },
-        {
-            "name": "google/cloud-core",
-            "version": "v1.42.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "f3fff3ca4af92c87eb824e5c98aaf003523204a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/f3fff3ca4af92c87eb824e5c98aaf003523204a2",
-                "reference": "f3fff3ca4af92c87eb824e5c98aaf003523204a2",
-                "shasum": ""
-            },
-            "require": {
-                "google/auth": "^1.12",
-                "guzzlehttp/guzzle": "^5.3|^6.0|^7.0",
-                "guzzlehttp/promises": "^1.3",
-                "guzzlehttp/psr7": "^1.2",
-                "monolog/monolog": "^1.1|^2.0",
-                "php": ">=5.5",
-                "psr/http-message": "1.0.*",
-                "rize/uri-template": "~0.3"
-            },
-            "require-dev": {
-                "erusev/parsedown": "^1.6",
-                "google/common-protos": "^1.0",
-                "google/gax": "^1.1",
-                "opis/closure": "^3",
-                "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "suggest": {
-                "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
-                "symfony/lock": "Required for the Spanner cached based session pool. Please require the following commit: 3.3.x-dev#1ba6ac9"
-            },
-            "bin": [
-                "bin/google-cloud-batch"
-            ],
-            "type": "library",
-            "extra": {
-                "component": {
-                    "id": "cloud-core",
-                    "target": "googleapis/google-cloud-php-core.git",
-                    "path": "Core",
-                    "entry": "src/ServiceBuilder.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Google\\Cloud\\Core\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
-            "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.42.2"
-            },
-            "time": "2021-06-30T16:21:40+00:00"
-        },
-        {
-            "name": "google/cloud-translate",
-            "version": "v1.10.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-cloud-php-translate.git",
-                "reference": "ea5f24247e77ec590b1c1833589df2fa48415c6d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-translate/zipball/ea5f24247e77ec590b1c1833589df2fa48415c6d",
-                "reference": "ea5f24247e77ec590b1c1833589df2fa48415c6d",
-                "shasum": ""
-            },
-            "require": {
-                "google/cloud-core": "^1.39",
-                "google/gax": "^1.1"
-            },
-            "require-dev": {
-                "erusev/parsedown": "^1.6",
-                "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "suggest": {
-                "ext-grpc": "The gRPC extension enables use of the performant gRPC transport",
-                "ext-protobuf": "Provides a significant increase in throughput over the pure PHP protobuf implementation. See https://cloud.google.com/php/grpc for installation instructions."
-            },
-            "type": "library",
-            "extra": {
-                "component": {
-                    "id": "cloud-translate",
-                    "target": "googleapis/google-cloud-php-translate.git",
-                    "path": "Translate",
-                    "entry": "src/TranslateClient.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Google\\Cloud\\Translate\\": "src",
-                    "GPBMetadata\\Google\\Cloud\\Translate\\": "metadata"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Cloud Translation Client for PHP",
-            "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-translate/tree/v1.10.1"
-            },
-            "time": "2021-06-09T22:04:14+00:00"
-        },
-        {
-            "name": "google/common-protos",
-            "version": "1.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "c348d1545fbeac7df3c101fdc687aba35f49811f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/c348d1545fbeac7df3c101fdc687aba35f49811f",
-                "reference": "c348d1545fbeac7df3c101fdc687aba35f49811f",
-                "shasum": ""
-            },
-            "require": {
-                "google/protobuf": "^3.6.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.36",
-                "sami/sami": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\": "src",
-                    "GPBMetadata\\Google\\": "metadata"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Google API Common Protos for PHP",
-            "homepage": "https://github.com/googleapis/common-protos-php",
-            "keywords": [
-                "google"
-            ],
-            "support": {
-                "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/1.3.1"
-            },
-            "time": "2021-06-29T15:42:12+00:00"
-        },
-        {
-            "name": "google/gax",
-            "version": "v1.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "30ca2be6125c8936e74ad17ec2b495bb26697a59"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/30ca2be6125c8936e74ad17ec2b495bb26697a59",
-                "reference": "30ca2be6125c8936e74ad17ec2b495bb26697a59",
-                "shasum": ""
-            },
-            "require": {
-                "google/auth": "^1.18.0",
-                "google/common-protos": "^1.0",
-                "google/grpc-gcp": "^0.1.0",
-                "google/protobuf": "^3.12.2",
-                "grpc/grpc": "^1.13",
-                "guzzlehttp/promises": "^1.3",
-                "guzzlehttp/psr7": "^1.7.0|^2",
-                "php": ">=5.5"
-            },
-            "conflict": {
-                "ext-protobuf": "<3.7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.36",
-                "squizlabs/php_codesniffer": "3.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\ApiCore\\": "src",
-                    "GPBMetadata\\ApiCore\\": "metadata/ApiCore"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Google API Core for PHP",
-            "homepage": "https://github.com/googleapis/gax-php",
-            "keywords": [
-                "google"
-            ],
-            "support": {
-                "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.9.0"
-            },
-            "time": "2021-09-01T16:16:42+00:00"
-        },
-        {
-            "name": "google/grpc-gcp",
-            "version": "0.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
-                "reference": "bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36",
-                "reference": "bb9bdbf62f6ae4e73d5209d85b1d0a0b9855ff36",
-                "shasum": ""
-            },
-            "require": {
-                "google/auth": "^1.3",
-                "google/protobuf": "^v3.3.0",
-                "grpc/grpc": "^v1.13.0",
-                "php": ">=5.5.0",
-                "psr/cache": "^1.0.1"
-            },
-            "require-dev": {
-                "google/cloud-spanner": "^1.7",
-                "phpunit/phpunit": "4.8.36"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Grpc\\Gcp\\": "src/"
-                },
-                "classmap": [
-                    "src/generated/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "gRPC GCP library for channel management",
-            "support": {
-                "issues": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/issues",
-                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.1.5"
-            },
-            "time": "2020-05-26T17:21:09+00:00"
-        },
-        {
-            "name": "google/protobuf",
-            "version": "v3.17.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "ae9282cf11dd2933b7e71a611f9590f07d53d3f3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/ae9282cf11dd2933b7e71a611f9590f07d53d3f3",
-                "reference": "ae9282cf11dd2933b7e71a611f9590f07d53d3f3",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=4.8.0"
-            },
-            "suggest": {
-                "ext-bcmath": "Need to support JSON deserialization"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\Protobuf\\": "src/Google/Protobuf",
-                    "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "proto library for PHP",
-            "homepage": "https://developers.google.com/protocol-buffers/",
-            "keywords": [
-                "proto"
-            ],
-            "support": {
-                "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.17.3"
-            },
-            "time": "2021-06-08T14:59:41+00:00"
-        },
-        {
             "name": "graham-campbell/manager",
             "version": "v4.6.0",
             "source": {
@@ -1881,50 +1881,6 @@
                 }
             ],
             "time": "2020-07-25T18:02:52+00:00"
-        },
-        {
-            "name": "grpc/grpc",
-            "version": "1.39.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "101485614283d1ecb6b2ad1d5b95dc82495931db"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/101485614283d1ecb6b2ad1d5b95dc82495931db",
-                "reference": "101485614283d1ecb6b2ad1d5b95dc82495931db",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "google/auth": "^v1.3.0"
-            },
-            "suggest": {
-                "ext-protobuf": "For better performance, install the protobuf C extension.",
-                "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Grpc\\": "src/lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "gRPC library for PHP",
-            "homepage": "https://grpc.io",
-            "keywords": [
-                "rpc"
-            ],
-            "support": {
-                "source": "https://github.com/grpc/grpc-php/tree/v1.39.0"
-            },
-            "time": "2021-07-23T23:04:53+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -5266,55 +5222,6 @@
             "time": "2021-08-16T04:20:12+00:00"
         },
         {
-            "name": "psr/cache",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Cache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for caching libraries",
-            "keywords": [
-                "cache",
-                "psr",
-                "psr-6"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/cache/tree/master"
-            },
-            "time": "2016-08-06T20:24:11+00:00"
-        },
-        {
             "name": "psr/container",
             "version": "1.1.1",
             "source": {
@@ -6032,54 +5939,6 @@
             "time": "2020-09-08T12:21:27+00:00"
         },
         {
-            "name": "rize/uri-template",
-            "version": "0.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rize/UriTemplate.git",
-                "reference": "6e0b97e00e0f36c652dd3c37b194ef07de669b82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rize/UriTemplate/zipball/6e0b97e00e0f36c652dd3c37b194ef07de669b82",
-                "reference": "6e0b97e00e0f36c652dd3c37b194ef07de669b82",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8.36"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rize\\": "src/Rize"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marut K",
-                    "homepage": "http://twitter.com/rezigned"
-                }
-            ],
-            "description": "PHP URI Template (RFC 6570) supports both expansion & extraction",
-            "keywords": [
-                "RFC 6570",
-                "template",
-                "uri"
-            ],
-            "support": {
-                "issues": "https://github.com/rize/UriTemplate/issues",
-                "source": "https://github.com/rize/UriTemplate/tree/0.3.3"
-            },
-            "time": "2021-02-22T15:03:38+00:00"
-        },
-        {
             "name": "sabberworm/php-css-parser",
             "version": "8.3.1",
             "source": {
@@ -6707,69 +6566,6 @@
                 "source": "https://github.com/spatie/temporary-directory/tree/1.3.0"
             },
             "time": "2020-11-09T15:54:21+00:00"
-        },
-        {
-            "name": "stichoza/google-translate-php",
-            "version": "v4.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Stichoza/google-translate-php.git",
-                "reference": "85039e0af473e58cc9f42d58e36d9d534a6a6431"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/85039e0af473e58cc9f42d58e36d9d534a6a6431",
-                "reference": "85039e0af473e58cc9f42d58e36d9d534a6a6431",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "guzzlehttp/guzzle": "~6.0|~7.0",
-                "php": "^7.1|^8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Stichoza\\GoogleTranslate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Levan Velijanashvili",
-                    "email": "me@stichoza.com"
-                }
-            ],
-            "description": "Free Google Translate API PHP Package",
-            "homepage": "http://github.com/Stichoza/google-translate-php",
-            "keywords": [
-                "google",
-                "php",
-                "translate",
-                "translator"
-            ],
-            "support": {
-                "issues": "https://github.com/Stichoza/google-translate-php/issues",
-                "source": "https://github.com/Stichoza/google-translate-php/tree/v4.1.5"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/stichoza",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/stichoza",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2021-08-05T11:03:52+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -9190,67 +8986,6 @@
             "time": "2021-08-04T23:19:25+00:00"
         },
         {
-            "name": "tanmuhittin/laravel-google-translate",
-            "version": "2.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tanmuhittin/laravel-google-translate.git",
-                "reference": "2f2d97b7cf0a1296b92a1aeb8cb965bac683c118"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tanmuhittin/laravel-google-translate/zipball/2f2d97b7cf0a1296b92a1aeb8cb965bac683c118",
-                "reference": "2f2d97b7cf0a1296b92a1aeb8cb965bac683c118",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "google/cloud-translate": "^1.7.4",
-                "illuminate/console": ">=5.1",
-                "illuminate/support": "^5.5|^6|^7|^8",
-                "illuminate/translation": "^5.5|^6|^7|^8",
-                "php": ">=7.0.0",
-                "stichoza/google-translate-php": "^4.0",
-                "yandex/translate-api": "^1.5.2"
-            },
-            "require-dev": {
-                "orchestra/testbench": "5.x-dev|6.x-dev",
-                "phpunit/phpunit": "^8.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Tanmuhittin\\LaravelGoogleTranslate\\LaravelGoogleTranslateServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Tanmuhittin\\LaravelGoogleTranslate\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Muhittin Tan",
-                    "email": "tanmuhittin@gmail.com"
-                }
-            ],
-            "description": "Translate translation files to other languages using google translate api",
-            "support": {
-                "issues": "https://github.com/tanmuhittin/laravel-google-translate/issues",
-                "source": "https://github.com/tanmuhittin/laravel-google-translate/tree/2.0.4"
-            },
-            "funding": [
-                {
-                    "url": "https://www.patreon.com/tanmuhittin",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2020-09-30T18:04:10+00:00"
-        },
-        {
             "name": "thepinecode/i18n",
             "version": "v1.1.0",
             "source": {
@@ -9784,47 +9519,6 @@
                 }
             ],
             "time": "2020-11-12T00:07:28+00:00"
-        },
-        {
-            "name": "yandex/translate-api",
-            "version": "1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yandex-php/translate-api.git",
-                "reference": "c99e69cde3e688fc0f99c4d8a21585226a8e1938"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yandex-php/translate-api/zipball/c99e69cde3e688fc0f99c4d8a21585226a8e1938",
-                "reference": "c99e69cde3e688fc0f99c4d8a21585226a8e1938",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Yandex\\Translate\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nikita Gusakov",
-                    "email": "dev@nkt.me"
-                }
-            ],
-            "description": "Client for Yandex.Translate API",
-            "support": {
-                "issues": "https://github.com/yandex-php/translate-api/issues",
-                "source": "https://github.com/yandex-php/translate-api/tree/1.5.2"
-            },
-            "time": "2015-07-27T15:00:45+00:00"
         }
     ],
     "packages-dev": [

@@ -31,12 +31,6 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ url('/translations') }}">
-            <i class="fas fa-fw fa-language"></i>
-            <span>@lang('common.lang')</span></a>
-        </li>
-
-        <li class="nav-item">
             <a class="nav-link" href="{{ route('plans.index') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>@lang('plans.title')</span></a>
