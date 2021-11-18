@@ -10,7 +10,7 @@ use App\Models\Configuration;
 use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ToggleTest extends TestCase
+class ConfigToggleTest extends TestCase
 {
     use RefreshDatabase;
 

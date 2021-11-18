@@ -11,7 +11,7 @@ use App\Constants\Modules;
 use App\Models\Configuration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexTest extends TestCase
+class ConfigIndexTest extends TestCase
 {
     use RefreshDatabase;
 
