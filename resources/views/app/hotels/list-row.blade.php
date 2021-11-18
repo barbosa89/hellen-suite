@@ -29,7 +29,7 @@
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
             <p>
                 <a href="{{ route('hotels.show', ['id' => id_encode($row->id)]) }}">
-                    <i class="fa fa-{{ $row->status ? 'check-circle' : 'times-circle' }}"></i>
+                    <em class="fa fa-{{ $row->status ? 'check-circle' : 'times-circle' }}"></em>
                 </a>
             </p>
         </div>

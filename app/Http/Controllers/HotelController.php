@@ -19,8 +19,8 @@ class HotelController extends Controller
     public function index()
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->paginate(config('settings.paginate', fields_get('hotels')))
-            ->sort();
+            ->latest()
+            ->paginate(config('settings.paginate', fields_get('hotels')));
 
         return view('app.hotels.index', compact('hotels'));
     }
