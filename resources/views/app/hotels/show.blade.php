@@ -6,32 +6,34 @@
 
 @section('content')
     <div id="page-wrapper">
-        @include('partials.page-header', [
-            'title' => trans('hotels.title'),
-            'url' => route('hotels.index'),
-            'options' => [
-                [
-                    'option' => trans('common.edit'),
-                    'url' => route('hotels.edit', [
-                        'id' => id_encode($hotel->id)
-                    ]),
-                ],
-                [
-                    'option' => $hotel->status ? trans('common.disable') : trans('common.enable'),
-                    'url' => route('hotels.toggle', [
-                        'id' => id_encode($hotel->id)
-                    ]),
-                ],
-                [
-                    'type' => 'confirm',
-                    'option' => trans('common.delete.item'),
-                    'url' => route('hotels.destroy', [
-                        'id' => id_encode($hotel->id)
-                    ]),
-                    'method' => 'DELETE'
-                ],
-            ]
-        ])
+        <x-navigation
+            title="{{ trans('hotels.title') }}"
+            url="{{ route('hotels.index') }}">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="{{ route('hotels.toggle', ['id' => $hotel->hash]) }}" class="nav-link">
+                        {{ $hotel->status ? trans('common.disable') : trans('common.enable') }}
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('hotels.edit', ['id' => $hotel->hash]) }}" class="nav-link">
+                        @lang('common.edit')
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"
+                    id="modal-confirm"
+                    data-method="DELETE"
+                    class="nav-link"
+                    onclick="confirmAction(this, event)"
+                    data-url="{{ route('hotels.destroy', ['id' => $hotel->hash]) }}">
+                        @lang('common.delete.item')
+                    </a>
+                </li>
+            </ul>
+        </x-navigation>
 
         <div class="row mb-4">
             <div class="col-xs-2 col-sm-2 col-md-2 col-md-2">
