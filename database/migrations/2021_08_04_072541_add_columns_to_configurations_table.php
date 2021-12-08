@@ -16,6 +16,7 @@ class AddColumnsToConfigurationsTable extends Migration
     {
         Schema::table('configurations', function (Blueprint $table) {
             $table->enum('module', Modules::toArray())
+                ->nullable()
                 ->after('name');
 
             $table->timestamp('enabled_at')
