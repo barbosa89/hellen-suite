@@ -13,10 +13,10 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $hotelId): JsonResponse
+    public function index(string $hotelHash): JsonResponse
     {
         $notes = Note::owner()
-            ->ofHotel(id_decode($hotelId))
+            ->whereHotel($hotelHash)
             ->latest()
             ->paginate(
                 config('settings.paginate'),

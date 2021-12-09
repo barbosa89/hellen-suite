@@ -68,9 +68,9 @@ class TagController extends Controller
     {
         $tag = $this->tag->get(id_decode($id));
 
-        $hotel = Hotel::byId(id_decode($hotel));
+        $hotel = Hotel::findHash($hotel, fields_get('hotels'));
 
-        $notes = Note::ForTag($hotel, $tag)
+        $notes = Note::whereTag($hotel, $tag)
             ->paginate(
                 config('settings.paginate'),
                 Note::getColumnNames()

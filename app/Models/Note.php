@@ -80,10 +80,10 @@ class Note extends Model
      * @param  \App\Models\Tag $tag
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForTag($query, Hotel $hotel, Tag $tag)
+    public function scopeWhereTag($query, Hotel $hotel, Tag $tag)
     {
         return $query->owner()
-            ->ofHotel($hotel->id)
+            ->WhereHotel($hotel->hash)
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('id', $tag->id);
             });
@@ -93,11 +93,11 @@ class Note extends Model
      * Scope a query to get all notes by a hotel.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $hotelId
+     * @param  string $hotelHash
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfHotel($query, int $hotelId)
+    public function scopeWhereHotel($query, string $hotelHash)
     {
-        return $query->where('hotel_id', $hotelId);
+        return $query->where('hotel_id', id_decode($hotelHash));
     }
 }
