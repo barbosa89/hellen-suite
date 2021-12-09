@@ -78,7 +78,7 @@ trait Queryable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter($query, array $filters)
+    public function scopeFilter($query, array $filters): Builder
     {
         foreach ($filters as $filter => $param) {
             $filter = clean_param(Str::camel($filter));
