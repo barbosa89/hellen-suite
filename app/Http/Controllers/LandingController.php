@@ -13,7 +13,7 @@ class LandingController extends Controller
      */
     public function index()
     {
-        $plans = Plan::allColumns()
+        $plans = Plan::selectAll()
             ->active()
             ->get();
 
