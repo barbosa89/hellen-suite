@@ -12,7 +12,7 @@ class HotelSettingController extends Controller
     public function index(string $hotel): View
     {
         $hotel = Hotel::findHash($hotel, fields_get('hotels'));
-        $settings = Setting::whereHotel($hotel)->first();
+        $settings = Setting::whereHotel($hotel)->get();
 
         return view('app.hotels.settings.index', compact('settings', 'hotel'));
     }

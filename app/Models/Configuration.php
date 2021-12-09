@@ -44,11 +44,6 @@ class Configuration extends Model
         return $this->attributes['hash'] = id_encode($this->attributes['id']);
     }
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
-
     public function isEnabled(): bool
     {
         return !empty($this->enabled_at);
