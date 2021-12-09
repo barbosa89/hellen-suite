@@ -118,7 +118,7 @@ class Hotel extends Model
      */
     public function scopeAssigned($query)
     {
-        return $query->whereUserId(id_parent())
+        return $query->owner()
             ->whereStatus(true)
             ->when(auth()->user()->hasRole('receptionist'), function ($query)
             {
@@ -127,19 +127,5 @@ class Hotel extends Model
                     $query->where('id', auth()->user()->id);
                 });
             });
-    }
-
-    /**
-     * Scope a query to get a hotel by id.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $id
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeById($query, int $id)
-    {
-        return $query->whereUserId(id_parent())
-            ->whereId($id)
-            ->first(fields_get('hotels'));
     }
 }
