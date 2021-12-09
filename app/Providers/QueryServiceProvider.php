@@ -27,7 +27,7 @@ class QueryServiceProvider extends ServiceProvider
         Builder::macro('findHash', function (string $hash, array $columns = []) {
             return $this->where('id', id_decode($hash))
                 ->where('user_id', id_parent())
-                ->first($columns);
+                ->firstOrFail($columns);
         });
     }
 }
