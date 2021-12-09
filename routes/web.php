@@ -53,6 +53,7 @@ require __DIR__ . '/api/web/companies.php';
 require __DIR__ . '/api/web/rooms.php';
 
 // Modules
+require __DIR__ . '/modules/hotel_settings.php';
 require __DIR__ . '/modules/hotels.php';
 require __DIR__ . '/modules/rooms.php';
 require __DIR__ . '/modules/team.php';

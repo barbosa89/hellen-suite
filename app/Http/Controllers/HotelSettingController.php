@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotel;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class HotelSettingController extends Controller
 {
-    public function index(string $hotel)
+    public function index(string $hotel): View
     {
-        $settings = Setting::whereHotel($hotel);
+        $hotel = Hotel::findHash($hotel, fields_get('hotels'));
+        $settings = Setting::whereHotel($hotel)->first();
+
+        return view('app.hotels.settings.index', compact('settings', 'hotel'));
     }
 
     /**

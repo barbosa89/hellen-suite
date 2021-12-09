@@ -196,3 +196,8 @@ Breadcrumbs::for('configurations', function ($trail) {
     $trail->parent('home');
     $trail->push(trans('configurations.title'), route('configurations.index'));
 });
+
+Breadcrumbs::for('hotel settings', function ($trail, $hotel) {
+    $trail->parent('hotels');
+    $trail->push(trans('settings.title'), route('hotels.settings.index', ['hotel' => $hotel->hash]));
+});
