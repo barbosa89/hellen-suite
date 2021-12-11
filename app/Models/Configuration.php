@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\User;
 use App\Traits\Queryable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use App\Presenters\ConfigurationPresenter;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property int $id
@@ -31,6 +31,8 @@ class Configuration extends Model
 
     protected $appends = ['hash'];
 
+    protected $hidden = ['id'];
+
     protected $casts = [
         'enabled_at' => 'datetime:Y-m-d',
     ];
@@ -42,6 +44,11 @@ class Configuration extends Model
     public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = id_encode($this->attributes['id']);
+    }
+
+    public function scopeEnabled(Builder $query): Builder
+    {
+        return $query->whereNotNull('enabled_at');
     }
 
     public function isEnabled(): bool

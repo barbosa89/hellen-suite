@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Hotel\Setting;
 
+use App\Constants\Modules;
 use App\User;
 use Tests\TestCase;
 use App\Models\Hotel;
 use RolesTableSeeder;
 use App\Constants\Roles;
+use ConfigurationsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingIndexTest extends TestCase
@@ -23,6 +25,7 @@ class SettingIndexTest extends TestCase
         parent::setUp();
 
         $this->seed(RolesTableSeeder::class);
+        $this->seed(ConfigurationsTableSeeder::class);
 
         $this->manager = factory(User::class)->create();
         $this->manager->assignRole(Roles::MANAGER);
@@ -57,6 +60,13 @@ class SettingIndexTest extends TestCase
         $response = $this->actingAs($this->manager)
             ->get($this->route);
 
-        $response->assertViewIs($this->view);
+        $response->assertViewIs($this->view)
+            ->assertViewHas('hotel', function ($data) {
+                return $data->id === $this->hotel->id;
+            })
+            ->assertViewHas('configurations', function ($data) {
+                return $data->count() > 0
+                    && $data->where('module', Modules::HOTELS)->count() === 1;
+            });
     }
 }

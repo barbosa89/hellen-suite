@@ -11,7 +11,10 @@ class ConfigurationsTableSeeder extends Seeder
     {
         Configuration::firstOrCreate(
             ['name' => Config::CHECK_OUT],
-            ['module' => Modules::HOTELS],
+            [
+                'module' => Modules::HOTELS,
+                'enabled_at' => now(),
+            ],
         );
     }
 }
