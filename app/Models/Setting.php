@@ -5,11 +5,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $hash
+ * @property mixed $value
+ * @property int $configurable_id
+ * @property string $configurable_type
+ * @property int $configuration_id
+ * @property Carbon $created_at
+ */
 class Setting extends Model
 {
-    public function scopeWhereHotel(Builder $query, string $hotel): Builder
+    protected $fillable = ['value'];
+
+    protected $appends = ['hash'];
+
+    protected $hidden = ['id'];
+
+    public function getHashAttribute(): string
     {
-        return $query->where('configurable_id', id_decode($hotel))
-            ->where('configurable_type', Hotel::class);
+        return $this->attributes['hash'] = id_encode($this->attributes['id']);
+    }
+
+    public function commentable()
+    {
+        return $this->morphTo();
     }
 }
