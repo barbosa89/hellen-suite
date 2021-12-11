@@ -2,16 +2,29 @@
 
 namespace App\Models;
 
+use App\User;
+use App\Models\Note;
+use App\Models\Prop;
+use App\Models\Room;
+use App\Models\Asset;
+use App\Models\Shift;
+use App\Models\Product;
+use App\Models\Service;
+use App\Models\Setting;
+use App\Models\Voucher;
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Hotel extends Model
 {
     use Queryable;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -27,96 +40,87 @@ class Hotel extends Model
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
      * @var array
      */
     protected $appends = ['hash'];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = ['id', 'main_hotel', 'user_id'];
-
-    // The hotel owner
-    public function owner()
-    {
-        return $this->belongsTo(\App\User::class, 'user_id');
-    }
-
-    // Employees assigned to one or more hotels
-    public function employees()
-    {
-        return $this->belongsToMany(\App\User::class);
-    }
-
-    public function vouchers()
-    {
-        return $this->hasMany(\App\Models\Voucher::class);
-    }
-
-    public function shifts()
-    {
-        return $this->hasMany(\App\Models\Shift::class);
-    }
-
-    public function rooms()
-    {
-        return $this->hasMany(\App\Models\Room::class);
-    }
-
-    public function main()
-    {
-        return $this->belongsTo(Hotel::class, 'main_hotel');
-    }
-
-    public function headquarters()
-    {
-        return $this->hasMany(Hotel::class, 'main_hotel');
-    }
 
     public function getHashAttribute()
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 
-    public function products()
+    // The hotel owner
+    public function owner(): BelongsTo
     {
-        return $this->hasMany(\App\Models\Product::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function services()
+    public function employees(): BelongsToMany
     {
-        return $this->hasMany(\App\Models\Service::class);
+        return $this->belongsToMany(User::class);
     }
 
-    public function assets()
+    public function vouchers(): HasMany
     {
-        return $this->hasMany(\App\Models\Asset::class);
+        return $this->hasMany(Voucher::class);
     }
 
-    public function props()
+    public function shifts(): HasMany
     {
-        return $this->hasMany(\App\Models\Prop::class);
+        return $this->hasMany(Shift::class);
     }
 
-    /**
-     * Get the notes for the hotel.
-     */
-    public function notes()
+    public function rooms(): HasMany
     {
-        return $this->hasMany(\App\Models\Note::class);
+        return $this->hasMany(Room::class);
     }
 
-    /**
-     * Scope a query to get assigned hotels by role.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeAssigned($query)
+    public function main(): BelongsTo
+    {
+        return $this->belongsTo(Hotel::class, 'main_hotel');
+    }
+
+    public function headquarters(): HasMany
+    {
+        return $this->hasMany(Hotel::class, 'main_hotel');
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    public function props(): HasMany
+    {
+        return $this->hasMany(Prop::class);
+    }
+
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function settings(): MorphMany
+    {
+        return $this->morphMany(Setting::class, 'configurable');
+    }
+
+    public function scopeAssigned(Builder $query): Builder
     {
         return $query->owner()
             ->where('status', true)
