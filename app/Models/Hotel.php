@@ -55,6 +55,7 @@ class Hotel extends Model
     }
 
     // The hotel owner
+    // BUG: Urgente
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

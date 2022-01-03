@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\Hotel;
 use RolesTableSeeder;
 use App\Constants\Roles;
+use App\Models\Setting;
 use ConfigurationsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -15,8 +16,8 @@ class SettingIndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $manager;
     private Hotel $hotel;
+    private User $manager;
     private string $route;
     private string $view = 'app.hotels.settings.index';
 
@@ -57,12 +58,19 @@ class SettingIndexTest extends TestCase
 
     public function test_user_can_access_to_setting_list()
     {
+        /** @var \App\Models\Setting $setting */
+        $setting = factory(Setting::class)->create([
+            'configurable_type' => Hotel::class,
+            'configurable_id' => $this->hotel->id,
+        ]);
+
         $response = $this->actingAs($this->manager)
             ->get($this->route);
 
         $response->assertViewIs($this->view)
-            ->assertViewHas('hotel', function ($data) {
-                return $data->id === $this->hotel->id;
+            ->assertViewHas('hotel', function ($data) use ($setting) {
+                return $data->id === $this->hotel->id
+                    && $data->settings->first()->is($setting);
             })
             ->assertViewHas('configurations', function ($data) {
                 return $data->count() > 0

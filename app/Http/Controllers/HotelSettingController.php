@@ -14,10 +14,10 @@ class HotelSettingController extends Controller
     public function index(string $hotel): View
     {
         $hotel = Hotel::findHash($hotel, fields_get('hotels'));
-        $hotel->load('settings');
+        $hotel->load(['settings', 'settings.configuration']);
 
-        $configurations = Configuration::where('module', Modules::HOTELS)
-            ->enabled()
+        $configurations = Configuration::enabled()
+            ->where('module', Modules::HOTELS)
             ->get(['id', 'name', 'module']);
 
         return view('app.hotels.settings.index', compact('hotel', 'configurations'));

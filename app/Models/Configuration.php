@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use App\Presenters\ConfigurationPresenter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -44,6 +45,11 @@ class Configuration extends Model
     public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = id_encode($this->attributes['id']);
+    }
+
+    public function settings(): HasMany
+    {
+        return $this->hasMany(Setting::class);
     }
 
     public function scopeEnabled(Builder $query): Builder

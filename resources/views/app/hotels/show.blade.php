@@ -11,6 +11,12 @@
             url="{{ route('hotels.index') }}">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <a href="{{ route('hotels.settings.index', ['hotel' => $hotel->hash]) }}" class="nav-link">
+                        @lang('common.settings')
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('hotels.toggle', ['id' => $hotel->hash]) }}" class="nav-link">
                         {{ $hotel->status ? trans('common.disable') : trans('common.enable') }}
                     </a>
