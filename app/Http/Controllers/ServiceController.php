@@ -119,8 +119,8 @@ class ServiceController extends Controller
             },
             'vouchers' => function ($query) {
                 $query->select(fields_dotted('vouchers'))
-                    ->orderBy('vouchers.created_at', 'DESC')
-                    ->whereYear('vouchers.created_at', \date('Y'))
+                ->latest()
+                ->limit(20)
                     ->withPivot(['quantity', 'value']);
             }
         ]);
