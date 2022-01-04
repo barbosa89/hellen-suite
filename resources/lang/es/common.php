@@ -34,7 +34,7 @@ return array (
     'confirm' => 'Confirmar',
     'attention' => 'Atención',
     'cancel' => 'Cancelar',
-    'all' => 'Todo',
+    'all' => 'Todo(s)',
     'number' => 'Número',
     'description' => 'Descripción',
     'value' => 'Valor',
