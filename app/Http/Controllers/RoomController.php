@@ -88,8 +88,8 @@ class RoomController extends Controller
             'vouchers' => function ($query)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereYear('vouchers.created_at', date('Y'))
                     ->orderBy('vouchers.created_at', 'DESC')
+                    ->limit(20)
                     ->withPivot('value');
             }
         ]);

@@ -230,7 +230,7 @@ class GuestController extends Controller
             'vouchers' => function ($query)
             {
                 $query->select(fields_dotted('vouchers'))
-                    ->whereYear('vouchers.created_at', date('Y'))
+                    ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
             },
             'vouchers.hotel' => function ($query)
