@@ -454,7 +454,7 @@ class VoucherController extends Controller
             ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
-            // flash('No hay habitaciones disponibles')->info();
+            flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
                 'id' => id_encode($voucher->id)
@@ -609,7 +609,7 @@ class VoucherController extends Controller
             ->get(fields_dotted('rooms'));
 
         if ($rooms->isEmpty()) {
-            flash('No hay habitaciones disponibles')->info();
+            flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
                 'id' => id_encode($voucher->id)
@@ -1378,7 +1378,7 @@ class VoucherController extends Controller
             ->get(fields_get('products'));
 
         if ($products->isEmpty()) {
-            flash('No hay productos disponibles')->info();
+            flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
                 'id' => id_encode($voucher->id)
@@ -1567,7 +1567,7 @@ class VoucherController extends Controller
             ->get(fields_get('services'));
 
         if ($services->isEmpty()) {
-            flash('No hay servicios disponibles')->info();
+            flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
                 'id' => id_encode($voucher->id)
