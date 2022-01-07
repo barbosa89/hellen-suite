@@ -446,12 +446,8 @@ class VoucherController extends Controller
                 'payments' => function ($query)
                 {
                     $query->select(fields_get('payments'));
-                }
-            ])->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
+                },
+            ])->firstOrFail(fields_dotted('vouchers'));
 
         $rooms = Room::where('hotel_id', $voucher->hotel->id)
             ->where('status', Room::AVAILABLE)
