@@ -423,10 +423,10 @@ class VoucherController extends Controller
     /**
      * Show the form for adding rooms to voucher.
      *
-     * @param int $id
+     * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function showFormToAddRooms($id = '')
+    public function showFormToAddRooms(string $id)
     {
         $voucher = Voucher::where('user_id', id_parent())
             ->where('id', id_decode($id))
