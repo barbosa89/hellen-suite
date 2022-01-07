@@ -1054,6 +1054,8 @@ class VoucherController extends Controller
         } catch (Throwable $th) {
             report($th);
 
+            DB::rollBack();
+
             flash(trans('common.error'))->error();
 
             return redirect()->route('vouchers.guests.search', [
