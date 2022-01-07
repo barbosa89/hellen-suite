@@ -2,33 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\VoucherPrinter;
-use App\Contracts\VoucherRepository;
-use App\Events\CheckIn;
-use App\Events\CheckOut;
-use App\Events\RoomCheckOut;
 use Exception;
+use Throwable;
 use Carbon\Carbon;
+use App\Models\Room;
+use App\Models\Guest;
+use App\Models\Hotel;
+use App\Models\Shift;
+use App\Events\CheckIn;
+use App\Helpers\Random;
+use App\Models\Company;
+use App\Models\Product;
+use App\Models\Service;
+use App\Models\Vehicle;
+use App\Models\Voucher;
+use App\Events\CheckOut;
+use App\Helpers\Customer;
+use App\Models\Additional;
+use App\Events\RoomCheckOut;
 use Illuminate\Http\Request;
-use App\Helpers\{Customer, Random};
-use App\Models\{Additional, Company, Guest, Hotel, Voucher, Product, Room, Service, Shift, Vehicle};
-use App\Http\Requests\{
-    AddGuests,
-    AddProducts,
-    AddRooms,
-    AddServices,
-    ChangeGuestRoom,
-    ChangeRoom,
-    VouchersProcessing,
-    StoreAdditional,
-    StoreVoucher,
-    StoreRoute
-};
-use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\AddRooms;
+use App\Http\Requests\AddGuests;
+use App\Contracts\VoucherPrinter;
+use App\Http\Requests\ChangeRoom;
+use App\Http\Requests\StoreRoute;
+use App\Http\Requests\AddProducts;
+use App\Http\Requests\AddServices;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreVoucher;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Contracts\VoucherRepository;
+use App\Http\Requests\ChangeGuestRoom;
+use App\Http\Requests\StoreAdditional;
+use App\Http\Requests\VouchersProcessing;
+use Illuminate\Database\Eloquent\Builder;
 
 class VoucherController extends Controller
 {
@@ -167,7 +176,7 @@ class VoucherController extends Controller
             return redirect()->route('vouchers.guests.search', [
                 'id' => id_encode($voucher->id)
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollback();
         }
 
@@ -356,7 +365,7 @@ class VoucherController extends Controller
 
                 $voucher->delete();
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -525,7 +534,7 @@ class VoucherController extends Controller
                 $room->status = '0';
                 $room->save();
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -740,7 +749,7 @@ class VoucherController extends Controller
             return redirect()->route('vouchers.show', [
                 'id' => id_encode($voucher->id),
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
 
             Log::error(trans('common.error'), [
@@ -977,80 +986,94 @@ class VoucherController extends Controller
      */
     public function addGuests(AddGuests $request, string $id)
     {
-        $voucher = Voucher::owner()
-            ->id(id_decode($id))
-            ->open()
-            ->with([
-                'guests' => function ($query) {
-                    $query->select(fields_dotted('guests'))
-                        ->withPivot('main', 'active');
-                },
-                'guests.identificationType' => function ($query) {
-                    $query->select('id', 'type');
-                },
-                'rooms' => function ($query) use ($request) {
-                    $query->select(fields_dotted('rooms'))
-                        ->where('id', id_decode($request->room))
-                        ->wherePivot('enabled', true)
-                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
-                },
-                'hotel' => function ($query) {
-                    $query->select(fields_get('hotels'));
-                },
-            ])
-            ->firstOrFail(fields_dotted('vouchers'));
+        DB::beginTransaction();
 
-        $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
+        try {
+            $voucher = Voucher::owner()
+                ->id(id_decode($id))
+                ->open()
+                ->with([
+                    'guests' => function ($query) {
+                        $query->select(fields_dotted('guests'))
+                            ->withPivot('main', 'active');
+                    },
+                    'guests.identificationType' => function ($query) {
+                        $query->select('id', 'type');
+                    },
+                    'rooms' => function ($query) use ($request) {
+                        $query->select(fields_dotted('rooms'))
+                            ->where('id', id_decode($request->room))
+                            ->wherePivot('enabled', true)
+                            ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+                    },
+                    'hotel' => function ($query) {
+                        $query->select(fields_get('hotels'));
+                    },
+                ])
+                ->firstOrFail(fields_dotted('vouchers'));
 
-        if (empty($guest)) {
-            // The guest to add to the voucher
-            $guest = Guest::where('id', id_decode($request->guest))
-                ->where('status', false) // Not in hotel
-                ->firstOrFail(fields_dotted('guests'));
-        }
+            $guest = $voucher->guests->where('id', id_decode($request->guest))->first();
 
-        // Check if the guest to add exists in the voucher
-        if ($voucher->guests->where('id', $guest->id)->count() == 0) {
-            $responsible = $request->get('responsible_adult', null);
-
-            // Assign a responsible adult
-            if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
-                $guest->responsible_adult = id_decode($responsible);
+            if (empty($guest)) {
+                // The guest to add to the voucher
+                $guest = Guest::where('id', id_decode($request->guest))
+                    ->where('status', false) // Not in hotel
+                    ->firstOrFail(fields_dotted('guests'));
             }
 
-            $voucher->guests()->attach($guest->id, [
-                'main' => $voucher->guests->isEmpty(), // Check if the guest is the first so to assign the main guest
-                'active' => true
+            // Check if the guest to add exists in the voucher
+            if ($voucher->guests->where('id', $guest->id)->count() == 0) {
+                $responsible = $request->get('responsible_adult', null);
+
+                // Assign a responsible adult
+                if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
+                    $guest->responsible_adult = id_decode($responsible);
+                }
+
+                $voucher->guests()->attach($guest->id, [
+                    'main' => $voucher->guests->isEmpty(), // Check if the guest is the first so to assign the main guest
+                    'active' => true
+                ]);
+            } else {
+                // Refresh relationship voucher - guest
+                $voucher->guests()->updateExistingPivot(
+                    $guest,
+                    ['active' => true]
+                );
+            }
+
+            CheckIn::dispatch($voucher, $guest, $voucher->rooms->first());
+
+            // Remove old relationships guest - room
+            $guest->rooms()
+                ->wherePivot('voucher_id', $voucher->id)
+                ->detach();
+
+            // Refresh relationships guest - room
+            $guest->rooms()->attach($voucher->rooms->first(), [
+                'voucher_id' => $voucher->id
             ]);
-        } else {
-            // Refresh relationship voucher - guest
-            $voucher->guests()->updateExistingPivot(
-                $guest,
-                ['active' => true]
-            );
+
+            // Change guest status
+            $guest->status = true;
+            $guest->save();
+
+            DB::commit();
+
+            flash(trans('common.successful'))->success();
+
+            return redirect()->route('vouchers.guests.search', [
+                'id' => $voucher->hash,
+            ]);
+        } catch (Throwable $th) {
+            report($th);
+
+            flash(trans('common.error'))->error();
+
+            return redirect()->route('vouchers.guests.search', [
+                'id' => $voucher->hash,
+            ]);
         }
-
-        CheckIn::dispatch($voucher, $guest, $voucher->rooms->first());
-
-        // Remove old relationships guest - room
-        $guest->rooms()
-            ->wherePivot('voucher_id', $voucher->id)
-            ->detach();
-
-        // Refresh relationships guest - room
-        $guest->rooms()->attach($voucher->rooms->first(), [
-            'voucher_id' => $voucher->id
-        ]);
-
-        // Change guest status
-        $guest->status = true;
-        $guest->save();
-
-        flash(trans('common.successful'))->success();
-
-        return redirect()->route('vouchers.guests.search', [
-            'id' => id_encode($voucher->id)
-        ]);
     }
 
     /**
@@ -1431,7 +1454,7 @@ class VoucherController extends Controller
                 $product->save();
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -1489,7 +1512,7 @@ class VoucherController extends Controller
                     ->detach($product->id);
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -1616,7 +1639,7 @@ class VoucherController extends Controller
                 $voucher->update();
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -1671,7 +1694,7 @@ class VoucherController extends Controller
                     ->detach($service->id);
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2067,7 +2090,7 @@ class VoucherController extends Controller
                 $voucher->save();
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2126,7 +2149,7 @@ class VoucherController extends Controller
                 $additional->delete();
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2212,7 +2235,7 @@ class VoucherController extends Controller
                 $additional->save();
 
                 $status = true;
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2283,7 +2306,7 @@ class VoucherController extends Controller
             return redirect()->route('vouchers.show', [
                 'id' => $voucher->hash,
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error(trans('common.error'), [
                 'file' => $e->getFile(),
                 'message' => $e->getMessage(),
@@ -2378,7 +2401,7 @@ class VoucherController extends Controller
                 if ($voucher->save()) {
                     $status = true;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2464,7 +2487,7 @@ class VoucherController extends Controller
 
                     $status = true;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
@@ -2763,7 +2786,7 @@ class VoucherController extends Controller
                         });
                     });
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Log::error(trans('common.error'), [
                     'file' => $e->getFile(),
                     'message' => $e->getMessage(),
