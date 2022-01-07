@@ -1171,11 +1171,7 @@ class VoucherController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_dotted('vouchers'));
 
         $voucher->load([
             'hotel' => function ($query) {
@@ -1264,11 +1260,7 @@ class VoucherController extends Controller
             ->where('id', $id)
             ->where('open', true)
             ->where('status', true)
-            ->first(fields_dotted('vouchers'));
-
-        if (empty($voucher)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_dotted('vouchers'));
 
         $voucher->load([
             'hotel' => function ($query) {
@@ -1285,7 +1277,7 @@ class VoucherController extends Controller
             'company' => function ($query) {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) use ($id) {
+            'rooms' => function ($query) {
                 $query->select(fields_dotted('rooms'));
             }
         ]);
