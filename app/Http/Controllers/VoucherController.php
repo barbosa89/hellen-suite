@@ -1230,7 +1230,7 @@ class VoucherController extends Controller
         $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest isn't in hotel and if the guest is inactive in the current voucher
-        if ($guest->status == false and $guest->pivot->active == false) {
+        if (!$guest->status && !$guest->pivot->active) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
@@ -1302,7 +1302,7 @@ class VoucherController extends Controller
         $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest is active in hotel and the current voucher
-        if ($guest->status == false and $guest->pivot->active == false) {
+        if (!$guest->status && !$guest->pivot->active) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
