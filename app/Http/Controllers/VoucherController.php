@@ -225,7 +225,7 @@ class VoucherController extends Controller
         }
 
         $voucher->load([
-            'guests' => function ($query) use ($id) {
+            'guests' => function ($query) {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
