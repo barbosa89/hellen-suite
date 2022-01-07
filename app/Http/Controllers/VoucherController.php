@@ -629,8 +629,6 @@ class VoucherController extends Controller
      */
     public function changeRoom(ChangeRoom $request, $id, $roomId)
     {
-        $status = false;
-
         DB::beginTransaction();
 
         try {
@@ -657,7 +655,7 @@ class VoucherController extends Controller
                 },
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select(fields_dotted('guests'))
-                        ->wherePivot('voucher_id', $id);
+                        ->wherePivot('voucher_id', id_decode($id));
                 }
             ]);
 
@@ -667,7 +665,7 @@ class VoucherController extends Controller
                 ->first();
 
                 // Check if room is enabled to changes
-            if ($current->pivot->enabled == false) {
+            if (!$current->pivot->enabled) {
                 throw new Exception(trans('rooms.change.disabled'));
             }
 
@@ -676,8 +674,6 @@ class VoucherController extends Controller
                 ->where('number', $request->number)
                 ->where('status', Room::AVAILABLE)
                 ->first(fields_dotted('rooms'));
-
-            ### Rooms ###
 
             // Current values are subtracted
             $voucher->discount -= $current->pivot->discount;
@@ -713,8 +709,6 @@ class VoucherController extends Controller
             $voucher->value += $subvalue + $taxes;
             $voucher->save();
 
-            ### Guests ###
-
             // Check the room has guests
             if ($current->guests->isNotEmpty()) {
                 foreach ($current->guests as $guest) {
@@ -746,13 +740,9 @@ class VoucherController extends Controller
                 'id' => id_encode($voucher->id),
             ]);
         } catch (Throwable $e) {
-            DB::rollBack();
+            report($e);
 
-            Log::error(trans('common.error'), [
-                'file' => $e->getFile(),
-                'message' => $e->getMessage(),
-                'line' => $e->getLine(),
-            ]);
+            DB::rollBack();
 
             flash(trans('common.error'))->error();
 
