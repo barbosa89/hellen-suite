@@ -2177,6 +2177,16 @@ class VoucherTest extends TestCase
             'room_id' => $assignedRoom->id,
             'guest_id' => $guest->id,
         ]);
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $assignedRoom->id,
+            'status' => Room::CLEANING,
+        ]);
+
+        $this->assertDatabaseHas('rooms', [
+            'id' => $availableRoom->id,
+            'status' => Room::OCCUPIED,
+        ]);
     }
 
     public function test_user_can_see_form_to_change_guest_to_any_available_room_in_voucher()
