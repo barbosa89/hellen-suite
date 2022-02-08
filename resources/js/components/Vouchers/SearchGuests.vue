@@ -39,7 +39,7 @@
         },
         data() {
             return {
-                url: route('api.web.guests.index', {status: 'is_not_staying'}),
+                url: route('api.web.guests.index', {status: 'is_not_staying', per_page: 100}),
                 guests: [],
                 headers: [
                     {
@@ -61,7 +61,10 @@
         methods: {
             setData(data) {
                 if (data.guests.data.length > 0) {
-                    this.guests = data.guests.data
+                    this.guests = []
+                    setTimeout(() => {
+                        this.guests = data.guests.data
+                    }, 500)
                 } else {
                     toastr.info(
                         this.$root.$t('common.without.results'),
