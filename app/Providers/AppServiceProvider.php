@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\User;
+use App\Models\User;
 use App\Models\Shift;
 use App\Models\Voucher;
 use Illuminate\Support\Arr;

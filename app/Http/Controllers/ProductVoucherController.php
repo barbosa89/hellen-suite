@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Models\Shift;
 use App\Helpers\Random;
 use App\Models\Company;

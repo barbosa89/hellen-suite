@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\Models\User;
 use App\Models\Hotel;
 use Faker\Generator as Faker;
 
@@ -15,7 +15,7 @@ $factory->define(Hotel::class, function (Faker $faker) {
         'mobile' => $faker->e164PhoneNumber,
         'email' => $faker->unique()->safeEmail,
         'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
+            return factory(\App\Models\User::class)->create()->id;
         },
     ];
 });

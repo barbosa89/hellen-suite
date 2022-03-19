@@ -105,7 +105,7 @@ class Voucher extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     /**

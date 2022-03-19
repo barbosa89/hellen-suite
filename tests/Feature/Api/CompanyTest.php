@@ -3,7 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Company;
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use RolesTableSeeder;
 use CountriesTableSeeder;

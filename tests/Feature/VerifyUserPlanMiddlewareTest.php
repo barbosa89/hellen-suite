@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Hotel;
 use App\Models\Plan;
-use App\User;
+use App\Models\User;
 use PlanSeeder;
 use Tests\TestCase;
 use RolesTableSeeder;

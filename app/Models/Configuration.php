@@ -8,6 +8,6 @@ class Configuration extends Model
 {
     public function user()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsToMany(\App\Models\User::class);
     }
 }

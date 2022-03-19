@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use App\Models\Room;
 use App\Models\Hotel;
@@ -20,7 +20,7 @@ class RoomTest extends TestCase
     use RefreshDatabase, WithFaker, InteractsWithViews;
 
     /**
-     * @var \App\User
+     * @var \App\Models\User
      */
     public $manager;
 

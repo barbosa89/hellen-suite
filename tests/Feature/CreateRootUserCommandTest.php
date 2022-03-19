@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,7 +60,7 @@ class CreateRootUserCommandTest extends TestCase
 
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
-            'model_type' => \App\User::class,
+            'model_type' => \App\Models\User::class,
             'model_id' => $user->id
         ]);
     }
@@ -104,7 +104,7 @@ class CreateRootUserCommandTest extends TestCase
 
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
-            'model_type' => \App\User::class,
+            'model_type' => \App\Models\User::class,
             'model_id' => $user->id
         ]);
     }

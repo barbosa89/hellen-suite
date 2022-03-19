@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 use App\Models\Guest;
 use RolesTableSeeder;

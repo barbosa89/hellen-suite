@@ -15,7 +15,7 @@ $factory->define(Company::class, function (Faker $faker) {
         'mobile' => $faker->e164PhoneNumber,
         'is_supplier' => $faker->numberBetween(0, 1),
         'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
+            return factory(\App\Models\User::class)->create()->id;
         },
     ];
 });

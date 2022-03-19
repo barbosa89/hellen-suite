@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use App\Models\Hotel;
 use App\Models\Tag;
 use AssignmentsSeeder;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\User;
+use App\Models\User;
 use App\Models\Prop;
 use App\Models\Hotel;
 use App\Exports\PropReport;

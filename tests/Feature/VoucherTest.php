@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Mockery;
-use App\User;
+use App\Models\User;
 use Exception;
 use Tests\TestCase;
 use App\Models\Room;

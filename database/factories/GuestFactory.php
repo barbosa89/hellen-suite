@@ -20,7 +20,7 @@ $factory->define(App\Models\Guest::class, function (Faker $faker) {
             return \App\Models\Country::inRandomOrder()->first(['id'])->id;
         },
         'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
+            return factory(\App\Models\User::class)->create()->id;
         }
     ];
 });

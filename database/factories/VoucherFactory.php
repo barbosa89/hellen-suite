@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\Models\User;
 use App\Models\Hotel;
 use App\Models\Voucher;
 use Illuminate\Support\Str;
@@ -22,7 +22,7 @@ $factory->define(Voucher::class, function (Faker $faker) {
             return factory(Hotel::class)->create()->id;
         },
         'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
+            return factory(\App\Models\User::class)->create()->id;
         },
     ];
 });

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\User;
+use App\Models\User;
 use App\Models\Tag;
 use App\Models\Note;
 use App\Models\Room;

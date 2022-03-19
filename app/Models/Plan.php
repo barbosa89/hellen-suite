@@ -39,7 +39,7 @@ class Plan extends Model
 
     public function users()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsToMany(\App\Models\User::class);
     }
 
     public function invoices()

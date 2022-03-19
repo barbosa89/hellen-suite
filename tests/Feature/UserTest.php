@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use PlanSeeder;
 use Tests\TestCase;
 use App\Models\Plan;
