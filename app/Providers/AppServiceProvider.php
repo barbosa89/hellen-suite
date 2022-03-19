@@ -3,15 +3,16 @@
 namespace App\Providers;
 
 use App\User;
-use App\Models\Voucher;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
-use App\Observers\VoucherObserver;
 use App\Models\Shift;
+use App\Models\Voucher;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use App\Observers\VoucherObserver;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
+
         // Custom validation
         Validator::extend('stock', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
