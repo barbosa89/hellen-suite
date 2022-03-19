@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\User;
 use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
