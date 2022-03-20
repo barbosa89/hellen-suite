@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Room extends Model
 {
-    use LogsActivity;
     use Queryable;
+    use LogsActivity;
+    use InteractWithLogs;
 
     public const OCCUPIED = '0';
 

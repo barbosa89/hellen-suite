@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Prop extends Model
 {
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.

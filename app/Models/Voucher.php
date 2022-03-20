@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\InteractWithLogs;
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class Voucher extends Model
 {
     use Queryable;
     use LogsActivity;
+    use InteractWithLogs;
 
     public const PREFIX = 'V';
     public const SALE = 'sale';
@@ -156,18 +158,11 @@ class Voucher extends Model
         return $this->hasMany(\App\Models\Check::class);
     }
 
-    /**
-     * @return string
-     */
     public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeLodging(Builder $query): Builder
     {
         return $query->where('type', 'lodging')
@@ -177,20 +172,12 @@ class Voucher extends Model
             });
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeOpen(Builder $query): Builder
     {
         return $query->where('open', true)
             ->where('status', true);
     }
 
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeClosed(Builder $query): Builder
     {
         return $query->where('open', false)

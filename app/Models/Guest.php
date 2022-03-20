@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -14,6 +15,7 @@ class Guest extends Model
 {
     use Queryable;
     use LogsActivity;
+    use InteractWithLogs;
 
     public const SCOPE_FILTERS = [
         'from_date',

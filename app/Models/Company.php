@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Company extends Model
 {
-    use LogsActivity;
     use Queryable;
+    use LogsActivity;
+    use InteractWithLogs;
 
     public const SCOPE_FILTERS = [
         'from_date',

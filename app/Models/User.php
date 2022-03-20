@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Roles;
+use App\Traits\InteractWithLogs;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -19,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use LogsActivity;
     use HasApiTokens;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.

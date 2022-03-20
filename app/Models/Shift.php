@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Helpers\Fields;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Shift extends Model
 {
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.
