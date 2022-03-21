@@ -37,10 +37,10 @@ class VoucherTest extends TestCase
     public function test_access_is_denied_if_user_dont_have_vouchers_index_permissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -53,16 +53,16 @@ class VoucherTest extends TestCase
     public function test_user_can_list_vouchers()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
         ]);
@@ -80,23 +80,23 @@ class VoucherTest extends TestCase
     public function test_user_can_filter_new_vouchers_by_date()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $oldVoucher */
-        $oldVoucher = factory(Voucher::class)->create([
+        $oldVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
         ]);
@@ -122,11 +122,11 @@ class VoucherTest extends TestCase
     public function test_the_date_cannot_be_older_than_one_year()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
@@ -146,16 +146,16 @@ class VoucherTest extends TestCase
     public function test_user_can_get_guest_datasets_from_vouchers_history()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'open' => true,
             'status' => true,
             'user_id' => $manager->id,
@@ -163,7 +163,7 @@ class VoucherTest extends TestCase
         ]);
 
         /** @var Room $room */
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
         ]);
@@ -184,7 +184,7 @@ class VoucherTest extends TestCase
         );
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
             'status' => false,
         ]);
@@ -198,7 +198,7 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        factory(Check::class)->create([
+        Check::factory()->create([
             'in_at' => now(),
             'out_at' => null,
             'guest_id' => $guest->id,
@@ -236,23 +236,23 @@ class VoucherTest extends TestCase
     public function test_user_can_filter_vouchers_by_status(string $column, bool $status, string $filterValue)
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             $column => !$status,
         ]);
 
         /** @var Voucher $filterableVoucher */
-        $filterableVoucher = factory(Voucher::class)->create([
+        $filterableVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             $column => $status,
@@ -283,23 +283,23 @@ class VoucherTest extends TestCase
     public function test_user_can_filter_vouchers_by_type(string $type)
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'type' => Arr::first(Voucher::TYPES, fn($t) => $t !== $type),
         ]);
 
         /** @var Voucher $filterableVoucher */
-        $filterableVoucher = factory(Voucher::class)->create([
+        $filterableVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'type' => $type,
@@ -326,30 +326,30 @@ class VoucherTest extends TestCase
     public function test_user_can_filter_vouchers_by_multiple_types()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'type' => Voucher::LODGING,
         ]);
 
         /** @var Voucher $diningVoucher */
-        $diningVoucher = factory(Voucher::class)->create([
+        $diningVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'type' => Voucher::DINING,
         ]);
 
         /** @var Voucher $saleVoucher */
-        $saleVoucher = factory(Voucher::class)->create([
+        $saleVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
             'type' => Voucher::SALE,
@@ -382,22 +382,22 @@ class VoucherTest extends TestCase
     public function test_user_can_search_vouchers()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('vouchers.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
         ]);
 
         /** @var Voucher $searchableVoucher */
-        $searchableVoucher = factory(Voucher::class)->create([
+        $searchableVoucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
         ]);

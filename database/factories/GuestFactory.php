@@ -13,8 +13,7 @@ class GuestFactory extends Factory
     public function definition(): array
     {
         $genders = [Genders::FEMALE, Genders::MALE];
-        $gender = $this->faker->randomElements($genders);
-
+        $gender = $this->faker->randomElements($genders)[0];
 
         return [
             'dni' => $this->faker->randomNumber(7),

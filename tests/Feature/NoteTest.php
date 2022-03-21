@@ -28,12 +28,12 @@ class NoteTest extends TestCase
         $this->seed(AssignmentsSeeder::class);
 
         // Create user
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $this->user->assignRole('manager');
         $this->user->syncPermissions(Permission::all());
 
         // Create hotel
-        $this->hotel = factory(Hotel::class)->create([
+        $this->hotel = Hotel::factory()->create([
             'user_id' => $this->user->id
         ]);
 
@@ -52,7 +52,7 @@ class NoteTest extends TestCase
     public function test_user_can_see_notes_search_results()
     {
         // Prepare note
-        $note = factory(Note::class)->create([
+        $note = Note::factory()->create([
             'user_id' => $this->user->id,
             'hotel_id' => $this->hotel->id
         ]);
@@ -72,7 +72,7 @@ class NoteTest extends TestCase
     public function test_user_can_search_notes_by_text()
     {
         // Prepare note
-        $note = factory(Note::class)->create([
+        $note = Note::factory()->create([
             'content' => 'Custom content',
             'user_id' => $this->user->id,
             'hotel_id' => $this->hotel->id
@@ -94,7 +94,7 @@ class NoteTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $tags = factory(Tag::class, 3)->create([
+        $tags = Tag::factory(3)->create([
             'user_id' => $this->user->id
         ]);
 
@@ -129,7 +129,7 @@ class NoteTest extends TestCase
         $this->withExceptionHandling();
 
         // Prepate tags
-        $tags = factory(Tag::class, 3)->create([
+        $tags = Tag::factory(3)->create([
             'user_id' => $this->user->id
         ]);
 

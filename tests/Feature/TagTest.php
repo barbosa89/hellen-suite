@@ -27,7 +27,7 @@ class TagTest extends TestCase
         $this->seed(AssignmentsSeeder::class);
 
         // Create user
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $this->user->assignRole('manager');
         $this->user->syncPermissions(Permission::all());
 
@@ -38,7 +38,7 @@ class TagTest extends TestCase
     public function test_user_can_get_all_tags_as_json()
     {
         // Create tag
-        $tag = factory(Tag::class)->create([
+        $tag = Tag::factory()->create([
             'user_id' => $this->user->id
         ]);
 
@@ -60,7 +60,7 @@ class TagTest extends TestCase
     public function test_user_can_see_all_tags()
     {
         // Create tag
-        $tag = factory(Tag::class)->create([
+        $tag = Tag::factory()->create([
             'user_id' => $this->user->id
         ]);
 
@@ -94,11 +94,11 @@ class TagTest extends TestCase
         $this->withExceptionHandling();
 
         // Create tag
-        $tag = factory(Tag::class)->create([
+        $tag = Tag::factory()->create([
             'user_id' => $this->user->id
         ]);
 
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $this->user->id
         ]);
 

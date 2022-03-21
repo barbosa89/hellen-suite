@@ -24,7 +24,7 @@ class AccountTest extends TestCase
 
     public function test_user_can_see_link_to_change_password()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $this->actingAs($user)
@@ -36,7 +36,7 @@ class AccountTest extends TestCase
 
     public function test_user_can_see_form_to_change_password()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $this->actingAs($user)
@@ -54,7 +54,7 @@ class AccountTest extends TestCase
         $password = Str::random('8');
         $newPassword = Str::random('8');
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => bcrypt($password)
         ]);
 
@@ -85,7 +85,7 @@ class AccountTest extends TestCase
         $password = Str::random('8');
         $newPassword = Str::random('8');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $user->assignRole('root');
 

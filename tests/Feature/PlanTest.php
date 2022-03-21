@@ -31,7 +31,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_all_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -49,7 +49,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_plan_edition_form()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -63,7 +63,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_update_a_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -84,7 +84,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_form_to_choose_a_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $response = $this->actingAs($user)
@@ -105,7 +105,7 @@ class PlanTest extends TestCase
     public function test_user_can_choose_the_free_plan()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -131,7 +131,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_basic_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -150,7 +150,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_not_see_expired_free_plan_on_choose_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -171,7 +171,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_buy_the_basic_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -190,7 +190,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_not_renew_with_active_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -205,7 +205,7 @@ class PlanTest extends TestCase
 
     public function test_user_without_plans_is_redirected_to_choose_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $response = $this->actingAs($user)
@@ -216,7 +216,7 @@ class PlanTest extends TestCase
 
     public function test_user_with_free_expired_plan_is_redirected_to_choose_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -231,7 +231,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_the_form_to_renew_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $free = Plan::where('type', Plan::FREE)->first();

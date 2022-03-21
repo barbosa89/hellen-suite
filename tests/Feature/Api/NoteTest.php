@@ -31,10 +31,10 @@ class NoteTest extends TestCase
     public function test_access_is_denied_if_user_dont_have_note_index_permissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -47,16 +47,16 @@ class NoteTest extends TestCase
     public function test_user_can_get_note_list()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->givePermissionTo('notes.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $user->id,
         ]);
 
         /** @var Note $note */
-        $note = factory(Note::class)->create([
+        $note = Note::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $user->id,
         ]);

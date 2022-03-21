@@ -26,7 +26,7 @@ class SyncUserPermissionsCommandTest extends TestCase
     public function testSyncManagerUserPermissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $user->assignRole(Roles::MANAGER);
 
@@ -41,7 +41,7 @@ class SyncUserPermissionsCommandTest extends TestCase
     public function testPermissionsAreNotDuplicated()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $user->assignRole(Roles::MANAGER);
 

@@ -24,10 +24,10 @@ class UserTest extends TestCase
 
     public function test_root_user_can_assign_the_sponsor_plan()
     {
-        $root = factory(User::class)->create();
+        $root = User::factory()->create();
         $root->assignRole('root');
 
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->assignRole('manager');
 
         $response = $this->actingAs($root)

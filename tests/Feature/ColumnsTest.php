@@ -21,12 +21,12 @@ class ColumnsTest extends TestCase
     {
         $this->assertEquals(
             ['id', 'description', 'slug', 'user_id', 'created_at', 'updated_at'],
-            Columns::get('tags', 'sqlite')
+            Columns::get('tags')
         );
     }
 
     public function test_get_empty_array_when_model_is_unknown()
     {
-        $this->assertEquals([], Columns::get('unknown', 'sqlite'));
+        $this->assertEquals([], Columns::get('unknown'));
     }
 }
