@@ -8,10 +8,12 @@ use App\Services\ExchangeRate;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
     use Queryable;
+    use HasFactory;
 
     public const FREE = 'FREE';
     public const BASIC = 'BASIC';

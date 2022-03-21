@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
-    public const PENDING = 'PENDING';
-
-    public const CANCELED = 'CANCELED';
+    use HasFactory;
 
     public const PAID = 'PAID';
+    public const PENDING = 'PENDING';
+    public const CANCELED = 'CANCELED';
 
     /**
      * The attributes that are mass assignable.

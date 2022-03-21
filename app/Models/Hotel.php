@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Hotel extends Model
 {
     use Queryable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
     use Sluggable;
+    use HasFactory;
 
     public const CHECK_IN = 'check-in';
     public const CHECK_OUT = 'check-out';
