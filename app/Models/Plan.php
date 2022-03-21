@@ -14,12 +14,16 @@ class Plan extends Model
     use Queryable;
 
     public const FREE = 'FREE';
-
     public const BASIC = 'BASIC';
-
     public const PREMIUM = 'PREMIUM';
-
     public const SPONSOR = 'SPONSOR';
+
+    public const ALL = [
+        self::FREE,
+        self::BASIC,
+        self::PREMIUM,
+        self::SPONSOR,
+    ];
 
     /**
      * The attributes that are mass assignable.

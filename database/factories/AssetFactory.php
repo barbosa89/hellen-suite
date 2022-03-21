@@ -1,9 +1,15 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Asset::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class AssetFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            //
+        ];
+    }
+}

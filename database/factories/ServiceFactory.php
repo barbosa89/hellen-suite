@@ -1,13 +1,17 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Service::class, function (Faker $faker) {
-    $faker->addProvider(new \Bezhanov\Faker\Provider\Food($faker));
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    return [
-        'description' => $faker->ingredient,
-        'price' => $faker->randomNumber(4),
-        'is_dining_service' => ceil($faker->numberBetween(0,1))
-    ];
-});
+class ServiceFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'description' => $this->faker->ingredient,
+            'price' => $this->faker->randomNumber(4),
+            'is_dining_service' => ceil($this->faker->numberBetween(0,1))
+        ];
+    }
+}

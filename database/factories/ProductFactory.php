@@ -1,13 +1,20 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Models\Product::class, function (Faker $faker) {
-    $faker->addProvider(new \Bezhanov\Faker\Provider\Commerce($faker));
+use Bezhanov\Faker\Provider\Commerce;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    return [
-        'description' => $faker->productName,
-        'price' => $faker->randomNumber(4),
-        'quantity' => 20
-    ];
-});
+class ProductFactory extends Factory
+{
+    public function definition(): array
+    {
+        $this->faker->addProvider(new Commerce($this->faker));
+
+        return [
+            'description' => $this->faker->productName,
+            'price' => $this->faker->randomNumber(4),
+            'quantity' => 20
+        ];
+    }
+}
