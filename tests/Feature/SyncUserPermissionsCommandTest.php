@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Constants\Roles;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use PermissionsTableSeeder;
-use RolesTableSeeder;
-use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
+use App\Models\User;
+use App\Constants\Roles;
+use Database\Seeders\RolesTableSeeder;
+use Spatie\Permission\Models\Permission;
+use Database\Seeders\PermissionsTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SyncUserPermissionsCommandTest extends TestCase
 {

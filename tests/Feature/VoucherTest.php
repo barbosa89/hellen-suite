@@ -2,29 +2,27 @@
 
 namespace Tests\Feature;
 
-use Mockery;
-use App\Models\User;
-use Exception;
 use Tests\TestCase;
 use App\Models\Room;
+use App\Models\User;
 use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
-use RolesTableSeeder;
 use App\Events\CheckIn;
 use App\Models\Voucher;
 use App\Events\CheckOut;
-use CountriesTableSeeder;
 use Illuminate\Support\Str;
-use PermissionsTableSeeder;
 use App\Events\RoomCheckOut;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use IdentificationTypesTableSeeder;
 use Illuminate\Support\Facades\Event;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Response;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class VoucherTest extends TestCase
 {

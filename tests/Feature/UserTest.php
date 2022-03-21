@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use PlanSeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use RolesTableSeeder;
+use App\Models\User;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

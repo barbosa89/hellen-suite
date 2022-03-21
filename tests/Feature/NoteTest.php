@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Tests\TestCase;
 use App\Models\Tag;
+use Tests\TestCase;
 use App\Models\Note;
-use RolesTableSeeder;
-use UsersTableSeeder;
+use App\Models\User;
 use App\Models\Hotel;
-use AssignmentsSeeder;
-use PermissionsTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\AssignmentsSeeder;
 use Spatie\Permission\Models\Permission;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NoteTest extends TestCase

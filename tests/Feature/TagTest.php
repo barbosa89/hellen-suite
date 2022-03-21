@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\Tag;
+use Tests\TestCase;
 use App\Models\User;
 use App\Models\Hotel;
-use App\Models\Tag;
-use AssignmentsSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use PermissionsTableSeeder;
-use RolesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\AssignmentsSeeder;
 use Spatie\Permission\Models\Permission;
-use Tests\TestCase;
-use UsersTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TagTest extends TestCase
 {

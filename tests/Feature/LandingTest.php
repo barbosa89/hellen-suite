@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use PlanSeeder;
 use Tests\TestCase;
 use App\Models\Plan;
+use Database\Seeders\PlanSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LandingTest extends TestCase

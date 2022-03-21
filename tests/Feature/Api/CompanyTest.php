@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Company;
-use App\Models\User;
 use Tests\TestCase;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use App\Models\User;
+use App\Models\Company;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class CompanyTest extends TestCase
 {

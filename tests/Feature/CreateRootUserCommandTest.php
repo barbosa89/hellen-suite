@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Tests\TestCase;
-use RolesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Database\Seeders\RolesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateRootUserCommandTest extends TestCase
 {

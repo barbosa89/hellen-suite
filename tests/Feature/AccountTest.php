@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Tests\TestCase;
-use RolesTableSeeder;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 
 class AccountTest extends TestCase
 {
@@ -24,6 +24,7 @@ class AccountTest extends TestCase
 
     public function test_user_can_see_link_to_change_password()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $user->assignRole('root');
 

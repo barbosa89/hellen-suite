@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Guest;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class GuestTest extends TestCase
 {
@@ -138,26 +138,26 @@ class GuestTest extends TestCase
                 "data" => [
                     [
                         "address" => $guest->address,
-                        "banned" => "0",
+                        "banned" => 0,
                         "birthdate" => $guest->birthdate ?? null,
-                        "country_id" => (string) $guest->country_id,
+                        "country_id" => $guest->country_id,
                         "created_at" => $guest->created_at,
                         "dni" => (string) $guest->dni,
                         "email" => $guest->email,
                         "gender" => $guest->gender ?? null,
                         "hash" => $guest->hash,
-                        "identification_type_id" => (string) $guest->identification_type_id,
+                        "identification_type_id" => $guest->identification_type_id,
                         "last_name" => $guest->last_name,
                         "name" => $guest->name,
                         "full_name" => $guest->full_name,
                         "phone" => $guest->phone ?? null,
                         "profession" => $guest->profession ?? null,
-                        "responsible_adult" => "0",
-                        "status" => $status ? "1" : "0",
+                        "responsible_adult" => 0,
+                        "status" => $status ? 1 : 0,
                         "updated_at" => $guest->updated_at,
-                        "user_id" => (string) $guest->user_id,
-                    ]
-                ]
+                        "user_id" => $guest->user_id,
+                    ],
+                ],
             ]);
     }
 

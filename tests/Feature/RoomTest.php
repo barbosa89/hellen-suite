@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Tests\TestCase;
 use App\Models\Room;
+use App\Models\User;
 use App\Models\Hotel;
-use RolesTableSeeder;
-use UsersTableSeeder;
-use AssignmentsSeeder;
 use App\Models\Voucher;
-use PermissionsTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\AssignmentsSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;

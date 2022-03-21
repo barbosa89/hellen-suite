@@ -7,9 +7,9 @@ use App\Models\Guest;
 use App\Models\Company;
 use App\Models\Voucher;
 use App\Data\Views\Customer;
-use CountriesTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class CustomerDataTest extends TestCase
 {

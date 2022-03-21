@@ -2,15 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\Hotel;
+use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\User;
-use PlanSeeder;
-use Tests\TestCase;
-use RolesTableSeeder;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Hotel;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PermissionsTableSeeder;
 
 class VerifyUserPlanMiddlewareTest extends TestCase
 {

@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use PermissionsTableSeeder;
 use Spatie\Permission\Models\Permission;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdatePermissionsCommandTest extends TestCase

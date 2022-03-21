@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use RolesTableSeeder;
+use App\Models\User;
 use App\Models\Currency;
+use Database\Seeders\PlanSeeder;
 use App\Models\IdentificationType;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PlanTest extends TestCase
 {

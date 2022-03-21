@@ -2,22 +2,22 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
 use Tests\TestCase;
 use App\Models\Room;
+use App\Models\User;
 use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
-use RolesTableSeeder;
 use App\Models\Voucher;
 use Carbon\CarbonPeriod;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Arr;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class VoucherTest extends TestCase
 {

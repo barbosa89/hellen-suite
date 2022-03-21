@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use CurrencySeeder;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Invoice;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PurgeInvoicesCommandTest extends TestCase
 {

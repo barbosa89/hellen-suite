@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
 use Tests\TestCase;
 use App\Models\Note;
+use App\Models\User;
 use App\Models\Hotel;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class NoteTest extends TestCase
 {

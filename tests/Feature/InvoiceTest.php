@@ -2,23 +2,23 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Exception;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use RolesTableSeeder;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Currency;
 use Illuminate\Support\Str;
 use App\Models\InvoicePayment;
 use App\Services\PaymentGateway;
+use Database\Seeders\PlanSeeder;
 use App\Models\IdentificationType;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Http;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class InvoiceTest extends TestCase
 {
