@@ -7,16 +7,22 @@ use Tests\TestCase;
 use App\Models\Note;
 use App\Models\User;
 use App\Models\Hotel;
+use App\Models\Shift;
 use Database\Seeders\RolesTableSeeder;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\AssignmentsSeeder;
 use Spatie\Permission\Models\Permission;
 use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Request;
 
 class NoteTest extends TestCase
 {
     use RefreshDatabase;
+
+    private const NOTES_ROUTE = '/notes';
+
+    private User $user;
 
     public function setUp(): void
     {
@@ -27,79 +33,70 @@ class NoteTest extends TestCase
         $this->seed(PermissionsTableSeeder::class);
         $this->seed(AssignmentsSeeder::class);
 
-        // Create user
         $this->user = User::factory()->create();
         $this->user->assignRole('manager');
         $this->user->syncPermissions(Permission::all());
 
-        // Create hotel
         $this->hotel = Hotel::factory()->create([
             'user_id' => $this->user->id
         ]);
-
-        // User login
         $this->be($this->user);
     }
 
-    public function test_user_can_see_form_to_search_notes()
+    public function test_user_can_see_form_to_search_notes(): void
     {
-        $response = $this->get('/notes');
+        $response = $this->get(self::NOTES_ROUTE);
 
         $response->assertOk()
             ->assertViewIs('app.notes.index');
     }
 
-    public function test_user_can_see_notes_search_results()
+    public function test_user_can_see_notes_search_results(): void
     {
-        // Prepare note
         $note = Note::factory()->create([
             'user_id' => $this->user->id,
             'hotel_id' => $this->hotel->id
         ]);
 
-        // Search params
-        $start = now()->subDay();
-        $end = now();
-        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start->toDateString()}&end={$end->toDateString()}";
-
-        $response = $this->get('/notes/search' . $params);
+        $response = $this->call(Request::METHOD_GET, '/notes/search', [
+            "hotel" => $this->hotel->hash,
+            "start" => now()->subDay()->toDateString(),
+            "end" => now()->toDateString(),
+        ]);
 
         $response->assertOk()
             ->assertViewIs('app.notes.search')
             ->assertSee($note->content);
     }
 
-    public function test_user_can_search_notes_by_text()
+    public function test_user_can_search_notes_by_text(): void
     {
-        // Prepare note
         $note = Note::factory()->create([
             'content' => 'Custom content',
             'user_id' => $this->user->id,
             'hotel_id' => $this->hotel->id
         ]);
 
-        // Search params
-        $start = now()->subDay();
-        $end = now();
-        $params = "?hotel=" . id_encode($this->hotel->id) . "&start={$start->toDateString()}&end={$end->toDateString()}&text=custom";
-
-        $response = $this->get('/notes/search' . $params);
+        $response = $this->call(Request::METHOD_GET, '/notes/search', [
+            "hotel" => $this->hotel->hash,
+            "start" => now()->subDay()->toDateString(),
+            "end" => now()->toDateString(),
+            "text" => "custom",
+        ]);
 
         $response->assertOk()
             ->assertViewIs('app.notes.search')
             ->assertSee($note->content);
     }
 
-    public function test_user_can_store_note()
+    public function test_user_can_store_note(): void
     {
-        $this->withoutExceptionHandling();
-
-        $tags = Tag::factory(3)->create([
+        $tags = Tag::factory(2)->create([
             'user_id' => $this->user->id
         ]);
 
-        $response = $this->post('/notes', [
-            'hotel_id' => id_encode($this->hotel->id),
+        $response = $this->post(self::NOTES_ROUTE, [
+            'hotel_id' => $this->hotel->hash,
             'content' => 'content',
             'tags' => $tags->toArray(),
             'add' => false
@@ -111,30 +108,29 @@ class NoteTest extends TestCase
             ]);
 
         $this->assertDatabaseHas('notes', [
-            'content' => '<p>content</p>'
-        ])->assertDatabaseHas('note_tag', [
-            'note_id' => 1,
-            'tag_id' => 1
-        ])->assertDatabaseHas('note_tag', [
-            'note_id' => 1,
-            'tag_id' => 2
-        ])->assertDatabaseHas('note_tag', [
-            'note_id' => 1,
-            'tag_id' => 3
+            'content' => '<p>content</p>',
+            'hotel_id' => $this->hotel->id,
+            'user_id' => $this->user->id,
         ]);
+
+        $noteId = Note::latest('id')->value('id');
+
+        $this->assertDatabaseCount('note_tag', 2)
+            ->assertDatabaseHas('note_tag', [
+                'note_id' => $noteId,
+                'tag_id' => $tags->get(0)->id,
+            ])->assertDatabaseHas('note_tag', [
+                'note_id' => $noteId,
+                'tag_id' => $tags->get(1)->id,
+            ]);
     }
 
-    public function test_user_can_attach_note_to_shift()
+    public function test_user_can_attach_note_to_shift(): void
     {
-        $this->withExceptionHandling();
+        $tags = Tag::factory(2)->for($this->user)->create();
 
-        // Prepate tags
-        $tags = Tag::factory(3)->create([
-            'user_id' => $this->user->id
-        ]);
-
-        $response = $this->post('/notes', [
-            'hotel_id' => id_encode($this->hotel->id),
+        $response = $this->post(self::NOTES_ROUTE, [
+            'hotel_id' => $this->hotel->hash,
             'content' => 'content',
             'tags' => $tags->toArray(),
             'add' => true
@@ -145,9 +141,12 @@ class NoteTest extends TestCase
                 'status' => true
             ]);
 
+        $noteId = Note::latest('id')->value('id');
+        $shiftId = Shift::latest('id')->value('id');
+
         $this->assertDatabaseHas('note_shift', [
-            'note_id' => 1,
-            'shift_id' => 1
+            'note_id' => $noteId,
+            'shift_id' => $shiftId,
         ]);
     }
 }
