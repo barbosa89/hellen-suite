@@ -11,10 +11,12 @@ use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\AssignmentsSeeder;
 use Spatie\Permission\Models\Permission;
 use Database\Seeders\PermissionsTableSeeder;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TagTest extends TestCase
 {
+    use WithFaker;
     use RefreshDatabase;
 
     public function setUp(): void
@@ -26,21 +28,16 @@ class TagTest extends TestCase
         $this->seed(PermissionsTableSeeder::class);
         $this->seed(AssignmentsSeeder::class);
 
-        // Create user
         $this->user = User::factory()->create();
         $this->user->assignRole('manager');
         $this->user->syncPermissions(Permission::all());
 
-        // User login
         $this->be($this->user);
     }
 
     public function test_user_can_get_all_tags_as_json()
     {
-        // Create tag
-        $tag = Tag::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $tag = Tag::factory()->for($this->user)->create();
 
         $response = $this->get('/tags', ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
@@ -49,20 +46,15 @@ class TagTest extends TestCase
                 [
                     'description' => $tag->description,
                     'slug' => $tag->slug,
-                    'hash' => id_encode($tag->id),
+                    'hash' => $tag->hash,
                     'value' => $tag->description
                 ]
             ]);
-
-        $this->assertEquals(1, Tag::count());
     }
 
     public function test_user_can_see_all_tags()
     {
-        // Create tag
-        $tag = Tag::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $tag = Tag::factory()->for($this->user)->create();
 
         $response = $this->get('/tags');
 
@@ -74,35 +66,30 @@ class TagTest extends TestCase
     public function test_user_can_store_tag()
     {
         $response = $this->post('/tags', [
-            'tag' => 'foo'
+            'tag' => 'foo',
         ]);
 
         $response->assertOk()
             ->assertJson([
                 'value' => 'foo',
-                'hash' => id_encode(1)
             ]);
 
-        $this->assertDatabaseHas('tags', [
-            'description' => 'foo',
-            'user_id' => $this->user->id
-        ])->assertEquals(1, Tag::count());
+        $this->assertDatabaseCount('tags', 1)
+            ->assertDatabaseHas('tags', [
+                'description' => 'foo',
+                'user_id' => $this->user->id
+            ]);
     }
 
     public function test_user_can_see_tag()
     {
-        $this->withExceptionHandling();
-
-        // Create tag
-        $tag = Tag::factory()->create([
-            'user_id' => $this->user->id
-        ]);
+        $tag = Tag::factory()->for($this->user)->create();
 
         $hotel = Hotel::factory()->create([
             'user_id' => $this->user->id
         ]);
 
-        $response = $this->get('/tags/' . id_encode($tag->id) . '/hotel/' . id_encode($hotel->id));
+        $response = $this->get("/tags/{$tag->hash}/hotel/{$hotel->hash}");
 
         $response->assertOk()
             ->assertViewIs('app.tags.show')
