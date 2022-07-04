@@ -7,7 +7,15 @@
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <report>
+            <html outputDirectory="tests/coverage/php"/>
+            <text outputFile="tests/coverage/php/coverage.txt"/>
+            <clover outputFile="tests/coverage/php/logs/clover.xml"/>
+        </report>
     </coverage>
+    <logging>
+        <junit outputFile="tests/coverage/php/report.junit.xml"/>
+    </logging>
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>

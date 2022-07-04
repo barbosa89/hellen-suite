@@ -80,3 +80,15 @@ jobs:
         run: vendor/bin/phpunit --verbose --testdox
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+
+      - name: Prepare paths for SonarQube analysis
+        if: matrix.run-sonarcloud-analysis
+        run: |
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/logs/clover.xml
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/report.junit.xml
+      - name: Run SonarQube analysis
+        uses: sonarsource/sonarcloud-github-action@master
+        if: matrix.run-sonarcloud-analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
