@@ -20,7 +20,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:8.0.16
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
           MYSQL_ROOT_PASSWORD: password
@@ -35,11 +35,8 @@ jobs:
         php: [8.0]
         laravel: [8.*]
         stability: [prefer-stable]
-        include:
-          - laravel: 8.*
-            testbench: 6.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -86,6 +83,7 @@ jobs:
         run: |
           sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/logs/clover.xml
           sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/report.junit.xml
+
       - name: Run SonarQube analysis
         uses: sonarsource/sonarcloud-github-action@master
         if: matrix.run-sonarcloud-analysis
