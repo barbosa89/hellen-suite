@@ -42,6 +42,7 @@
         "vinkla/hashids": "^9.1.0"
     },
     "require-dev": {
+        "barbosa89/laravel-vue-i18n-generator": "^1.0",
         "barryvdh/laravel-debugbar": "^3.6",
         "beyondcode/laravel-dump-server": "^1.4",
         "beyondcode/laravel-query-detector": "^1.2",
