@@ -2,21 +2,23 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Invoice;
+use Illuminate\Support\Str;
 use App\Services\PaymentGateway;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PaymentGatewayTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
+    use RefreshDatabase;
 
     public function setUp(): void
     {
@@ -29,8 +31,8 @@ class PaymentGatewayTest extends TestCase
 
     public function test_get_self_instance()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -41,8 +43,8 @@ class PaymentGatewayTest extends TestCase
 
     public function test_return_redirect_to_payment_gateway()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -53,8 +55,11 @@ class PaymentGatewayTest extends TestCase
 
     public function test_generate_payment_gateway_url()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        config()->set('settings.payments.url', $this->faker->url());
+        config()->set('settings.payments.key', Str::random(16));
+
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -62,7 +67,7 @@ class PaymentGatewayTest extends TestCase
 
         $validation = filter_var($gateway->generatePaymentUrl(), FILTER_VALIDATE_URL);
 
-        $this->assertTrue($validation !== false);
+        $this->assertNotEmpty($validation);
     }
 
     public function test_send_request_to_payment_confirmation()

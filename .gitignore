@@ -15,4 +15,5 @@ yarn-error.log
 .env.testing
 /.phpintel
 .phpunit.result.cache
+docker-compose.override.yml
 /tests/coverage

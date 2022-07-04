@@ -1,18 +1,26 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Constants\Roles;
+use App\Traits\InteractWithLogs;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, LogsActivity, HasRoles;
+    use HasRoles;
+    use Notifiable;
+    use HasFactory;
+    use LogsActivity;
+    use HasApiTokens;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.

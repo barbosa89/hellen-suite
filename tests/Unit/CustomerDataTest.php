@@ -7,9 +7,9 @@ use App\Models\Guest;
 use App\Models\Company;
 use App\Models\Voucher;
 use App\Data\Views\Customer;
-use CountriesTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class CustomerDataTest extends TestCase
 {
@@ -26,7 +26,7 @@ class CustomerDataTest extends TestCase
     public function test_generate_empty_customer_data()
     {
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create();
+        $voucher = Voucher::factory()->create();
 
         $customer = new Customer($voucher);
 
@@ -46,10 +46,10 @@ class CustomerDataTest extends TestCase
     public function test_generate_customer_data_with_company()
     {
         /** @var Company $company */
-        $company = factory(Company::class)->create();
+        $company = Company::factory()->create();
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create([
+        $voucher = Voucher::factory()->create([
             'company_id' => $company->id,
         ]);
 
@@ -73,10 +73,10 @@ class CustomerDataTest extends TestCase
     public function test_generate_customer_data_with_guests()
     {
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create();
+        $guest = Guest::factory()->create();
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create();
+        $voucher = Voucher::factory()->create();
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
@@ -107,10 +107,10 @@ class CustomerDataTest extends TestCase
     public function test_generate_empty_customer_data_when_main_guest_is_missing()
     {
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create();
+        $guest = Guest::factory()->create();
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create();
+        $voucher = Voucher::factory()->create();
 
         $voucher->guests()->attach($guest->id, [
             'main' => false,
@@ -141,10 +141,10 @@ class CustomerDataTest extends TestCase
     public function test_generate_empty_customer_data_when_main_pivot_field_is_not_loaded()
     {
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create();
+        $guest = Guest::factory()->create();
 
         /** @var Voucher $voucher */
-        $voucher = factory(Voucher::class)->create();
+        $voucher = Voucher::factory()->create();
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,

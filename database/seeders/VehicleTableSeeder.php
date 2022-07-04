@@ -1,10 +1,12 @@
 <?php
 
-use App\User;
-use App\Models\Guest;
+namespace Database\Seeders;
+
+use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
-class GuestTableSeeder extends Seeder
+class VehicleTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +17,7 @@ class GuestTableSeeder extends Seeder
     {
         $user = User::where('email', 'manager@dev.com')->first(['id']);
 
-        factory(Guest::class, 20)->create([
+        factory(Vehicle::class, 8)->create([
             'user_id' => $user->id
         ]);
     }

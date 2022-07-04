@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Asset extends Model
 {
+    use HasFactory;
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The accessors to append to the model's array form.
@@ -23,8 +27,6 @@ class Asset extends Model
      */
     protected $hidden = ['id'];
 
-    use LogsActivity;
-
     public function room()
     {
         return $this->belongsTo(\App\Models\Room::class);
@@ -32,7 +34,7 @@ class Asset extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function hotel()

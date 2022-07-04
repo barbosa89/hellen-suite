@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Api;
 
-use App\User;
 use Tests\TestCase;
 use App\Models\Note;
+use App\Models\User;
 use App\Models\Hotel;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class NoteTest extends TestCase
 {
@@ -31,10 +31,10 @@ class NoteTest extends TestCase
     public function test_access_is_denied_if_user_dont_have_note_index_permissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -47,16 +47,16 @@ class NoteTest extends TestCase
     public function test_user_can_get_note_list()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->givePermissionTo('notes.index');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $user->id,
         ]);
 
         /** @var Note $note */
-        $note = factory(Note::class)->create([
+        $note = Note::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $user->id,
         ]);

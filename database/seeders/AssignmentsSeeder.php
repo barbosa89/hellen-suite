@@ -1,10 +1,12 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Models\User;
 use App\Helpers\Permissions;
-use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+
 class AssignmentsSeeder extends Seeder
 {
     /**

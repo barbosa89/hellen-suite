@@ -1,16 +1,20 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use Illuminate\Support\Str;
-use Faker\Generator as Faker;
 use App\Models\InvoicePayment;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(InvoicePayment::class, function (Faker $faker) {
-    return [
-        'number' => Str::random(12),
-        'value' => $faker->randomNumber(6),
-        'payment_method' => $faker->word,
-        'status' => InvoicePayment::APPROVED
-    ];
-});
+class InvoicePaymentFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'number' => Str::random(12),
+            'value' => $this->faker->randomNumber(6),
+            'payment_method' => $this->faker->word,
+            'status' => InvoicePayment::APPROVED
+        ];
+    }
+}

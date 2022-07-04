@@ -2,18 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use RolesTableSeeder;
+use App\Models\User;
 use App\Models\Currency;
+use Database\Seeders\PlanSeeder;
 use App\Models\IdentificationType;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Http;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PlanTest extends TestCase
 {
@@ -31,7 +32,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_all_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -49,7 +50,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_plan_edition_form()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -63,7 +64,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_update_a_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $plan = Plan::first();
@@ -84,7 +85,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_form_to_choose_a_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $response = $this->actingAs($user)
@@ -105,7 +106,7 @@ class PlanTest extends TestCase
     public function test_user_can_choose_the_free_plan()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -129,9 +130,16 @@ class PlanTest extends TestCase
         $this->assertEquals(false, $message->overlay);
     }
 
-    public function test_user_can_choose_the_basic_plan()
+    public function test_user_can_choose_the_basic_plan(): void
     {
-        $user = factory(User::class)->create();
+        Http::fake(function ($request) {
+            return Http::response(json_encode([
+                'USD_COP' => 3000
+            ]), Response::HTTP_OK);
+        });
+
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -150,7 +158,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_not_see_expired_free_plan_on_choose_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -171,7 +179,13 @@ class PlanTest extends TestCase
 
     public function test_user_can_buy_the_basic_plan()
     {
-        $user = factory(User::class)->create();
+        Http::fake(function ($request) {
+            return Http::response(json_encode([
+                'USD_COP' => 3000
+            ]), Response::HTTP_OK);
+        });
+
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -190,7 +204,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_not_renew_with_active_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -205,7 +219,7 @@ class PlanTest extends TestCase
 
     public function test_user_without_plans_is_redirected_to_choose_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $response = $this->actingAs($user)
@@ -216,7 +230,7 @@ class PlanTest extends TestCase
 
     public function test_user_with_free_expired_plan_is_redirected_to_choose_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::FREE)->first();
@@ -231,7 +245,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_see_the_form_to_renew_plans()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $free = Plan::where('type', Plan::FREE)->first();

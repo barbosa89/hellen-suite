@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Tests\TestCase;
-use RolesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Database\Seeders\RolesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateRootUserCommandTest extends TestCase
 {
@@ -21,7 +21,7 @@ class CreateRootUserCommandTest extends TestCase
 
     public function test_user_can_update_password_to_existing_root_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('root');
 
         $password = 'php_is_powerful';
@@ -38,7 +38,7 @@ class CreateRootUserCommandTest extends TestCase
 
     public function test_user_can_create_root_user()
     {
-        $user = factory(User::class)->make([
+        $user = User::factory()->make([
             'email' => 'contacto@omarbarbosa.com'
         ]);
 
@@ -60,14 +60,14 @@ class CreateRootUserCommandTest extends TestCase
 
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
-            'model_type' => \App\User::class,
+            'model_type' => \App\Models\User::class,
             'model_id' => $user->id
         ]);
     }
 
     public function test_user_can_not_create_root_user_with_fake_email()
     {
-        $user = factory(User::class)->make([
+        $user = User::factory()->make([
             'email' => 'fake_account@fakerserverservice.com'
         ]);
 
@@ -83,7 +83,7 @@ class CreateRootUserCommandTest extends TestCase
 
     public function test_user_can_create_root_user_when_password_is_short()
     {
-        $user = factory(User::class)->make([
+        $user = User::factory()->make([
             'email' => 'contacto@omarbarbosa.com'
         ]);
 
@@ -104,7 +104,7 @@ class CreateRootUserCommandTest extends TestCase
 
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
-            'model_type' => \App\User::class,
+            'model_type' => \App\Models\User::class,
             'model_id' => $user->id
         ]);
     }

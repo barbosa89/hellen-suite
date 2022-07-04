@@ -1,9 +1,15 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Subscription::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class SubscriptionFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            //
+        ];
+    }
+}

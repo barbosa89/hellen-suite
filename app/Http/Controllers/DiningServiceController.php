@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Helpers\Chart;
 use Illuminate\Http\Request;
 use App\Exports\ServiceReport;

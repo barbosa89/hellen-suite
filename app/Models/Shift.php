@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use App\Helpers\Fields;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shift extends Model
 {
+    use HasFactory;
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +31,7 @@ class Shift extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function hotel()

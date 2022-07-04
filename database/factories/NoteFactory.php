@@ -1,14 +1,17 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Note;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Note::class, function (Faker $faker) {
-    return [
-        'content' => $faker->sentence(20),
-        'team_member_name' => $faker->name,
-        'team_member_email' => $faker->email
-    ];
-});
+class NoteFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'content' => $this->faker->sentence(20),
+            'team_member_name' => $this->faker->name,
+            'team_member_email' => $this->faker->email
+        ];
+    }
+}

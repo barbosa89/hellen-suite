@@ -1,21 +1,24 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\User;
-use App\Models\Hotel;
-use Faker\Generator as Faker;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Hotel::class, function (Faker $faker) {
-    return [
-        'business_name' => $faker->text(20),
-        'tin' => $faker->randomNumber(3) . '-' . $faker->randomNumber(3) . '-' . $faker->randomNumber(3),
-        'address' => $faker->address,
-        'phone' => $faker->e164PhoneNumber,
-        'mobile' => $faker->e164PhoneNumber,
-        'email' => $faker->unique()->safeEmail,
-        'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
-        },
-    ];
-});
+class HotelFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'business_name' => $this->faker->text(20),
+            'tin' => $this->faker->randomNumber(3) . '-' . $this->faker->randomNumber(3) . '-' . $this->faker->randomNumber(3),
+            'address' => $this->faker->address,
+            'phone' => $this->faker->e164PhoneNumber,
+            'mobile' => $this->faker->e164PhoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+        ];
+    }
+}

@@ -3,17 +3,21 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Guest extends Model
 {
     use Queryable;
+    use HasFactory;
     use LogsActivity;
+    use InteractWithLogs;
 
     public const SCOPE_FILTERS = [
         'from_date',
@@ -75,7 +79,7 @@ class Guest extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function rooms(): BelongsToMany

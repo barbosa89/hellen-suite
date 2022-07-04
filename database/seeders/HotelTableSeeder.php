@@ -1,12 +1,14 @@
 <?php
 
-use App\User;
-use App\Models\Hotel;
-use App\Models\Note;
-use App\Models\Product;
-use App\Models\Room;
-use App\Models\Service;
+namespace Database\Seeders;
+
+use App\Models\User;
 use App\Models\Tag;
+use App\Models\Note;
+use App\Models\Room;
+use App\Models\Hotel;
+use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 
 class HotelTableSeeder extends Seeder

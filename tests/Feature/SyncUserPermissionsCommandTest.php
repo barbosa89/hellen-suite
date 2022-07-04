@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Constants\Roles;
-use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use PermissionsTableSeeder;
-use RolesTableSeeder;
-use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
+use App\Models\User;
+use App\Constants\Roles;
+use Database\Seeders\RolesTableSeeder;
+use Spatie\Permission\Models\Permission;
+use Database\Seeders\PermissionsTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SyncUserPermissionsCommandTest extends TestCase
 {
@@ -26,7 +25,7 @@ class SyncUserPermissionsCommandTest extends TestCase
     public function testSyncManagerUserPermissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $user->assignRole(Roles::MANAGER);
 
@@ -41,7 +40,7 @@ class SyncUserPermissionsCommandTest extends TestCase
     public function testPermissionsAreNotDuplicated()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $user->assignRole(Roles::MANAGER);
 

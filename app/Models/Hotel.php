@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Hotel extends Model
 {
     use Queryable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -43,13 +45,13 @@ class Hotel extends Model
     // The hotel owner
     public function owner()
     {
-        return $this->belongsTo(\App\User::class, 'user_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
     // Employees assigned to one or more hotels
     public function employees()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsToMany(\App\Models\User::class);
     }
 
     public function vouchers()

@@ -1,16 +1,24 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace App;
 
-$factory->define(App\Models\Vehicle::class, function (Faker $faker) {
-    $faker->addProvider(new \Faker\Provider\ms_MY\Miscellaneous($faker));
+use App\Models\VehicleType;
+use Faker\Provider\ms_MY\Miscellaneous;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    return [
-        'registration' => $faker->jpjNumberPlate,
-        'brand' => $faker->text(8),
-        'color' => $faker->safeColorName,
-        'vehicle_type_id' => function () {
-            return \App\Models\VehicleType::inRandomOrder()->first(['id'])->id;
-        },
-    ];
-});
+class VechicleFactory extends Factory
+{
+    public function definition(): array
+    {
+        $this->faker->addProvider(new Miscellaneous($this->faker));
+
+        return [
+            'registration' => $this->faker->jpjNumberPlate,
+            'brand' => $this->faker->text(8),
+            'color' => $this->faker->safeColorName,
+            'vehicle_type_id' => function () {
+                return VehicleType::inRandomOrder()->first(['id'])->id;
+            },
+        ];
+    }
+}
