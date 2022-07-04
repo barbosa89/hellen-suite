@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Invoice;
+use Illuminate\Support\Str;
 use App\Services\PaymentGateway;
 use Database\Seeders\PlanSeeder;
 use Database\Seeders\CurrencySeeder;
@@ -16,7 +17,8 @@ use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PaymentGatewayTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
+    use RefreshDatabase;
 
     public function setUp(): void
     {
@@ -53,6 +55,9 @@ class PaymentGatewayTest extends TestCase
 
     public function test_generate_payment_gateway_url()
     {
+        config()->set('settings.payments.url', $this->faker->url());
+        config()->set('settings.payments.key', Str::random(16));
+
         $user = User::factory()->create();
         $invoice = Invoice::factory()->create([
             'user_id' => $user->id
@@ -62,7 +67,7 @@ class PaymentGatewayTest extends TestCase
 
         $validation = filter_var($gateway->generatePaymentUrl(), FILTER_VALIDATE_URL);
 
-        $this->assertTrue($validation !== false);
+        $this->assertTrue($validation);
     }
 
     public function test_send_request_to_payment_confirmation()
