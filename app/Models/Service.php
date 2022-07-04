@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
 {
+    use HasFactory;
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The accessors to append to the model's array form.
@@ -30,7 +34,7 @@ class Service extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function hotel()

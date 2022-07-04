@@ -8,18 +8,24 @@ use App\Services\ExchangeRate;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
     use Queryable;
+    use HasFactory;
 
     public const FREE = 'FREE';
-
     public const BASIC = 'BASIC';
-
     public const PREMIUM = 'PREMIUM';
-
     public const SPONSOR = 'SPONSOR';
+
+    public const ALL = [
+        self::FREE,
+        self::BASIC,
+        self::PREMIUM,
+        self::SPONSOR,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +45,7 @@ class Plan extends Model
 
     public function users()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsToMany(\App\Models\User::class);
     }
 
     public function invoices()

@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Tests\TestCase;
 use App\Models\Room;
+use App\Models\User;
 use App\Models\Hotel;
-use RolesTableSeeder;
-use UsersTableSeeder;
-use AssignmentsSeeder;
 use App\Models\Voucher;
-use PermissionsTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\AssignmentsSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +20,7 @@ class RoomTest extends TestCase
     use RefreshDatabase, WithFaker, InteractsWithViews;
 
     /**
-     * @var \App\User
+     * @var \App\Models\User
      */
     public $manager;
 
@@ -42,7 +42,7 @@ class RoomTest extends TestCase
         $this->manager = User::where('email', 'manager@dev.com')->first();
 
         // Create hotel
-        $this->hotel = factory(Hotel::class)->create([
+        $this->hotel = Hotel::factory()->create([
             'user_id' => $this->manager->id
         ]);
     }
@@ -92,7 +92,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_get_the_list_rooms_from_api()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'user_id' => $this->manager->id,
             'hotel_id' => $this->hotel->id,
         ]);
@@ -124,7 +124,7 @@ class RoomTest extends TestCase
     {
         $admin = User::where('email', 'admin@dev.com')->first();
 
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'user_id' => $this->manager->id,
             'hotel_id' => $this->hotel->id,
         ]);
@@ -165,7 +165,7 @@ class RoomTest extends TestCase
     {
         $receptionist = User::where('email', 'receptionist@dev.com')->first();
 
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'user_id' => $this->manager->id,
             'hotel_id' => $this->hotel->id,
         ]);
@@ -240,7 +240,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_store_rooms()
     {
-        $room = factory(Room::class)->make([
+        $room = Room::factory()->make([
             'hotel_id' => $this->hotel->id,
         ]);
 
@@ -280,7 +280,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_store_rooms_from_api()
     {
-        $room = factory(Room::class)->make([
+        $room = Room::factory()->make([
             'hotel_id' => $this->hotel->id,
         ]);
 
@@ -325,7 +325,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_form_to_edit_rooms()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -347,7 +347,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_update_rooms()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -383,7 +383,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_room_details()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -398,7 +398,7 @@ class RoomTest extends TestCase
 
     public function test_manager_can_delete_rooms()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -423,13 +423,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_not_delete_room_when_it_has_vouchers()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::OCCUPIED,
         ]);
 
-        $voucher = factory(Voucher::class)->create();
+        $voucher = Voucher::factory()->create();
 
         $voucher->rooms()->attach($room, [
             'quantity' => 1,
@@ -464,7 +464,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_search_rooms()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -497,7 +497,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_get_room_price_and_tax_data()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
         ]);
@@ -516,7 +516,7 @@ class RoomTest extends TestCase
 
     public function test_user_cannot_change_room_status_when_it_is_occupied()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::OCCUPIED,
@@ -533,7 +533,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_available_when_not_occupied()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::MAINTENANCE,
@@ -553,7 +553,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_disabled_when_not_occupied()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::AVAILABLE,
@@ -573,7 +573,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_under_maintenance_when_not_occupied()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::AVAILABLE,
@@ -594,19 +594,19 @@ class RoomTest extends TestCase
     public function test_user_can_enable_room()
     {
         /** @var User $user */
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
         $user->givePermissionTo('rooms.toggle');
 
         /** @var Hotel $hotel */
-        $hotel = factory(Hotel::class)->create([
+        $hotel = Hotel::factory()->create([
             'user_id' => $this->manager->id,
         ]);
 
         /** @var Room $room */
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::CLEANING,
@@ -631,7 +631,7 @@ class RoomTest extends TestCase
 
     public function test_user_can_room_data_from_api()
     {
-        $room = factory(Room::class)->create([
+        $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::AVAILABLE,

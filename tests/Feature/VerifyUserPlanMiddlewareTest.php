@@ -2,15 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\Hotel;
-use App\Models\Plan;
-use App\User;
-use PlanSeeder;
 use Tests\TestCase;
-use RolesTableSeeder;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Plan;
+use App\Models\User;
+use App\Models\Hotel;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PermissionsTableSeeder;
 
 class VerifyUserPlanMiddlewareTest extends TestCase
 {
@@ -25,15 +24,15 @@ class VerifyUserPlanMiddlewareTest extends TestCase
         $this->seed(PlanSeeder::class);
 
         // Create hotel
-        $this->hotel = factory(Hotel::class)->make();
+        $this->hotel = Hotel::factory()->make();
 
         // Create plan
-        $this->plan = factory(Plan::class)->create();
+        $this->plan = Plan::factory()->create();
     }
 
     public function test_user_does_not_have_any_plans_is_redirected_to_choose()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
@@ -59,7 +58,7 @@ class VerifyUserPlanMiddlewareTest extends TestCase
 
     public function test_user_has_expired_plan_is_redirected_to_renew()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
@@ -87,7 +86,7 @@ class VerifyUserPlanMiddlewareTest extends TestCase
 
     public function test_user_has_active_plan_is_redirected_successfully()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 

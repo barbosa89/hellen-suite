@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
     use Sluggable;
+    use HasFactory;
 
     public const CHECK_IN = 'check-in';
     public const CHECK_OUT = 'check-out';
@@ -34,12 +36,7 @@ class Tag extends Model
      */
     protected $hidden = ['id', 'pivot', 'user_id'];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -81,6 +78,6 @@ class Tag extends Model
      */
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 }

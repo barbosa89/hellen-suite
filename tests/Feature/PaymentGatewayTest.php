@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Services\PaymentGateway;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PaymentGatewayTest extends TestCase
 {
@@ -29,8 +29,8 @@ class PaymentGatewayTest extends TestCase
 
     public function test_get_self_instance()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -41,8 +41,8 @@ class PaymentGatewayTest extends TestCase
 
     public function test_return_redirect_to_payment_gateway()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -53,8 +53,8 @@ class PaymentGatewayTest extends TestCase
 
     public function test_generate_payment_gateway_url()
     {
-        $user = factory(User::class)->create();
-        $invoice = factory(Invoice::class)->create([
+        $user = User::factory()->create();
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 

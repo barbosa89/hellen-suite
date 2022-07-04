@@ -2,23 +2,23 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Exception;
-use PlanSeeder;
-use CurrencySeeder;
 use Tests\TestCase;
 use App\Models\Plan;
-use RolesTableSeeder;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Currency;
 use Illuminate\Support\Str;
 use App\Models\InvoicePayment;
 use App\Services\PaymentGateway;
+use Database\Seeders\PlanSeeder;
 use App\Models\IdentificationType;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Support\Facades\Http;
+use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class InvoiceTest extends TestCase
 {
@@ -38,10 +38,10 @@ class InvoiceTest extends TestCase
 
     public function test_user_can_see_all_invoices()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -54,10 +54,10 @@ class InvoiceTest extends TestCase
 
     public function test_user_can_see_one_invoice()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -65,7 +65,7 @@ class InvoiceTest extends TestCase
 
         $invoice->plans()->attach($plan);
 
-        $payment = factory(InvoicePayment::class)->create([
+        $payment = InvoicePayment::factory()->create([
             'value' => $invoice->total,
             'invoice_id' => $invoice->id
         ]);
@@ -85,10 +85,10 @@ class InvoiceTest extends TestCase
 
     public function test_user_can_destroy_a_pending_invoice()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -114,10 +114,10 @@ class InvoiceTest extends TestCase
 
     public function test_user_can_not_destroy_a_paid_invoice()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id,
             'status' => Invoice::PAID
         ]);
@@ -144,7 +144,7 @@ class InvoiceTest extends TestCase
 
     public function test_redirect_to_payment_gateway_is_successfully_on_invoice_storing()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
@@ -169,10 +169,10 @@ class InvoiceTest extends TestCase
 
     public function test_user_has_pending_invoices_with_same_plan()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -197,12 +197,12 @@ class InvoiceTest extends TestCase
 
     public function test_it_confirm_user_payment_successfully()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id,
             'value' => $plan->price,
             'total' => $plan->price
@@ -247,12 +247,12 @@ class InvoiceTest extends TestCase
      */
     public function test_it_expects_exception_with_unknown_response_status_code()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id,
             'value' => $plan->price,
             'total' => $plan->price
@@ -295,12 +295,12 @@ class InvoiceTest extends TestCase
 
     public function test_it_check_bad_payment_gateway_response()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('manager');
 
         $plan = Plan::where('type', Plan::BASIC)->first();
 
-        $invoice = factory(Invoice::class)->create([
+        $invoice = Invoice::factory()->create([
             'user_id' => $user->id,
             'value' => $plan->price,
             'total' => $plan->price

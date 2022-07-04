@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Models\Room;
 use App\Models\Asset;
 use App\Models\Hotel;

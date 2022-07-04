@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
-    use LogsActivity;
     use Queryable;
+    use HasFactory;
+    use LogsActivity;
+    use InteractWithLogs;
 
     public const SCOPE_FILTERS = [
         'from_date',
@@ -28,7 +32,7 @@ class Company extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function getHashAttribute(): string

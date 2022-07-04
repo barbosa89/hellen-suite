@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use CurrencySeeder;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Invoice;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\CurrencySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class PurgeInvoicesCommandTest extends TestCase
 {
@@ -23,9 +23,9 @@ class PurgeInvoicesCommandTest extends TestCase
 
     public function test_it_delete_all_pending_invoices()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $invoices = factory(Invoice::class, 10)->create([
+        $invoices = Invoice::factory(10)->create([
             'user_id' => $user->id,
             'created_at' => now()->subDays(2)
         ]);
@@ -36,9 +36,9 @@ class PurgeInvoicesCommandTest extends TestCase
 
     public function test_it_does_not_delete_paid_invoices()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        factory(Invoice::class, 10)->create([
+        Invoice::factory(10)->create([
             'user_id' => $user->id,
             'created_at' => now()->subDays(2),
             'status' => Invoice::PAID

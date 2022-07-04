@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Role;
 use App\Mail\Welcome;
 use App\Helpers\Random;

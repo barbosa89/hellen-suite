@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\User;
+use App\Models\User;
 use App\Models\Hotel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\URL;
@@ -17,7 +17,7 @@ class VerifyTeamMemberEmail extends Notification
     /**
      * The new team member
      *
-     * @var App\User
+     * @var App\Models\User
      */
     public $user;
 

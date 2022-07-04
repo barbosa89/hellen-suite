@@ -13,7 +13,7 @@ return [
     |
     */
     'modelsWatched' => [
-        'App\User'
+        'App\Models\User'
     ],
 
     /*

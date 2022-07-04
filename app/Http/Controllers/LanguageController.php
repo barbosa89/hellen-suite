@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Language;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {

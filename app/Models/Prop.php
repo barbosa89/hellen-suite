@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prop extends Model
 {
+    use HasFactory;
     use LogsActivity;
+    use InteractWithLogs;
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +43,7 @@ class Prop extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function vouchers()

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Chart;
-use App\User;
+use App\Models\User;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\{StoreHotel, UpdateHotel};

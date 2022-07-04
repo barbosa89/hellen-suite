@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Company;
-use App\User;
 use Tests\TestCase;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use App\Models\User;
+use App\Models\Company;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class CompanyTest extends TestCase
 {
@@ -30,7 +30,7 @@ class CompanyTest extends TestCase
     public function test_access_is_denied_if_user_dont_have_companies_index_permissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->get('/api/v1/web/companies');
@@ -41,11 +41,11 @@ class CompanyTest extends TestCase
     public function test_user_can_list_companies()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('companies.index');
 
         /** @var Company $company */
-        $company = factory(Company::class)->create([
+        $company = Company::factory()->create([
             'user_id' => $manager->id,
         ]);
 
@@ -64,17 +64,17 @@ class CompanyTest extends TestCase
     public function test_user_can_filter_new_companies_by_date()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('companies.index');
 
         /** @var Company $oldCompany */
-        $oldCompany = factory(Company::class)->create([
+        $oldCompany = Company::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Company $company */
-        $company = factory(Company::class)->create([
+        $company = Company::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(6)
         ]);

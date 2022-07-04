@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Currency extends Model
 {
-    public const COP = 'COP';
+    use HasFactory;
 
+    public const COP = 'COP';
     public const USD = 'USD';
 
     public function invoices()

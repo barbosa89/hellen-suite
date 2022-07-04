@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Api;
 
-use App\User;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Guest;
-use RolesTableSeeder;
-use CountriesTableSeeder;
-use PermissionsTableSeeder;
-use IdentificationTypesTableSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\CountriesTableSeeder;
+use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\IdentificationTypesTableSeeder;
 
 class GuestTest extends TestCase
 {
@@ -30,7 +30,7 @@ class GuestTest extends TestCase
     public function test_access_is_denied_if_user_dont_have_guest_index_permissions()
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->get('/api/v1/web/guests');
@@ -41,11 +41,11 @@ class GuestTest extends TestCase
     public function test_user_can_list_guests()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('guests.index');
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
         ]);
 
@@ -65,17 +65,17 @@ class GuestTest extends TestCase
     public function test_user_can_filter_new_guests_by_date()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('guests.index');
 
         /** @var Guest $oldGuest */
-        $oldGuest = factory(Guest::class)->create([
+        $oldGuest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(6)
         ]);
@@ -114,11 +114,11 @@ class GuestTest extends TestCase
     public function test_user_can_filter_guests_by_status(bool $status, string $filter)
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('guests.index');
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
             'status' => $status,
@@ -138,26 +138,26 @@ class GuestTest extends TestCase
                 "data" => [
                     [
                         "address" => $guest->address,
-                        "banned" => "0",
+                        "banned" => 0,
                         "birthdate" => $guest->birthdate ?? null,
-                        "country_id" => (string) $guest->country_id,
+                        "country_id" => $guest->country_id,
                         "created_at" => $guest->created_at,
                         "dni" => (string) $guest->dni,
                         "email" => $guest->email,
                         "gender" => $guest->gender ?? null,
                         "hash" => $guest->hash,
-                        "identification_type_id" => (string) $guest->identification_type_id,
+                        "identification_type_id" => $guest->identification_type_id,
                         "last_name" => $guest->last_name,
                         "name" => $guest->name,
                         "full_name" => $guest->full_name,
                         "phone" => $guest->phone ?? null,
                         "profession" => $guest->profession ?? null,
-                        "responsible_adult" => "0",
-                        "status" => $status ? "1" : "0",
+                        "responsible_adult" => 0,
+                        "status" => $status ? 1 : 0,
                         "updated_at" => $guest->updated_at,
-                        "user_id" => (string) $guest->user_id,
-                    ]
-                ]
+                        "user_id" => $guest->user_id,
+                    ],
+                ],
             ]);
     }
 
@@ -183,11 +183,11 @@ class GuestTest extends TestCase
     public function test_user_can_not_filter_guests_with_opposite_status(bool $status, string $filter)
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('guests.index');
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
             'status' => $status,
@@ -225,17 +225,17 @@ class GuestTest extends TestCase
     public function test_user_can_filter_guests_by_query()
     {
         /** @var User $manager */
-        $manager = factory(User::class)->create();
+        $manager = User::factory()->create();
         $manager->givePermissionTo('guests.index');
 
         /** @var Guest $oldGuest */
-        $oldGuest = factory(Guest::class)->create([
+        $oldGuest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
         ]);
 
         /** @var Guest $guest */
-        $guest = factory(Guest::class)->create([
+        $guest = Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(6)
         ]);

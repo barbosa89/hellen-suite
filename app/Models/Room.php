@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
+use App\Traits\InteractWithLogs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Room extends Model
 {
-    use LogsActivity;
     use Queryable;
+    use HasFactory;
+    use LogsActivity;
+    use InteractWithLogs;
 
     public const OCCUPIED = '0';
 
@@ -119,7 +123,7 @@ class Room extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     public function guests()

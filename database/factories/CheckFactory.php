@@ -1,19 +1,24 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Check;
-use Faker\Generator as Faker;
+use App\Models\Guest;
+use App\Models\Voucher;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Check::class, function (Faker $faker) {
-    return [
-        'in_at' => now(),
-        'out_at' => now(),
-        'guest_id' => function () {
-            return factory(\App\Models\Guest::class)->create()->id;
-        },
-        'voucher_id' => function () {
-            return factory(\App\Models\Voucher::class)->create()->id;
-        },
-    ];
-});
+class CheckFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'in_at' => now(),
+            'out_at' => now(),
+            'guest_id' => function () {
+                return Guest::factory()->create()->id;
+            },
+            'voucher_id' => function () {
+                return Voucher::factory()->create()->id;
+            },
+        ];
+    }
+}
