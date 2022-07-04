@@ -67,7 +67,7 @@ class PaymentGatewayTest extends TestCase
 
         $validation = filter_var($gateway->generatePaymentUrl(), FILTER_VALIDATE_URL);
 
-        $this->assertTrue($validation);
+        $this->assertNotEmpty($validation);
     }
 
     public function test_send_request_to_payment_confirmation()
