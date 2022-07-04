@@ -44,7 +44,7 @@ class PaymentGateway
             'currency' => $this->invoice->currency->code,
             'amount-in-cents' => number_format($this->invoice->total, 2, '', ''),
             'reference' => $this->invoice->number,
-            'redirect-url' => route(config('settings.payments.redirect'), ['number' => $this->invoice->number])
+            'redirect-url' => route('invoices.payments.confirm', ['number' => $this->invoice->number])
         ]);
     }
 

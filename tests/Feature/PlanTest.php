@@ -9,8 +9,10 @@ use App\Models\Currency;
 use Database\Seeders\PlanSeeder;
 use App\Models\IdentificationType;
 use Database\Seeders\CurrencySeeder;
+use Illuminate\Support\Facades\Http;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
 
@@ -128,8 +130,15 @@ class PlanTest extends TestCase
         $this->assertEquals(false, $message->overlay);
     }
 
-    public function test_user_can_choose_the_basic_plan()
+    public function test_user_can_choose_the_basic_plan(): void
     {
+        Http::fake(function ($request) {
+            return Http::response(json_encode([
+                'USD_COP' => 3000
+            ]), Response::HTTP_OK);
+        });
+
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $user->assignRole('manager');
 
@@ -170,6 +179,12 @@ class PlanTest extends TestCase
 
     public function test_user_can_buy_the_basic_plan()
     {
+        Http::fake(function ($request) {
+            return Http::response(json_encode([
+                'USD_COP' => 3000
+            ]), Response::HTTP_OK);
+        });
+
         $user = User::factory()->create();
         $user->assignRole('manager');
 
