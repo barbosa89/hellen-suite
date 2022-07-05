@@ -9,16 +9,14 @@ use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Events\CheckIn;
+use App\Models\Country;
 use App\Models\Voucher;
 use App\Events\CheckOut;
 use Illuminate\Support\Str;
 use App\Events\RoomCheckOut;
-use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\CountriesTableSeeder;
-use Database\Seeders\PermissionsTableSeeder;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,248 +28,41 @@ class VoucherTest extends TestCase
     use RefreshDatabase;
     use InteractsWithViews;
 
-    public User $manager;
+    private User $manager;
+
+    private const VOUCHERS_EDIT = 'vouchers.edit';
+
+    private const VOUCHERS_CLOSE = 'vouchers.close';
+
+    private const GUESTS_EDIT = 'guests.edit';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
+        Permission::findOrCreate(
+            self::VOUCHERS_EDIT,
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            self::VOUCHERS_CLOSE,
+            config('auth.defaults.guard')
+        );
+
+        Permission::findOrCreate(
+            self::GUESTS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         $this->seed(IdentificationTypesTableSeeder::class);
-        $this->seed(CountriesTableSeeder::class);
 
         $this->manager = User::factory()->create();
 
-        Carbon::setTestNow();
+        Carbon::setTestNow(now());
     }
 
-    public function test_user_cannot_see_voucher_list_when_he_does_not_have_permission()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->get('/vouchers');
-
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
-    }
-
-    public function test_user_can_see_voucher_list()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('vouchers.index');
-
-        $response = $this->actingAs($user)
-            ->get('/vouchers');
-
-        $response->assertOk()
-            ->assertViewIs('app.vouchers.index');
-    }
-
-    public function test_user_cannot_see_form_to_create_a_voucher_when_he_does_not_have_permission()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->get('/vouchers/create');
-
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
-    }
-
-    public function test_user_can_see_form_to_create_a_voucher()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('vouchers.create');
-
-        /** @var Hotel $hotel */
-        $hotel = Hotel::factory()->create([
-            'user_id' => $this->manager->id,
-        ]);
-
-        /** @var Room $room */
-        $room = Room::factory()->create([
-            'hotel_id' => $hotel->id,
-            'user_id' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->call(
-                'GET',
-                '/vouchers/create',
-                [
-                    'hotel' => $hotel->hash,
-                    'rooms' => [
-                        $room->hash,
-                    ],
-                ],
-            );
-
-        $response->assertOk()
-            ->assertViewIs('app.vouchers.create')
-            ->assertViewHas('hotel', function ($hotel) use ($room) {
-                return $hotel
-                    ->rooms
-                    ->where('id', $room->id)
-                    ->isNotEmpty();
-            });
-    }
-
-    public function test_user_cannot_see_form_to_create_a_voucher_when_params_are_wrong()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('vouchers.create');
-
-        $response = $this->actingAs($user)
-            ->call(
-                'GET',
-                '/vouchers/create',
-            );
-
-        $response->assertRedirect()
-            ->assertSessionHasErrors(['hotel']);
-    }
-
-    public function test_user_can_store_a_voucher()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('vouchers.create');
-
-        /** @var Hotel $hotel */
-        $hotel = Hotel::factory()->create([
-            'user_id' => $this->manager->id,
-        ]);
-
-        /** @var Room $room */
-        $room = Room::factory()->create([
-            'hotel_id' => $hotel->id,
-            'user_id' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->post('/vouchers', [
-                'hotel' => $hotel->hash,
-                'registry' => 'checkin',
-                'origin' => $this->faker->city,
-                'destination' => $this->faker->city,
-                'room' => [
-                    [
-                        'number' => $room->number,
-                        'price' => $room->price,
-                        'start' => now()->format('Y-m-d'),
-                        'end' => now()->addDay()->format('Y-m-d'),
-                    ]
-                ],
-            ]);
-
-        $voucher = Voucher::latest('id')->first();
-
-        $response->assertRedirect(route('vouchers.guests.search', ['id' => $voucher->hash]))
-            ->assertSessionDoesntHaveErrors();
-
-        $this->assertDatabaseCount('vouchers', 1);
-
-        $this->assertDatabaseCount('room_voucher', 1);
-
-        $this->assertDatabaseHas('room_voucher', [
-            'voucher_id' => $voucher->id,
-            'room_id' => $room->id,
-            'quantity' => 1,
-            'price' => $room->price,
-            'discount' => 0,
-            'subvalue' => $room->price,
-            'taxes' => 0,
-            'value' => $room->price,
-            'start' => now()->format('Y-m-d'),
-            'end' => now()->addDay()->format('Y-m-d'),
-            'enabled' => true,
-        ]);
-    }
-
-    public function test_user_can_store_a_voucher_as_reservation()
-    {
-        /** @var User $user */
-        $user = User::factory()->create([
-            'parent' => $this->manager->id,
-        ]);
-
-        $user->givePermissionTo('vouchers.create');
-
-        /** @var Hotel $hotel */
-        $hotel = Hotel::factory()->create([
-            'user_id' => $this->manager->id,
-        ]);
-
-        /** @var Room $room */
-        $room = Room::factory()->create([
-            'hotel_id' => $hotel->id,
-            'user_id' => $this->manager->id,
-        ]);
-
-        $response = $this->actingAs($user)
-            ->post('/vouchers', [
-                'hotel' => $hotel->hash,
-                'registry' => Voucher::RESERVATION,
-                'origin' => $this->faker->city,
-                'destination' => $this->faker->city,
-                'room' => [
-                    [
-                        'number' => $room->number,
-                        'price' => $room->price,
-                        'start' => now()->format('Y-m-d'),
-                        'end' => now()->addDay()->format('Y-m-d'),
-                    ]
-                ],
-            ]);
-
-        $voucher = Voucher::latest('id')->first();
-
-        $response->assertRedirect(route('vouchers.guests.search', ['id' => $voucher->hash]))
-            ->assertSessionDoesntHaveErrors();
-
-        $this->assertTrue($voucher->reservation);
-
-        $this->assertDatabaseCount('vouchers', 1);
-
-        $this->assertDatabaseCount('room_voucher', 1);
-
-        $this->assertDatabaseHas('room_voucher', [
-            'voucher_id' => $voucher->id,
-            'room_id' => $room->id,
-            'quantity' => 1,
-            'price' => $room->price,
-            'discount' => 0,
-            'subvalue' => $room->price,
-            'taxes' => 0,
-            'value' => $room->price,
-            'start' => now()->format('Y-m-d'),
-            'end' => now()->addDay()->format('Y-m-d'),
-            'enabled' => true,
-        ]);
-    }
-
-    public function test_user_cannot_edit_a_voucher_without_permissions()
+    public function test_user_cannot_edit_a_voucher_without_permissions(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
@@ -291,14 +82,19 @@ class VoucherTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_see_the_guest_search_form()
+    public function test_user_can_see_the_guest_search_form(): void
     {
+        Permission::findOrCreate(
+            self::VOUCHERS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -340,14 +136,14 @@ class VoucherTest extends TestCase
             ->assertViewIs('app.vouchers.search-guests');
     }
 
-    public function test_user_cannot_see_the_guest_search_form_when_voucher_is_empty()
+    public function test_user_cannot_see_the_guest_search_form_when_voucher_is_empty(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Voucher $voucher */
         $voucher = Voucher::factory()->create([
@@ -362,8 +158,13 @@ class VoucherTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_user_can_search_guests_to_add_to_voucher()
+    public function test_user_can_search_guests_to_add_to_voucher(): void
     {
+        Permission::findOrCreate(
+            'guests.index',
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
@@ -395,14 +196,14 @@ class VoucherTest extends TestCase
             ]);
     }
 
-    public function test_user_can_see_the_form_to_add_guest_to_voucher()
+    public function test_user_can_see_the_form_to_add_guest_to_voucher(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -451,14 +252,14 @@ class VoucherTest extends TestCase
             ->assertViewHas('voucher', $voucher);
     }
 
-    public function test_user_can_add_guest_to_voucher()
+    public function test_user_can_add_guest_to_voucher(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -528,7 +329,7 @@ class VoucherTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('checks', [
-            'in_at' => now(),
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -554,7 +355,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_it_dispatch_check_in_event()
+    public function test_it_dispatch_check_in_event(): void
     {
         Event::fake();
 
@@ -563,7 +364,7 @@ class VoucherTest extends TestCase
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -604,7 +405,7 @@ class VoucherTest extends TestCase
             'user_id' => $this->manager->id,
         ]);
 
-        $response = $this->actingAs($user)
+        $this->actingAs($user)
             ->post("vouchers/{$voucher->hash}/guests/add", [
                 'guest' => $guest->hash,
                 'room' => $room->hash,
@@ -615,14 +416,14 @@ class VoucherTest extends TestCase
         });
     }
 
-    public function test_user_can_add_guest_to_voucher_with_responsible_adult()
+    public function test_user_can_add_guest_to_voucher_with_responsible_adult(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -699,14 +500,14 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_reactivate_previously_registered_guests()
+    public function test_user_can_reactivate_previously_registered_guests(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -786,7 +587,7 @@ class VoucherTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('checks', [
-            'in_at' => now(),
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -800,7 +601,7 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_it_dispatch_check_out_event()
+    public function test_it_dispatch_check_out_event(): void
     {
         Event::fake();
 
@@ -809,7 +610,7 @@ class VoucherTest extends TestCase
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -869,10 +670,8 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
-
         Check::factory()->create([
-            'in_at' => $now,
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
         ]);
@@ -885,14 +684,14 @@ class VoucherTest extends TestCase
         });
     }
 
-    public function test_user_can_remove_guest_from_voucher()
+    public function test_user_can_remove_guest_from_voucher(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -952,7 +751,7 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
+        $now = now()->format('Y-m-d H:i:s');
 
         Check::factory()->create([
             'in_at' => $now,
@@ -988,7 +787,7 @@ class VoucherTest extends TestCase
 
         $this->assertDatabaseHas('checks', [
             'in_at' => $now,
-            'out_at' => now(),
+            'out_at' => now()->format('Y-m-d H:i:s'),
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
         ]);
@@ -1013,14 +812,14 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_remove_guest_when_voucher_has_one_guest()
+    public function test_user_cannot_remove_guest_when_voucher_has_one_guest(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1095,14 +894,14 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_remove_guest_when_guest_is_inactive()
+    public function test_user_cannot_remove_guest_when_guest_is_inactive(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1197,14 +996,14 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_remove_guest_when_room_was_delivered()
+    public function test_user_cannot_remove_guest_when_room_was_delivered(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1299,14 +1098,19 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_toggle_guest_status_when_guest_leaves_of_hotel()
+    public function test_user_can_toggle_guest_status_when_guest_leaves_of_hotel(): void
     {
+        Permission::findOrCreate(
+            self::GUESTS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('guests.edit');
+        $user->givePermissionTo(self::GUESTS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1368,7 +1172,7 @@ class VoucherTest extends TestCase
         ]);
 
         Check::factory()->create([
-            'in_at' => now(),
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -1421,14 +1225,19 @@ class VoucherTest extends TestCase
         $this->assertTrue($checkOut instanceof Check);
     }
 
-    public function test_user_can_toggle_guest_status_when_room_is_active_to_enter_to_hotel()
+    public function test_user_can_toggle_guest_status_when_room_is_active_to_enter_to_hotel(): void
     {
+        Permission::findOrCreate(
+            self::GUESTS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('guests.edit');
+        $user->givePermissionTo(self::GUESTS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1490,7 +1299,7 @@ class VoucherTest extends TestCase
         ]);
 
         Check::factory()->create([
-            'in_at' => now(),
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -1543,14 +1352,19 @@ class VoucherTest extends TestCase
         $this->assertTrue($checkOut instanceof Check);
     }
 
-    public function test_user_cannot_toggle_guest_status_when_room_is_disabled_to_changes()
+    public function test_user_cannot_toggle_guest_status_when_room_is_disabled_to_changes(): void
     {
+        Permission::findOrCreate(
+            self::GUESTS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('guests.edit');
+        $user->givePermissionTo(self::GUESTS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1637,14 +1451,19 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_toggle_guest_status_when_voucher_has_unique_guest()
+    public function test_user_cannot_toggle_guest_status_when_voucher_has_unique_guest(): void
     {
+        Permission::findOrCreate(
+            self::GUESTS_EDIT,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('guests.edit');
+        $user->givePermissionTo(self::GUESTS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1722,14 +1541,19 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_close_an_open_voucher()
+    public function test_user_can_close_an_open_voucher(): void
     {
+        Permission::findOrCreate(
+            self::VOUCHERS_CLOSE,
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.close');
+        $user->givePermissionTo(self::VOUCHERS_CLOSE);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1795,7 +1619,7 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
+        $now = now()->format('Y-m-d H:i:s');
 
         Check::factory()->create([
             'in_at' => $now,
@@ -1881,16 +1705,21 @@ class VoucherTest extends TestCase
         $this->assertEquals(2, $checkOuts->count());
     }
 
-    public function test_it_dispatch_room_check_out_event_on_voucher_close()
+    public function test_it_dispatch_room_check_out_event_on_voucher_close(): void
     {
         Event::fake();
+
+        Permission::findOrCreate(
+            self::VOUCHERS_CLOSE,
+            config('auth.defaults.guard')
+        );
 
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.close');
+        $user->givePermissionTo(self::VOUCHERS_CLOSE);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -1956,7 +1785,7 @@ class VoucherTest extends TestCase
             'voucher_id' => $voucher->id
         ]);
 
-        $now = now();
+        $now = now()->format('Y-m-d H:i:s');
 
         Check::factory()->create([
             'in_at' => $now,
@@ -1980,14 +1809,14 @@ class VoucherTest extends TestCase
         });
     }
 
-    public function test_user_can_see_form_to_change_assigned_room_to_any_available_room_in_hotel()
+    public function test_user_can_see_form_to_change_assigned_room_to_any_available_room_in_hotel(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -2065,14 +1894,14 @@ class VoucherTest extends TestCase
             });
     }
 
-    public function test_user_can_change_assigned_room_to_any_available_room()
+    public function test_user_can_change_assigned_room_to_any_available_room(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -2187,14 +2016,14 @@ class VoucherTest extends TestCase
         ]);
     }
 
-    public function test_user_can_see_form_to_change_guest_to_any_available_room_in_voucher()
+    public function test_user_can_see_form_to_change_guest_to_any_available_room_in_voucher(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -2307,14 +2136,14 @@ class VoucherTest extends TestCase
             });
     }
 
-    public function test_user_can_change_guest_to_any_available_room_in_voucher()
+    public function test_user_can_change_guest_to_any_available_room_in_voucher(): void
     {
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
         ]);
 
-        $user->givePermissionTo('vouchers.edit');
+        $user->givePermissionTo(self::VOUCHERS_EDIT);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([

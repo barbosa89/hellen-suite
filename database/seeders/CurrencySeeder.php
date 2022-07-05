@@ -14,12 +14,9 @@ class CurrencySeeder extends Seeder
      */
     public function run()
     {
-        Currency::create([
-            'code' => 'COP'
-        ]);
-
-        Currency::create([
-            'code' => 'USD'
+        Currency::insert([
+            ['code' => 'COP'],
+            ['code' => 'USD'],
         ]);
     }
 }

@@ -14,13 +14,15 @@ class IdentificationTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        IdentificationType::create(['type' => 'cc']);
-        IdentificationType::create(['type' => 'ci']);
-        IdentificationType::create(['type' => 'dni']);
-        IdentificationType::create(['type' => 'dui']);
-        IdentificationType::create(['type' => 'ec']);
-        IdentificationType::create(['type' => 'it']);
-        IdentificationType::create(['type' => 'rc']);
-        IdentificationType::create(['type' => 'tp']);
+        IdentificationType::insert([
+            ['type' => 'cc'],
+            ['type' => 'ci'],
+            ['type' => 'dni'],
+            ['type' => 'dui'],
+            ['type' => 'ec'],
+            ['type' => 'it'],
+            ['type' => 'rc'],
+            ['type' => 'tp'],
+        ]);
     }
 }
