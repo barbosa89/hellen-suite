@@ -15,12 +15,12 @@ jobs:
       DB_PASSWORD: password
       BROADCAST_DRIVER: log
       CACHE_DRIVER: file
-      QUEUE_CONNECTION: async
+      QUEUE_CONNECTION: sync
       SESSION_DRIVER: file
 
     services:
       mysql:
-        image: mysql:8.0.16
+        image: mysql:5.7.38
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
           MYSQL_ROOT_PASSWORD: password
@@ -79,14 +79,12 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
 
       - name: Prepare paths for SonarQube analysis
-        if: matrix.run-sonarcloud-analysis
         run: |
           sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/logs/clover.xml
           sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" tests/coverage/php/report.junit.xml
 
       - name: Run SonarQube analysis
         uses: sonarsource/sonarcloud-github-action@master
-        if: matrix.run-sonarcloud-analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
