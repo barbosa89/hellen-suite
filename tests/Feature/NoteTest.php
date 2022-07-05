@@ -34,7 +34,6 @@ class NoteTest extends TestCase
             'guard_name' => config('auth.defaults.guard')
         ]);
 
-
         Permission::create([
             'name' => 'notes.index',
             'guard_name' => config('auth.defaults.guard')
