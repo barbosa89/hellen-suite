@@ -6,8 +6,10 @@ use App\Exports\CompaniesReport;
 use Carbon\Carbon;
 use App\Models\Company;
 use Illuminate\Http\Request;
-use App\Helpers\{Chart, Response};
-use App\Http\Requests\{StoreCompany, UpdateCompany};
+use App\Helpers\Chart;
+use App\Helpers\Response;
+use App\Http\Requests\StoreCompany;
+use App\Http\Requests\UpdateCompany;
 use App\Models\IdentificationType;
 use App\Models\Voucher;
 use Maatwebsite\Excel\Facades\Excel;
@@ -275,7 +277,7 @@ class CompanyController extends Controller
         if ($request->ajax()) {
             $format = clean_param($request->get('format'));
             $template = 'app.companies.search.' . clean_param($request->get('template'));
-            $response = new Response($format, $template, $companies);
+            $response = new Response($companies, $format, $template);
 
             return response()->json([
                 'companies' => $response->get()

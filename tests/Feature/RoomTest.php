@@ -7,41 +7,34 @@ use App\Models\Room;
 use App\Models\User;
 use App\Models\Hotel;
 use App\Models\Voucher;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\UsersTableSeeder;
-use Database\Seeders\AssignmentsSeeder;
-use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoomTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, InteractsWithViews;
+    use WithFaker;
+    use RefreshDatabase;
+    use InteractsWithViews;
 
-    /**
-     * @var \App\Models\User
-     */
-    public $manager;
+    public User $manager;
 
-    /**
-     * @var \App\Models\Hotel
-     */
-    public $hotel;
+    public Hotel $hotel;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(UsersTableSeeder::class);
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
-        $this->seed(AssignmentsSeeder::class);
+        Role::create([
+            'name' => 'manager',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
 
-        // Create user
-        $this->manager = User::where('email', 'manager@dev.com')->first();
+        $this->manager = User::factory()->create();
+        $this->manager->assignRole('manager');
 
-        // Create hotel
         $this->hotel = Hotel::factory()->create([
             'user_id' => $this->manager->id
         ]);
@@ -49,6 +42,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_view_to_list_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.index');
+
         $this->actingAs($this->manager)
             ->get(route('rooms.index'))
             ->assertViewIs('app.rooms.index');
@@ -56,7 +56,20 @@ class RoomTest extends TestCase
 
     public function test_admin_can_see_view_to_list_rooms()
     {
-        $admin = User::where('email', 'admin@dev.com')->first();
+        Role::create([
+            'name' => 'admin',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $admin */
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $admin->givePermissionTo('rooms.index');
 
         $this->actingAs($admin)
             ->get(route('rooms.index'))
@@ -65,7 +78,14 @@ class RoomTest extends TestCase
 
     public function test_accountant_can_not_see_view_to_list_rooms()
     {
-        $accountant = User::where('email', 'accountant@dev.com')->first();
+        Role::create([
+            'name' => 'accountant',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $accountant */
+        $accountant = User::factory()->create();
+        $accountant->assignRole('accountant');
 
         $this->actingAs($accountant)
             ->get(route('rooms.index'))
@@ -74,7 +94,20 @@ class RoomTest extends TestCase
 
     public function test_receptionist_can_see_view_to_list_rooms()
     {
-        $receptionist = User::where('email', 'receptionist@dev.com')->first();
+        Role::create([
+            'name' => 'receptionist',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $receptionist */
+        $receptionist = User::factory()->create();
+        $receptionist->assignRole('receptionist');
+        $receptionist->givePermissionTo('rooms.index');
 
         $this->actingAs($receptionist)
             ->get(route('rooms.index'))
@@ -83,7 +116,14 @@ class RoomTest extends TestCase
 
     public function test_cashier_can_not_see_view_to_list_rooms()
     {
-        $cashier = User::where('email', 'cashier@dev.com')->first();
+        Role::create([
+            'name' => 'cashier',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $cashier */
+        $cashier = User::factory()->create();
+        $cashier->assignRole('cashier');
 
         $this->actingAs($cashier)
             ->get(route('rooms.index'))
@@ -92,6 +132,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_get_the_list_rooms_from_api()
     {
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.index');
+
         $room = Room::factory()->create([
             'user_id' => $this->manager->id,
             'hotel_id' => $this->hotel->id,
@@ -122,7 +169,23 @@ class RoomTest extends TestCase
 
     public function test_admin_can_get_the_list_rooms_from_api()
     {
-        $admin = User::where('email', 'admin@dev.com')->first();
+        Role::create([
+            'name' => 'admin',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $admin */
+        $admin = User::factory()->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $admin->assignRole('admin');
+        $admin->givePermissionTo('rooms.index');
 
         $room = Room::factory()->create([
             'user_id' => $this->manager->id,
@@ -130,13 +193,13 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($admin)
-            ->get(route('api.web.rooms.index', ['hotel' => id_encode($this->hotel->id)]))
+            ->get(route('api.web.rooms.index', ['hotel' => $this->hotel->hash]))
             ->assertJsonFragment([
                 'rooms' => [
                     [
-                        'hash' => id_encode($room->id),
+                        'hash' => $room->hash,
                         'number' => (string) $room->number,
-                        'hotel_hash' => id_encode($this->hotel->id),
+                        'hotel_hash' => $this->hotel->hash,
                         'description' => $room->description,
                         'price' => $room->price,
                         'min_price' => $room->min_price,
@@ -152,9 +215,19 @@ class RoomTest extends TestCase
             ]);
     }
 
-    public function test_accountant_can_get_the_list_rooms_from_api()
+    public function test_accountant_cannot_get_the_list_rooms_from_api()
     {
-        $accountant = User::where('email', 'accountant@dev.com')->first();
+        Role::create([
+            'name' => 'accountant',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $accountant */
+        $accountant = User::factory()->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $accountant->assignRole('accountant');
 
         $this->actingAs($accountant)
             ->get(route('api.web.rooms.index', ['hotel' => id_encode($this->hotel->id)]))
@@ -163,7 +236,23 @@ class RoomTest extends TestCase
 
     public function test_receptionist_can_get_the_list_rooms_from_api()
     {
-        $receptionist = User::where('email', 'receptionist@dev.com')->first();
+        Role::create([
+            'name' => 'receptionist',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $receptionist */
+        $receptionist = User::factory()->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $receptionist->assignRole('receptionist');
+        $receptionist->givePermissionTo('rooms.index');
 
         $room = Room::factory()->create([
             'user_id' => $this->manager->id,
@@ -171,7 +260,7 @@ class RoomTest extends TestCase
         ]);
 
         $this->actingAs($receptionist)
-            ->get(route('api.web.rooms.index', ['hotel' => id_encode($this->hotel->id)]))
+            ->get(route('api.web.rooms.index', ['hotel' => $this->hotel->hash]))
             ->assertJsonFragment([
                 'rooms' => [
                     [
@@ -195,7 +284,17 @@ class RoomTest extends TestCase
 
     public function test_cashier_can_get_the_list_rooms_from_api()
     {
-        $cashier = User::where('email', 'cashier@dev.com')->first();
+        Role::create([
+            'name' => 'cashier',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        /** @var User $cashier */
+        $cashier = User::factory()->create([
+            'parent' => $this->manager->id,
+        ]);
+
+        $cashier->assignRole('cashier');
 
         $this->actingAs($cashier)
             ->get(route('api.web.rooms.index', ['hotel' => id_encode($this->hotel->id)]))
@@ -204,6 +303,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_form_to_create_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.create');
+
         $this->actingAs($this->manager)
             ->get(route('rooms.create'))
             ->assertViewIs('app.rooms.create')
@@ -224,6 +330,13 @@ class RoomTest extends TestCase
 
     public function test_manager_is_redirected_if_there_are_no_hotels()
     {
+        Permission::create([
+            'name' => 'rooms.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.create');
+
         Hotel::where('user_id', $this->manager->id)->delete();
 
         $this->actingAs($this->manager)
@@ -240,6 +353,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_store_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.create');
+
         $room = Room::factory()->make([
             'hotel_id' => $this->hotel->id,
         ]);
@@ -280,6 +400,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_store_rooms_from_api()
     {
+        Permission::create([
+            'name' => 'rooms.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.create');
+
         $room = Room::factory()->make([
             'hotel_id' => $this->hotel->id,
         ]);
@@ -325,6 +452,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_form_to_edit_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.edit',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.edit');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -347,6 +481,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_update_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.edit',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.edit');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -383,6 +524,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_see_room_details()
     {
+        Permission::create([
+            'name' => 'rooms.show',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.show');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -398,6 +546,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_delete_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.destroy',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.destroy');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -423,6 +578,13 @@ class RoomTest extends TestCase
 
     public function test_manager_can_not_delete_room_when_it_has_vouchers()
     {
+        Permission::create([
+            'name' => 'rooms.destroy',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.destroy');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -464,6 +626,13 @@ class RoomTest extends TestCase
 
     public function test_user_can_search_rooms()
     {
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.index');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -490,6 +659,13 @@ class RoomTest extends TestCase
 
     public function test_it_check_redirection_on_empty_query_search()
     {
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.index');
+
         $this->actingAs($this->manager)
             ->get(route('rooms.search') . "?query=")
             ->assertRedirect(route('rooms.index'));
@@ -497,6 +673,13 @@ class RoomTest extends TestCase
 
     public function test_user_can_get_room_price_and_tax_data()
     {
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.index');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -516,6 +699,13 @@ class RoomTest extends TestCase
 
     public function test_user_cannot_change_room_status_when_it_is_occupied()
     {
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.toggle');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -533,6 +723,13 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_available_when_not_occupied()
     {
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.toggle');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -553,6 +750,13 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_disabled_when_not_occupied()
     {
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.toggle');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -573,6 +777,13 @@ class RoomTest extends TestCase
 
     public function test_user_can_change_room_status_to_under_maintenance_when_not_occupied()
     {
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.toggle');
+
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
@@ -593,6 +804,11 @@ class RoomTest extends TestCase
 
     public function test_user_can_enable_room()
     {
+        Permission::create([
+            'name' => 'rooms.toggle',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
         /** @var User $user */
         $user = User::factory()->create([
             'parent' => $this->manager->id,
@@ -629,13 +845,20 @@ class RoomTest extends TestCase
         ]);
     }
 
-    public function test_user_can_room_data_from_api()
+    public function test_user_can_get_room_data_from_api()
     {
         $room = Room::factory()->create([
             'hotel_id' => $this->hotel->id,
             'user_id' => $this->manager->id,
             'status' => Room::AVAILABLE,
         ]);
+
+        Permission::create([
+            'name' => 'rooms.show',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->manager->givePermissionTo('rooms.show');
 
         $this->actingAs($this->manager)
             ->get(route('api.web.rooms.show', ['id' => id_encode($room->id)]))

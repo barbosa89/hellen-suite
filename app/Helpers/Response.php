@@ -6,66 +6,33 @@ use Illuminate\Support\Collection;
 
 class Response
 {
-	/**
-     * The response format
-     *
-     * @var string
-     */
-	private $format;
+	private string $format;
 
-    /**
-     * Template name for rendered format.
-     *
-     * @var array
-     */
-	private $template;
+	private string $template;
 
-    /**
-     * A data collection.
-     *
-     * @var array
-     */
-	private $collection;
+	private Collection $collection;
 
-	/**
-     * Construct method.
-     *
-	 * @param string $format
-	 * @param string $template
-	 * @param \Illuminate\Support\Collection $collection
-     * @return array
-     */
-	public function __construct($format = null, $template = null, Collection $collection)
+	public function __construct(Collection $collection, $format = null, $template = null)
 	{
 		$this->format = $format;
 		$this->template = $template;
 		$this->collection = $collection;
 	}
 
-    /**
-     * Parse data results by format request.
-     *
-     * @return array
-     */
-    public function get()
+    public function get(): array
     {
-        if ($this->format == 'rendered' and view()->exists($this->template)) {
-            return $this->render();
+        if ($this->format == 'rendered' && view()->exists($this->template)) {
+            return $this->render()->toArray();
         }
 
         return $this->collection->toArray();
     }
 
-    /**
-     * Render data collection in array.
-     *
-     * @return array
-     */
-    private function render()
+    private function render(): Collection
     {
         $rendered = collect();
 
-		foreach ($this->collection as $key => $value) {
+		foreach ($this->collection as $value) {
 			$render = view($this->template, compact('value'))->render();
 			$rendered->push($render);
 		}
