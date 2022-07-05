@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Vouchers;
 
 use Tests\TestCase;
 use App\Models\Room;
@@ -22,7 +22,7 @@ use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
 
-class VoucherTest extends TestCase
+class VoucherEditTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
