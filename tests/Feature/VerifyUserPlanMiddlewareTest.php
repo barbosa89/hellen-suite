@@ -6,8 +6,11 @@ use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Hotel;
+use App\Constants\Roles;
 use Database\Seeders\PlanSeeder;
+use Spatie\Permission\Models\Role;
 use Database\Seeders\RolesTableSeeder;
+use Spatie\Permission\Models\Permission;
 use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,21 +22,33 @@ class VerifyUserPlanMiddlewareTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(PermissionsTableSeeder::class);
-        $this->seed(RolesTableSeeder::class);
+        Role::create([
+            'name' => Roles::MANAGER,
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'hotels.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'hotels.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
         $this->seed(PlanSeeder::class);
 
-        // Create hotel
         $this->hotel = Hotel::factory()->make();
 
-        // Create plan
         $this->plan = Plan::factory()->create();
     }
 
     public function test_user_does_not_have_any_plans_is_redirected_to_choose()
     {
+        /** @var User $user */
         $user = User::factory()->create();
-        $user->assignRole('manager');
+        $user->assignRole(Roles::MANAGER);
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
         $this->actingAs($user)
@@ -58,8 +73,9 @@ class VerifyUserPlanMiddlewareTest extends TestCase
 
     public function test_user_has_expired_plan_is_redirected_to_renew()
     {
+        /** @var User $user */
         $user = User::factory()->create();
-        $user->assignRole('manager');
+        $user->assignRole(Roles::MANAGER);
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
         $user->plans()->attach($this->plan, ['ends_at' => now()->subDay()]);
@@ -84,10 +100,11 @@ class VerifyUserPlanMiddlewareTest extends TestCase
             ->assertRedirect(route('plans.renew'));
     }
 
-    public function test_user_has_active_plan_is_redirected_successfully()
+    public function test_user_has_active_plan_is_redirected_successfully(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
-        $user->assignRole('manager');
+        $user->assignRole(Roles::MANAGER);
         $user->syncPermissions(['hotels.index', 'hotels.create']);
 
         $user->plans()->attach($this->plan, ['ends_at' => now()->addMonth()]);

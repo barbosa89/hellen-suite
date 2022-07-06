@@ -6,9 +6,8 @@ use Tests\TestCase;
 use App\Models\Note;
 use App\Models\User;
 use App\Models\Hotel;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\CountriesTableSeeder;
-use Database\Seeders\PermissionsTableSeeder;
+use App\Models\Country;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
@@ -22,10 +21,7 @@ class NoteTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
         $this->seed(IdentificationTypesTableSeeder::class);
-        $this->seed(CountriesTableSeeder::class);
     }
 
     public function test_access_is_denied_if_user_dont_have_note_index_permissions()
@@ -46,6 +42,11 @@ class NoteTest extends TestCase
 
     public function test_user_can_get_note_list()
     {
+        Permission::findOrCreate(
+            'notes.index',
+            config('auth.defaults.guard')
+        );
+
         /** @var User $user */
         $user = User::factory()->create();
         $user->givePermissionTo('notes.index');

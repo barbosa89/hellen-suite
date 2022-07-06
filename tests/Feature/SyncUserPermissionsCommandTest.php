@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Constants\Roles;
-use Database\Seeders\RolesTableSeeder;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Database\Seeders\PermissionsTableSeeder;
+use Illuminate\Console\Command;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SyncUserPermissionsCommandTest extends TestCase
@@ -18,8 +18,15 @@ class SyncUserPermissionsCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
+        Role::create([
+            'name' => Roles::MANAGER,
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'rooms.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
     }
 
     public function testSyncManagerUserPermissions()
@@ -30,7 +37,7 @@ class SyncUserPermissionsCommandTest extends TestCase
         $user->assignRole(Roles::MANAGER);
 
         $this->artisan('permissions:sync')
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $user->load('permissions');
 
@@ -47,7 +54,7 @@ class SyncUserPermissionsCommandTest extends TestCase
         $user->syncPermissions(Permission::all(['id', 'name', 'guard_name']));
 
         $this->artisan('permissions:sync')
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $user->load('permissions');
 

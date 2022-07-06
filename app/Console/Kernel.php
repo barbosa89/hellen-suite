@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\SaveTestData::class,
         \App\Console\Commands\PurgeInvoices::class,
         \App\Console\Commands\CreateRootUser::class,
-        \App\Console\Commands\UpdatePermissions::class,
     ];
 
     /**

@@ -23,15 +23,9 @@ class GuestFactory extends Factory
             'address' => $this->faker->streetAddress,
             'phone' => $this->faker->e164PhoneNumber,
             'gender' => $gender,
-            'identification_type_id' => function () {
-                return IdentificationType::inRandomOrder()->first(['id'])->id;
-            },
-            'country_id' => function () {
-                return Country::inRandomOrder()->first(['id'])->id;
-            },
-            'user_id' => function () {
-                return User::factory()->create()->id;
-            }
+            'identification_type_id' => IdentificationType::inRandomOrder()->first(['id']),
+            'country_id' => Country::factory()->create(),
+            'user_id' => User::factory()->create(),
         ];
     }
 }

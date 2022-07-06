@@ -12,6 +12,7 @@ use Database\Seeders\RolesTableSeeder;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\AssignmentsSeeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,18 +29,30 @@ class NoteTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(UsersTableSeeder::class);
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
-        $this->seed(AssignmentsSeeder::class);
+        Role::create([
+            'name' => 'manager',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'notes.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'notes.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
 
         $this->user = User::factory()->create();
         $this->user->assignRole('manager');
-        $this->user->syncPermissions(Permission::all());
+        $this->user->givePermissionTo('notes.index');
+        $this->user->givePermissionTo('notes.create');
 
         $this->hotel = Hotel::factory()->create([
             'user_id' => $this->user->id
         ]);
+
         $this->be($this->user);
     }
 

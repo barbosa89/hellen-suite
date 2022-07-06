@@ -10,15 +10,9 @@ class HelperTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->artisan('db:seed');
-    }
-
     public function test_get_columns_helper()
     {
-        $usersTable = [
+        $expected = [
             "id",
             "name",
             "email",
@@ -33,13 +27,17 @@ class HelperTest extends TestCase
             "updated_at",
         ];
 
-        $this->assertTrue(is_array(get_columns('users')));
-        $this->assertEquals($usersTable, get_columns('users'));
+        $current = get_columns('users');
+
+        sort($expected);
+        sort($current);
+
+        $this->assertEquals($expected, $current);
     }
 
     public function test_get_columns_helper_as_dotted_style()
     {
-        $usersTable = [
+        $expected = [
             "users.id",
             "users.name",
             "users.email",
@@ -54,13 +52,18 @@ class HelperTest extends TestCase
             "users.updated_at",
         ];
 
-        $this->assertTrue(is_array(get_columns('users')));
-        $this->assertEquals($usersTable, get_columns('users', true));
+        $current = get_columns('users', true);
+
+        sort($expected);
+        sort($current);
+
+        $this->assertEquals($expected, $current);
     }
 
     public function test_external_url_helper()
     {
         $url = 'http://domain.com/';
+
         $params = [
             'param' => 'value',
             'param2' => 'value2'
