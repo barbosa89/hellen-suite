@@ -5,9 +5,8 @@ namespace Tests\Feature\Api;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Guest;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\CountriesTableSeeder;
-use Database\Seeders\PermissionsTableSeeder;
+use App\Models\Country;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
@@ -17,14 +16,18 @@ class GuestTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
+    private const PERMISSION = 'guests.index';
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
+        Permission::findOrCreate(
+            self::PERMISSION,
+            config('auth.defaults.guard')
+        );
+
         $this->seed(IdentificationTypesTableSeeder::class);
-        $this->seed(CountriesTableSeeder::class);
     }
 
     public function test_access_is_denied_if_user_dont_have_guest_index_permissions()
@@ -42,7 +45,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('guests.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
@@ -66,7 +69,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('guests.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Guest $oldGuest */
         $oldGuest = Guest::factory()->create([
@@ -115,7 +118,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('guests.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
@@ -184,10 +187,9 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('guests.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
-        /** @var Guest $guest */
-        $guest = Guest::factory()->create([
+        Guest::factory()->create([
             'user_id' => $manager->id,
             'created_at' => now()->subDays(8),
             'status' => $status,
@@ -226,7 +228,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('guests.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Guest $oldGuest */
         $oldGuest = Guest::factory()->create([

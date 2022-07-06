@@ -8,33 +8,34 @@ use App\Models\User;
 use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
+use App\Models\Country;
 use App\Models\Voucher;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\CountriesTableSeeder;
-use Database\Seeders\PermissionsTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
 
 class VoucherTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+
+    private const PERMISSION = 'vouchers.index';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
+        Permission::findOrCreate(
+            self::PERMISSION,
+            config('auth.defaults.guard')
+        );
+
         $this->seed(IdentificationTypesTableSeeder::class);
-        $this->seed(CountriesTableSeeder::class);
     }
 
-    public function test_access_is_denied_if_user_dont_have_vouchers_index_permissions()
+    public function test_access_is_denied_if_user_dont_have_vouchers_index_permissions(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -50,11 +51,11 @@ class VoucherTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_list_vouchers()
+    public function test_user_can_list_vouchers(): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -77,11 +78,11 @@ class VoucherTest extends TestCase
             ]);
     }
 
-    public function test_user_can_filter_new_vouchers_by_date()
+    public function test_user_can_filter_new_vouchers_by_date(): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -119,11 +120,11 @@ class VoucherTest extends TestCase
             ]);
     }
 
-    public function test_the_date_cannot_be_older_than_one_year()
+    public function test_the_date_cannot_be_older_than_one_year(): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -143,11 +144,13 @@ class VoucherTest extends TestCase
             ->assertSessionHasErrors('from_date');
     }
 
-    public function test_user_can_get_guest_datasets_from_vouchers_history()
+    public function test_user_can_get_guest_datasets_from_vouchers_history(): void
     {
+        Carbon::setTestNow(now());
+
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -199,7 +202,7 @@ class VoucherTest extends TestCase
         ]);
 
         Check::factory()->create([
-            'in_at' => now(),
+            'in_at' => now()->format('Y-m-d H:i:s'),
             'out_at' => null,
             'guest_id' => $guest->id,
             'voucher_id' => $voucher->id,
@@ -233,11 +236,11 @@ class VoucherTest extends TestCase
      * @param string $filterValue
      * @dataProvider statusProvider
      */
-    public function test_user_can_filter_vouchers_by_status(string $column, bool $status, string $filterValue)
+    public function test_user_can_filter_vouchers_by_status(string $column, bool $status, string $filterValue): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -280,11 +283,11 @@ class VoucherTest extends TestCase
      * @param string $type
      * @dataProvider typeProvider
      */
-    public function test_user_can_filter_vouchers_by_type(string $type)
+    public function test_user_can_filter_vouchers_by_type(string $type): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -323,11 +326,11 @@ class VoucherTest extends TestCase
             ]);
     }
 
-    public function test_user_can_filter_vouchers_by_multiple_types()
+    public function test_user_can_filter_vouchers_by_multiple_types(): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([
@@ -379,11 +382,11 @@ class VoucherTest extends TestCase
             ]);
     }
 
-    public function test_user_can_search_vouchers()
+    public function test_user_can_search_vouchers(): void
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo('vouchers.index');
+        $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Hotel $hotel */
         $hotel = Hotel::factory()->create([

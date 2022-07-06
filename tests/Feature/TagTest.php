@@ -6,36 +6,39 @@ use App\Models\Tag;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Hotel;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\UsersTableSeeder;
-use Database\Seeders\AssignmentsSeeder;
+use App\Constants\Roles;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Database\Seeders\PermissionsTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TagTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+
+    private User $user;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(UsersTableSeeder::class);
-        $this->seed(RolesTableSeeder::class);
-        $this->seed(PermissionsTableSeeder::class);
-        $this->seed(AssignmentsSeeder::class);
+        Role::create([
+            'name' => Roles::MANAGER,
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        Permission::create([
+            'name' => 'tags.index',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
 
         $this->user = User::factory()->create();
-        $this->user->assignRole('manager');
-        $this->user->syncPermissions(Permission::all());
+        $this->user->assignRole(Roles::MANAGER);
+        $this->user->givePermissionTo('tags.index');
 
         $this->be($this->user);
     }
 
-    public function test_user_can_get_all_tags_as_json()
+    public function test_user_can_get_all_tags_as_json(): void
     {
         $tag = Tag::factory()->for($this->user)->create();
 
@@ -52,7 +55,7 @@ class TagTest extends TestCase
             ]);
     }
 
-    public function test_user_can_see_all_tags()
+    public function test_user_can_see_all_tags(): void
     {
         $tag = Tag::factory()->for($this->user)->create();
 
@@ -63,8 +66,15 @@ class TagTest extends TestCase
             ->assertSee($tag->slug);
     }
 
-    public function test_user_can_store_tag()
+    public function test_user_can_store_tag(): void
     {
+        Permission::create([
+            'name' => 'tags.create',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->user->givePermissionTo('tags.create');
+
         $response = $this->post('/tags', [
             'tag' => 'foo',
         ]);
@@ -81,8 +91,15 @@ class TagTest extends TestCase
             ]);
     }
 
-    public function test_user_can_see_tag()
+    public function test_user_can_see_tag(): void
     {
+        Permission::create([
+            'name' => 'tags.show',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
+
+        $this->user->givePermissionTo('tags.show');
+
         $tag = Tag::factory()->for($this->user)->create();
 
         $hotel = Hotel::factory()->create([

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,7 +20,10 @@ class AccountTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(RolesTableSeeder::class);
+        Role::create([
+            'name' => 'root',
+            'guard_name' => config('auth.defaults.guard')
+        ]);
     }
 
     public function test_user_can_see_link_to_change_password()
@@ -37,6 +41,7 @@ class AccountTest extends TestCase
 
     public function test_user_can_see_form_to_change_password()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
         $user->assignRole('root');
 
@@ -55,6 +60,7 @@ class AccountTest extends TestCase
         $password = Str::random('8');
         $newPassword = Str::random('8');
 
+        /** @var \App\Models\User $user */
         $user = User::factory()->create([
             'password' => bcrypt($password)
         ]);
@@ -86,6 +92,7 @@ class AccountTest extends TestCase
         $password = Str::random('8');
         $newPassword = Str::random('8');
 
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $user->assignRole('root');
@@ -103,8 +110,8 @@ class AccountTest extends TestCase
 
         $this->assertEquals(trans('accounts.password.wrong'), $message->message);
         $this->assertEquals('danger', $message->level);
-        $this->assertEquals(false, $message->important);
-        $this->assertEquals(false, $message->overlay);
+        $this->assertFalse($message->important);
+        $this->assertFalse($message->overlay);
 
         $user->refresh();
 
