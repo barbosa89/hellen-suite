@@ -84,7 +84,7 @@ class Note extends Model
      */
     public function scopeForTag($query, Hotel $hotel, Tag $tag)
     {
-        return $query->owner()
+        return $query->whereOwner()
             ->ofHotel($hotel->id)
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('id', $tag->id);

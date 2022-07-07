@@ -17,7 +17,7 @@ class CompanyRepository implements Repository
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Company::query()
-            ->owner()
+            ->whereOwner()
             ->latest()
             ->filter($filters)
             ->paginate($perPage);
@@ -30,7 +30,7 @@ class CompanyRepository implements Repository
     public function all(array $filters = []): Collection
     {
         return Company::query()
-            ->owner()
+            ->whereOwner()
             ->filter($filters)
             ->get();
     }
@@ -41,7 +41,7 @@ class CompanyRepository implements Repository
      */
     public function find(int $id): Company
     {
-        return Company::owner()->where('id', $id);
+        return Company::whereOwner()->where('id', $id);
     }
 
     public function create(array $data): Company
@@ -85,7 +85,7 @@ class CompanyRepository implements Repository
      */
     public function search(string $query): LengthAwarePaginator
     {
-        return Company::owner()
+        return Company::whereOwner()
             ->whereLike(['business_name', 'tin'], $query)
             ->paginate(15 , fields_get('companies'));
 

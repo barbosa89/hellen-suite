@@ -20,7 +20,7 @@ class RoomRepository implements Repository
      */
     public function find(int $id): Room
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('id', $id)
             ->with([
                 'hotel' => function ($query)
@@ -39,7 +39,7 @@ class RoomRepository implements Repository
      */
     public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('hotel_id', $hotel)
             ->latest()
             ->paginate($perPage);
@@ -52,7 +52,7 @@ class RoomRepository implements Repository
      */
     public function all(int $hotel, array $filters = []): Collection
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('hotel_id', $hotel)
             ->get();
     }
@@ -113,7 +113,7 @@ class RoomRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $room = Room::owner()
+        $room = Room::whereOwner()
             ->where('id', $id)
             ->doesntHave('vouchers')
             ->first(fields_get('rooms'));
@@ -131,7 +131,7 @@ class RoomRepository implements Repository
      */
     public function search(string $query): LengthAwarePaginator
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->whereLike(['number', 'description'], $query)
             ->with([
                 'hotel' => function ($query)
@@ -152,7 +152,7 @@ class RoomRepository implements Repository
      */
     public function toggle(int $id, string $status): Room
     {
-        $room = Room::owner()
+        $room = Room::whereOwner()
             ->where('id', $id)
             ->where('status', '!=', Room::OCCUPIED)
             ->firstOrFail(fields_get('rooms'));

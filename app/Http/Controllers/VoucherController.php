@@ -865,7 +865,7 @@ class VoucherController extends Controller
      */
     public function searchGuests($id)
     {
-        $voucher = Voucher::owner()
+        $voucher = Voucher::whereOwner()
             ->id(id_decode($id))
             ->open()
             ->has('rooms')
@@ -905,7 +905,7 @@ class VoucherController extends Controller
     public function showFormToAddGuests($id, $guest)
     {
         $id = id_decode($id);
-        $voucher = Voucher::owner()
+        $voucher = Voucher::whereOwner()
             ->id($id)
             ->open()
             ->with([
@@ -975,7 +975,7 @@ class VoucherController extends Controller
         DB::beginTransaction();
 
         try {
-            $voucher = Voucher::owner()
+            $voucher = Voucher::whereOwner()
                 ->id(id_decode($id))
                 ->open()
                 ->with([
@@ -1073,7 +1073,7 @@ class VoucherController extends Controller
      */
     public function removeGuests(string $id, string $guestId)
     {
-        $voucher = Voucher::owner()
+        $voucher = Voucher::whereOwner()
             ->id(id_decode($id))
             ->open()
             ->with([

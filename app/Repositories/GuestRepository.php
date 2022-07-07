@@ -17,7 +17,7 @@ class GuestRepository implements Repository
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Guest::query()
-            ->owner()
+            ->whereOwner()
             ->latest()
             ->filter($filters)
             ->paginate($perPage);
@@ -30,7 +30,7 @@ class GuestRepository implements Repository
     public function all(array $filters = []): Collection
     {
         return Guest::query()
-            ->owner()
+            ->whereOwner()
             ->filter($filters)
             ->get();
     }
@@ -41,7 +41,7 @@ class GuestRepository implements Repository
      */
     public function find(int $id): Guest
     {
-        return Guest::owner()->where('id', $id);
+        return Guest::whereOwner()->where('id', $id);
     }
 
     public function create(array $data): Guest
@@ -85,7 +85,7 @@ class GuestRepository implements Repository
      */
     public function search(string $query): LengthAwarePaginator
     {
-        return Guest::owner()
+        return Guest::whereOwner()
             ->whereLike(['name', 'last_name', 'dni', 'email'], $query)
             ->paginate(15 , fields_get('guests'));
 

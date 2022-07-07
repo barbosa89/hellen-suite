@@ -18,7 +18,7 @@ class VoucherRepository implements Repository
      */
     public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->where('hotel_id', $hotel)
             ->filter($filters)
             ->latest()
@@ -49,7 +49,7 @@ class VoucherRepository implements Repository
      */
     public function all(int $hotel, array $filters = []): Collection
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->where('hotel_id', $hotel)
             ->filter($filters)
             ->latest()
@@ -79,7 +79,7 @@ class VoucherRepository implements Repository
      */
     public function find(int $id): Voucher
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->where('id', $id)
             ->with([
                 'hotel' => function ($query)
@@ -131,7 +131,7 @@ class VoucherRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $voucher = Voucher::owner()
+        $voucher = Voucher::whereOwner()
             ->id($id)
             ->open()
             ->first(fields_get('vouchers'));
@@ -149,7 +149,7 @@ class VoucherRepository implements Repository
      */
     public function search(string $query): LengthAwarePaginator
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->whereLike([
                 'number',
                 'guests.name',
@@ -172,7 +172,7 @@ class VoucherRepository implements Repository
      */
     public function list(): Collection
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->lodging()
             ->with([
                 'guests' => function ($query) {
@@ -199,7 +199,7 @@ class VoucherRepository implements Repository
      */
     public function first(int $id): Voucher
     {
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->id($id)
             ->open()
             ->with([
@@ -231,7 +231,7 @@ class VoucherRepository implements Repository
     {
         $lastMonth = $startDate->copy()->subMonth();
 
-        return Voucher::owner()
+        return Voucher::whereOwner()
             ->where('hotel_id', $hotelId)
             ->where('status', true)
             ->where(function ($query) use ($startDate, $endDate, $lastMonth) {
