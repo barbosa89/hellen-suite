@@ -86,9 +86,8 @@ class AssetCreateTest extends TestCase
 
         Room::factory()
             ->for($hotel)
-            ->create([
-                'user_id' => $this->user->id,
-            ]);
+            ->for($this->user)
+            ->create();
 
         $asset = Asset::factory()
             ->for($hotel, 'hotel')
