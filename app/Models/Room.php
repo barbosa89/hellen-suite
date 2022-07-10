@@ -62,22 +62,12 @@ class Room extends Model
         'tax' => 'float',
     ];
 
-    /**
-     * Hashing Room ID.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function getHashAttribute()
+    public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }
 
-    /**
-     * @param  string  $value
-     * @return void
-     */
-    public function getHotelHashAttribute()
+    public function getHotelHashAttribute(): string
     {
         return $this->attributes['hotel_hash'] = id_encode($this->attributes['hotel_id']);
     }
