@@ -50,13 +50,7 @@ class Asset extends Model
         return $this->morphMany(\App\Models\Maintenance::class, 'maintainable');
     }
 
-    /**
-     * Hashing Product ID.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function getHashAttribute()
+    public function getHashAttribute(): string
     {
         return $this->attributes['hash'] = (string) id_encode($this->attributes['id']);
     }

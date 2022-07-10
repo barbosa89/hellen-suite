@@ -11,11 +11,11 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'number' => $this->faker->randomNumber(3),
+            'number' => (string) $this->faker->randomNumber(3),
             'description' => $this->faker->sentence(3),
             'brand' => $this->faker->word(),
             'model' => $this->faker->word(),
-            'serial_number' => $this->faker->randomNumber(3),
+            'serial_number' => (string) $this->faker->randomNumber(3),
             'price' => $this->faker->randomNumber(3),
             'room_id' => null,
             'hotel_id' => Hotel::factory()->create(),

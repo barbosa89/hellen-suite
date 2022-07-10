@@ -15,30 +15,28 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
+use App\Http\Requests\AssetsReportQuery;
+use App\Http\Requests\StoreAsset;
+use App\Http\Requests\StoreMaintenance;
+use App\Http\Requests\UpdateAsset;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class AssetController extends Controller
 {
-    public RoomRepository $room;
+    private RoomRepository $room;
 
     public function __construct(RoomRepository $room)
     {
         $this->room = $room;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): RedirectResponse|View
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', id_parent());
         })->with([
-            'assets' => function ($query)
-            {
+            'assets' => function ($query) {
                 $query->select(fields_get('assets'));
             }
         ])->get(fields_get('hotels'));
@@ -54,13 +52,7 @@ class AssetController extends Controller
         return view('app.assets.index', compact('hotels'));
     }
 
-    /**
-     * Encode all ID's from collection
-     *
-     * @param  \Illuminate\Support\Collection
-     * @return \Illuminate\Support\Collection
-     */
-    private function prepareData(Collection $hotels)
+    private function prepareData(Collection $hotels): Collection
     {
         $hotels = $hotels->map(function ($hotel)
         {
@@ -81,20 +73,13 @@ class AssetController extends Controller
         return $hotels;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): RedirectResponse|View
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', id_parent());
         })->where('status', true)
         ->with([
-            'rooms' => function ($query)
-            {
+            'rooms' => function ($query) {
                 $query->select(fields_get('rooms'));
             }
         ])->get(fields_get('hotels'));
@@ -105,12 +90,11 @@ class AssetController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        $rooms = $hotels->sum(function ($hotel)
-        {
+        $rooms = $hotels->sum(function ($hotel) {
             return $hotel->rooms->count();
         });
 
-        if($rooms == 0) {
+        if($rooms === 0) {
             flash(trans('rooms.no.created'))->info();
 
             return redirect()->route('assets.index');
@@ -119,36 +103,31 @@ class AssetController extends Controller
         return view('app.assets.create', compact('hotels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAsset $request)
+    public function store(StoreAsset $request): RedirectResponse
     {
         $asset = new Asset();
-        $asset->number = $request->number;
-        $asset->description = $request->description;
-        $asset->brand = $request->get('brand', null);
-        $asset->model = $request->get('model', null);
-        $asset->serial_number = $request->get('serial_number', null);
-        $asset->price = (float) $request->price;
-        $asset->location = $request->get('location', null);
+        $asset->number = $request->input('number');
+        $asset->description = $request->input('description');
+        $asset->brand = $request->input('brand');
+        $asset->model = $request->input('model');
+        $asset->serial_number = $request->input('serial_number');
+        $asset->price = (float) $request->input('price');
+        $asset->location = $request->input('location');
         $asset->user()->associate(id_parent());
         $asset->hotel()->associate(id_decode($request->hotel));
 
-        if (!empty($request->get('room', null))) {
-            $asset->room()->associate(id_decode($request->room));
+        if ($request->filled('room')) {
+            $asset->room()->associate(id_decode($request->input('room')));
         }
 
-        if ($asset->save()) {
-            flash(trans('common.updatedSuccessfully'))->success();
+        $asset->save();
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.updatedSuccessfully'))->success();
+
+        return redirect()->route('assets.show', [
+            'id' => $asset->hash,
+        ]);
+    }
 
         flash(trans('common.error'))->error();
 
