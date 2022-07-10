@@ -4,7 +4,6 @@ namespace Tests\Feature\Assets;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Asset;
 use App\Models\Hotel;
 use App\Models\Room;
 use Tests\Traits\HasPermissions;
@@ -84,13 +83,9 @@ class AssetCreateTest extends TestCase
             ->for($this->user, 'owner')
             ->create();
 
-        Room::factory()
+        $room = Room::factory()
             ->for($hotel)
             ->for($this->user)
-            ->create();
-
-        $asset = Asset::factory()
-            ->for($hotel, 'hotel')
             ->create();
 
         $response = $this->actingAs($this->user)
@@ -98,9 +93,9 @@ class AssetCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.create')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel, $asset) {
+            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel, $room) {
                 return $hotels->first()->is($hotel)
-                    && $hotels->first()->assets->first()->is($asset);
+                    && $hotels->first()->rooms->first()->is($room);
             });
     }
 }
