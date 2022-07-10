@@ -104,15 +104,6 @@ trait Queryable
     }
 
     /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function normalizeParam($value)
-    {
-        # code...
-    }
-
-    /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param string $date
      * @return \Illuminate\Database\Eloquent\Builder
