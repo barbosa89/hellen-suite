@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Traits\InteractWithLogs;
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Asset extends Model
 {
+    use Queryable;
     use HasFactory;
     use LogsActivity;
     use InteractWithLogs;

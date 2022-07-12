@@ -129,26 +129,11 @@ class AssetController extends Controller
         ]);
     }
 
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('assets.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(string $id): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('assets'));
 
         $asset->load([
             'room' => function ($query) {
@@ -157,8 +142,7 @@ class AssetController extends Controller
             'hotel' => function ($query) {
                 $query->select('id', 'business_name');
             },
-            'maintenances' => function ($query)
-            {
+            'maintenances' => function ($query) {
                 $query->select(fields_get('maintenances'))
                     ->orderBy('date', 'DESC');
             }

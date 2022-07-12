@@ -55,10 +55,6 @@ trait Queryable
         return $query->where('id', $id);
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeWhereOwner(Builder $query): Builder
     {
         return $query->where('user_id', id_parent());
