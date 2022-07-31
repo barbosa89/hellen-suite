@@ -151,21 +151,11 @@ class AssetController extends Controller
         return view('app.assets.show', compact('asset'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(string $id): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('assets'));
 
         $asset->load([
             'room' => function ($query) {
