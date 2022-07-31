@@ -1,6 +1,6 @@
 /*!
-  * Bootstrap v4.6.1 (https://getbootstrap.com/)
-  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v4.6.2 (https://getbootstrap.com/)
+  * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
@@ -29,8 +29,8 @@
  */
 
 /*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
+ * Vue.js v2.7.8
+ * (c) 2014-2022 Evan You
  * Released under the MIT License.
  */
 
@@ -49,7 +49,7 @@
  */
 
 /*!
- * vue-i18n v8.27.0 
+ * vue-i18n v8.27.2 
  * (c) 2022 kazuya kawaguchi
  * Released under the MIT License.
  */
