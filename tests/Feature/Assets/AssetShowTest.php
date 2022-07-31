@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Asset;
 use App\Models\Hotel;
 use Tests\Traits\HasPermissions;
-use Illuminate\Support\Collection;
 use Tests\Traits\HasFlashMessages;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -37,19 +36,19 @@ class AssetShowTest extends TestCase
         $this->user->givePermissionTo(self::RESOURCE_NAME);
 
         $this->hotel = Hotel::factory()
-        ->for($this->user, 'owner')
-        ->create();
+            ->for($this->user, 'owner')
+            ->create();
 
         $this->room = Room::factory()
-        ->for($this->hotel)
-        ->for($this->user)
-        ->create();
+            ->for($this->hotel)
+            ->for($this->user)
+            ->create();
 
         $this->asset = Asset::factory()
-        ->for($this->room)
-        ->for($this->hotel)
-        ->for($this->user)
-        ->create();
+            ->for($this->room)
+            ->for($this->hotel)
+            ->for($this->user)
+            ->create();
 
         $this->route = route(self::RESOURCE_NAME, $this->asset->hash);
     }
