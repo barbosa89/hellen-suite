@@ -87,7 +87,7 @@ class AssetStoreTest extends TestCase
         $response->assertSessionDoesntHaveErrors()
             ->assertRedirect();
 
-        $this->asssertFlashMessage(trans('common.updatedSuccessfully'), 'success');
+        $this->asssertFlashMessage(trans('common.createdSuccessfully'), 'success');
 
         $this->assertDatabaseCount('assets', 1);
 
@@ -138,7 +138,7 @@ class AssetStoreTest extends TestCase
         $response->assertSessionDoesntHaveErrors()
             ->assertRedirect();
 
-        $this->asssertFlashMessage(trans('common.updatedSuccessfully'), 'success');
+        $this->asssertFlashMessage(trans('common.createdSuccessfully'), 'success');
 
         $this->assertDatabaseCount('assets', 1);
 

@@ -122,7 +122,7 @@ class AssetController extends Controller
 
         $asset->save();
 
-        flash(trans('common.updatedSuccessfully'))->success();
+        flash(trans('common.createdSuccessfully'))->success();
 
         return redirect()->route('assets.show', [
             'id' => $asset->hash,
