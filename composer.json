@@ -103,6 +103,7 @@
         ],
         "test": [
             "vendor/bin/phpunit --verbose --testdox"
-        ]
+        ],
+        "sail": "vendor/bin/sail"
     }
 }
