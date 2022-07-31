@@ -17,7 +17,7 @@ class VehicleTableSeeder extends Seeder
     {
         $user = User::where('email', 'manager@dev.com')->first(['id']);
 
-        factory(Vehicle::class, 8)->create([
+        Vehicle::factory(8)->create([
             'user_id' => $user->id
         ]);
     }

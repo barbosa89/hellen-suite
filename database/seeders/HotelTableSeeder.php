@@ -22,28 +22,28 @@ class HotelTableSeeder extends Seeder
     {
         $user = User::where('email', 'manager@dev.com')->first(['id']);
 
-        factory(Hotel::class, 2)->create([
+        Hotel::factory(2)->create([
             'user_id' => $user->id
         ])->each(function ($hotel) use ($user) {
-            $hotel->rooms()->saveMany(factory(Room::class, 10)->make([
+            $hotel->rooms()->saveMany(Room::factory(10)->make([
                 'user_id' => $user->id
             ]));
 
-            $hotel->products()->saveMany(factory(Product::class, 10)->make([
+            $hotel->products()->saveMany(Product::factory(10)->make([
                 'user_id' => $user->id
             ]));
 
-            $hotel->services()->saveMany(factory(Service::class, 30)->make([
+            $hotel->services()->saveMany(Service::factory(30)->make([
                 'user_id' => $user->id
             ]));
 
-            $hotel->notes()->saveMany(factory(Note::class, 30)->make([
+            $hotel->notes()->saveMany(Note::factory(30)->make([
                 'user_id' => $user->id
             ]));
 
             $hotel->notes->each(function ($note) use ($user)
             {
-                $note->tags()->saveMany(factory(Tag::class, 3)->make([
+                $note->tags()->saveMany(Tag::factory(3)->make([
                     'user_id' => $user->id
                 ]));
             });
