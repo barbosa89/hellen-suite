@@ -186,51 +186,37 @@ class AssetController extends Controller
      */
     public function update(UpdateAsset $request, $id)
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
             ->where('hotel_id', id_decode($request->hotel))
-            ->first(fields_get('assets'));
+            ->firstOrFail(fields_get('assets'));
 
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->description = $request->description;
-        $asset->brand = $request->get('brand', null);
-        $asset->model = $request->get('model', null);
-        $asset->serial_number = $request->get('serial_number', null);
-        $asset->price = (float) $request->price;
-        $asset->location = $request->get('location', null);
+        $asset->description = $request->input('description');
+        $asset->brand = $request->input('brand');
+        $asset->model = $request->input('model');
+        $asset->serial_number = $request->input('serial_number');
+        $asset->price = (float) $request->input('price');
+        $asset->location = $request->input('location');
         $asset->hotel()->associate(id_decode($request->hotel));
 
-        if (empty($request->get('room', null))) {
+        if (empty($request->input('room'))) {
             $asset->room()->dissociate();
         } else {
             $room = Room::where('id', id_decode($request->room))
                 ->where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())
-                ->first(['id']);
+                ->firstOrFail(['id']);
 
-            if (empty($room)) {
-                flash('La habitación seleccionada no corresponde al hotel')->error();
-
-                return back();
-            }
-
-            $asset->room()->associate($room->id);
+            $asset->room()->associate($room);
         }
 
-        if ($asset->update()) {
-            flash(trans('common.updatedSuccessfully'))->success();
+        $asset->save();
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.updatedSuccessfully'))->success();
 
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('assets.index');
+        return redirect()->route('assets.show', [
+            'id' => $asset->hash,
+        ]);
     }
 
     /**
