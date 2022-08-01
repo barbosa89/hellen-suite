@@ -31,12 +31,12 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 		->name('assets.maintenance.form')
 		->middleware('permission:assets.edit');
 
-	Route::post('assets/report', 'AssetController@report')
-		->name('assets.report.export')
+	Route::post('assets/export', 'AssetController@export')
+		->name('assets.export')
 		->middleware('permission:assets.index');
 
-	Route::get('assets/report', 'AssetController@showReportForm')
-		->name('assets.report')
+	Route::get('assets/export', 'AssetController@showExportForm')
+		->name('assets.export.form')
 		->middleware('permission:assets.index');
 
     Route::post('assets/search', 'AssetController@search')

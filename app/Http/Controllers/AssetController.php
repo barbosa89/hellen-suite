@@ -22,6 +22,7 @@ use App\Http\Requests\UpdateAsset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
 {
@@ -255,12 +256,7 @@ class AssetController extends Controller
         ]);
     }
 
-    /**
-     * Display the report form to query between dates and hotels.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showReportForm()
+    public function showExportForm(): RedirectResponse|View
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
@@ -271,47 +267,24 @@ class AssetController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        return view('app.assets.report', compact('hotels'));
+        return view('app.assets.export', compact('hotels'));
     }
 
-    /**
-     * Export the props report in an excel document.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function report(AssetsReportQuery $request)
+    public function export(AssetsReportQuery $request): BinaryFileResponse
     {
-        if (empty($request->get('hotel', null))) {
-            $hotels = Hotel::where('user_id', id_parent())
-                ->with([
-                    'assets' => function($query) {
-                        $query->select(fields_get('assets'));
-                    },
-                    'assets.room' => function ($query)
-                    {
-                        $query->select(fields_get('rooms'));
-                    }
-                ])->get(fields_get('hotels'));
-        } else {
-            $hotels = Hotel::where('user_id', id_parent())
-                ->where('id', id_decode($request->hotel))
-                ->with([
-                    'assets' => function($query) {
-                        $query->select(fields_get('assets'));
-                    },
-                    'assets.room' => function ($query)
-                    {
-                        $query->select(fields_get('rooms'));
-                    }
-                ])->get(fields_get('hotels'));
-        }
-
-        if($hotels->isEmpty()) {
-            flash(trans('hotels.no.registered'))->info();
-
-            return redirect()->route('hotels.index');
-        }
+        $hotels = Hotel::where('user_id', id_parent())
+            ->when($request->filled('hotel'), function ($query) use ($request) {
+                $query->where('id', id_decode($request->hotel));
+            })
+            ->with([
+                'assets' => function($query) {
+                    $query->select(fields_get('assets'));
+                },
+                'assets.room' => function ($query)
+                {
+                    $query->select(fields_get('rooms'));
+                }
+            ])->get(fields_get('hotels'));
 
         return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
     }
