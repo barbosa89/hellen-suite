@@ -306,48 +306,33 @@ class AssetController extends Controller
         return view('app.assets.maintenance', compact('asset'));
     }
 
-    /**
-     * Store the asset maintenance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function maintenance(StoreMaintenance $request, $id)
+    public function maintenance(StoreMaintenance $request, string $id): RedirectResponse
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('assets'));
 
         $maintenance = new Maintenance();
-        $maintenance->date = $request->date;
-        $maintenance->commentary = $request->commentary;
-        $maintenance->value = $request->get('value', null);
+        $maintenance->date = $request->input('date');
+        $maintenance->commentary = $request->input('commentary');
+        $maintenance->value = $request->input('value');
         $maintenance->user()->associate(id_parent());
 
         if ($request->hasFile('invoice')) {
-            $path = $request->file('invoice')->storeAs(
-                'public',
-                time() . "_" . $request->file('invoice')->getClientOriginalName()
-            );
+            $file = $request->file('invoice');
+
+            $path = $file->storeAs('public', $file->hashName());
 
             $maintenance->invoice = $path;
         }
 
-        if ($asset->maintenances()->save($maintenance)) {
-            flash(trans('common.createdSuccessfully'))->success();
+        $asset->maintenances()->save($maintenance);
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.createdSuccessfully'))->success();
 
-        flash(trans('common.error'))->error();
-
-        return back();
+        return redirect()->route('assets.show', [
+            'id' => $asset->hash,
+        ]);
     }
 
     /**
