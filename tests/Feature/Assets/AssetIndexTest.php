@@ -83,4 +83,39 @@ class AssetIndexTest extends TestCase
                     && $hotels->first()->assets->first()->is($asset);
             });
     }
+
+    public function test_authorized_user_can_search_assets(): void
+    {
+        $hotel = Hotel::factory()
+            ->for($this->user, 'owner')
+            ->create();
+
+        $searcheableAsset = Asset::factory()
+            ->for($hotel)
+            ->for($this->user)
+            ->create([
+                'description' => 'bed',
+            ]);
+
+        $asset = Asset::factory()
+            ->for($hotel)
+            ->for($this->user)
+            ->create([
+                'description' => 'desk',
+            ]);
+
+        $response = $this->actingAs($this->user)
+            ->postJson(route('assets.search', [
+                'hotel' => $hotel->hash,
+                'query' => $searcheableAsset->description,
+            ]));
+
+        $response->assertOk()
+            ->assertJsonFragment([
+                'hash' => $searcheableAsset->hash,
+            ])
+            ->assertJsonMissing([
+                'hash' => $asset->hash,
+            ]);
+    }
 }

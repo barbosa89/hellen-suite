@@ -19,6 +19,7 @@ use App\Http\Requests\AssetsReportQuery;
 use App\Http\Requests\StoreAsset;
 use App\Http\Requests\StoreMaintenance;
 use App\Http\Requests\UpdateAsset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -232,36 +233,26 @@ class AssetController extends Controller
         return redirect()->route('assets.index');
     }
 
-    /**
-     * Return a rooms list by hotel ID.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
-        if ($request->ajax()) {
-            $query = clean_param($request->get('query', null));
+        $query = clean_param($request->get('query', null));
 
-            $assets = Asset::where('hotel_id', id_decode($request->hotel))
-                ->where('user_id', id_parent())
-                ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
-                ->get(fields_get('assets'));
+        /** @var \Illuminate\Support\Collection $assets */
+        $assets = Asset::where('hotel_id', id_decode($request->hotel))
+            ->where('user_id', id_parent())
+            ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
+            ->get(fields_get('assets'));
 
-            $assets = $assets->map(function ($asset)
-            {
-                $asset->hotel_id = id_encode($asset->hotel_id);
-                $asset->user_id = id_encode($asset->user_id);
+        $assets->transform(function ($asset) {
+            $asset->hotel_id = id_encode($asset->hotel_id);
+            $asset->user_id = id_encode($asset->user_id);
 
-                return $asset;
-            });
+            return $asset;
+        });
 
-            return response()->json([
-                'assets' => $assets->toJson()
-            ]);
-        }
-
-        abort(404);
+        return response()->json([
+            'assets' => $assets
+        ]);
     }
 
     /**
