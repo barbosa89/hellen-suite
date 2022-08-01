@@ -335,37 +335,23 @@ class AssetController extends Controller
         ]);
     }
 
-    /**
-     * Display the maintenance form to edit record.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showMaintenanceEditForm($id, $maintenance)
+    public function showMaintenanceEditForm(string $id, string $maintenance): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
+        $maintenance = Maintenance::whereOwner()
+            ->whereMaintainable($id, Asset::class)
+            ->where('id', id_decode($maintenance))
+            ->with([
+                'maintainable',
+                'maintainable.room' => function ($query) {
+                    $query->select('id', 'number');
+                },
+                'maintainable.hotel' => function ($query) {
+                    $query->select('id', 'business_name');
+                },
+            ])
+            ->firstOrFail(fields_get('maintenances'));
 
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'room' => function ($query) {
-                $query->select('id', 'number');
-            },
-            'hotel' => function ($query) {
-                $query->select('id', 'business_name');
-            },
-            'maintenances' => function ($query) use ($id, $maintenance)
-            {
-                $query->select(fields_get('maintenances'))
-                    ->where('maintainable_id', id_decode($id))
-                    ->where('id', id_decode($maintenance));
-            }
-        ]);
-
-        return view('app.assets.maintenance-edit', compact('asset'));
+        return view('app.assets.maintenance-edit', compact('maintenance'));
     }
 
     /**
