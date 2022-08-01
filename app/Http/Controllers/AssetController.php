@@ -219,29 +219,15 @@ class AssetController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(string $id): RedirectResponse
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(['id']);
+            ->firstOrFail(['id']);
 
-        if (empty($asset)) {
-            abort(404);
-        }
+        $asset->delete();
 
-        if ($asset->delete()) {
-            flash(trans('common.deletedSuccessfully'))->success();
-
-            return redirect()->route('assets.index');
-        }
-
-        flash(trans('common.error'))->error();
+        flash(trans('common.deletedSuccessfully'))->success();
 
         return redirect()->route('assets.index');
     }
