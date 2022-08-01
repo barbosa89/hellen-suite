@@ -100,6 +100,7 @@ class AssetMaintenanceStoreTest extends TestCase
             'date' => $data['date'],
             'value' => $data['value'],
             'commentary' => $data['commentary'],
+            'invoice' => "public/{$file->hashName()}",
             'maintainable_id' => $this->asset->id,
             'maintainable_type' => Asset::class,
         ]);
