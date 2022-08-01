@@ -289,29 +289,19 @@ class AssetController extends Controller
         return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
     }
 
-    /**
-     * Display the maintenance form to add new record.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showMaintenanceForm($id)
+    public function showMaintenanceForm(string $id): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'room' => function ($query) {
-                $query->select('id', 'number');
-            },
-            'hotel' => function ($query) {
-                $query->select('id', 'business_name');
-            }
-        ]);
+            ->with([
+                'room' => function ($query) {
+                    $query->select('id', 'number');
+                },
+                'hotel' => function ($query) {
+                    $query->select('id', 'business_name');
+                },
+            ])
+            ->firstOrFail(fields_get('assets'));
 
         return view('app.assets.maintenance', compact('asset'));
     }
