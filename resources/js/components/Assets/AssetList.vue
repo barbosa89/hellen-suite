@@ -15,7 +15,7 @@
                     <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                     <div class="input-group-append">
                         <button class="input-group-text" id="btnGroupAddon">
-                            <i class="fa fa-search"></i>
+                            <em class="fa fa-search"></em>
                         </button>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
                             <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
-                                <i class="fa fa-ellipsis-v"></i>
+                                <em class="fa fa-ellipsis-v"></em>
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
@@ -86,7 +86,7 @@
                                     Editar
                                 </a>
                                 <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete.item') }}</a>
+                                    {{ $t('common.delete.item') }}
                                 </a>
                             </div>
                         </div>
@@ -144,10 +144,8 @@ export default {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {
-                        let assets = JSON.parse(response.data.assets);
-
-                        if (assets.length > 0) {
-                            this.assets = assets
+                        if (response.data.assets.length > 0) {
+                            this.assets = response.data.assets
                         } else {
                             this.assets = []
 
@@ -156,7 +154,7 @@ export default {
                                 this.$root.$t('common.sorry')
                             );
                         }
-                    }).catch(e => {
+                    }).catch(_e => {
                         toastr.error(
                             this.$root.$t('common.try'),
                             'Error'
