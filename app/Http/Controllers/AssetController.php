@@ -354,32 +354,14 @@ class AssetController extends Controller
         return view('app.assets.maintenance-edit', compact('maintenance'));
     }
 
-    /**
-     * Store the asset maintenance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateMaintenance(StoreMaintenance $request, $id, $maintenance)
+    public function updateMaintenance(StoreMaintenance $request, string $id, string $maintenance): RedirectResponse
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
+        $maintenance = Maintenance::whereOwner()
+            ->whereMaintainable($id, Asset::class)
+            ->where('id', id_decode($maintenance))
+            ->with('maintainable')
+            ->firstOrFail(fields_get('maintenances'));
 
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'maintenances' => function ($query) use ($id, $maintenance)
-            {
-                $query->select(fields_get('maintenances'))
-                    ->where('maintainable_id', id_decode($id))
-                    ->where('id', id_decode($maintenance));
-            }
-        ]);
-
-        $maintenance = $asset->maintenances->first();
         $maintenance->date = $request->date;
         $maintenance->commentary = $request->commentary;
         $maintenance->value = $request->get('value', null);
@@ -389,24 +371,20 @@ class AssetController extends Controller
                 Storage::delete($maintenance->invoice);
             }
 
-            $path = $request->file('invoice')->storeAs(
-                'public',
-                time() . "_" . $request->file('invoice')->getClientOriginalName()
-            );
+            $file = $request->file('invoice');
+
+            $path = $file->storeAs('public', $file->hashName());
+
             $maintenance->invoice = $path;
         }
 
-        if ($maintenance->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
+        $maintenance->save();
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.updatedSuccessfully'))->success();
 
-        flash(trans('common.error'))->error();
-
-        return back();
+        return redirect()->route('assets.show', [
+            'id' => $maintenance->maintainable->hash
+        ]);
     }
 
     /**
