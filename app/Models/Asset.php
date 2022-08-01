@@ -7,6 +7,8 @@ use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Asset extends Model
 {
@@ -16,40 +18,33 @@ class Asset extends Model
     use InteractWithLogs;
 
     /**
-     * The accessors to append to the model's array form.
-     *
      * @var array
      */
     protected $appends = ['hash'];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = ['id'];
 
-    public function room()
+    public function room(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Room::class);
+        return $this->belongsTo(Room::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function hotel()
+    public function hotel(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Hotel::class);
+        return $this->belongsTo(Hotel::class);
     }
 
-    /**
-     * Get all of the asset's maintenances.
-     */
-    public function maintenances()
+    public function maintenances(): MorphMany
     {
-        return $this->morphMany(\App\Models\Maintenance::class, 'maintainable');
+        return $this->morphMany(Maintenance::class, 'maintainable');
     }
 
     public function getHashAttribute(): string
