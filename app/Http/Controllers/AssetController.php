@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Room;
 use App\Models\Asset;
 use App\Models\Hotel;
-use App\Models\Maintenance;
 use Illuminate\Http\Request;
 use App\Exports\AssetsReport;
-use App\Contracts\RoomRepository;
 use App\Http\Requests\AssignAsset;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\AssetsReportQuery;
 use App\Http\Requests\StoreAsset;
-use App\Http\Requests\StoreMaintenance;
 use App\Http\Requests\UpdateAsset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -26,13 +21,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
 {
-    private RoomRepository $room;
-
-    public function __construct(RoomRepository $room)
-    {
-        $this->room = $room;
-    }
-
     public function index(): RedirectResponse|View
     {
         $hotels = Hotel::whereHas('owner', function (Builder $query) {
@@ -289,51 +277,40 @@ class AssetController extends Controller
         return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
     }
 
-    /**
-     * @param string $room
-     * @return \Illuminate\Http\Response
-     */
-    public function assignment(string $room)
+    public function assignment(string $room): View
     {
-        $room = $this->room->find(id_decode($room));
+        $room = Room::where('id', id_decode($room))
+            ->with([
+                'hotel' => function ($query) {
+                    $query->select(fields_get('hotels'));
+                }
+            ])
+            ->firstOrFail(fields_get('rooms'));
 
-        $assets = Asset::where('hotel_id', $room->hotel->id)
+        $assets = Asset::where('hotel_id', $room->hotel_id)
             ->doesntHave('room')
             ->get(fields_get('assets'));
 
         return view('app.assets.assign', compact('room', 'assets'));
     }
 
-    /**
-     * @param \App\Http\Requests\AssignAsset $request
-     * @param string $room
-     * @return \Illuminate\Http\Response
-     */
-    public function assign(AssignAsset $request, string $room)
+    public function assign(AssignAsset $request, string $room): RedirectResponse
     {
-        try {
-            $room = $this->room->find(id_decode($room));
+        $room = Room::findOrFail(id_decode($room), fields_get('rooms'));
 
-            $asset = Asset::where('hotel_id', $room->hotel->id)
-                ->where('id', $request->asset)
-                ->doesntHave('room')
-                ->first(fields_get('assets'));
+        $asset = Asset::where('hotel_id', $room->hotel_id)
+            ->where('id', $request->input('asset'))
+            ->doesntHave('room')
+            ->firstOrFail(fields_get('assets'));
 
-            $asset->location = null;
-            $asset->room()->associate($room);
-            $asset->saveOrFail();
+        $asset->location = null;
+        $asset->room()->associate($room);
+        $asset->saveOrFail();
 
-            flash(trans('common.updatedSuccessfully'))->success();
+        flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('assets.assignment', [
-                'room' => id_encode($room->id),
-            ]);
-        } catch (\Throwable $th) {
-            flash(trans('common.error'))->error();
-
-            return redirect()->route('assets.assignment', [
-                'room' => id_encode($room->id),
-            ]);
-        }
+        return redirect()->route('assets.assignment', [
+            'room' => $room->hash,
+        ]);
     }
 }
