@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AssetMaintenanceUpdateTest extends TestCase
+class AssetMaintenanceDestroyTest extends TestCase
 {
     use WithFaker;
     use HasPermissions;
@@ -61,64 +61,46 @@ class AssetMaintenanceUpdateTest extends TestCase
             ->for($this->user)
             ->create();
 
-        $this->route = route('assets.maintenances.update', [
+        $this->route = route('assets.maintenances.destroy', [
             'asset' => $this->asset->hash,
             'maintenance' => $this->maintenance->hash,
         ]);
     }
 
-    public function test_guest_user_cannot_update_an_asset_maintenance(): void
+    public function test_guest_user_cannot_delete_an_asset_maintenance(): void
     {
-        $response = $this->patch($this->route);
+        $response = $this->delete($this->route);
 
         $response->assertRedirect(route('login'));
     }
 
-    public function test_unauthorized_user_cannot_update_an_asset_maintenance(): void
+    public function test_unauthorized_user_cannot_delete_an_asset_maintenance(): void
     {
         /** @var User $unauthorized */
         $unauthorized = User::factory()->create();
 
         $response = $this->actingAs($unauthorized)
-            ->patch($this->route);
+            ->delete($this->route);
 
         $response->assertForbidden();
     }
 
-    public function test_authorized_user_can_update_an_asset_maintenance(): void
+    public function test_authorized_user_can_delete_an_asset_maintenance(): void
     {
-        $file = UploadedFile::fake()->create('document.pdf', 50);
-
-        $data = [
-            'date' => now()->format('Y-m-d'),
-            'commentary' => $this->faker->sentence(3),
-            'value' => $this->faker->randomNumber(4),
-            'invoice' => $file,
-        ];
-
-        Storage::assertExists($this->maintenance->invoice);
-
         $response = $this->actingAs($this->user)
-            ->patch($this->route, $data);
+            ->delete($this->route);
 
         $response->assertSessionDoesntHaveErrors()
             ->assertRedirect();
 
-        $this->asssertFlashMessage(trans('common.updatedSuccessfully'), 'success');
+        $this->asssertFlashMessage(trans('common.deletedSuccessfully'), 'success');
 
-        $this->assertDatabaseCount('maintenances', 1);
+        $this->assertDatabaseCount('maintenances', 0);
 
-        $this->assertDatabaseHas('maintenances', [
+        $this->assertDatabaseMissing('maintenances', [
             'id' => $this->maintenance->id,
-            'date' => $data['date'],
-            'value' => $data['value'],
-            'commentary' => $data['commentary'],
-            'invoice' => "public/{$file->hashName()}",
-            'maintainable_id' => $this->asset->id,
-            'maintainable_type' => Asset::class,
         ]);
 
-        Storage::assertExists("public/{$file->hashName()}");
         Storage::assertMissing($this->maintenance->invoice);
     }
 }

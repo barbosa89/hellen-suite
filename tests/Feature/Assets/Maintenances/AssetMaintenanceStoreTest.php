@@ -52,12 +52,12 @@ class AssetMaintenanceStoreTest extends TestCase
             ->for($this->user)
             ->create();
 
-        $this->route = route('assets.maintenance', ['id' => $this->asset->hash]);
+        $this->route = route('assets.maintenances.store', ['asset' => $this->asset->hash]);
     }
 
     public function test_guest_user_cannot_store_an_asset_maintenance(): void
     {
-        $response = $this->get($this->route);
+        $response = $this->post($this->route);
 
         $response->assertRedirect(route('login'));
     }
@@ -68,7 +68,7 @@ class AssetMaintenanceStoreTest extends TestCase
         $unauthorized = User::factory()->create();
 
         $response = $this->actingAs($unauthorized)
-            ->get($this->route);
+            ->post($this->route);
 
         $response->assertForbidden();
     }

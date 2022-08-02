@@ -57,8 +57,8 @@ class AssetMaintenanceEditTest extends TestCase
             ->for($this->user)
             ->create();
 
-        $this->route = route('assets.maintenance.edit', [
-            'id' => $this->asset->hash,
+        $this->route = route('assets.maintenances.edit', [
+            'asset' => $this->asset->hash,
             'maintenance' => $this->maintenance->hash,
         ]);
     }
@@ -87,7 +87,7 @@ class AssetMaintenanceEditTest extends TestCase
             ->get($this->route);
 
         $response->assertOk()
-            ->assertViewIs('app.assets.maintenance-edit')
+            ->assertViewIs('app.assets.maintenances.edit')
             ->assertViewHas('maintenance', function (Maintenance $data) {
                 return $data->is($this->maintenance);
             });

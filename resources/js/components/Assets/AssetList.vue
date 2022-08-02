@@ -79,13 +79,16 @@
                             </button>
 
                             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash + '/maintenance'" class="dropdown-item">
-                                    Mantenimiento
+                                <a v-if="$can('assets.show')" :href="'/assets/' + asset.hash" class="dropdown-item">
+                                    {{ $t('common.show') }}
                                 </a>
-                                <a v-if="$can('assets.edit')" :href="'/assets/' +  + '/edit'" class="dropdown-item">
-                                    Editar
+                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash + '/maintenances/create'" class="dropdown-item">
+                                    {{ $t('maintenances.actions.create') }}
                                 </a>
-                                <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash  + '/edit'" class="dropdown-item">
+                                    {{ $t('common.edit') }}
+                                </a>
+                                <a v-if="$can('assets.destroy')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
                                     {{ $t('common.delete.item') }}
                                 </a>
                             </div>

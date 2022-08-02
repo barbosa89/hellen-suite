@@ -11,26 +11,6 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
         ->name('assets.assignment')
         ->middleware('permission:assets.edit');
 
-	Route::delete('assets/{id}/maintenance/{maintenance}', 'AssetController@destroyMaintenance')
-		->name('assets.maintenance.destroy')
-		->middleware('permission:assets.edit');
-
-	Route::post('assets/{id}/maintenance/{maintenance}/edit', 'AssetController@updateMaintenance')
-		->name('assets.maintenance.update')
-		->middleware('permission:assets.edit');
-
-	Route::get('assets/{id}/maintenance/{maintenance}/edit', 'AssetController@showMaintenanceEditForm')
-		->name('assets.maintenance.edit')
-		->middleware('permission:assets.edit');
-
-	Route::post('assets/{id}/maintenance', 'AssetController@maintenance')
-		->name('assets.maintenance')
-		->middleware('permission:assets.edit');
-
-	Route::get('assets/{id}/maintenance', 'AssetController@showMaintenanceForm')
-		->name('assets.maintenance.form')
-		->middleware('permission:assets.edit');
-
 	Route::post('assets/export', 'AssetController@export')
 		->name('assets.export')
 		->middleware('permission:assets.index');

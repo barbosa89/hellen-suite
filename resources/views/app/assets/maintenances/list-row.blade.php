@@ -27,11 +27,11 @@
             </p>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
-            <a href="{{ route('assets.maintenance.edit', ['id' => id_encode($asset->id), 'maintenance' => id_encode($row->id)]) }}" class="btn btn-link">
-                <i class="fas fa-edit"></i>
+            <a href="{{ route('assets.maintenances.edit', ['asset' => $asset->hash, 'maintenance' => $row->hash]) }}" class="btn btn-link">
+                <em class="fas fa-edit"></em>
             </a>
-            <a href="#" data-url="{{ route('assets.maintenance.destroy', ['id' => id_encode($asset->id), 'maintenance' => id_encode($row->id)]) }}" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)">
-                <i class="fas fa-times-circle"></i>
+            <a href="#" data-url="{{ route('assets.maintenances.destroy', ['asset' => $asset->hash, 'maintenance' => $row->hash]) }}" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)">
+                <em class="fas fa-times-circle"></em>
             </a>
         </div>
     </div>

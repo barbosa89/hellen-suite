@@ -1,6 +1,9 @@
 <?php
 
-return array (
-  'title' => 'Mantenimientos',
-  'maintenance' => 'Mantenimiento',
-);
+return [
+    'title' => 'Mantenimientos',
+    'maintenance' => 'Mantenimiento',
+    'actions' => [
+        'create' => 'Registrar un mantenimiento',
+    ],
+];

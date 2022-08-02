@@ -47,7 +47,7 @@ class AssetMaintenanceCreateTest extends TestCase
             ->for($this->user)
             ->create();
 
-        $this->route = route('assets.maintenance.form', ['id' => $this->asset->hash]);
+        $this->route = route('assets.maintenances.create', ['asset' => $this->asset->hash]);
     }
 
     public function test_guest_user_cannot_access_to_maintenance_form(): void
@@ -74,7 +74,7 @@ class AssetMaintenanceCreateTest extends TestCase
             ->get($this->route);
 
         $response->assertOk()
-            ->assertViewIs('app.assets.maintenance')
+            ->assertViewIs('app.assets.maintenances.create')
             ->assertViewHas('asset', function (Asset $data) {
                 return $data->is($this->asset);
             });
