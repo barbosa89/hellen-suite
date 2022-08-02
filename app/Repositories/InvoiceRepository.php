@@ -26,7 +26,7 @@ class InvoiceRepository implements Repository
      */
     public function find(int $id): Invoice
     {
-        return Invoice::owner()
+        return Invoice::whereOwner()
             ->where('id', $id)
             ->with([
                 'currency' => function ($query)
@@ -58,7 +58,7 @@ class InvoiceRepository implements Repository
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Invoice::owner()
+        return Invoice::whereOwner()
             ->latest()
             ->with([
                 'currency' => function ($query)
@@ -82,7 +82,7 @@ class InvoiceRepository implements Repository
      */
     public function all(array $filters = []): Collection
     {
-        return Invoice::owner()
+        return Invoice::whereOwner()
             ->latest()
             ->selectAll()
             ->limit(100)
@@ -153,7 +153,7 @@ class InvoiceRepository implements Repository
      */
     public function destroy(int $id): bool
     {
-        $invoice = Invoice::owner()
+        $invoice = Invoice::whereOwner()
             ->where('id', $id)
             ->where('status', '!=', Invoice::PAID)
             ->selectAll()
@@ -174,7 +174,7 @@ class InvoiceRepository implements Repository
      */
     public function pendingWithPlan(int $planId): Collection
     {
-        return Invoice::owner()
+        return Invoice::whereOwner()
             ->where('status', Invoice::PENDING)
             ->whereHas('plans', function ($query) use ($planId) {
                 return $query->where('plans.id', $planId);
@@ -192,7 +192,7 @@ class InvoiceRepository implements Repository
      */
     public function processPayment(string $number, stdClass $data): Invoice
     {
-        $invoice = Invoice::owner()
+        $invoice = Invoice::whereOwner()
             ->where('number', $number)
             ->where('status', Invoice::PENDING)
             ->with([

@@ -1,24 +1,20 @@
 <?php
 
-namespace App;
+namespace Database\Factories;
 
 use App\Models\VehicleType;
-use Faker\Provider\ms_MY\Miscellaneous;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-class VechicleFactory extends Factory
+class VehicleFactory extends Factory
 {
     public function definition(): array
     {
-        $this->faker->addProvider(new Miscellaneous($this->faker));
-
         return [
-            'registration' => $this->faker->jpjNumberPlate,
+            'registration' => Str::random(6),
             'brand' => $this->faker->text(8),
             'color' => $this->faker->safeColorName,
-            'vehicle_type_id' => function () {
-                return VehicleType::inRandomOrder()->first(['id'])->id;
-            },
+            'vehicle_type_id' => VehicleType::inRandomOrder()->first(['id']),
         ];
     }
 }

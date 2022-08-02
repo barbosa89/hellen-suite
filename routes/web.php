@@ -63,6 +63,7 @@ require __DIR__ . '/modules/vouchers.php';
 require __DIR__ . '/modules/products.php';
 require __DIR__ . '/modules/services.php';
 require __DIR__ . '/modules/assets.php';
+require __DIR__ . '/modules/asset_maintenances.php';
 require __DIR__ . '/modules/props.php';
 require __DIR__ . '/modules/vehicles.php';
 require __DIR__ . '/modules/payments.php';

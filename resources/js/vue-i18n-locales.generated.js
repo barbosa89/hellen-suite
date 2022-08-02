@@ -1,5 +1,97 @@
 export default {
     "en": {
+        "users": {
+            "title": "Users",
+            "active": "Active",
+            "inactive": "Inactive",
+            "verification": "Verification",
+            "admin": "Administrator",
+            "receptionist": "Recepcionist",
+            "root": "Root",
+            "successful": "The user was created successfully",
+            "actives": "Actives",
+            "inactives": "Inactives",
+            "notVerified": "Not verified",
+            "verified": "Verified",
+            "wasDeleted": "User was deleted",
+            "wasDisabled": "User was disabled because he has records in the system",
+            "chooseRole": "Choose a role",
+            "accountant": "Accountant",
+            "manager": "Manager",
+            "team": "My team",
+            "role": "Role",
+            "permissions": "Permissions",
+            "cashier": "Cashier"
+        },
+        "currencies": {
+            "cop": "Colombian peso",
+            "usd": "American dollar",
+            "title": "Currencies",
+            "currency": "Currency",
+            "exchange": {
+                "error": "The currency conversion service is not available"
+            }
+        },
+        "rooms": {
+            "title": "Rooms",
+            "disabled": "Disabled",
+            "free": "Free",
+            "maintenance": "Maintenance",
+            "occupied": "Occupied",
+            "successful": "The room was created successfully",
+            "room": "Room",
+            "wasDisabled": "The room was disabled",
+            "intoMaintenance": "The room went into maintenance",
+            "reserve": "Reserve",
+            "addRoom": "Add room",
+            "chooseRoom": "Choose a room",
+            "available": "Available",
+            "cleaning": "Cleaning",
+            "availableRooms": "Available rooms",
+            "changeRoom": "Change room",
+            "currentRoom": "Current room",
+            "deliver": "Deliver the room",
+            "no": {
+                "created": "There are no rooms created"
+            },
+            "type": "Indicates if the room is a suite",
+            "capacity": "Number of people to stay in the room",
+            "cannot": {
+                "enable": "You cannot enable this room",
+                "add": "You cannot add this room",
+                "destroy": "It is not possible to delete the room if it has associated vouchers, you can disable it."
+            },
+            "number": "Room No. {number}",
+            "change": {
+                "disabled": "The room cannot be changed"
+            }
+        },
+        "guests": {
+            "title": "Guests",
+            "guest": "Guest",
+            "chooseGender": "Choose gender",
+            "recently": "Recently registered",
+            "profession": "Profession",
+            "country": "Country",
+            "registerDate": "Register date",
+            "entered": "The guest entered the hotel",
+            "left": "The guest left the hotel",
+            "registerEntry": "Register entry",
+            "registerExit": "Register exit",
+            "hosted": "Hosted",
+            "birth": {
+                "country": "Birth country"
+            },
+            "new": {
+                "many": "new guests",
+                "none": "No new registrations",
+                "one": "new guest"
+            },
+            "status": {
+                "hosted": "Hosted",
+                "out": "Not hosted"
+            }
+        },
         "modules": {
             "assets": "Assets",
             "companies": "Companies",
@@ -22,6 +114,69 @@ export default {
             "plans": "Plans",
             "tags": "Tags",
             "transactions": "Transactions"
+        },
+        "transactions": {
+            "commentary": "Commentary",
+            "type": "Type",
+            "title": "Transactions",
+            "discharge": "Discharge",
+            "discharges": "Discharges",
+            "entries": "Entries",
+            "entry": "Entry",
+            "loss": "Loss",
+            "losses": "Losses",
+            "sale": "Sale",
+            "sales": "Sales",
+            "select": {
+                "type": "Select transaction type"
+            },
+            "element": {
+                "exists": "This item has already been added."
+            },
+            "made": {
+                "by": "Made by"
+            },
+            "no": {
+                "stock": "The element has no stock in the inventory",
+                "item": "There is no item to process"
+            },
+            "choose": {
+                "hotel": "Please choose a hotel",
+                "type": "Please choose a transaction type",
+                "company": "Please select a supplier"
+            },
+            "incomplete": "Incomplete fields were detected",
+            "amount": {
+                "zero": "The quantity must be greater than zero"
+            },
+            "has": {
+                "errors": "Errors were detected"
+            },
+            "all": {
+                "processed": "All transaction item were processed."
+            },
+            "partial": {
+                "processed": "Some transaction item were not processed"
+            },
+            "active": {
+                "edition": "An item is being modified"
+            },
+            "discard": "Discard",
+            "lodging": "Lodging",
+            "dining": "Dining"
+        },
+        "shifts": {
+            "shift": "Shift",
+            "title": "Shifts",
+            "open": "Open",
+            "close": "Close"
+        },
+        "passwords": {
+            "password": "Passwords must be at least six characters and match the confirmation.",
+            "reset": "Your password has been reset!",
+            "sent": "We have e-mailed your password reset link!",
+            "token": "This password reset token is invalid.",
+            "user": "We can't find a user with that e-mail address."
         },
         "common": {
             "back": "Back",
@@ -193,7 +348,7 @@ export default {
             },
             "lang": "Language",
             "month": "Month",
-            "months": "Months",
+            "months": "Month|Months",
             "view": {
                 "details": "View details"
             },
@@ -203,27 +358,6 @@ export default {
             },
             "clear": "Clear",
             "types": "Types"
-        },
-        "dining": {
-            "title": "Dining service",
-            "new": {
-                "item": "New item",
-                "menu": {
-                    "item": "New menu item"
-                }
-            },
-            "menu": {
-                "item": "Menu item"
-            },
-            "item": "Item"
-        },
-        "props": {
-            "add": "Add prop",
-            "chooseProps": "Choose prop",
-            "prop": "Prop",
-            "title": "Props",
-            "wasDisabled": "The prop element cannot be deleted and was disabled",
-            "transactions": "Props transaction"
         },
         "vehicles": {
             "bicycle": "Bicycle",
@@ -244,97 +378,19 @@ export default {
             "driver": "Driver",
             "drivers": "Drivers"
         },
-        "transactions": {
-            "commentary": "Commentary",
-            "type": "Type",
-            "title": "Transactions",
-            "discharge": "Discharge",
-            "discharges": "Discharges",
-            "entries": "Entries",
-            "entry": "Entry",
-            "loss": "Loss",
-            "losses": "Losses",
+        "accounts": {
+            "title": "Account",
+            "password": {
+                "updated": "The password was updated",
+                "wrong": "Wrong password",
+                "new": "New password"
+            }
+        },
+        "sales": {
+            "new": "New sale",
+            "register": "Register sale",
             "sale": "Sale",
-            "sales": "Sales",
-            "select": {
-                "type": "Select transaction type"
-            },
-            "element": {
-                "exists": "This item has already been added."
-            },
-            "made": {
-                "by": "Made by"
-            },
-            "no": {
-                "stock": "The element has no stock in the inventory",
-                "item": "There is no item to process"
-            },
-            "choose": {
-                "hotel": "Please choose a hotel",
-                "type": "Please choose a transaction type",
-                "company": "Please select a supplier"
-            },
-            "incomplete": "Incomplete fields were detected",
-            "amount": {
-                "zero": "The quantity must be greater than zero"
-            },
-            "has": {
-                "errors": "Errors were detected"
-            },
-            "all": {
-                "processed": "All transaction item were processed."
-            },
-            "partial": {
-                "processed": "Some transaction item were not processed"
-            },
-            "active": {
-                "edition": "An item is being modified"
-            },
-            "discard": "Discard",
-            "lodging": "Lodging",
-            "dining": "Dining"
-        },
-        "plans": {
-            "title": "Plans",
-            "own": "My plan",
-            "type": {
-                "basic": "Basic",
-                "free": "Free",
-                "premium": "Premium",
-                "sponsor": "Sponsor"
-            },
-            "types": "Plans type",
-            "duration": "Duration time in months",
-            "descriptions": {
-                "basic": "All modules for {months} months",
-                "free": "All modules for {months} month",
-                "premium": "All modules and electronic invoicing for 12 months",
-                "sponsor": "All platform features without time limit"
-            },
-            "prices": "Plan prices",
-            "features": {
-                "all": "All modules",
-                "sponsor": "If you want to support the platform development. This plan is assignable in direct negotiation.",
-                "support": {
-                    "mail": "Email support only",
-                    "priority": "Priority technical support"
-                },
-                "unique": "{months} month one time",
-                "renewable": "{months} months",
-                "default": "Please, contact us to purchase this plan"
-            },
-            "ready": "Your {plan} plan was activated"
-        },
-        "maintenances": {
-            "maintenance": "Maintenance",
-            "title": "Maintenances"
-        },
-        "passwords": {
-            "password": "Passwords must be at least six characters and match the confirmation.",
-            "reset": "Your password has been reset!",
-            "sent": "We have e-mailed your password reset link!",
-            "token": "This password reset token is invalid.",
-            "user": "We can't find a user with that e-mail address."
+            "title": "Sales"
         },
         "months": {
             "april": "Abril",
@@ -349,195 +405,6 @@ export default {
             "november": "November",
             "september": "September",
             "october": "October"
-        },
-        "dashboard": {
-            "settings": "Settings",
-            "profile": "Profile",
-            "search": "Search",
-            "dashboard": "Dashboard"
-        },
-        "email": {
-            "active": "Active account",
-            "notification": "Notification",
-            "terms": "When you activate your account, the terms and conditions of the site are understood to be accepted. {app} is committed to the protection of the personal data supplied, which will not be sold or transferred to third parties; everything is done in compliance with the legal framework of Data Protection of Colombia, law 1581 of 2012.",
-            "asCollaborator": "has added you as his collaborator.",
-            "welcome": "Welcome to {app}; To confirm your email and activate your account, please click on the \"Activate account\" button.",
-            "fail": "Unable to send your message",
-            "send": "Send",
-            "sent": "Your message was sent successfully"
-        },
-        "companies": {
-            "company": "Company",
-            "title": "Companies",
-            "businessName": "Business name",
-            "tin": "Taxpayer identification number",
-            "is": {
-                "supplier": "La company is a supplier"
-            },
-            "isnt": {
-                "supplier": "The company isn't a supplier"
-            },
-            "no": {
-                "registered": "There are no registered companies"
-            },
-            "new": {
-                "many": "new companies",
-                "none": "No recent company registrations",
-                "one": "new company"
-            }
-        },
-        "reports": {
-            "report": "Report",
-            "title": "Reports",
-            "type": "Report type",
-            "list": "List",
-            "listOf": "List of"
-        },
-        "users": {
-            "title": "Users",
-            "active": "Active",
-            "inactive": "Inactive",
-            "verification": "Verification",
-            "admin": "Administrator",
-            "receptionist": "Recepcionist",
-            "root": "Root",
-            "successful": "The user was created successfully",
-            "actives": "Actives",
-            "inactives": "Inactives",
-            "notVerified": "Not verified",
-            "verified": "Verified",
-            "wasDeleted": "User was deleted",
-            "wasDisabled": "User was disabled because he has records in the system",
-            "chooseRole": "Choose a role",
-            "accountant": "Accountant",
-            "manager": "Manager",
-            "team": "My team",
-            "role": "Role",
-            "permissions": "Permissions",
-            "cashier": "Cashier"
-        },
-        "invoices": {
-            "title": "Invoices",
-            "status": {
-                "canceled": "Canceled",
-                "paid": "Paid",
-                "pending": "Pending"
-            }
-        },
-        "accounts": {
-            "title": "Account",
-            "password": {
-                "updated": "The password was updated",
-                "wrong": "Wrong password",
-                "new": "New password"
-            }
-        },
-        "assets": {
-            "title": "Assets",
-            "add": "Add assets",
-            "assignedRoom": "Assigned room",
-            "location": "Location",
-            "anyPlace": "Any place",
-            "assignTo": "Assign to",
-            "serialNumber": "Serial number",
-            "registered": "A new asset was registered",
-            "rooms": {
-                "remove": "Remove room"
-            }
-        },
-        "permissions": {
-            "add": "Add",
-            "create": "Create",
-            "destroy": "Destroy",
-            "edit": "Edit",
-            "index": "List",
-            "load": "Load",
-            "search": "Search",
-            "show": "Show",
-            "close": "Close",
-            "losses": "Losses",
-            "open": "Open",
-            "discard": "Discard",
-            "entry": "Entry",
-            "loss": "Loss",
-            "sale": "Sale",
-            "vouchers": "Vouchers"
-        },
-        "hotels": {
-            "title": "Hotels",
-            "all": "All hotels",
-            "one": "One hotel or headquarters",
-            "choose": "Choose a hotel or headquarters",
-            "no": {
-                "registered": "There are no registered hotels"
-            },
-            "business": {
-                "name": "Business name"
-            },
-            "headquarters": "Headquarters",
-            "note": "We recommend you upload square images, or 3/2 aspect ratio, maximum weight 200 Kb. If you do not add a logo, one will be displayed by default.",
-            "independent": "Independent hotel",
-            "info": "The hotels and the headquarters, once created, cannot be modified due to the restrictions of the historical records",
-            "main": "Main hotel"
-        },
-        "shifts": {
-            "shift": "Shift",
-            "title": "Shifts",
-            "open": "Open",
-            "close": "Close"
-        },
-        "home": {
-            "title": "Panel"
-        },
-        "pagination": {
-            "previous": "&laquo; Previous",
-            "next": "Next &raquo;"
-        },
-        "services": {
-            "title": "Services",
-            "chooseService": "Choose a service",
-            "service": "Service",
-            "wasDisabled": "The service cannot be deleted and was disabled",
-            "quantity": "This is an unlimited item"
-        },
-        "team": {
-            "title": "Team",
-            "member": "Team member",
-            "assignment": "Headquarters Assignment",
-            "workplace": "Workplace",
-            "new": "New team member"
-        },
-        "sales": {
-            "new": "New sale",
-            "register": "Register sale",
-            "sale": "Sale",
-            "title": "Sales"
-        },
-        "guests": {
-            "title": "Guests",
-            "guest": "Guest",
-            "chooseGender": "Choose gender",
-            "recently": "Recently registered",
-            "profession": "Profession",
-            "country": "Country",
-            "registerDate": "Register date",
-            "entered": "The guest entered the hotel",
-            "left": "The guest left the hotel",
-            "registerEntry": "Register entry",
-            "registerExit": "Register exit",
-            "hosted": "Hosted",
-            "birth": {
-                "country": "Birth country"
-            },
-            "new": {
-                "many": "new guests",
-                "none": "No new registrations",
-                "one": "new guest"
-            },
-            "status": {
-                "hosted": "Hosted",
-                "out": "Not hosted"
-            }
         },
         "login": {
             "identification": "Sign in",
@@ -561,137 +428,44 @@ export default {
             "confirmPassword": "Confirm password",
             "signup": "Sign up"
         },
-        "auth": {
-            "failed": "These credentials do not match our records.",
-            "throttle": "Too many login attempts. Please try again in {seconds} seconds.",
-            "verify": {
-                "click": "click here to request another.",
-                "receive": "If you did not receive the email",
-                "link": "Before proceeding, please check your email for a verification link.",
-                "reset": "A fresh verification link has been sent to your email address.",
-                "title": "Verify Your Email Address"
+        "companies": {
+            "company": "Company",
+            "title": "Companies",
+            "businessName": "Business name",
+            "tin": "Taxpayer identification number",
+            "is": {
+                "supplier": "La company is a supplier"
+            },
+            "isnt": {
+                "supplier": "The company isn't a supplier"
+            },
+            "no": {
+                "registered": "There are no registered companies"
+            },
+            "new": {
+                "many": "new companies",
+                "none": "No recent company registrations",
+                "one": "new company"
             }
         },
-        "vouchers": {
-            "title": "Vouchers",
-            "forCompany": "For company",
-            "tourism": "Tourism",
-            "registerGuests": "Register guests",
-            "minors": "Minors",
-            "responsibleAdult": "Responsible adult",
-            "registerCustomerCompany": "Register customer company",
-            "registerCustomerGuest": "Register customer guest",
-            "customerCompany": "Customer company",
-            "customerGuest": "Customer guest",
-            "see": "See the voucher",
-            "loadProducts": "Load products",
-            "loadServices": "Load services",
-            "nights": "Nights",
-            "voucher": "Voucher",
-            "reason": "The reason for the sight",
-            "data": "Data",
-            "statisticalData": "Statistical data",
-            "selectIfApplicable": "Select only if applicable",
-            "registry": "Registry",
-            "reservation": "Reservation",
-            "job": "Job",
-            "registerCompany": "Register company",
-            "onlyOne": "There is only one guest",
-            "linkCompany": "Link company",
-            "linkNewCompany": "Link new company",
-            "withoutGuests": "There are no registered guests",
-            "vehicleAttached": "The vehicle is already attached to the current voucher.",
-            "hasVehicles": "The guest has a vehicle registered",
-            "addAdditional": "Add additional",
-            "additionals": "Additionals",
-            "customer": "Customer",
-            "open": "Open",
+        "permissions": {
+            "add": "Add",
+            "create": "Create",
+            "destroy": "Destroy",
+            "edit": "Edit",
+            "index": "List",
+            "load": "Load",
+            "search": "Search",
+            "show": "Show",
             "close": "Close",
             "losses": "Losses",
-            "closed": "Closed",
-            "loss": "Register as loss",
-            "route": "Route",
-            "checkin": "Check-in",
-            "external": "External service",
-            "from": "From",
-            "to": "To",
-            "note": "This document does not represent a legal invoice or equivalent, it is only a support for the transactions of products and services in the hotel.",
-            "isOpen": "The voucher is open, close it before closing payments.",
-            "questions": "If you have any questions about this voucher, please contact us",
-            "administration": "Administration",
-            "destination": "Destination",
-            "origin": "Origin",
-            "isClosed": "The voucher is closed",
-            "process": "Process",
-            "nothingToProcess": "There are no vouchers to process",
-            "processing": "Voucher processing",
-            "has": {
-                "one": {
-                    "room": "This voucher only has one room"
-                }
-            },
-            "delivered": {
-                "room": "The room was delivered"
-            },
-            "impossible": {
-                "room": {
-                    "change": "It is not possible to change the guest of your current room"
-                }
-            },
-            "inactive": {
-                "guest": "The guest is inactive in the current voucher"
-            },
-            "complete": {
-                "processing": "All vouchers were processed"
-            },
-            "incomplete": {
-                "processing": "There are pending vouchers for processing"
-            },
-            "load": {
-                "external": {
-                    "services": "Load thirdparty services"
-                },
-                "dining": {
-                    "services": "Load dining services"
-                }
-            },
-            "back": "Back to voucher",
-            "notfound": "Voucher not found",
-            "new": {
-                "many": "new vouchers",
-                "none": "No recent vouchers created",
-                "one": "new voucher"
-            },
-            "add": {
-                "companies": "Add companies"
-            },
-            "register": {
-                "vehicles": "Register vehicles"
-            },
-            "filters": "Voucher filters"
-        },
-        "products": {
-            "add": "Add productos",
-            "title": "Products",
-            "increase": "Increase stock",
-            "losses": "Record losses",
-            "chooseProduct": "Choose a product",
-            "product": "Product",
-            "wasDisabled": "The product cannot be deleted and was disabled",
-            "creation": "Product creation",
-            "transactions": "Products transactions",
-            "current": {
-                "stock": "Current stock"
-            }
-        },
-        "currencies": {
-            "cop": "Colombian peso",
-            "usd": "American dollar",
-            "title": "Currencies",
-            "currency": "Currency",
-            "exchange": {
-                "error": "The currency conversion service is not available"
-            }
+            "open": "Open",
+            "discard": "Discard",
+            "entry": "Entry",
+            "loss": "Loss",
+            "sale": "Sale",
+            "vouchers": "Vouchers",
+            "toggle": "Toggle status"
         },
         "notes": {
             "title": "Notes",
@@ -711,6 +485,23 @@ export default {
             "vehicle": "On voucher No. {link}, vehicle entry, registration",
             "owner": "the owner is",
             "tags": "Tags"
+        },
+        "hotels": {
+            "title": "Hotels",
+            "all": "All hotels",
+            "one": "One hotel or headquarters",
+            "choose": "Choose a hotel or headquarters",
+            "no": {
+                "registered": "There are no registered hotels"
+            },
+            "business": {
+                "name": "Business name"
+            },
+            "headquarters": "Headquarters",
+            "note": "We recommend you upload square images, or 3/2 aspect ratio, maximum weight 200 Kb. If you do not add a logo, one will be displayed by default.",
+            "independent": "Independent hotel",
+            "info": "The hotels and the headquarters, once created, cannot be modified due to the restrictions of the historical records",
+            "main": "Main hotel"
         },
         "landing": {
             "about": "App",
@@ -813,6 +604,363 @@ export default {
                 "description": "Hotel management suite, allows to control rooms, inventories, guests, shifts and roles such as receptionist and manager."
             }
         },
+        "invoices": {
+            "title": "Invoices",
+            "status": {
+                "canceled": "Canceled",
+                "paid": "Paid",
+                "pending": "Pending"
+            }
+        },
+        "props": {
+            "add": "Add prop",
+            "chooseProps": "Choose prop",
+            "prop": "Prop",
+            "title": "Props",
+            "wasDisabled": "The prop element cannot be deleted and was disabled",
+            "transactions": "Props transaction"
+        },
+        "plans": {
+            "title": "Plans",
+            "own": "My plan",
+            "type": {
+                "basic": "Basic",
+                "free": "Free",
+                "premium": "Premium",
+                "sponsor": "Sponsor"
+            },
+            "types": "Plans type",
+            "duration": "Duration time in months",
+            "descriptions": {
+                "basic": "All modules for {months} months",
+                "free": "All modules for {months} month|All modules for {months} months",
+                "premium": "All modules and electronic invoicing for 12 months",
+                "sponsor": "All platform features without time limit"
+            },
+            "prices": "Plan prices",
+            "features": {
+                "all": "All modules",
+                "sponsor": "If you want to support the platform development. This plan is assignable in direct negotiation.",
+                "support": {
+                    "mail": "Email support only",
+                    "priority": "Priority technical support"
+                },
+                "unique": "{months} month one time|{months} months one time",
+                "renewable": "{months} months",
+                "default": "Please, contact us to purchase this plan"
+            },
+            "ready": "Your {plan} plan was activated"
+        },
+        "email": {
+            "active": "Active account",
+            "notification": "Notification",
+            "terms": "When you activate your account, the terms and conditions of the site are understood to be accepted. {app} is committed to the protection of the personal data supplied, which will not be sold or transferred to third parties; everything is done in compliance with the legal framework of Data Protection of Colombia, law 1581 of 2012.",
+            "asCollaborator": "has added you as his collaborator.",
+            "welcome": "Welcome to {app}; To confirm your email and activate your account, please click on the \"Activate account\" button.",
+            "fail": "Unable to send your message",
+            "send": "Send",
+            "sent": "Your message was sent successfully"
+        },
+        "dashboard": {
+            "settings": "Settings",
+            "profile": "Profile",
+            "search": "Search",
+            "dashboard": "Dashboard"
+        },
+        "pagination": {
+            "previous": "&laquo; Previous",
+            "next": "Next &raquo;"
+        },
+        "home": {
+            "title": "Panel"
+        },
+        "maintenances": {
+            "maintenance": "Maintenance",
+            "title": "Maintenances",
+            "actions": {
+                "create": "Register a maintenance"
+            }
+        },
+        "validation": {
+            "accepted": "The {attribute} must be accepted.",
+            "active_url": "The {attribute} is not a valid URL.",
+            "after": "The {attribute} must be a date after {date}.",
+            "after_or_equal": "The {attribute} must be a date after or equal to {date}.",
+            "alpha": "The {attribute} must only contain letters.",
+            "alpha_dash": "The {attribute} must only contain letters, numbers, and dashes.",
+            "alpha_num": "The {attribute} must only contain letters and numbers.",
+            "array": "The {attribute} must be an array.",
+            "before": "The {attribute} must be a date before {date}.",
+            "before_or_equal": "The {attribute} must be a date before or equal to {date}.",
+            "between": {
+                "numeric": "The {attribute} must be between {min} and {max}.",
+                "file": "The {attribute} must be between {min} and {max} kilobytes.",
+                "string": "The {attribute} must be between {min} and {max} characters.",
+                "array": "The {attribute} must have between {min} and {max} items."
+            },
+            "boolean": "The {attribute} field must be true or false.",
+            "confirmed": "The {attribute} confirmation does not match.",
+            "current_password": "The password is incorrect.",
+            "date": "The {attribute} is not a valid date.",
+            "date_format": "The {attribute} does not match the format {format}.",
+            "declined": "The {attribute} must be declined.",
+            "declined_if": "The {attribute} must be declined when {other} is {value}.",
+            "different": "The {attribute} and {other} must be different.",
+            "digits": "The {attribute} must be {digits} digits.",
+            "digits_between": "The {attribute} must be between {min} and {max} digits.",
+            "dimensions": "The {attribute} has invalid image dimensions.",
+            "distinct": "The {attribute} field has a duplicate value.",
+            "email": "The {attribute} must be a valid email address.",
+            "ends_with": "The {attribute} must end with one of the following: {values}.",
+            "enum": "The selected {attribute} is invalid.",
+            "exists": "The selected {attribute} is invalid.",
+            "file": "The {attribute} must be a file.",
+            "filled": "The {attribute} field must have a value.",
+            "gt": {
+                "numeric": "The {attribute} must be greater than {value}.",
+                "file": "The {attribute} must be greater than {value} kilobytes.",
+                "string": "The {attribute} must be greater than {value} characters.",
+                "array": "The {attribute} must have more than {value} items."
+            },
+            "gte": {
+                "numeric": "The {attribute} must be greater than or equal to {value}.",
+                "file": "The {attribute} must be greater than or equal to {value} kilobytes.",
+                "string": "The {attribute} must be greater than or equal to {value} characters.",
+                "array": "The {attribute} must have {value} items or more."
+            },
+            "image": "The {attribute} must be an image.",
+            "in": "The selected {attribute} is invalid.",
+            "in_array": "The {attribute} field does not exist in {other}.",
+            "integer": "The {attribute} must be an integer.",
+            "ip": "The {attribute} must be a valid IP address.",
+            "ipv4": "The {attribute} must be a valid IPv4 address.",
+            "ipv6": "The {attribute} must be a valid IPv6 address.",
+            "json": "The {attribute} must be a valid JSON string.",
+            "lt": {
+                "numeric": "The {attribute} must be less than {value}.",
+                "file": "The {attribute} must be less than {value} kilobytes.",
+                "string": "The {attribute} must be less than {value} characters.",
+                "array": "The {attribute} must have less than {value} items."
+            },
+            "lte": {
+                "numeric": "The {attribute} must be less than or equal to {value}.",
+                "file": "The {attribute} must be less than or equal to {value} kilobytes.",
+                "string": "The {attribute} must be less than or equal to {value} characters.",
+                "array": "The {attribute} must not have more than {value} items."
+            },
+            "mac_address": "The {attribute} must be a valid MAC address.",
+            "max": {
+                "numeric": "The {attribute} may not be greater than {max}.",
+                "file": "The {attribute} may not be greater than {max} kilobytes.",
+                "string": "The {attribute} may not be greater than {max} characters.",
+                "array": "The {attribute} may not have more than {max} items."
+            },
+            "mimes": "The {attribute} must be a file of type: {values}.",
+            "mimetypes": "The {attribute} must be a file of type: {values}.",
+            "min": {
+                "numeric": "The {attribute} must be at least {min}.",
+                "file": "The {attribute} must be at least {min} kilobytes.",
+                "string": "The {attribute} must be at least {min} characters.",
+                "array": "The {attribute} must have at least {min} items."
+            },
+            "multiple_of": "The {attribute} must be a multiple of {value}.",
+            "not_in": "The selected {attribute} is invalid.",
+            "not_regex": "The {attribute} format is invalid.",
+            "numeric": "The {attribute} must be a number.",
+            "present": "The {attribute} field must be present.",
+            "prohibited": "The {attribute} field is prohibited.",
+            "prohibited_if": "The {attribute} field is prohibited when {other} is {value}.",
+            "prohibited_unless": "The {attribute} field is prohibited unless {other} is in {values}.",
+            "prohibits": "The {attribute} field prohibits {other} from being present.",
+            "regex": "The {attribute} format is invalid.",
+            "required": "The {attribute} field is required.",
+            "required_array_keys": "The {attribute} field must contain entries for: {values}.",
+            "required_if": "The {attribute} field is required when {other} is {value}.",
+            "required_unless": "The {attribute} field is required unless {other} is in {values}.",
+            "required_with": "The {attribute} field is required when {values} is present.",
+            "required_with_all": "The {attribute} field is required when {values} is present.",
+            "required_without": "The {attribute} field is required when {values} is not present.",
+            "required_without_all": "The {attribute} field is required when none of {values} are present.",
+            "same": "The {attribute} and {other} must match.",
+            "size": {
+                "numeric": "The {attribute} must be {size}.",
+                "file": "The {attribute} must be {size} kilobytes.",
+                "string": "The {attribute} must be {size} characters.",
+                "array": "The {attribute} must contain {size} items."
+            },
+            "string": "The {attribute} must be a string.",
+            "timezone": "The {attribute} must be a valid timezone.",
+            "unique": "The {attribute} has already been taken.",
+            "uploaded": "The {attribute} failed to upload.",
+            "url": "The {attribute} must be a valid URL.",
+            "0": {
+                "attribute-name": {
+                    "rule-name": "custom-message"
+                }
+            },
+            "verified": "The {attribute} has not been verified",
+            "unique_per_user": "There is already a record with the same information",
+            "open_shift": "There is already an open shift",
+            "has_headquarters": "The team member does not have an assigned headquarter",
+            "headquarters": "This unique number, as an independent hotel, is already in use."
+        },
+        "reports": {
+            "report": "Report",
+            "title": "Reports",
+            "type": "Report type",
+            "list": "List",
+            "listOf": "List of"
+        },
+        "products": {
+            "add": "Add productos",
+            "title": "Products",
+            "increase": "Increase stock",
+            "losses": "Record losses",
+            "chooseProduct": "Choose a product",
+            "product": "Product",
+            "wasDisabled": "The product cannot be deleted and was disabled",
+            "creation": "Product creation",
+            "transactions": "Products transactions",
+            "current": {
+                "stock": "Current stock"
+            }
+        },
+        "dining": {
+            "title": "Dining service",
+            "new": {
+                "item": "New item",
+                "menu": {
+                    "item": "New menu item"
+                }
+            },
+            "menu": {
+                "item": "Menu item"
+            },
+            "item": "Item"
+        },
+        "vouchers": {
+            "title": "Vouchers",
+            "forCompany": "For company",
+            "tourism": "Tourism",
+            "registerGuests": "Register guests",
+            "minors": "Minors",
+            "responsibleAdult": "Responsible adult",
+            "registerCustomerCompany": "Register customer company",
+            "registerCustomerGuest": "Register customer guest",
+            "customerCompany": "Customer company",
+            "customerGuest": "Customer guest",
+            "see": "See the voucher",
+            "loadProducts": "Load products",
+            "loadServices": "Load services",
+            "nights": "Nights",
+            "voucher": "Voucher",
+            "reason": "The reason for the sight",
+            "data": "Data",
+            "statisticalData": "Statistical data",
+            "selectIfApplicable": "Select only if applicable",
+            "registry": "Registry",
+            "reservation": "Reservation",
+            "job": "Job",
+            "registerCompany": "Register company",
+            "onlyOne": "There is only one guest",
+            "linkCompany": "Link company",
+            "linkNewCompany": "Link new company",
+            "withoutGuests": "There are no registered guests",
+            "vehicleAttached": "The vehicle is already attached to the current voucher.",
+            "hasVehicles": "The guest has a vehicle registered",
+            "addAdditional": "Add additional",
+            "additionals": "Additionals",
+            "customer": "Customer",
+            "open": "Open",
+            "close": "Close",
+            "losses": "Losses",
+            "closed": "Closed",
+            "loss": "Register as loss",
+            "route": "Route",
+            "checkin": "Check-in",
+            "external": "External service",
+            "from": "From",
+            "to": "To",
+            "note": "This document does not represent a legal invoice or equivalent, it is only a support for the transactions of products and services in the hotel.",
+            "isOpen": "The voucher is open, close it before closing payments.",
+            "questions": "If you have any questions about this voucher, please contact us",
+            "administration": "Administration",
+            "destination": "Destination",
+            "origin": "Origin",
+            "isClosed": "The voucher is closed",
+            "process": "Process",
+            "nothingToProcess": "There are no vouchers to process",
+            "processing": "Voucher processing",
+            "has": {
+                "one": {
+                    "room": "This voucher only has one room"
+                }
+            },
+            "delivered": {
+                "room": "The room was delivered"
+            },
+            "impossible": {
+                "room": {
+                    "change": "It is not possible to change the guest of your current room"
+                }
+            },
+            "inactive": {
+                "guest": "The guest is inactive in the current voucher"
+            },
+            "complete": {
+                "processing": "All vouchers were processed"
+            },
+            "incomplete": {
+                "processing": "There are pending vouchers for processing"
+            },
+            "load": {
+                "external": {
+                    "services": "Load thirdparty services"
+                },
+                "dining": {
+                    "services": "Load dining services"
+                }
+            },
+            "back": "Back to voucher",
+            "notfound": "Voucher not found",
+            "new": {
+                "many": "new vouchers",
+                "none": "No recent vouchers created",
+                "one": "new voucher"
+            },
+            "add": {
+                "companies": "Add companies"
+            },
+            "register": {
+                "vehicles": "Register vehicles"
+            },
+            "filters": "Voucher filters",
+            "messages": {
+                "rooms": {
+                    "unavailable": "No rooms available"
+                }
+            }
+        },
+        "assets": {
+            "title": "Assets",
+            "add": "Add assets",
+            "assignedRoom": "Assigned room",
+            "location": "Location",
+            "anyPlace": "Any place",
+            "assignTo": "Assign to",
+            "serialNumber": "Serial number",
+            "registered": "A new asset was registered",
+            "rooms": {
+                "remove": "Remove room"
+            }
+        },
+        "team": {
+            "title": "Team",
+            "member": "Team member",
+            "assignment": "Headquarters Assignment",
+            "workplace": "Workplace",
+            "new": "New team member"
+        },
         "payments": {
             "payment": "Payment",
             "title": "Payments",
@@ -840,125 +988,23 @@ export default {
             },
             "close": "Close payments"
         },
-        "validation": {
-            "accepted": "The {attribute} must be accepted.",
-            "active_url": "The {attribute} is not a valid URL.",
-            "after": "The {attribute} must be a date after {date}.",
-            "after_or_equal": "The {attribute} must be a date after or equal to {date}.",
-            "alpha": "The {attribute} may only contain letters.",
-            "alpha_dash": "The {attribute} may only contain letters, numbers, and dashes.",
-            "alpha_num": "The {attribute} may only contain letters and numbers.",
-            "array": "The {attribute} must be an array.",
-            "before": "The {attribute} must be a date before {date}.",
-            "before_or_equal": "The {attribute} must be a date before or equal to {date}.",
-            "between": {
-                "numeric": "The {attribute} must be between {min} and {max}.",
-                "file": "The {attribute} must be between {min} and {max} kilobytes.",
-                "string": "The {attribute} must be between {min} and {max} characters.",
-                "array": "The {attribute} must have between {min} and {max} items."
-            },
-            "boolean": "The {attribute} field must be true or false.",
-            "confirmed": "The {attribute} confirmation does not match.",
-            "date": "The {attribute} is not a valid date.",
-            "date_format": "The {attribute} does not match the format {format}.",
-            "different": "The {attribute} and {other} must be different.",
-            "digits": "The {attribute} must be {digits} digits.",
-            "digits_between": "The {attribute} must be between {min} and {max} digits.",
-            "dimensions": "The {attribute} has invalid image dimensions.",
-            "distinct": "The {attribute} field has a duplicate value.",
-            "email": "The {attribute} must be a valid email address.",
-            "exists": "The selected {attribute} is invalid.",
-            "file": "The {attribute} must be a file.",
-            "filled": "The {attribute} field must have a value.",
-            "image": "The {attribute} must be an image.",
-            "in": "The selected {attribute} is invalid.",
-            "in_array": "The {attribute} field does not exist in {other}.",
-            "integer": "The {attribute} must be an integer.",
-            "ip": "The {attribute} must be a valid IP address.",
-            "ipv4": "The {attribute} must be a valid IPv4 address.",
-            "ipv6": "The {attribute} must be a valid IPv6 address.",
-            "json": "The {attribute} must be a valid JSON string.",
-            "max": {
-                "numeric": "The {attribute} may not be greater than {max}.",
-                "file": "The {attribute} may not be greater than {max} kilobytes.",
-                "string": "The {attribute} may not be greater than {max} characters.",
-                "array": "The {attribute} may not have more than {max} items."
-            },
-            "mimes": "The {attribute} must be a file of type: {values}.",
-            "mimetypes": "The {attribute} must be a file of type: {values}.",
-            "min": {
-                "numeric": "The {attribute} must be at least {min}.",
-                "file": "The {attribute} must be at least {min} kilobytes.",
-                "string": "The {attribute} must be at least {min} characters.",
-                "array": "The {attribute} must have at least {min} items."
-            },
-            "not_in": "The selected {attribute} is invalid.",
-            "not_regex": "The {attribute} format is invalid.",
-            "numeric": "The {attribute} must be a number.",
-            "present": "The {attribute} field must be present.",
-            "regex": "The {attribute} format is invalid.",
-            "required": "The {attribute} field is required.",
-            "required_if": "The {attribute} field is required when {other} is {value}.",
-            "required_unless": "The {attribute} field is required unless {other} is in {values}.",
-            "required_with": "The {attribute} field is required when {values} is present.",
-            "required_with_all": "The {attribute} field is required when {values} is present.",
-            "required_without": "The {attribute} field is required when {values} is not present.",
-            "required_without_all": "The {attribute} field is required when none of {values} are present.",
-            "same": "The {attribute} and {other} must match.",
-            "size": {
-                "numeric": "The {attribute} must be {size}.",
-                "file": "The {attribute} must be {size} kilobytes.",
-                "string": "The {attribute} must be {size} characters.",
-                "array": "The {attribute} must contain {size} items."
-            },
-            "string": "The {attribute} must be a string.",
-            "timezone": "The {attribute} must be a valid zone.",
-            "unique": "The {attribute} has already been taken.",
-            "uploaded": "The {attribute} failed to upload.",
-            "url": "The {attribute} format is invalid.",
-            "custom": {
-                "attribute-name": {
-                    "rule-name": "custom-message"
-                }
-            },
-            "verified": "The {attribute} has not been verified",
-            "unique_per_user": "There is already a record with the same information",
-            "open_shift": "There is already an open shift",
-            "has_headquarters": "The team member does not have an assigned headquarter",
-            "headquarters": "This unique number, as an independent hotel, is already in use."
+        "services": {
+            "title": "Services",
+            "chooseService": "Choose a service",
+            "service": "Service",
+            "wasDisabled": "The service cannot be deleted and was disabled",
+            "quantity": "This is an unlimited item"
         },
-        "rooms": {
-            "title": "Rooms",
-            "disabled": "Disabled",
-            "free": "Free",
-            "maintenance": "Maintenance",
-            "occupied": "Occupied",
-            "successful": "The room was created successfully",
-            "room": "Room",
-            "wasDisabled": "The room was disabled",
-            "intoMaintenance": "The room went into maintenance",
-            "reserve": "Reserve",
-            "addRoom": "Add room",
-            "chooseRoom": "Choose a room",
-            "available": "Available",
-            "cleaning": "Cleaning",
-            "availableRooms": "Available rooms",
-            "changeRoom": "Change room",
-            "currentRoom": "Current room",
-            "deliver": "Deliver the room",
-            "no": {
-                "created": "There are no rooms created"
-            },
-            "type": "Indicates if the room is a suite",
-            "capacity": "Number of people to stay in the room",
-            "cannot": {
-                "enable": "You cannot enable this room",
-                "add": "You cannot add this room",
-                "destroy": "It is not possible to delete the room if it has associated vouchers, you can disable it."
-            },
-            "number": "Room No. {number}",
-            "change": {
-                "disabled": "The room cannot be changed"
+        "auth": {
+            "failed": "These credentials do not match our records.",
+            "password": "The provided password is incorrect.",
+            "throttle": "Too many login attempts. Please try again in {seconds} seconds.",
+            "verify": {
+                "click": "click here to request another.",
+                "receive": "If you did not receive the email",
+                "link": "Before proceeding, please check your email for a verification link.",
+                "reset": "A fresh verification link has been sent to your email address.",
+                "title": "Verify Your Email Address"
             }
         }
     },
@@ -974,6 +1020,98 @@ export default {
         "Reset Password": "Reestablecer contraseña",
         "Send Password Reset Link": "Enviar link para reestablecer contraseña",
         "Logout": "Cerrar sesión",
+        "users": {
+            "title": "Usuarios",
+            "verification": "Verificación",
+            "active": "Activo",
+            "inactive": "Inactivo",
+            "root": "Root",
+            "admin": "Administrador",
+            "receptionist": "Recepcionista",
+            "successful": "El usuario fue creado con éxito",
+            "actives": "Activos",
+            "inactives": "Inactivos",
+            "verified": "Verificado",
+            "notVerified": "No verificado",
+            "wasDeleted": "El usuario fue eliminado",
+            "wasDisabled": "El usuario fue deshabilitado porque tiene registros en el sistema",
+            "chooseRole": "Elige un rol",
+            "manager": "Gerente",
+            "accountant": "Contador",
+            "team": "Mi equipo",
+            "role": "Rol",
+            "permissions": "Permisos",
+            "cashier": "Cajero"
+        },
+        "currencies": {
+            "cop": "Peso colombiano",
+            "usd": "Dólar americano",
+            "title": "Monedas",
+            "currency": "Moneda",
+            "exchange": {
+                "error": "El servicio de conversión de moneda no está disponible"
+            }
+        },
+        "rooms": {
+            "title": "Habitaciones",
+            "occupied": "Ocupado",
+            "free": "Libre",
+            "maintenance": "Mantenimiento",
+            "disabled": "Deshabilitado",
+            "successful": "La habitación fue creada satisfactoriamente",
+            "room": "Habitación",
+            "wasDisabled": "La habitación fue deshabilitada",
+            "intoMaintenance": "La habitación entro a mantenimiento",
+            "reserve": "Reservar",
+            "addRoom": "Agregar habitación",
+            "chooseRoom": "Elije una habitación",
+            "available": "Disponible",
+            "cleaning": "Limpieza",
+            "changeRoom": "Cambiar de habitación",
+            "currentRoom": "Habitación actual",
+            "availableRooms": "Habitaciones disponibles",
+            "deliver": "Entregar la habitación",
+            "no": {
+                "created": "No hay habitaciones creadas"
+            },
+            "type": "Indica si la habitación es una suite",
+            "capacity": "Cantidad de personas a hospedar en la habitación",
+            "cannot": {
+                "enable": "Tú no puedes habilitar esta habitación",
+                "add": "Tú no puedes agregar esta habitación",
+                "destroy": "No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla."
+            },
+            "number": "Habitación No. {number}",
+            "change": {
+                "disabled": "La habitación no puede ser cambiada"
+            }
+        },
+        "guests": {
+            "title": "Huéspedes",
+            "guest": "Huésped",
+            "chooseGender": "Selecciona un género",
+            "recently": "Recientemente registrados",
+            "profession": "Profesión",
+            "country": "País",
+            "registerDate": "Fecha de registro",
+            "entered": "El huésped ingresó al hotel",
+            "left": "El huésped salió del hotel",
+            "registerEntry": "Registrar entrada",
+            "registerExit": "Registrar salida",
+            "hosted": "Hospedados",
+            "birth": {
+                "country": "País de nacimiento"
+            },
+            "new": {
+                "none": "No hay nuevos registros",
+                "one": "nuevo huésped",
+                "many": "nuevos huéspedes"
+            },
+            "status": {
+                "hosted": "Hospedado",
+                "out": "No hospedado"
+            }
+        },
         "modules": {
             "users": "Usuarios",
             "team": "Equipo de trabajo",
@@ -996,6 +1134,69 @@ export default {
             "plans": "Planes",
             "transactions": "Transacciones",
             "notes": "Notas"
+        },
+        "transactions": {
+            "type": "Tipo",
+            "commentary": "Comentario",
+            "title": "Transacciones",
+            "entry": "Entrada",
+            "entries": "Entradas",
+            "discharge": "Salida",
+            "discharges": "Salidas",
+            "sale": "Venta",
+            "loss": "Pérdida",
+            "sales": "Ventas",
+            "losses": "Pérdidas",
+            "select": {
+                "type": "Seleccione el tipo de transacción"
+            },
+            "element": {
+                "exists": "Este elemento ya fue agregado"
+            },
+            "made": {
+                "by": "Hecho por"
+            },
+            "no": {
+                "stock": "El elemento no tiene existencias en el inventario",
+                "item": "No hay ítem para procesar"
+            },
+            "choose": {
+                "hotel": "Por elije un hotel",
+                "type": "por favor elite un tipo de transacción",
+                "company": "Por favor seleccione un proveedor"
+            },
+            "incomplete": "Se detectaron campos incompletos",
+            "amount": {
+                "zero": "La cantidad debe ser mayor a cero"
+            },
+            "has": {
+                "errors": "Hay errores y no puedes continuar"
+            },
+            "all": {
+                "processed": "Todos los ítem de la transacción fueron procesados"
+            },
+            "partial": {
+                "processed": "Algunos ítem de la transacción no fueron procesados"
+            },
+            "active": {
+                "edition": "Un ítem está siendo modificado"
+            },
+            "discard": "Descarga",
+            "lodging": "Alojamiento",
+            "dining": "Comedor"
+        },
+        "shifts": {
+            "title": "Turnos",
+            "shift": "Turno",
+            "close": "Cerrado",
+            "open": "Abierto"
+        },
+        "passwords": {
+            "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",
+            "reset": "¡Su contraseña ha sido restablecida!",
+            "sent": "¡Recordatorio de contraseña enviado!",
+            "token": "Este token de restablecimiento de contraseña es inválido.",
+            "user": "No se ha encontrado un usuario con esa dirección de correo."
         },
         "common": {
             "create": "Crear",
@@ -1167,7 +1368,7 @@ export default {
             },
             "lang": "Lenguaje",
             "month": "Mes",
-            "months": "Meses",
+            "months": "Mes|Meses",
             "view": {
                 "details": "Ver detalles"
             },
@@ -1177,27 +1378,6 @@ export default {
             },
             "clear": "Limpiar",
             "types": "Tipos"
-        },
-        "dining": {
-            "title": "Servicio de comedor",
-            "new": {
-                "item": "Nuevo ítem",
-                "menu": {
-                    "item": "Nuevo ítem del menú"
-                }
-            },
-            "menu": {
-                "item": "Ítem del menú"
-            },
-            "item": "Ítem"
-        },
-        "props": {
-            "add": "Agregar utilería",
-            "chooseProps": "Seleccionar un elemento",
-            "prop": "Utilería",
-            "title": "Utilería",
-            "wasDisabled": "El elemento de utilería no pudo ser eliminado y fue deshabilitado",
-            "transactions": "Transacciones de utilería"
         },
         "vehicles": {
             "car": "Automóvil",
@@ -1218,97 +1398,19 @@ export default {
             "drivers": "Conductores",
             "driver": "Conductor"
         },
-        "transactions": {
-            "type": "Tipo",
-            "commentary": "Comentario",
-            "title": "Transacciones",
-            "entry": "Entrada",
-            "entries": "Entradas",
-            "discharge": "Salida",
-            "discharges": "Salidas",
+        "accounts": {
+            "title": "Tu cuenta",
+            "password": {
+                "updated": "La contraseña fue actualizada",
+                "wrong": "Contraseña incorrecta",
+                "new": "Nueva contraseña"
+            }
+        },
+        "sales": {
+            "title": "Ventas",
             "sale": "Venta",
-            "loss": "Pérdida",
-            "sales": "Ventas",
-            "losses": "Pérdidas",
-            "select": {
-                "type": "Seleccione el tipo de transacción"
-            },
-            "element": {
-                "exists": "Este elemento ya fue agregado"
-            },
-            "made": {
-                "by": "Hecho por"
-            },
-            "no": {
-                "stock": "El elemento no tiene existencias en el inventario",
-                "item": "No hay ítem para procesar"
-            },
-            "choose": {
-                "hotel": "Por elije un hotel",
-                "type": "por favor elite un tipo de transacción",
-                "company": "Por favor seleccione un proveedor"
-            },
-            "incomplete": "Se detectaron campos incompletos",
-            "amount": {
-                "zero": "La cantidad debe ser mayor a cero"
-            },
-            "has": {
-                "errors": "Hay errores y no puedes continuar"
-            },
-            "all": {
-                "processed": "Todos los ítem de la transacción fueron procesados"
-            },
-            "partial": {
-                "processed": "Algunos ítem de la transacción no fueron procesados"
-            },
-            "active": {
-                "edition": "Un ítem está siendo modificado"
-            },
-            "discard": "Descarga",
-            "lodging": "Alojamiento",
-            "dining": "Comedor"
-        },
-        "plans": {
-            "title": "Planes",
-            "own": "Mi plan",
-            "types": "Tipo de planes",
-            "type": {
-                "free": "Gratuito",
-                "basic": "Básico",
-                "premium": "Premium",
-                "sponsor": "Patrocinador"
-            },
-            "duration": "Tiempo de duración en meses",
-            "descriptions": {
-                "free": "Todos los módulos por {months} mes",
-                "basic": "Todos los módulos por {months} meses",
-                "premium": "Todos los módulos y facturación electrónica por 12 meses",
-                "sponsor": "Todas las características de la plataforma sin límite de tiempo"
-            },
-            "prices": "Precios de los planes",
-            "features": {
-                "unique": "{months} mes por única vez",
-                "all": "Todos los módulos",
-                "support": {
-                    "mail": "Soporte por correo",
-                    "priority": "Soporte técnico prioritario"
-                },
-                "sponsor": "Si desea apoyar el desarrollo de la plataforma. Este plan se puede asignar en negociación directa.",
-                "renewable": "{months} meses",
-                "default": "Por favor, contáctanos para adquirir este plan"
-            },
-            "ready": "Tu plan {plan} fue activado"
-        },
-        "maintenances": {
-            "title": "Mantenimientos",
-            "maintenance": "Mantenimiento"
-        },
-        "passwords": {
-            "password": "La contraseña debe tener al menos 6 caracteres y coincidir con la confirmación.",
-            "reset": "¡Su contraseña ha sido restablecida!",
-            "sent": "¡Recordatorio de contraseña enviado!",
-            "token": "Este token de restablecimiento de contraseña es inválido.",
-            "user": "No se ha encontrado un usuario con esa dirección de correo."
+            "new": "Nueva venta",
+            "register": "Registrar venta"
         },
         "months": {
             "january": "Enero",
@@ -1323,195 +1425,6 @@ export default {
             "december": "Diciembre",
             "july": "Julio",
             "october": "Octubre"
-        },
-        "dashboard": {
-            "settings": "Configuraciones",
-            "profile": "Perfil",
-            "search": "Buscar",
-            "dashboard": "Panel de control"
-        },
-        "email": {
-            "active": "Activar cuenta",
-            "notification": "Notificación",
-            "terms": "Al activar tu cuenta, se entienden por aceptados los términos y condiciones del sitio. app: se compromete con la protección de los datos personales suministrados, los cuales no serán vendidos, ni cedidos a terceros; todo se realiza en cumplimiento del marco legal de Protección de Datos de Colombia, ley 1581 de 2012. También se ajusta a las leyes de protección de datos personales a nivel internacional.",
-            "asCollaborator": "te ha agregado como su colaborador.",
-            "welcome": "Bienvenido al equipo de {app}; para confirmar tu correo y activar tu cuenta, por favor pulsa en el botón \"Activar cuenta\".",
-            "fail": "No es posible enviar su mensaje",
-            "send": "Enviar",
-            "sent": "Su mensaje fue enviado exitosamente"
-        },
-        "companies": {
-            "title": "Empresas",
-            "company": "Empresa",
-            "businessName": "Razón social",
-            "tin": "Número de identificación tributaria",
-            "is": {
-                "supplier": "La empresa es proveedora"
-            },
-            "isnt": {
-                "supplier": "La empresa no es proveedora"
-            },
-            "no": {
-                "registered": "No hay empresas registradas"
-            },
-            "new": {
-                "none": "No hay empresas recientes",
-                "one": "nueva empresa",
-                "many": "nuevas empresas"
-            }
-        },
-        "reports": {
-            "title": "Reportes",
-            "report": "Reporte",
-            "type": "Tipo de reporte",
-            "list": "Listado",
-            "listOf": "Listado de"
-        },
-        "users": {
-            "title": "Usuarios",
-            "verification": "Verificación",
-            "active": "Activo",
-            "inactive": "Inactivo",
-            "root": "Root",
-            "admin": "Administrador",
-            "receptionist": "Recepcionista",
-            "successful": "El usuario fue creado con éxito",
-            "actives": "Activos",
-            "inactives": "Inactivos",
-            "verified": "Verificado",
-            "notVerified": "No verificado",
-            "wasDeleted": "El usuario fue eliminado",
-            "wasDisabled": "El usuario fue deshabilitado porque tiene registros en el sistema",
-            "chooseRole": "Elige un rol",
-            "manager": "Gerente",
-            "accountant": "Contador",
-            "team": "Mi equipo",
-            "role": "Rol",
-            "permissions": "Permisos",
-            "cashier": "Cajero"
-        },
-        "invoices": {
-            "title": "Facturas",
-            "status": {
-                "paid": "Pagada",
-                "pending": "Pendiente",
-                "canceled": "Cancelada"
-            }
-        },
-        "accounts": {
-            "title": "Tu cuenta",
-            "password": {
-                "updated": "La contraseña fue actualizada",
-                "wrong": "Contraseña incorrecta",
-                "new": "Nueva contraseña"
-            }
-        },
-        "assets": {
-            "title": "Activos",
-            "add": "Agregar activos",
-            "assignedRoom": "Habitación asignada",
-            "location": "Ubicación",
-            "anyPlace": "Cualquier lugar",
-            "assignTo": "Asignar a",
-            "serialNumber": "Serie",
-            "registered": "Se registró un nuevo activo",
-            "rooms": {
-                "remove": "Quitar habitación"
-            }
-        },
-        "permissions": {
-            "index": "Listar",
-            "create": "Crear",
-            "show": "Mostrar",
-            "edit": "Editar",
-            "destroy": "Eliminar",
-            "search": "Buscar",
-            "add": "Agregar",
-            "load": "Cargar",
-            "close": "Cerrar",
-            "open": "Abrir",
-            "losses": "Pérdidas",
-            "sale": "Venta",
-            "entry": "Entrada",
-            "loss": "Pérdida",
-            "discard": "Salida",
-            "vouchers": "Recibos"
-        },
-        "hotels": {
-            "title": "Hoteles",
-            "all": "Todos los hoteles",
-            "one": "Un hotel o sede",
-            "choose": "Elije un hotel o sede",
-            "no": {
-                "registered": "No hay hoteles registrados"
-            },
-            "business": {
-                "name": "Razón social"
-            },
-            "headquarters": "Sede",
-            "note": "Te recomendamos cargar imágenes cuadradas, o de proporción 3/2, peso máximo 200 Kb. Si no agrega un logotipo, se mostrará uno por defecto.",
-            "independent": "Hotel independiente",
-            "info": "Los hoteles y la sede, una vez creados, no pueden modificarse debido a las restricciones de los registros históricos.",
-            "main": "Hotel principal"
-        },
-        "shifts": {
-            "title": "Turnos",
-            "shift": "Turno",
-            "close": "Cerrado",
-            "open": "Abierto"
-        },
-        "home": {
-            "title": "Panel"
-        },
-        "pagination": {
-            "previous": "&laquo; Anterior",
-            "next": "Siguiente &raquo;"
-        },
-        "services": {
-            "title": "Servicios",
-            "chooseService": "Elije un servicio",
-            "service": "Servicio",
-            "wasDisabled": "El servicio no puede ser eliminado y fue deshabilitado",
-            "quantity": "Este es un artículo ilimitado"
-        },
-        "team": {
-            "title": "Miembros del equipo",
-            "member": "Miembro del equipo",
-            "assignment": "Asignación de sede",
-            "workplace": "Sede laboral",
-            "new": "Nuevo integrante del equipo"
-        },
-        "sales": {
-            "title": "Ventas",
-            "sale": "Venta",
-            "new": "Nueva venta",
-            "register": "Registrar venta"
-        },
-        "guests": {
-            "title": "Huéspedes",
-            "guest": "Huésped",
-            "chooseGender": "Selecciona un género",
-            "recently": "Recientemente registrados",
-            "profession": "Profesión",
-            "country": "País",
-            "registerDate": "Fecha de registro",
-            "entered": "El huésped ingresó al hotel",
-            "left": "El huésped salió del hotel",
-            "registerEntry": "Registrar entrada",
-            "registerExit": "Registrar salida",
-            "hosted": "Hospedados",
-            "birth": {
-                "country": "País de nacimiento"
-            },
-            "new": {
-                "none": "No hay nuevos registros",
-                "one": "nuevo huésped",
-                "many": "nuevos huéspedes"
-            },
-            "status": {
-                "hosted": "Hospedado",
-                "out": "No hospedado"
-            }
         },
         "login": {
             "logout": "Salir",
@@ -1535,137 +1448,44 @@ export default {
             "confirmPassword": "Confirmar contraseña",
             "signup": "Regístrate"
         },
-        "auth": {
-            "failed": "Estas credenciales no coinciden con nuestros registros.",
-            "throttle": "Demasiados intentos de inicio de sesión. Vuelva a intentarlo en {seconds} segundos.",
-            "verify": {
-                "title": "Verifica tu dirección de correo electrónico",
-                "reset": "Un nuevo enlace de verificación ha sido enviado a tu dirección de correo electrónico.",
-                "link": "Antes de continuar, por favor verifica en tu correo electrónico un mensaje con un enlace de verificación.",
-                "receive": "Si no recibiste el correo electrónico",
-                "click": "clic aquí para enviar otro."
-            }
-        },
-        "vouchers": {
-            "title": "Recibos",
-            "forCompany": "Para empresa",
-            "tourism": "Turismo",
-            "registerGuests": "Registrar huéspedes",
-            "minors": "Menores de edad",
-            "responsibleAdult": "Adulto responsable",
-            "registerCustomerGuest": "Registrar huésped cliente",
-            "registerCustomerCompany": "Registrar empresa cliente",
-            "customerCompany": "Empresa cliente",
-            "customerGuest": "Huésped cliente",
-            "see": "Ver el recibo",
-            "loadProducts": "Cargar productos",
-            "loadServices": "Cargar servicios",
-            "nights": "Noches",
-            "voucher": "Recibo",
-            "reason": "Motivo de la visita",
-            "data": "Datos",
-            "statisticalData": "Datos estadísticos",
-            "selectIfApplicable": "Seleccionar sólo si aplica",
-            "registry": "Registro",
-            "reservation": "Reservación",
-            "job": "Trabajo",
-            "registerCompany": "Registrar empresa",
-            "onlyOne": "Sólo hay un huesped",
-            "linkCompany": "Vincular empresa",
-            "linkNewCompany": "Vincular nueva empresa",
-            "withoutGuests": "No hay huéspedes registrados",
-            "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
-            "hasVehicles": "El huésped tiene un vehículo registrado",
-            "addAdditional": "Agregar adicional",
-            "additionals": "Adicionales",
-            "customer": "Cliente",
-            "open": "Abiertos",
-            "close": "Cerrar",
-            "losses": "Pérdidas",
-            "closed": "Cerrados",
-            "loss": "Registrar como pérdida",
-            "route": "Ruta",
-            "checkin": "Ingreso",
-            "external": "Servicio externo",
-            "from": "De",
-            "to": "Para",
-            "note": "Este documento no representa una factura legal o equivalente, solo es un soporte de las transacciones de productos y servicios en el hotel.",
-            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
-            "questions": "Si tiene alguna pregunta sobre este recibo, por favor contáctenos",
-            "administration": "Administración",
-            "origin": "Origen",
-            "destination": "Destino",
-            "isClosed": "El recibo está cerrado",
-            "process": "Procesar",
-            "nothingToProcess": "No hay facturas para procesar",
-            "processing": "Procesamiento de recibos",
-            "has": {
-                "one": {
-                    "room": "Este recibo sólo cuenta con una habitación"
-                }
+        "companies": {
+            "title": "Empresas",
+            "company": "Empresa",
+            "businessName": "Razón social",
+            "tin": "Número de identificación tributaria",
+            "is": {
+                "supplier": "La empresa es proveedora"
             },
-            "delivered": {
-                "room": "La habitación fue entregada"
+            "isnt": {
+                "supplier": "La empresa no es proveedora"
             },
-            "impossible": {
-                "room": {
-                    "change": "No es posible cambiar al huésped de su habitación actual"
-                }
+            "no": {
+                "registered": "No hay empresas registradas"
             },
-            "inactive": {
-                "guest": "El invitado está inactivo en la factura actual"
-            },
-            "complete": {
-                "processing": "Todos los recibos fueron procesados"
-            },
-            "incomplete": {
-                "processing": "Quedaron recibos pendientes por procesar"
-            },
-            "load": {
-                "external": {
-                    "services": "Cargar servicios de terceros"
-                },
-                "dining": {
-                    "services": "Cargar servicios de comedor"
-                }
-            },
-            "back": "Volver al recibo",
-            "notfound": "Comprobante no encontrado",
             "new": {
-                "none": "No se han creado recibos recientemente",
-                "one": "nuevo recibo",
-                "many": "nuevos recibos"
-            },
-            "add": {
-                "companies": "Agregar empresas"
-            },
-            "register": {
-                "vehicles": "Registrar vehículos"
-            },
-            "filters": "Filtros de recibos"
-        },
-        "products": {
-            "title": "Productos",
-            "add": "Agregar productos",
-            "increase": "Incrementar stock",
-            "losses": "Registrar pérdidas",
-            "chooseProduct": "Elije un producto",
-            "product": "Producto",
-            "wasDisabled": "El producto no pudo ser eliminado y fue deshabilitado",
-            "creation": "Creación del producto",
-            "transactions": "Transacciones de productos",
-            "current": {
-                "stock": "Cantidad actual"
+                "none": "No hay empresas recientes",
+                "one": "nueva empresa",
+                "many": "nuevas empresas"
             }
         },
-        "currencies": {
-            "cop": "Peso colombiano",
-            "usd": "Dólar americano",
-            "title": "Monedas",
-            "currency": "Moneda",
-            "exchange": {
-                "error": "El servicio de conversión de moneda no está disponible"
-            }
+        "permissions": {
+            "index": "Listar",
+            "create": "Crear",
+            "show": "Mostrar",
+            "edit": "Editar",
+            "destroy": "Eliminar",
+            "search": "Buscar",
+            "add": "Agregar",
+            "load": "Cargar",
+            "close": "Cerrar",
+            "open": "Abrir",
+            "losses": "Pérdidas",
+            "sale": "Venta",
+            "entry": "Entrada",
+            "loss": "Pérdida",
+            "discard": "Salida",
+            "vouchers": "Recibos",
+            "toggle": "Cambiar estado"
         },
         "notes": {
             "title": "Notas",
@@ -1685,6 +1505,23 @@ export default {
             "vehicle": "En el recibo No. {link}, se registra vehículo con matrícula",
             "owner": "el propietario(a) es",
             "tags": "Etiquetas"
+        },
+        "hotels": {
+            "title": "Hoteles",
+            "all": "Todos los hoteles",
+            "one": "Un hotel o sede",
+            "choose": "Elije un hotel o sede",
+            "no": {
+                "registered": "No hay hoteles registrados"
+            },
+            "business": {
+                "name": "Razón social"
+            },
+            "headquarters": "Sede",
+            "note": "Te recomendamos cargar imágenes cuadradas, o de proporción 3/2, peso máximo 200 Kb. Si no agrega un logotipo, se mostrará uno por defecto.",
+            "independent": "Hotel independiente",
+            "info": "Los hoteles y la sede, una vez creados, no pueden modificarse debido a las restricciones de los registros históricos.",
+            "main": "Hotel principal"
         },
         "landing": {
             "home": "Inicio",
@@ -1787,6 +1624,363 @@ export default {
                 "description": "Suite de administración de hoteles, te permite controlar habitaciones, inventarios, huéspedes, turnos y roles como recepcionista y gerente."
             }
         },
+        "invoices": {
+            "title": "Facturas",
+            "status": {
+                "paid": "Pagada",
+                "pending": "Pendiente",
+                "canceled": "Cancelada"
+            }
+        },
+        "props": {
+            "add": "Agregar utilería",
+            "chooseProps": "Seleccionar un elemento",
+            "prop": "Utilería",
+            "title": "Utilería",
+            "wasDisabled": "El elemento de utilería no pudo ser eliminado y fue deshabilitado",
+            "transactions": "Transacciones de utilería"
+        },
+        "plans": {
+            "title": "Planes",
+            "own": "Mi plan",
+            "types": "Tipo de planes",
+            "type": {
+                "free": "Gratuito",
+                "basic": "Básico",
+                "premium": "Premium",
+                "sponsor": "Patrocinador"
+            },
+            "duration": "Tiempo de duración en meses",
+            "descriptions": {
+                "free": "Todos los módulos por {months} mes|Todos los módulos por {months} meses",
+                "basic": "Todos los módulos por {months} meses",
+                "premium": "Todos los módulos y facturación electrónica por 12 meses",
+                "sponsor": "Todas las características de la plataforma sin límite de tiempo"
+            },
+            "prices": "Precios de los planes",
+            "features": {
+                "unique": "{months} mes por única vez|{months} meses por única vez",
+                "all": "Todos los módulos",
+                "support": {
+                    "mail": "Soporte por correo",
+                    "priority": "Soporte técnico prioritario"
+                },
+                "sponsor": "Si desea apoyar el desarrollo de la plataforma. Este plan se puede asignar en negociación directa.",
+                "renewable": "{months} meses",
+                "default": "Por favor, contáctanos para adquirir este plan"
+            },
+            "ready": "Tu plan {plan} fue activado"
+        },
+        "email": {
+            "active": "Activar cuenta",
+            "notification": "Notificación",
+            "terms": "Al activar tu cuenta, se entienden por aceptados los términos y condiciones del sitio. app: se compromete con la protección de los datos personales suministrados, los cuales no serán vendidos, ni cedidos a terceros; todo se realiza en cumplimiento del marco legal de Protección de Datos de Colombia, ley 1581 de 2012. También se ajusta a las leyes de protección de datos personales a nivel internacional.",
+            "asCollaborator": "te ha agregado como su colaborador.",
+            "welcome": "Bienvenido al equipo de {app}; para confirmar tu correo y activar tu cuenta, por favor pulsa en el botón \"Activar cuenta\".",
+            "fail": "No es posible enviar su mensaje",
+            "send": "Enviar",
+            "sent": "Su mensaje fue enviado exitosamente"
+        },
+        "dashboard": {
+            "settings": "Configuraciones",
+            "profile": "Perfil",
+            "search": "Buscar",
+            "dashboard": "Panel de control"
+        },
+        "pagination": {
+            "previous": "&laquo; Anterior",
+            "next": "Siguiente &raquo;"
+        },
+        "home": {
+            "title": "Panel"
+        },
+        "maintenances": {
+            "title": "Mantenimientos",
+            "maintenance": "Mantenimiento",
+            "actions": {
+                "create": "Registrar un mantenimiento"
+            }
+        },
+        "validation": {
+            "accepted": "El campo {attribute} debe ser aceptado.",
+            "active_url": "El campo {attribute} no es una URL válida.",
+            "after": "El campo {attribute} debe ser una fecha posterior a {date}.",
+            "after_or_equal": "El campo {attribute} debe ser una fecha posterior o igual a {date}.",
+            "alpha": "El campo {attribute} sólo puede contener letras.",
+            "alpha_dash": "El campo {attribute} sólo puede contener letras, números y guiones (a-z, 0-9, -_).",
+            "alpha_num": "El campo {attribute} sólo puede contener letras y números.",
+            "array": "El campo {attribute} debe ser un array.",
+            "before": "El campo {attribute} debe ser una fecha anterior a {date}.",
+            "before_or_equal": "El campo {attribute} debe ser una fecha anterior o igual a {date}.",
+            "between": {
+                "numeric": "El campo {attribute} debe ser un valor entre {min} y {max}.",
+                "file": "El archivo {attribute} debe pesar entre {min} y {max} kilobytes.",
+                "string": "El campo {attribute} debe contener entre {min} y {max} caracteres.",
+                "array": "El campo {attribute} debe contener entre {min} y {max} elementos."
+            },
+            "boolean": "El campo {attribute} debe ser verdadero o falso.",
+            "confirmed": "El campo confirmación de {attribute} no coincide.",
+            "current_password": "La contraseña es incorrecta.",
+            "date": "El campo {attribute} no corresponde con una fecha válida.",
+            "date_format": "El campo {attribute} no corresponde con el formato de fecha {format}.",
+            "declined": "El campo {attribute} debe ser declinado.",
+            "declined_if": "The {attribute} debe ser declinado cuando {other} es {value}.",
+            "different": "Los campos {attribute} y {other} deben ser diferentes.",
+            "digits": "El campo {attribute} debe ser un número de {digits} dígitos.",
+            "digits_between": "El campo {attribute} debe contener entre {min} y {max} dígitos.",
+            "dimensions": "El campo {attribute} tiene dimensiones inválidas.",
+            "distinct": "El campo {attribute} tiene un valor duplicado.",
+            "email": "El campo {attribute} debe ser una dirección de correo válida.",
+            "ends_with": "El campo {attribute} debe finalizar con uno de los siguientes: {values}.",
+            "enum": "El campo selecctionado {attribute} es inválido.",
+            "exists": "El campo {attribute} seleccionado no existe.",
+            "file": "El campo {attribute} debe ser un archivo.",
+            "filled": "El campo {attribute} debe tener algún valor.",
+            "gt": {
+                "numeric": "El campo {attribute} debe ser mayor a {value}.",
+                "file": "El archivo {attribute} debe pesar más de {value} kilobytes.",
+                "string": "El campo {attribute} debe contener más de {value} caracteres.",
+                "array": "El campo {attribute} debe contener más de {value} elementos."
+            },
+            "gte": {
+                "numeric": "El campo {attribute} debe ser mayor o igual a {value}.",
+                "file": "El archivo {attribute} debe pesar {value} o más kilobytes.",
+                "string": "El campo {attribute} debe contener {value} o más caracteres.",
+                "array": "El campo {attribute} debe contener {value} o más elementos."
+            },
+            "image": "El campo {attribute} debe ser una imagen.",
+            "in": "El campo {attribute} es inválido.",
+            "in_array": "El campo {attribute} no existe en {other}.",
+            "integer": "El campo {attribute} debe ser un número entero.",
+            "ip": "El campo {attribute} debe ser una dirección IP válida.",
+            "ipv4": "El campo {attribute} debe ser una dirección IPv4 válida.",
+            "ipv6": "El campo {attribute} debe ser una dirección IPv6 válida.",
+            "json": "El campo {attribute} debe ser una cadena de texto JSON válida.",
+            "lt": {
+                "numeric": "El campo {attribute} debe ser menor a {value}.",
+                "file": "El archivo {attribute} debe pesar menos de {value} kilobytes.",
+                "string": "El campo {attribute} debe contener menos de {value} caracteres.",
+                "array": "El campo {attribute} debe contener menos de {value} elementos."
+            },
+            "lte": {
+                "numeric": "El campo {attribute} debe ser menor o igual a {value}.",
+                "file": "El archivo {attribute} debe pesar {value} o menos kilobytes.",
+                "string": "El campo {attribute} debe contener {value} o menos caracteres.",
+                "array": "El campo {attribute} debe contener {value} o menos elementos."
+            },
+            "mac_address": "El campo {attribute} una dirección MAC válida.",
+            "max": {
+                "numeric": "El campo {attribute} no debe ser mayor a {max}.",
+                "file": "El archivo {attribute} no debe pesar más de {max} kilobytes.",
+                "string": "El campo {attribute} no debe contener más de {max} caracteres.",
+                "array": "El campo {attribute} no debe contener más de {max}."
+            },
+            "mimes": "El campo {attribute} debe ser un archivo de tipo {values}.",
+            "mimetypes": "El campo {attribute} debe ser un archivo de tipo {values}.",
+            "min": {
+                "numeric": "El campo {attribute} debe tener al menos {min}.",
+                "file": "El archivo {attribute} debe pesar al menos {min} kilobytes.",
+                "string": "El campo {attribute} debe contener al menos {min} caracteres.",
+                "array": "El campo {attribute} debe contener al menos {min} elementos."
+            },
+            "multiple_of": "El campo {attribute} debe ser un múltiplo de {value}.",
+            "not_in": "El campo {attribute} seleccionado es inválido.",
+            "not_regex": "El formato del campo {attribute} es inválido.",
+            "numeric": "El campo {attribute} debe ser un número.",
+            "present": "El campo {attribute} debe estar presente.",
+            "prohibited": "El campo {attribute} está prohibido.",
+            "prohibited_if": "El campo {attribute} está prohibido cuando {other} es {value}.",
+            "prohibited_unless": "El campo {attribute} prohibido a menos que {other} está en {values}.",
+            "prohibits": "El campo {attribute} field prohibits {other} from being present.",
+            "regex": "El formato del campo {attribute} es inválido.",
+            "required": "El campo {attribute} es obligatorio.",
+            "required_array_keys": "El campo {attribute} debe contener un valor de: {values}.",
+            "required_if": "El campo {attribute} es obligatorio cuando el campo {other} es {value}.",
+            "required_unless": "El campo {attribute} es requerido a menos que {other} se encuentre en {values}.",
+            "required_with": "El campo {attribute} es obligatorio cuando {values} está presente.",
+            "required_with_all": "El campo {attribute} es obligatorio cuando {values} está presente.",
+            "required_without": "El campo {attribute} es obligatorio cuando {values} no está presente.",
+            "required_without_all": "El campo {attribute} es obligatorio cuando ninguno de los campos {values} está presente.",
+            "same": "Los campos {attribute} y {other} deben coincidir.",
+            "size": {
+                "numeric": "El campo {attribute} debe ser {size}.",
+                "file": "El archivo {attribute} debe pesar {size} kilobytes.",
+                "string": "El campo {attribute} debe contener {size} caracteres.",
+                "array": "El campo {attribute} debe contener {size} elementos."
+            },
+            "string": "El campo {attribute} debe ser una cadena de caracteres.",
+            "timezone": "El campo {attribute} debe contener una zona horaria válida.",
+            "unique": "El valor del campo {attribute} ya está en uso.",
+            "uploaded": "El campo {attribute} falló al subir.",
+            "url": "El formato del campo {attribute} debe ser de una URL válida.",
+            "custom": {
+                "attribute-name": {
+                    "rule-name": "custom-message"
+                }
+            },
+            "verified": "El correo no ha sido verificado",
+            "unique_per_user": "Ya hay un registro con la misma información",
+            "open_shift": "Ya hay un turno abierto",
+            "has_headquarters": "No tienes una sede asignada",
+            "headquarters": "Este número único, como hotel independiente, ya está en uso."
+        },
+        "reports": {
+            "title": "Reportes",
+            "report": "Reporte",
+            "type": "Tipo de reporte",
+            "list": "Listado",
+            "listOf": "Listado de"
+        },
+        "products": {
+            "title": "Productos",
+            "add": "Agregar productos",
+            "increase": "Incrementar stock",
+            "losses": "Registrar pérdidas",
+            "chooseProduct": "Elije un producto",
+            "product": "Producto",
+            "wasDisabled": "El producto no pudo ser eliminado y fue deshabilitado",
+            "creation": "Creación del producto",
+            "transactions": "Transacciones de productos",
+            "current": {
+                "stock": "Cantidad actual"
+            }
+        },
+        "dining": {
+            "title": "Servicio de comedor",
+            "new": {
+                "item": "Nuevo ítem",
+                "menu": {
+                    "item": "Nuevo ítem del menú"
+                }
+            },
+            "menu": {
+                "item": "Ítem del menú"
+            },
+            "item": "Ítem"
+        },
+        "vouchers": {
+            "title": "Recibos",
+            "forCompany": "Para empresa",
+            "tourism": "Turismo",
+            "registerGuests": "Registrar huéspedes",
+            "minors": "Menores de edad",
+            "responsibleAdult": "Adulto responsable",
+            "registerCustomerGuest": "Registrar huésped cliente",
+            "registerCustomerCompany": "Registrar empresa cliente",
+            "customerCompany": "Empresa cliente",
+            "customerGuest": "Huésped cliente",
+            "see": "Ver el recibo",
+            "loadProducts": "Cargar productos",
+            "loadServices": "Cargar servicios",
+            "nights": "Noches",
+            "voucher": "Recibo",
+            "reason": "Motivo de la visita",
+            "data": "Datos",
+            "statisticalData": "Datos estadísticos",
+            "selectIfApplicable": "Seleccionar sólo si aplica",
+            "registry": "Registro",
+            "reservation": "Reservación",
+            "job": "Trabajo",
+            "registerCompany": "Registrar empresa",
+            "onlyOne": "Sólo hay un huesped",
+            "linkCompany": "Vincular empresa",
+            "linkNewCompany": "Vincular nueva empresa",
+            "withoutGuests": "No hay huéspedes registrados",
+            "vehicleAttached": "El vehículo ya está relacionado a la factura actual.",
+            "hasVehicles": "El huésped tiene un vehículo registrado",
+            "addAdditional": "Agregar adicional",
+            "additionals": "Adicionales",
+            "customer": "Cliente",
+            "open": "Abiertos",
+            "close": "Cerrar",
+            "losses": "Pérdidas",
+            "closed": "Cerrados",
+            "loss": "Registrar como pérdida",
+            "route": "Ruta",
+            "checkin": "Ingreso",
+            "external": "Servicio externo",
+            "from": "De",
+            "to": "Para",
+            "note": "Este documento no representa una factura legal o equivalente, solo es un soporte de las transacciones de productos y servicios en el hotel.",
+            "isOpen": "La factura está abierta, ciérrala antes de cerrar los pagos.",
+            "questions": "Si tiene alguna pregunta sobre este recibo, por favor contáctenos",
+            "administration": "Administración",
+            "origin": "Origen",
+            "destination": "Destino",
+            "isClosed": "El recibo está cerrado",
+            "process": "Procesar",
+            "nothingToProcess": "No hay facturas para procesar",
+            "processing": "Procesamiento de recibos",
+            "has": {
+                "one": {
+                    "room": "Este recibo sólo cuenta con una habitación"
+                }
+            },
+            "delivered": {
+                "room": "La habitación fue entregada"
+            },
+            "impossible": {
+                "room": {
+                    "change": "No es posible cambiar al huésped de su habitación actual"
+                }
+            },
+            "inactive": {
+                "guest": "El invitado está inactivo en la factura actual"
+            },
+            "complete": {
+                "processing": "Todos los recibos fueron procesados"
+            },
+            "incomplete": {
+                "processing": "Quedaron recibos pendientes por procesar"
+            },
+            "load": {
+                "external": {
+                    "services": "Cargar servicios de terceros"
+                },
+                "dining": {
+                    "services": "Cargar servicios de comedor"
+                }
+            },
+            "back": "Volver al recibo",
+            "notfound": "Comprobante no encontrado",
+            "new": {
+                "none": "No se han creado recibos recientemente",
+                "one": "nuevo recibo",
+                "many": "nuevos recibos"
+            },
+            "add": {
+                "companies": "Agregar empresas"
+            },
+            "register": {
+                "vehicles": "Registrar vehículos"
+            },
+            "filters": "Filtros de recibos",
+            "messages": {
+                "rooms": {
+                    "unavailable": "No hay habitaciones disponibles"
+                }
+            }
+        },
+        "assets": {
+            "title": "Activos",
+            "add": "Agregar activos",
+            "assignedRoom": "Habitación asignada",
+            "location": "Ubicación",
+            "anyPlace": "Cualquier lugar",
+            "assignTo": "Asignar a",
+            "serialNumber": "Serie",
+            "registered": "Se registró un nuevo activo",
+            "rooms": {
+                "remove": "Quitar habitación"
+            }
+        },
+        "team": {
+            "title": "Miembros del equipo",
+            "member": "Miembro del equipo",
+            "assignment": "Asignación de sede",
+            "workplace": "Sede laboral",
+            "new": "Nuevo integrante del equipo"
+        },
         "payments": {
             "title": "Pagos",
             "payment": "Pago",
@@ -1814,125 +2008,23 @@ export default {
             },
             "close": "Cerrar pagos"
         },
-        "validation": {
-            "accepted": "El campo {attribute} debe ser aceptado.",
-            "active_url": "El campo {attribute} no es una URL válida.",
-            "after": "El campo {attribute} debe ser una fecha posterior a {date}.",
-            "after_or_equal": "El campo {attribute} debe ser una fecha posterior o igual a {date}.",
-            "alpha": "El campo {attribute} sólo puede contener letras.",
-            "alpha_dash": "El campo {attribute} sólo puede contener letras, números y guiones (a-z, 0-9, -_).",
-            "alpha_num": "El campo {attribute} sólo puede contener letras y números.",
-            "array": "El campo {attribute} debe ser un array.",
-            "before": "El campo {attribute} debe ser una fecha anterior a {date}.",
-            "before_or_equal": "El campo {attribute} debe ser una fecha anterior o igual a {date}.",
-            "between": {
-                "numeric": "El campo {attribute} debe ser un valor entre {min} y {max}.",
-                "file": "El archivo {attribute} debe pesar entre {min} y {max} kilobytes.",
-                "string": "El campo {attribute} debe contener entre {min} y {max} caracteres.",
-                "array": "El campo {attribute} debe contener entre {min} y {max} elementos."
-            },
-            "boolean": "El campo {attribute} debe ser verdadero o falso.",
-            "confirmed": "El campo confirmación de {attribute} no coincide.",
-            "date": "El campo {attribute} no corresponde con una fecha válida.",
-            "date_format": "El campo {attribute} no corresponde con el formato de fecha {format}.",
-            "different": "Los campos {attribute} y {other} deben ser diferentes.",
-            "digits": "El campo {attribute} debe ser un número de {digits} dígitos.",
-            "digits_between": "El campo {attribute} debe contener entre {min} y {max} dígitos.",
-            "dimensions": "El campo {attribute} tiene dimensiones inválidas.",
-            "distinct": "El campo {attribute} tiene un valor duplicado.",
-            "email": "El campo {attribute} debe ser una dirección de correo válida.",
-            "exists": "El campo {attribute} seleccionado no existe.",
-            "file": "El campo {attribute} debe ser un archivo.",
-            "filled": "El campo {attribute} debe tener algún valor.",
-            "image": "El campo {attribute} debe ser una imagen.",
-            "in": "El campo {attribute} es inválido.",
-            "in_array": "El campo {attribute} no existe en {other}.",
-            "integer": "El campo {attribute} debe ser un número entero.",
-            "ip": "El campo {attribute} debe ser una dirección IP válida.",
-            "ipv4": "El campo {attribute} debe ser una dirección IPv4 válida.",
-            "ipv6": "El campo {attribute} debe ser una dirección IPv6 válida.",
-            "json": "El campo {attribute} debe ser una cadena de texto JSON válida.",
-            "max": {
-                "numeric": "El campo {attribute} no debe ser mayor a {max}.",
-                "file": "El archivo {attribute} no debe pesar más de {max} kilobytes.",
-                "string": "El campo {attribute} no debe contener más de {max} caracteres.",
-                "array": "El campo {attribute} no debe contener más de {max}."
-            },
-            "mimes": "El campo {attribute} debe ser un archivo de tipo {values}.",
-            "mimetypes": "El campo {attribute} debe ser un archivo de tipo {values}.",
-            "min": {
-                "numeric": "El campo {attribute} debe tener al menos {min}.",
-                "file": "El archivo {attribute} debe pesar al menos {min} kilobytes.",
-                "string": "El campo {attribute} debe contener al menos {min} caracteres.",
-                "array": "El campo {attribute} debe contener al menos {min} elementos."
-            },
-            "not_in": "El campo {attribute} seleccionado es inválido.",
-            "not_regex": "El formato del campo {attribute} es inválido.",
-            "numeric": "El campo {attribute} debe ser un número.",
-            "present": "El campo {attribute} debe estar presente.",
-            "regex": "El formato del campo {attribute} es inválido.",
-            "required": "El campo {attribute} es obligatorio.",
-            "required_if": "El campo {attribute} es obligatorio cuando el campo {other} es {value}.",
-            "required_unless": "El campo {attribute} es requerido a menos que {other} se encuentre en {values}.",
-            "required_with": "El campo {attribute} es obligatorio cuando {values} está presente.",
-            "required_with_all": "El campo {attribute} es obligatorio cuando {values} está presente.",
-            "required_without": "El campo {attribute} es obligatorio cuando {values} no está presente.",
-            "required_without_all": "El campo {attribute} es obligatorio cuando ninguno de los campos {values} está presente.",
-            "same": "Los campos {attribute} y {other} deben coincidir.",
-            "size": {
-                "numeric": "El campo {attribute} debe ser {size}.",
-                "file": "El archivo {attribute} debe pesar {size} kilobytes.",
-                "string": "El campo {attribute} debe contener {size} caracteres.",
-                "array": "El campo {attribute} debe contener {size} elementos."
-            },
-            "string": "El campo {attribute} debe ser una cadena de caracteres.",
-            "timezone": "El campo {attribute} debe contener una zona válida.",
-            "unique": "El valor del campo {attribute} ya está en uso.",
-            "uploaded": "El campo {attribute} falló al subir.",
-            "url": "El formato del campo {attribute} es inválido.",
-            "custom": {
-                "attribute-name": {
-                    "rule-name": "custom-message"
-                }
-            },
-            "verified": "El correo no ha sido verificado",
-            "unique_per_user": "Ya hay un registro con la misma información",
-            "open_shift": "Ya hay un turno abierto",
-            "has_headquarters": "No tienes una sede asignada",
-            "headquarters": "Este número único, como hotel independiente, ya está en uso."
+        "services": {
+            "title": "Servicios",
+            "chooseService": "Elije un servicio",
+            "service": "Servicio",
+            "wasDisabled": "El servicio no puede ser eliminado y fue deshabilitado",
+            "quantity": "Este es un artículo ilimitado"
         },
-        "rooms": {
-            "title": "Habitaciones",
-            "occupied": "Ocupado",
-            "free": "Libre",
-            "maintenance": "Mantenimiento",
-            "disabled": "Deshabilitado",
-            "successful": "La habitación fue creada satisfactoriamente",
-            "room": "Habitación",
-            "wasDisabled": "La habitación fue deshabilitada",
-            "intoMaintenance": "La habitación entro a mantenimiento",
-            "reserve": "Reservar",
-            "addRoom": "Agregar habitación",
-            "chooseRoom": "Elije una habitación",
-            "available": "Disponible",
-            "cleaning": "Limpieza",
-            "changeRoom": "Cambiar de habitación",
-            "currentRoom": "Habitación actual",
-            "availableRooms": "Habitaciones disponibles",
-            "deliver": "Entregar la habitación",
-            "no": {
-                "created": "No hay habitaciones creadas"
-            },
-            "type": "Indica si la habitación es una suite",
-            "capacity": "Cantidad de personas a hospedar en la habitación",
-            "cannot": {
-                "enable": "Tú no puedes habilitar esta habitación",
-                "add": "Tú no puedes agregar esta habitación",
-                "destroy": "No es posible eliminar la habitación si tiene comprobantes asociados, puede deshabilitarla."
-            },
-            "number": "Habitación No. {number}",
-            "change": {
-                "disabled": "La habitación no puede ser cambiada"
+        "auth": {
+            "failed": "Estas credenciales no coinciden con nuestros registros.",
+            "password": "La contraseña provista no es correcta.",
+            "throttle": "Demasiados intentos de inicio de sesión. Vuelva a intentarlo en {seconds} segundos.",
+            "verify": {
+                "title": "Verifica tu dirección de correo electrónico",
+                "reset": "Un nuevo enlace de verificación ha sido enviado a tu dirección de correo electrónico.",
+                "link": "Antes de continuar, por favor verifica en tu correo electrónico un mensaje con un enlace de verificación.",
+                "receive": "Si no recibiste el correo electrónico",
+                "click": "clic aquí para enviar otro."
             }
         }
     }

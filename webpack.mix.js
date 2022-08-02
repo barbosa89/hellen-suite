@@ -54,7 +54,12 @@ mix.js('resources/js/app.js', 'public/js')
     .scripts([
         'node_modules/tinymce/tinymce.min.js'
     ], 'public/js/editor.js')
-    .sourceMaps()
     .browserSync({
         proxy: 'hellen.localhost'
     });
+
+if (mix.inProduction()) {
+    mix.version()
+} else {
+    mix.sourceMaps()
+}

@@ -9,7 +9,7 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->ingredient,
+            'description' => $this->faker->word,
             'price' => $this->faker->randomNumber(4),
             'is_dining_service' => ceil($this->faker->numberBetween(0,1))
         ];

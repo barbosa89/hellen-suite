@@ -4,36 +4,25 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use Throwable;
 use App\Helpers\Parameter;
 use Vinkla\Hashids\Facades\Hashids;
 
 class Id
 {
-	/**
-     * Decode ID.
-     *
-     * @param  string $id
-     * @return int
-     */
 	public static function decode(string $id): int
 	{
 		try {
 			$id = Parameter::clean($id);
 
 			return Hashids::decode($id)[0];
-		} catch (\Throwable $e) {
+		} catch (Throwable $e) {
 			report($e);
 
-			return false;
+			return 0;
 		}
 	}
 
-	/**
-     * Encode ID.
-     *
-     * @param  int $id
-     * @return string
-     */
 	public static function encode(int $id): string
 	{
 		return (string) Hashids::encode($id);
@@ -49,8 +38,7 @@ class Id
 	{
 		$collection = [];
 
-		array_walk($ids, function ($id) use (&$collection)
-		{
+		array_walk($ids, function ($id) use (&$collection) {
 			array_push($collection, self::decode($id));
 		});
 

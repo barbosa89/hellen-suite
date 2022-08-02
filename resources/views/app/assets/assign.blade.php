@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('assets.title'),
@@ -14,7 +13,7 @@
                 [
                     'option' => trans('rooms.number', ['number' => $room->number]),
                     'url' => route('rooms.show', [
-                        'id' => id_encode($room->id),
+                        'id' => $room->hash,
                     ])
                 ],
             ]
@@ -24,7 +23,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('assets.title') @lang('common.assign')</h2>
 
-                <form action="{{ route('assets.assign', ['room' => id_encode($room->id)]) }}" method="POST">
+                <form action="{{ route('assets.assign', ['room' => $room->hash]) }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
@@ -63,12 +62,5 @@
                 </form>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="spacer-md"></div>
-            </div>
-        </div>
     </div>
-
 @endsection

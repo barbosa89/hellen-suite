@@ -4,9 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
-window.Vue = require('vue');
+import Vue from 'vue'
+
+window.Vue = Vue
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -14,33 +16,33 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import VueRouter from 'vue-router';
-import Permissions from './mixins/Permissions';
+import VueRouter from 'vue-router'
+import Permissions from './mixins/Permissions'
 
 // Commom
-Vue.component('search-input', require('./components/SearchInput.vue').default);
-Vue.component('hotel-select', require('./components/Hotels/Select.vue').default);
-Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default);
-Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default);
+Vue.component('search-input', require('./components/SearchInput.vue').default)
+Vue.component('hotel-select', require('./components/Hotels/Select.vue').default)
+Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default)
+Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default)
 
-Vue.component('service-list', require('./components/Services/ServiceList.vue').default);
-Vue.component('dining-service-list', require('./components/Services/DiningServiceList.vue').default);
+Vue.component('service-list', require('./components/Services/ServiceList.vue').default)
+Vue.component('dining-service-list', require('./components/Services/DiningServiceList.vue').default)
 
-Vue.component('product-transactions', require('./components/Products/ProductTransactions.vue').default);
-Vue.component('product-list', require('./components/Products/ProductList.vue').default);
+Vue.component('product-transactions', require('./components/Products/ProductTransactions.vue').default)
+Vue.component('product-list', require('./components/Products/ProductList.vue').default)
 
-Vue.component('room-list', require('./components/Rooms/RoomList.vue').default);
+Vue.component('room-list', require('./components/Rooms/RoomList.vue').default)
 
-Vue.component('prop-transactions', require('./components/Props/PropTransactions.vue').default);
-Vue.component('prop-list', require('./components/Props/PropList.vue').default);
+Vue.component('prop-transactions', require('./components/Props/PropTransactions.vue').default)
+Vue.component('prop-list', require('./components/Props/PropList.vue').default)
 
-Vue.component('asset-list', require('./components/Assets/AssetList.vue').default);
+Vue.component('asset-list', require('./components/Assets/AssetList.vue').default)
 
-Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default);
-Vue.component('tag-list', require('./components/Tags/TagList.vue').default);
+Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default)
+Vue.component('tag-list', require('./components/Tags/TagList.vue').default)
 
-Vue.component('search-guests', require('./components/Vouchers/SearchGuests.vue').default);
-Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default);
+Vue.component('search-guests', require('./components/Vouchers/SearchGuests.vue').default)
+Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default)
 Vue.component('vouchers-index', require('./components/Vouchers/Index.vue').default);
 
 Vue.component('home-index', require('./components/Home/Index.vue').default);

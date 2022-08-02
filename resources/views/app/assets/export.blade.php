@@ -22,7 +22,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="text-center">@lang('reports.listOf') @lang('assets.title')</h2>
 
-                <form action="{{ route('assets.report.export') }}" method="POST">
+                <form action="{{ route('assets.export') }}" method="POST">
                     @csrf()
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
