@@ -10,7 +10,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "cviebrock/eloquent-sluggable": "^9.0",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "guzzlehttp/guzzle": "^7.8",
