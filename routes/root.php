@@ -1,14 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\IdentificationTypeController;
 
 Route::group(['middleware' => ['auth', 'role:root', 'verified']], function() {
-    Route::post('users/{user}/plans', 'UserController@assign')
+    Route::post('users/{user}/plans', [UserController::class, 'assign'])
         ->name('users.assign');
     Route::resource('users', 'UserController');
 
-    Route::resource('identifications', 'IdentificationTypeController');
-
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
-        ->name('logs.viewer');
+    Route::resource('identifications', IdentificationTypeController::class);
 });

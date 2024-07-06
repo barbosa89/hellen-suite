@@ -1,57 +1,58 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiningServiceController;
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
 	// Service report
 
-	Route::post('dining/report', 'DiningServiceController@exportReport')
+	Route::post('dining/report', [DiningServiceController::class, 'exportReport'])
 		->name('dining.report.export')
 		->middleware('permission:dining.index');
 
-	Route::get('dining/report', 'DiningServiceController@showReportForm')
+	Route::get('dining/report', [DiningServiceController::class, 'showReportForm'])
 		->name('dining.report')
 		->middleware('permission:dining.index');
 
-	Route::post('dining/{id}/report', 'DiningServiceController@exportServiceReport')
+	Route::post('dining/{id}/report', [DiningServiceController::class, 'exportServiceReport'])
 		->name('dining.service.report.export')
 		->middleware('permission:dining.index');
 
-	Route::get('dining/{id}/report', 'DiningServiceController@showServiceReportForm')
+	Route::get('dining/{id}/report', [DiningServiceController::class, 'showServiceReportForm'])
 		->name('dining.service.report')
 		->middleware('permission:dining.index');
 
 	# CRUD
 
-    Route::post('dining/search', 'DiningServiceController@search')
+    Route::post('dining/search', [DiningServiceController::class, 'search'])
 		->name('dining.search')
 		->middleware('permission:dining.index');
 
-	Route::delete('dining/{id}', 'DiningServiceController@destroy')
+	Route::delete('dining/{id}', [DiningServiceController::class, 'destroy'])
 		->name('dining.destroy')
 		->middleware('permission:dining.destroy');
 
-	Route::put('dining/{id}', 'DiningServiceController@update')
+	Route::put('dining/{id}', [DiningServiceController::class, 'update'])
 		->name('dining.update')
 		->middleware('permission:dining.edit');
 
-	Route::get('dining/{id}/edit', 'DiningServiceController@edit')
+	Route::get('dining/{id}/edit', [DiningServiceController::class, 'edit'])
 		->name('dining.edit')
 		->middleware('permission:dining.edit');
 
-	Route::post('dining', 'DiningServiceController@store')
+	Route::post('dining', [DiningServiceController::class, 'store'])
 		->name('dining.store')
 		->middleware('permission:dining.create');
 
-	Route::get('dining/create', 'DiningServiceController@create')
+	Route::get('dining/create', [DiningServiceController::class, 'create'])
 		->name('dining.create')
 		->middleware('permission:dining.create');
 
-	Route::get('dining/{id}', 'DiningServiceController@show')
+	Route::get('dining/{id}', [DiningServiceController::class, 'show'])
 		->name('dining.show')
 		->middleware('permission:dining.show');
 
-	Route::get('dining', 'DiningServiceController@index')
+	Route::get('dining', [DiningServiceController::class, 'index'])
 		->name('dining.index')
 		->middleware('permission:dining.index');
 });

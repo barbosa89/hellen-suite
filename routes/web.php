@@ -13,35 +13,41 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SubscriberController;
 
-Route::get('/', 'LandingController@index');
+Route::get('/', [LandingController::class, 'index']);
 
-Route::get('/accounts/verify/{email}/{token}', 'AccountController@verify')
+Route::get('/accounts/verify/{email}/{token}', [AccountController::class, 'verify'])
     ->name('accounts.verify')
     ->middleware('signed');
 
-Route::post('/accounts/password', 'AccountController@updatePassword')
+Route::post('/accounts/password', [AccountController::class, 'updatePassword'])
     ->name('accounts.password.update')
     ->middleware('auth');
 
-Route::get('/accounts/password', 'AccountController@changePassword')
+Route::get('/accounts/password', [AccountController::class, 'changePassword'])
     ->name('accounts.password.change')
     ->middleware('auth');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('language/{locale}', 'LanguageController@locale');
+Route::get('language/{locale}', [LanguageController::class, 'locale']);
 
-Route::post('/subscribe', 'SubscriberController@subscribe')
+Route::post('/subscribe', [SubscriberController::class, 'subscribe'])
     ->name('subscribe')
     ->middleware(['sanitize', 'honeypot']);
 
-Route::get('/unsubscribe/{email}', 'SubscriberController@unsubscribe')
+Route::get('/unsubscribe/{email}', [SubscriberController::class, 'unsubscribe'])
     ->name('unsubscribe');
 
-Route::post('/message', 'ContactController@message')
+Route::post('/message', [ContactController::class, 'message'])
     ->name('message')
     ->middleware(['sanitize', 'honeypot']);
 
