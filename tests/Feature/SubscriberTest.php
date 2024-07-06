@@ -2,26 +2,24 @@
 
 namespace Tests\Feature;
 
-use Mockery;
 use Tests\TestCase;
-use Spatie\Newsletter\Newsletter;
+use Spatie\Newsletter\Facades\Newsletter;
 
 class SubscriberTest extends TestCase
 {
-    public function tearDown(): void
+    public function setUp(): void
     {
-        Mockery::close();
+        parent::setUp();
+
+        config()->set('newsletter.driver_arguments.endpoint', '');
     }
 
     public function test_it_can_subscribe_someone_as_pending()
     {
         $email = 'contacto@omarbarbosa.com';
 
-        $mock = Mockery::mock(Newsletter::class);
-        $mock->shouldReceive('isSubscribed')->once()->with($email)->andReturn(false);
-        $mock->shouldReceive('subscribePending')->once()->with($email);
-
-        $this->app->instance(Newsletter::class, $mock);
+        Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(false);
+        Newsletter::shouldReceive('subscribePending')->once()->with($email);
 
         $this->post('/subscribe', [
             'email' => $email
@@ -40,11 +38,8 @@ class SubscriberTest extends TestCase
     {
         $email = 'contacto@omarbarbosa.com';
 
-        $mock = Mockery::mock(Newsletter::class);
-        $mock->shouldReceive('isSubscribed')->once()->with($email)->andReturn(true);
-        $mock->shouldNotReceive('subscribePending');
-
-        $this->app->instance(Newsletter::class, $mock);
+        Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(true);
+        Newsletter::shouldNotReceive('subscribePending');
 
         $this->post('/subscribe', [
             'email' => $email
@@ -63,11 +58,8 @@ class SubscriberTest extends TestCase
     {
         $email = 'contacto@omarbarbosa.com';
 
-        $mock = Mockery::mock(Newsletter::class);
-        $mock->shouldReceive('isSubscribed')->once()->with($email)->andReturn(true);
-        $mock->shouldReceive('unsubscribe')->once()->with($email);
-
-        $this->app->instance(Newsletter::class, $mock);
+        Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(true);
+        Newsletter::shouldReceive('unsubscribe')->once()->with($email);
 
         $this->get('/unsubscribe/' . $email)
             ->assertRedirect('/');
@@ -85,11 +77,8 @@ class SubscriberTest extends TestCase
     {
         $email = 'contacto@omarbarbosa.com';
 
-        $mock = Mockery::mock(Newsletter::class);
-        $mock->shouldReceive('isSubscribed')->once()->with($email)->andReturn(false);
-        $mock->shouldNotReceive('unsubscribe');
-
-        $this->app->instance(Newsletter::class, $mock);
+        Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(false);
+        Newsletter::shouldNotReceive('unsubscribe');
 
         $this->get('/unsubscribe/' . $email)
             ->assertRedirect('/');

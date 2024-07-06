@@ -13,6 +13,7 @@
         "php": "^8.1",
         "cviebrock/eloquent-sluggable": "^9.0",
         "diglactic/laravel-breadcrumbs": "^9.0",
+        "drewm/mailchimp-api": "^2.5",
         "guzzlehttp/guzzle": "^7.8",
         "jamesmills/laravel-timezone": "^1.13",
         "kwn/number-to-words": "^2.9",
