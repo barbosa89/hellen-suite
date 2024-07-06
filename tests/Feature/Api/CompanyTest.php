@@ -23,10 +23,10 @@ class CompanyTest extends TestCase
     {
         parent::setUp();
 
-        $this->permission = Permission::create([
-            'name' => self::PERMISSION,
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        $this->permission = Permission::firstOrCreate(
+            ['name' => self::PERMISSION],
+            ['guard_name' => config('auth.defaults.guard')]
+        );
 
         $this->seed(IdentificationTypesTableSeeder::class);
     }
