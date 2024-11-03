@@ -17,14 +17,15 @@ class CompanyTest extends TestCase
     use RefreshDatabase;
 
     public const PERMISSION = 'companies.index';
+    protected Permission $permission;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Permission::findOrCreate(
-            self::PERMISSION,
-            config('auth.defaults.guard')
+        $this->permission = Permission::firstOrCreate(
+            ['name' => self::PERMISSION],
+            ['guard_name' => config('auth.defaults.guard')]
         );
 
         $this->seed(IdentificationTypesTableSeeder::class);
@@ -45,7 +46,7 @@ class CompanyTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Company $company */
         $company = Company::factory()->create([

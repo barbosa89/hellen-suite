@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreSubscriber;
-use Spatie\Newsletter\NewsletterFacade as Newsletter;
+use Spatie\Newsletter\Facades\Newsletter;
 
 class SubscriberController extends Controller
 {

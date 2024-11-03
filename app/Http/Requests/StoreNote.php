@@ -53,8 +53,9 @@ class StoreNote extends FormRequest
      *
      * @return array
      */
-    public function validated()
+    public function validated($key = null, $default = null): array
     {
+
         return array_merge(parent::validated(), [
             'team_member_name' => auth()->user()->name,
             'team_member_email' => auth()->user()->email
