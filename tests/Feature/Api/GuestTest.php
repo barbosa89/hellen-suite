@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Guest;
 use App\Models\Country;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,6 +46,11 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
+
+        dump(User::all()->toJson(JSON_PRETTY_PRINT));
+        dump(Permission::all()->toJson(JSON_PRETTY_PRINT));
+        dump(DB::table('model_has_permissions')->get()->toJson(JSON_PRETTY_PRINT));
+
         $manager->givePermissionTo(self::PERMISSION);
 
         /** @var Guest $guest */
