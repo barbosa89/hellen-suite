@@ -16,7 +16,15 @@
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <report>
+            <html outputDirectory="tests/coverage/php/coverage"/>
+            <text outputFile="tests/coverage/php/coverage.txt"/>
+            <clover outputFile="tests/coverage/php/logs/clover.xml"/>
+        </report>
     </coverage>
+    <logging>
+        <junit outputFile="tests/coverage/php/report.junit.xml"/>
+    </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>

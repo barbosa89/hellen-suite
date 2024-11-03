@@ -5,7 +5,6 @@ namespace Tests\Feature\Api;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Guest;
-use App\Models\Country;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,15 +16,13 @@ class GuestTest extends TestCase
     use RefreshDatabase;
 
     private const PERMISSION = 'guests.index';
+    private Permission $permission;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Permission::findOrCreate(
-            self::PERMISSION,
-            config('auth.defaults.guard')
-        );
+        $this->permission = Permission::findOrCreate(self::PERMISSION);
 
         $this->seed(IdentificationTypesTableSeeder::class);
     }
@@ -45,7 +42,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
@@ -69,7 +66,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $oldGuest */
         $oldGuest = Guest::factory()->create([
@@ -118,7 +115,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
@@ -187,7 +184,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         Guest::factory()->create([
             'user_id' => $manager->id,
@@ -228,7 +225,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $oldGuest */
         $oldGuest = Guest::factory()->create([

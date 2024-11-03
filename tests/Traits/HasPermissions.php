@@ -7,12 +7,9 @@ use Spatie\Permission\Models\Permission;
 
 trait HasPermissions
 {
-    public function createPermission(string $name): void
+    public function createPermission(string $name): Permission
     {
-        Permission::create([
-            'name' => $name,
-            'guard_name' => config('auth.defaults.guard')
-        ]);
+        return Permission::findOrCreate($name, config('auth.defaults.guard'));
     }
 
     /**
