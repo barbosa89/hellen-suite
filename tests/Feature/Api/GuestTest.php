@@ -5,8 +5,6 @@ namespace Tests\Feature\Api;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Guest;
-use App\Models\Country;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,11 +42,6 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-
-        dump(User::all()->toJson(JSON_PRETTY_PRINT));
-        dump(Permission::all()->toJson(JSON_PRETTY_PRINT));
-        dump(DB::table('model_has_permissions')->get()->toJson(JSON_PRETTY_PRINT));
-
         $manager->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
@@ -122,7 +115,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
@@ -191,7 +184,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         Guest::factory()->create([
             'user_id' => $manager->id,
@@ -232,7 +225,7 @@ class GuestTest extends TestCase
     {
         /** @var User $manager */
         $manager = User::factory()->create();
-        $manager->givePermissionTo(self::PERMISSION);
+        $manager->givePermissionTo($this->permission);
 
         /** @var Guest $oldGuest */
         $oldGuest = Guest::factory()->create([
