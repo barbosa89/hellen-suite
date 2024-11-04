@@ -109,7 +109,7 @@
                                     <i class="fas fa-calendar-plus"></i>
                                 </div>
                             </div>
-                            <input type="string" class="form-control datepicker start-date" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
+                            <input type="date" class="form-control start-date" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
                         </div>
 
                         @if ($errors->has('room.' . $loop->index. '.start'))
@@ -132,7 +132,7 @@
                                     <i class="fas fa-calendar-times"></i>
                                 </div>
                             </div>
-                            <input type="string" class="form-control datepicker{{ !$loop->first ? ' end-date' : '' }}" name="room[{{ $loop->index }}][end]" {{ $loop->first ? 'id=common-date' : '' }} value="{{ old('room.' . $loop->index . '.end') }}" placeholder="Campo no obligatorio">
+                            <input type="date" class="form-control{{ !$loop->first ? ' end-date' : '' }}" name="room[{{ $loop->index }}][end]" {{ $loop->first ? 'id=common-date' : '' }} value="{{ old('room.' . $loop->index . '.end') }}" placeholder="Campo no obligatorio">
                         </div>
 
                         @if ($errors->has('room.' . $loop->index . '.end'))

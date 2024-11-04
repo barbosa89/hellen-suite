@@ -56,7 +56,7 @@
 
                     <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
                         <label for="start">@lang('common.startDate'):</label>
-                        <input type="text" class="form-control datepicker" name="start" id="start" value="{{ old('start') }}" required>
+                        <input type="date" class="form-control" name="start" id="start" value="{{ old('start') }}" required>
 
                         @if ($errors->has('start'))
                             <span class="help-block">
@@ -67,7 +67,7 @@
 
                     <div class="form-group{{ $errors->has('end') ? ' has-error' : '' }}">
                         <label for="end">@lang('common.endDate'):</label>
-                        <input type="text" class="form-control datepicker" name="end" id="end" value="{{ old('end') }}" required>
+                        <input type="date" class="form-control" name="end" id="end" value="{{ old('end') }}" required>
 
                         @if ($errors->has('end'))
                             <span class="help-block">

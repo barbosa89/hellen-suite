@@ -136,7 +136,7 @@
 
 <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
     <label for="birthdate">@lang('common.birthdate'):</label>
-    <input type="string" class="form-control datepicker" name="birthdate" id="birthdate" value="{{ $guest->birthdate }}">
+    <input type="date" class="form-control" name="birthdate" id="birthdate" value="{{ $guest->birthdate }}">
 
     @if ($errors->has('birthdate'))
         <span class="help-block">

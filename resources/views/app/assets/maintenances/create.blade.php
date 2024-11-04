@@ -30,7 +30,7 @@
 
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                         <label for="date">@lang('common.date'):</label>
-                        <input type="text" class="form-control datepicker" name="date" id="date" value="{{ old('date') }}" required placeholder="{{ trans('common.required') }}">
+                        <input type="date" class="form-control" name="date" id="date" value="{{ old('date') }}" required placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('date'))
                             <span class="help-block">

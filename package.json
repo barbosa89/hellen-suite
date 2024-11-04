@@ -16,7 +16,6 @@
         "@voerro/vue-tagsinput": "^2.7.1",
         "axios": "^0.21.1",
         "bootstrap": "^4.6.0",
-        "bootstrap-datepicker": "^1.7.1",
         "bootstrap-select": "^1.13.18",
         "bootstrap-social": "^5.1.1",
         "browser-sync": "^2.27.4",
