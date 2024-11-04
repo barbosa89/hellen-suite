@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand bg-dark static-top" data-bs-theme="dark">
     <a class="navbar-brand mr-1" href="{{ url('/') }}" id="app-name">{{ config('app.name') }}</a>
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
     <i class="fa fa-bars"></i>
@@ -19,7 +19,7 @@
         {{-- <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
+            <span class="badge bg-danger">9+</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
                 <a class="dropdown-item" href="#">Action</a>
@@ -31,7 +31,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-envelope fa-fw"></i>
-            <span class="badge badge-danger">7</span>
+            <span class="badge bg-danger">7</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
                 <a class="dropdown-item" href="#">Action</a>

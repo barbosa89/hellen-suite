@@ -14,11 +14,11 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/style.css', 'resources/js/theme.js'])
 </head>
 <body id="page-top">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav class="navbar navbar-expand-md bg-dark shadow-sm" data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" id="app-name">
                     {{ config('app.name') }}
@@ -68,6 +68,6 @@
             @yield('content')
         </main>
     </div>
-    <script src="{{ asset('js/theme.js') }}"></script>
+    {{-- <script src="{{ asset('js/theme.js') }}"></script> --}}
 </body>
 </html>

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
             <div class="col-sm-12">
-                <div class="row text-muted">
+                <div class="row text-body-secondary">
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
@@ -118,7 +118,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="row text-muted">
+                <div class="row text-body-secondary">
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
@@ -235,7 +235,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="row text-muted">
+                    <div class="row text-body-secondary">
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
@@ -352,7 +352,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="row text-muted">
+                        <div class="row text-body-secondary">
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">

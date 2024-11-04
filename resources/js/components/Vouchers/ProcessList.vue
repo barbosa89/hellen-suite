@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a v-if="$can('vouchers.index')" href="/vouchers" class="navbar-brand text-muted">
+            <a v-if="$can('vouchers.index')" href="/vouchers" class="navbar-brand text-body-secondary">
                 {{ $t('vouchers.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">

@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        <vue-context ref="menu">
+        <!-- <vue-context ref="menu">
             <template slot-scope="child">
                 <li>
                     <a href="#" @click.prevent="assign($event.target.innerText, child.data)">
@@ -116,13 +116,11 @@
                     </a>
                 </li>
             </template>
-        </vue-context>
+        </vue-context> -->
     </div>
 </template>
 
 <script>
-    import { VueContext } from 'vue-context';
-
     export default {
         data() {
             return {

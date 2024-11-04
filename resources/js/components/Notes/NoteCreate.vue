@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import VoerroTagsInput from '@voerro/vue-tagsinput'
+    import VueTagsInput from '@james090500/vue-tagsinput'
     import Editor from '@tinymce/tinymce-vue'
 
     export default {
@@ -96,7 +96,7 @@
             }
         },
         components: {
-            "tags-input": VoerroTagsInput,
+            "tags-input": VueTagsInput,
             'editor': Editor
         },
         watch: {

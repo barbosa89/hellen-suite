@@ -3,7 +3,7 @@
         <h5 class="card-title">
             {{ trans('plans.type.free') }}
         </h5>
-        <h6 class="card-subtitle mb-2 text-muted mh-card-subtitle">
+        <h6 class="card-subtitle mb-2 text-body-secondary mh-card-subtitle">
             {{ trans_choice('plans.descriptions.free', $plan->months, ['months' => $plan->months]) }}
         </h6>
         <p class="card-text">

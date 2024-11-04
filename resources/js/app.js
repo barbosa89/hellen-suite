@@ -1,24 +1,17 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import.meta.glob([
+    '../images/**',
+])
 
 import './bootstrap'
 
 import { createApp } from 'vue'
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-import Permissions from './mixins/Permissions'
-import VueInternationalization from 'vue-i18n'
-import Locale from './vue-i18n-locales.generated'
+import { i18nVue } from 'laravel-vue-i18n'
+import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
+import ContextMenu from '@imengyu/vue3-context-menu'
+import Vue3Toastify from 'vue3-toastify'
 
 import SearchInput from './components/SearchInput.vue'
+import Table from './components/Table.vue'
 import HotelSelect from './components/Hotels/Select.vue'
 import TransactionSelects from './components/Transactions/TransactionSelects.vue'
 import TransactionLiveSearch from './components/Transactions/TransactionLiveSearch.vue'
@@ -40,6 +33,8 @@ import HomeIndex from './components/Home/Index.vue'
 const app = createApp()
 
 Vue.component('search-input', SearchInput)
+Vue.component('vue-table', Table)
+
 Vue.component('hotel-select', HotelSelect)
 Vue.component('transaction-selects', TransactionSelects)
 Vue.component('transaction-live-search', TransactionLiveSearch)
@@ -66,17 +61,19 @@ Vue.component('vouchers-index', VoucherIndex);
 
 Vue.component('home-index', HomeIndex);
 
+app.use(ContextMenu)
+app.use(LaravelPermissionToVueJS)
+app.use(Vue3Toastify, {
+    autoClose: 3000,
+})
 
-// Vue.mixin(Permissions);
+app.use(i18nVue, {
+    resolve: lang => {
+        const langs = import.meta.glob('../../lang/*.json', { eager: true });
 
-Vue.use(VueInternationalization);
-
-const lang = document.documentElement.lang.substr(0, 2);
-
-const i18n = new VueInternationalization({
-    locale: lang,
-    messages: Locale
-});
+        return langs[`../../lang/${lang}.json`].default;
+    },
+})
 
 // Vue.filter('date', function(value) {
 //     if (value) {
@@ -90,12 +87,6 @@ const i18n = new VueInternationalization({
 //     methods: {
 //         route: route
 //     }
-// });
-
-// const app = new Vue({
-//     el: '#app',
-//     i18n,
-//     router: router
-// });
+// })
 
 app.mount("#app")

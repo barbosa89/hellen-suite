@@ -1,13 +1,11 @@
 import 'bootstrap'
 import lodash from 'lodash'
-import toastr from 'toastr'
 import Swal from 'sweetalert2'
 import moment from 'moment'
 import axios from 'axios'
 
 window._ = lodash
 window.sweet = Swal
-window.toastr = toastr
 window.moment = moment
 
 /**

@@ -29,50 +29,44 @@
                 </div>
             </template>
         </div>
-        <div class="card-footer small text-muted">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
+        <div class="card-footer small text-body-secondary">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
     </div>
 </template>
 
 <script>
-    import Bus from '../../Bus'
-    import VueTable from '@barbosa89/vue-table'
+export default {
+    mounted() {
+        // Bus.$on('last-vouchers', (vouchers) => {
+        //     this.vouchers = vouchers
+        // })
 
-    export default {
-        mounted() {
-            Bus.$on('last-vouchers', (vouchers) => {
-                this.vouchers = vouchers
-            })
-
-            setTimeout(() => {
-                this.empty = true
-            }, 5000);
-        },
-        data() {
-            return {
-                vouchers: [],
-                date: moment(),
-                empty: false,
-                headers: [
-                    {
-                        description: this.$root.$t('common.date')
-                    },
-                    {
-                        description: this.$root.$t('common.number')
-                    },
-                    {
-                        description: 'Hotel'
-                    },
-                    {
-                        description: this.$root.$t('common.type')
-                    },
-                    {
-                        description: this.$root.$t('common.value')
-                    },
-                ]
-            }
-        },
-        components: {
-            VueTable
-        },
+        setTimeout(() => {
+            this.empty = true
+        }, 5000);
+    },
+    data() {
+        return {
+            vouchers: [],
+            date: moment(),
+            empty: false,
+            headers: [
+                {
+                    description: this.$root.$t('common.date')
+                },
+                {
+                    description: this.$root.$t('common.number')
+                },
+                {
+                    description: 'Hotel'
+                },
+                {
+                    description: this.$root.$t('common.type')
+                },
+                {
+                    description: this.$root.$t('common.value')
+                },
+            ]
+        }
     }
+}
 </script>

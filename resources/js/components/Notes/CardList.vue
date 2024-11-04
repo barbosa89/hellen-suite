@@ -20,60 +20,54 @@
                 </div>
             </template>
         </div>
-        <div class="card-footer small text-muted">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
+        <div class="card-footer small text-body-secondary">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
     </div>
 </template>
 
 <script>
-    import VueTable from '@barbosa89/vue-table'
-import moment from 'moment'
+export default {
+    mounted() {
+        this.queryNotes()
 
-    export default {
-        mounted() {
+    },
+    props: {
+        hotelId: {
+            type: String,
+        }
+    },
+    watch: {
+        hotelId() {
             this.queryNotes()
-
+        }
+    },
+    data() {
+        return {
+            notes: [],
+            date: moment(),
+            headers: [
+                {
+                    description: this.$root.$t('common.date')
+                },
+                {
+                    description: this.$root.$t('notes.content')
+                },
+                {
+                    description: this.$root.$t('common.name')
+                }
+            ]
+        }
+    },
+    methods: {
+        queryNotes() {
+            axios
+                .get(route('api.web.notes.index', {hotel: this.hotelId}))
+                .then(response => {
+                    this.notes = response.data.notes.data
+                })
         },
-        props: {
-            hotelId: {
-                type: String,
-            }
-        },
-        watch: {
-            hotelId() {
-                this.queryNotes()
-            }
-        },
-        components: {
-            VueTable
-        },
-        data() {
-            return {
-                notes: [],
-                date: moment(),
-                headers: [
-                    {
-                        description: this.$root.$t('common.date')
-                    },
-                    {
-                        description: this.$root.$t('notes.content')
-                    },
-                    {
-                        description: this.$root.$t('common.name')
-                    }
-                ]
-            }
-        },
-        methods: {
-            queryNotes() {
-                axios
-                    .get(route('api.web.notes.index', {hotel: this.hotelId}))
-                    .then(response => {
-                        this.notes = response.data.notes.data
-                    })
-            },
-            formatDate(date) {
-                return moment(date).format('YY-MM-DD HH:mm:ss')
-            }
+        formatDate(date) {
+            return moment(date).format('YY-MM-DD HH:mm:ss')
         }
     }
+}
 </script>

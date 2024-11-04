@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-    <a class="navbar-brand text-muted" href="{{ $url }}">
+    <a class="navbar-brand text-body-secondary" href="{{ $url }}">
         {{ $title }}
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

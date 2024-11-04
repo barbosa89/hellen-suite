@@ -9,7 +9,7 @@
             <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 align-self-center">
                 <div class="row">
                     <div class="col-md-12">
-                        <span class="d-block font-weight-bold">Hotel</span>
+                        <span class="d-block fw-bold">Hotel</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->business_name }}
@@ -30,7 +30,7 @@
     <div class="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
         <div class="row mb-4">
             <div class="col-6 col-sx-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 align-self-center">
-                <span class="text-uppercase badge badge-dark text-wrap" style="font-size:24px">
+                <span class="text-uppercase badge bg-dark text-wrap" style="font-size:24px">
                     @lang('vouchers.voucher')
 
                     @if ($voucher->reservation)
@@ -41,7 +41,7 @@
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
-                <span class="d-block font-weight-light">No.</span>
+                <span class="d-block fw-light">No.</span>
                 <span class="d-block">
                     <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)] ) }}">
                         {{ $voucher->number }}
@@ -49,19 +49,19 @@
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
-                <span class="d-block font-weight-light">@lang('common.date')</span>
+                <span class="d-block fw-light">@lang('common.date')</span>
                 <span class="d-block">
                     {{ $voucher->created_at->format('Y-m-d') }}
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
-                <span class="d-block font-weight-light">@lang('common.value')</span>
+                <span class="d-block fw-light">@lang('common.value')</span>
                 <span class="d-block">
                     $ {{ number_format($voucher->value, 0, ',', '.') }}
                 </span>
             </div>
             <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2">
-                <span class="d-block font-weight-light text-center">@lang('common.status')</span>
+                <span class="d-block fw-light text-center">@lang('common.status')</span>
                 <span class="d-block text-center">
                     <i class="fa fa-{{ $voucher->open ? 'lock-open' : 'lock' }} fa-2x"></i>
                 </span>
@@ -71,7 +71,7 @@
         <div class="row">
             @if (!empty($customer))
                 <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                    <span class="d-block font-weight-light">@lang('vouchers.customer')</span>
+                    <span class="d-block fw-light">@lang('vouchers.customer')</span>
                     <span class="d-block dont-break-out">
                         <a href="{{ $customer['route'] }}">
                             {{ $customer['name'] }}
@@ -79,7 +79,7 @@
                     </span>
                 </div>
                 <div class="col-2 col-sx-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <span class="d-block font-weight-light">@lang('common.number')</span>
+                    <span class="d-block fw-light">@lang('common.number')</span>
                     <span class="d-block">
                         <a href="{{ $customer['route'] }}">
                             {{ $customer['tin'] }}
@@ -88,26 +88,26 @@
                 </div>
                 @if ($voucher->type == 'lodging')
                     <div class="col-3 col-sx-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                        <span class="d-block font-weight-light">@lang('vouchers.origin') / @lang('vouchers.destination')</span>
+                        <span class="d-block fw-light">@lang('vouchers.origin') / @lang('vouchers.destination')</span>
                         <span class="d-block">
                             {{ $voucher->origin ?? 'No definido' }} - {{ $voucher->destination ?? 'No definido' }}
                         </span>
                     </div>
                     <div class="col-2 col-sx-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                        <span class="d-block font-weight-light">@lang('payments.title')</span>
+                        <span class="d-block fw-light">@lang('payments.title')</span>
                         <span class="d-block">
                             $ {{ number_format($voucher->payments->sum('value'), 0, ',', '.') }}
                         </span>
                     </div>
                     <div class="col-6 col-sx-6 col-sm-6 col-md-2 col-lg-2 col-xl-2 text-center">
                         @if ($voucher->type == 'loss')
-                            <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
+                            <span class="d-block fw-light text-center">@lang('vouchers.losses')</span>
                             <span class="d-block text-center">
                                 {{ number_format($voucher->value - $voucher->payments->sum('value'), 2, ',', '.') }}
                             </span>
                         @else
                             @if ($voucher->payment_method == false and $voucher->value > $voucher->payments->sum('value'))
-                                <span class="d-block font-weight-light text-center">@lang('vouchers.losses')</span>
+                                <span class="d-block fw-light text-center">@lang('vouchers.losses')</span>
                                 <span class="d-block text-center">
                                     @can('vouchers.losses')
                                         <a href="#" title="{{ trans('vouchers.loss') }}" class="btn btn-danger btn-sm" onclick="confirmRedirect(event, '{{ route('vouchers.losses', ['id' => id_encode($voucher->id)], false) }}')">
@@ -127,7 +127,7 @@
             <div class="col-md-7 align-self-center text-right">
                 <div class="row">
                     <div class="col-md-12 dont-break-out">
-                        <span class="d-block font-weight-bold">Hotel</span>
+                        <span class="d-block fw-bold">Hotel</span>
                         <span class="d-block">
                             <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                                 {{ $voucher->hotel->business_name }}

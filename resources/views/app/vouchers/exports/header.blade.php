@@ -2,7 +2,7 @@
 <div class="header">
     <div class="row">
         <div class="col-xs-6 from">
-            <span class="d-block font-weight-light">@lang('vouchers.from'):</span>
+            <span class="d-block fw-light">@lang('vouchers.from'):</span>
             @if ($voucher->type == 'entry')
                 @include('app.vouchers.exports.customer')
             @else
@@ -10,7 +10,7 @@
             @endif
         </div>
         <div class="col-xs-6 to">
-            <span class="d-block font-weight-light">@lang('vouchers.to'):</span>
+            <span class="d-block fw-light">@lang('vouchers.to'):</span>
             @if ($voucher->type == 'entry')
                 @include('app.vouchers.exports.hotel')
             @else
@@ -24,7 +24,7 @@
 <!-- note -->
 <div class="row mt-4">
     <div class="col-xs-12">
-        <p class="text-justify text-muted">
+        <p class="text-justify text-body-secondary">
             <small>{{ $voucher->comments }}</small>
         </p>
     </div>

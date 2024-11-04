@@ -16,7 +16,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Icon -->
-    <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ Vite::asset('resources/images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
     <link rel="canonical" href="{{ config('app.url') }}">
 
     <meta name="description" content="{{ trans('landing.meta.description') }}">
@@ -40,8 +40,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta property="fb:app_id" content="1595428934178032" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/landing.css') }}" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/css/landing.css', 'resources/js/landing.js'])
 
     <script>
         addEventListener("load", function () {
@@ -68,7 +67,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
     <div id="app">
-        @include('flash::message')
+        {{-- @include('flash::message') --}}
 
     <!-- header -->
     <header class="index-banner">
@@ -80,7 +79,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div id="brand">
                                 <div id="logo" class="text-center pt-2">
                                     <a href="{{ url('/') }}">
-                                        <img src="{{ asset('images/white-logo.png') }}" width="40" height="40" alt="{{ config('app.name') }}">
+                                        <img src="{{ Vite::asset('resources/images/white-logo.png') }}" width="40" height="40" alt="{{ config('app.name') }}">
                                     </a>
                                 </div>
                                 <div id="word-mark">
@@ -216,12 +215,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </p>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
+                        <img src="{{ Vite::asset('resources/images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                 </div>
                 <div class="row process-grids mt-5">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
+                        <img src="{{ Vite::asset('resources/images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <h4 class="mb-4">
@@ -595,7 +594,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="footer-grid_section text-center">
                         <div class="footer-title mb-3">
                             <a href="{{ url('/') }}">
-                                <img src="{{ asset('images/blue-logo.png') }}" alt="{{ config('app.name') }}">
+                                <img src="{{ Vite::asset('resources/images/blue-logo.png') }}" alt="{{ config('app.name') }}">
                                 @include('partials.name')
                             </a>
                         </div>
@@ -678,55 +677,65 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //copyright -->
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ asset('js/theme.js') }}"></script>
-    <script src="{{ asset('js/landing.js') }}"></script>
     <script>
-		$(() => {
-            //On Scroll Functionality
-            $(window).scroll(() => {
-                var windowTop = $(window).scrollTop();
-                windowTop> 100 ? $('nav').addClass('navShadow') : $('nav').removeClass('navShadow');
-                windowTop> 100 ? $('ul.nav-agile').css('top', '50px') : $('ul.nav-agile').css('top', '160px');
+        document.addEventListener('DOMContentLoaded', () => {
+            // On Scroll Functionality
+            window.addEventListener('scroll', () => {
+                var windowTop = window.scrollY;
+                
+                // Add or remove shadow to the nav element
+                if (windowTop > 100) {
+                    document.querySelector('nav').classList.add('navShadow');
+                    document.querySelector('ul.nav-agile').style.top = '50px';
+                } else {
+                    document.querySelector('nav').classList.remove('navShadow');
+                    document.querySelector('ul.nav-agile').style.top = '160px';
+                }
             });
 
-            //Click Logo To Scroll To Top
-            $('#logo').on('click', () => {
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 500);
+            // Click Logo to Scroll to Top
+            document.querySelector('#logo').addEventListener('click', (event) => {
+                event.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            //Toggle Menu
-            $('#menu-toggle').on('click', () => {
-                $('#menu-toggle').toggleClass('closeMenu');
-                $('ul#menu-list').toggleClass('showMenu');
+            // Toggle Menu
+            const menuToggle = document.querySelector('#menu-toggle');
+            const menuList = document.querySelector('ul#menu-list');
 
-                $('li').on('click', () => {
-                    $('ul#menu-list').removeClass('showMenu');
-                    $('#menu-toggle').removeClass('closeMenu');
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('closeMenu');
+                menuList.classList.toggle('showMenu');
+            });
+
+            // Close menu when a list item is clicked
+            document.querySelectorAll('ul#menu-list li').forEach(item => {
+                item.addEventListener('click', () => {
+                    menuList.classList.remove('showMenu');
+                    menuToggle.classList.remove('closeMenu');
                 });
             });
-		});
 
-        $(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
+            document.querySelectorAll('.scroll').forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
 
-                $('html,body').animate({
-                    scrollTop: $(this.hash).offset().top
-                }, 900);
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const targetPosition = targetElement.offsetTop;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
 
-        $(document).ready(function () {
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
-
-        });
-
-        $('#flash-overlay-modal').modal();
+        // $('#flash-overlay-modal').modal();
     </script>
     <script type="application/ld+json" async>
         {

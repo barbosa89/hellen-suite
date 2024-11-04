@@ -1,5 +1,5 @@
 <script>
-    import Transactions from '../Transactions/TransactionsBase';
+    import Transactions from '../Transactions/TransactionsBase.vue';
 
     export default {
         data() {

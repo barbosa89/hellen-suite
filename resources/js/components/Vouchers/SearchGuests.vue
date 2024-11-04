@@ -27,9 +27,6 @@
 </template>
 
 <script>
-    import SearchInput from '../SearchInput'
-    import VueTable from '@barbosa89/vue-table'
-
     export default {
         props: {
             voucherHash: {
@@ -53,10 +50,6 @@
                     },
                 ]
             }
-        },
-        components: {
-            SearchInput,
-            VueTable
         },
         methods: {
             setData(data) {
