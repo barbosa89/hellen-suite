@@ -8,8 +8,10 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
-                'resources/css/landing.css',
+                'resources/css/panel.css',
                 'resources/js/app.js',
+                'resources/js/panel.js',
+                'resources/css/landing.css',
                 'resources/js/landing.js'
             ],
             refresh: true,

@@ -60,11 +60,11 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
-                            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                 <i class="fa fa-ellipsis-v"></i>
                             </button>
 
-                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                 <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/edit'" class="dropdown-item">{{ $t('common.edit') }}</a>
                                 <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
                                     {{ service.status == 1 ? $t('common.disable') : $t('common.disable') }}

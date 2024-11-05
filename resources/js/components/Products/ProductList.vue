@@ -96,14 +96,14 @@
                                 <button
                                     type="button"
                                     id="dropdownMenuButton"
-                                    data-toggle="dropdown"
+                                    data-bs-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                     class="btn btn-link"
                                     >
                                 <i class="fa fa-ellipsis-v"></i>
                                 </button>
-                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                     <a
                                         :href="'/products/' + product.hash + '/increase'"
                                         class="dropdown-item"
