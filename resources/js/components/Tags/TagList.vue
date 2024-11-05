@@ -47,9 +47,6 @@
                 list: this.tags
             }
         },
-        components: {
-            VueContext
-        },
         methods: {
             go(tag) {
                 // Redirect on click

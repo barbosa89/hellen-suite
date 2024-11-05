@@ -7,7 +7,6 @@ import './bootstrap'
 import { createApp } from 'vue'
 import { i18nVue } from 'laravel-vue-i18n'
 import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
-import ContextMenu from '@imengyu/vue3-context-menu'
 import Vue3Toastify from 'vue3-toastify'
 
 import SearchInput from './components/SearchInput.vue'
@@ -32,36 +31,36 @@ import HomeIndex from './components/Home/Index.vue'
 
 const app = createApp()
 
-Vue.component('search-input', SearchInput)
-Vue.component('vue-table', Table)
+app.component('search-input', SearchInput)
+app.component('vue-table', Table)
 
-Vue.component('hotel-select', HotelSelect)
-Vue.component('transaction-selects', TransactionSelects)
-Vue.component('transaction-live-search', TransactionLiveSearch)
+app.component('hotel-select', HotelSelect)
+app.component('transaction-selects', TransactionSelects)
+app.component('transaction-live-search', TransactionLiveSearch)
 
-Vue.component('service-list', ServiceList)
-Vue.component('dining-service-list', DiningServiceList)
+app.component('service-list', ServiceList)
+app.component('dining-service-list', DiningServiceList)
 
-Vue.component('product-transactions', ProductTransactions)
-Vue.component('product-list', ProductList)
+app.component('product-transactions', ProductTransactions)
+app.component('product-list', ProductList)
 
-Vue.component('room-list', RoomList)
+app.component('room-list', RoomList)
 
-Vue.component('prop-transactions', PropTransactions)
-Vue.component('prop-list', PropList)
+app.component('prop-transactions', PropTransactions)
+app.component('prop-list', PropList)
 
-Vue.component('asset-list', AssetList)
+app.component('asset-list', AssetList)
 
-Vue.component('note-create', NoteCreate)
-Vue.component('tag-list', TagList)
+app.component('note-create', NoteCreate)
+app.component('tag-list', TagList)
 
-Vue.component('search-guests', SearchGuests)
-Vue.component('process-list', ProcessList)
-Vue.component('vouchers-index', VoucherIndex);
+app.component('search-guests', SearchGuests)
+app.component('process-list', ProcessList)
+app.component('vouchers-index', VoucherIndex);
 
-Vue.component('home-index', HomeIndex);
+app.component('home-index', HomeIndex);
 
-app.use(ContextMenu)
+// app.use(ContextMenu)
 app.use(LaravelPermissionToVueJS)
 app.use(Vue3Toastify, {
     autoClose: 3000,

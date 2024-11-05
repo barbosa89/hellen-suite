@@ -7,7 +7,6 @@
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
-        "@imengyu/vue3-context-menu": "^1.4.3",
         "@james090500/vue-tagsinput": "^3.1.4",
         "@tinymce/tinymce-vue": "^6.1.0",
         "@vitejs/plugin-vue": "^5.1.4",
