@@ -155,11 +155,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </h2>
                         </div>
                         <h3 class="txt-w3_agile">@lang('landing.slogan.section.two')</h3>
-                        <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">@lang('landing.more')</a>
+                        <a class="btn mt-4 me-2 text-capitalize"  href="#overview" role="button">@lang('landing.more')</a>
                         <a class="btn mt-4 text-capitalize" href="#contact" role="button">@lang('landing.contact')</a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
-                        <h5><i class="fas mr-2 fa-laptop"></i> @lang('common.register')</h5>
+                        <h5><i class="fas me-2 fa-laptop"></i> @lang('common.register')</h5>
                         <form action="{{ route('register') }}" class="mt-4" method="post">
                             @csrf
                             @honeypot
@@ -281,7 +281,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <h4>
                     @lang('landing.advantage')
                 </h4>
-                <div class="start text-right mt-4">
+                <div class="start text-end mt-4">
                     <a href="#contact" class="scroll">@lang('landing.contact')</a>
                 </div>
                 <div class="clearfix"></div>
@@ -458,10 +458,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>john watson</h4>
                                         <span class="">- congue leo</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
                                             <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -479,10 +479,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>Paul walkner</h4>
                                         <span class="">- lacinia eget</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -500,10 +500,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>Anderson</h4>
                                         <span class="">- Donec rutru</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
                                             <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -606,12 +606,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <ul class="social_section_1info">
                             <li class="mb-2 facebook">
                                 <a href="https://www.facebook.com/HellenSuite" target="_blank" rel="noopener noreferrer">
-                                    <i class="fab mr-1 fa-facebook-f"></i>facebook
+                                    <i class="fab me-1 fa-facebook-f"></i>facebook
                                 </a>
                             </li>
                             <li class="mb-2 twitter">
                                 <a href="https://twitter.com/@Hellen_Suite" target="_blank" rel="noopener noreferrer">
-                                    <i class="fab mr-1 fa-twitter"></i>twitter
+                                    <i class="fab me-1 fa-twitter"></i>twitter
                                 </a>
                             </li>
                         </ul>

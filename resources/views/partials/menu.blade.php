@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
+<nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-end-0 border-start-0">
     <a class="navbar-brand text-body-secondary" href="{{ $url }}">
         {{ $title }}
     </a>
@@ -19,7 +19,7 @@
             </form>
         @endif
 
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ms-auto">
             @foreach($options as $option)
                 @include('partials.li', ['option' => $option])
             @endforeach

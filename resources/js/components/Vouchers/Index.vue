@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
+        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-end-0 border-start-0">
             <a href="/vouchers" class="navbar-brand text-body-secondary">
                 {{ $t('vouchers.title') }}
             </a>

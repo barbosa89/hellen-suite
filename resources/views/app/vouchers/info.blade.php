@@ -124,7 +124,7 @@
     </div>
     <div class="col-lg-3 col-xl-3 d-none d-lg-block d-xl-block">
         <div class="row">
-            <div class="col-md-7 align-self-center text-right">
+            <div class="col-md-7 align-self-center text-end">
                 <div class="row">
                     <div class="col-md-12 dont-break-out">
                         <span class="d-block fw-bold">Hotel</span>
@@ -143,7 +143,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 text-right dont-break-out">
+            <div class="col-md-5 text-end dont-break-out">
                 <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
                     <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
                 </a>
