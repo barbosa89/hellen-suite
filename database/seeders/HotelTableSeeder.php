@@ -20,7 +20,7 @@ class HotelTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', 'manager@dev.com')->first(['id']);
+        $user = User::where('email', 'manager@app.com')->first(['id']);
 
         Hotel::factory(2)->create([
             'user_id' => $user->id

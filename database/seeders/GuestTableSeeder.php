@@ -15,7 +15,7 @@ class GuestTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', 'manager@dev.com')->first(['id']);
+        $user = User::where('email', 'manager@app.com')->first(['id']);
 
         Guest::factory(20)->create([
             'user_id' => $user->id

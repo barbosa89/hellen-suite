@@ -16,46 +16,46 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'Root',
-            'email' => 'root@dev.com',
-            'password' => bcrypt('root'),
+            'email' => 'root@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
         ]);
 
         $manager = User::create([
             'name' => 'Manager',
-            'email' => 'manager@dev.com',
-            'password' => bcrypt('manager'),
+            'email' => 'manager@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
         ]);
 
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@dev.com',
-            'password' => bcrypt('admin'),
+            'email' => 'admin@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'parent' => $manager->id,
         ]);
 
         User::create([
             'name' => 'Accountant',
-            'email' => 'accountant@dev.com',
-            'password' => bcrypt('accountant'),
+            'email' => 'accountant@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'parent' => $manager->id,
         ]);
 
         User::create([
             'name' => 'Receptionist',
-            'email' => 'receptionist@dev.com',
-            'password' => bcrypt('receptionist'),
+            'email' => 'receptionist@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'parent' => $manager->id,
         ]);
 
         User::create([
             'name' => 'Cashier',
-            'email' => 'cashier@dev.com',
-            'password' => bcrypt('cashier'),
+            'email' => 'cashier@app.com',
+            'password' => bcrypt('password'),
             'email_verified_at' => now(),
             'parent' => $manager->id,
         ]);
