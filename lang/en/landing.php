@@ -66,8 +66,8 @@ return array (
     ),
     'design' => 
     array (
-      'description' => 'Adaptable to any device, elegant and intuitive interface, integrates a control panel, graphs and reports, so that you can make decisions based on data.',
-      'title' => 'Modern design',
+      'description' => 'Adaptable to any device, elegant and intuitive, integrates a control panel, graphs and reports, so that you can make decisions based on data.',
+      'title' => 'Modern interface',
     ),
   ),
   'advantage' => 'All the advantages of the web in one suite to support administration tasks. Easy, powerful and from anywhere.',

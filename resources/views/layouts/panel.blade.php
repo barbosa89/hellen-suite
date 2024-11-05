@@ -14,6 +14,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
+    @routes
+
     <!-- Styles -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -54,18 +56,9 @@
     </div>
 
     <!-- Scripts -->
-    <script>
-        @auth
-            window.Permissions = @json(get_user_permissions());
-        @else
-            window.Permissions = [];
-        @endauth
-    </script>
-    @routes
-    @translations
     @yield('editor')
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/scripts.js') }}"></script>
+    {{-- <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/scripts.js') }}"></script> --}}
     @yield('scripts')
 </body>
 </html>

@@ -242,7 +242,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-3">
                 <h3 class="heading mb-5 text-center"> @lang('landing.why.choose')</h3>
                 <div class="feature-grids row">
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon1 p-4">
                             <i class="fas fa-cubes"></i>
                             <h3 class="my-3">
@@ -253,7 +253,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon2 p-4">
                             <i class="fas fa-shield-alt"></i>
                             <h3 class="my-3">@lang('landing.why.security.title')</h3>
@@ -262,7 +262,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon3 p-4">
                             <i class="fas fa-palette"></i>
                             <h3 class="my-3">@lang('landing.why.design.title')</h3>

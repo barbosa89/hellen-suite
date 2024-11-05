@@ -66,8 +66,8 @@ return array (
     ),
     'design' => 
     array (
-      'title' => 'Diseño moderno',
-      'description' => 'Adaptable a cualquier dispositivo, interfaz elegante e intuitiva, integra un panel de control, gráficas e informes, para que tomes decisiones basadas en datos.',
+      'title' => 'Interfaz moderna',
+      'description' => 'Adaptable a cualquier dispositivo, elegante e intuitiva, panel de control con gráficas e informes, para que tomes decisiones basadas en datos.',
     ),
   ),
   'advantage' => 'Todas las ventajas de la web en una suite para apoyar las tareas de administración. Fácil, potente y desde cualquier lugar.',

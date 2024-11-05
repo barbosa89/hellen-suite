@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    @vite(['resources/sass/app.scss', 'resources/css/style.css', 'resources/js/theme.js'])
+    @vite(['resources/sass/app.scss'])
 </head>
 <body id="page-top">
     <div id="app">
@@ -68,6 +68,5 @@
             @yield('content')
         </main>
     </div>
-    {{-- <script src="{{ asset('js/theme.js') }}"></script> --}}
 </body>
 </html>
