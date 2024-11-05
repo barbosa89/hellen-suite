@@ -17,7 +17,7 @@
     @routes
 
     <!-- Styles -->
-    @vite(['resources/sass/app.scss', 'resources/css/panel.css', 'resources/js/app.js', 'resources/js/panel.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/panel.css', 'resources/js/app.js'])
 </head>
 <body id="page-top">
     <div id="app">
@@ -56,9 +56,9 @@
     </div>
 
     <!-- Scripts -->
+    @vite(['resources/js/panel.js'])
+
     @yield('editor')
-    {{-- <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/scripts.js') }}"></script> --}}
     @yield('scripts')
 </body>
 </html>
