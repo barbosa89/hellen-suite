@@ -27,7 +27,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" readonly>
+                        <select class="form-control" title="Elige un hotel o sede" name="hotel" id="hotel" readonly>
                                 <option value="{{ id_encode($service->hotel->id) }}" selected>{{ $service->hotel->business_name }}</option>
                         </select>
 

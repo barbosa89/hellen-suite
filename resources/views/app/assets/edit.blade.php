@@ -93,7 +93,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
+                        <select class="form-control" title="Elige un hotel o sede" name="hotel" id="hotel" required onchange="listRoomsByHotel(this)">
                             <option value="{{ id_encode($asset->hotel->id) }}" selected>{{ $asset->hotel->business_name }}</option>
 
                             @foreach ($hotels as $hotel)
@@ -110,7 +110,7 @@
 
                     <div class="form-group{{ $errors->has('assign') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('assets.assignTo'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
+                        <select class="form-control" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
                             <option value="room" @if(empty($asset->location)) selected @endif>@lang('rooms.room')</option>
                             <option value="any" @if(empty($asset->room_id)) selected @endif>@lang('assets.anyPlace')</option>
                         </select>
@@ -124,7 +124,7 @@
 
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list" @if ($asset->location) style="display:none;" @endif>
                         <label for="pwd">{{ trans('rooms.room') }} No.:</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
+                        <select class="form-control" title="{{ trans('common.optional') }}" name="room" id="room">
                             @if ($asset->room)
                                 <option value="{{ id_encode($asset->room->id) }}" selected>
                                     {{ $asset->room->number }}

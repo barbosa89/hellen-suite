@@ -26,7 +26,7 @@
 
                     <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }}">
                         <label for="pwd">Replicar desde el hotel:</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="from" id="from" required>
+                        <select class="form-control" title="Elige un hotel o sede" name="from" id="from" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
@@ -41,7 +41,7 @@
 
                     <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}" id="to-list">
                         <label for="pwd">Para el hotel:</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="to" id="to" required>
+                        <select class="form-control" title="Elige un hotel o sede" name="to" id="to" required>
                             @if ($hotels->count() > 1)
                                 @foreach ($hotels->where('id', '!=', $hotels->first()->id) as $hotel)
                                     <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
@@ -74,51 +74,39 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $('#from').change(function () {
-            if (this.value != null || this.value != "") {
-                $.ajax({
-                    type: 'POST',
-                    url: '/hotels/different',
-                    data: {
-                        hotel: this.value
-                    },
-                    success: function (result) {
-                        var hotels = JSON.parse(result.hotels);
+<script>
+    document.querySelector('#from').addEventListener('change', function () {
+        if (this.value !== null && this.value !== "") {
+            axios.post('/hotels/different', {
+                hotel: this.value
+            })
+            .then(function (response) {
+                var hotels = JSON.parse(response.data.hotels);
 
-                        if (hotels.length) {
-                            if ($("#to-list").is(':hidden')) {
-                                $("#to-list").fadeIn();
-                            }
-
-                            var newOptions = [];
-                            hotels.forEach(function(hotel) {
-                                newOptions.push("<option value=" + hotel.hash + ">" + hotel.business_name + "</option>");
-                            });
-
-                            $("#to").html(newOptions);
-                            $("#to").selectpicker('refresh');
-                        } else {
-                            toastr.info(
-                                'No hay hoteles para replicar',
-                                'Sin registros'
-                            );
-
-                            $('#to').val('');
-
-                            if ($("#to-list").is(':visible')) {
-                                $("#to-list").fadeOut();
-                            }
-                        }
-                    },
-                    error: function(xhr) {
-                        toastr.error(
-                            'Ha ocurrido un error',
-                            'Error'
-                        );
+                if (hotels.length) {
+                    var toList = document.querySelector("#to-list");
+                    if (toList.style.display === 'none') {
+                        toList.style.display = 'block';
                     }
-                })
-            }
-        });
-    </script>
+
+                    var newOptions = hotels.map(function(hotel) {
+                        return "<option value='" + hotel.hash + "'>" + hotel.business_name + "</option>";
+                    }).join('');
+
+                    document.querySelector("#to").innerHTML = newOptions;
+                } else {
+                    toastr.info('No hay hoteles para replicar', 'Sin registros');
+                    document.querySelector('#to').value = '';
+
+                    if (toList.style.display === 'block') {
+                        toList.style.display = 'none';
+                    }
+                }
+            })
+            .catch(function (error) {
+                toastr.error('Ha ocurrido un error', 'Error');
+            });
+        }
+    });
+</script>
 @endsection

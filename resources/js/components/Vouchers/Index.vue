@@ -102,10 +102,12 @@
         },
         methods: {
             close() {
-                $('#voucher-filter').modal('hide')
+                const modal = new bootstrap.Modal('#voucher-filter')
+                modal.show()
             },
             toggle() {
-                $('#voucher-filter').modal('toggle')
+                const modal = new bootstrap.Modal('#voucher-filter')
+                modal.toggle()
             },
             setFilters(filters) {
                 const params = {}

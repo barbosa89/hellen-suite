@@ -26,7 +26,7 @@
 
                     <div class="form-group{{ $errors->has('hotel_id') ? ' has-error' : '' }}">
                         <label for="hotel_id">Hotel:</label>
-                        <select class="form-control selectpicker" title="{{ trans('hotels.choose') }}" name="hotel_id" id="hotel_id" required>
+                        <select class="form-control" title="{{ trans('hotels.choose') }}" name="hotel_id" id="hotel_id" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -74,7 +74,7 @@
 
                     <div class="form-group{{ $errors->has('is_suite') ? ' has-error' : '' }}">
                         <label for="is_suite">@lang('rooms.type'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('rooms.type') }}" name="is_suite" id="is_suite" required>
+                        <select class="form-control" title="{{ trans('rooms.type') }}" name="is_suite" id="is_suite" required>
                             <option value="0" selected>@lang('common.no')</option>
                             <option value="1">@lang('common.yes')</option>
                         </select>
@@ -121,7 +121,7 @@
 
                     <div class="form-group{{ $errors->has('tax_status') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('common.tax.status'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="tax_status" id="tax_status">
+                        <select class="form-control" title="{{ trans('common.optional') }}" name="tax_status" id="tax_status">
                             <option value="0" selected>@lang('common.without.tax')</option>
                             <option value="1">@lang('common.with.tax')</option>
                         </select>

@@ -72,51 +72,60 @@
 
 @section('scripts')
     <script type="text/javascript">
-        function search (str) {
-            const url = '{{ url('companies/search') }}'
-            const uri = "?query=" + str + "&format=rendered&template=vouchers"
+        function search(str) {
+            const url = '{{ url('companies/search') }}';
+            const uri = `?query=${str}&format=rendered&template=vouchers`;
 
-            if (str.length == 0) {
-                $('#list').hide();
-                $('#item-search').empty()
+            if (str.length === 0) {
+                document.querySelector('#list').style.display = 'none';
+                document.querySelector('#item-search').innerHTML = '';
             }
 
             if (str.length >= 3) {
-                $.ajax({
-                    type: 'GET',
-                    url: url + uri,
-                    data: {
-                        query: str
-                    },
-                    success: function(result) {
-                        let companies = Array.from(result.companies);
+                axios.get(url + uri, {
+                    params: { query: str }
+                })
+                .then(response => {
+                    const companies = response.data.companies;
 
-                        if (companies.length) {
-                            $('#item-search').empty()
+                    if (companies.length) {
+                        const itemSearch = document.querySelector('#item-search');
+                        itemSearch.innerHTML = '';
 
-                            companies.forEach(company => {
-                                let item = '<a href="#" onclick="add(this, event)" data-value="' + company.hash + '"><div class="crud-list-row"><div class="row"><div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><p>'+ company.business_name + '</p></div><div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><p>' + company.tin + '</p></div></div></div></a>'
-                                $('#item-search').append(item);
-                            })
+                        companies.forEach(company => {
+                            const item = `
+                                <a href="#" onclick="add(this, event)" data-value="${company.hash}">
+                                    <div class="crud-list-row">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p>${company.business_name}</p>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p>${company.tin}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                            itemSearch.insertAdjacentHTML('beforeend', item);
+                        });
 
-                            $('#list').show();
-                        }
-                    },
-                    error: function(xhr){
-                        toastr.error(
-                            'Ha ocurrido un error',
-                            'Error'
-                        )
+                        document.querySelector('#list').style.display = 'block';
                     }
                 })
+                .catch(error => {
+                    toastr.error(
+                        'Ha ocurrido un error',
+                        'Error'
+                    );
+                });
             }
         }
-
 
         function add(el, e) {
             e.preventDefault()
 
-            const voucher = $('#voucher').data('id')
+            const voucher = document.querySelector('#voucher').getAttribute('data-id');
             const company = el.dataset.value
             const url = '/vouchers/'+ voucher +'/companies/' + company
 

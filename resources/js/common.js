@@ -1,180 +1,216 @@
-const translator = new I18n();
+import { trans } from "laravel-vue-i18n"
 
-$('body').on('keydown', 'input, select, textarea', function(e) {
-    var self = $(this),
-        form = self.parents('form:eq(0)'),
-        focusable, next;
-    if (e.keyCode == 13) {
-        focusable = form.find('input,a,select,button,textarea').filter(':visible');
-        next = focusable.eq(focusable.index(this) + 1);
-        if (next.length) {
-            next.focus();
-        } else {
-            form.submit();
+document.body.addEventListener('keydown', function (e) {
+    const target = e.target
+
+    // Check if the event target is an input, select, or textarea
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)) {
+        const form = target.closest('form')
+
+        if (e.keyCode === 13) {  // Enter key
+            e.preventDefault()
+
+            // Get all visible, focusable elements within the form
+            const focusable = Array.from(form.querySelectorAll('input, a, select, button, textarea'))
+                .filter(el => el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement)
+
+            // Find the next focusable element
+            const nextIndex = focusable.indexOf(target) + 1
+            const next = focusable[nextIndex]
+
+            if (next) {
+                next.focus()
+            } else {
+                form.submit()
+            }
         }
-        return false;
     }
-});
+})
 
-$('.selectpicker').selectpicker();
+document.querySelectorAll('div.alert:not(.alert-important)').forEach(alert => {
+    setTimeout(() => {
+        alert.style.transition = 'opacity 0.35s'
+        alert.style.opacity = '0'
 
+        // Remove the element from the DOM after fade-out
+        setTimeout(() => alert.remove(), 350)
+    }, 7000)
+})
 
-$('div.alert').not('.alert-important').delay(7000).fadeOut(350);
+function changeIcon(el, event, first, second) {
+    event.preventDefault();
+    const icon = el.querySelector('span');
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-function changeIcon(el, e, first, second) {
-    e.preventDefault();
-    var ico = $(el).find('span').first();
-
-    if ($(ico).hasClass(first)) {
-        $(ico).removeClass(first);
-        $(ico).addClass(second);
+    if (icon.classList.contains(first)) {
+        icon.classList.remove(first);
+        icon.classList.add(second);
     } else {
-        $(ico).removeClass(second);
-        $(ico).addClass(first);
+        icon.classList.remove(second);
+        icon.classList.add(first);
     }
 }
 
-function confirmAction(el, e) {
-    e.preventDefault()
+function confirmAction(el, event) {
+    event.preventDefault();
 
-    var data = {
+    const data = {
         '{url}': el.getAttribute('data-url'),
-        '{method}': el.getAttribute('data-method'),
+        '{method}': el.getAttribute('data-method')
     };
 
-    var modal = $('div.hide > div#modal-confirm').prop('outerHTML');
+    let modal = document.querySelector('div.hide > div#modal-confirm').outerHTML;
 
-    $.each(data, function(key, value) {
+    for (const [key, value] of Object.entries(data)) {
         modal = modal.replace(new RegExp(key, 'g'), value);
-    });
+    }
 
-    $(modal).modal('show');
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modal;
+    const modalElement = tempDiv.firstChild;
+
+    document.body.appendChild(modalElement);
+    const bootstrapModal = new bootstrap.Modal(modalElement);
+    bootstrapModal.show();
+
+    modalElement.addEventListener('hidden.bs.modal', () => {
+        modalElement.remove();
+    });
 }
 
 function calculateTotal(url, element, quantity) {
-    if (!empty(element) && !empty(quantity)) {
-        $.post(url, {
+    if (element && quantity) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
                 element: element,
                 quantity: quantity
-            },
-            function(data, status) {
-                $('#total').removeAttr('value').attr('value', data.value);
-                $('#total-input').show();
-            }
-        );
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const totalElement = document.getElementById('total');
+            totalElement.removeAttribute('value');
+            totalElement.setAttribute('value', data.value);
+
+            const totalInput = document.getElementById('total-input');
+            totalInput.style.display = 'block';
+        })
+        .catch(error => console.error('Error:', error));
     } else {
-        $('#total').removeAttr('value');
-        $('#total-input').hide();
+        const totalElement = document.getElementById('total');
+        totalElement.removeAttribute('value');
+
+        const totalInput = document.getElementById('total-input');
+        totalInput.style.display = 'none';
     }
 }
 
 function empty(data) {
-    if (typeof(data) == 'number' || typeof(data) == 'boolean') {
-        return false;
+    if (typeof (data) == 'number' || typeof (data) == 'boolean') {
+        return false
     }
 
-    if (typeof(data) == 'undefined' || data === null) {
-        return true;
+    if (typeof (data) == 'undefined' || data === null) {
+        return true
     }
 
-    if (typeof(data.length) != 'undefined') {
-        return data.length == 0;
+    if (typeof (data.length) != 'undefined') {
+        return data.length == 0
     }
 
-    var count = 0;
+    var count = 0
     for (var i in data) {
         if (data.hasOwnProperty(i)) {
-            count++;
+            count++
         }
     }
 
-    return count == 0;
+    return count == 0
 }
 
-$("#min_price").on('keyup', function(e) {
-    var price = $("#price").val();
+document.getElementById("min_price").addEventListener("keyup", function () {
+    const price = parseFloat(document.getElementById("price").value);
+    const minPriceInput = document.getElementById("min_price");
+    const minPrice = parseFloat(minPriceInput.value);
 
-    if (parseFloat($("#min_price").val()) > parseFloat(price)) {
+    if (minPrice > price) {
         toastr.info(
             'El precio mínimo es mayor al valor de la habitación',
-            'Ciudado'
+            'Cuidado'
         );
-
-        $("#min_price").val('');
+        minPriceInput.value = '';
     }
-});
+})
 
-$("#tax_status").on('change', function(e) {
+document.getElementById("tax_status").addEventListener("change", function () {
+    const taxInput = document.getElementById("tax-input");
+    const taxField = document.getElementById("tax");
+
     if (parseInt(this.value) > 0) {
-        if ($('#tax-input').is(':hidden')) {
-            $('#tax-input').fadeIn();
-            $('#tax').attr('required', 'required');
+        if (taxInput.style.display === "none" || taxInput.style.display === "") {
+            taxInput.style.display = "block";
+            taxField.setAttribute("required", "required");
         }
     } else {
-        if ($('#tax-input').is(':visible')) {
-            $('#tax-input').fadeOut();
-            $('#tax').value = '';
-            $('#tax').removeAttr('required');
+        if (taxInput.style.display === "block") {
+            taxInput.style.display = "none";
+            taxField.value = "";
+            taxField.removeAttribute("required");
         }
     }
 });
 
 function listRoomsByHotel(hotel) {
-    $.ajax({
-        type: 'GET',
-        url: route('api.web.rooms.index', hotel),
-        data: {
-            hotel: hotel
-        },
-        success: function(result) {
-            var rooms = result.rooms;
-            $('#room').empty();
+    axios.get(route('api.web.rooms.index', hotel), {
+        params: { hotel: hotel }
+    })
+    .then(function (response) {
+        const rooms = response.data.rooms;
+        const roomSelect = document.getElementById("room");
+        roomSelect.innerHTML = ""; // Clear current options
 
-            if (rooms.length) {
-                if ($("#room-list").is(':hidden')) {
-                    $("#room-list").fadeIn();
-                    $("#room").attr('required', 'required');
-                }
+        if (rooms.length) {
+            const roomList = document.getElementById("room-list");
 
-                var newOptions = [];
-                rooms.forEach(function(room) {
-                    newOptions.push("<option value=" + room.hash + ">" + room.number + "</option>");
-                });
-
-                $("#room").html(newOptions);
-                $("#room").selectpicker('refresh');
-            } else {
-                toastr.info(
-                    'El hotel seleccionado no tiene habitaciones',
-                    'Sin habitaciones'
-                );
-
-                $('#room').val('');
-
-                if ($("#room-list").is(':visible')) {
-                    $("#room-list").fadeOut();
-                    $("#room").removeAttr('required');
-                }
+            // Show the room list and make it required if hidden
+            if (roomList.style.display === "none" || roomList.style.display === "") {
+                roomList.style.display = "block";
+                roomSelect.setAttribute("required", "required");
             }
-        },
-        error: function(xhr) {
-            toastr.error(
-                'Ha ocurrido un error',
-                'Error'
-            );
+
+            // Populate new options
+            rooms.forEach(function (room) {
+                const option = document.createElement("option");
+                option.value = room.hash;
+                option.textContent = room.number;
+                roomSelect.appendChild(option);
+            });
+        } else {
+            toastr.info('El hotel seleccionado no tiene habitaciones', 'Sin habitaciones');
+            roomSelect.value = ""; // Clear the selection
+
+            const roomList = document.getElementById("room-list");
+
+            // Hide the room list and remove required attribute if visible
+            if (roomList.style.display === "block") {
+                roomList.style.display = "none";
+                roomSelect.removeAttribute("required");
+            }
         }
+    })
+    .catch(function () {
+        toastr.error('Ha ocurrido un error', 'Error');
     });
 }
 
-$('#remove-room').on('click', function() {
-    options = [];
-    $("#room").children().each(function(index, item) {
+document.getElementById('remove-room').addEventListener('click', function () {
+    const options = [];
+    const roomSelect = document.getElementById("room");
+
+    Array.from(roomSelect.children).forEach(function (item, index) {
         item.removeAttribute('selected');
 
         if (index > 0) {
@@ -182,84 +218,112 @@ $('#remove-room').on('click', function() {
         }
     });
 
-    $("#room").html(options);
-    $("#room").selectpicker('refresh');
+    roomSelect.innerHTML = ""; // Clear the current options
+    options.forEach(function (option) {
+        roomSelect.appendChild(option); // Append options back excluding the first one
+    });
 });
 
-$('#hotel').on('change', function() {
-    $('#room-list').fadeOut();
-    $('#any-place').fadeOut();
+document.getElementById('hotel').addEventListener('change', function () {
+    const roomList = document.getElementById('room-list');
+    const anyPlace = document.getElementById('any-place');
+    const assignSelect = document.getElementById('assign');
 
-    $("#assign").html(['<option value="room">' + translator.trans('rooms.room') + '</option>', '<option value="any">' + translator.trans('assets.anyPlace') + '</option>']);
-    $("#assign").selectpicker('refresh');
+    // Fade out the 'room-list' and 'any-place' elements
+    roomList.style.transition = "opacity 0.35s";
+    roomList.style.opacity = "0";
+    setTimeout(() => { roomList.style.display = "none"; }, 350);
+
+    anyPlace.style.transition = "opacity 0.35s";
+    anyPlace.style.opacity = "0";
+    setTimeout(() => { anyPlace.style.display = "none"; }, 350);
+
+    // Update the 'assign' dropdown options
+    assignSelect.innerHTML = `
+        <option value="room">${trans('rooms.room')}</option>
+        <option value="any">${trans('assets.anyPlace')}</option>
+    `;
 });
 
-$('#assign').on('change', function() {
-    if (this.value == 'room') {
-        listRoomsByHotel($('#hotel').val());
+document.getElementById('assign').addEventListener('change', function () {
+    const hotelValue = document.getElementById('hotel').value;
+    const roomList = document.getElementById('room-list');
+    const anyPlace = document.getElementById('any-place');
+    const locationInput = document.getElementById('location');
+    const roomSelect = document.getElementById('room');
 
-        $('#any-place').fadeOut();
-        $("#location").removeAttr('required');
+    if (this.value === 'room') {
+        // Call listRoomsByHotel function with the hotel value
+        listRoomsByHotel(hotelValue);
+
+        // Fade out 'any-place' element
+        anyPlace.style.transition = "opacity 0.35s";
+        anyPlace.style.opacity = "0";
+        setTimeout(() => { anyPlace.style.display = "none"; }, 350);
+
+        // Remove 'required' attribute from 'location'
+        locationInput.removeAttribute('required');
     } else {
-        if ($('#any-place').is(':hidden')) {
-            $('#room-list').fadeOut();
-            $("#room").removeAttr('required');
+        if (anyPlace.style.display === "none" || anyPlace.style.opacity === "0") {
+            // Fade out 'room-list' element
+            roomList.style.transition = "opacity 0.35s";
+            roomList.style.opacity = "0";
+            setTimeout(() => { roomList.style.display = "none"; }, 350);
 
-            $('#any-place').fadeIn();
-            $("#location").attr('required', 'required');
+            // Remove 'required' attribute from 'room'
+            roomSelect.removeAttribute('required');
+
+            // Fade in 'any-place' element
+            anyPlace.style.display = "block";
+            setTimeout(() => { anyPlace.style.opacity = "1"; }, 10); // Small delay to trigger transition
+
+            // Add 'required' attribute to 'location'
+            locationInput.setAttribute('required', 'required');
         }
     }
 });
 
 function confirmRedirect(e, url) {
-    e.preventDefault();
+    e.preventDefault()
 
     Swal.fire({
-        title: translator.trans('common.attention'),
-        text: translator.trans('common.confirmAction'),
+        title: trans('common.attention'),
+        text: trans('common.confirmAction'),
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: translator.trans('common.continue'),
-        cancelButtonText: translator.trans('common.cancel')
+        confirmButtonText: trans('common.continue'),
+        cancelButtonText: trans('common.cancel')
     }).then(result => {
         if (result.value) {
-            window.location.href = url;
+            window.location.href = url
         }
-    });
+    })
 }
 
 function getRoomPriceByNumber(hotel, number) {
-    $.ajax({
-        type: 'POST',
-        url: '/rooms/price',
-        data: {
-            hotel: hotel,
-            number: number
-        },
-        success: function(result) {
-            $('#price').attr('value', Math.round(parseInt(result.price)))
-                .attr('min', Math.round(parseInt(result.min_price)))
-                .attr('max', Math.round(parseInt(result.price)));
+    axios.post('/rooms/price', {
+        hotel: hotel,
+        number: number
+    })
+    .then(function (response) {
+        const result = response.data;
 
-            $('span#tax-value').text(parseFloat(result.tax) * 100);
-        },
-        error: function(xhr) {
-            toastr.error(
-                'Ha ocurrido un error',
-                'Error'
-            );
-        }
+        document.getElementById('price').setAttribute('value', Math.round(parseInt(result.price)));
+        document.getElementById('price').setAttribute('min', Math.round(parseInt(result.min_price)));
+        document.getElementById('price').setAttribute('max', Math.round(parseInt(result.price)));
+
+        document.getElementById('tax-value').textContent = (parseFloat(result.tax) * 100).toFixed(2);
+    })
+    .catch(function () {
+        toastr.error(
+            'Ha ocurrido un error',
+            'Error'
+        );
     });
 }
 
-// {
-//     url: '/vehicles/search',
-//     list_id: 'list',
-//     item_container: 'item-search',
-//     render: render
-// }
 
 /**
  * Object params.
@@ -281,39 +345,41 @@ function getRoomPriceByNumber(hotel, number) {
 function std_search(event, query, params) {
     event.preventDefault();
 
-    if (query.length == 0) {
-        $('#' + params.list_id).hide();
-        $('#' + params.item_container).empty();
+    const listElement = document.getElementById(params.list_id);
+    const itemContainer = document.getElementById(params.item_container);
+
+    if (query.length === 0) {
+        listElement.style.display = 'none';
+        itemContainer.innerHTML = '';
+        return;
     }
 
     if (query.length >= 3) {
-        $.ajax({
-            url: params.url + '?query=' + query,
-            success: function(result) {
-                let data = JSON.parse(result.data);
+        axios.get(`${params.url}?query=${query}`)
+            .then(function (response) {
+                const data = JSON.parse(response.data.data);
 
                 if (data.length) {
-                    $('#' + params.item_container).empty();
+                    itemContainer.innerHTML = ''; // Clear previous results
 
                     data.forEach(item => {
-                        $('#' + params.item_container).append(params.render(item));
+                        itemContainer.insertAdjacentHTML('beforeend', params.render(item));
                     });
 
-                    $('#' + params.list_id).show();
+                    listElement.style.display = 'block';
                 } else {
                     toastr.info(
-                        translator.trans('common.noRecords'),
-                        translator.trans('common.attention')
+                        trans('common.noRecords'),
+                        trans('common.attention')
                     );
                 }
-            },
-            error: function(xhr) {
+            })
+            .catch(function () {
                 toastr.error(
-                    translator.trans('common.error'),
+                    trans('common.error'),
                     'Error'
                 );
-            }
-        });
+            });
     }
 }
 
@@ -325,24 +391,24 @@ function std_search(event, query, params) {
  * @return void
  */
 function generate_chart(id, datasets) {
-    let ctx = document.getElementById(id);
+    let ctx = document.getElementById(id)
 
     new Chart(ctx, {
         type: 'bar',
         data: {
             labels: [
-                translator.trans('months.january'),
-                translator.trans('months.february'),
-                translator.trans('months.march'),
-                translator.trans('months.april'),
-                translator.trans('months.may'),
-                translator.trans('months.june'),
-                translator.trans('months.july'),
-                translator.trans('months.august'),
-                translator.trans('months.september'),
-                translator.trans('months.october'),
-                translator.trans('months.november'),
-                translator.trans('months.december')
+                trans('months.january'),
+                trans('months.february'),
+                trans('months.march'),
+                trans('months.april'),
+                trans('months.may'),
+                trans('months.june'),
+                trans('months.july'),
+                trans('months.august'),
+                trans('months.september'),
+                trans('months.october'),
+                trans('months.november'),
+                trans('months.december')
             ],
             datasets: datasets
         },
@@ -355,7 +421,7 @@ function generate_chart(id, datasets) {
                 }]
             }
         }
-    });
+    })
 }
 
 function buildHotelSelect(id) {

@@ -67,8 +67,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
     <div id="app">
-        {{-- @include('flash::message') --}}
-
     <!-- header -->
     <header class="index-banner">
         <!-- nav -->
@@ -734,8 +732,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 });
             });
         });
-
-        // $('#flash-overlay-modal').modal();
     </script>
     <script type="application/ld+json" async>
         {

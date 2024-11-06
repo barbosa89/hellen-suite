@@ -50,7 +50,7 @@
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                         <label for="type">@lang('plans.types'): <small>{{ trans('common.required') }}</small></label>
-                        <select class="form-control selectpicker" name="type" id="type" required>
+                        <select class="form-control" name="type" id="type" required>
                                 <option value="{{ $plan->type }}" selected>
                                     @lang('plans.type.' . $plan->getType())
                                 </option>
@@ -65,7 +65,7 @@
 
                     <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                         <label for="status">@lang('common.status'): <small>{{ trans('common.required') }}</small></label>
-                        <select class="form-control selectpicker" name="status" id="status" required>
+                        <select class="form-control" name="status" id="status" required>
                             @if ($plan->status)
                                 <option value="1" selected>@lang('common.active')</option>
                                 <option value="0">@lang('common.inactive')</option>

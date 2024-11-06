@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
     <label for="room">@lang('rooms.title'):</label>
-    <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
+    <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($rooms as $room)
             <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
         @endforeach

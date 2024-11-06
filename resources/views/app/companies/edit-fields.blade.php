@@ -66,7 +66,7 @@
 
 <div class="form-group{{ $errors->has('is_supplier') ? ' has-error' : '' }}">
     <label for="is_supplier">@lang('common.type'):</label>
-    <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="is_supplier" id="is_supplier" required>
+    <select class="form-control" title="{{ trans('common.chooseOption') }}" name="is_supplier" id="is_supplier" required>
         <option value="1">@lang('companies.is.supplier')</option>
         <option value="0">@lang('companies.isnt.supplier')</option>
         @if ((int) $company->is_supplier)

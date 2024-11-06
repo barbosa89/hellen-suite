@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
     <label for="type">@lang('common.idType'):</label>
-    <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
+    <select class="form-control" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
         @foreach($types as $type)
             @if($loop->first)
                 <option selected value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
@@ -96,7 +96,7 @@
 
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
-    <select class="form-control selectpicker" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
+    <select class="form-control" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
         <option value="f">@lang('common.f')</option>
         <option value="m">@lang('common.m')</option>
         <option value="x">@lang('common.other')</option>
@@ -111,7 +111,7 @@
 
 <div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
     <label for="nationality">@lang('guests.birth.country'):</label>
-    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required placeholder="{{ trans('common.required') }}">
+    <select class="form-control" title="Elige un pais" name="nationality" id="nationality" required placeholder="{{ trans('common.required') }}">
         @foreach ($countries as $country)
         <option value="{{ id_encode($country->id) }}" {{ $country->name == 'Colombia' ? 'selected' : '' }}>{{ $country->name }}</option>
         @endforeach

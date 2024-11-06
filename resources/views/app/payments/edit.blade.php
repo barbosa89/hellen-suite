@@ -53,7 +53,7 @@
 
                     <div class="form-group{{ $errors->has('method') ? ' has-error' : '' }}">
                         <label for="method">@lang('payments.method'):</label>
-                        <select class="form-control selectpicker" name="method" id="method" required>
+                        <select class="form-control" name="method" id="method" required>
                             <option value="{{ $payment->payment_method }}" selected>{{ trans('payments.' . $payment->payment_method) }}</option>
 
                             @foreach (array_diff(['cash', 'transfer', 'courtesy'], [$payment->payment_method]) as $item)

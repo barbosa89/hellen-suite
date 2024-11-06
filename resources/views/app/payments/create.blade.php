@@ -52,7 +52,7 @@
 
                     <div class="form-group{{ $errors->has('method') ? ' has-error' : '' }}">
                         <label for="method">@lang('payments.method'):</label>
-                        <select class="form-control selectpicker" name="method" id="method" required>
+                        <select class="form-control" name="method" id="method" required>
                             <option value="cash">@lang('payments.cash')</option>
                             <option value="transfer">@lang('payments.transfer')</option>
                             <option value="courtesy">@lang('payments.courtesy')</option>

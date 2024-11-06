@@ -27,7 +27,7 @@
                     {{-- <input type="hidden" name="hotel" id="hotel" value="{{ id_encode($prop->hotel->id) }}"> --}}
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="hotel">Hotel:</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="hotel" id="hotel" required>
+                        <select class="form-control" title="{{ trans('common.chooseOption') }}" name="hotel" id="hotel" required>
                             <option value="{{ id_encode($prop->hotel->id) }}" selected>{{ $prop->hotel->business_name }}</option>
                         </select>
 

@@ -54,7 +54,7 @@
 
                     <div class="form-group{{ $errors->has('is_suite') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('rooms.type'):</label>
-                        <select class="form-control selectpicker" title="Es una suite?" name="is_suite" id="is_suite" required>
+                        <select class="form-control" title="Es una suite?" name="is_suite" id="is_suite" required>
                             <option value="0" {{ !$room->is_suite ? 'selected' : '' }}>@lang('common.no')</option>
                             <option value="1" {{ $room->is_suite ? 'selected' : '' }}>@lang('common.yes')</option>
                         </select>
@@ -101,7 +101,7 @@
 
                     <div class="form-group{{ $errors->has('tax_status') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('common.tax.status'):</label>
-                        <select class="form-control selectpicker" title="Opcional" name="tax_status" id="tax_status">
+                        <select class="form-control" title="Opcional" name="tax_status" id="tax_status">
                             @if ($room->tax > 0)
                                 <option value="1" selected>@lang('common.with.tax')</option>
                                 <option value="0">@lang('common.without.tax')</option>

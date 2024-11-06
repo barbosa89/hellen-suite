@@ -94,9 +94,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            buildHotelSelect('hotel')
-        })
-    </script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        buildHotelSelect('hotel');
+    });
+</script>
 @endsection

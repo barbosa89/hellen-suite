@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
     <label for="room">@lang('rooms.room'):</label>
-    <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
+    <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($voucher->rooms as $room)
             @if ($room->status == '0' and $room->pivot->enabled == true)
                 <option value="{{ id_encode($room->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $room->number }}</option>
@@ -18,7 +18,7 @@
 @if ($guests > 0)
     <div class="form-group{{ $errors->has('responsible_adult') ? ' has-error' : '' }}">
         <label for="responsible_adult">@lang('vouchers.responsibleAdult'):</label>
-        <select class="form-control selectpicker" title="{{ trans('common.onlyFor') . ' ' . strtolower(trans('vouchers.minors'))  }}" name="responsible_adult" id="responsible_adult">
+        <select class="form-control" title="{{ trans('common.onlyFor') . ' ' . strtolower(trans('vouchers.minors'))  }}" name="responsible_adult" id="responsible_adult">
             @foreach($voucher->rooms as $room)
                 @foreach($room->guests as $guest)
                     <option value="{{ id_encode($guest->id) }}">{{ $guest->name }} {{ $guest->last_name }}</option>
