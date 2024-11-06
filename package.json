@@ -10,7 +10,6 @@
         "@james090500/vue-tagsinput": "^3.1.4",
         "@tinymce/tinymce-vue": "^6.1.0",
         "@vitejs/plugin-vue": "^5.1.4",
-        "aos": "^3.0.0-beta.6",
         "axios": "^1.1.2",
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",

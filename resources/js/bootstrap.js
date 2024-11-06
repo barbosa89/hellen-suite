@@ -31,7 +31,3 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
-
-import I18n from './vendor/I18n';
-
-window.I18n = I18n;
