@@ -92,6 +92,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -136,16 +139,10 @@ export default {
                         } else {
                             this.props = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
+                            toast.info(trans('common.without.results'));
                         }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
+                    }).catch(_e => {
+                        toast.error(trans('common.try'));
                     });
                 }
             }

@@ -85,6 +85,7 @@
 
         <context-menu
             v-if="showMenu"
+            v-model="showMenu"
             :actions="menuActions"
             @action-clicked="handleAction"
             :x="x"
@@ -94,6 +95,7 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
 import { trans } from 'laravel-vue-i18n'
 import ContextMenu from '../ContextMenu.vue'
 
@@ -111,32 +113,7 @@ export default {
             filteredRooms: [],
             selectedRooms: [],
             showStatus: false,
-            menuActions: [
-                {
-                    label: trans('common.assign'),
-                    action: 'assign',
-                },
-                {
-                    label: trans('common.select'),
-                    action: 'select',
-                },
-                {
-                    label: trans('common.enable'),
-                    action: 'enable',
-                },
-                {
-                    label: trans('common.disable'),
-                    action: 'disable',
-                },
-                {
-                    label: trans('rooms.maintenance'),
-                    action: 'maintenance',
-                },
-                {
-                    label: trans('common.show'),
-                    action: 'show',
-                },
-            ],
+            menuActions: [],
             target: null
         }
     },
@@ -144,6 +121,34 @@ export default {
         hotelId() {
             this.queryRooms()
         }
+    },
+    created() {
+        this.menuActions = [
+            {
+                label: trans('common.assign'),
+                action: 'assign',
+            },
+            {
+                label: trans('common.select'),
+                action: 'select',
+            },
+            {
+                label: trans('common.enable'),
+                action: 'enable',
+            },
+            {
+                label: trans('common.disable'),
+                action: 'disable',
+            },
+            {
+                label: trans('rooms.maintenance'),
+                action: 'maintenance',
+            },
+            {
+                label: trans('common.show'),
+                action: 'show',
+            },
+        ]
     },
     computed: {
         chunkedItems() {
@@ -166,10 +171,7 @@ export default {
                     }
                 })
                 .catch(e => {
-                    toastr.error(
-                        trans('common.try'),
-                        'Error'
-                    )
+                    toast.error(trans('common.try'))
                 })
         },
         prepare() {
@@ -251,10 +253,7 @@ export default {
                     room.selected = true
                 }
             } else {
-                toastr.info(
-                    trans('rooms.cannot.add'),
-                    trans('common.not.allowed')
-                );
+                toast.error(trans('common.not.allowed'))
             }
         },
         select() {
@@ -278,10 +277,7 @@ export default {
 
                 window.location.href = this.buildLink(this.hotelId, [this.target])
             } else {
-                toastr.info(
-                    trans('rooms.cannot.add'),
-                    trans('common.not.allowed')
-                )
+                toast.info(trans('rooms.cannot.add'))
             }
         },
         pool() {
@@ -296,64 +292,49 @@ export default {
 
             return `/vouchers/create?hotel=${hotel}${params}`
         },
-        changeStatus(data, status) {
-            if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
+        changeStatus(status) {
+            if (_.indexOf(['0', '1', '2', '3', '4'], this.target.status) != -1) {
                 axios.post(route('api.web.rooms.toggle'), {
-                    room: data.room.hash,
+                    room: this.target.hash,
                     status: status
                 }).then(response => {
                     this.rooms = _.each(this.rooms, (room) => {
-                        if (response.data.room.hash == room.hash) {
+                        if (response.this.target.hash == room.hash) {
                             room.status = status
                         }
                     })
 
                     this.filteredRooms = _.each(this.filteredRooms, (room) => {
-                        if (response.data.room.hash == room.hash) {
+                        if (response.this.target.hash == room.hash) {
                             room.status = status
                         }
                     })
                 }).catch(e => {
-                    toastr.error(
-                        trans('common.try'),
-                        'Error'
-                    );
+                    toast.error(trans('common.try'))
                 });
             } else {
-                toastr.info(
-                    trans('rooms.cannot.enable'),
-                    trans('common.not.allowed')
-                );
+                toast.error(trans('rooms.cannot.enable'))
             }
         },
         enable() {
             if (_.indexOf(['2', '3', '4'], this.target.status) != -1) {
-                this.changeStatus(data, '1')
+                this.changeStatus('1')
             } else {
-                toastr.info(
-                    trans('rooms.cannot.enable'),
-                    trans('common.not.allowed')
-                );
+                toast.info(trans('rooms.cannot.enable'));
             }
         },
-        disable(text, data) {
+        disable() {
             if (_.indexOf(['1', '2', '4'], this.target.status) != -1) {
-                this.changeStatus(data, '3')
+                this.changeStatus('3')
             } else {
-                toastr.info(
-                    trans('rooms.cannot.enable'),
-                    trans('common.not.allowed')
-                );
+                toast.info(trans('rooms.cannot.enable'));
             }
         },
         changeStatusToMaintenance() {
             if (_.indexOf(['1', '2', '3'], this.target.status) != -1) {
-                this.changeStatus(data, '4')
+                this.changeStatus('4')
             } else {
-                toastr.info(
-                    trans('rooms.cannot.enable'),
-                    trans('common.not.allowed')
-                );
+                toast.error(trans('rooms.cannot.enable'))
             }
         },
         getStatusIcon(room) {
@@ -388,25 +369,29 @@ export default {
             this.y = event.clientY
         },
         handleAction(action) {
-            switch (action) {
-                case 'assign':
-                    this.assign()
-                    break;
-                case 'select':
-                    this.select()
-                    break;
-                case 'enable':
-                    this.enable()
-                    break;
-                case 'disable':
-                    this.disable()
-                    break;
-                case 'maintenance':
-                    this.changeStatusToMaintenance()
-                    break;
-                default:
-                    this.show()
-                    break;
+            try {
+                switch (action) {
+                    case 'assign':
+                        this.assign()
+                        break;
+                    case 'select':
+                        this.select()
+                        break;
+                    case 'enable':
+                        this.enable()
+                        break;
+                    case 'disable':
+                        this.disable()
+                        break;
+                    case 'maintenance':
+                        this.changeStatusToMaintenance()
+                        break;
+                    default:
+                        this.show()
+                        break;
+                }
+            } catch (error) {
+                console.log({error})
             }
         }
     },

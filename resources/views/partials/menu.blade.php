@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-end-0 border-start-0">
+<nav class="navbar navbar-expand-lg navbar-light app-nav">
     <a class="navbar-brand text-body-secondary" href="{{ $url }}">
         {{ $title }}
     </a>

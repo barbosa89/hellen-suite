@@ -144,7 +144,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" id="room-store" class="btn btn-primary">
+                    <button type="submit" id="room-store" class="btn btn-primary me-2">
                         @lang('common.create')
                     </button>
                     <a href="{{ route('rooms.index') }}" class="btn btn-secondary">

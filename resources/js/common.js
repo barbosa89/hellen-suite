@@ -1,6 +1,7 @@
 import { trans } from "laravel-vue-i18n"
+import { toast } from 'vue3-toastify'
 
-document.body.addEventListener('keydown', function (e) {
+document.body.addEventListener('keydown', e => {
     const target = e.target
 
     // Check if the event target is an input, select, or textarea
@@ -131,21 +132,18 @@ function empty(data) {
     return count == 0
 }
 
-document.getElementById("min_price").addEventListener("keyup", function () {
+document.getElementById("min_price")?.addEventListener("keyup", () => {
     const price = parseFloat(document.getElementById("price").value);
     const minPriceInput = document.getElementById("min_price");
     const minPrice = parseFloat(minPriceInput.value);
 
     if (minPrice > price) {
-        toastr.info(
-            'El precio mínimo es mayor al valor de la habitación',
-            'Cuidado'
-        );
+        toast.info('El precio mínimo es mayor al valor de la habitación'); // TODO: Add translation
         minPriceInput.value = '';
     }
 })
 
-document.getElementById("tax_status").addEventListener("change", function () {
+document.getElementById("tax_status")?.addEventListener("change", () => {
     const taxInput = document.getElementById("tax-input");
     const taxField = document.getElementById("tax");
 
@@ -167,7 +165,7 @@ function listRoomsByHotel(hotel) {
     axios.get(route('api.web.rooms.index', hotel), {
         params: { hotel: hotel }
     })
-    .then(function (response) {
+    .then(response => {
         const rooms = response.data.rooms;
         const roomSelect = document.getElementById("room");
         roomSelect.innerHTML = ""; // Clear current options
@@ -182,14 +180,14 @@ function listRoomsByHotel(hotel) {
             }
 
             // Populate new options
-            rooms.forEach(function (room) {
+            rooms.forEach(room => {
                 const option = document.createElement("option");
                 option.value = room.hash;
                 option.textContent = room.number;
                 roomSelect.appendChild(option);
             });
         } else {
-            toastr.info('El hotel seleccionado no tiene habitaciones', 'Sin habitaciones');
+            toast.info('El hotel seleccionado no tiene habitaciones');
             roomSelect.value = ""; // Clear the selection
 
             const roomList = document.getElementById("room-list");
@@ -201,16 +199,16 @@ function listRoomsByHotel(hotel) {
             }
         }
     })
-    .catch(function () {
-        toastr.error('Ha ocurrido un error', 'Error');
+    .catch(() => {
+        toast.error('Ha ocurrido un error');
     });
 }
 
-document.getElementById('remove-room').addEventListener('click', function () {
+document.getElementById('remove-room')?.addEventListener('click', () => {
     const options = [];
     const roomSelect = document.getElementById("room");
 
-    Array.from(roomSelect.children).forEach(function (item, index) {
+    Array.from(roomSelect.children).forEach((item, index) => {
         item.removeAttribute('selected');
 
         if (index > 0) {
@@ -219,12 +217,12 @@ document.getElementById('remove-room').addEventListener('click', function () {
     });
 
     roomSelect.innerHTML = ""; // Clear the current options
-    options.forEach(function (option) {
+    options.forEach(option => {
         roomSelect.appendChild(option); // Append options back excluding the first one
     });
 });
 
-document.getElementById('hotel').addEventListener('change', function () {
+document.getElementById('hotel')?.addEventListener('change', () => {
     const roomList = document.getElementById('room-list');
     const anyPlace = document.getElementById('any-place');
     const assignSelect = document.getElementById('assign');
@@ -245,7 +243,7 @@ document.getElementById('hotel').addEventListener('change', function () {
     `;
 });
 
-document.getElementById('assign').addEventListener('change', function () {
+document.getElementById('assign')?.addEventListener('change', () => {
     const hotelValue = document.getElementById('hotel').value;
     const roomList = document.getElementById('room-list');
     const anyPlace = document.getElementById('any-place');
@@ -253,7 +251,7 @@ document.getElementById('assign').addEventListener('change', function () {
     const roomSelect = document.getElementById('room');
 
     if (this.value === 'room') {
-        // Call listRoomsByHotel function with the hotel value
+        // Call listRoomsByHotel fn with the hotel value
         listRoomsByHotel(hotelValue);
 
         // Fade out 'any-place' element
@@ -307,7 +305,7 @@ function getRoomPriceByNumber(hotel, number) {
         hotel: hotel,
         number: number
     })
-    .then(function (response) {
+    .then(response => {
         const result = response.data;
 
         document.getElementById('price').setAttribute('value', Math.round(parseInt(result.price)));
@@ -316,23 +314,11 @@ function getRoomPriceByNumber(hotel, number) {
 
         document.getElementById('tax-value').textContent = (parseFloat(result.tax) * 100).toFixed(2);
     })
-    .catch(function () {
-        toastr.error(
-            'Ha ocurrido un error',
-            'Error'
-        );
+    .catch(() => {
+        toast.error('Ha ocurrido un error');
     });
 }
 
-
-/**
- * Object params.
- *
- * string   url             The URI to query
- * string   list_id         The ID of list, include list headers
- * string   item_container  The container ID where the result will be rendered
- * function render          The method to render the results in a string template
- */
 
 /**
  * Standar search methods.
@@ -356,7 +342,7 @@ function std_search(event, query, params) {
 
     if (query.length >= 3) {
         axios.get(`${params.url}?query=${query}`)
-            .then(function (response) {
+            .then(response => {
                 const data = JSON.parse(response.data.data);
 
                 if (data.length) {
@@ -368,17 +354,11 @@ function std_search(event, query, params) {
 
                     listElement.style.display = 'block';
                 } else {
-                    toastr.info(
-                        trans('common.noRecords'),
-                        trans('common.attention')
-                    );
+                    toast.info(trans('common.noRecords'));
                 }
             })
-            .catch(function () {
-                toastr.error(
-                    trans('common.error'),
-                    'Error'
-                );
+            .catch(() => {
+                toast.error(trans('common.error'))
             });
     }
 }

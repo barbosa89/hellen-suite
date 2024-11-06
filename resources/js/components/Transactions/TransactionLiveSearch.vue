@@ -25,27 +25,31 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                query: '',
-                results: []
-            }
-        },
-        props: ['uri', 'hotel'],
-        methods: {
-            push(result) {
-                this.$emit('selectResult', result)
-                this.query = ''
-            }
-        },
-        watch: {
-            query: function(current, old) {
-                if (current.length == 0 || this.query.length == 0) {
-                    this.results = []
-                } else {
-                    if (current.length >= 3 && this.hotel) {
-                        axios.get(this.uri + '?query=' + this.query + '&hotel=' + this.hotel)
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
+
+export default {
+    data() {
+        return {
+            query: '',
+            results: []
+        }
+    },
+    props: ['uri', 'hotel'],
+    methods: {
+        push(result) {
+            this.$emit('selectResult', result)
+            this.query = ''
+        }
+    },
+    watch: {
+        query: function(current, old) {
+            if (current.length == 0 || this.query.length == 0) {
+                this.results = []
+            } else {
+                if (current.length >= 3 && this.hotel) {
+                    axios
+                        .get(this.uri + '?query=' + this.query + '&hotel=' + this.hotel)
                         .then(response => {
                             let results = JSON.parse(response.data.results);
 
@@ -54,20 +58,14 @@
                             } else {
                                 this.results = []
 
-                                toastr.info(
-                                    this.$root.$t('common.without.results'),
-                                    this.$root.$t('common.sorry')
-                                );
+                                toast.info(trans('common.without.results'));
                             }
-                        }).catch(e => {
-                            toastr.error(
-                                this.$root.$t('common.try'),
-                                'Error'
-                            );
+                        }).catch(_e => {
+                            toast.error(trans('common.try'));
                         });
-                    }
                 }
             }
-        },
-    }
+        }
+    },
+}
 </script>

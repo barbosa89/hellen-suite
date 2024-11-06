@@ -1,25 +1,54 @@
 <template>
     <div class="position-fixed context-menu" :style="{ top: y + 'px', left: x + 'px' }">
-        <div v-for="action in actions" :key="action.action" @click="emitAction(action.action)">
+        <div class="context-menu-item" v-for="action in actions" :key="action.action" @click="emitAction(action.action)">
             {{ action.label }}
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, onMounted, onUnmounted } from 'vue'
 
-const { actions, x, y } = defineProps(['actions', 'x', 'y']);
-const emit = defineEmits(['action-clicked']);
+const { actions, x, y } = defineProps({
+    actions: {
+        type: Array,
+        required: true,
+    },
+    x: {
+        type: Number,
+        required: true,
+    },
+    y: {
+        type: Number,
+        required: true,
+    },
+})
+
+const emit = defineEmits(['action-clicked', 'update:modelValue'])
 
 const emitAction = (action) => {
-    emit('action-clicked', action);
-};
+    emit('action-clicked', action)
+    emit('update:modelValue', false)
+}
+
+const handleClickOutside = (event) => {
+    if (!event.target.classList.contains('context-menu-item')) {
+        emit('update:modelValue', false)
+    }
+}
+
+onMounted(() => {
+    document.addEventListener("click", handleClickOutside)
+})
+
+onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside)
+})
 </script>
 
 <style scoped>
 .context-menu {
-    height: 33.33%;
+    height: auto;
     z-index: 50;
     position: absolute;
     background: white;

@@ -75,38 +75,41 @@
 
 @section('scripts')
 <script>
-    document.querySelector('#from').addEventListener('change', function () {
-        if (this.value !== null && this.value !== "") {
-            axios.post('/hotels/different', {
-                hotel: this.value
-            })
-            .then(function (response) {
-                var hotels = JSON.parse(response.data.hotels);
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
 
-                if (hotels.length) {
-                    var toList = document.querySelector("#to-list");
-                    if (toList.style.display === 'none') {
-                        toList.style.display = 'block';
-                    }
+document.querySelector('#from').addEventListener('change', function () {
+    if (this.value !== null && this.value !== "") {
+        axios.post('/hotels/different', {
+            hotel: this.value
+        })
+        .then(function (response) {
+            var hotels = JSON.parse(response.data.hotels);
 
-                    var newOptions = hotels.map(function(hotel) {
-                        return "<option value='" + hotel.hash + "'>" + hotel.business_name + "</option>";
-                    }).join('');
-
-                    document.querySelector("#to").innerHTML = newOptions;
-                } else {
-                    toastr.info('No hay hoteles para replicar', 'Sin registros');
-                    document.querySelector('#to').value = '';
-
-                    if (toList.style.display === 'block') {
-                        toList.style.display = 'none';
-                    }
+            if (hotels.length) {
+                var toList = document.querySelector("#to-list");
+                if (toList.style.display === 'none') {
+                    toList.style.display = 'block';
                 }
-            })
-            .catch(function (error) {
-                toastr.error('Ha ocurrido un error', 'Error');
-            });
-        }
-    });
+
+                var newOptions = hotels.map(function(hotel) {
+                    return "<option value='" + hotel.hash + "'>" + hotel.business_name + "</option>";
+                }).join('');
+
+                document.querySelector("#to").innerHTML = newOptions;
+            } else {
+                toast.info('No hay hoteles para replicar'); // TODO: Add translation
+                document.querySelector('#to').value = '';
+
+                if (toList.style.display === 'block') {
+                    toList.style.display = 'none';
+                }
+            }
+        })
+        .catch(function (error) {
+            toast.error('Ha ocurrido un error'); // TODO: Add translation
+        });
+    }
+});
 </script>
 @endsection

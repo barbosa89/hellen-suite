@@ -93,6 +93,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -124,28 +127,23 @@ export default {
                 this.updateServiceList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/dining/search', {
-                        query: this.query,
-                        hotel: this.hotel
-                    }).then(response => {
-                        let services = JSON.parse(response.data.services);
+                    axios
+                        .post('/dining/search', {
+                            query: this.query,
+                            hotel: this.hotel
+                        }).then(response => {
+                            let services = JSON.parse(response.data.services);
 
-                        if (services.length > 0) {
-                            this.services = services
-                        } else {
-                            this.services = []
+                            if (services.length > 0) {
+                                this.services = services
+                            } else {
+                                this.services = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
-                        }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
-                    });
+                                toast.info(trans('common.without.results'));
+                            }
+                        }).catch(_e => {
+                            toast.error(trans('common.try'));
+                        });
                 }
             }
         }

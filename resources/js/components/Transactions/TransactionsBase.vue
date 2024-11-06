@@ -39,7 +39,7 @@
             </option>
         </select>
 
-        <textarea name="comments" id="comments" cols="30" rows="2" class="form-control" v-model="comments" :placeholder="this.$root.$t('common.comments')"></textarea>
+        <textarea name="comments" id="comments" cols="30" rows="2" class="form-control" v-model="comments" :placeholder="trans('common.comments')"></textarea>
 
         <div class="crud-list" v-if="selecteds.length != 0">
             <div class="crud-list-heading mt-2">
@@ -130,232 +130,217 @@
 </template>
 
 <script>
-    export default {
-        props: ['hotels', 'companies'],
-        data() {
-            return {
-                selecteds: [],
-                types: [],
-                errors: [],
-                info: [],
-                hotel: '',
-                company: '',
-                type: '',
-                hash: '',
-                amount: 0,
-                price: 0,
-                comments: '',
-                process_uri: '',
-                search_uri: '',
-                module_uri: '',
-                title: 'Default',
-                module_name: 'Default',
-            }
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
+
+export default {
+    props: ['hotels', 'companies'],
+    data() {
+        return {
+            selecteds: [],
+            types: [],
+            errors: [],
+            info: [],
+            hotel: '',
+            company: '',
+            type: '',
+            hash: '',
+            amount: 0,
+            price: 0,
+            comments: '',
+            process_uri: '',
+            search_uri: '',
+            module_uri: '',
+            title: 'Default',
+            module_name: 'Default',
+        }
+    },
+    methods: {
+        resetAll() {
+            this.query = ''
+            this.selecteds = []
+            this.amount = 0
+            this.price = 0
+            this.company = ''
+            this.comments = ''
         },
-        methods: {
-            resetAll() {
-                this.query = ''
-                this.selecteds = []
-                this.amount = 0
-                this.price = 0
-                this.company = ''
-                this.comments = ''
-            },
-            add(element) {
-                this.exists(element)
-                this.checkStock(element)
-                this.checkActiveEdition()
+        add(element) {
+            this.exists(element)
+            this.checkStock(element)
+            this.checkActiveEdition()
 
-                if (this.info.length == 0) {
-                    this.cancelEditing()
-
-                    element.amount = 0
-                    element.editing = true
-                    this.price = element.price
-
-                    this.selecteds.push(element)
-                }
-            },
-            exists(element) {
-                _.map(this.selecteds, selected => {
-                    if (selected.hash == element.hash) {
-                        this.info.push(this.$root.$t('transactions.element.exists'))
-                    }
-                })
-            },
-            edit(selected, index) {
+            if (this.info.length == 0) {
                 this.cancelEditing()
 
-                selected.editing = true
+                element.amount = 0
+                element.editing = true
+                this.price = element.price
 
-                this.$set(this.selecteds, index, selected);
+                this.selecteds.push(element)
+            }
+        },
+        exists(element) {
+            _.map(this.selecteds, selected => {
+                if (selected.hash == element.hash) {
+                    this.info.push(trans('transactions.element.exists'))
+                }
+            })
+        },
+        edit(selected, index) {
+            this.cancelEditing()
 
-                this.amount = selected.amount
-                this.price = selected.price
-            },
-            save(selected, index) {
-                this.checkAmount()
+            selected.editing = true
 
-                if (this.info.length == 0) {
-                    if (this.type != 'entry') {
-                        if (this.amount > selected.quantity) {
-                            selected.amount = selected.quantity
-                        } else {
-                            selected.amount = this.amount
-                        }
+            this.$set(this.selecteds, index, selected);
+
+            this.amount = selected.amount
+            this.price = selected.price
+        },
+        save(selected, index) {
+            this.checkAmount()
+
+            if (this.info.length == 0) {
+                if (this.type != 'entry') {
+                    if (this.amount > selected.quantity) {
+                        selected.amount = selected.quantity
                     } else {
                         selected.amount = this.amount
                     }
-
-                    selected.editing = false
-                    selected.price = this.price
-
-                    this.$set(this.selecteds, index, selected);
-
-                    this.amount = 0
-                    this.price = 0
+                } else {
+                    selected.amount = this.amount
                 }
-            },
-            cancelEditing() {
-                if (this.selecteds.length > 0) {
-                    let selectList = this.selecteds;
-                    this.selecteds = []
-                    this.selecteds = _.each(selectList, function (item) {
-                        item.editing = false
-                    })
-                }
+
+                selected.editing = false
+                selected.price = this.price
+
+                this.$set(this.selecteds, index, selected);
 
                 this.amount = 0
                 this.price = 0
-            },
-            process() {
-                if (this.validate()) {
-                    axios.post(this.process_uri, {
-                        elements: this.selecteds,
-                        hotel: this.hotel,
-                        type: this.type,
-                        comments: this.comments,
-                        company: this.company
-                    }).then(response => {
-                        let selecteds = this.selecteds
-                        let processed = Array.from(response.data.processed)
-                        this.resetAll()
+            }
+        },
+        cancelEditing() {
+            if (this.selecteds.length > 0) {
+                let selectList = this.selecteds;
+                this.selecteds = []
+                this.selecteds = _.each(selectList, function (item) {
+                    item.editing = false
+                })
+            }
 
-                        _.each(selecteds, selected => {
-                            if (processed.indexOf(selected.hash) == -1) {
-                                this.selecteds.push(selected)
-                            }
-                        })
+            this.amount = 0
+            this.price = 0
+        },
+        process() {
+            if (this.validate()) {
+                axios.post(this.process_uri, {
+                    elements: this.selecteds,
+                    hotel: this.hotel,
+                    type: this.type,
+                    comments: this.comments,
+                    company: this.company
+                }).then(response => {
+                    let selecteds = this.selecteds
+                    let processed = Array.from(response.data.processed)
+                    this.resetAll()
 
-                        if (this.selecteds.length) {
-                            toastr.error(
-                                this.$root.$t('transactions.partial.processed'),
-                                this.$root.$t('common.sorry')
-                            );
-                        } else {
-                            toastr.success(
-                                this.$root.$t('transactions.all.processed'),
-                                this.$root.$t('common.great')
-                            );
+                    _.each(selecteds, selected => {
+                        if (processed.indexOf(selected.hash) == -1) {
+                            this.selecteds.push(selected)
                         }
-                    }).catch(e => {
-                         toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
-                    });
-                } else {
-                    toastr.info(
-                        this.$root.$t('transactions.has.errors'),
-                        this.$root.$t('common.sorry')
-                    );
-                }
-            },
-            validate() {
-                let status = true
+                    })
 
-                if (this.selecteds.length == 0) {
-                    status = false
-                    this.errors.push(this.$root.$t('transactions.no.item'))
-                }
-
-                if (!this.hotel) {
-                    status = false
-                    this.errors.push(this.$root.$t('transactions.choose.hotel'))
-                }
-
-                if (!this.type) {
-                    status = false
-                    this.errors.push(this.$root.$t('transactions.choose.type'))
-                }
-
-                if (this.type == 'entry' && this.company == '') {
-                    status = false
-                    this.errors.push(this.$root.$t('transactions.choose.company'))
-                }
-
-                this.selecteds.forEach(selected => {
-                    if (selected.amount == 0) {
-                        status = false
-                        this.errors.push(this.$root.$t('transactions.amount.zero'))
+                    if (this.selecteds.length) {
+                        toast.error(trans('transactions.partial.processed'));
+                    } else {
+                        toast.success(trans('transactions.all.processed'));
                     }
-                })
-
-                return status
-            },
-            checkStock(element) {
-                if (this.type !== 'entry') {
-                    if (parseInt(element.quantity) === 0) {
-                        this.info.push(this.$root.$t('transactions.no.stock'))
-                    }
-                }
-            },
-            checkAmount() {
-                if (parseInt(this.amount) <= 0 || this.amount == '') {
-                    this.info.push(this.$root.$t('transactions.amount.zero'))
-                }
-            },
-            checkActiveEdition() {
-                _.each(this.selecteds, selected => {
-                    if (selected.editing == true) {
-                        this.info.push(this.$root.$t('transactions.active.edition'))
-                    }
-                })
+                }).catch(e => {
+                        toast.error(trans('common.try'));
+                });
+            } else {
+                toast.info(trans('transactions.has.errors'));
             }
         },
-        watch: {
-            hotel: function (current, old) {
-                this.resetAll()
-            },
-            type: function (current, old) {
-                this.resetAll()
-            },
-            errors: function (current, old) {
-                if (current.length > 0) {
-                    current.forEach(error => {
-                        toastr.error(
-                            error,
-                            this.$root.$t('common.sorry')
-                        );
-                    })
+        validate() {
+            let status = true
 
-                    this.errors = []
+            if (this.selecteds.length == 0) {
+                status = false
+                this.errors.push(trans('transactions.no.item'))
+            }
+
+            if (!this.hotel) {
+                status = false
+                this.errors.push(trans('transactions.choose.hotel'))
+            }
+
+            if (!this.type) {
+                status = false
+                this.errors.push(trans('transactions.choose.type'))
+            }
+
+            if (this.type == 'entry' && this.company == '') {
+                status = false
+                this.errors.push(trans('transactions.choose.company'))
+            }
+
+            this.selecteds.forEach(selected => {
+                if (selected.amount == 0) {
+                    status = false
+                    this.errors.push(trans('transactions.amount.zero'))
                 }
-            },
-            info: function (current, old) {
-                if (current.length > 0) {
-                    current.forEach(info => {
-                        toastr.info(
-                            info,
-                            this.$root.$t('common.sorry')
-                        );
-                    })
+            })
 
-                    this.info = []
+            return status
+        },
+        checkStock(element) {
+            if (this.type !== 'entry') {
+                if (parseInt(element.quantity) === 0) {
+                    this.info.push(trans('transactions.no.stock'))
                 }
             }
         },
-    };
+        checkAmount() {
+            if (parseInt(this.amount) <= 0 || this.amount == '') {
+                this.info.push(trans('transactions.amount.zero'))
+            }
+        },
+        checkActiveEdition() {
+            _.each(this.selecteds, selected => {
+                if (selected.editing == true) {
+                    this.info.push(trans('transactions.active.edition'))
+                }
+            })
+        }
+    },
+    watch: {
+        hotel: function (current, old) {
+            this.resetAll()
+        },
+        type: function (current, old) {
+            this.resetAll()
+        },
+        errors: function (current, old) {
+            if (current.length > 0) {
+                current.forEach(error => {
+                    toast.error(error);
+                })
+
+                this.errors = []
+            }
+        },
+        info: function (current, old) {
+            if (current.length > 0) {
+                current.forEach(info => {
+                    toast.info(info);
+                })
+
+                this.info = []
+            }
+        }
+    },
+};
 </script>
 
 <style scoped>

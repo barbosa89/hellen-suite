@@ -168,6 +168,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -238,40 +241,29 @@ export default {
                     numbers.push(voucher.number)
                 })
 
-                axios.post('/vouchers/process', {
-                    numbers: numbers,
-                    hotel: this.hotel
-                }).then(response => {
-                    let processed = Array.from(response.data.processed)
+                axios
+                    .post('/vouchers/process', {
+                        numbers: numbers,
+                        hotel: this.hotel
+                    }).then(response => {
+                        let processed = Array.from(response.data.processed)
 
-                    processed.forEach((number, index) => {
-                        this.vouchers = _.filter(this.vouchers, (voucher) => {
-                            return voucher.number != number
+                        processed.forEach((number, index) => {
+                            this.vouchers = _.filter(this.vouchers, (voucher) => {
+                                return voucher.number != number
+                            })
                         })
-                    })
 
-                    if (this.vouchers.length > 0) {
-                        toastr.error(
-                            this.$root.$t('vouchers.incomplete.processing'),
-                            this.$root.$t('common.sorry')
-                        );
-                    } else {
-                        toastr.success(
-                            this.$root.$t('vouchers.complete.processing'),
-                            this.$root.$t('common.successful')
-                        );
-                    }
-                }).catch(e => {
-                    toastr.error(
-                        this.$root.$t('common.try'),
-                        'Error'
-                    );
-                });
+                        if (this.vouchers.length > 0) {
+                            toast.error(trans('vouchers.incomplete.processing'));
+                        } else {
+                            toast.success(trans('vouchers.complete.processing'));
+                        }
+                    }).catch(e => {
+                        toast.error(trans('common.try'));
+                    });
             } else {
-                toastr.error(
-                    this.$root.$t('common.noRecords'),
-                    'Error'
-                );
+                toast.error(trans('common.noRecords'));
             }
         }
     },

@@ -27,49 +27,49 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            voucherHash: {
-                type: String,
-                required: true
-            }
-        },
-        data() {
-            return {
-                url: route('api.web.guests.index', {status: 'is_not_staying', per_page: 100}),
-                guests: [],
-                headers: [
-                    {
-                        description: this.$root.$t('common.name')
-                    },
-                    {
-                        description: this.$root.$t('common.idNumber')
-                    },
-                    {
-                        description: this.$root.$t('common.options')
-                    },
-                ]
-            }
-        },
-        methods: {
-            setData(data) {
-                if (data.guests.data.length > 0) {
-                    this.guests = []
-                    setTimeout(() => {
-                        this.guests = data.guests.data
-                    }, 500)
-                } else {
-                    toastr.info(
-                        this.$root.$t('common.without.results'),
-                        this.$root.$t('common.sorry')
-                    )
-                }
-            },
-            redirect(guest) {
-                let route = window.route('vouchers.guests', {id: this.voucherHash, guest: guest.hash})
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
 
-                window.location.href = route
+export default {
+    props: {
+        voucherHash: {
+            type: String,
+            required: true
+        }
+    },
+    data() {
+        return {
+            url: route('api.web.guests.index', {status: 'is_not_staying', per_page: 100}),
+            guests: [],
+            headers: [
+                {
+                    description: this.$root.$t('common.name')
+                },
+                {
+                    description: this.$root.$t('common.idNumber')
+                },
+                {
+                    description: this.$root.$t('common.options')
+                },
+            ]
+        }
+    },
+    methods: {
+        setData(data) {
+            if (data.guests.data.length > 0) {
+                this.guests = []
+                setTimeout(() => {
+                    this.guests = data.guests.data
+                }, 500)
+            } else {
+                toast.info(trans('common.without.results'))
             }
+        },
+        redirect(guest) {
+            let route = window.route('vouchers.guests', {id: this.voucherHash, guest: guest.hash})
+
+            window.location.href = route
         }
     }
+}
 </script>

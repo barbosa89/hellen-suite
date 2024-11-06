@@ -18,6 +18,8 @@ $fa-font-path: "@fortawesome/fontawesome-free/webfonts";
 @import '@fortawesome/fontawesome-free/scss/solid';
 @import '@fortawesome/fontawesome-free/scss/brands';
 
+@import 'vue3-toastify/dist/index.css';
+
 $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;

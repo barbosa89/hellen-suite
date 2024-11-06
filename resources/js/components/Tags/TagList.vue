@@ -37,59 +37,54 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            tags: Array
-        },
-        data() {
-            return {
-                hotel: '',
-                list: this.tags
-            }
-        },
-        methods: {
-            go(tag) {
-                // Redirect on click
-                if (this.hotel.length > 0) {
-                    window.location.href = '/tags/' + tag.hash + '/hotel/' + this.hotel
-                } else {
-                    toastr.info(
-                        this.$root.$t('hotels.choose'),
-                        'Ey'
-                    )
-                }
-            },
-            showResults(results) {
-                this.list = results
-            },
-            reset() {
-                this.list = this.tags
-            },
-            edit(text, data) {
-                window.location.href = `/tags/${data.tag.hash}/edit`
-            },
-            destroy(text, data) {
-                axios.delete(`tags/${data.tag.hash}`)
-                    .then(response => {
-                        if (response.data.status) {
-                            this.list = _.filter(this.list, tag => {
-                                return tag.hash != data.tag.hash
-                            })
+import { toast } from 'vue3-toastify'
+import { trans } from 'laravel-vue-i18n'
 
-                            toastr.success(
-                                this.$root.$t('common.deletedSuccessfully'),
-                                this.$root.$t('common.great'),
-                            )
-                        }
-                    }).catch(error => {
-                        toastr.info(
-                            this.$root.$t('common.error'),
-                            'Error',
-                        )
-                    })
+export default {
+    props: {
+        tags: Array
+    },
+    data() {
+        return {
+            hotel: '',
+            list: this.tags
+        }
+    },
+    methods: {
+        go(tag) {
+            // Redirect on click
+            if (this.hotel.length > 0) {
+                window.location.href = '/tags/' + tag.hash + '/hotel/' + this.hotel
+            } else {
+                toast.info(trans('hotels.choose'))
             }
         },
-    }
+        showResults(results) {
+            this.list = results
+        },
+        reset() {
+            this.list = this.tags
+        },
+        edit(text, data) {
+            window.location.href = `/tags/${data.tag.hash}/edit`
+        },
+        destroy(text, data) {
+            axios
+                .delete(`tags/${data.tag.hash}`)
+                .then(response => {
+                    if (response.data.status) {
+                        this.list = _.filter(this.list, tag => {
+                            return tag.hash != data.tag.hash
+                        })
+
+                        toast.success(trans('common.deletedSuccessfully'))
+                    }
+                }).catch(_error => {
+                    toast.info(trans('common.error'))
+                })
+        }
+    },
+}
 </script>
 
 <style scoped>
