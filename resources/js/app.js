@@ -75,18 +75,4 @@ app.use(i18nVue, {
     },
 })
 
-// Vue.filter('date', function(value) {
-//     if (value) {
-//         return moment(String(value)).format('YY-MM-DD')
-//     }
-
-//     return ''
-// });
-
-// Vue.mixin({
-//     methods: {
-//         route: route
-//     }
-// })
-
 app.mount("#app")

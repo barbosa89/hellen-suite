@@ -1,7 +1,7 @@
 <div class="hide">
 	<div class="modal fade modal-slide-in-right" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="confirm-action" aria-hidden="true">
 		<form action="{url}" method="POST">
-			{{ csrf_field() }}
+			@csrf
 			<input type="hidden" name="_method" value="{method}">
 
 			<div class="modal-dialog">

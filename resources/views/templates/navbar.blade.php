@@ -6,7 +6,7 @@
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+            <input type="text" name="search" class="form-control" placeholder="{{ trans('common.search') }}" aria-label="Search" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-light" type="button">
                 <i class="fa fa-search"></i>

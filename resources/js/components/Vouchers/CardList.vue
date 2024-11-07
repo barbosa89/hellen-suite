@@ -8,7 +8,7 @@
             <template v-if="vouchers.length > 0">
                 <vue-table :headers='headers' :user-data='vouchers'>
                     <template v-slot:record="{ record }">
-                        <td>{{ record.created_at | date }}</td>
+                        <td>{{ record.created_at }}</td>
                         <td>
                             <a :href="'/vouchers/' +record.hash">
                                 {{ record.number }}

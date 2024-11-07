@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-end-0 border-start-0">
+        <nav class="navbar navbar-expand-lg navbar-light app-nav">
             <a href="/vouchers" class="navbar-brand text-body-secondary">
                 {{ $t('vouchers.title') }}
             </a>
@@ -35,7 +35,7 @@
                     :search-icon='"fas fa-search"'
                     :params='params'>
                     <template v-slot:record="{ record }">
-                        <td>{{ record.created_at | date }}</td>
+                        <td>{{ record.created_at }}</td>
                         <td>
                             <a :href='route("vouchers.show", record.hash)'>
                                 {{ record.number }}
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { trans } from "laravel-vue-i18n"
+import { wTrans } from "laravel-vue-i18n"
 
 import FilterModal from './FilterModal.vue'
 
@@ -67,28 +67,30 @@ export default {
     computed: {
         canDisplayList() {
             return this.url.length > 0
+        },
+        headers() {
+            return [
+                {
+                    description: wTrans('common.date')
+                },
+                {
+                    description: wTrans('common.number'),
+                    sortable: 'number'
+                },
+                {
+                    description: wTrans('common.type'),
+                    sortable: 'type'
+                },
+                {
+                    description: wTrans('common.value')
+                },
+            ]
         }
     },
     data() {
         return {
             url: '',
             hotelHash: '',
-            headers: [
-                {
-                    description: trans('common.date')
-                },
-                {
-                    description: trans('common.number'),
-                    sortable: 'number'
-                },
-                {
-                    description: trans('common.type'),
-                    sortable: 'type'
-                },
-                {
-                    description: trans('common.value')
-                },
-            ],
             lang: '',
             params: {}
         }
