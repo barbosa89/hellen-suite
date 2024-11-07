@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { trans } from "laravel-vue-i18n"
+
 export default {
     mounted() {
         // Bus.$on('last-vouchers', (vouchers) => {
@@ -51,19 +53,19 @@ export default {
             empty: false,
             headers: [
                 {
-                    description: this.$root.$t('common.date')
+                    description: trans('common.date')
                 },
                 {
-                    description: this.$root.$t('common.number')
+                    description: trans('common.number')
                 },
                 {
                     description: 'Hotel'
                 },
                 {
-                    description: this.$root.$t('common.type')
+                    description: trans('common.type')
                 },
                 {
-                    description: this.$root.$t('common.value')
+                    description: trans('common.value')
                 },
             ]
         }

@@ -64,11 +64,11 @@
 
         <div class="row my-4">
             <div class="col-12">
-                <button role="button" class="btn btn-primary" @click="create">
+                <button role="button" class="btn btn-dark" @click="create">
                     {{ $t('common.create') }}
                 </button>
 
-                <a href="/notes" class="btn btn-secondary">
+                <a href="/notes" class="btn btn-light">
                     {{ $t('common.back') }}
                 </a>
             </div>
@@ -188,7 +188,7 @@ export default {
             axios.post('/tags', {
                 tag: tag.value
             }).then(response => {
-                this.$set(tag, 'hash', response.data.hash)
+                tag.hash = response.data.hash
 
                 if (!this.existsTag(response.data.hash)) {
                     this.tags.push({

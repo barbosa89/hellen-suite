@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { trans } from "laravel-vue-i18n"
+
 export default {
     mounted() {
         this.queryNotes()
@@ -46,13 +48,13 @@ export default {
             date: moment(),
             headers: [
                 {
-                    description: this.$root.$t('common.date')
+                    description: trans('common.date')
                 },
                 {
-                    description: this.$root.$t('notes.content')
+                    description: trans('notes.content')
                 },
                 {
-                    description: this.$root.$t('common.name')
+                    description: trans('common.name')
                 }
             ]
         }

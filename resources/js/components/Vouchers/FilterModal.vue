@@ -118,9 +118,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">{{ $t('common.close') }}</button>
-                    <button class="btn btn-secondary" @click.prevent="clear">{{ $t('common.clear') }}</button>
-                    <button class="btn btn-primary" @click="apply">{{ $t('common.filters.apply') }}</button>
+                    <button class="btn btn-light" data-dismiss="modal">{{ $t('common.close') }}</button>
+                    <button class="btn btn-light" @click.prevent="clear">{{ $t('common.clear') }}</button>
+                    <button class="btn btn-dark" @click="apply">{{ $t('common.filters.apply') }}</button>
                 </div>
             </div>
         </div>

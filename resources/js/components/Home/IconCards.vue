@@ -37,6 +37,7 @@
 
 <script>
 import IconCard from './IconCard.vue'
+import { trans } from "laravel-vue-i18n"
 
 export default {
     mounted() {
@@ -98,7 +99,7 @@ export default {
                         let rooms = response.data.rooms
                         let assigned = _.filter(rooms, {status: '1'})
 
-                        this.cards.rooms.content = `${assigned.length} / ${rooms.length} ${this.$root.$t('rooms.title')}`
+                        this.cards.rooms.content = `${assigned.length} / ${rooms.length} ${trans('rooms.title')}`
                     }
                 })
                 .finally(() => {
@@ -116,11 +117,11 @@ export default {
                     const quantity = response.data.guests.data.length
 
                     if (quantity == 0) {
-                        this.cards.guests.content = this.$root.$t('guests.new.none')
+                        this.cards.guests.content = trans('guests.new.none')
                     } else if (quantity == 1) {
-                        this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.one')}`
+                        this.cards.guests.content = `${quantity} ${trans('guests.new.one')}`
                     } else {
-                        this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.many')}`
+                        this.cards.guests.content = `${quantity} ${trans('guests.new.many')}`
                     }
                 })
                 .finally(() => {
@@ -136,11 +137,11 @@ export default {
                     const quantity = response.data.companies.data.length
 
                     if (quantity == 0) {
-                        this.cards.companies.content = this.$root.$t('companies.new.none')
+                        this.cards.companies.content = trans('companies.new.none')
                     } else if (quantity == 1) {
-                        this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.one')}`
+                        this.cards.companies.content = `${quantity} ${trans('companies.new.one')}`
                     } else {
-                        this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.many')}`
+                        this.cards.companies.content = `${quantity} ${trans('companies.new.many')}`
                     }
                 })
         },
@@ -158,14 +159,14 @@ export default {
 
                     if (quantity > 0) {
                         if (quantity == 1) {
-                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.one')}`
+                            this.cards.vouchers.content = `${quantity} ${trans('vouchers.new.one')}`
                         } else {
-                            this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.many')}`
+                            this.cards.vouchers.content = `${quantity} ${trans('vouchers.new.many')}`
                         }
 
                         // Bus.$emit('last-vouchers', response.data.vouchers.data)
                     } else {
-                        this.cards.vouchers.content = this.$root.$t('vouchers.new.none')
+                        this.cards.vouchers.content = trans('vouchers.new.none')
                     }
                 })
         }

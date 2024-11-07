@@ -413,8 +413,8 @@
             prepareTitles() {
                 if (this.headers.length) {
                     // Add  the selected custom field
-                    this.headers.forEach((title) => {
-                        this.$set(title, 'selected', false);
+                    this.headers.forEach(title => {
+                        title.selected = false
                         this.titles.push(title)
                     });
                 }

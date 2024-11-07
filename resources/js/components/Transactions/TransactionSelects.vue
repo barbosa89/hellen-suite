@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { can } from 'laravel-permission-to-vuejs'
+
 export default {
     data() {
         return {
@@ -47,7 +49,7 @@ export default {
     computed: {
         typesList: function () {
             return _.filter(this.types, type => {
-                return this.$root.$can(type.permission)
+                return can(type.permission)
             })
         }
     },

@@ -119,7 +119,7 @@
         </div>
 
         <div class="mt-4" v-if="selecteds.length != 0">
-            <button type="button" class="btn btn-primary" @click.prevent="process">
+            <button type="button" class="btn btn-dark" @click.prevent="process">
                 {{ $t('common.process') }}
             </button>
             <a class="btn btn-default" @click.prevent="resetAll">
@@ -191,7 +191,7 @@ export default {
 
             selected.editing = true
 
-            this.$set(this.selecteds, index, selected);
+            this.selecteds[index] = selected;
 
             this.amount = selected.amount
             this.price = selected.price
@@ -213,7 +213,7 @@ export default {
                 selected.editing = false
                 selected.price = this.price
 
-                this.$set(this.selecteds, index, selected);
+                this.selecteds[index] = selected
 
                 this.amount = 0
                 this.price = 0

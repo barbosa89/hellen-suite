@@ -16,7 +16,7 @@
                             </a>
                         </td>
                         <td>
-                            <button class="btn btn-primary btn-sm" @click="redirect(record)">
+                            <button class="btn btn-dark btn-sm" @click="redirect(record)">
                                 <em class="fa fa-plus"></em>
                             </button>
                         </td>
@@ -43,13 +43,13 @@ export default {
             guests: [],
             headers: [
                 {
-                    description: this.$root.$t('common.name')
+                    description: trans('common.name')
                 },
                 {
-                    description: this.$root.$t('common.idNumber')
+                    description: trans('common.idNumber')
                 },
                 {
-                    description: this.$root.$t('common.options')
+                    description: trans('common.options')
                 },
             ]
         }

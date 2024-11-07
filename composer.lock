@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c327555f37026d3bfd66dcb17ec7c2c6",
+    "content-hash": "82ea61d1e8a9ca4be64243947c453c86",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -9128,66 +9128,6 @@
                 }
             ],
             "time": "2024-09-25T14:18:03+00:00"
-        },
-        {
-            "name": "thepinecode/i18n",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/conedevelopment/i18n.git",
-                "reference": "26f3b6c644a3edbcb06c251bf7867a86cb0c763d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/conedevelopment/i18n/zipball/26f3b6c644a3edbcb06c251bf7867a86cb0c763d",
-                "reference": "26f3b6c644a3edbcb06c251bf7867a86cb0c763d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/config": "^9.0 || ^10.0 || ^11.0",
-                "illuminate/filesystem": "^9.0 || ^10.0 || ^11.0",
-                "illuminate/support": "^9.0 || ^10.0 || ^11.0",
-                "illuminate/translation": "^9.0 || ^10.0 || ^11.0",
-                "illuminate/view": "^9.0 || ^10.0 || ^11.0",
-                "php": "^8.0 || ^8.1"
-            },
-            "require-dev": {
-                "laravel/laravel": "^10.0",
-                "phpunit/phpunit": "^10.0"
-            },
-            "type": "project",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Pine\\I18n\\I18nServiceProvider"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Pine\\I18n\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cone Development",
-                    "email": "hello@conedevelopment.com"
-                }
-            ],
-            "description": "Push your translations to the front-end.",
-            "support": {
-                "issues": "https://github.com/conedevelopment/i18n/issues",
-                "source": "https://github.com/conedevelopment/i18n/tree/v1.4.0"
-            },
-            "abandoned": "conedevelopment/i18n",
-            "time": "2024-03-22T12:48:34+00:00"
         },
         {
             "name": "tightenco/ziggy",

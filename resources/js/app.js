@@ -8,6 +8,7 @@ import { createApp } from 'vue'
 import { i18nVue } from 'laravel-vue-i18n'
 import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
 import Vue3Toastify from 'vue3-toastify'
+import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 
 import SearchInput from './components/SearchInput.vue'
 import Table from './components/Table.vue'
@@ -60,7 +61,7 @@ app.component('vouchers-index', VoucherIndex);
 
 app.component('home-index', HomeIndex);
 
-// app.use(ContextMenu)
+app.use(ZiggyVue)
 app.use(LaravelPermissionToVueJS)
 app.use(Vue3Toastify, {
     autoClose: 3000,

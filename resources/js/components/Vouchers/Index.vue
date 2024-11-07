@@ -53,77 +53,79 @@
 </template>
 
 <script>
-    import FilterModal from './FilterModal.vue'
+import { trans } from "laravel-vue-i18n"
 
-    export default {
-        mounted() {
-            this.lang = document.documentElement.lang
-        },
-        components: {
-            FilterModal
-        },
-        computed: {
-            canDisplayList() {
-                return this.url.length > 0
-            }
-        },
-        data() {
-            return {
-                url: '',
-                hotelHash: '',
-                headers: [
-                    {
-                        description: this.$root.$t('common.date')
-                    },
-                    {
-                        description: this.$root.$t('common.number'),
-                        sortable: 'number'
-                    },
-                    {
-                        description: this.$root.$t('common.type'),
-                        sortable: 'type'
-                    },
-                    {
-                        description: this.$root.$t('common.value')
-                    },
-                ],
-                lang: '',
-                params: {}
-            }
-        },
-        watch: {
-            hotelHash() {
-                if (this.hotelHash.length) {
-                    this.url = ''
+import FilterModal from './FilterModal.vue'
 
-                    this.url = route('api.web.vouchers.index', this.hotelHash)
-                }
-            }
-        },
-        methods: {
-            close() {
-                const modal = new bootstrap.Modal('#voucher-filter')
-                modal.show()
-            },
-            toggle() {
-                const modal = new bootstrap.Modal('#voucher-filter')
-                modal.toggle()
-            },
-            setFilters(filters) {
-                const params = {}
+export default {
+    mounted() {
+        this.lang = document.documentElement.lang
+    },
+    components: {
+        FilterModal
+    },
+    computed: {
+        canDisplayList() {
+            return this.url.length > 0
+        }
+    },
+    data() {
+        return {
+            url: '',
+            hotelHash: '',
+            headers: [
+                {
+                    description: trans('common.date')
+                },
+                {
+                    description: trans('common.number'),
+                    sortable: 'number'
+                },
+                {
+                    description: trans('common.type'),
+                    sortable: 'type'
+                },
+                {
+                    description: trans('common.value')
+                },
+            ],
+            lang: '',
+            params: {}
+        }
+    },
+    watch: {
+        hotelHash() {
+            if (this.hotelHash.length) {
+                this.url = ''
 
-                if (filters.hasOwnProperty('status') && filters.status.length) {
-                    params.status = filters.status
-                }
-
-                if (filters.hasOwnProperty('type') && filters.type.length) {
-                    params.type = filters.type
-                }
-
-                this.params = Object.assign({}, params)
-
-                this.close()
+                this.url = route('api.web.vouchers.index', this.hotelHash)
             }
         }
+    },
+    methods: {
+        close() {
+            const modal = new bootstrap.Modal('#voucher-filter')
+            modal.show()
+        },
+        toggle() {
+            const modal = new bootstrap.Modal('#voucher-filter')
+            modal.toggle()
+        },
+        setFilters(filters) {
+            const params = {}
+
+            if (filters.hasOwnProperty('status') && filters.status.length) {
+                params.status = filters.status
+            }
+
+            if (filters.hasOwnProperty('type') && filters.type.length) {
+                params.type = filters.type
+            }
+
+            this.params = Object.assign({}, params)
+
+            this.close()
+        }
     }
+}
 </script>
