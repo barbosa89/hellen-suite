@@ -3,7 +3,7 @@
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::post('vouchers/{id}/vehicles', [VehicleController::class, 'storeForvoucher'])
         ->name('vouchers.vehicles.store')
         ->middleware(['permission:vouchers.edit', 'open_shift']);

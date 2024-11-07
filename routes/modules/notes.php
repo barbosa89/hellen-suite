@@ -3,7 +3,7 @@
 use App\Http\Controllers\NoteController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('notes/export', [NoteController::class, 'export'])
         ->name('notes.export')
         ->middleware('permission:notes.index');

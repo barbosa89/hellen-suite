@@ -23,6 +23,8 @@ class InvoiceTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    protected string $transactionId;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -36,7 +38,7 @@ class InvoiceTest extends TestCase
         $this->seed(IdentificationTypesTableSeeder::class);
         $this->seed(CurrencySeeder::class);
 
-        $this->transaction_id = '17557-1604357312-75896';
+        $this->transactionId = '17557-1604357312-75896';
     }
 
     public function test_user_can_see_all_invoices()
@@ -220,17 +222,13 @@ class InvoiceTest extends TestCase
 
         $invoice->plans()->attach($plan);
 
-        Http::fake(function ($request) use ($invoice) {
-            return Http::response($this->getPaymentGatewayResponse($invoice), 200);
-        });
+        Http::fake(fn($request) => Http::response($this->getPaymentGatewayResponse($invoice), 200));
 
         $this->actingAs($user)
-            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transaction_id}")
+            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transactionId}")
             ->assertRedirect(route('home'));
 
-        Http::assertSent(function ($request) {
-            return $request->url() == config('settings.payments.confirm').$this->transaction_id;
-        });
+        Http::assertSent(fn($request) => $request->url() == config('settings.payments.confirm').$this->transactionId);
 
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => $plan->id,
@@ -238,7 +236,7 @@ class InvoiceTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('invoice_payments', [
-            'number' => $this->transaction_id,
+            'number' => $this->transactionId,
             'value' => $plan->price,
             'status' => InvoicePayment::APPROVED,
             'invoice_id' => $invoice->id,
@@ -272,17 +270,13 @@ class InvoiceTest extends TestCase
 
         $invoice->plans()->attach($plan);
 
-        Http::fake(function ($request) use ($invoice) {
-            return Http::response($this->getPaymentGatewayResponse($invoice, 'CARD', 'UNKNOWN'), 200);
-        });
+        Http::fake(fn($request) => Http::response($this->getPaymentGatewayResponse($invoice, 'CARD', 'UNKNOWN'), 200));
 
         $this->actingAs($user)
-            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transaction_id}")
+            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transactionId}")
             ->assertRedirect(route('invoices.index'));
 
-        Http::assertSent(function ($request) {
-            return $request->url() == config('settings.payments.confirm').$this->transaction_id;
-        });
+        Http::assertSent(fn($request) => $request->url() == config('settings.payments.confirm').$this->transactionId);
 
         $this->assertDatabaseMissing('plan_user', [
             'plan_id' => $plan->id,
@@ -290,7 +284,7 @@ class InvoiceTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('invoice_payments', [
-            'number' => $this->transaction_id,
+            'number' => $this->transactionId,
             'value' => $plan->price,
             'status' => InvoicePayment::APPROVED,
             'invoice_id' => $invoice->id,
@@ -321,17 +315,13 @@ class InvoiceTest extends TestCase
 
         $invoice->plans()->attach($plan);
 
-        Http::fake(function ($request) use ($invoice) {
-            return Http::response($this->getPaymentGatewayResponse($invoice), 404);
-        });
+        Http::fake(fn($request) => Http::response($this->getPaymentGatewayResponse($invoice), 404));
 
         $this->actingAs($user)
-            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transaction_id}")
+            ->get(route('invoices.payments.confirm', ['number' => $invoice->number])."/?id={$this->transactionId}")
             ->assertRedirect(route('invoices.index'));
 
-        Http::assertSent(function ($request) {
-            return $request->url() == config('settings.payments.confirm').$this->transaction_id;
-        });
+        Http::assertSent(fn($request) => $request->url() == config('settings.payments.confirm').$this->transactionId);
 
         $this->assertDatabaseMissing('plan_user', [
             'plan_id' => $plan->id,
@@ -339,7 +329,7 @@ class InvoiceTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('invoice_payments', [
-            'number' => $this->transaction_id,
+            'number' => $this->transactionId,
             'value' => $plan->price,
             'status' => InvoicePayment::APPROVED,
             'invoice_id' => $invoice->id,
@@ -361,7 +351,7 @@ class InvoiceTest extends TestCase
     {
         return [
             'data' => [
-                'id' => $this->transaction_id,
+                'id' => $this->transactionId,
                 'created_at' => now()->toIso8601String(),
                 'amount_in_cents' => number_format($invoice->total, 2, '', ''),
                 'reference' => $invoice->number,

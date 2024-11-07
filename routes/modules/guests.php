@@ -3,7 +3,7 @@
 use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('guests/{id}/toggle/{voucher}', [GuestController::class, 'toggle'])
         ->name('guests.toggle')
         ->middleware('permission:guests.edit');

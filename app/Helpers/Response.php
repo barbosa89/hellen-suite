@@ -6,17 +6,11 @@ use Illuminate\Support\Collection;
 
 class Response
 {
-    private string $format;
-
-    private string $template;
-
-    private Collection $collection;
-
-    public function __construct(Collection $collection, $format = null, $template = null)
-    {
-        $this->format = $format;
-        $this->template = $template;
-        $this->collection = $collection;
+    public function __construct(
+        private readonly Collection $collection,
+        private readonly string|null $format = null,
+        private readonly string|null $template = null
+    ) {
     }
 
     public function get(): array

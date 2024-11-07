@@ -155,12 +155,12 @@ class CompanyController extends Controller
         }
 
         $company->load([
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
             },
-            'vouchers.hotel' => function ($query) {
+            'vouchers.hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
         ]);

@@ -3,7 +3,7 @@
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('companies/export', [CompanyController::class, 'export'])
         ->name('companies.export')
         ->middleware(['permission:companies.index']);

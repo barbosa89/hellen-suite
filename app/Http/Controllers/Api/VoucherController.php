@@ -13,11 +13,8 @@ use Illuminate\Validation\Rule;
 
 class VoucherController extends Controller
 {
-    public VoucherRepository $voucher;
-
-    public function __construct(VoucherRepository $voucher)
+    public function __construct(public VoucherRepository $voucher)
     {
-        $this->voucher = $voucher;
     }
 
     /**

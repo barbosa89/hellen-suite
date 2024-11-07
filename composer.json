@@ -103,6 +103,7 @@
         "test:debug": "vendor/bin/phpunit -d memory_limit=1024M",
         "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit -d memory_limit=1024M",
         "sail": "vendor/bin/sail",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "code:upgrade": "vendor/bin/rector"
     }
 }

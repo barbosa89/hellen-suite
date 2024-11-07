@@ -21,7 +21,7 @@ class RoomRepository implements Repository
         return Room::whereOwner()
             ->where('id', $id)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])
@@ -106,7 +106,7 @@ class RoomRepository implements Repository
         return Room::whereOwner()
             ->whereLike(['number', 'description'], $query)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
             ])

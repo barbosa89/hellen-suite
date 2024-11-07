@@ -17,17 +17,17 @@ class VoucherRepository implements Repository
             ->filter($filters)
             ->latest()
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -42,17 +42,17 @@ class VoucherRepository implements Repository
             ->filter($filters)
             ->latest()
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -67,7 +67,7 @@ class VoucherRepository implements Repository
         return Voucher::whereOwner()
             ->where('id', $id)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])
@@ -130,7 +130,7 @@ class VoucherRepository implements Repository
                 'hotel.business_name',
             ], $query)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
             ])
@@ -142,17 +142,17 @@ class VoucherRepository implements Repository
         return Voucher::whereOwner()
             ->lodging()
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -165,18 +165,18 @@ class VoucherRepository implements Repository
             ->id($id)
             ->open()
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])
@@ -190,23 +190,23 @@ class VoucherRepository implements Repository
         return Voucher::whereOwner()
             ->where('hotel_id', $hotelId)
             ->where('status', true)
-            ->where(function ($query) use ($startDate, $endDate, $lastMonth) {
+            ->where(function ($query) use ($startDate, $endDate, $lastMonth): void {
                 $query->whereBetween('created_at', [$startDate, $endDate])
-                    ->orWhere(function ($query) use ($startDate, $lastMonth) {
+                    ->orWhere(function ($query) use ($startDate, $lastMonth): void {
                         $query->open()
                             ->whereYear('created_at', $startDate)
                             ->whereMonth('created_at', $lastMonth);
                     });
             })
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
-                'rooms.guests' => function ($query) {
+                'rooms.guests' => function ($query): void {
                     $query->select(fields_dotted('guests'));
                 },
-                'checks' => function ($query) {
+                'checks' => function ($query): void {
                     $query->select('id', 'in_at', 'out_at', 'guest_id', 'voucher_id');
                 },
             ])

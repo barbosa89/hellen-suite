@@ -410,9 +410,7 @@ class VoucherEditTest extends TestCase
                 'room' => $room->hash,
             ]);
 
-        Event::assertDispatched(CheckIn::class, function ($event) use ($guest) {
-            return $event->guest->id == $guest->id;
-        });
+        Event::assertDispatched(CheckIn::class, fn($event) => $event->guest->id == $guest->id);
     }
 
     public function test_user_can_add_guest_to_voucher_with_responsible_adult(): void
@@ -678,9 +676,7 @@ class VoucherEditTest extends TestCase
         $this->actingAs($user)
             ->get("vouchers/{$voucher->hash}/guests/{$guest->hash}/remove");
 
-        Event::assertDispatched(CheckOut::class, function ($event) use ($guest) {
-            return $event->guest->id == $guest->id;
-        });
+        Event::assertDispatched(CheckOut::class, fn($event) => $event->guest->id == $guest->id);
     }
 
     public function test_user_can_remove_guest_from_voucher(): void
@@ -1803,9 +1799,7 @@ class VoucherEditTest extends TestCase
         $this->actingAs($user)
             ->post("vouchers/{$voucher->hash}/close");
 
-        Event::assertDispatched(RoomCheckOut::class, function ($event) use ($voucher) {
-            return $event->voucher->id == $voucher->id;
-        });
+        Event::assertDispatched(RoomCheckOut::class, fn($event) => $event->voucher->id == $voucher->id);
     }
 
     public function test_user_can_see_form_to_change_assigned_room_to_any_available_room_in_hotel(): void
@@ -1881,16 +1875,10 @@ class VoucherEditTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.vouchers.change-room')
-            ->assertViewHas('voucher', function ($data) use ($voucher) {
-                return $data->id === $voucher->id;
-            })
-            ->assertViewHas('rooms', function ($data) use ($availableRoom) {
-                return $data->count() === 1
-                    && $data->first()->id == $availableRoom->id;
-            })
-            ->assertViewHas('room', function ($data) use ($assignedRoom) {
-                return $data->id == $assignedRoom->id;
-            });
+            ->assertViewHas('voucher', fn($data) => $data->id === $voucher->id)
+            ->assertViewHas('rooms', fn($data) => $data->count() === 1
+                && $data->first()->id == $availableRoom->id)
+            ->assertViewHas('room', fn($data) => $data->id == $assignedRoom->id);
     }
 
     public function test_user_can_change_assigned_room_to_any_available_room(): void
@@ -2120,19 +2108,13 @@ class VoucherEditTest extends TestCase
         $response->assertSessionHasNoErrors()
             ->assertOk()
             ->assertViewIs('app.vouchers.change-guest-room')
-            ->assertViewHas('voucher', function ($data) use ($voucher, $assignedRoom, $availableRoom) {
-                return $data->id === $voucher->id
-                    && $data->rooms->whereIn('id', [
-                        $assignedRoom->id,
-                        $availableRoom->id,
-                    ])->count() === 2;
-            })
-            ->assertViewHas('room', function ($data) use ($assignedRoom) {
-                return $data->id == $assignedRoom->id;
-            })
-            ->assertViewHas('guest', function ($data) use ($guest) {
-                return $data->id == $guest->id;
-            });
+            ->assertViewHas('voucher', fn($data) => $data->id === $voucher->id
+                && $data->rooms->whereIn('id', [
+                    $assignedRoom->id,
+                    $availableRoom->id,
+                ])->count() === 2)
+            ->assertViewHas('room', fn($data) => $data->id == $assignedRoom->id)
+            ->assertViewHas('guest', fn($data) => $data->id == $guest->id);
     }
 
     public function test_user_can_change_guest_to_any_available_room_in_voucher(): void

@@ -3,7 +3,7 @@
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('tags/search', [TagController::class, 'search'])
         ->name('tags.search')
         ->middleware('permission:tags.index');

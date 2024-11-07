@@ -14,22 +14,13 @@ class CheckOut
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Voucher $voucher;
-
-    public Guest $guest;
-
-    public Room $room;
-
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Voucher $voucher, Guest $guest, Room $room)
+    public function __construct(public Voucher $voucher, public Guest $guest, public Room $room)
     {
-        $this->guest = $guest;
-        $this->voucher = $voucher;
-        $this->room = $room;
     }
 
     /**

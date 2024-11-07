@@ -26,16 +26,16 @@ class InvoiceRepository implements Repository
         return Invoice::whereOwner()
             ->where('id', $id)
             ->with([
-                'currency' => function ($query) {
+                'currency' => function ($query): void {
                     $query->select(['id', 'code']);
                 },
-                'identificationType' => function ($query) {
+                'identificationType' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
-                'plans' => function ($query) {
+                'plans' => function ($query): void {
                     $query->select(['plans.id', 'plans.price', 'plans.months', 'plans.type']);
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(['id', 'number', 'value', 'payment_method', 'status', 'invoice_id', 'created_at']);
                 },
             ])
@@ -51,10 +51,10 @@ class InvoiceRepository implements Repository
         return Invoice::whereOwner()
             ->latest()
             ->with([
-                'currency' => function ($query) {
+                'currency' => function ($query): void {
                     $query->select(['id', 'code']);
                 },
-                'identificationType' => function ($query) {
+                'identificationType' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
             ])
@@ -150,9 +150,7 @@ class InvoiceRepository implements Repository
     {
         return Invoice::whereOwner()
             ->where('status', Invoice::PENDING)
-            ->whereHas('plans', function ($query) use ($planId) {
-                return $query->where('plans.id', $planId);
-            })
+            ->whereHas('plans', fn($query) => $query->where('plans.id', $planId))
             ->selectAll()
             ->get();
     }
@@ -166,15 +164,9 @@ class InvoiceRepository implements Repository
             ->where('number', $number)
             ->where('status', Invoice::PENDING)
             ->with([
-                'plans' => function ($query) {
-                    return $query->select(get_columns('plans', true));
-                },
-                'user' => function ($query) {
-                    return $query->select(['users.id']);
-                },
-                'user.plans' => function ($query) {
-                    return $query->select(get_columns('plans', true));
-                },
+                'plans' => fn($query) => $query->select(get_columns('plans', true)),
+                'user' => fn($query) => $query->select(['users.id']),
+                'user.plans' => fn($query) => $query->select(get_columns('plans', true)),
             ])
             ->selectAll()
             ->firstOrFail();

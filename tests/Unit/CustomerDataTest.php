@@ -82,7 +82,7 @@ class CustomerDataTest extends TestCase
         ]);
 
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->withPivot('main');
             },
         ]);
@@ -116,7 +116,7 @@ class CustomerDataTest extends TestCase
         ]);
 
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->withPivot('main');
             },
         ]);

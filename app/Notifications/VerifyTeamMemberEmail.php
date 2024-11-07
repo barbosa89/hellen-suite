@@ -13,32 +13,12 @@ class VerifyTeamMemberEmail extends Notification
 {
     use Queueable;
 
-    /**
-     * The new team member
-     *
-     * @var App\Models\User
-     */
-    public $user;
+    public User $user;
 
-    /**
-     * The hotel headquarters
-     *
-     * @var App\Models\Hotel
-     */
-    public $hotel;
+    public Hotel $hotel;
 
-    /**
-     * Temporary password
-     *
-     * @var string
-     */
-    public $password;
+    public string $password;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(User $user, Hotel $hotel, string $password)
     {
         $this->user = $user;
@@ -46,28 +26,16 @@ class VerifyTeamMemberEmail extends Notification
         $this->password = $password;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         $url = URL::temporarySignedRoute(
             'accounts.verify',
-            now()->addDay(1),
+            now()->addDay(),
             [
                 'email' => $this->user->email,
                 'token' => $this->user->token,
@@ -84,13 +52,7 @@ class VerifyTeamMemberEmail extends Notification
             ->line('Gracias por ser parte de '.config('app.name'));
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [
             //

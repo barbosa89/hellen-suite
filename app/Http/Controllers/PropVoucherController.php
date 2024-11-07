@@ -81,7 +81,7 @@ class PropVoucherController extends Controller
         $props = $this->getProps($request, $ids);
         $processed = collect();
 
-        DB::transaction(function () use (&$processed, $request, $props) {
+        DB::transaction(function () use (&$processed, $request, $props): void {
             try {
                 // Voucher creation
                 $voucher = new Voucher;

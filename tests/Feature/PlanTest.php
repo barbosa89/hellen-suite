@@ -96,11 +96,9 @@ class PlanTest extends TestCase
             ->assertSee(trans('plans.type.free'))
             ->assertSee(trans('plans.type.basic'))
             ->assertSee(trans('plans.type.sponsor'))
-            ->assertViewHas('plans', function ($data) {
-                return $data
-                    ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
-                    ->count() == 3;
-            });
+            ->assertViewHas('plans', fn($data) => $data
+                ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
+                ->count() == 3);
     }
 
     public function test_user_can_choose_the_free_plan()
@@ -124,7 +122,7 @@ class PlanTest extends TestCase
 
         $message = session('flash_notification')->first();
 
-        $this->assertEquals(trans('plans.ready', ['plan' => ucfirst($plan->getType())]), $message->message);
+        $this->assertEquals(trans('plans.ready', ['plan' => ucfirst((string) $plan->getType())]), $message->message);
         $this->assertEquals('success', $message->level);
         $this->assertEquals(false, $message->important);
         $this->assertEquals(false, $message->overlay);
@@ -132,11 +130,9 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_basic_plan(): void
     {
-        Http::fake(function ($request) {
-            return Http::response(json_encode([
-                'USD_COP' => 3000,
-            ]), Response::HTTP_OK);
-        });
+        Http::fake(fn($request) => Http::response(json_encode([
+            'USD_COP' => 3000,
+        ]), Response::HTTP_OK));
 
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
@@ -170,20 +166,16 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.choose')
-            ->assertViewHas('plans', function ($data) {
-                return $data
-                    ->where('type', Plan::FREE)
-                    ->count() == 0;
-            });
+            ->assertViewHas('plans', fn($data) => $data
+                ->where('type', Plan::FREE)
+                ->count() == 0);
     }
 
     public function test_user_can_buy_the_basic_plan()
     {
-        Http::fake(function ($request) {
-            return Http::response(json_encode([
-                'USD_COP' => 3000,
-            ]), Response::HTTP_OK);
-        });
+        Http::fake(fn($request) => Http::response(json_encode([
+            'USD_COP' => 3000,
+        ]), Response::HTTP_OK));
 
         $user = User::factory()->create();
         $user->assignRole('manager');

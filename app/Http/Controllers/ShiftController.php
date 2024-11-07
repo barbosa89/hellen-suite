@@ -20,10 +20,10 @@ class ShiftController extends Controller
     public function index()
     {
         $shifts = Shift::where('user_id', id_parent())
-            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query) {
+            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query): void {
                 $query->where('team_member', auth()->user()->id);
             })->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->get(fields_get('shifts'));
@@ -39,24 +39,24 @@ class ShiftController extends Controller
     public function show(string $id)
     {
         $shift = Shift::where('user_id', id_parent())
-            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query) {
+            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query): void {
                 $query->where('team_member', auth()->user()->id);
             })->where('id', id_decode($id))
             ->with([
-                'vouchers' => function ($query) {
+                'vouchers' => function ($query): void {
                     $query->select(fields_get('vouchers'));
                 },
-                'vouchers.payments' => function ($query) {
+                'vouchers.payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'notes' => function ($query) {
+                'notes' => function ($query): void {
                     $query->select(Note::getColumnNames())
                         ->orderBy('created_at', 'DESC');
                 },
-                'notes.tags' => function ($query) {
+                'notes.tags' => function ($query): void {
                     $query->select(['id', 'slug']);
                 },
             ])->first(fields_get('shifts'));
@@ -68,10 +68,10 @@ class ShiftController extends Controller
         $rooms = Room::where('user_id', id_parent())
             ->where('hotel_id', $shift->hotel->id)
             ->with([
-                'vouchers' => function ($query) {
+                'vouchers' => function ($query): void {
                     $query->select(['vouchers.id', 'vouchers.value', 'vouchers.number']);
                 },
-                'vouchers.payments' => function ($query) {
+                'vouchers.payments' => function ($query): void {
                     $query->select(['id', 'value', 'voucher_id']);
                 },
             ])->get(['id', 'number', 'status']);
@@ -103,24 +103,24 @@ class ShiftController extends Controller
     public function export(string $id)
     {
         $shift = Shift::where('user_id', id_parent())
-            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query) {
+            ->when(! auth()->user()->hasRole(['manager', 'admin']), function ($query): void {
                 $query->where('team_member', auth()->user()->id);
             })->where('id', id_decode($id))
             ->with([
-                'vouchers' => function ($query) {
+                'vouchers' => function ($query): void {
                     $query->select(fields_get('vouchers'));
                 },
-                'vouchers.payments' => function ($query) {
+                'vouchers.payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'notes' => function ($query) {
+                'notes' => function ($query): void {
                     $query->select(Note::getColumnNames())
                         ->orderBy('created_at', 'DESC');
                 },
-                'notes.tags' => function ($query) {
+                'notes.tags' => function ($query): void {
                     $query->select(['id', 'slug']);
                 },
             ])->first(fields_get('shifts'));
@@ -128,10 +128,10 @@ class ShiftController extends Controller
         $rooms = Room::where('user_id', id_parent())
             ->where('hotel_id', $shift->hotel->id)
             ->with([
-                'vouchers' => function ($query) {
+                'vouchers' => function ($query): void {
                     $query->select(['vouchers.id', 'vouchers.value', 'vouchers.number']);
                 },
-                'vouchers.payments' => function ($query) {
+                'vouchers.payments' => function ($query): void {
                     $query->select(['id', 'value', 'voucher_id']);
                 },
             ])->get(['id', 'number', 'status']);

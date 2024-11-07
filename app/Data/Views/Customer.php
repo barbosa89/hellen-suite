@@ -21,11 +21,8 @@ class Customer implements Arrayable, Buildable
 
     public string $phone = '';
 
-    private Voucher $voucher;
-
-    public function __construct(Voucher $voucher)
+    public function __construct(private readonly Voucher $voucher)
     {
-        $this->voucher = $voucher;
     }
 
     public function build(): self
@@ -63,9 +60,7 @@ class Customer implements Arrayable, Buildable
     {
         if ($this->hasGuests()) {
             /** @var Guest $guest */
-            $guest = $this->voucher->guests->first(function ($guest) {
-                return (bool) $guest->pivot->main;
-            });
+            $guest = $this->voucher->guests->first(fn($guest) => (bool) $guest->pivot->main);
 
             if ($guest) {
                 $this->name = $guest->full_name;

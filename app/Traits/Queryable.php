@@ -64,10 +64,9 @@ trait Queryable
     }
 
     /**
-     * @param  mixed  $value
      * @return mixed
      */
-    private function parseParam($value)
+    private function parseParam(mixed $value)
     {
         if (is_array($value)) {
             foreach ($value as $param) {

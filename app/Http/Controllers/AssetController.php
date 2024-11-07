@@ -23,10 +23,10 @@ class AssetController extends Controller
 {
     public function index(): RedirectResponse|View
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query) {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->with([
-            'assets' => function ($query) {
+            'assets' => function ($query): void {
                 $query->select(fields_get('assets'));
             },
         ])->get(fields_get('hotels'));
@@ -63,11 +63,11 @@ class AssetController extends Controller
 
     public function create(): RedirectResponse|View
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query) {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->where('status', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_get('rooms'));
                 },
             ])->get(fields_get('hotels'));
@@ -78,9 +78,7 @@ class AssetController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        $rooms = $hotels->sum(function ($hotel) {
-            return $hotel->rooms->count();
-        });
+        $rooms = $hotels->sum(fn($hotel) => $hotel->rooms->count());
 
         if ($rooms === 0) {
             flash(trans('rooms.no.created'))->info();
@@ -124,13 +122,13 @@ class AssetController extends Controller
             ->firstOrFail(fields_get('assets'));
 
         $asset->load([
-            'room' => function ($query) {
+            'room' => function ($query): void {
                 $query->select('id', 'number', 'description');
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'maintenances' => function ($query) {
+            'maintenances' => function ($query): void {
                 $query->select(fields_get('maintenances'))
                     ->orderBy('date', 'DESC');
             },
@@ -146,13 +144,13 @@ class AssetController extends Controller
             ->firstOrFail(fields_get('assets'));
 
         $asset->load([
-            'room' => function ($query) {
+            'room' => function ($query): void {
                 $query->select('id', 'number');
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'hotel.rooms' => function ($query) {
+            'hotel.rooms' => function ($query): void {
                 $query->select('id', 'number', 'hotel_id');
             },
         ]);
@@ -259,14 +257,14 @@ class AssetController extends Controller
     public function export(AssetsReportQuery $request): BinaryFileResponse
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->when($request->filled('hotel'), function ($query) use ($request) {
+            ->when($request->filled('hotel'), function ($query) use ($request): void {
                 $query->where('id', id_decode($request->hotel));
             })
             ->with([
-                'assets' => function ($query) {
+                'assets' => function ($query): void {
                     $query->select(fields_get('assets'));
                 },
-                'assets.room' => function ($query) {
+                'assets.room' => function ($query): void {
                     $query->select(fields_get('rooms'));
                 },
             ])->get(fields_get('hotels'));
@@ -278,7 +276,7 @@ class AssetController extends Controller
     {
         $room = Room::where('id', id_decode($room))
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])

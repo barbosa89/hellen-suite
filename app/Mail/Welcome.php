@@ -12,29 +12,10 @@ class Welcome extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The recipient user.
-     *
-     * @var User
-     */
-    private $user;
-
-    /**
-     * Temporal password.
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(User $user, $password)
-    {
-        $this->user = $user;
-        $this->password = $password;
+    public function __construct(
+        private User $user,
+        private $password
+    ) {
     }
 
     /**
@@ -45,10 +26,10 @@ class Welcome extends Mailable implements ShouldQueue
     public function build()
     {
         $this->user->load([
-            'roles' => function ($query) {
+            'roles' => function ($query): void {
                 $query->select('id', 'name');
             },
-            'father' => function ($query) {
+            'father' => function ($query): void {
                 $query->select('id', 'name');
             },
         ]);

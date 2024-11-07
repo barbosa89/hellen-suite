@@ -11,17 +11,9 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    /**
-     * Tag repository Eloquent based
-     */
-    public TagRepository $tag;
-
-    /**
-     * Construct function
-     */
-    public function __construct(TagRepository $tag)
-    {
-        $this->tag = $tag;
+    public function __construct(
+        public TagRepository $tag
+    ) {
     }
 
     /**

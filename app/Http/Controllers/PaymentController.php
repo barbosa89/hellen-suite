@@ -30,17 +30,17 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -74,17 +74,17 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -120,10 +120,10 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id']);
             },
         ]);
@@ -149,7 +149,7 @@ class PaymentController extends Controller
             return back();
         }
 
-        DB::transaction(function () use (&$status, &$voucher, $request) {
+        DB::transaction(function () use (&$status, &$voucher, $request): void {
             try {
                 $payment = new Payment;
                 $payment->date = $request->date;
@@ -174,7 +174,7 @@ class PaymentController extends Controller
 
                         // Load the voucher owner of payment
                         $shift->load([
-                            'vouchers' => function ($query) use ($voucher) {
+                            'vouchers' => function ($query) use ($voucher): void {
                                 $query->where('id', $voucher->id);
                             },
                         ]);
@@ -234,17 +234,17 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_get('guests'))
                     ->withPivot('main');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -283,7 +283,7 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -298,7 +298,7 @@ class PaymentController extends Controller
             return back();
         }
 
-        DB::transaction(function () use (&$status, &$voucher, $request, $id) {
+        DB::transaction(function () use (&$status, &$voucher, $request, $id): void {
             try {
                 // Get payment to update
                 $payment = $voucher->payments->where('id', id_decode($id))->first();
@@ -335,7 +335,7 @@ class PaymentController extends Controller
                     // the new value will be added to the shift
                     if ($payment->payment_method == 'cash') {
                         $shift->load([
-                            'vouchers' => function ($query) use ($voucher) {
+                            'vouchers' => function ($query) use ($voucher): void {
                                 $query->where('id', $voucher->id);
                             },
                         ]);
@@ -349,7 +349,7 @@ class PaymentController extends Controller
 
                     // Reload payments
                     $voucher->load([
-                        'payments' => function ($query) {
+                        'payments' => function ($query): void {
                             $query->select(fields_get('payments'));
                         },
                     ]);
@@ -411,12 +411,12 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
 
-        DB::transaction(function () use (&$status, &$voucher, $id) {
+        DB::transaction(function () use (&$status, &$voucher, $id): void {
             try {
                 // Get payment to delete
                 $payment = $voucher->payments->where('id', id_decode($id))->first();
@@ -431,7 +431,7 @@ class PaymentController extends Controller
                 // the value is subtracted to the shift
                 if ($payment->payment_method == 'cash') {
                     $shift->load([
-                        'vouchers' => function ($query) use ($voucher) {
+                        'vouchers' => function ($query) use ($voucher): void {
                             $query->where('id', $voucher->id);
                         },
                     ]);
@@ -446,7 +446,7 @@ class PaymentController extends Controller
 
                     // Reload payments
                     $voucher->load([
-                        'payments' => function ($query) {
+                        'payments' => function ($query): void {
                             $query->select(fields_get('payments'));
                         },
                     ]);

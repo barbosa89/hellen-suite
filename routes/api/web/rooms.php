@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\RoomController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['auth', 'verified']], function () {
+Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['auth', 'verified']], function (): void {
     Route::post('rooms/toggle', [RoomController::class, 'toggle'])
         ->name('rooms.toggle')
         ->middleware('permission:rooms.toggle');

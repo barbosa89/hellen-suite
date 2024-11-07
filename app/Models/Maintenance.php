@@ -39,7 +39,7 @@ class Maintenance extends Model
         return $query->whereHasMorph(
             'maintainable',
             $maintainableType,
-            function (Builder $query) use ($maintainableId) {
+            function (Builder $query) use ($maintainableId): void {
                 $query->where('id', id_decode($maintainableId));
             }
         );

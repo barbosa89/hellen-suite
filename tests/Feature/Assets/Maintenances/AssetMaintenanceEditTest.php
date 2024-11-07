@@ -92,8 +92,6 @@ class AssetMaintenanceEditTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.maintenances.edit')
-            ->assertViewHas('maintenance', function (Maintenance $data) {
-                return $data->is($this->maintenance);
-            });
+            ->assertViewHas('maintenance', fn(Maintenance $data) => $data->is($this->maintenance));
     }
 }

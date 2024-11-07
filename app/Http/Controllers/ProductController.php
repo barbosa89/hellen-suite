@@ -30,10 +30,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query) {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->with([
-            'products' => function ($query) {
+            'products' => function ($query): void {
                 $query->select(fields_get('products'));
             },
         ])->get(fields_get('hotels'));
@@ -80,7 +80,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query) {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->whereStatus(true)
             ->get(fields_get('hotels'));
@@ -175,10 +175,10 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)
@@ -205,7 +205,7 @@ class ProductController extends Controller
             ->products()
             ->where('id', id_decode($id))
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_get('products'));
@@ -270,7 +270,7 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select('vouchers.id');
             },
         ]);
@@ -396,7 +396,7 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
         ]);
@@ -422,10 +422,10 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request) {
+            'vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
@@ -434,7 +434,7 @@ class ProductController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) {
+            'vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -483,10 +483,10 @@ class ProductController extends Controller
         }
 
         $query->with([
-            'products' => function ($query) {
+            'products' => function ($query): void {
                 $query->select(fields_get('products'));
             },
-            'products.vouchers' => function ($query) use ($request) {
+            'products.vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
@@ -495,7 +495,7 @@ class ProductController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'products.vouchers.company' => function ($query) {
+            'products.vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);

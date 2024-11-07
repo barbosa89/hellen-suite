@@ -14,17 +14,9 @@ use Illuminate\Validation\Validator as ValidationValidator;
 
 class NoteController extends Controller
 {
-    /**
-     * Note repository Eloquent based
-     */
-    public NoteRepository $note;
-
-    /**
-     * Construct function
-     */
-    public function __construct(NoteRepository $note)
-    {
-        $this->note = $note;
+    public function __construct(
+        public NoteRepository $note
+    ) {
     }
 
     /**

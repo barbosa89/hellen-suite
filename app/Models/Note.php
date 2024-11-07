@@ -84,7 +84,7 @@ class Note extends Model
     {
         return $query->whereOwner()
             ->ofHotel($hotel->id)
-            ->whereHas('tags', function ($query) use ($tag) {
+            ->whereHas('tags', function ($query) use ($tag): void {
                 $query->where('id', $tag->id);
             });
     }

@@ -13,7 +13,7 @@ class UserComposer
     {
         $this->user = User::where('id', auth()->user()->id)
             ->with([
-                'roles' => function ($query) {
+                'roles' => function ($query): void {
                     $query->select('id', 'name');
                 },
             ])->first(['id']);

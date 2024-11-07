@@ -9,11 +9,8 @@ use App\Http\Requests\StoreRoom;
 
 class RoomController extends Controller
 {
-    public RoomRepository $room;
-
-    public function __construct(RoomRepository $room)
+    public function __construct(public RoomRepository $room)
     {
-        $this->room = $room;
     }
 
     /**

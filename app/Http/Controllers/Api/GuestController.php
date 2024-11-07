@@ -9,11 +9,8 @@ use Illuminate\Support\Arr;
 
 class GuestController extends Controller
 {
-    public GuestRepository $guest;
-
-    public function __construct(GuestRepository $guest)
+    public function __construct(public GuestRepository $guest)
     {
-        $this->guest = $guest;
     }
 
     /**

@@ -34,8 +34,6 @@ class ContactTest extends TestCase
         $this->assertEquals(false, $message->important);
         $this->assertEquals(true, $message->overlay);
 
-        Mail::assertSent(function (ContactMessage $mail) use ($data) {
-            return $mail->message->contact_email === $data['contact_email'];
-        });
+        Mail::assertSent(fn(ContactMessage $mail) => $mail->message->contact_email === $data['contact_email']);
     }
 }

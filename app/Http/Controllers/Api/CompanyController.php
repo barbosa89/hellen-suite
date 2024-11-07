@@ -9,11 +9,8 @@ use Illuminate\Support\Arr;
 
 class CompanyController extends Controller
 {
-    public CompanyRepository $company;
-
-    public function __construct(CompanyRepository $company)
+    public function __construct(public CompanyRepository $company)
     {
-        $this->company = $company;
     }
 
     /**

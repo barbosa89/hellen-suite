@@ -86,7 +86,7 @@ if (! function_exists('get_columns')) {
         $columns = Schema::getColumnListing($table);
 
         if ($dotted) {
-            array_walk($columns, function (&$column) use ($table) {
+            array_walk($columns, function (&$column) use ($table): void {
                 $column = $table.'.'.$column;
             });
         }
@@ -103,11 +103,11 @@ if (! function_exists('external_url')) {
     {
         $url = Str::of($url)->finish('/');
 
-        $params = collect($params)->transform(function ($value, $key) {
+        $params = collect($params)->transform(function ($value, $key): string {
             return urlencode($key).'='.urlencode($value);
         })->join('&');
 
-        return $url.'?'.$params;
+        return $url .'?' .$params;
     }
 }
 
@@ -134,7 +134,7 @@ if (! function_exists('get_user_permissions')) {
     function get_user_permissions(): array
     {
         if (Auth::check()) {
-            $permissions = Permission::whereHas('users', function ($query) {
+            $permissions = Permission::whereHas('users', function ($query): void {
                 $query->where('id', Auth::id());
             })->get(['id', 'name']);
 

@@ -27,7 +27,7 @@ class DiningServiceController extends Controller
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->with([
-                'services' => function ($query) {
+                'services' => function ($query): void {
                     $query->select(fields_get('services'))
                         ->where('is_dining_service', true);
                 },
@@ -126,10 +126,10 @@ class DiningServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)
@@ -156,7 +156,7 @@ class DiningServiceController extends Controller
             ->where('id', id_decode($id))
             ->where('is_dining_service', true)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_get('services'));
@@ -220,7 +220,7 @@ class DiningServiceController extends Controller
         }
 
         $service->load([
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select('id');
             },
         ]);
@@ -295,7 +295,7 @@ class DiningServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
         ]);
@@ -322,10 +322,10 @@ class DiningServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request) {
+            'vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
@@ -334,7 +334,7 @@ class DiningServiceController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) {
+            'vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -383,11 +383,11 @@ class DiningServiceController extends Controller
         }
 
         $query->with([
-            'services' => function ($query) {
+            'services' => function ($query): void {
                 $query->select(fields_get('services'))
                     ->where('is_dining_service', true);
             },
-            'services.vouchers' => function ($query) use ($request) {
+            'services.vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
@@ -396,7 +396,7 @@ class DiningServiceController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'services.vouchers.company' => function ($query) {
+            'services.vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);

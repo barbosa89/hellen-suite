@@ -34,7 +34,7 @@ class Id
     {
         $collection = [];
 
-        array_walk($ids, function ($id) use (&$collection) {
+        array_walk($ids, function ($id) use (&$collection): void {
             array_push($collection, self::decode($id));
         });
 

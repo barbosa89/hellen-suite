@@ -32,7 +32,7 @@ class PropController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->with([
-                'props' => function ($query) {
+                'props' => function ($query): void {
                     $query->select(fields_get('props'));
                 },
             ])->get(fields_get('hotels'));
@@ -174,10 +174,10 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC')
@@ -203,7 +203,7 @@ class PropController extends Controller
         $prop = User::find(id_parent(), ['id'])->props()
             ->where('id', id_decode($id))
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
             ])->first(fields_get('props'));
@@ -323,7 +323,7 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
         ]);
@@ -349,10 +349,10 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request) {
+            'vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
@@ -361,7 +361,7 @@ class PropController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) {
+            'vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -403,14 +403,14 @@ class PropController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $props = Prop::where('user_id', id_parent())
-            ->when($request->hotel, function ($query) use ($request) {
+            ->when($request->hotel, function ($query) use ($request): void {
                 $query->where('id', id_decode($request->hotel));
             })
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_dotted('hotels'));
                 },
-                'vouchers' => function ($query) use ($request) {
+                'vouchers' => function ($query) use ($request): void {
                     $query->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
                         Carbon::parse($request->end)->endOfDay(),
@@ -418,7 +418,7 @@ class PropController extends Controller
                         ->orderBy('vouchers.created_at', 'DESC')
                         ->withPivot('quantity', 'value');
                 },
-                'vouchers.company' => function ($query) {
+                'vouchers.company' => function ($query): void {
                     $query->select(fields_dotted('companies'));
                 },
             ])

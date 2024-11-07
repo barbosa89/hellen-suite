@@ -79,7 +79,7 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setRoomItems(): self
     {
-        $this->voucher->rooms->each(function ($room) {
+        $this->voucher->rooms->each(function ($room): void {
             $item = new InvoiceItem;
 
             $item->title(trans('rooms.number', ['number' => $room->number]))
@@ -95,7 +95,7 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setProductItems(): self
     {
-        $this->voucher->products->each(function ($product) {
+        $this->voucher->products->each(function ($product): void {
             $item = new InvoiceItem;
 
             $item->title($product->description)
@@ -111,7 +111,7 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setServiceItems(): self
     {
-        $this->voucher->services->each(function ($service) {
+        $this->voucher->services->each(function ($service): void {
             $item = new InvoiceItem;
 
             $item->title($service->description)
@@ -127,7 +127,7 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setAditionalItems(): self
     {
-        $this->voucher->additionals->each(function ($aditional) {
+        $this->voucher->additionals->each(function ($aditional): void {
             $item = new InvoiceItem;
 
             $item->title($aditional->description)

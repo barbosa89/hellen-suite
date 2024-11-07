@@ -3,7 +3,7 @@
 use App\Http\Controllers\AssetController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::post('rooms/{room}/assets/assign', [AssetController::class, 'assign'])
         ->name('assets.assign')
         ->middleware('permission:assets.edit');

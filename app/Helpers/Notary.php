@@ -12,16 +12,13 @@ use App\Models\Voucher;
 
 class Notary
 {
-    private Hotel $hotel;
-
-    private Writer $writer;
+    private readonly Writer $writer;
 
     /**
      * Construct function
      */
-    public function __construct(Hotel $hotel)
+    public function __construct(private readonly Hotel $hotel)
     {
-        $this->hotel = $hotel;
         $this->writer = new Writer;
 
     }

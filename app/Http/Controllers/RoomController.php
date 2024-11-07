@@ -13,11 +13,8 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public RoomRepository $room;
-
-    public function __construct(RoomRepository $room)
+    public function __construct(public RoomRepository $room)
     {
-        $this->room = $room;
     }
 
     /**
@@ -76,13 +73,13 @@ class RoomController extends Controller
         $room = $this->room->find(id_decode($id));
 
         $room->load([
-            'assets' => function ($query) {
+            'assets' => function ($query): void {
                 $query->select(fields_dotted('assets'));
             },
-            'products' => function ($query) {
+            'products' => function ($query): void {
                 $query->select(fields_dotted('products'));
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)

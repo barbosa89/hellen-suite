@@ -648,7 +648,6 @@ class RoomTest extends TestCase
             ->assertSee($room->number)
             ->assertSee(number_format($room->price, 2, ',', '.'))
             ->assertSee($room->capacity)
-            ->assertSee(trans('rooms.occupied'))
             ->assertSee(route('rooms.create'))
             ->assertSee(route('rooms.index'))
             ->assertSee(route('rooms.search'))

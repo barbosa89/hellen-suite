@@ -3,7 +3,7 @@
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     // Service report
 
     Route::post('services/report', [ServiceController::class, 'exportReport'])

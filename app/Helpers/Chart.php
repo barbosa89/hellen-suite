@@ -8,8 +8,6 @@ use Illuminate\Support\Collection;
 
 class Chart implements ChartInterface
 {
-    protected Collection $vouchers;
-
     /**
      * @var Collection|array
      */
@@ -18,9 +16,8 @@ class Chart implements ChartInterface
     /**
      * @return void
      */
-    public function __construct(Collection $vouchers)
+    public function __construct(protected Collection $vouchers)
     {
-        $this->vouchers = $vouchers;
     }
 
     /**
@@ -61,9 +58,9 @@ class Chart implements ChartInterface
     public function group(): Chart
     {
         $this->data = $this->vouchers->groupBy([
-            function ($voucher) {
+            function ($voucher): mixed {
                 return $voucher->type;
-            }, function ($voucher) {
+            }, function ($voucher): mixed {
                 return $voucher->created_at->month;
             },
         ]);
@@ -107,10 +104,7 @@ class Chart implements ChartInterface
      */
     public function countItems(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add quantity in the pivot table
-            return $voucher['pivot']['quantity'];
-        });
+        $this->process(fn($vouchers, $voucher) => $voucher['pivot']['quantity']);
 
         return $this;
     }
@@ -120,9 +114,7 @@ class Chart implements ChartInterface
      */
     public function countVouchers(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            return 1;
-        });
+        $this->process(fn($vouchers, $voucher): int => 1);
 
         return $this;
     }
@@ -132,10 +124,7 @@ class Chart implements ChartInterface
      */
     public function addValues(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add voucher value
-            return (float) $voucher['value'];
-        });
+        $this->process(fn($vouchers, $voucher): float => (float) $voucher['value']);
 
         return $this;
     }
@@ -145,10 +134,7 @@ class Chart implements ChartInterface
      */
     public function addItemValues(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add voucher item value
-            return (float) $voucher['pivot']['value'];
-        });
+        $this->process(fn($vouchers, $voucher): float => (float) $voucher['pivot']['value']);
 
         return $this;
     }

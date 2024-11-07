@@ -68,10 +68,8 @@ class AssetExportTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.export')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel) {
-                return $hotels->count() === 1 &&
-                    $hotels->first()->is($hotel);
-            });
+            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->count() === 1 &&
+                $hotels->first()->is($hotel));
     }
 
     public function test_authorized_user_can_export_all_assets(): void

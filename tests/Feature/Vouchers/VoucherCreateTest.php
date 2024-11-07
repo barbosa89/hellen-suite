@@ -87,12 +87,10 @@ class VoucherCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.vouchers.create')
-            ->assertViewHas('hotel', function ($hotel) use ($room) {
-                return $hotel
-                    ->rooms
-                    ->where('id', $room->id)
-                    ->isNotEmpty();
-            });
+            ->assertViewHas('hotel', fn($hotel) => $hotel
+                ->rooms
+                ->where('id', $room->id)
+                ->isNotEmpty());
     }
 
     public function test_user_cannot_see_form_to_create_a_voucher_when_params_are_wrong(): void

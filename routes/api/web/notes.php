@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\NoteController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['auth', 'verified']], function () {
+Route::group(['prefix' => 'api/v1/web', 'as' => 'api.web.', 'middleware' => ['auth', 'verified']], function (): void {
     Route::get('hotels/{hotel}/notes', [NoteController::class, 'index'])
         ->name('notes.index')
         ->middleware('permission:notes.index');

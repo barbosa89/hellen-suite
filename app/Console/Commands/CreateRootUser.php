@@ -49,7 +49,7 @@ class CreateRootUser extends Command
         $this->info('- Minimum password length: 8 chars'.PHP_EOL);
 
         // Query existing root user
-        $user = User::whereHas('roles', function ($query) {
+        $user = User::whereHas('roles', function ($query): void {
             $query->where('name', 'root');
         })->first();
 

@@ -143,7 +143,7 @@ class Voucher extends Model
     public function scopeLodging(Builder $query): Builder
     {
         return $query->where('type', 'lodging')
-            ->when(auth()->user()->hasRole('receptionist'), function ($query) {
+            ->when(auth()->user()->hasRole('receptionist'), function ($query): void {
                 $query->where('hotel_id', auth()->user()->headquarters()->first()->id);
             });
     }

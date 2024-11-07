@@ -16,10 +16,10 @@ class AssetMaintenanceController extends Controller
         $asset = Asset::whereOwner()
             ->where('id', id_decode($asset))
             ->with([
-                'room' => function ($query) {
+                'room' => function ($query): void {
                     $query->select('id', 'number');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select('id', 'business_name');
                 },
             ])
@@ -64,10 +64,10 @@ class AssetMaintenanceController extends Controller
             ->where('id', id_decode($maintenance))
             ->with([
                 'maintainable',
-                'maintainable.room' => function ($query) {
+                'maintainable.room' => function ($query): void {
                     $query->select('id', 'number');
                 },
-                'maintainable.hotel' => function ($query) {
+                'maintainable.hotel' => function ($query): void {
                     $query->select('id', 'business_name');
                 },
             ])

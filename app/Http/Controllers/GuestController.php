@@ -97,22 +97,22 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id', 'number', 'status')
                         ->withPivot('enabled');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('voucher_id', $id);
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_get('vouchers'));
@@ -125,7 +125,7 @@ class GuestController extends Controller
         $countries = Country::all(['id', 'name']);
         $guests = 0;
 
-        $voucher->rooms->each(function ($room) use (&$guests) {
+        $voucher->rooms->each(function ($room) use (&$guests): void {
             $guests += $room->guests->count();
         });
 
@@ -147,10 +147,10 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select('id');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -226,15 +226,15 @@ class GuestController extends Controller
         }
 
         $guest->load([
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
             },
-            'vouchers.hotel' => function ($query) {
+            'vouchers.hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'country' => function ($query) {
+            'country' => function ($query): void {
                 $query->select('id', 'name');
             },
         ]);
@@ -262,10 +262,10 @@ class GuestController extends Controller
         }
 
         $guest->load([
-            'identificationType' => function ($query) {
+            'identificationType' => function ($query): void {
                 $query->select(['id', 'type']);
             },
-            'country' => function ($query) {
+            'country' => function ($query): void {
                 $query->select(['id', 'name']);
             },
         ]);
@@ -387,10 +387,10 @@ class GuestController extends Controller
     {
         $guests = Guest::where('user_id', id_parent())
             ->with([
-                'identificationType' => function ($query) {
+                'identificationType' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
-                'country' => function ($query) {
+                'country' => function ($query): void {
                     $query->select(['id', 'name']);
                 },
             ])
@@ -418,23 +418,23 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->where('responsible_adult', false)
                         ->withPivot('main', 'active');
                 },
-                'guests.rooms' => function ($query) use ($voucher) {
+                'guests.rooms' => function ($query) use ($voucher): void {
                     $query->select(fields_dotted('rooms'))
                         ->wherePivot('voucher_id', id_decode($voucher));
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));

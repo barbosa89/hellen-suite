@@ -3,7 +3,7 @@
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::post('rooms/toggle', [RoomController::class, 'toggle'])
         ->name('rooms.toggle')
         ->middleware('permission:rooms.toggle');

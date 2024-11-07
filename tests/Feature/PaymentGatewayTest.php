@@ -78,8 +78,6 @@ class PaymentGatewayTest extends TestCase
 
         PaymentGateway::confirm($id);
 
-        Http::assertSent(function ($request) use ($id) {
-            return $request->url() == config('settings.payments.confirm').$id;
-        });
+        Http::assertSent(fn($request) => $request->url() == config('settings.payments.confirm').$id);
     }
 }

@@ -4,25 +4,17 @@ namespace App\Helpers;
 
 use App\Models\Check;
 use App\Models\Guest;
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class GuestChart
 {
-    protected Collection $vouchers;
-
-    protected Carbon $startDate;
-
-    protected Carbon $endDate;
-
     protected array $data = [];
 
-    public function __construct(Collection $vouchers, Carbon $startDate, Carbon $endDate)
+    public function __construct(protected Collection $vouchers, protected Carbon $startDate, protected Carbon $endDate)
     {
-        $this->vouchers = $vouchers;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
     }
 
     /**
@@ -30,13 +22,13 @@ class GuestChart
      */
     public function countChecks(): self
     {
-        $this->vouchers->each(function ($voucher) {
-            $voucher->rooms->each(function ($room) use ($voucher) {
-                $room->guests->each(function ($guest) use ($voucher, $room) {
+        $this->vouchers->each(function ($voucher): void {
+            $voucher->rooms->each(function ($room) use ($voucher): void {
+                $room->guests->each(function ($guest) use ($voucher, $room): void {
                     $checks = $voucher->checks->where('guest_id', $guest->id);
                     $maxDate = $voucher->created_at->addDays($room->pivot->quantity);
 
-                    $checks->each(function ($check) use ($guest, $maxDate) {
+                    $checks->each(function ($check) use ($guest, $maxDate): void {
                         $checkInAt = $this->getCheckInDate($check);
                         $checkOutAt = $this->getCheckOutDate($check, $maxDate);
 
@@ -75,7 +67,7 @@ class GuestChart
         return $checkOutAt->subDay();
     }
 
-    private function addCheck(Guest $guest, Carbon $date): void
+    private function addCheck(Guest $guest, CarbonInterface $date): void
     {
         $date = $date->format('Y-m-d');
 

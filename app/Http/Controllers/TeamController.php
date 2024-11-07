@@ -26,10 +26,10 @@ class TeamController extends Controller
     {
         $team = User::where('parent', auth()->user()->id)
             ->with([
-                'headquarters' => function ($query) {
+                'headquarters' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
-                'roles' => function ($query) {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name']);
                 },
             ])->get(fields_get('users'));
@@ -124,16 +124,16 @@ class TeamController extends Controller
         }
 
         $member->load([
-            'headquarters' => function ($query) {
+            'headquarters' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'roles' => function ($query) {
+            'roles' => function ($query): void {
                 $query->select(['id', 'name']);
             },
-            'shifts' => function ($query) {
+            'shifts' => function ($query): void {
                 $query->select(fields_get('shifts'));
             },
-            'shifts.hotel' => function ($query) {
+            'shifts.hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
         ]);
@@ -198,7 +198,7 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'roles' => function ($query) {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name']);
                 },
             ])->first(fields_get('users'));
@@ -227,7 +227,7 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'headquarters' => function ($query) {
+                'headquarters' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
             ])->first(fields_get('users'));
@@ -238,7 +238,7 @@ class TeamController extends Controller
         $hasHeadquarters = $member->headquarters->isNotEmpty();
 
         $hotels = User::find(auth()->user()->id, ['id'])->hotels()
-            ->when($hasHeadquarters, function ($query) use ($member) {
+            ->when($hasHeadquarters, function ($query) use ($member): void {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
             })->get(fields_get('hotels'));
 
@@ -296,10 +296,10 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'roles' => function ($query) {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name', 'guard_name']);
                 },
-                'permissions' => function ($query) {
+                'permissions' => function ($query): void {
                     $query->select(['id', 'name', 'guard_name']);
                 },
             ])->first(fields_get('users'));
@@ -308,9 +308,7 @@ class TeamController extends Controller
         $allPermissions = Permission::get(['id', 'name', 'guard_name']);
 
         // Grouping by modules
-        $permissions = $allPermissions->groupBy(function ($permission) {
-            return explode('.', $permission->name)[0];
-        });
+        $permissions = $allPermissions->groupBy(fn($permission) => explode('.', $permission->name)[0]);
 
         return view('app.team.permissions', compact('member', 'permissions'));
     }

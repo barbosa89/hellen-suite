@@ -11,23 +11,11 @@ class ShiftReport implements WithMultipleSheets
 {
     use Exportable;
 
-    /**
-     * The shift to export.
-     */
-    protected Shift $shift;
-
-    /**
-     * The Hotel Rooms.
-     */
-    protected Collection $rooms;
-
-    /**
-     * Construct function
-     */
-    public function __construct(Shift $shift, Collection $rooms)
+    public function __construct(
+        protected Shift $shift,
+        protected Collection $rooms
+    )
     {
-        $this->shift = $shift;
-        $this->rooms = $rooms;
     }
 
     /**

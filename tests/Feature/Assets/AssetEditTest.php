@@ -86,13 +86,9 @@ class AssetEditTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.edit')
-            ->assertViewHas('asset', function (Asset $data) {
-                return $data->is($this->asset)
-                    && $data->hotel->is($this->hotel)
-                    && $data->room->is($this->room);
-            })
-            ->assertViewHas('hotels', function (Collection $data) use ($hotels) {
-                return $data->whereIn('id', $hotels->modelKeys())->count() === 2;
-            });
+            ->assertViewHas('asset', fn(Asset $data) => $data->is($this->asset)
+                && $data->hotel->is($this->hotel)
+                && $data->room->is($this->room))
+            ->assertViewHas('hotels', fn(Collection $data) => $data->whereIn('id', $hotels->modelKeys())->count() === 2);
     }
 }

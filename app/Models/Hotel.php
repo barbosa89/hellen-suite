@@ -122,8 +122,8 @@ class Hotel extends Model
     {
         return $query->whereUserId(id_parent())
             ->whereStatus(true)
-            ->when(auth()->user()->hasRole('receptionist'), function ($query) {
-                $query->whereHas('employees', function ($query) {
+            ->when(auth()->user()->hasRole('receptionist'), function ($query): void {
+                $query->whereHas('employees', function ($query): void {
                     $query->where('id', auth()->user()->id);
                 });
             });

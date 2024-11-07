@@ -73,10 +73,10 @@ class AppServiceProvider extends ServiceProvider
         // Check if the receptionist has an assigned headquarters
         Validator::extend('has_headquarters', function ($attribute, $value, $parameters, $validator) {
             $user = User::where('email', $value)
-                ->whereHas('roles', function ($query) {
+                ->whereHas('roles', function ($query): void {
                     $query->where('name', 'receptionist');
                 })->with([
-                    'headquarters' => function ($query) {
+                    'headquarters' => function ($query): void {
                         $query->select(['id', 'business_name']);
                     },
                 ])->first(['id', 'email']);
@@ -123,10 +123,10 @@ class AppServiceProvider extends ServiceProvider
             // Parent field
             // $alias[0]: Parent field name in the form
             // $alias[1]: Parent field name in table table
-            $alias = explode('#', $parameters[1]);
-            $parentField = isset($alias[1]) ? $alias[1] : $alias[0];
+            $alias = explode('#', (string) $parameters[1]);
+            $parentField = $alias[1] ?? $alias[0];
             $parentId = is_string($data[$alias[0]]) ? id_decode($data[$alias[0]]) : $data[$alias[0]];
-            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+            $exception = isset($parameters[2]) ? (int) trim((string) $parameters[2]) : null;
 
             $results = DB::table($parameters[0])
                 ->where($attribute, $value)
@@ -151,7 +151,7 @@ class AppServiceProvider extends ServiceProvider
          * $parameters[2]   Except
          */
         Validator::extend('unique_per_user', function ($attribute, $value, $parameters, $validator) {
-            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+            $exception = isset($parameters[2]) ? (int) trim((string) $parameters[2]) : null;
 
             $results = DB::table($parameters[0])
                 ->where($parameters[1], $value)
@@ -213,18 +213,18 @@ class AppServiceProvider extends ServiceProvider
         // Macros
 
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {
-            $this->where(function (Builder $query) use ($attributes, $searchTerm) {
+            $this->where(function (Builder $query) use ($attributes, $searchTerm): void {
                 foreach (Arr::wrap($attributes) as $attribute) {
                     $query->when(
                         Str::contains($attribute, '.'),
-                        function (Builder $query) use ($attribute, $searchTerm) {
-                            [$relationName, $relationAttribute] = explode('.', $attribute);
+                        function (Builder $query) use ($attribute, $searchTerm): void {
+                            [$relationName, $relationAttribute] = explode('.', (string) $attribute);
 
-                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm): void {
                                 $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
                             });
                         },
-                        function (Builder $query) use ($attribute, $searchTerm) {
+                        function (Builder $query) use ($attribute, $searchTerm): void {
                             $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
                         }
                     );

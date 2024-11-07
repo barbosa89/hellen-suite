@@ -3,7 +3,7 @@
 use App\Http\Controllers\PlanController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('plans/renew', [PlanController::class, 'renew'])
         ->name('plans.renew')
         ->middleware('role:manager');

@@ -3,7 +3,7 @@
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::delete('vouchers/{voucher}/payments/{id}', [PaymentController::class, 'destroy'])
         ->name('payments.destroy')
         ->middleware('permission:payments.destroy');

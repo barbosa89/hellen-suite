@@ -98,10 +98,10 @@ class HotelController extends Controller
         }
 
         $hotel->load([
-            'main' => function ($query) {
+            'main' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
@@ -126,7 +126,7 @@ class HotelController extends Controller
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
             ->with([
-                'main' => function ($query) {
+                'main' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
             ])->first(fields_get('hotels'));
@@ -193,10 +193,10 @@ class HotelController extends Controller
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
-            ->whereDoesntHave('headquarters', function ($query) {
+            ->whereDoesntHave('headquarters', function ($query): void {
                 $query->select(['id', 'main_hotel']);
             })
-            ->whereDoesntHave('vouchers', function ($query) {
+            ->whereDoesntHave('vouchers', function ($query): void {
                 $query->select(['id', 'hotel_id']);
             })->first(fields_get('hotels'));
 

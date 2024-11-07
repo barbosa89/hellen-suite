@@ -93,9 +93,7 @@ class AssetCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.create')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel, $room) {
-                return $hotels->first()->is($hotel)
-                    && $hotels->first()->rooms->first()->is($room);
-            });
+            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->first()->is($hotel)
+                && $hotels->first()->rooms->first()->is($room));
     }
 }

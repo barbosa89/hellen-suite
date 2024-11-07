@@ -20,8 +20,8 @@ class SanitizeInput
 
         $input = $request->all();
 
-        array_walk_recursive($input, function (&$input) {
-            $input = htmlentities(strip_tags(trim($input)));
+        array_walk_recursive($input, function (&$input): void {
+            $input = htmlentities(strip_tags(trim((string) $input)));
         });
 
         $request->merge($input);

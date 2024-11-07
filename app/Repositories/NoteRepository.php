@@ -96,12 +96,12 @@ class NoteRepository implements Repository
             ->whereHotelId($hotel)
             ->whereDate('created_at', '>=', $start)
             ->whereDate('created_at', '<=', $end)
-            ->when(! empty($text), function ($query) use ($text) {
+            ->when(! empty($text), function ($query) use ($text): void {
                 $query->whereLike(['content'], $text);
             })
             ->orderBy('created_at', 'DESC')
             ->with([
-                'tags' => function ($query) {
+                'tags' => function ($query): void {
                     $query->select(['id', 'slug']);
                 },
             ]);

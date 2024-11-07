@@ -24,7 +24,7 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
-                'type' => function ($query) {
+                'type' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
             ])->orderBy('created_at', 'DESC')
@@ -84,7 +84,7 @@ class VehicleController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_get('guests'))
                         ->withPivot('main');
                 },
@@ -112,18 +112,18 @@ class VehicleController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_get('guests'))
                         ->withPivot('main');
                 },
-                'guests.vehicles' => function ($query) use ($id) {
+                'guests.vehicles' => function ($query) use ($id): void {
                     $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -206,7 +206,7 @@ class VehicleController extends Controller
         }
 
         $vehicle->load([
-            'type' => function ($query) {
+            'type' => function ($query): void {
                 $query->select(['id', 'type']);
             },
         ]);
@@ -323,10 +323,10 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
-                'type' => function ($query) {
+                'type' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(['id', 'name', 'last_name']);
                 },
             ])->get(fields_get('vehicles'));

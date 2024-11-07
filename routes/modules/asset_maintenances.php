@@ -3,7 +3,7 @@
 use App\Http\Controllers\AssetMaintenanceController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::delete('assets/{asset}/maintenances/{maintenance}', [AssetMaintenanceController::class, 'destroy'])
         ->name('assets.maintenances.destroy')
         ->middleware('permission:assets.edit');

@@ -3,7 +3,7 @@
 use App\Http\Controllers\DiningServiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     // Service report
 
     Route::post('dining/report', [DiningServiceController::class, 'exportReport'])

@@ -81,10 +81,8 @@ class AssetShowTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.show')
-            ->assertViewHas('asset', function (Asset $data) {
-                return $data->is($this->asset)
-                    && $data->hotel->is($this->hotel)
-                    && $data->room->is($this->room);
-            });
+            ->assertViewHas('asset', fn(Asset $data) => $data->is($this->asset)
+                && $data->hotel->is($this->hotel)
+                && $data->room->is($this->room));
     }
 }

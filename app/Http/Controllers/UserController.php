@@ -20,10 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereHas('roles', function ($query) {
+        $users = User::whereHas('roles', function ($query): void {
             $query->where('name', 'manager');
         })->with([
-            'employees' => function ($query) {
+            'employees' => function ($query): void {
                 $query->select('id', 'name', 'parent');
             },
         ])->get(['id', 'name', 'email', 'status', 'created_at', 'email_verified_at']);

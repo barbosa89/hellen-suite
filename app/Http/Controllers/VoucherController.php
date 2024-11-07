@@ -40,14 +40,8 @@ use Throwable;
 
 class VoucherController extends Controller
 {
-    public VoucherRepository $voucher;
-
-    public VoucherPrinter $printer;
-
-    public function __construct(VoucherRepository $voucher, VoucherPrinter $printer)
+    public function __construct(public VoucherRepository $voucher, public VoucherPrinter $printer)
     {
-        $this->voucher = $voucher;
-        $this->printer = $printer;
     }
 
     /**
@@ -78,7 +72,7 @@ class VoucherController extends Controller
         $hotel = Hotel::where('user_id', id_parent())
             ->where('id', id_decode(request()->input('hotel')))
             ->with([
-                'rooms' => function ($query) use ($rooms) {
+                'rooms' => function ($query) use ($rooms): void {
                     $query->whereIn('id', $rooms)
                         ->select(fields_dotted('rooms'));
                 },
@@ -173,7 +167,7 @@ class VoucherController extends Controller
             return redirect()->route('vouchers.guests.search', [
                 'id' => id_encode($voucher->id),
             ]);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             DB::rollback();
         }
 
@@ -221,46 +215,46 @@ class VoucherController extends Controller
         }
 
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
-            'guests.vehicles' => function ($query) use ($id) {
+            'guests.vehicles' => function ($query) use ($id): void {
                 $query->select(fields_dotted('vehicles'))
                     ->wherePivot('voucher_id', $id);
             },
-            'guests.rooms' => function ($query) use ($id) {
+            'guests.rooms' => function ($query) use ($id): void {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
-            'guests.parent' => function ($query) {
+            'guests.parent' => function ($query): void {
                 $query->select('id', 'name', 'last_name');
             },
-            'guests.identificationType' => function ($query) {
+            'guests.identificationType' => function ($query): void {
                 $query->select('id', 'type');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
-            'products' => function ($query) {
+            'products' => function ($query): void {
                 $query->select(fields_dotted('products'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
-            'services' => function ($query) {
+            'services' => function ($query): void {
                 $query->select(fields_dotted('services'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
-            'additionals' => function ($query) {
+            'additionals' => function ($query): void {
                 $query->select(['id', 'description', 'billable', 'value', 'voucher_id', 'created_at']);
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
-            'props' => function ($query) {
+            'props' => function ($query): void {
                 $query->select(fields_dotted('props'))
                     ->withPivot('quantity', 'value', 'created_at');
             },
@@ -292,17 +286,17 @@ class VoucherController extends Controller
             ->where('id', id_decode($id))
             ->where('status', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'));
                 },
-                'products' => function ($query) {
+                'products' => function ($query): void {
                     $query->select(fields_dotted('products'))
                         ->withPivot('id', 'quantity', 'value');
                 },
-                'props' => function ($query) {
+                'props' => function ($query): void {
                     $query->select(fields_dotted('props'))
                         ->withPivot('quantity');
                 },
@@ -318,7 +312,7 @@ class VoucherController extends Controller
 
         $status = false;
 
-        DB::transaction(function () use (&$status, &$voucher) {
+        DB::transaction(function () use (&$status, &$voucher): void {
             try {
                 // Change Room status to cleaning
                 Room::whereIn('id', $voucher->rooms->pluck('id')->toArray())->update(['status' => '2']);
@@ -326,7 +320,7 @@ class VoucherController extends Controller
                 // Change Guest status to false: Guest is not in hotel
                 if ($voucher->guests->isNotEmpty()) {
                     Guest::whereIn('id', $voucher->guests->pluck('id')->toArray())
-                        ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher) {
+                        ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher): void {
                             $query->where('open', true)
                                 ->where('status', true)
                                 ->where('reservation', false)
@@ -336,7 +330,7 @@ class VoucherController extends Controller
 
                 // Restore product stocks
                 if ($voucher->products->isNotEmpty()) {
-                    $voucher->products->each(function ($product) {
+                    $voucher->products->each(function ($product): void {
                         $product->quantity += $product->pivot->quantity;
                         $product->save();
                     });
@@ -344,7 +338,7 @@ class VoucherController extends Controller
 
                 // Restore prop stocks
                 if ($voucher->props->isNotEmpty()) {
-                    $voucher->props->each(function ($prop) use ($voucher) {
+                    $voucher->props->each(function ($prop) use ($voucher): void {
                         if ($voucher->type == 'entry') {
                             $prop->quantity -= $prop->pivot->quantity;
                         } else {
@@ -423,17 +417,17 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -466,14 +460,14 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $request, $id) {
+        DB::transaction(function () use (&$status, $request, $id): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
                     ->where('open', true)
                     ->where('status', true)
                     ->with([
-                        'hotel' => function ($query) {
+                        'hotel' => function ($query): void {
                             $query->select(fields_get('hotels'));
                         },
                     ])->first(fields_dotted('vouchers'));
@@ -558,25 +552,25 @@ class VoucherController extends Controller
         }
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
-            'rooms.guests' => function ($query) use ($id) {
+            'rooms.guests' => function ($query) use ($id): void {
                 $query->select(fields_dotted('guests'))
                     ->wherePivot('voucher_id', $id);
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -627,21 +621,21 @@ class VoucherController extends Controller
                 ->firstOrFail(fields_dotted('vouchers'));
 
             $voucher->load([
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select(fields_dotted('guests'))
                         ->wherePivot('voucher_id', id_decode($id));
                 },
@@ -762,18 +756,18 @@ class VoucherController extends Controller
         }
 
         $voucher->load([
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
-            'rooms.guests' => function ($query) use ($id) {
+            'rooms.guests' => function ($query) use ($id): void {
                 $query->select(fields_dotted('guests'))
                     ->wherePivot('voucher_id', $id);
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
@@ -858,21 +852,21 @@ class VoucherController extends Controller
             ->open()
             ->has('rooms')
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -894,22 +888,22 @@ class VoucherController extends Controller
             ->id($id)
             ->open()
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id', 'number', 'status')
                         ->withPivot('enabled');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('voucher_id', $id);
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -917,7 +911,7 @@ class VoucherController extends Controller
         $guest = Guest::where('id', id_decode($guest))
             ->where('status', false) // Not in hotel
             ->with([
-                'identificationType' => function ($query) {
+                'identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
             ])->firstOrFail(fields_dotted('guests'));
@@ -936,7 +930,7 @@ class VoucherController extends Controller
     {
         $guests = 0;
 
-        $voucher->rooms->each(function ($room) use (&$guests) {
+        $voucher->rooms->each(function ($room) use (&$guests): void {
             $guests += $room->guests->count();
         });
 
@@ -958,20 +952,20 @@ class VoucherController extends Controller
                 ->id(id_decode($id))
                 ->open()
                 ->with([
-                    'guests' => function ($query) {
+                    'guests' => function ($query): void {
                         $query->select(fields_dotted('guests'))
                             ->withPivot('main', 'active');
                     },
-                    'guests.identificationType' => function ($query) {
+                    'guests.identificationType' => function ($query): void {
                         $query->select('id', 'type');
                     },
-                    'rooms' => function ($query) use ($request) {
+                    'rooms' => function ($query) use ($request): void {
                         $query->select(fields_dotted('rooms'))
                             ->where('id', id_decode($request->room))
                             ->wherePivot('enabled', true)
                             ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
                     },
-                    'hotel' => function ($query) {
+                    'hotel' => function ($query): void {
                         $query->select(fields_get('hotels'));
                     },
                 ])
@@ -1054,23 +1048,23 @@ class VoucherController extends Controller
             ->id(id_decode($id))
             ->open()
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_get('guests'))
                         ->where('responsible_adult', false)
                         ->withPivot('active');
                 },
-                'guests.rooms' => function ($query) use ($id) {
+                'guests.rooms' => function ($query) use ($id): void {
                     $query->select('id', 'number')
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -1106,7 +1100,7 @@ class VoucherController extends Controller
 
         // Refresh the guests relationship to select the main guest
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select('id')
                     ->where('responsible_adult', false);
             },
@@ -1151,26 +1145,26 @@ class VoucherController extends Controller
             ->firstOrFail(fields_dotted('vouchers'));
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
-            'guests.rooms' => function ($query) use ($id) {
+            'guests.rooms' => function ($query) use ($id): void {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('enabled', true)
                     ->withPivot('enabled');
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -1239,21 +1233,21 @@ class VoucherController extends Controller
             ->firstOrFail(fields_dotted('vouchers'));
 
         $voucher->load([
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
-            'guests.rooms' => function ($query) use ($id) {
+            'guests.rooms' => function ($query) use ($id): void {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('voucher_id', $id);
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'));
             },
         ]);
@@ -1318,20 +1312,20 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id', 'number');
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -1370,7 +1364,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $request, $id) {
+        DB::transaction(function () use (&$status, $request, $id): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -1378,7 +1372,7 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
-                        'hotel' => function ($query) {
+                        'hotel' => function ($query): void {
                             $query->select(fields_get('hotels'));
                         },
                     ])->first(fields_dotted('vouchers'));
@@ -1438,7 +1432,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $id, $record) {
+        DB::transaction(function () use (&$status, $id, $record): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -1446,7 +1440,7 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
-                        'products' => function ($query) use ($record) {
+                        'products' => function ($query) use ($record): void {
                             $query->select(fields_dotted('products'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
@@ -1505,17 +1499,17 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -1558,7 +1552,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $request, $id) {
+        DB::transaction(function () use (&$status, $request, $id): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -1566,7 +1560,7 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
-                        'hotel' => function ($query) {
+                        'hotel' => function ($query): void {
                             $query->select(fields_get('hotels'));
                         },
                     ])->first(fields_dotted('vouchers'));
@@ -1622,7 +1616,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $id, $record) {
+        DB::transaction(function () use (&$status, $id, $record): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -1630,7 +1624,7 @@ class VoucherController extends Controller
                     ->where('status', true)
                     ->where('reservation', false)
                     ->with([
-                        'services' => function ($query) use ($record) {
+                        'services' => function ($query) use ($record): void {
                             $query->select(fields_dotted('services'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
@@ -1679,14 +1673,14 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -1755,7 +1749,7 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'company' => function ($query) use ($company) {
+                'company' => function ($query) use ($company): void {
                     $query->select(fields_get('companies'))
                         ->where('id', id_decode($company));
                 },
@@ -1796,21 +1790,21 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -1856,18 +1850,18 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'guests.vehicles' => function ($query) use ($id) {
+                'guests.vehicles' => function ($query) use ($id): void {
                     $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -1875,7 +1869,7 @@ class VoucherController extends Controller
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($vehicleId))
             ->with([
-                'type' => function ($query) {
+                'type' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
             ])->first(fields_get('vehicles'));
@@ -1942,7 +1936,7 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'guests' => function ($query) use ($guest) {
+                'guests' => function ($query) use ($guest): void {
                     $query->select(fields_dotted('guests'))
                         ->where('id', id_decode($guest));
                 },
@@ -1981,17 +1975,17 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id');
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -2016,7 +2010,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $id, $request) {
+        DB::transaction(function () use (&$status, $id, $request): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -2068,7 +2062,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $id, $additional) {
+        DB::transaction(function () use (&$status, $id, $additional): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -2130,17 +2124,17 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', false)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id');
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -2165,7 +2159,7 @@ class VoucherController extends Controller
     {
         $status = false;
 
-        DB::transaction(function () use (&$status, $id, $request) {
+        DB::transaction(function () use (&$status, $id, $request): void {
             try {
                 $voucher = Voucher::where('user_id', id_parent())
                     ->where('id', id_decode($id))
@@ -2215,10 +2209,10 @@ class VoucherController extends Controller
             ->where('payment_status', false)
             ->where('status', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -2235,7 +2229,7 @@ class VoucherController extends Controller
                 // Change Guest status to false: Guest is not in hotel
                 if ($voucher->guests->isNotEmpty()) {
                     Guest::whereIn('id', $voucher->guests->pluck('id')->toArray())
-                        ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher) {
+                        ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher): void {
                             $query->where('open', true)
                                 ->where('status', true)
                                 ->where('reservation', false)
@@ -2317,7 +2311,7 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('payment_status', false)
             ->with([
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -2340,7 +2334,7 @@ class VoucherController extends Controller
 
         $status = false;
 
-        DB::transaction(function () use (&$status, &$voucher) {
+        DB::transaction(function () use (&$status, &$voucher): void {
             try {
                 $voucher->payment_status = true;
 
@@ -2381,13 +2375,13 @@ class VoucherController extends Controller
             ->where('payment_status', false)
             ->where('type', '!=', Voucher::LOSS)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'));
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -2410,7 +2404,7 @@ class VoucherController extends Controller
 
         $status = false;
 
-        DB::transaction(function () use (&$status, &$voucher) {
+        DB::transaction(function () use (&$status, &$voucher): void {
             try {
                 $voucher->open = false;
                 $voucher->type = 'loss';
@@ -2422,7 +2416,7 @@ class VoucherController extends Controller
                     // Change Guest status to false: Guest is not in hotel
                     if ($voucher->guests->isNotEmpty()) {
                         Guest::whereIn('id', $voucher->guests->pluck('id')->toArray())
-                            ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher) {
+                            ->whereDoesntHave('vouchers', function (Builder $query) use ($voucher): void {
                                 $query->where('open', true)
                                     ->where('status', true)
                                     ->where('reservation', false)
@@ -2466,17 +2460,17 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('reservation', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id');
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query) {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -2543,7 +2537,7 @@ class VoucherController extends Controller
             ->assigned();
 
         // Check if hotels have vouchers to process
-        $hotels->whereHas('vouchers', function ($query) {
+        $hotels->whereHas('vouchers', function ($query): void {
             $query->where('open', true)
                 ->where('status', true)
                 ->where('reservation', false)
@@ -2553,7 +2547,7 @@ class VoucherController extends Controller
 
         // Load vouchers with relateds
         $hotels->with([
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->where('user_id', id_parent())
                     ->where('open', true)
@@ -2562,19 +2556,19 @@ class VoucherController extends Controller
                     ->where('payment_status', false)
                     ->where('type', '!=', Voucher::LOSS);
             },
-            'vouchers.guests' => function ($query) {
+            'vouchers.guests' => function ($query): void {
                 $query->select(['id', 'name', 'last_name'])
                     ->wherePivot('main', true);
             },
-            'vouchers.rooms' => function ($query) {
+            'vouchers.rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('enabled', true)
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
-            'vouchers.company' => function ($query) {
+            'vouchers.company' => function ($query): void {
                 $query->select(['id', 'tin', 'business_name']);
             },
-            'vouchers.payments' => function ($query) {
+            'vouchers.payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
         ]);
@@ -2652,7 +2646,7 @@ class VoucherController extends Controller
         // So the processed vouchers will be returned as JSON response
         $processed = collect();
 
-        DB::transaction(function () use (&$processed, $request) {
+        DB::transaction(function () use (&$processed, $request): void {
             try {
                 $vouchers = Voucher::where('user_id', id_parent())
                     ->where('hotel_id', id_decode($request->hotel))
@@ -2663,7 +2657,7 @@ class VoucherController extends Controller
                     ->where('payment_status', false)
                     ->where('type', '!=', Voucher::LOSS)
                     ->with([
-                        'rooms' => function ($query) {
+                        'rooms' => function ($query): void {
                             $query->select(fields_dotted('rooms'))
                                 ->wherePivot('enabled', true)
                                 ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
@@ -2671,8 +2665,8 @@ class VoucherController extends Controller
                     ])->get(fields_dotted('vouchers'));
 
                 if ($vouchers->isNotEmpty()) {
-                    $vouchers->each(function ($voucher) use (&$processed) {
-                        $voucher->rooms->each(function ($room) use (&$processed, $voucher) {
+                    $vouchers->each(function ($voucher) use (&$processed): void {
+                        $voucher->rooms->each(function ($room) use (&$processed, $voucher): void {
                             // Dates
                             $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
                             $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
@@ -2759,37 +2753,37 @@ class VoucherController extends Controller
         }
 
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
             },
-            'company' => function ($query) {
+            'company' => function ($query): void {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'))
                     ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
             },
-            'products' => function ($query) {
+            'products' => function ($query): void {
                 $query->select(fields_dotted('products'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
-            'services' => function ($query) {
+            'services' => function ($query): void {
                 $query->select(fields_dotted('services'))
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
-            'additionals' => function ($query) {
+            'additionals' => function ($query): void {
                 $query->select(['id', 'description', 'billable', 'value', 'voucher_id', 'created_at'])
                     ->where('billable', true);
             },
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->select(fields_get('payments'));
             },
-            'props' => function ($query) {
+            'props' => function ($query): void {
                 $query->select(fields_dotted('props'))
                     ->withPivot('quantity', 'value', 'created_at');
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
         ]);

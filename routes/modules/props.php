@@ -4,7 +4,7 @@ use App\Http\Controllers\PropController;
 use App\Http\Controllers\PropVoucherController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     // Props report
 
     Route::post('props/report', [PropController::class, 'exportReport'])

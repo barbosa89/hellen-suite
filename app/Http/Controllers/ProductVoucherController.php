@@ -47,7 +47,7 @@ class ProductVoucherController extends Controller
     {
         if (auth()->user()->hasRole('receptionist')) {
             $user = auth()->user()->load([
-                'headquarters' => function ($query) {
+                'headquarters' => function ($query): void {
                     $query->select(fields_dotted('hotels'))
                         ->where('status', true);
                 },
@@ -75,7 +75,7 @@ class ProductVoucherController extends Controller
         $products = $this->getProducts($request, $ids);
         $processed = collect();
 
-        DB::transaction(function () use (&$processed, $request, $products) {
+        DB::transaction(function () use (&$processed, $request, $products): void {
             try {
                 // Voucher creation
                 $voucher = new Voucher;

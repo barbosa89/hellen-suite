@@ -3,7 +3,7 @@
 use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('shifts/{id}/close', [ShiftController::class, 'close'])
         ->name('shifts.close')
         ->middleware('permission:shifts.close');

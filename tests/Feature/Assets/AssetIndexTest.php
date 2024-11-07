@@ -78,10 +78,8 @@ class AssetIndexTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.index')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel, $asset) {
-                return $hotels->first()->is($hotel)
-                    && $hotels->first()->assets->first()->is($asset);
-            });
+            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->first()->is($hotel)
+                && $hotels->first()->assets->first()->is($asset));
     }
 
     public function test_authorized_user_can_search_assets(): void

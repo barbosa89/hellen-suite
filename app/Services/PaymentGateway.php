@@ -9,27 +9,15 @@ use Illuminate\Support\Facades\Http;
 
 class PaymentGateway
 {
-    public Invoice $invoice;
-
-    /**
-     * Constructor
-     */
-    public function __construct(Invoice $invoice)
+    public function __construct(public Invoice $invoice)
     {
-        $this->invoice = $invoice;
     }
 
-    /**
-     * Create self instance statically
-     */
     public static function create(Invoice $invoice): self
     {
         return new PaymentGateway($invoice);
     }
 
-    /**
-     * Generate URL to redirect to payment gateway
-     */
     public function generatePaymentUrl(): string
     {
         return external_url(config('settings.payments.url'), [
@@ -41,17 +29,11 @@ class PaymentGateway
         ]);
     }
 
-    /**
-     * Return redirect to payment gateway
-     */
     public function redirect(): RedirectResponse
     {
         return redirect()->away($this->generatePaymentUrl());
     }
 
-    /**
-     * Get transaction status data to check payment
-     */
     public static function confirm(string $id): Response
     {
         return Http::get(config('settings.payments.confirm').$id);

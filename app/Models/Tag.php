@@ -64,7 +64,7 @@ class Tag extends Model
      */
     public function getValueAttribute()
     {
-        return $this->attributes['value'] = strtolower($this->attributes['description']);
+        return $this->attributes['value'] = strtolower((string) $this->attributes['description']);
     }
 
     /**
