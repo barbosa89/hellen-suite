@@ -16,8 +16,7 @@ class NoteController extends Controller
 {
     public function __construct(
         public NoteRepository $note
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.

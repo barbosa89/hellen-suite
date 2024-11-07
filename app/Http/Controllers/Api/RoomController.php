@@ -9,9 +9,7 @@ use App\Http\Requests\StoreRoom;
 
 class RoomController extends Controller
 {
-    public function __construct(public RoomRepository $room)
-    {
-    }
+    public function __construct(public RoomRepository $room) {}
 
     /**
      * Display a listing of the resource.

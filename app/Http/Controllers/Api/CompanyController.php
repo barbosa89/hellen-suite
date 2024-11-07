@@ -9,9 +9,7 @@ use Illuminate\Support\Arr;
 
 class CompanyController extends Controller
 {
-    public function __construct(public CompanyRepository $company)
-    {
-    }
+    public function __construct(public CompanyRepository $company) {}
 
     /**
      * Display a listing of the resource.

@@ -9,20 +9,14 @@ use App\Http\Requests\StoreRoom;
 use App\Http\Requests\UpdateRoom;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct(public RoomRepository $room)
-    {
-    }
+    public function __construct(public RoomRepository $room) {}
 
-    /**
-     * Display a listing of the resources.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
         return view('app.rooms.index');
     }

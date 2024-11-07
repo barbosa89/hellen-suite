@@ -15,8 +15,7 @@ class Welcome extends Mailable implements ShouldQueue
     public function __construct(
         private User $user,
         private $password
-    ) {
-    }
+    ) {}
 
     /**
      * Build the message.

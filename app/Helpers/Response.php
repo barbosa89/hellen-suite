@@ -8,10 +8,9 @@ class Response
 {
     public function __construct(
         private readonly Collection $collection,
-        private readonly string|null $format = null,
-        private readonly string|null $template = null
-    ) {
-    }
+        private readonly ?string $format = null,
+        private readonly ?string $template = null
+    ) {}
 
     public function get(): array
     {

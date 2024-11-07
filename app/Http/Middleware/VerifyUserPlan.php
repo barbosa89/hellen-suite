@@ -38,7 +38,7 @@ class VerifyUserPlan
      */
     private function hasNoActivePlans(Collection $plans): bool
     {
-        $actives = $plans->filter(fn($plan) => $plan->isActive());
+        $actives = $plans->filter(fn ($plan) => $plan->isActive());
 
         return $actives->isEmpty();
     }

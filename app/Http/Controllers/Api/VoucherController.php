@@ -13,9 +13,7 @@ use Illuminate\Validation\Rule;
 
 class VoucherController extends Controller
 {
-    public function __construct(public VoucherRepository $voucher)
-    {
-    }
+    public function __construct(public VoucherRepository $voucher) {}
 
     /**
      * Display a listing of the paginate resource.

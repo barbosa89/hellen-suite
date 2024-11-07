@@ -13,8 +13,7 @@ class TagController extends Controller
 {
     public function __construct(
         public TagRepository $tag
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.

@@ -9,9 +9,7 @@ use Illuminate\Support\Arr;
 
 class GuestController extends Controller
 {
-    public function __construct(public GuestRepository $guest)
-    {
-    }
+    public function __construct(public GuestRepository $guest) {}
 
     /**
      * Display a listing of the resource.

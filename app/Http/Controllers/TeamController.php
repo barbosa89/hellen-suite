@@ -308,7 +308,7 @@ class TeamController extends Controller
         $allPermissions = Permission::get(['id', 'name', 'guard_name']);
 
         // Grouping by modules
-        $permissions = $allPermissions->groupBy(fn($permission) => explode('.', $permission->name)[0]);
+        $permissions = $allPermissions->groupBy(fn ($permission) => explode('.', $permission->name)[0]);
 
         return view('app.team.permissions', compact('member', 'permissions'));
     }

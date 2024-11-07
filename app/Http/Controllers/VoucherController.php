@@ -40,9 +40,7 @@ use Throwable;
 
 class VoucherController extends Controller
 {
-    public function __construct(public VoucherRepository $voucher, public VoucherPrinter $printer)
-    {
-    }
+    public function __construct(public VoucherRepository $voucher, public VoucherPrinter $printer) {}
 
     /**
      * Display a listing of the resource.

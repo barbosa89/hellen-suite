@@ -75,8 +75,8 @@ class AssetAssignTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.assign')
-            ->assertViewHas('assets', fn(Collection $data) => $data->first()->is($this->asset))
-            ->assertViewHas('room', fn(Room $data) => $data->is($this->room));
+            ->assertViewHas('assets', fn (Collection $data) => $data->first()->is($this->asset))
+            ->assertViewHas('room', fn (Room $data) => $data->is($this->room));
     }
 
     public function test_guest_user_cannot_assign_asset_to_room(): void

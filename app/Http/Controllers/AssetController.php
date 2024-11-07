@@ -78,7 +78,7 @@ class AssetController extends Controller
             return redirect()->route('hotels.index');
         }
 
-        $rooms = $hotels->sum(fn($hotel) => $hotel->rooms->count());
+        $rooms = $hotels->sum(fn ($hotel) => $hotel->rooms->count());
 
         if ($rooms === 0) {
             flash(trans('rooms.no.created'))->info();

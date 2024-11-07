@@ -93,7 +93,7 @@ class AssetCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.create')
-            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->first()->is($hotel)
+            ->assertViewHas('hotels', fn (Collection $hotels) => $hotels->first()->is($hotel)
                 && $hotels->first()->rooms->first()->is($room));
     }
 }

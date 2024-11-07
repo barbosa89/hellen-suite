@@ -78,7 +78,7 @@ class AssetIndexTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.index')
-            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->first()->is($hotel)
+            ->assertViewHas('hotels', fn (Collection $hotels) => $hotels->first()->is($hotel)
                 && $hotels->first()->assets->first()->is($asset));
     }
 

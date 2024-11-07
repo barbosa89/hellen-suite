@@ -96,7 +96,7 @@ class PlanTest extends TestCase
             ->assertSee(trans('plans.type.free'))
             ->assertSee(trans('plans.type.basic'))
             ->assertSee(trans('plans.type.sponsor'))
-            ->assertViewHas('plans', fn($data) => $data
+            ->assertViewHas('plans', fn ($data) => $data
                 ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
                 ->count() == 3);
     }
@@ -130,7 +130,7 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_basic_plan(): void
     {
-        Http::fake(fn($request) => Http::response(json_encode([
+        Http::fake(fn ($request) => Http::response(json_encode([
             'USD_COP' => 3000,
         ]), Response::HTTP_OK));
 
@@ -166,14 +166,14 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.choose')
-            ->assertViewHas('plans', fn($data) => $data
+            ->assertViewHas('plans', fn ($data) => $data
                 ->where('type', Plan::FREE)
                 ->count() == 0);
     }
 
     public function test_user_can_buy_the_basic_plan()
     {
-        Http::fake(fn($request) => Http::response(json_encode([
+        Http::fake(fn ($request) => Http::response(json_encode([
             'USD_COP' => 3000,
         ]), Response::HTTP_OK));
 

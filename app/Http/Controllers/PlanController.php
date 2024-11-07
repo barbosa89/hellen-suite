@@ -133,7 +133,7 @@ class PlanController extends Controller
      */
     private function hasActivePlans(Collection $plans): bool
     {
-        $actives = $plans->filter(fn($plan) => $plan->isActive());
+        $actives = $plans->filter(fn ($plan) => $plan->isActive());
 
         return $actives->isNotEmpty();
     }

@@ -19,9 +19,7 @@ class CheckOut
      *
      * @return void
      */
-    public function __construct(public Voucher $voucher, public Guest $guest, public Room $room)
-    {
-    }
+    public function __construct(public Voucher $voucher, public Guest $guest, public Room $room) {}
 
     /**
      * Get the channels the event should broadcast on.

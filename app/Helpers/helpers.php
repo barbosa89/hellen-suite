@@ -107,7 +107,7 @@ if (! function_exists('external_url')) {
             return urlencode($key).'='.urlencode($value);
         })->join('&');
 
-        return $url .'?' .$params;
+        return $url.'?'.$params;
     }
 }
 

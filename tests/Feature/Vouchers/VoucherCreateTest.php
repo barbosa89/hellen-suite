@@ -87,7 +87,7 @@ class VoucherCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.vouchers.create')
-            ->assertViewHas('hotel', fn($hotel) => $hotel
+            ->assertViewHas('hotel', fn ($hotel) => $hotel
                 ->rooms
                 ->where('id', $room->id)
                 ->isNotEmpty());

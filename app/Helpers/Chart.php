@@ -16,9 +16,7 @@ class Chart implements ChartInterface
     /**
      * @return void
      */
-    public function __construct(protected Collection $vouchers)
-    {
-    }
+    public function __construct(protected Collection $vouchers) {}
 
     /**
      * Assign the default zero value for months that have no vouchers
@@ -104,7 +102,7 @@ class Chart implements ChartInterface
      */
     public function countItems(): Chart
     {
-        $this->process(fn($vouchers, $voucher) => $voucher['pivot']['quantity']);
+        $this->process(fn ($vouchers, $voucher) => $voucher['pivot']['quantity']);
 
         return $this;
     }
@@ -114,7 +112,7 @@ class Chart implements ChartInterface
      */
     public function countVouchers(): Chart
     {
-        $this->process(fn($vouchers, $voucher): int => 1);
+        $this->process(fn ($vouchers, $voucher): int => 1);
 
         return $this;
     }
@@ -124,7 +122,7 @@ class Chart implements ChartInterface
      */
     public function addValues(): Chart
     {
-        $this->process(fn($vouchers, $voucher): float => (float) $voucher['value']);
+        $this->process(fn ($vouchers, $voucher): float => (float) $voucher['value']);
 
         return $this;
     }
@@ -134,7 +132,7 @@ class Chart implements ChartInterface
      */
     public function addItemValues(): Chart
     {
-        $this->process(fn($vouchers, $voucher): float => (float) $voucher['pivot']['value']);
+        $this->process(fn ($vouchers, $voucher): float => (float) $voucher['pivot']['value']);
 
         return $this;
     }

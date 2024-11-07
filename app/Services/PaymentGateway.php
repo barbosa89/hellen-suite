@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class PaymentGateway
 {
-    public function __construct(public Invoice $invoice)
-    {
-    }
+    public function __construct(public Invoice $invoice) {}
 
     public static function create(Invoice $invoice): self
     {

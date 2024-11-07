@@ -75,7 +75,7 @@ class Plan extends Model
      */
     public function scopeOwner($query)
     {
-        return $query->whereHas('users', fn($query) => $query->where('users.id', id_parent()));
+        return $query->whereHas('users', fn ($query) => $query->where('users.id', id_parent()));
     }
 
     /**
@@ -85,7 +85,7 @@ class Plan extends Model
      */
     public function scopeNotRelatedToUser(Builder $query)
     {
-        return $query->whereDoesntHave('users', fn(Builder $query) => $query->where('users.id', auth()->id()));
+        return $query->whereDoesntHave('users', fn (Builder $query) => $query->where('users.id', auth()->id()));
     }
 
     /**

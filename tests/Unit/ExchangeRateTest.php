@@ -11,7 +11,7 @@ class ExchangeRateTest extends TestCase
 {
     public function test_convert_usd_to_cop(): void
     {
-        Http::fake(fn($request) => Http::response(json_encode([
+        Http::fake(fn ($request) => Http::response(json_encode([
             'USD_COP' => 3000,
         ]), Response::HTTP_OK));
 

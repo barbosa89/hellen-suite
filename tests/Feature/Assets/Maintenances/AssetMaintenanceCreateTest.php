@@ -79,6 +79,6 @@ class AssetMaintenanceCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.maintenances.create')
-            ->assertViewHas('asset', fn(Asset $data) => $data->is($this->asset));
+            ->assertViewHas('asset', fn (Asset $data) => $data->is($this->asset));
     }
 }

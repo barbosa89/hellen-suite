@@ -14,9 +14,7 @@ class ShiftReport implements WithMultipleSheets
     public function __construct(
         protected Shift $shift,
         protected Collection $rooms
-    )
-    {
-    }
+    ) {}
 
     /**
      * Report sheets

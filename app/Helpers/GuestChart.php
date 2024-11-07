@@ -13,9 +13,7 @@ class GuestChart
 {
     protected array $data = [];
 
-    public function __construct(protected Collection $vouchers, protected Carbon $startDate, protected Carbon $endDate)
-    {
-    }
+    public function __construct(protected Collection $vouchers, protected Carbon $startDate, protected Carbon $endDate) {}
 
     /**
      * Count each guest check by day

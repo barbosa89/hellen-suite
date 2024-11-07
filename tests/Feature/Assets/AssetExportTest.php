@@ -68,7 +68,7 @@ class AssetExportTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.export')
-            ->assertViewHas('hotels', fn(Collection $hotels) => $hotels->count() === 1 &&
+            ->assertViewHas('hotels', fn (Collection $hotels) => $hotels->count() === 1 &&
                 $hotels->first()->is($hotel));
     }
 
