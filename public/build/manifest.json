@@ -1,0 +1,174 @@
+{
+  "_bootstrap.esm-DiaGsIN1.js": {
+    "file": "assets/bootstrap.esm-DiaGsIN1.js",
+    "name": "bootstrap.esm"
+  },
+  "_index-DiNVdKB3.js": {
+    "file": "assets/index-DiNVdKB3.js",
+    "name": "index"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot": {
+    "file": "assets/fa-brands-400-DnkPfk3o.eot",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.svg": {
+    "file": "assets/fa-brands-400-cH1MgKbP.svg",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-CSYNqBb_.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff": {
+    "file": "assets/fa-brands-400-CEJbCg16.woff",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-UxlILjvJ.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.eot": {
+    "file": "assets/fa-regular-400-BhTwtT8w.eot",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.svg": {
+    "file": "assets/fa-regular-400-gwj8Pxq-.svg",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-D1vz6WBx.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff": {
+    "file": "assets/fa-regular-400-DFnMcJPd.woff",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-DGzu1beS.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.eot": {
+    "file": "assets/fa-solid-900-B6Axprfb.eot",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.svg": {
+    "file": "assets/fa-solid-900-B4ZZ7kfP.svg",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-mxuxnBEa.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff": {
+    "file": "assets/fa-solid-900-DOXgCApm.woff",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-BUswJgRo.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
+    "file": "assets/bootstrap-icons-BOrJxbIo.woff",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
+  },
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-BtvjY1KL.woff2",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
+  },
+  "resources/css/landing.css": {
+    "file": "assets/landing-Bs3POC3w.css",
+    "src": "resources/css/landing.css",
+    "isEntry": true
+  },
+  "resources/css/panel.css": {
+    "file": "assets/panel-B3BZq9K-.css",
+    "src": "resources/css/panel.css",
+    "isEntry": true
+  },
+  "resources/images/b1.jpg": {
+    "file": "assets/b1-DuS-eWSd.jpg",
+    "src": "resources/images/b1.jpg"
+  },
+  "resources/images/b2.jpg": {
+    "file": "assets/b2-qdshvUr1.jpg",
+    "src": "resources/images/b2.jpg"
+  },
+  "resources/images/b3.jpg": {
+    "file": "assets/b3-BU_krSR-.jpg",
+    "src": "resources/images/b3.jpg"
+  },
+  "resources/images/banner-1.jpg": {
+    "file": "assets/banner-1-KaJkpQSb.jpg",
+    "src": "resources/images/banner-1.jpg"
+  },
+  "resources/images/blue-logo.png": {
+    "file": "assets/blue-logo-OB-1Ca5O.png",
+    "src": "resources/images/blue-logo.png"
+  },
+  "resources/images/brand.jpg": {
+    "file": "assets/brand-B1d76-OC.jpg",
+    "src": "resources/images/brand.jpg"
+  },
+  "resources/images/hj.png": {
+    "file": "assets/hj-DjUcUXUt.png",
+    "src": "resources/images/hj.png"
+  },
+  "resources/images/hotel.png": {
+    "file": "assets/hotel-B-wXONYC.png",
+    "src": "resources/images/hotel.png"
+  },
+  "resources/images/qr.png": {
+    "file": "assets/qr-uCOL5Yfo.png",
+    "src": "resources/images/qr.png"
+  },
+  "resources/images/scroll-top.png": {
+    "file": "assets/scroll-top-Ct7geVa_.png",
+    "src": "resources/images/scroll-top.png"
+  },
+  "resources/images/white-logo.png": {
+    "file": "assets/white-logo-C7Dpapex.png",
+    "src": "resources/images/white-logo.png"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DMoasOzr.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-DiaGsIN1.js",
+      "_index-DiNVdKB3.js"
+    ],
+    "css": [
+      "assets/app-BpYg-1BR.css"
+    ]
+  },
+  "resources/js/common.js": {
+    "file": "assets/common-CSvrhEXJ.js",
+    "name": "common",
+    "src": "resources/js/common.js",
+    "isEntry": true,
+    "imports": [
+      "_index-DiNVdKB3.js"
+    ]
+  },
+  "resources/js/landing.js": {
+    "file": "assets/landing-DbPG15f6.js",
+    "name": "landing",
+    "src": "resources/js/landing.js",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.esm-DiaGsIN1.js"
+    ]
+  },
+  "resources/js/panel.js": {
+    "file": "assets/panel-D_brlZZi.js",
+    "name": "panel",
+    "src": "resources/js/panel.js",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-uezGrSz8.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}
