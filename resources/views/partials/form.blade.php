@@ -28,7 +28,7 @@
     @endif
 
     @isset($btn)
-        <button type="submit" class="btn btn-primary">{{ $btn }}</button>
+        <button type="submit" class="btn btn-dark">{{ $btn }}</button>
     @endisset
 
     @isset($link)

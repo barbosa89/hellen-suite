@@ -21,7 +21,7 @@
 						<button type="button" class="btn btn-link" data-bs-dismiss="modal">
 							@lang('common.cancel')
 						</button>
-						<button type="Submit" class="btn btn-primary">
+						<button type="Submit" class="btn btn-dark">
 							@lang('common.continue')
 						</button>
 					</div>

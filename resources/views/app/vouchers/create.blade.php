@@ -183,7 +183,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-dark">
             @lang('common.add')
         </button>
         <a href="{{ route('rooms.index') }}" class="btn btn-link">

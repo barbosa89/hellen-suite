@@ -80,7 +80,7 @@
 
             <div class="row my-4">
                 <div class="col-12">
-                    <button type="submit" role="button" class="btn btn-primary" onclick="javascript: form.action='{{ route('notes.search') }}';">
+                    <button type="submit" role="button" class="btn btn-dark" onclick="javascript: form.action='{{ route('notes.search') }}';">
                         <i class="fas fa-search"></i> {{ trans('common.query') }}
                     </button>
                     <button type="submit" role="button" class="btn btn-outline-info" onclick="javascript: form.action='{{ route('notes.export') }}';">

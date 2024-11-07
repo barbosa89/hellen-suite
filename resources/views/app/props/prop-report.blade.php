@@ -50,7 +50,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.query')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.query')</button>
                     <a href="{{ route('props.show', ['id' => id_encode($prop->id)]) }}" class="btn btn-default">
                         @lang('common.back')
                     </a>

@@ -53,8 +53,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.assign')</button>
-                    <a href="{{ route('team.index') }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('common.assign')</button>
+                    <a href="{{ route('team.index') }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>

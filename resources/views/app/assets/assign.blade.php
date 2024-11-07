@@ -53,7 +53,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-dark">
                         @lang('common.assign')
                     </button>
                     <a href="{{ route('assets.index') }}" class="btn btn-default">

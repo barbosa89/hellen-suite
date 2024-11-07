@@ -11,7 +11,7 @@
                 @include('app.plans.types.features.basic')
             </ul>
         </p>
-        <a href="{{ route('plans.buy', ['id' => id_encode($plan->id)]) }}" class="btn btn-primary card-link">
+        <a href="{{ route('plans.buy', ['id' => id_encode($plan->id)]) }}" class="btn btn-dark card-link">
             @lang('common.select')
         </a>
     </div>

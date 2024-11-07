@@ -11,7 +11,7 @@
                 @include('app.plans.types.features.default')
             </ul>
         </p>
-        <a class="btn btn-primary card-link" href="tel:+57{{ config('settings.tel') }}">
+        <a class="btn btn-dark card-link" href="tel:+57{{ config('settings.tel') }}">
             @lang('landing.contact')
         </a>
     </div>

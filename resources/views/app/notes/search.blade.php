@@ -69,7 +69,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" role="button" class="btn btn-primary">
+                            <button type="submit" role="button" class="btn btn-dark">
                                 {{ trans('common.query') }}
                             </button>
                         </div>

@@ -156,7 +156,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-dark">
                         @lang('common.update')
                     </button>
                     <button type="button" class="btn btn-default" id="remove-room">

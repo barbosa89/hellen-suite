@@ -102,8 +102,8 @@
                         <input type="text" class="form-control" name="total" id="total" value="$ {{ number_format($plan->price, 2, ',', '.') }}" placeholder="{{ trans('common.required') }}" readonly>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('landing.buy')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('landing.buy')</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>

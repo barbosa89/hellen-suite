@@ -58,10 +58,10 @@
                 </div>
             @endforeach
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-dark">
                 @lang('common.assign')
             </button>
-            <a href="{{ route('team.index') }}" class="btn btn-secondary">
+            <a href="{{ route('team.index') }}" class="btn btn-light">
                 @lang('common.back')
             </a>
         </form>

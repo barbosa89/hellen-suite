@@ -144,10 +144,10 @@
                         @endif
                     </div>
 
-                    <button type="submit" id="room-store" class="btn btn-primary me-2">
+                    <button type="submit" id="room-store" class="btn btn-dark me-2">
                         @lang('common.create')
                     </button>
-                    <a href="{{ route('rooms.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('rooms.index') }}" class="btn btn-light">
                         @lang('common.back')
                     </a>
                 </form>

@@ -102,7 +102,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.create')</button>
                     <a href="{{ route('props.index') }}" class="btn btn-default">
                         @lang('common.back')
                     </a>

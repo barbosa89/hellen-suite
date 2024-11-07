@@ -60,7 +60,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.update')</button>
                 </form>
             </div>
         </div>

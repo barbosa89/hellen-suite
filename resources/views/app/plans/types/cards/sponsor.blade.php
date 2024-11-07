@@ -11,7 +11,7 @@
                 @include('app.plans.types.features.sponsor')
             </ul>
         </p>
-        <a class="btn btn-primary card-link" href="mailto:{{ config('mail.from.address') }}">
+        <a class="btn btn-dark card-link" href="mailto:{{ config('mail.from.address') }}">
             @lang('landing.contact')
         </a>
     </div>
