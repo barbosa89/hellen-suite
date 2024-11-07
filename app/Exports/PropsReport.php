@@ -23,7 +23,7 @@ class PropsReport implements FromView
     public function view(): View
     {
         return view('app.props.exports.props', [
-            'props' => $this->props
+            'props' => $this->props,
         ]);
     }
 }

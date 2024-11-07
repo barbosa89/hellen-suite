@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Services\ExchangeRate;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\TestCase;
 
 class ExchangeRateTest extends TestCase
 {
@@ -13,7 +13,7 @@ class ExchangeRateTest extends TestCase
     {
         Http::fake(function ($request) {
             return Http::response(json_encode([
-                'USD_COP' => 3000
+                'USD_COP' => 3000,
             ]), Response::HTTP_OK);
         });
 

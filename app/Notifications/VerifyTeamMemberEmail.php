@@ -2,13 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Models\Hotel;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class VerifyTeamMemberEmail extends Notification
 {
@@ -71,18 +70,18 @@ class VerifyTeamMemberEmail extends Notification
             now()->addDay(1),
             [
                 'email' => $this->user->email,
-                'token' => $this->user->token
+                'token' => $this->user->token,
             ]
         );
 
         return (new MailMessage)
-                    ->subject('Verificación de correo electrónico')
-                    ->greeting('Hola, ' . $this->user->name)
-                    ->line($this->hotel->business_name . ' te ha agregado como miembro de su equipo.')
-                    ->line('Tu contraseña temporal es: ' . $this->password)
-                    ->line('Por favor, haz clic en el siguiente enlace para verificar tu correo.')
-                    ->action('Verificar correo', $url)
-                    ->line('Gracias por ser parte de ' . config('app.name'));
+            ->subject('Verificación de correo electrónico')
+            ->greeting('Hola, '.$this->user->name)
+            ->line($this->hotel->business_name.' te ha agregado como miembro de su equipo.')
+            ->line('Tu contraseña temporal es: '.$this->password)
+            ->line('Por favor, haz clic en el siguiente enlace para verificar tu correo.')
+            ->action('Verificar correo', $url)
+            ->line('Gracias por ser parte de '.config('app.name'));
     }
 
     /**

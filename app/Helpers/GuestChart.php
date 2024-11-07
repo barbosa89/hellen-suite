@@ -27,8 +27,6 @@ class GuestChart
 
     /**
      * Count each guest check by day
-     *
-     * @return self
      */
     public function countChecks(): self
     {
@@ -61,19 +59,11 @@ class GuestChart
         return $this;
     }
 
-    /**
-     * @param Check $check
-     * @return Carbon
-     */
     private function getCheckInDate(Check $check): Carbon
     {
         return $check->in_at->lessThan($this->startDate) ? $this->startDate : $check->in_at;
     }
 
-    /**
-     * @param Check $check
-     * @return Carbon
-     */
     private function getCheckOutDate(Check $check, Carbon $maxDate): Carbon
     {
         $checkOutAt = empty($check->out_at) ? $maxDate : $check->out_at;
@@ -85,33 +75,25 @@ class GuestChart
         return $checkOutAt->subDay();
     }
 
-    /**
-     * @param Guest $guest
-     * @param Carbon $date
-     * @return void
-     */
     private function addCheck(Guest $guest, Carbon $date): void
     {
         $date = $date->format('Y-m-d');
 
-        if (!array_key_exists($date, $this->data)) {
+        if (! array_key_exists($date, $this->data)) {
             $this->data[$date] = [];
         }
 
-        if (!in_array($guest->id, $this->data[$date])) {
+        if (! in_array($guest->id, $this->data[$date])) {
             $this->data[$date][] = $guest->id;
         }
     }
 
-    /**
-     * @return void
-     */
     private function fillMonthDates(): void
     {
         $month = CarbonPeriod::create($this->startDate, $this->endDate);
 
         foreach ($month as $day) {
-            if (!array_key_exists($day->format('Y-m-d'), $this->data)) {
+            if (! array_key_exists($day->format('Y-m-d'), $this->data)) {
                 $this->data[$day->format('Y-m-d')] = [];
             }
         }
@@ -119,9 +101,6 @@ class GuestChart
         ksort($this->data);
     }
 
-    /**
-     * @return array
-     */
     private function buildDatasets(): array
     {
         $dataset = [];
@@ -133,7 +112,7 @@ class GuestChart
 
             $dataset['labels'][] = $date;
 
-            if (!isset($set['label'])) {
+            if (! isset($set['label'])) {
                 $set['label'] = trans('guests.title');
             }
 
@@ -153,9 +132,6 @@ class GuestChart
         return $dataset;
     }
 
-    /**
-     * @return array
-     */
     public function get(): array
     {
         $this->fillMonthDates();

@@ -12,11 +12,6 @@ class ExchangeRate
 {
     /**
      * Binary currency converter
-     *
-     * @param float $value
-     * @param string $from
-     * @param string $to
-     * @return string
      */
     public static function convert(float $value, string $from, string $to): string
     {
@@ -25,7 +20,7 @@ class ExchangeRate
         $response = Http::get(config('settings.currency.url'), [
             'q' => $pair,
             'compact' => 'ultra',
-            'apiKey' => config('settings.currency.key')
+            'apiKey' => config('settings.currency.key'),
         ]);
 
         if ($response->ok()) {

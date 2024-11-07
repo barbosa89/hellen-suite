@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-    use Queryable;
     use HasFactory;
+    use Queryable;
 
     /**
      * The attributes that are mass assignable.
@@ -78,8 +78,6 @@ class Note extends Model
      * Scope a query to get all notes by a hotel and a tag.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \App\Models\Hotel $hotel
-     * @param  \App\Models\Tag $tag
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeForTag($query, Hotel $hotel, Tag $tag)
@@ -95,7 +93,6 @@ class Note extends Model
      * Scope a query to get all notes by a hotel.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $hotelId
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOfHotel($query, int $hotelId)

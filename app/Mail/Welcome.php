@@ -4,9 +4,9 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class Welcome extends Mailable implements ShouldQueue
 {
@@ -50,10 +50,10 @@ class Welcome extends Mailable implements ShouldQueue
             },
             'father' => function ($query) {
                 $query->select('id', 'name');
-            }
+            },
         ]);
 
-        return $this->view('emails.welcome.' . $this->user->roles->first()->name)
+        return $this->view('emails.welcome.'.$this->user->roles->first()->name)
             ->subject(trans('email.active'))
             ->with([
                 'user' => $this->user,

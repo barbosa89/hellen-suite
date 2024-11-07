@@ -26,7 +26,7 @@ class UpdateProduct extends FormRequest
         $id = id_decode($this->route('id'));
 
         return [
-            'description' => 'required|string|max:191|unique_with:products,hotel#hotel_id, ' . $id,
+            'description' => 'required|string|max:191|unique_with:products,hotel#hotel_id, '.$id,
             'brand' => 'nullable|string|max:50',
             'reference' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:1',

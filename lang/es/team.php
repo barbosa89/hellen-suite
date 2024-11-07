@@ -1,9 +1,9 @@
 <?php
 
-return array (
-  'title' => 'Miembros del equipo',
-  'member' => 'Miembro del equipo',
-  'assignment' => 'Asignación de sede',
-  'workplace' => 'Sede laboral',
-  'new' => 'Nuevo integrante del equipo',
-);
+return [
+    'title' => 'Miembros del equipo',
+    'member' => 'Miembro del equipo',
+    'assignment' => 'Asignación de sede',
+    'workplace' => 'Sede laboral',
+    'new' => 'Nuevo integrante del equipo',
+];

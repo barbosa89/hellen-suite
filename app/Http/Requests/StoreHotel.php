@@ -32,7 +32,7 @@ class StoreHotel extends FormRequest
             'email' => 'required|email|max:100|unique:hotels,email',
             'image' => 'nullable|file|max:200|mimes:jpeg,png',
             'type' => 'required|string|in:main,headquarters',
-            'main_hotel' => 'required_if:type,headquarters|hashed_exists:hotels,id'
+            'main_hotel' => 'required_if:type,headquarters|hashed_exists:hotels,id',
         ];
     }
 }

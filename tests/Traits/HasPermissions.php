@@ -2,8 +2,8 @@
 
 namespace Tests\Traits;
 
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 trait HasPermissions
 {
@@ -13,8 +13,7 @@ trait HasPermissions
     }
 
     /**
-     * @param array<int, string> $names
-     * @return void
+     * @param  array<int, string>  $names
      */
     public function createPermissions(array $names): void
     {
@@ -27,13 +26,12 @@ trait HasPermissions
     {
         Role::create([
             'name' => $name,
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
     }
 
     /**
-     * @param array<int, string> $names
-     * @return void
+     * @param  array<int, string>  $names
      */
     public function createRoles(array $names): void
     {

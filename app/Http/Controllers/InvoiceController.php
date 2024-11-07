@@ -2,27 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
-use Illuminate\Http\Request;
 use App\Http\Requests\BuyPlan;
+use App\Models\Invoice;
 use App\Models\InvoicePayment;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Repositories\InvoiceRepository;
 use App\Services\PaymentGateway;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceController extends Controller
 {
-    /**
-     * @var \App\Repositories\InvoiceRepository
-     */
     public InvoiceRepository $repository;
 
     /**
      * Constructor
-     *
-     * @param InvoiceRepository $invoice
      */
     public function __construct(InvoiceRepository $invoice)
     {
@@ -65,7 +60,6 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $invoice
      * @return \Illuminate\Http\Response
      */
     public function show(string $invoice)
@@ -78,7 +72,6 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $invoice
      * @return \Illuminate\Http\Response
      */
     public function destroy(string $invoice)
@@ -97,7 +90,6 @@ class InvoiceController extends Controller
     /**
      * Check the invoice payment status.
      *
-     * @param  string  $number
      * @return \Illuminate\Http\Response
      */
     public function confirmPayment(Request $request, string $number)
@@ -117,7 +109,7 @@ class InvoiceController extends Controller
 
                     Log::info(trans('payments.confirmation.success', ['number' => $number]));
 
-                    $type = trans('plans.type.' . $invoice->plans->first()->getType());
+                    $type = trans('plans.type.'.$invoice->plans->first()->getType());
 
                     flash(trans('plans.ready', ['plan' => $type]))->success();
 
@@ -130,7 +122,7 @@ class InvoiceController extends Controller
                     Log::error(trans('payments.confirmation.error', ['number' => $number]), [
                         'message' => $e->getMessage(),
                         'line' => $e->getLine(),
-                        'file' => $e->getFile()
+                        'file' => $e->getFile(),
                     ]);
 
                     flash(trans('payments.confirmation.pending', ['number' => $number]))->info();

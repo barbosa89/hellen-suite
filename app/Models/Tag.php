@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    use Sluggable;
     use HasFactory;
+    use Sluggable;
 
     public const CHECK_IN = 'check-in';
+
     public const CHECK_OUT = 'check-out';
+
     public const VEHICLE = 'vehicle';
 
     /**
@@ -40,8 +42,8 @@ class Tag extends Model
     {
         return [
             'slug' => [
-                'source' => 'description'
-            ]
+                'source' => 'description',
+            ],
         ];
     }
 

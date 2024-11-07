@@ -26,13 +26,13 @@ class UpdateCompany extends FormRequest
         $id = id_decode($this->route('id'));
 
         return [
-            'tin' => 'required|alpha_num|unique_per_user:companies,tin,' . $id,
+            'tin' => 'required|alpha_num|unique_per_user:companies,tin,'.$id,
             'business_name' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'phone' => 'nullable|string|min:6|max:12',
             'mobile' => 'nullable|string|min:6|max:12',
-            'is_supplier' => 'required|integer|in:0,1'
+            'is_supplier' => 'required|integer|in:0,1',
         ];
     }
 }

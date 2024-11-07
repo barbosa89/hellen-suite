@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Rules\MinDate;
-use App\Models\Voucher;
 use App\Contracts\VoucherRepository;
 use App\Helpers\GuestChart;
 use App\Http\Controllers\Controller;
+use App\Models\Voucher;
+use App\Rules\MinDate;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -23,7 +23,6 @@ class VoucherController extends Controller
     /**
      * Display a listing of the paginate resource.
      *
-     * @param  string $hotel
      * @return \Illuminate\Http\Response
      */
     public function index(string $hotel)
@@ -34,7 +33,7 @@ class VoucherController extends Controller
                 'nullable',
                 'date',
                 'before_or_equal:today',
-                new MinDate(),
+                new MinDate,
             ],
             'status.*' => [
                 'bail',
@@ -53,7 +52,7 @@ class VoucherController extends Controller
                 'nullable',
                 'alpha_num',
                 'max:30',
-                'min:3'
+                'min:3',
             ],
         ]);
 
@@ -67,7 +66,6 @@ class VoucherController extends Controller
     }
 
     /**
-     * @param  string  $hotelId
      * @param  string  $period
      * @return \Illuminate\Http\Response
      */

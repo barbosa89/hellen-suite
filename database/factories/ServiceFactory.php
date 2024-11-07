@@ -11,7 +11,7 @@ class ServiceFactory extends Factory
         return [
             'description' => $this->faker->word,
             'price' => $this->faker->randomNumber(4),
-            'is_dining_service' => ceil($this->faker->numberBetween(0,1))
+            'is_dining_service' => ceil($this->faker->numberBetween(0, 1)),
         ];
     }
 }

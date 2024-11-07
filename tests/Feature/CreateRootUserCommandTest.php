@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class CreateRootUserCommandTest extends TestCase
 {
@@ -27,9 +27,9 @@ class CreateRootUserCommandTest extends TestCase
         $password = 'php_is_powerful';
 
         $this->artisan('root:user')
-            ->expectsOutput("Existing root user: ")
+            ->expectsOutput('Existing root user: ')
             ->expectsOutput("Name: {$user->name}")
-            ->expectsOutput("Email: {$user->email}" . PHP_EOL)
+            ->expectsOutput("Email: {$user->email}".PHP_EOL)
             ->expectsQuestion('Type your Root password: ', $password)
             ->expectsOutput("Email: {$user->email}")
             ->expectsOutput("Password: {$password}")
@@ -39,7 +39,7 @@ class CreateRootUserCommandTest extends TestCase
     public function test_user_can_create_root_user()
     {
         $user = User::factory()->make([
-            'email' => 'contacto@omarbarbosa.com'
+            'email' => 'contacto@omarbarbosa.com',
         ]);
 
         $password = 'php_is_powerful';
@@ -61,19 +61,19 @@ class CreateRootUserCommandTest extends TestCase
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
             'model_type' => \App\Models\User::class,
-            'model_id' => $user->id
+            'model_id' => $user->id,
         ]);
     }
 
     public function test_user_can_not_create_root_user_with_fake_email()
     {
         $user = User::factory()->make([
-            'email' => 'fake_account@fakerserverservice.com'
+            'email' => 'fake_account@fakerserverservice.com',
         ]);
 
         $this->artisan('root:user')
             ->expectsQuestion('Type your Root email: ', $user->email)
-            ->expectsOutput("You cannot register the email as root user")
+            ->expectsOutput('You cannot register the email as root user')
             ->assertExitCode(0);
 
         $this->assertDatabaseMissing('users', [
@@ -84,7 +84,7 @@ class CreateRootUserCommandTest extends TestCase
     public function test_user_can_create_root_user_when_password_is_short()
     {
         $user = User::factory()->make([
-            'email' => 'contacto@omarbarbosa.com'
+            'email' => 'contacto@omarbarbosa.com',
         ]);
 
         $password = 'short';
@@ -105,7 +105,7 @@ class CreateRootUserCommandTest extends TestCase
         $this->assertDatabaseHas('model_has_roles', [
             'role_id' => $role->id,
             'model_type' => \App\Models\User::class,
-            'model_id' => $user->id
+            'model_id' => $user->id,
         ]);
     }
 }

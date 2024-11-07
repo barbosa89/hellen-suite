@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Invoice;
+use App\Models\User;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PurgeInvoicesCommandTest extends TestCase
 {
@@ -27,7 +27,7 @@ class PurgeInvoicesCommandTest extends TestCase
 
         $invoices = Invoice::factory(10)->create([
             'user_id' => $user->id,
-            'created_at' => now()->subDays(2)
+            'created_at' => now()->subDays(2),
         ]);
 
         $this->artisan('invoices:purge')
@@ -41,10 +41,10 @@ class PurgeInvoicesCommandTest extends TestCase
         Invoice::factory(10)->create([
             'user_id' => $user->id,
             'created_at' => now()->subDays(2),
-            'status' => Invoice::PAID
+            'status' => Invoice::PAID,
         ]);
 
         $this->artisan('invoices:purge')
-            ->expectsOutput("Affected records: 0");
+            ->expectsOutput('Affected records: 0');
     }
 }

@@ -2,22 +2,25 @@
 
 namespace App\Models;
 
-use App\Traits\Queryable;
-use Illuminate\Support\Str;
 use App\Services\ExchangeRate;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class Plan extends Model
 {
-    use Queryable;
     use HasFactory;
+    use Queryable;
 
     public const FREE = 'FREE';
+
     public const BASIC = 'BASIC';
+
     public const PREMIUM = 'PREMIUM';
+
     public const SPONSOR = 'SPONSOR';
 
     public const ALL = [
@@ -80,7 +83,6 @@ class Plan extends Model
     /**
      * Scope a query to plans not related to the authenticated user.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeNotRelatedToUser(Builder $query)
@@ -114,8 +116,6 @@ class Plan extends Model
 
     /**
      * Check plan is expired
-     *
-     * @return boolean
      */
     public function isExpired(): bool
     {
@@ -126,8 +126,6 @@ class Plan extends Model
 
     /**
      * Check plan is active
-     *
-     * @return boolean
      */
     public function isActive(): bool
     {
@@ -138,19 +136,14 @@ class Plan extends Model
 
     /**
      * Return the plan type in lower case string
-     *
-     * @return string
      */
     public function getType(): string
     {
         return Str::lower($this->type);
     }
 
-
     /**
      * Get the plan's price in USD currency.
-     *
-     * @return float
      */
     public function getDollarPrice(): float
     {

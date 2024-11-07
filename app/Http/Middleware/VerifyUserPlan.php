@@ -12,7 +12,6 @@ class VerifyUserPlan
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -35,8 +34,7 @@ class VerifyUserPlan
     /**
      * Check the user has no active plans.
      *
-     * @param \Illuminate\Support\Collection $plans
-     * @return boolean
+     * @param  \Illuminate\Support\Collection  $plans
      */
     private function hasNoActivePlans(Collection $plans): bool
     {

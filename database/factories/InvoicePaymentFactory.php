@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Support\Str;
 use App\Models\InvoicePayment;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class InvoicePaymentFactory extends Factory
 {
@@ -14,7 +14,7 @@ class InvoicePaymentFactory extends Factory
             'number' => Str::random(12),
             'value' => $this->faker->randomNumber(6),
             'payment_method' => $this->faker->word,
-            'status' => InvoicePayment::APPROVED
+            'status' => InvoicePayment::APPROVED,
         ];
     }
 }

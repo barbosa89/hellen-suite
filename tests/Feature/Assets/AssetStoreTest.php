@@ -2,21 +2,21 @@
 
 namespace Tests\Feature\Assets;
 
-use Tests\TestCase;
+use App\Models\Asset;
+use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
 use Hashids\Hashids;
-use App\Models\Asset;
-use App\Models\Hotel;
-use Tests\Traits\HasPermissions;
-use Tests\Traits\HasFlashMessages;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetStoreTest extends TestCase
 {
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
 
     private string $route;
 
@@ -157,8 +157,6 @@ class AssetStoreTest extends TestCase
     }
 
     /**
-     * @param string $field
-     * @param array $data
      * @dataProvider errorProvider
      */
     public function test_it_checks_validation_errors(string $field, array $data): void
@@ -198,7 +196,7 @@ class AssetStoreTest extends TestCase
 
     private function hash(int $number): string
     {
-        $hashids = new Hashids();
+        $hashids = new Hashids;
 
         return $hashids->encode($number);
     }

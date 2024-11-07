@@ -2,46 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use Throwable;
-use Carbon\Carbon;
-use App\Models\Room;
+use App\Contracts\VoucherPrinter;
+use App\Contracts\VoucherRepository;
+use App\Events\CheckIn;
+use App\Events\CheckOut;
+use App\Events\RoomCheckOut;
+use App\Helpers\Customer;
+use App\Helpers\Random;
+use App\Http\Requests\AddGuests;
+use App\Http\Requests\AddProducts;
+use App\Http\Requests\AddRooms;
+use App\Http\Requests\AddServices;
+use App\Http\Requests\ChangeGuestRoom;
+use App\Http\Requests\ChangeRoom;
+use App\Http\Requests\StoreAdditional;
+use App\Http\Requests\StoreRoute;
+use App\Http\Requests\StoreVoucher;
+use App\Http\Requests\VouchersProcessing;
+use App\Models\Additional;
+use App\Models\Company;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Models\Shift;
-use App\Events\CheckIn;
-use App\Helpers\Random;
-use App\Models\Company;
 use App\Models\Product;
+use App\Models\Room;
 use App\Models\Service;
+use App\Models\Shift;
 use App\Models\Vehicle;
 use App\Models\Voucher;
-use App\Events\CheckOut;
-use App\Helpers\Customer;
-use App\Models\Additional;
-use App\Events\RoomCheckOut;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Http\Requests\AddRooms;
-use App\Http\Requests\AddGuests;
-use App\Contracts\VoucherPrinter;
-use App\Http\Requests\ChangeRoom;
-use App\Http\Requests\StoreRoute;
-use App\Http\Requests\AddProducts;
-use App\Http\Requests\AddServices;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreVoucher;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
-use App\Contracts\VoucherRepository;
-use App\Http\Requests\ChangeGuestRoom;
-use App\Http\Requests\StoreAdditional;
-use App\Http\Requests\VouchersProcessing;
-use Illuminate\Database\Eloquent\Builder;
+use Throwable;
 
 class VoucherController extends Controller
 {
-
     public VoucherRepository $voucher;
 
     public VoucherPrinter $printer;
@@ -71,7 +69,7 @@ class VoucherController extends Controller
     {
         request()->validate([
             'hotel' => 'required|string|hashed_exists:hotels,id',
-            'rooms.*' => 'required|string|hashed_exists:rooms,id'
+            'rooms.*' => 'required|string|hashed_exists:rooms,id',
         ]);
 
         $rooms = collect(request()->input('rooms'))->flatten();
@@ -80,11 +78,10 @@ class VoucherController extends Controller
         $hotel = Hotel::where('user_id', id_parent())
             ->where('id', id_decode(request()->input('hotel')))
             ->with([
-                'rooms' => function ($query) use ($rooms)
-                {
+                'rooms' => function ($query) use ($rooms) {
                     $query->whereIn('id', $rooms)
                         ->select(fields_dotted('rooms'));
-                }
+                },
             ])->first(fields_get('hotels'));
 
         return view('app.vouchers.create', compact('hotel'));
@@ -141,7 +138,7 @@ class VoucherController extends Controller
                     'value' => $subvalue + $taxes,
                     'start' => $start->toDateString(),
                     'end' => $end->toDateString(),
-                    'enabled' => true
+                    'enabled' => true,
                 ];
             }
 
@@ -174,7 +171,7 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.guests.search', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         } catch (Throwable $e) {
             DB::rollback();
@@ -192,7 +189,7 @@ class VoucherController extends Controller
      */
     private function newVoucher()
     {
-        $voucher = new Voucher();
+        $voucher = new Voucher;
         $voucher->number = Random::consecutive();
         $voucher->subvalue = 0.0;
         $voucher->taxes = 0.0;
@@ -209,7 +206,6 @@ class VoucherController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -259,10 +255,9 @@ class VoucherController extends Controller
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'additionals' => function ($query) {
-                $query->select(['id', 'description', 'billable','value', 'voucher_id', 'created_at']);
+                $query->select(['id', 'description', 'billable', 'value', 'voucher_id', 'created_at']);
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
             },
             'props' => function ($query) {
@@ -289,7 +284,6 @@ class VoucherController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -311,7 +305,7 @@ class VoucherController extends Controller
                 'props' => function ($query) {
                     $query->select(fields_dotted('props'))
                         ->withPivot('quantity');
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -342,8 +336,7 @@ class VoucherController extends Controller
 
                 // Restore product stocks
                 if ($voucher->products->isNotEmpty()) {
-                    $voucher->products->each(function ($product)
-                    {
+                    $voucher->products->each(function ($product) {
                         $product->quantity += $product->pivot->quantity;
                         $product->save();
                     });
@@ -351,8 +344,7 @@ class VoucherController extends Controller
 
                 // Restore prop stocks
                 if ($voucher->props->isNotEmpty()) {
-                    $voucher->props->each(function ($prop) use ($voucher)
-                    {
+                    $voucher->props->each(function ($prop) use ($voucher) {
                         if ($voucher->type == 'entry') {
                             $prop->quantity -= $prop->pivot->quantity;
                         } else {
@@ -388,7 +380,6 @@ class VoucherController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -407,7 +398,7 @@ class VoucherController extends Controller
                 'guests.last_name',
                 'guests.dni',
                 'company.business_name',
-                'hotel.business_name'
+                'hotel.business_name',
             ], $query)->paginate(
                 config('settings.paginate'),
                 fields_dotted('vouchers')
@@ -423,7 +414,6 @@ class VoucherController extends Controller
     /**
      * Show the form for adding rooms to voucher.
      *
-     * @param string $id
      * @return \Illuminate\Http\Response
      */
     public function showFormToAddRooms(string $id)
@@ -443,8 +433,7 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
                 },
             ])->firstOrFail(fields_dotted('vouchers'));
@@ -457,7 +446,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -470,7 +459,7 @@ class VoucherController extends Controller
      * Attach the selected rooms to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function addRooms(AddRooms $request, $id)
@@ -486,7 +475,7 @@ class VoucherController extends Controller
                     ->with([
                         'hotel' => function ($query) {
                             $query->select(fields_get('hotels'));
-                        }
+                        },
                     ])->first(fields_dotted('vouchers'));
 
                 $room = Room::where('user_id', id_parent())
@@ -518,7 +507,7 @@ class VoucherController extends Controller
                         'value' => $subvalue + $taxes,
                         'start' => $request->start,
                         'end' => $end->toDateString(),
-                        'enabled' => true
+                        'enabled' => true,
                     ]
                 );
 
@@ -551,8 +540,8 @@ class VoucherController extends Controller
     /**
      * Show the form to change a room from the voucher.
      *
-     * @param int $id
-     * @param int $room
+     * @param  int  $id
+     * @param  int  $room
      * @return \Illuminate\Http\Response
      */
     public function showFormToChangeRoom($id, $room)
@@ -587,10 +576,9 @@ class VoucherController extends Controller
                 $query->select(fields_dotted('guests'))
                     ->wherePivot('voucher_id', $id);
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         $room = $voucher->rooms->where('id', id_decode($room))
@@ -612,7 +600,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -656,7 +644,7 @@ class VoucherController extends Controller
                 'rooms.guests' => function ($query) use ($id) {
                     $query->select(fields_dotted('guests'))
                         ->wherePivot('voucher_id', id_decode($id));
-                }
+                },
             ]);
 
             // The room to change from the voucher
@@ -664,8 +652,8 @@ class VoucherController extends Controller
                 ->where('hotel_id', $voucher->hotel->id)
                 ->first();
 
-                // Check if room is enabled to changes
-            if (!$current->pivot->enabled) {
+            // Check if room is enabled to changes
+            if (! $current->pivot->enabled) {
                 throw new Exception(trans('rooms.change.disabled'));
             }
 
@@ -699,7 +687,7 @@ class VoucherController extends Controller
                     'value' => $subvalue + $taxes,
                     'start' => $current->pivot->start, // This is same that before
                     'end' => $current->pivot->end, // This is same that before
-                    'enabled' => true
+                    'enabled' => true,
                 ]
             );
 
@@ -719,7 +707,7 @@ class VoucherController extends Controller
 
                     // Attach the new room of the guests
                     $guest->rooms()->attach($room->id, [
-                        'voucher_id' => $voucher->id
+                        'voucher_id' => $voucher->id,
                     ]);
                 }
             }
@@ -788,7 +776,7 @@ class VoucherController extends Controller
             'guests' => function ($query) {
                 $query->select(fields_dotted('guests'))
                     ->withPivot('main', 'active');
-            }
+            },
         ]);
 
         // Check if the voucher has one room
@@ -839,7 +827,7 @@ class VoucherController extends Controller
                         $voucher->guests()->updateExistingPivot(
                             $guest,
                             [
-                                'active' => false
+                                'active' => false,
                             ]
                         );
                     }
@@ -860,7 +848,7 @@ class VoucherController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function searchGuests($id)
@@ -884,10 +872,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->firstOrFail(fields_dotted('vouchers'));
 
         $customer = Customer::get($voucher);
@@ -898,8 +885,6 @@ class VoucherController extends Controller
     /**
      * Show form to add guests to voucher.
      *
-     * @param $id
-     * @param $guest
      * @return \Illuminate\Http\Response
      */
     public function showFormToAddGuests($id, $guest)
@@ -924,10 +909,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->firstOrFail(fields_dotted('vouchers'));
 
         $guest = Guest::where('id', id_decode($guest))
@@ -947,16 +931,12 @@ class VoucherController extends Controller
 
     /**
      * Return number of guests in all rooms.
-     *
-     * @param  \App\Models\Voucher  $voucher
-     * @return int
      */
     private function countGuestsPerRoom(Voucher $voucher): int
     {
         $guests = 0;
 
-        $voucher->rooms->each(function ($room) use (&$guests)
-        {
+        $voucher->rooms->each(function ($room) use (&$guests) {
             $guests += $room->guests->count();
         });
 
@@ -967,7 +947,6 @@ class VoucherController extends Controller
      * Add guests to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string $id
      * @return \Illuminate\Http\Response
      */
     public function addGuests(AddGuests $request, string $id)
@@ -1012,13 +991,13 @@ class VoucherController extends Controller
                 $responsible = $request->get('responsible_adult', null);
 
                 // Assign a responsible adult
-                if (Customer::isMinor($guest->birthdate) and !empty($responsible)) {
+                if (Customer::isMinor($guest->birthdate) and ! empty($responsible)) {
                     $guest->responsible_adult = id_decode($responsible);
                 }
 
                 $voucher->guests()->attach($guest->id, [
                     'main' => $voucher->guests->isEmpty(), // Check if the guest is the first so to assign the main guest
-                    'active' => true
+                    'active' => true,
                 ]);
             } else {
                 // Refresh relationship voucher - guest
@@ -1037,7 +1016,7 @@ class VoucherController extends Controller
 
             // Refresh relationships guest - room
             $guest->rooms()->attach($voucher->rooms->first(), [
-                'voucher_id' => $voucher->id
+                'voucher_id' => $voucher->id,
             ]);
 
             // Change guest status
@@ -1067,8 +1046,6 @@ class VoucherController extends Controller
     /**
      * Remove guests to voucher.
      *
-     * @param string $id
-     * @param string $guestId
      * @return \Illuminate\Http\Response
      */
     public function removeGuests(string $id, string $guestId)
@@ -1095,7 +1072,7 @@ class VoucherController extends Controller
                 },
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->firstOrFail(fields_dotted('vouchers'));
 
         // Check if the voucher only has a guest
@@ -1132,7 +1109,7 @@ class VoucherController extends Controller
             'guests' => function ($query) {
                 $query->select('id')
                     ->where('responsible_adult', false);
-            }
+            },
         ]);
 
         // Select the main guest
@@ -1153,15 +1130,15 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Show the form to change guest room from the voucher.
      *
-     * @param int $id
-     * @param int $guest
+     * @param  int  $id
+     * @param  int  $guest
      * @return \Illuminate\Http\Response
      */
     public function showFormToChangeGuestRoom($id, $guest)
@@ -1188,15 +1165,14 @@ class VoucherController extends Controller
             'company' => function ($query) {
                 $query->select(fields_get('companies'));
             },
-            'rooms' => function ($query) use ($id) {
+            'rooms' => function ($query) {
                 $query->select(fields_dotted('rooms'))
                     ->wherePivot('enabled', true)
                     ->withPivot('enabled');
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         // Check the rooms number
@@ -1204,7 +1180,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1213,7 +1189,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1222,7 +1198,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1230,11 +1206,11 @@ class VoucherController extends Controller
         $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest isn't in hotel and if the guest is inactive in the current voucher
-        if (!$guest->status && !$guest->pivot->active) {
+        if (! $guest->status && ! $guest->pivot->active) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1249,8 +1225,8 @@ class VoucherController extends Controller
      * Remove guests to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $id
-     * @param int $guest
+     * @param  int  $id
+     * @param  int  $guest
      * @return \Illuminate\Http\Response
      */
     public function changeGuestRoom(ChangeGuestRoom $request, $id, $guest)
@@ -1279,14 +1255,14 @@ class VoucherController extends Controller
             },
             'rooms' => function ($query) {
                 $query->select(fields_dotted('rooms'));
-            }
+            },
         ]);
 
         if ($voucher->rooms->count() <= 1) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1294,7 +1270,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1302,11 +1278,11 @@ class VoucherController extends Controller
         $guest = $voucher->guests->where('id', id_decode($guest))->first();
 
         // Check if guest is active in hotel and the current voucher
-        if (!$guest->status && !$guest->pivot->active) {
+        if (! $guest->status && ! $guest->pivot->active) {
             flash(trans('vouchers.impossible.room.change'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1318,20 +1294,20 @@ class VoucherController extends Controller
 
         // Attach the selected room to guest
         $guest->rooms()->attach($room->id, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Show the form for adding products to voucher.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function products($id = '')
@@ -1355,10 +1331,9 @@ class VoucherController extends Controller
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -1375,7 +1350,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1388,7 +1363,7 @@ class VoucherController extends Controller
      * Store the product values to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function addProducts(AddProducts $request, $id)
@@ -1405,7 +1380,7 @@ class VoucherController extends Controller
                     ->with([
                         'hotel' => function ($query) {
                             $query->select(fields_get('hotels'));
-                        }
+                        },
                     ])->first(fields_dotted('vouchers'));
 
                 $product = Product::where('user_id', id_parent())
@@ -1422,7 +1397,7 @@ class VoucherController extends Controller
                     [
                         'quantity' => $request->quantity,
                         'value' => $value,
-                        'created_at' => Carbon::now()->toDateTimeString()
+                        'created_at' => Carbon::now()->toDateTimeString(),
                     ]
                 );
 
@@ -1455,8 +1430,8 @@ class VoucherController extends Controller
     /**
      * Remove a product from the voucher.
      *
-     * @param int $id
-     * @param int $record
+     * @param  int  $id
+     * @param  int  $record
      * @return \Illuminate\Http\Response
      */
     public function removeProduct($id, $record)
@@ -1475,7 +1450,7 @@ class VoucherController extends Controller
                             $query->select(fields_dotted('products'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
-                        }
+                        },
                     ])->first(fields_dotted('vouchers'));
 
                 $product = $voucher->products->first();
@@ -1513,14 +1488,14 @@ class VoucherController extends Controller
     /**
      * Show the form to add services to voucher.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function showFormToAddServices($id, $type = 'all')
     {
         $type = clean_param($type);
 
-        if (!in_array($type, ['all', 'dining'])) {
+        if (! in_array($type, ['all', 'dining'])) {
             abort(400);
         }
 
@@ -1540,10 +1515,9 @@ class VoucherController extends Controller
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])
             ->first(fields_dotted('vouchers'));
 
@@ -1564,7 +1538,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.messages.rooms.unavailable'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1577,7 +1551,7 @@ class VoucherController extends Controller
      * Store the services values to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function addServices(AddServices $request, $id)
@@ -1594,7 +1568,7 @@ class VoucherController extends Controller
                     ->with([
                         'hotel' => function ($query) {
                             $query->select(fields_get('hotels'));
-                        }
+                        },
                     ])->first(fields_dotted('vouchers'));
 
                 $service = Service::where('user_id', id_parent())
@@ -1610,7 +1584,7 @@ class VoucherController extends Controller
                     [
                         'quantity' => $request->quantity,
                         'value' => $value,
-                        'created_at' => Carbon::now()->toDateTimeString()
+                        'created_at' => Carbon::now()->toDateTimeString(),
                     ]
                 );
 
@@ -1640,8 +1614,8 @@ class VoucherController extends Controller
     /**
      * Remove a service from the voucher.
      *
-     * @param int $id
-     * @param int $record
+     * @param  int  $id
+     * @param  int  $record
      * @return \Illuminate\Http\Response
      */
     public function removeService($id, $record)
@@ -1660,7 +1634,7 @@ class VoucherController extends Controller
                             $query->select(fields_dotted('services'))
                                 ->wherePivot('id', id_decode($record))
                                 ->withPivot('id', 'quantity', 'value', 'created_at');
-                        }
+                        },
                     ])->first(fields_dotted('vouchers'));
 
                 $service = $voucher->services->first();
@@ -1695,7 +1669,7 @@ class VoucherController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function searchCompanies($id)
@@ -1712,10 +1686,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])
             ->first(fields_dotted('vouchers'));
 
@@ -1731,8 +1704,8 @@ class VoucherController extends Controller
     /**
      * Attach a company to voucher.
      *
-     * @param string $id
-     * @param string $company
+     * @param  string  $id
+     * @param  string  $company
      * @return \Illuminate\Http\Response
      */
     public function addCompanies($id, $company)
@@ -1757,22 +1730,22 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.show', [
-                'id' => $id
+                'id' => $id,
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('vouchers.show', [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
     /**
      * Detach a company from voucher.
      *
-     * @param string $id
-     * @param string $company
+     * @param  string  $id
+     * @param  string  $company
      * @return \Illuminate\Http\Response
      */
     public function removeCompany($id, $company)
@@ -1782,11 +1755,10 @@ class VoucherController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'company' => function ($query) use ($company)
-                {
+                'company' => function ($query) use ($company) {
                     $query->select(fields_get('companies'))
                         ->where('id', id_decode($company));
-                }
+                },
             ])->first(['id', 'company_id']);
 
         if (empty($voucher) or empty($voucher->company)) {
@@ -1799,21 +1771,21 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.show', [
-                'id' => $id
+                'id' => $id,
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('vouchers.show', [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
     /**
      * Display a listing of searched records from vehicle module.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function searchVehicles($id)
@@ -1838,10 +1810,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -1852,7 +1823,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.firstStep'))->info();
 
             return redirect()->route('vouchers.rooms.add', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1860,7 +1831,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.withoutGuests'))->info();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1872,9 +1843,9 @@ class VoucherController extends Controller
     /**
      * Attach a vehicle to guest voucher.
      *
-     * @param string $id
-     * @param string $vehicleId
-     * @param string $guestId
+     * @param  string  $id
+     * @param  string  $vehicleId
+     * @param  string  $guestId
      * @return \Illuminate\Http\Response
      */
     public function addVehicle($id, $vehicleId, $guestId)
@@ -1898,16 +1869,15 @@ class VoucherController extends Controller
                 },
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         $vehicle = Vehicle::where('user_id', id_parent())
             ->where('id', id_decode($vehicleId))
             ->with([
-                'type' => function ($query)
-                {
+                'type' => function ($query) {
                     $query->select(['id', 'type']);
-                }
+                },
             ])->first(fields_get('vehicles'));
 
         if (empty($voucher) or empty($vehicle)) {
@@ -1918,7 +1888,7 @@ class VoucherController extends Controller
             flash(trans('vouchers.hasVehicles'))->error();
 
             return redirect()->route('vouchers.vehicles.search', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -1932,7 +1902,7 @@ class VoucherController extends Controller
         if (empty($existingVehicle)) {
             $vehicle->guests()->attach($voucher->guests->where('id', id_decode($guestId))->first()->id, [
                 'voucher_id' => $voucher->id,
-                'created_at' => Carbon::now()->toDateTimeString()
+                'created_at' => Carbon::now()->toDateTimeString(),
             ]);
 
             // Create note
@@ -1945,23 +1915,23 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.show', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
         flash(trans('vouchers.vehicleAttached'))->error();
 
         return redirect()->route('vouchers.vehicles.search', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Detach a vehicle from guest voucher.
      *
-     * @param string $id
-     * @param string $vehicle
-     * @param string $guest
+     * @param  string  $id
+     * @param  string  $vehicle
+     * @param  string  $guest
      * @return \Illuminate\Http\Response
      */
     public function removeVehicle($id, $vehicle, $guest)
@@ -1975,7 +1945,7 @@ class VoucherController extends Controller
                 'guests' => function ($query) use ($guest) {
                     $query->select(fields_dotted('guests'))
                         ->where('id', id_decode($guest));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         $vehicle = Vehicle::where('user_id', id_parent())
@@ -1993,14 +1963,14 @@ class VoucherController extends Controller
         flash(trans('common.successful'))->success();
 
         return redirect()->route('vouchers.show', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Show form to create additional value to the voucher.
      *
-     * @param string $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function createAdditional($id)
@@ -2021,10 +1991,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2057,7 +2026,7 @@ class VoucherController extends Controller
                     ->first(fields_dotted('vouchers'));
 
                 // Create new additional for the voucher
-                $additional = new Additional();
+                $additional = new Additional;
                 $additional->description = $request->description;
                 $additional->value = (float) $request->value;
                 $additional->billable = true;
@@ -2115,7 +2084,7 @@ class VoucherController extends Controller
                 // Query the additional to remove
                 $additional = Additional::where('voucher_id', $voucher->id)
                     ->where('id', id_decode($additional))
-                    ->first(['id', 'value', 'billable','voucher_id']);
+                    ->first(['id', 'value', 'billable', 'voucher_id']);
 
                 // Check is a billable additional
                 if ($additional->billable) {
@@ -2150,7 +2119,7 @@ class VoucherController extends Controller
     /**
      * Show form to add external service to the voucher.
      *
-     * @param string $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function addExternalService($id)
@@ -2171,10 +2140,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2207,7 +2175,7 @@ class VoucherController extends Controller
                     ->first(fields_dotted('vouchers'));
 
                 // Create new additional for the voucher
-                $additional = new Additional();
+                $additional = new Additional;
                 $additional->description = $request->description;
                 $additional->value = (float) $request->value;
                 $additional->billable = false;
@@ -2237,7 +2205,6 @@ class VoucherController extends Controller
      * Close an open voucher.
      * The open status is by default in true value.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function close(string $id)
@@ -2350,10 +2317,9 @@ class VoucherController extends Controller
             ->where('status', true)
             ->where('payment_status', false)
             ->with([
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2421,10 +2387,9 @@ class VoucherController extends Controller
                 'guests' => function ($query) {
                     $query->select(fields_dotted('guests'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2511,10 +2476,9 @@ class VoucherController extends Controller
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -2554,14 +2518,14 @@ class VoucherController extends Controller
             flash(trans('common.successful'))->success();
 
             return redirect()->route('vouchers.guests.search', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('vouchers.show', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
@@ -2589,33 +2553,31 @@ class VoucherController extends Controller
 
         // Load vouchers with relateds
         $hotels->with([
-                'vouchers' => function ($query) {
-                    $query->select(fields_dotted('vouchers'))
-                        ->where('user_id', id_parent())
-                        ->where('open', true)
-                        ->where('status', true)
-                        ->where('reservation', false)
-                        ->where('payment_status', false)
-                        ->where('type', '!=', Voucher::LOSS);
-                },
-                'vouchers.guests' => function ($query) {
-                    $query->select(['id', 'name', 'last_name'])
-                        ->wherePivot('main', true);
-                },
-                'vouchers.rooms' => function ($query)
-                {
-                    $query->select(fields_dotted('rooms'))
-                        ->wherePivot('enabled', true)
-                        ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
-                },
-                'vouchers.company' => function ($query) {
-                    $query->select(['id', 'tin', 'business_name']);
-                },
-                'vouchers.payments' => function ($query)
-                {
-                    $query->select(fields_get('payments'));
-                }
-            ]);
+            'vouchers' => function ($query) {
+                $query->select(fields_dotted('vouchers'))
+                    ->where('user_id', id_parent())
+                    ->where('open', true)
+                    ->where('status', true)
+                    ->where('reservation', false)
+                    ->where('payment_status', false)
+                    ->where('type', '!=', Voucher::LOSS);
+            },
+            'vouchers.guests' => function ($query) {
+                $query->select(['id', 'name', 'last_name'])
+                    ->wherePivot('main', true);
+            },
+            'vouchers.rooms' => function ($query) {
+                $query->select(fields_dotted('rooms'))
+                    ->wherePivot('enabled', true)
+                    ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
+            },
+            'vouchers.company' => function ($query) {
+                $query->select(['id', 'tin', 'business_name']);
+            },
+            'vouchers.payments' => function ($query) {
+                $query->select(fields_get('payments'));
+            },
+        ]);
 
         // Get results
         $hotels = $hotels->get(fields_get('hotels'));
@@ -2635,12 +2597,11 @@ class VoucherController extends Controller
     /**
      * Hashing all IDs, model and relationships, before convert to JSON format.
      *
-     * @param  \Illuminate\Support\Collection  $hotels
-     * @return \Illuminate\Support\Collection  $hotels
+     * @return \Illuminate\Support\Collection $hotels
      */
     public function prepareData(Collection $hotels)
     {
-        $hotels = $hotels->map(function($hotel) {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = $hotel->main_hotel ? id_encode($hotel->main_hotel) : null;
 
@@ -2649,16 +2610,14 @@ class VoucherController extends Controller
                 $voucher->hotel_id = id_encode($voucher->hotel_id);
                 $voucher->company_id = $voucher->company_id ? id_encode($voucher->company_id) : null;
 
-                $voucher->guests = $voucher->guests->map(function ($guest)
-                {
+                $voucher->guests = $voucher->guests->map(function ($guest) {
                     $guest->pivot->voucher_id = id_encode($guest->pivot->voucher_id);
                     $guest->pivot->guest_id = id_encode($guest->pivot->guest_id);
 
                     return $guest;
                 });
 
-                $voucher->rooms = $voucher->rooms->map(function ($room)
-                {
+                $voucher->rooms = $voucher->rooms->map(function ($room) {
                     $room->user_id = id_encode($room->user_id);
                     $room->pivot->voucher_id = id_encode($room->pivot->voucher_id);
                     $room->pivot->room_id = id_encode($room->pivot->room_id);
@@ -2666,8 +2625,7 @@ class VoucherController extends Controller
                     return $room;
                 });
 
-                $voucher->payments = $voucher->payments->map(function ($payment)
-                {
+                $voucher->payments = $voucher->payments->map(function ($payment) {
                     $payment->voucher_id = id_encode($payment->voucher_id);
 
                     return $payment;
@@ -2705,19 +2663,16 @@ class VoucherController extends Controller
                     ->where('payment_status', false)
                     ->where('type', '!=', Voucher::LOSS)
                     ->with([
-                        'rooms' => function ($query)
-                        {
+                        'rooms' => function ($query) {
                             $query->select(fields_dotted('rooms'))
                                 ->wherePivot('enabled', true)
                                 ->withPivot('quantity', 'discount', 'subvalue', 'taxes', 'value', 'start', 'end', 'price', 'enabled');
-                        }
+                        },
                     ])->get(fields_dotted('vouchers'));
 
                 if ($vouchers->isNotEmpty()) {
-                    $vouchers->each(function ($voucher) use (&$processed)
-                    {
-                        $voucher->rooms->each(function ($room) use (&$processed, $voucher)
-                        {
+                    $vouchers->each(function ($voucher) use (&$processed) {
+                        $voucher->rooms->each(function ($room) use (&$processed, $voucher) {
                             // Dates
                             $start = Carbon::createFromFormat('Y-m-d', $room->pivot->start);
                             $end = Carbon::createFromFormat('Y-m-d', $room->pivot->end);
@@ -2750,7 +2705,7 @@ class VoucherController extends Controller
                                             'subvalue' => $room->pivot->subvalue + $subvalue,
                                             'taxes' => $room->pivot->taxes + $taxes,
                                             'value' => $room->pivot->value + $value,
-                                            'end' => $newEnd->toDateString()
+                                            'end' => $newEnd->toDateString(),
                                         ]
                                     );
 
@@ -2782,14 +2737,13 @@ class VoucherController extends Controller
         }
 
         return response()->json([
-            'processed' => $processed
+            'processed' => $processed,
         ]);
     }
 
     /**
      * Export a voucher to PDF.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function export(string $id)
@@ -2825,11 +2779,10 @@ class VoucherController extends Controller
                     ->withPivot('id', 'quantity', 'value', 'created_at');
             },
             'additionals' => function ($query) {
-                $query->select(['id', 'description', 'billable','value', 'voucher_id', 'created_at'])
+                $query->select(['id', 'description', 'billable', 'value', 'voucher_id', 'created_at'])
                     ->where('billable', true);
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
             },
             'props' => function ($query) {

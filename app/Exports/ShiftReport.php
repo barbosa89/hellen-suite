@@ -13,23 +13,16 @@ class ShiftReport implements WithMultipleSheets
 
     /**
      * The shift to export.
-     *
-     * @var \App\Models\Shift
      */
     protected Shift $shift;
 
     /**
      * The Hotel Rooms.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected Collection $rooms;
 
     /**
      * Construct function
-     *
-     * @param Shift $shift
-     * @param Collection $rooms
      */
     public function __construct(Shift $shift, Collection $rooms)
     {
@@ -39,8 +32,6 @@ class ShiftReport implements WithMultipleSheets
 
     /**
      * Report sheets
-     *
-     * @return array
      */
     public function sheets(): array
     {

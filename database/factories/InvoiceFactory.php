@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Invoice;
 use App\Models\Currency;
-use Illuminate\Support\Str;
 use App\Models\IdentificationType;
+use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class InvoiceFactory extends Factory
 {
@@ -22,7 +22,7 @@ class InvoiceFactory extends Factory
             'total' => $value,
             'status' => Invoice::PENDING,
             'identification_type_id' => IdentificationType::inRandomOrder()->first(),
-            'currency_id' => Currency::where('code', Currency::COP)->first()
+            'currency_id' => Currency::where('code', Currency::COP)->first(),
         ];
     }
 }

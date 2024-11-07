@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return [
     'title' => 'Habitaciones',
     'occupied' => 'Ocupado',
     'free' => 'Libre',
@@ -33,4 +33,4 @@ return array (
     'change' => [
         'disabled' => 'La habitación no puede ser cambiada',
     ],
-);
+];

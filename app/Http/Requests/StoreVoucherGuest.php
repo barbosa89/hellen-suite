@@ -34,7 +34,7 @@ class StoreVoucherGuest extends FormRequest
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'room' => 'required|string',
-            'responsible_adult' => 'nullable|string'
+            'responsible_adult' => 'nullable|string',
         ];
     }
 }

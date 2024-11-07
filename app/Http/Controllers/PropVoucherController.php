@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prop;
-use App\Models\Hotel;
 use App\Helpers\Random;
 use App\Models\Company;
+use App\Models\Hotel;
+use App\Models\Prop;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -27,7 +27,7 @@ class PropVoucherController extends Controller
             ->with('props')
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             if (auth()->user()->can('hotels.index')) {
@@ -57,8 +57,7 @@ class PropVoucherController extends Controller
         $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
-            $hotel->props = $hotel->props->map(function ($prop)
-            {
+            $hotel->props = $hotel->props->map(function ($prop) {
                 $prop->hotel_id = id_encode($prop->hotel_id);
                 $prop->user_id = id_encode($prop->user_id);
 
@@ -74,7 +73,6 @@ class PropVoucherController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -86,7 +84,7 @@ class PropVoucherController extends Controller
         DB::transaction(function () use (&$processed, $request, $props) {
             try {
                 // Voucher creation
-                $voucher = new Voucher();
+                $voucher = new Voucher;
                 $voucher->number = Random::consecutive();
                 $voucher->open = false;
                 $voucher->payment_status = true;
@@ -97,7 +95,7 @@ class PropVoucherController extends Controller
                 $voucher->user()->associate(id_parent());
 
                 // Check if a supplier was selected
-                if (!empty($request->company)) {
+                if (! empty($request->company)) {
                     $voucher->company()->associate(id_decode($request->company));
                 }
 
@@ -112,7 +110,7 @@ class PropVoucherController extends Controller
                     $attach[$prop->id] = [
                         'quantity' => $element['amount'],
                         'value' => $prop->price * $element['amount'],
-                        'created_at' => now()
+                        'created_at' => now(),
                     ];
 
                     // If voucher type is an entry,
@@ -149,15 +147,13 @@ class PropVoucherController extends Controller
         });
 
         return response()->json([
-            'processed' => $processed->toArray()
+            'processed' => $processed->toArray(),
         ]);
     }
 
     /**
      * Return a props collections.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $ids
      * @return \Illuminate\Support\Collection
      */
     public function getProps(Request $request, array $ids)

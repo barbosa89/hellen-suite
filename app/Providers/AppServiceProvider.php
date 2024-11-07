@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Models\Shift;
+use App\Models\User;
 use App\Models\Voucher;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Observers\VoucherObserver;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -73,16 +73,15 @@ class AppServiceProvider extends ServiceProvider
         // Check if the receptionist has an assigned headquarters
         Validator::extend('has_headquarters', function ($attribute, $value, $parameters, $validator) {
             $user = User::where('email', $value)
-                ->whereHas('roles', function ($query)
-                {
+                ->whereHas('roles', function ($query) {
                     $query->where('name', 'receptionist');
                 })->with([
-                    'headquarters' => function($query) {
+                    'headquarters' => function ($query) {
                         $query->select(['id', 'business_name']);
-                    }
+                    },
                 ])->first(['id', 'email']);
 
-            if (!empty($user)) {
+            if (! empty($user)) {
                 return $user->headquarters->isNotEmpty();
             }
 
@@ -135,7 +134,7 @@ class AppServiceProvider extends ServiceProvider
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
-            if (!empty($exception)) {
+            if (! empty($exception)) {
                 if ($results->count() === 1 and $results->first()->id === $exception) {
                     return true;
                 }
@@ -160,7 +159,7 @@ class AppServiceProvider extends ServiceProvider
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
-            if (!empty($exception)) {
+            if (! empty($exception)) {
                 if ($results->isEmpty()) {
                     return true;
                 }
@@ -175,8 +174,7 @@ class AppServiceProvider extends ServiceProvider
             return $results->count() === 0;
         });
 
-        Validator::extend('verified', function($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('verified', function ($attribute, $value, $parameters, $validator) {
             $users = DB::table('users')
                 ->where($attribute, $value)
                 ->where('email_verified_at', '!=', null)
@@ -186,14 +184,13 @@ class AppServiceProvider extends ServiceProvider
             return $users->count() === 1;
         });
 
-        Validator::extend('price', function($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('price', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
             if (isset($data[$parameters[1]])) {
                 $id = $data[$parameters[1]];
             } else {
-                $keys = explode(".", $attribute);
+                $keys = explode('.', $attribute);
                 $id = $data[$keys[0]][$keys[1]][$parameters[1]];
             }
 

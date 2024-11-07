@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Customer;
 use App\Http\Requests\StorePayment;
-use App\Models\Voucher;
 use App\Models\Payment;
 use App\Models\Shift;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -40,10 +40,9 @@ class PaymentController extends Controller
             'company' => function ($query) {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         $customer = Customer::get($voucher);
@@ -85,10 +84,9 @@ class PaymentController extends Controller
             'company' => function ($query) {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         if ((float) $voucher->value == $voucher->payments->sum('value')) {
@@ -122,14 +120,12 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
             },
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query) {
                 $query->select(['id']);
-            }
+            },
         ]);
 
         if ($voucher->payment_status) {
@@ -155,7 +151,7 @@ class PaymentController extends Controller
 
         DB::transaction(function () use (&$status, &$voucher, $request) {
             try {
-                $payment = new Payment();
+                $payment = new Payment;
                 $payment->date = $request->date;
                 $payment->commentary = $request->commentary;
                 $payment->payment_method = $request->method;
@@ -165,7 +161,7 @@ class PaymentController extends Controller
                 if ($request->hasFile('invoice')) {
                     $path = $request->file('invoice')->storeAs(
                         'public',
-                        time() . "_" . $request->file('invoice')->getClientOriginalName()
+                        time().'_'.$request->file('invoice')->getClientOriginalName()
                     );
 
                     $payment->invoice = $path;
@@ -178,10 +174,9 @@ class PaymentController extends Controller
 
                         // Load the voucher owner of payment
                         $shift->load([
-                            'vouchers' => function ($query) use ($voucher)
-                            {
+                            'vouchers' => function ($query) use ($voucher) {
                                 $query->where('id', $voucher->id);
-                            }
+                            },
                         ]);
 
                         // Check the voucher was loaded
@@ -209,15 +204,15 @@ class PaymentController extends Controller
         }
 
         return redirect()->route('payments.index', [
-            'voucher' => id_encode($voucher->id)
+            'voucher' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string $voucher
-     * @param  string $id
+     * @param  string  $voucher
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($voucher, $id)
@@ -249,10 +244,9 @@ class PaymentController extends Controller
             'company' => function ($query) {
                 $query->select(fields_get('companies'));
             },
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         $customer = Customer::get($voucher);
@@ -265,8 +259,8 @@ class PaymentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string $voucher
-     * @param  string $id
+     * @param  string  $voucher
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(StorePayment $request, $voucher, $id)
@@ -289,10 +283,9 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         // Calculate the total value with the other payments adding the payment to update
@@ -325,13 +318,13 @@ class PaymentController extends Controller
                 $payment->value = (float) $request->value;
 
                 if ($request->hasFile('invoice')) {
-                    if (!empty($payment->invoice)) {
+                    if (! empty($payment->invoice)) {
                         Storage::delete($payment->invoice);
                     }
 
                     $path = $request->file('invoice')->storeAs(
                         'public',
-                        time() . "_" . $request->file('invoice')->getClientOriginalName()
+                        time().'_'.$request->file('invoice')->getClientOriginalName()
                     );
 
                     $payment->invoice = $path;
@@ -342,10 +335,9 @@ class PaymentController extends Controller
                     // the new value will be added to the shift
                     if ($payment->payment_method == 'cash') {
                         $shift->load([
-                            'vouchers' => function ($query) use ($voucher)
-                            {
+                            'vouchers' => function ($query) use ($voucher) {
                                 $query->where('id', $voucher->id);
-                            }
+                            },
                         ]);
 
                         if ($shift->vouchers->isNotEmpty()) {
@@ -357,10 +349,9 @@ class PaymentController extends Controller
 
                     // Reload payments
                     $voucher->load([
-                        'payments' => function ($query)
-                        {
+                        'payments' => function ($query) {
                             $query->select(fields_get('payments'));
-                        }
+                        },
                     ]);
 
                     if ((float) $voucher->value < $voucher->payments->sum('value')) {
@@ -384,7 +375,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'voucher' => id_encode($voucher->id)
+                'voucher' => id_encode($voucher->id),
             ]);
         }
 
@@ -396,8 +387,8 @@ class PaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string $voucher
-     * @param  string $id
+     * @param  string  $voucher
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($voucher, $id)
@@ -420,10 +411,9 @@ class PaymentController extends Controller
         }
 
         $voucher->load([
-            'payments' => function ($query)
-            {
+            'payments' => function ($query) {
                 $query->select(fields_get('payments'));
-            }
+            },
         ]);
 
         DB::transaction(function () use (&$status, &$voucher, $id) {
@@ -441,10 +431,9 @@ class PaymentController extends Controller
                 // the value is subtracted to the shift
                 if ($payment->payment_method == 'cash') {
                     $shift->load([
-                        'vouchers' => function ($query) use ($voucher)
-                        {
+                        'vouchers' => function ($query) use ($voucher) {
                             $query->where('id', $voucher->id);
-                        }
+                        },
                     ]);
 
                     if ($shift->vouchers->isNotEmpty()) {
@@ -457,10 +446,9 @@ class PaymentController extends Controller
 
                     // Reload payments
                     $voucher->load([
-                        'payments' => function ($query)
-                        {
+                        'payments' => function ($query) {
                             $query->select(fields_get('payments'));
-                        }
+                        },
                     ]);
 
                     if ((float) $voucher->value < $voucher->payments->sum('value')) {
@@ -486,7 +474,7 @@ class PaymentController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('payments.index', [
-                'voucher' => id_encode($voucher->id)
+                'voucher' => id_encode($voucher->id),
             ]);
         }
 

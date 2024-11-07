@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StoreRoom;
 use App\Contracts\RoomRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangeRoomStatus;
+use App\Http\Requests\StoreRoom;
 
 class RoomController extends Controller
 {
@@ -19,7 +19,6 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param string $hotel
      * @return \Illuminate\Http\Response
      */
     public function index(string $hotel)
@@ -49,7 +48,6 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function show(string $id)
@@ -72,7 +70,7 @@ class RoomController extends Controller
         $room = $this->room->toggle(id_decode($request->room), $request->status);
 
         return response()->json([
-            'room' => $room
+            'room' => $room,
         ]);
     }
 }

@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Models\Currency;
+use App\Models\IdentificationType;
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\Currency;
-use Database\Seeders\PlanSeeder;
-use App\Models\IdentificationType;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Http;
-use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
+use Tests\TestCase;
 
 class PlanTest extends TestCase
 {
@@ -41,7 +41,7 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.index')
-            ->assertSeeText(trans('plans.descriptions.' . $plan->getType()))
+            ->assertSeeText(trans('plans.descriptions.'.$plan->getType()))
             ->assertSeeText(number_format($plan->price, 2, '.', ','))
             ->assertSeeText($plan->months)
             ->assertSee($plan->status)
@@ -72,7 +72,7 @@ class PlanTest extends TestCase
         $data = [
             'price' => $this->faker->numberBetween(0, 300000),
             'months' => $this->faker->numberBetween(2, 12),
-            'status' => $this->faker->numberBetween(0, 1)
+            'status' => $this->faker->numberBetween(0, 1),
         ];
 
         $response = $this->actingAs($user)
@@ -119,7 +119,7 @@ class PlanTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => $plan->id,
             'user_id' => $user->id,
-            'ends_at' => now()->addMonths($plan->months)
+            'ends_at' => now()->addMonths($plan->months),
         ]);
 
         $message = session('flash_notification')->first();
@@ -134,7 +134,7 @@ class PlanTest extends TestCase
     {
         Http::fake(function ($request) {
             return Http::response(json_encode([
-                'USD_COP' => 3000
+                'USD_COP' => 3000,
             ]), Response::HTTP_OK);
         });
 
@@ -181,7 +181,7 @@ class PlanTest extends TestCase
     {
         Http::fake(function ($request) {
             return Http::response(json_encode([
-                'USD_COP' => 3000
+                'USD_COP' => 3000,
             ]), Response::HTTP_OK);
         });
 

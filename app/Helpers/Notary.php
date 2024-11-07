@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Helpers\Writer;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\Note;
@@ -13,20 +12,12 @@ use App\Models\Voucher;
 
 class Notary
 {
-    /**
-     * @var \App\Models\Hotel
-     */
     private Hotel $hotel;
 
-    /**
-     * @var \App\Helpers\Writer
-     */
     private Writer $writer;
 
     /**
      * Construct function
-     *
-     * @param \App\Models\Hotel $hotel
      */
     public function __construct(Hotel $hotel)
     {
@@ -37,11 +28,6 @@ class Notary
 
     /**
      * Create note for guest check in
-     *
-     * @param \App\Models\Voucher $voucher
-     * @param \App\Models\Guest $guest
-     * @param \App\Models\Room $room
-     * @return void
      */
     public function checkinGuest(Voucher $voucher, Guest $guest, Room $room): void
     {
@@ -54,11 +40,6 @@ class Notary
 
     /**
      * Create note for guest check out
-     *
-     * @param \App\Models\Voucher $voucher
-     * @param \App\Models\Guest $guest
-     * @param \App\Models\Room $room
-     * @return void
      */
     public function checkoutGuest(Voucher $voucher, Guest $guest, Room $room): void
     {
@@ -71,9 +52,6 @@ class Notary
 
     /**
      * Create note for check out of many guests
-     *
-     * @param \App\Models\Voucher $voucher
-     * @return void
      */
     public function checkoutGuests(Voucher $voucher): void
     {
@@ -86,9 +64,6 @@ class Notary
     /**
      * Create note for vehicle entry
      *
-     * @param \App\Models\Voucher $voucher
-     * @param \App\Models\Guest $guest
-     * @param \App\Models\Vehicle $vehicle
      * @return void
      */
     public function vehicleEntry(Voucher $voucher, Guest $guest, Vehicle $vehicle)
@@ -101,13 +76,10 @@ class Notary
 
     /**
      * Store new note
-     *
-     * @param string $tag
-     * @return void
      */
     private function createNote(string $tag): void
     {
-        $note = new Note();
+        $note = new Note;
         $note->content = $this->writer->write();
         $note->team_member_name = auth()->user()->name;
         $note->team_member_email = auth()->user()->email;
@@ -121,14 +93,11 @@ class Notary
 
     /**
      * Return a existing Tag or create Tag
-     *
-     * @param string $tag
-     * @return \App\Models\Tag
      */
     private function getTag(string $tag): Tag
     {
         $tag = Tag::firstOrNew([
-            'description' => $tag
+            'description' => $tag,
         ]);
 
         $tag->user()->associate(id_parent());
@@ -139,9 +108,6 @@ class Notary
 
     /**
      * Create new Notary object
-     *
-     * @param \App\Models\Hotel $hotel
-     * @return \App\Helpers\Notary
      */
     public static function create(Hotel $hotel): Notary
     {

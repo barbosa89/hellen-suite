@@ -16,7 +16,7 @@ class UpdateAsset extends FormRequest
         $id = id_decode($this->route('id'));
 
         return [
-            'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id,' . $id,
+            'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id,'.$id,
             'description' => 'required|string|max:191',
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',

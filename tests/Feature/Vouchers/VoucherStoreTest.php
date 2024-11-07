@@ -2,24 +2,23 @@
 
 namespace Tests\Feature\Vouchers;
 
-use Tests\TestCase;
+use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
-use App\Models\Hotel;
-use App\Models\Country;
 use App\Models\Voucher;
-use Illuminate\Support\Carbon;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
-use NunoMaduro\LaravelMojito\InteractsWithViews;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
+use NunoMaduro\LaravelMojito\InteractsWithViews;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class VoucherStoreTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use InteractsWithViews;
+    use RefreshDatabase;
+    use WithFaker;
 
     private User $manager;
 
@@ -73,7 +72,7 @@ class VoucherStoreTest extends TestCase
                         'price' => $room->price,
                         'start' => now()->format('Y-m-d'),
                         'end' => now()->addDay()->format('Y-m-d'),
-                    ]
+                    ],
                 ],
             ]);
 
@@ -133,7 +132,7 @@ class VoucherStoreTest extends TestCase
                         'price' => $room->price,
                         'start' => now()->format('Y-m-d'),
                         'end' => now()->addDay()->format('Y-m-d'),
-                    ]
+                    ],
                 ],
             ]);
 
@@ -163,5 +162,3 @@ class VoucherStoreTest extends TestCase
         ]);
     }
 }
-
-

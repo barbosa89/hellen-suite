@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
     use HasFactory;
 
     public const PAID = 'PAID';
+
     public const PENDING = 'PENDING';
+
     public const CANCELED = 'CANCELED';
 
     /**
@@ -67,7 +69,7 @@ class Invoice extends Model
             'currency_id',
             'user_id',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
     }
 

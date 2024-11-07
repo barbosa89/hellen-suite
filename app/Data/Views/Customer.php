@@ -2,19 +2,25 @@
 
 namespace App\Data\Views;
 
+use App\Contracts\Buildable;
 use App\Models\Guest;
 use App\Models\Voucher;
-use App\Contracts\Buildable;
 use Illuminate\Contracts\Support\Arrayable;
 
 class Customer implements Arrayable, Buildable
 {
     public string $name = '';
+
     public string $tin = '';
+
     public string $route = '';
+
     public string $email = '';
+
     public string $address = '';
+
     public string $phone = '';
+
     private Voucher $voucher;
 
     public function __construct(Voucher $voucher)
@@ -35,7 +41,7 @@ class Customer implements Arrayable, Buildable
 
     private function hasCompany(): bool
     {
-        return !empty($this->voucher->company);
+        return ! empty($this->voucher->company);
     }
 
     private function hasGuests(): bool

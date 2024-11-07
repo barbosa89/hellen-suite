@@ -1,11 +1,10 @@
 <?php
 
-return array (
-  'title' => 'Invoices',
-  'status' => 
-  array (
-    'canceled' => 'Canceled',
-    'paid' => 'Paid',
-    'pending' => 'Pending',
-  ),
-);
+return [
+    'title' => 'Invoices',
+    'status' => [
+        'canceled' => 'Canceled',
+        'paid' => 'Paid',
+        'pending' => 'Pending',
+    ],
+];

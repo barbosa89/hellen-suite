@@ -28,7 +28,7 @@ class AddRooms extends FormRequest
             'number' => 'required|string|exists:rooms,number',
             'price' => 'required|numeric|price:rooms,number',
             'start' => 'required|date|after_or_equal:today',
-            'end' => 'nullable|date|after:start'
+            'end' => 'nullable|date|after:start',
         ];
     }
 }

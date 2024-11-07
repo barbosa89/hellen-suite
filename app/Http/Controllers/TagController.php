@@ -4,24 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTag;
 use App\Http\Requests\UpdateTag;
-use App\Repositories\TagRepository;
 use App\Models\Hotel;
 use App\Models\Note;
+use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
     /**
      * Tag repository Eloquent based
-     *
-     * @var TagRepository
      */
     public TagRepository $tag;
 
     /**
      * Construct function
-     *
-     * @param \App\Repositories\TagRepository $tag
      */
     public function __construct(TagRepository $tag)
     {
@@ -60,8 +56,6 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $id
-     * @param  string  $hotel
      * @return \Illuminate\Http\Response
      */
     public function show(string $id, string $hotel)
@@ -82,7 +76,6 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(string $id)
@@ -96,7 +89,6 @@ class TagController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateTag $request, string $id)
@@ -111,7 +103,6 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(string $id)
@@ -119,7 +110,7 @@ class TagController extends Controller
         if ($this->tag->destroy(id_decode($id))) {
             if (request()->ajax()) {
                 return response()->json([
-                    'status' => true
+                    'status' => true,
                 ]);
             }
 
@@ -136,7 +127,6 @@ class TagController extends Controller
     /**
      * Tag searching
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -144,7 +134,7 @@ class TagController extends Controller
         $query = clean_param($request->get('query_by', null));
 
         return response()->json([
-            'results' => $this->tag->search($query)
+            'results' => $this->tag->search($query),
         ]);
     }
 }

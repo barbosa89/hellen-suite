@@ -17,7 +17,7 @@ class RolesTableSeeder extends Seeder
         foreach (config('settings.roles') as $role) {
             Role::create([
                 'name' => $role,
-                'guard_name' => config('auth.defaults.guard')
+                'guard_name' => config('auth.defaults.guard'),
             ]);
         }
     }

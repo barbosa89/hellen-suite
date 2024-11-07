@@ -27,9 +27,9 @@ class UpdateVehicle extends FormRequest
 
         return [
             'type' => 'required|string|hashed_exists:vehicle_types,id',
-            'registration' => 'required|alpha_num|unique_per_user:vehicles,registration,' . $id,
+            'registration' => 'required|alpha_num|unique_per_user:vehicles,registration,'.$id,
             'brand' => 'required|string',
-            'color' => 'required|string'
+            'color' => 'required|string',
         ];
     }
 }

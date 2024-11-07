@@ -25,7 +25,7 @@ class Replicate extends FormRequest
     {
         return [
             'from' => 'required|string|hashed_exists:hotels,id',
-            'to' => 'required|string|hashed_exists:hotels,id'
+            'to' => 'required|string|hashed_exists:hotels,id',
         ];
     }
 }

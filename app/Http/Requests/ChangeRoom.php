@@ -25,7 +25,7 @@ class ChangeRoom extends FormRequest
     {
         return [
             'number' => 'required|string|exists:rooms,number',
-            'price' => 'required|numeric|price:rooms,number'
+            'price' => 'required|numeric|price:rooms,number',
         ];
     }
 }

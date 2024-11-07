@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     'title' => 'Recibos',
     'forCompany' => 'Para empresa',
     'tourism' => 'Turismo',
@@ -53,67 +53,53 @@ return array(
     'process' => 'Procesar',
     'nothingToProcess' => 'No hay facturas para procesar',
     'processing' => 'Procesamiento de recibos',
-    'has' =>
-    array(
-        'one' =>
-        array(
+    'has' => [
+        'one' => [
             'room' => 'Este recibo sólo cuenta con una habitación',
-        ),
-    ),
-    'delivered' =>
-    array(
+        ],
+    ],
+    'delivered' => [
         'room' => 'La habitación fue entregada',
-    ),
-    'impossible' =>
-    array(
-        'room' =>
-        array(
+    ],
+    'impossible' => [
+        'room' => [
             'change' => 'No es posible cambiar al huésped de su habitación actual',
-        ),
-    ),
-    'inactive' =>
-    array(
+        ],
+    ],
+    'inactive' => [
         'guest' => 'El invitado está inactivo en la factura actual',
-    ),
-    'complete' =>
-    array(
+    ],
+    'complete' => [
         'processing' => 'Todos los recibos fueron procesados',
-    ),
-    'incomplete' =>
-    array(
+    ],
+    'incomplete' => [
         'processing' => 'Quedaron recibos pendientes por procesar',
-    ),
-    'load' =>
-    array(
-        'external' =>
-        array(
+    ],
+    'load' => [
+        'external' => [
             'services' => 'Cargar servicios de terceros',
-        ),
-        'dining' =>
-        array(
+        ],
+        'dining' => [
             'services' => 'Cargar servicios de comedor',
-        ),
-    ),
+        ],
+    ],
     'back' => 'Volver al recibo',
     'notfound' => 'Comprobante no encontrado',
-    'new' =>
-    array(
+    'new' => [
         'none' => 'No se han creado recibos recientemente',
         'one' => 'nuevo recibo',
         'many' => 'nuevos recibos',
-    ),
-    'add' =>
-    array(
+    ],
+    'add' => [
         'companies' => 'Agregar empresas',
-    ),
-    'register' =>
-    array(
+    ],
+    'register' => [
         'vehicles' => 'Registrar vehículos',
-    ),
+    ],
     'filters' => 'Filtros de recibos',
     'messages' => [
         'rooms' => [
             'unavailable' => 'No hay habitaciones disponibles',
         ],
     ],
-);
+];

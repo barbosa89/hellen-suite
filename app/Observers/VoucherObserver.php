@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Helpers\Fields;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +10,6 @@ class VoucherObserver
     /**
      * Handle to the voucher "created" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function created(Voucher $voucher)
@@ -22,7 +20,6 @@ class VoucherObserver
     /**
      * Handle the voucher "updated" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function updated(Voucher $voucher)
@@ -33,7 +30,6 @@ class VoucherObserver
     /**
      * Handle the voucher "deleting" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleting(Voucher $voucher)
@@ -47,7 +43,7 @@ class VoucherObserver
             },
         ]);
 
-        $voucher->rooms->each(function ($room, $index) use ($voucher) {
+        $voucher->rooms->each(function ($room, $index) {
             $room->number = $room->number;
             $room->description = $room->description;
             $room->status = '1';
@@ -71,7 +67,6 @@ class VoucherObserver
     /**
      * Handle the voucher "deleted" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleted(Voucher $voucher)

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Room;
-use App\Helpers\Chart;
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreRoom;
 use App\Contracts\RoomRepository;
-use App\Http\Requests\UpdateRoom;
+use App\Helpers\Chart;
 use App\Http\Requests\ChangeRoomStatus;
+use App\Http\Requests\StoreRoom;
+use App\Http\Requests\UpdateRoom;
+use App\Models\Room;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
@@ -69,7 +69,6 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function show(string $id)
@@ -77,21 +76,18 @@ class RoomController extends Controller
         $room = $this->room->find(id_decode($id));
 
         $room->load([
-            'assets' => function ($query)
-            {
+            'assets' => function ($query) {
                 $query->select(fields_dotted('assets'));
             },
-            'products' => function ($query)
-            {
+            'products' => function ($query) {
                 $query->select(fields_dotted('products'));
             },
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query) {
                 $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)
                     ->withPivot('value');
-            }
+            },
         ]);
 
         $data = Chart::create($room->vouchers)
@@ -104,7 +100,6 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(string $id)
@@ -118,7 +113,6 @@ class RoomController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRoom $request, string $id)
@@ -128,14 +122,13 @@ class RoomController extends Controller
         flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('rooms.show', [
-            'id' => id_encode($room->id)
+            'id' => id_encode($room->id),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(string $id)
@@ -149,14 +142,13 @@ class RoomController extends Controller
         flash(trans('rooms.cannot.destroy'))->error();
 
         return redirect()->route('rooms.show', [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -176,7 +168,6 @@ class RoomController extends Controller
     /**
      * Return the price and min price of a room.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function getPrice(Request $request)
@@ -190,7 +181,7 @@ class RoomController extends Controller
         return response()->json([
             'price' => $room->price,
             'min_price' => $room->min_price,
-            'tax' => $room->tax
+            'tax' => $room->tax,
         ]);
     }
 

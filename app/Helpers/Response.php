@@ -6,18 +6,18 @@ use Illuminate\Support\Collection;
 
 class Response
 {
-	private string $format;
+    private string $format;
 
-	private string $template;
+    private string $template;
 
-	private Collection $collection;
+    private Collection $collection;
 
-	public function __construct(Collection $collection, $format = null, $template = null)
-	{
-		$this->format = $format;
-		$this->template = $template;
-		$this->collection = $collection;
-	}
+    public function __construct(Collection $collection, $format = null, $template = null)
+    {
+        $this->format = $format;
+        $this->template = $template;
+        $this->collection = $collection;
+    }
 
     public function get(): array
     {
@@ -32,10 +32,10 @@ class Response
     {
         $rendered = collect();
 
-		foreach ($this->collection as $value) {
-			$render = view($this->template, compact('value'))->render();
-			$rendered->push($render);
-		}
+        foreach ($this->collection as $value) {
+            $render = view($this->template, compact('value'))->render();
+            $rendered->push($render);
+        }
 
         return $rendered;
     }

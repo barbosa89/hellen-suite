@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Hotel;
+use App\Exports\ProductReport;
+use App\Exports\ProductsReport;
 use App\Helpers\Chart;
 use App\Helpers\Random;
+use App\Http\Requests\DateRangeQuery;
+use App\Http\Requests\ReportQuery;
+use App\Http\Requests\StoreProduct;
+use App\Http\Requests\UpdateProduct;
 use App\Models\Company;
+use App\Models\Hotel;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Voucher;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Exports\ProductReport;
 use Illuminate\Support\Carbon;
-use App\Exports\ProductsReport;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreProduct, UpdateProduct};
 
 class ProductController extends Controller
 {
@@ -32,7 +35,7 @@ class ProductController extends Controller
         })->with([
             'products' => function ($query) {
                 $query->select(fields_get('products'));
-            }
+            },
         ])->get(fields_get('hotels'));
 
         if ($hotels->isEmpty()) {
@@ -103,7 +106,7 @@ class ProductController extends Controller
      */
     public function store(StoreProduct $request)
     {
-        $product = new Product();
+        $product = new Product;
         $product->description = $request->description;
         $product->brand = $request->brand;
         $product->reference = $request->reference;
@@ -114,7 +117,7 @@ class ProductController extends Controller
 
         if ($product->save()) {
             // Voucher creation
-            $voucher = new Voucher();
+            $voucher = new Voucher;
             $voucher->number = Random::consecutive();
             $voucher->open = false;
             $voucher->payment_status = true;
@@ -126,7 +129,7 @@ class ProductController extends Controller
             $voucher->hotel()->associate(id_decode($request->hotel));
             $voucher->user()->associate(id_parent());
 
-            if (!empty($request->company)) {
+            if (! empty($request->company)) {
                 $voucher->company()->associate(id_decode($request->company));
             }
 
@@ -137,7 +140,7 @@ class ProductController extends Controller
                     [
                         'quantity' => $product->quantity,
                         'value' => $product->price * $product->quantity,
-                        'created_at' => now()
+                        'created_at' => now(),
                     ]
                 );
             }
@@ -145,7 +148,7 @@ class ProductController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('products.show', [
-                'id' => id_encode($product->id)
+                'id' => id_encode($product->id),
             ]);
         }
 
@@ -180,7 +183,7 @@ class ProductController extends Controller
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)
                     ->withPivot('quantity', 'value');
-            }
+            },
         ]);
 
         $data = Chart::create($product->vouchers)
@@ -204,7 +207,7 @@ class ProductController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->first(fields_get('products'));
 
         if (empty($product)) {
@@ -241,7 +244,7 @@ class ProductController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('products.show', [
-                'id' => id_encode($product->id)
+                'id' => id_encode($product->id),
             ]);
         }
 
@@ -296,7 +299,6 @@ class ProductController extends Controller
     /**
      * Return price of resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function total(Request $request)
@@ -320,7 +322,7 @@ class ProductController extends Controller
     /**
      * Toggle status for the specified resource from storage.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function toggle($id)
@@ -334,7 +336,7 @@ class ProductController extends Controller
             return abort(404);
         }
 
-        $product->status = !$product->status;
+        $product->status = ! $product->status;
 
         if ($product->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
@@ -350,7 +352,6 @@ class ProductController extends Controller
     /**
      * Return a rooms list by hotel ID.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -371,7 +372,7 @@ class ProductController extends Controller
             });
 
             return response()->json([
-                'products' => $products->toJson()
+                'products' => $products->toJson(),
             ]);
         }
 
@@ -395,10 +396,9 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query) {
                 $query->select(['id', 'business_name']);
-            }
+            },
         ]);
 
         return view('app.products.product-report', compact('product'));
@@ -422,22 +422,19 @@ class ProductController extends Controller
         }
 
         $product->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query) {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request)
-            {
+            'vouchers' => function ($query) use ($request) {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
-                        Carbon::parse($request->end)->endOfDay()
+                        Carbon::parse($request->end)->endOfDay(),
                     ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) use ($request)
-            {
+            'vouchers.company' => function ($query) {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -448,7 +445,7 @@ class ProductController extends Controller
             return redirect()->route('products.product.report', ['id' => id_encode($product->id)]);
         }
 
-        return Excel::download(new ProductReport($product), trans('products.product') . '.xlsx');
+        return Excel::download(new ProductReport($product), trans('products.product').'.xlsx');
     }
 
     /**
@@ -461,7 +458,7 @@ class ProductController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('products.index');
@@ -481,38 +478,36 @@ class ProductController extends Controller
         $query = Hotel::query();
         $query->where('user_id', id_parent());
 
-        if (!empty($request->hotel)) {
+        if (! empty($request->hotel)) {
             $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([
-            'products' => function($query) {
+            'products' => function ($query) {
                 $query->select(fields_get('products'));
             },
-            'products.vouchers' => function ($query) use ($request)
-            {
+            'products.vouchers' => function ($query) use ($request) {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
-                        Carbon::parse($request->end)->endOfDay()
+                        Carbon::parse($request->end)->endOfDay(),
                     ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'products.vouchers.company' => function ($query) use ($request)
-            {
+            'products.vouchers.company' => function ($query) {
                 $query->select(fields_dotted('companies'));
-            }
+            },
         ]);
 
         $hotels = $query->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return back();
         }
 
-        return Excel::download(new ProductsReport($hotels), trans('products.title') . '.xlsx');
+        return Excel::download(new ProductsReport($hotels), trans('products.title').'.xlsx');
     }
 }

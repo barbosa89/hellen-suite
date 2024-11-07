@@ -2,21 +2,21 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Company;
-use App\Models\Country;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class CompanyTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+    use WithFaker;
 
     public const PERMISSION = 'companies.index';
+
     protected Permission $permission;
 
     public function setUp(): void
@@ -80,7 +80,7 @@ class CompanyTest extends TestCase
         /** @var Company $company */
         $company = Company::factory()->create([
             'user_id' => $manager->id,
-            'created_at' => now()->subDays(6)
+            'created_at' => now()->subDays(6),
         ]);
 
         $response = $this->actingAs($manager)
@@ -96,13 +96,13 @@ class CompanyTest extends TestCase
             ->assertJsonFragment([
                 'hash' => id_encode($company->id),
                 'business_name' => $company->business_name,
-                'tin' => (string)  $company->tin,
+                'tin' => (string) $company->tin,
                 'email' => $company->email,
             ])
             ->assertJsonMissing([
                 'hash' => id_encode($oldCompany->id),
-                'business_name' =>$oldCompany->business_name,
-                'tin' => (string)  $oldCompany->tin,
+                'business_name' => $oldCompany->business_name,
+                'tin' => (string) $oldCompany->tin,
                 'email' => $oldCompany->email,
             ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -15,31 +15,31 @@ return array(
         'middleware' => [
             'web',
             'auth',
-            'role:root'
+            'role:root',
         ],
     ],
 
     /**
      * Enable deletion of translations
      *
-     * @type boolean
+     * @type bool
      */
     'delete_enabled' => true,
 
     /**
-     * Exclude specific groups from Laravel Translation Manager. 
+     * Exclude specific groups from Laravel Translation Manager.
      * This is useful if, for example, you want to avoid editing the official Laravel language files.
      *
      * @type array
      *
      * array(
      *  'pagination',
-        *		'reminders',
-        *		'validation',
-        *	)
-        */
-    'exclude_groups' => array(),
-    
+     *		'reminders',
+     *		'validation',
+     *	)
+     */
+    'exclude_groups' => [],
+
     /**
      * Exclude specific languages from Laravel Translation Manager.
      *
@@ -50,11 +50,11 @@ return array(
      *		'de',
      *	)
      */
-    'exclude_langs' => array(),
+    'exclude_langs' => [],
 
     /**
      * Export translations with keys output alphabetically.
      */
     'sort_keys ' => false,
 
-);
+];

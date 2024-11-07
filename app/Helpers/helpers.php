@@ -1,72 +1,72 @@
 <?php
 
-use App\Helpers\Id;
-use App\Models\Hotel;
 use App\Helpers\Fields;
+use App\Helpers\Id;
 use App\Helpers\Notary;
 use App\Helpers\Parameter;
-use Illuminate\Support\Str;
+use App\Models\Hotel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 
-if (!function_exists('id_encode')) {
+if (! function_exists('id_encode')) {
     function id_encode(string $id): string
     {
         return Id::encode($id);
     }
 }
 
-if (!function_exists('id_decode')) {
+if (! function_exists('id_decode')) {
     function id_decode(string $id): int
     {
         return Id::decode($id);
     }
 }
 
-if (!function_exists('id_decode_recursive')) {
+if (! function_exists('id_decode_recursive')) {
     function id_decode_recursive(array $ids): array
     {
         return Id::pool($ids);
     }
 }
 
-if (!function_exists('id_parent')) {
+if (! function_exists('id_parent')) {
     function id_parent()
     {
         return Id::parent();
     }
 }
 
-if (!function_exists('clean_param')) {
+if (! function_exists('clean_param')) {
     function clean_param($value = null)
     {
         return Parameter::clean($value);
     }
 }
 
-if (!function_exists('notary')) {
+if (! function_exists('notary')) {
     function notary(Hotel $hotel)
     {
         return Notary::create($hotel);
     }
 }
 
-if (!function_exists('fields_get')) {
+if (! function_exists('fields_get')) {
     function fields_get(string $model)
     {
         return Fields::get($model);
     }
 }
 
-if (!function_exists('fields_dotted')) {
+if (! function_exists('fields_dotted')) {
     function fields_dotted(string $model)
     {
         return Fields::parsed($model);
     }
 }
 
-if (!function_exists('argument_array')) {
+if (! function_exists('argument_array')) {
     function argument_array($args)
     {
         if (is_array($args[0])) {
@@ -77,13 +77,9 @@ if (!function_exists('argument_array')) {
     }
 }
 
-if (!function_exists('get_columns')) {
+if (! function_exists('get_columns')) {
     /**
      * Get all table column names from schema
-     *
-     * @param string $table
-     * @param boolean $dotted
-     * @return array
      */
     function get_columns(string $table, bool $dotted = false): array
     {
@@ -91,7 +87,7 @@ if (!function_exists('get_columns')) {
 
         if ($dotted) {
             array_walk($columns, function (&$column) use ($table) {
-                $column = $table . '.' . $column;
+                $column = $table.'.'.$column;
             });
         }
 
@@ -99,50 +95,41 @@ if (!function_exists('get_columns')) {
     }
 }
 
-if (!function_exists('external_url')) {
+if (! function_exists('external_url')) {
     /**
      * Generate external URL with query params
-     *
-     * @param string $url
-     * @param array $params
-     * @return string
      */
     function external_url(string $url, array $params = []): string
     {
         $url = Str::of($url)->finish('/');
 
         $params = collect($params)->transform(function ($value, $key) {
-            return urlencode($key) . '=' . urlencode($value);
+            return urlencode($key).'='.urlencode($value);
         })->join('&');
 
-        return $url . '?' . $params;
+        return $url.'?'.$params;
     }
 }
 
-if (!function_exists('cents_to_float')) {
+if (! function_exists('cents_to_float')) {
     /**
      * Convert amount in cents to float number
-     *
-     * @param string $value
-     * @return float
      */
     function cents_to_float(string $value): float
     {
         $value = (float) $value;
 
         if ($value > 0) {
-            return ($value / 100);
+            return $value / 100;
         }
 
-        throw new InvalidArgumentException("The value must be greater than zero", 1);
+        throw new InvalidArgumentException('The value must be greater than zero', 1);
     }
 }
 
-if (!function_exists('get_user_permissions')) {
+if (! function_exists('get_user_permissions')) {
     /**
      * Get all asigned user permissions
-     *
-     * @return array
      */
     function get_user_permissions(): array
     {
@@ -158,10 +145,7 @@ if (!function_exists('get_user_permissions')) {
     }
 }
 
-if (!function_exists('get_colors')) {
-    /**
-     * @return array
-     */
+if (! function_exists('get_colors')) {
     function get_colors(): array
     {
         $colors = [];

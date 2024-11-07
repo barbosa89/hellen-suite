@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
-use App\Models\Country;
 use App\Constants\Genders;
+use App\Models\Country;
 use App\Models\IdentificationType;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GuestFactory extends Factory

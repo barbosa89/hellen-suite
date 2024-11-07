@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePassword;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\UpdatePassword;
 
 class AccountController extends Controller
 {
     /**
      * Verify team member email.
      *
-     * @param  string  $email
-     * @return string  $token
+     * @return string $token
      */
-    public function verify(string $email = null, string $token = null)
+    public function verify(?string $email = null, ?string $token = null)
     {
         $email = filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_SANITIZE_EMAIL);
         $token = clean_param($token);
@@ -58,7 +57,6 @@ class AccountController extends Controller
     /**
      * Update User password.
      *
-     * @param UpdatePassword $request
      * @return \Illuminate\Http\Response
      */
     public function updatePassword(UpdatePassword $request)

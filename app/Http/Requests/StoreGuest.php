@@ -34,7 +34,7 @@ class StoreGuest extends FormRequest
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'profession' => 'nullable|string',
-            'nationality' => 'required|string|hashed_exists:countries,id'
+            'nationality' => 'required|string|hashed_exists:countries,id',
         ];
     }
 }

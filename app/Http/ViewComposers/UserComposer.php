@@ -5,8 +5,8 @@ namespace App\Http\ViewComposers;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 
-class UserComposer {
-
+class UserComposer
+{
     public $user;
 
     public function __construct()
@@ -15,14 +15,13 @@ class UserComposer {
             ->with([
                 'roles' => function ($query) {
                     $query->select('id', 'name');
-                }
+                },
             ])->first(['id']);
     }
 
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

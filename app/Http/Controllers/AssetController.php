@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
-use App\Models\Asset;
-use App\Models\Hotel;
-use Illuminate\Http\Request;
 use App\Exports\AssetsReport;
-use App\Http\Requests\AssignAsset;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\AssetsReportQuery;
+use App\Http\Requests\AssignAsset;
 use App\Http\Requests\StoreAsset;
 use App\Http\Requests\UpdateAsset;
+use App\Models\Asset;
+use App\Models\Hotel;
+use App\Models\Room;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
@@ -28,10 +28,10 @@ class AssetController extends Controller
         })->with([
             'assets' => function ($query) {
                 $query->select(fields_get('assets'));
-            }
+            },
         ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -44,12 +44,10 @@ class AssetController extends Controller
 
     private function prepareData(Collection $hotels): Collection
     {
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
-            $hotel->assets = $hotel->assets->map(function ($asset)
-            {
+            $hotel->assets = $hotel->assets->map(function ($asset) {
                 $asset->hotel_id = id_encode($asset->hotel_id);
                 $asset->user_id = id_encode($asset->user_id);
                 $asset->room_id = $asset->room_id ? id_encode($asset->room_id) : null;
@@ -68,13 +66,13 @@ class AssetController extends Controller
         $hotels = Hotel::whereHas('owner', function (Builder $query) {
             $query->where('id', id_parent());
         })->where('status', true)
-        ->with([
-            'rooms' => function ($query) {
-                $query->select(fields_get('rooms'));
-            }
-        ])->get(fields_get('hotels'));
+            ->with([
+                'rooms' => function ($query) {
+                    $query->select(fields_get('rooms'));
+                },
+            ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -84,7 +82,7 @@ class AssetController extends Controller
             return $hotel->rooms->count();
         });
 
-        if($rooms === 0) {
+        if ($rooms === 0) {
             flash(trans('rooms.no.created'))->info();
 
             return redirect()->route('assets.index');
@@ -95,7 +93,7 @@ class AssetController extends Controller
 
     public function store(StoreAsset $request): RedirectResponse
     {
-        $asset = new Asset();
+        $asset = new Asset;
         $asset->number = $request->input('number');
         $asset->description = $request->input('description');
         $asset->brand = $request->input('brand');
@@ -135,7 +133,7 @@ class AssetController extends Controller
             'maintenances' => function ($query) {
                 $query->select(fields_get('maintenances'))
                     ->orderBy('date', 'DESC');
-            }
+            },
         ]);
 
         return view('app.assets.show', compact('asset'));
@@ -240,7 +238,7 @@ class AssetController extends Controller
         });
 
         return response()->json([
-            'assets' => $assets
+            'assets' => $assets,
         ]);
     }
 
@@ -249,7 +247,7 @@ class AssetController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -265,16 +263,15 @@ class AssetController extends Controller
                 $query->where('id', id_decode($request->hotel));
             })
             ->with([
-                'assets' => function($query) {
+                'assets' => function ($query) {
                     $query->select(fields_get('assets'));
                 },
-                'assets.room' => function ($query)
-                {
+                'assets.room' => function ($query) {
                     $query->select(fields_get('rooms'));
-                }
+                },
             ])->get(fields_get('hotels'));
 
-        return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
+        return Excel::download(new AssetsReport($hotels), trans('assets.title').'.xlsx');
     }
 
     public function assignment(string $room): View
@@ -283,7 +280,7 @@ class AssetController extends Controller
             ->with([
                 'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])
             ->firstOrFail(fields_get('rooms'));
 

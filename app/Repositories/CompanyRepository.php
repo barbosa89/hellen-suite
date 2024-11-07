@@ -2,18 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Company;
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Contracts\CompanyRepository as Repository;
+use App\Models\Company;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class CompanyRepository implements Repository
 {
-    /**
-     * @param int $perPage
-     * @param array $filters
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Company::query()
@@ -23,10 +18,6 @@ class CompanyRepository implements Repository
             ->paginate($perPage);
     }
 
-    /**
-     * @param array $filters
-     * @return \Illuminate\Support\Collection
-     */
     public function all(array $filters = []): Collection
     {
         return Company::query()
@@ -35,10 +26,6 @@ class CompanyRepository implements Repository
             ->get();
     }
 
-    /**
-     * @param integer $id
-     * @return \App\Models\Company
-     */
     public function find(int $id): Company
     {
         return Company::whereOwner()->where('id', $id);
@@ -46,7 +33,7 @@ class CompanyRepository implements Repository
 
     public function create(array $data): Company
     {
-        $company = new Company();
+        $company = new Company;
         $company->fill($data);
         $company->user()->associate(id_parent());
         $company->save();
@@ -54,11 +41,6 @@ class CompanyRepository implements Repository
         return $company;
     }
 
-    /**
-     * @param integer $id
-     * @param array $data
-     * @return \App\Models\Company
-     */
     public function update(int $id, array $data): Company
     {
         $company = $this->find($id);
@@ -68,10 +50,6 @@ class CompanyRepository implements Repository
         return $company;
     }
 
-    /**
-     * @param integer $id
-     * @return boolean
-     */
     public function destroy(int $id): bool
     {
         $company = $this->find($id);
@@ -79,15 +57,11 @@ class CompanyRepository implements Repository
         return $company->delete();
     }
 
-    /**
-     * @param string $query
-     * @return LengthAwarePaginator
-     */
     public function search(string $query): LengthAwarePaginator
     {
         return Company::whereOwner()
             ->whereLike(['business_name', 'tin'], $query)
-            ->paginate(15 , fields_get('companies'));
+            ->paginate(15, fields_get('companies'));
 
     }
 }

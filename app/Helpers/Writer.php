@@ -17,16 +17,11 @@ class Writer
 
     /**
      * The writte
-     *
-     * @var string
      */
     private string $writte = '';
 
     /**
      * Return a link tag
-     *
-     * @param Voucher $voucher
-     * @return string
      */
     private function buildLink(Voucher $voucher): string
     {
@@ -37,9 +32,6 @@ class Writer
 
     /**
      * Build text for guest check in
-     *
-     * @param \App\Models\Voucher $voucher
-     * @return \App\Helpers\Writer
      */
     public function checkin(Voucher $voucher): Writer
     {
@@ -50,16 +42,13 @@ class Writer
         $text = str_replace('{link}', $link, trans('notes.checkin.of'));
 
         // Add text
-        $this->writte .= $text . self::BLANK;
+        $this->writte .= $text.self::BLANK;
 
         return $this;
     }
 
     /**
      * Build text for guest check out
-     *
-     * @param \App\Models\Voucher $voucher
-     * @return \App\Helpers\Writer
      */
     public function checkout(Voucher $voucher): Writer
     {
@@ -70,22 +59,19 @@ class Writer
         $text = str_replace('{link}', $link, trans('notes.checkout.of'));
 
         // Add text
-        $this->writte .= $text . self::BLANK;
+        $this->writte .= $text.self::BLANK;
 
         return $this;
     }
 
     /**
      * Build text about guest personal data
-     *
-     * @param \App\Models\Guest $guest
-     * @return \App\Helpers\Writer
      */
     public function guest(Guest $guest): Writer
     {
         $idType = strtoupper($guest->identificationType->type);
 
-        $text = "{$guest->full_name} {$idType} {$guest->dni}," . self::BLANK;
+        $text = "{$guest->full_name} {$idType} {$guest->dni},".self::BLANK;
 
         $this->writte .= $text;
 
@@ -94,15 +80,12 @@ class Writer
 
     /**
      * Build text for each guest about personal data and assigned hotel room
-     *
-     * @param \Illuminate\Support\Collection $guests
-     * @return \App\Helpers\Writer
      */
     public function guests(Collection $guests): Writer
     {
         $text = '';
         foreach ($guests as $guest) {
-            $room = lcfirst(trans('rooms.number', ['number' => $guest->rooms->first()->number])) . self::COMMA;
+            $room = lcfirst(trans('rooms.number', ['number' => $guest->rooms->first()->number])).self::COMMA;
 
             $idType = strtoupper($guest->identificationType->type);
 
@@ -118,11 +101,10 @@ class Writer
      * Build text about assigned hotel room
      *
      * @param \App\Models\\App\Models\Room $room
-     * @return \App\Helpers\Writer
      */
     public function room(Room $room): Writer
     {
-        $text = lcfirst(trans('rooms.number', ['number' => $room->number])) . self::COMMA;
+        $text = lcfirst(trans('rooms.number', ['number' => $room->number])).self::COMMA;
 
         $this->writte .= $text;
 
@@ -131,10 +113,6 @@ class Writer
 
     /**
      * Build text about vehicle entry
-     *
-     * @param \App\Models\Voucher $voucher
-     * @param \App\Models\Vehicle $vehicle
-     * @return \App\Helpers\Writer
      */
     public function vehicle(Voucher $voucher, Vehicle $vehicle): Writer
     {
@@ -144,7 +122,7 @@ class Writer
         // Replace link in placeholder
         $text = str_replace('{link}', $link, trans('notes.vehicle'));
 
-        $type = trans('vehicles.' . $vehicle->type->type);
+        $type = trans('vehicles.'.$vehicle->type->type);
 
         // Add vehicle registration, vehicle type
         $text .= " {$vehicle->registration}, {$type}";
@@ -158,21 +136,16 @@ class Writer
     /**
      * Build text about vehicle owner
      * This method wraps Writer->guest() method
-     *
-     * @param \App\Models\Guest $guest
-     * @return \App\Helpers\Writer
      */
     public function owner(Guest $guest): Writer
     {
-        $this->writte .= trans('notes.owner') . self::BLANK;
+        $this->writte .= trans('notes.owner').self::BLANK;
 
         return $this->guest($guest);
     }
 
     /**
      * Return the writte
-     *
-     * @return string
      */
     public function write(): string
     {

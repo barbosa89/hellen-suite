@@ -40,13 +40,13 @@ class CreateRootUser extends Command
      */
     public function handle()
     {
-        $this->info('Important!' . PHP_EOL);
-        $this->info('If the supplied email exists in the database, then your password will be updated.' . PHP_EOL);
+        $this->info('Important!'.PHP_EOL);
+        $this->info('If the supplied email exists in the database, then your password will be updated.'.PHP_EOL);
         $this->info('Requirements:');
         $this->info('- Unique email');
         $this->info('- Unique user with root role');
         $this->info('- Maximum password length: 24 chars');
-        $this->info('- Minimum password length: 8 chars' . PHP_EOL);
+        $this->info('- Minimum password length: 8 chars'.PHP_EOL);
 
         // Query existing root user
         $user = User::whereHas('roles', function ($query) {
@@ -57,7 +57,7 @@ class CreateRootUser extends Command
             $email = $this->ask('Type your Root email: ');
 
             if ($this->validEmail($email)) {
-                $user = new User();
+                $user = new User;
                 $user->email = $email;
             } else {
                 $this->info('You cannot register the email as root user');
@@ -65,9 +65,9 @@ class CreateRootUser extends Command
                 return;
             }
         } else {
-            $this->info("Existing root user: ");
+            $this->info('Existing root user: ');
             $this->info("Name: {$user->name}");
-            $this->info("Email: {$user->email}" . PHP_EOL);
+            $this->info("Email: {$user->email}".PHP_EOL);
         }
 
         $password = $this->ask('Type your Root password: ');
@@ -80,7 +80,7 @@ class CreateRootUser extends Command
         $user->fill([
             'name' => 'Root',
             'email_verified_at' => now(),
-            'password' => bcrypt($password)
+            'password' => bcrypt($password),
         ]);
 
         // If Root user was stored
@@ -93,24 +93,21 @@ class CreateRootUser extends Command
 
         // Output
         $this->line('The Root user');
-        $this->line('Email: ' . $user->email);
-        $this->line('Password: ' . $password);
+        $this->line('Email: '.$user->email);
+        $this->line('Password: '.$password);
     }
 
     /**
      * Validate root user
-     *
-     * @param string $email
-     * @return boolean
      */
     public function validEmail(string $email): bool
     {
         $validator = Validator::make(
             [
-                'email' => $email
+                'email' => $email,
             ],
             [
-                'email' => 'required|email:rfc,dns,spoof,filter|unique:users,email'
+                'email' => 'required|email:rfc,dns,spoof,filter|unique:users,email',
             ]
         );
 
@@ -123,18 +120,15 @@ class CreateRootUser extends Command
 
     /**
      * Validate root password
-     *
-     * @param string $password
-     * @return boolean
      */
     public function isInvalidPassword(string $password): bool
     {
         $validator = Validator::make(
             [
-                'password' => $password
+                'password' => $password,
             ],
             [
-                'password' => 'required|string|min:8|max:24'
+                'password' => 'required|string|min:8|max:24',
             ]
         );
 

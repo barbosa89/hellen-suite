@@ -26,7 +26,7 @@ class UpdateTag extends FormRequest
         $id = id_decode($this->route('id'));
 
         return [
-            'description' => 'required|string|max:30|unique_per_user:tags,description,' . $id,
+            'description' => 'required|string|max:30|unique_per_user:tags,description,'.$id,
         ];
     }
 }

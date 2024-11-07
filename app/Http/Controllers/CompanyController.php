@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CompaniesReport;
-use Carbon\Carbon;
-use App\Models\Company;
-use Illuminate\Http\Request;
 use App\Helpers\Chart;
 use App\Helpers\Response;
 use App\Http\Requests\StoreCompany;
 use App\Http\Requests\UpdateCompany;
+use App\Models\Company;
 use App\Models\IdentificationType;
 use App\Models\Voucher;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
@@ -51,7 +51,7 @@ class CompanyController extends Controller
      */
     public function store(StoreCompany $request)
     {
-        $company = new Company();
+        $company = new Company;
         $company->tin = $request->tin;
         $company->business_name = $request->business_name;
         $company->email = $request->get('email', null);
@@ -65,7 +65,7 @@ class CompanyController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('companies.show', [
-                'id' => id_encode($company->id)
+                'id' => id_encode($company->id),
             ]);
         }
 
@@ -77,7 +77,6 @@ class CompanyController extends Controller
     /**
      * Show the form for creating a new vouche company.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function createForVoucher($id)
@@ -101,7 +100,7 @@ class CompanyController extends Controller
      * Store a newly created company in storage and attaching to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function storeForVoucher(StoreCompany $request, $id)
@@ -116,7 +115,7 @@ class CompanyController extends Controller
             abort(404);
         }
 
-        $company = new Company();
+        $company = new Company;
         $company->tin = $request->tin;
         $company->business_name = $request->business_name;
         $company->email = $request->get('email', null);
@@ -143,7 +142,6 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -157,16 +155,14 @@ class CompanyController extends Controller
         }
 
         $company->load([
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query) {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
             },
-            'vouchers.hotel' => function ($query)
-            {
+            'vouchers.hotel' => function ($query) {
                 $query->select('id', 'business_name');
-            }
+            },
         ]);
 
         $data = Chart::create($company->vouchers)
@@ -179,7 +175,6 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -199,7 +194,6 @@ class CompanyController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCompany $request, $id)
@@ -234,7 +228,6 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -264,7 +257,7 @@ class CompanyController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -276,11 +269,11 @@ class CompanyController extends Controller
 
         if ($request->ajax()) {
             $format = clean_param($request->get('format'));
-            $template = 'app.companies.search.' . clean_param($request->get('template'));
+            $template = 'app.companies.search.'.clean_param($request->get('template'));
             $response = new Response($companies, $format, $template);
 
             return response()->json([
-                'companies' => $response->get()
+                'companies' => $response->get(),
             ]);
         }
 
@@ -303,6 +296,6 @@ class CompanyController extends Controller
             return redirect()->route('companies.index');
         }
 
-        return Excel::download(new CompaniesReport($companies), trans('companies.title') . '.xlsx');
+        return Excel::download(new CompaniesReport($companies), trans('companies.title').'.xlsx');
     }
 }

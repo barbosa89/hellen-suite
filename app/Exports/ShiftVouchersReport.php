@@ -24,14 +24,12 @@ class ShiftVouchersReport implements FromView, WithTitle
     public function view(): View
     {
         return view('app.shifts.exports.shift', [
-            'shift' => $this->shift
+            'shift' => $this->shift,
         ]);
     }
 
     /**
      * Sheet title
-     *
-     * @return string
      */
     public function title(): string
     {

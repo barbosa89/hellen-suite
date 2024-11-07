@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
-use Illuminate\View\View;
-use App\Models\Maintenance;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreMaintenance;
+use App\Models\Asset;
+use App\Models\Maintenance;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class AssetMaintenanceController extends Controller
 {
@@ -35,7 +34,7 @@ class AssetMaintenanceController extends Controller
             ->where('id', id_decode($asset))
             ->firstOrFail(fields_get('assets'));
 
-        $maintenance = new Maintenance();
+        $maintenance = new Maintenance;
         $maintenance->date = $request->input('date');
         $maintenance->commentary = $request->input('commentary');
         $maintenance->value = $request->input('value');
@@ -90,7 +89,7 @@ class AssetMaintenanceController extends Controller
         $maintenance->value = $request->get('value', null);
 
         if ($request->hasFile('invoice')) {
-            if (!empty($maintenance->invoice)) {
+            if (! empty($maintenance->invoice)) {
                 Storage::delete($maintenance->invoice);
             }
 
@@ -106,7 +105,7 @@ class AssetMaintenanceController extends Controller
         flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('assets.show', [
-            'id' => $maintenance->maintainable->hash
+            'id' => $maintenance->maintainable->hash,
         ]);
     }
 
@@ -125,7 +124,7 @@ class AssetMaintenanceController extends Controller
         flash(trans('common.deletedSuccessfully'))->success();
 
         return redirect()->route('assets.show', [
-            'id' => $maintenance->maintainable->hash
+            'id' => $maintenance->maintainable->hash,
         ]);
     }
 }

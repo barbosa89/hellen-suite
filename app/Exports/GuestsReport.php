@@ -2,8 +2,8 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class GuestsReport implements FromView
@@ -23,7 +23,7 @@ class GuestsReport implements FromView
     public function view(): View
     {
         return view('app.guests.exports.guests', [
-            'guests' => $this->guests
+            'guests' => $this->guests,
         ]);
     }
 }

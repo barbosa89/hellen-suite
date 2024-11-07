@@ -2,20 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Contracts\VoucherRepository as Repository;
 use App\Models\Voucher;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use App\Contracts\VoucherRepository as Repository;
 
 class VoucherRepository implements Repository
 {
-    /**
-     * @param integer $hotel
-     * @param integer $perPage
-     * @param array $filters
-     * @return LengthAwarePaginator
-     */
     public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return Voucher::whereOwner()
@@ -33,8 +27,7 @@ class VoucherRepository implements Repository
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -42,11 +35,6 @@ class VoucherRepository implements Repository
             ->withQueryString();
     }
 
-    /**
-     * @param integer $hotel
-     * @param array $filters
-     * @return Collection
-     */
     public function all(int $hotel, array $filters = []): Collection
     {
         return Voucher::whereOwner()
@@ -64,8 +52,7 @@ class VoucherRepository implements Repository
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
                 },
             ])
@@ -73,32 +60,26 @@ class VoucherRepository implements Repository
     }
 
     /**
-     * @param int $id
      * @throws Exception
-     * @return \App\Models\Voucher
      */
     public function find(int $id): Voucher
     {
         return Voucher::whereOwner()
             ->where('id', $id)
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query) {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])
             ->firstOrFail(fields_get('vouchers'));
     }
 
     /**
-     * @param integer $hotel
-     * @param array $data
      * @throws Exception
-     * @return \App\Models\Voucher
      */
     public function create(int $hotel, array $data): Voucher
     {
-        $voucher = new Voucher();
+        $voucher = new Voucher;
         $voucher->fill($data);
 
         $voucher->hotel()->associate($hotel);
@@ -109,10 +90,7 @@ class VoucherRepository implements Repository
     }
 
     /**
-     * @param  integer $id
-     * @param  array $data
      * @throws Exception
-     * @return \App\Models\Voucher
      */
     public function update(int $id, array $data): Voucher
     {
@@ -125,9 +103,6 @@ class VoucherRepository implements Repository
 
     /**
      * Destroy model
-     *
-     * @param integer $id
-     * @return boolean
      */
     public function destroy(int $id): bool
     {
@@ -143,10 +118,6 @@ class VoucherRepository implements Repository
         return $voucher->delete();
     }
 
-    /**
-     * @param string $query
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
     public function search(string $query): LengthAwarePaginator
     {
         return Voucher::whereOwner()
@@ -156,20 +127,16 @@ class VoucherRepository implements Repository
                 'guests.last_name',
                 'guests.dni',
                 'company.business_name',
-                'hotel.business_name'
+                'hotel.business_name',
             ], $query)
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query) {
                     $query->select(['id', 'business_name']);
-                }
+                },
             ])
             ->paginate(config('settings.paginate'), fields_get('vouchers'));
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function list(): Collection
     {
         return Voucher::whereOwner()
@@ -185,18 +152,13 @@ class VoucherRepository implements Repository
                 'company' => function ($query) {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query) {
                     $query->select(fields_get('payments'));
                 },
             ])
             ->get(fields_dotted('vouchers'));
     }
 
-    /**
-     * @param int $id
-     * @return \App\Models\Voucher
-     */
     public function first(int $id): Voucher
     {
         return Voucher::whereOwner()
@@ -221,12 +183,6 @@ class VoucherRepository implements Repository
             ->first(fields_dotted('vouchers'));
     }
 
-    /**
-     * @param integer $hotelId
-     * @param \Illuminate\Support\Carbon $startDate
-     * @param \Illuminate\Support\Carbon $endDate
-     * @return \Illuminate\Support\Collection
-     */
     public function queryGuestChecks(int $hotelId, Carbon $startDate, Carbon $endDate): Collection
     {
         $lastMonth = $startDate->copy()->subMonth();

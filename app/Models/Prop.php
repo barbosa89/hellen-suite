@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use App\Traits\InteractWithLogs;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prop extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use InteractWithLogs;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class Prop extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'quantity', 'status', 'hotel_id', 'user_ud'
+        'description', 'quantity', 'status', 'hotel_id', 'user_ud',
     ];
 
     /**

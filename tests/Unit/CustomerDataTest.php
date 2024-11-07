@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\Guest;
-use App\Models\Company;
-use App\Models\Voucher;
 use App\Data\Views\Customer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Company;
+use App\Models\Guest;
+use App\Models\Voucher;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CustomerDataTest extends TestCase
 {

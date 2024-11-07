@@ -2,25 +2,23 @@
 
 namespace Tests\Feature\Vouchers;
 
-use Tests\TestCase;
+use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
-use App\Models\Hotel;
-use App\Models\Country;
-use App\Models\Voucher;
+use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\IdentificationTypesTableSeeder;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class VoucherCreateTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use InteractsWithViews;
+    use RefreshDatabase;
+    use WithFaker;
 
     private User $manager;
 
@@ -116,5 +114,3 @@ class VoucherCreateTest extends TestCase
             ->assertSessionHasErrors(['hotel']);
     }
 }
-
-

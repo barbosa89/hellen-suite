@@ -20,13 +20,13 @@ return [
 
     'currency' => [
         'url' => env('CURRENCY_CONVERTER_URL'),
-        'key' => env('CURRENCY_CONVERTER_KEY')
+        'key' => env('CURRENCY_CONVERTER_KEY'),
     ],
 
     'payments' => [
         'url' => env('PAYMENTS_URL'),
         'key' => env('PAYMENTS_PUBLIC_KEY'),
-        'confirm' => env('PAYMENTS_CONFIRM_URL')
+        'confirm' => env('PAYMENTS_CONFIRM_URL'),
     ],
 
     'paginate' => 20,
@@ -44,7 +44,7 @@ return [
             'status',
             'image',
             'created_at',
-            'main_hotel'
+            'main_hotel',
         ],
         'vouchers' => [
             'id',
@@ -65,7 +65,7 @@ return [
             'company_id',
             'user_id',
             'hotel_id',
-            'created_at'
+            'created_at',
         ],
         'rooms' => [
             'id',
@@ -79,7 +79,7 @@ return [
             'capacity',
             'floor',
             'min_price',
-            'hotel_id'
+            'hotel_id',
         ],
         'guests' => [
             'id',
@@ -98,7 +98,7 @@ return [
             'user_id',
             'status',
             'banned',
-            'created_at'
+            'created_at',
         ],
         'products' => [
             'id',
@@ -109,7 +109,7 @@ return [
             'quantity',
             'status',
             'user_id',
-            'hotel_id'
+            'hotel_id',
         ],
         'services' => [
             'id',
@@ -118,7 +118,7 @@ return [
             'status',
             'is_dining_service',
             'user_id',
-            'hotel_id'
+            'hotel_id',
         ],
         'companies' => [
             'id',
@@ -130,7 +130,7 @@ return [
             'mobile',
             'is_supplier',
             'user_id',
-            'created_at'
+            'created_at',
         ],
         'users' => [
             'id',
@@ -141,7 +141,7 @@ return [
             'parent',
             'created_at',
             'updated_at',
-            'email_verified_at'
+            'email_verified_at',
         ],
         'assets' => [
             'id',
@@ -155,7 +155,7 @@ return [
             'user_id',
             'created_at',
             'hotel_id',
-            'room_id'
+            'room_id',
         ],
         'props' => [
             'id',
@@ -164,7 +164,7 @@ return [
             'price',
             'status',
             'hotel_id',
-            'user_id'
+            'user_id',
         ],
         'maintenances' => [
             'id',
@@ -175,7 +175,7 @@ return [
             'maintainable_id',
             'maintainable_type',
             'created_at',
-            'user_id'
+            'user_id',
         ],
         'vehicles' => [
             'id',
@@ -206,7 +206,7 @@ return [
             'user_id',
             'created_at',
             'updated_at',
-            'closed_at'
+            'closed_at',
         ],
     ],
 
@@ -249,7 +249,7 @@ return [
         'admin',
         'receptionist',
         'accountant',
-        'cashier'
+        'cashier',
     ],
 
     /*
@@ -264,110 +264,110 @@ return [
     'permissions' => [
         // Root permissions do not apply, only with role
         'root' => [
-            'users'                 => '*',
-            'subscriptions'         => '*',
-            'identification_types'  => '*'
+            'users' => '*',
+            'subscriptions' => '*',
+            'identification_types' => '*',
         ],
         'manager' => [
-            'team'          => '*',
-            'assets'        => '*',
-            'companies'     => '*',
-            'guests'        => '*',
-            'hotels'        => '*',
-            'vouchers'      => ['*', 'open', 'close'],
-            'products'      => ['*', 'vouchers'],
-            'rooms'         => '*',
-            'services'      => '*',
-            'shifts'        => ['index', 'create', 'show', 'close'],
-            'vehicles'      => '*',
-            'props'         => ['*', 'vouchers'],
-            'dining'        => ['*', 'sale'],
-            'payments'      => ['*', 'close'],
-            'transactions'  => ['sale', 'entry', 'loss', 'discard'],
-            'tags'          => '*',
-            'notes'         => ['index', 'create', 'show'],
+            'team' => '*',
+            'assets' => '*',
+            'companies' => '*',
+            'guests' => '*',
+            'hotels' => '*',
+            'vouchers' => ['*', 'open', 'close'],
+            'products' => ['*', 'vouchers'],
+            'rooms' => '*',
+            'services' => '*',
+            'shifts' => ['index', 'create', 'show', 'close'],
+            'vehicles' => '*',
+            'props' => ['*', 'vouchers'],
+            'dining' => ['*', 'sale'],
+            'payments' => ['*', 'close'],
+            'transactions' => ['sale', 'entry', 'loss', 'discard'],
+            'tags' => '*',
+            'notes' => ['index', 'create', 'show'],
         ],
         'admin' => [
-            'assets'        => '*',
-            'companies'     => '*',
-            'guests'        => '*',
-            'hotels'        => ['index'],
-            'vouchers'      => ['*', 'open', 'close'],
-            'products'      => ['*', 'vouchers'],
-            'rooms'         => '*',
-            'services'      => '*',
-            'shifts'        => ['index', 'create', 'show', 'close'],
-            'vehicles'      => '*',
-            'props'         => ['*', 'vouchers'],
-            'dining'        => ['*', 'sale'],
-            'payments'      => ['*', 'close'],
-            'transactions'  => ['sale', 'entry', 'loss', 'discard'],
-            'tags'          => '*',
-            'notes'         => ['index', 'create', 'show'],
+            'assets' => '*',
+            'companies' => '*',
+            'guests' => '*',
+            'hotels' => ['index'],
+            'vouchers' => ['*', 'open', 'close'],
+            'products' => ['*', 'vouchers'],
+            'rooms' => '*',
+            'services' => '*',
+            'shifts' => ['index', 'create', 'show', 'close'],
+            'vehicles' => '*',
+            'props' => ['*', 'vouchers'],
+            'dining' => ['*', 'sale'],
+            'payments' => ['*', 'close'],
+            'transactions' => ['sale', 'entry', 'loss', 'discard'],
+            'tags' => '*',
+            'notes' => ['index', 'create', 'show'],
         ],
-        'receptionist'  => [
-            'companies'     => ['index', 'create', 'show', 'edit'],
-            'guests'        => ['index', 'create', 'show', 'edit'],
-            'hotels'        => ['index'],
-            'vouchers'      => ['index', 'create', 'show', 'edit', 'destroy', 'close'],
-            'payments'      => ['index', 'create', 'edit', 'destroy', 'close'],
-            'products'      => ['index', 'vouchers'],
-            'rooms'         => ['index'],
-            'services'      => ['index'],
-            'shifts'        => ['index', 'create', 'show', 'close'],
-            'vehicles'      => ['index', 'create', 'show', 'edit'],
-            'transactions'  => ['sale', 'loss'],
-            'tags'          => ['index', 'show'],
-            'notes'         => ['index', 'create', 'show'],
+        'receptionist' => [
+            'companies' => ['index', 'create', 'show', 'edit'],
+            'guests' => ['index', 'create', 'show', 'edit'],
+            'hotels' => ['index'],
+            'vouchers' => ['index', 'create', 'show', 'edit', 'destroy', 'close'],
+            'payments' => ['index', 'create', 'edit', 'destroy', 'close'],
+            'products' => ['index', 'vouchers'],
+            'rooms' => ['index'],
+            'services' => ['index'],
+            'shifts' => ['index', 'create', 'show', 'close'],
+            'vehicles' => ['index', 'create', 'show', 'edit'],
+            'transactions' => ['sale', 'loss'],
+            'tags' => ['index', 'show'],
+            'notes' => ['index', 'create', 'show'],
         ],
         'accountant' => [
-            'assets'        => ['index'],
-            'companies'     => ['index'],
-            'guests'        => ['index'],
-            'hotels'        => ['index'],
-            'vouchers'      => ['index'],
-            'payments'      => ['index'],
-            'products'      => ['index'],
-            'services'      => ['index'],
-            'props'         => ['index'],
-            'dining'        => ['index'],
-            'notes'         => ['index', 'create', 'show'],
+            'assets' => ['index'],
+            'companies' => ['index'],
+            'guests' => ['index'],
+            'hotels' => ['index'],
+            'vouchers' => ['index'],
+            'payments' => ['index'],
+            'products' => ['index'],
+            'services' => ['index'],
+            'props' => ['index'],
+            'dining' => ['index'],
+            'notes' => ['index', 'create', 'show'],
         ],
         'cashier' => [
-            'companies'     => ['index'],
-            'guests'        => ['index'],
-            'hotels'        => ['index'],
-            'vouchers'      => ['index', 'show'],
-            'payments'      => ['index', 'show'],
-            'products'      => ['index'],
-            'dining'        => ['index', 'sale']
+            'companies' => ['index'],
+            'guests' => ['index'],
+            'hotels' => ['index'],
+            'vouchers' => ['index', 'show'],
+            'payments' => ['index', 'show'],
+            'products' => ['index'],
+            'dining' => ['index', 'sale'],
         ],
     ],
 
     'colors' => [
         'loss' => [
             'bar' => 'rgba(255, 102, 102, 0.2)',
-            'border' => 'rgba(255, 102, 102, 1)'
+            'border' => 'rgba(255, 102, 102, 1)',
         ],
         'entry' => [
             'bar' => 'rgba(5, 32, 74, 0.2)',
-            'border' => 'rgba(5, 32, 74, 1)'
+            'border' => 'rgba(5, 32, 74, 1)',
         ],
         'lodging' => [
             'bar' => 'rgba(117, 185, 190, 0.2)',
-            'border' => 'rgba(117, 185, 190, 1)'
+            'border' => 'rgba(117, 185, 190, 1)',
         ],
         'discard' => [
             'bar' => 'rgba(245, 158, 62, 0.2)',
-            'border' => 'rgba(245, 158, 62, 1)'
+            'border' => 'rgba(245, 158, 62, 1)',
         ],
         'dining' => [
             'bar' => 'rgba(255, 211, 218, 0.2)',
-            'border' => 'rgba(255, 211, 218, 1)'
+            'border' => 'rgba(255, 211, 218, 1)',
         ],
         'sale' => [
             'bar' => 'rgba(35, 206, 107, 0.2)',
-            'border' => 'rgba(35, 206, 107, 1)'
+            'border' => 'rgba(35, 206, 107, 1)',
         ],
-    ]
+    ],
 ];
