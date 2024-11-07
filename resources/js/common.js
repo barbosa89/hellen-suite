@@ -1,5 +1,6 @@
 import { trans } from "laravel-vue-i18n"
 import { toast } from 'vue3-toastify'
+import { Chart } from "chart.js"
 
 document.body.addEventListener('keydown', e => {
     const target = e.target
@@ -370,7 +371,7 @@ function std_search(event, query, params) {
  * @param array datasets
  * @return void
  */
-function generate_chart(id, datasets) {
+export function generate_chart(id, datasets) {
     let ctx = document.getElementById(id)
 
     new Chart(ctx, {
@@ -391,15 +392,6 @@ function generate_chart(id, datasets) {
                 trans('months.december')
             ],
             datasets: datasets
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
         }
     })
 }

@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/panel.css',
                 'resources/js/app.js',
                 'resources/js/panel.js',
+                'resources/js/common.js',
                 'resources/css/landing.css',
                 'resources/js/landing.js'
             ],

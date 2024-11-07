@@ -56,7 +56,7 @@
     </div>
 
     <!-- Scripts -->
-    @vite(['resources/js/panel.js'])
+    @vite(['resources/js/panel.js', 'resources/js/common.js'])
 
     @yield('editor')
     @yield('scripts')

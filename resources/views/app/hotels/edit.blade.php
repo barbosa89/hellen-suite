@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('hotels.title'),
@@ -109,11 +108,10 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark me-2">@lang('common.update')</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
     </div>
-
 @endsection

@@ -1,7 +1,5 @@
 "use strict"; // Start of use strict
 
-import './common.js'
-
 // Toggle the side navigation
 document.getElementById("sidebarToggle").addEventListener('click', function (e) {
     e.preventDefault();

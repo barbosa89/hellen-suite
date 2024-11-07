@@ -1,7 +1,7 @@
 <ul id="myTab" class="nav nav-tabs" role="tablist">
     @foreach($tabs as $tab)
         <li class="nav-item">
-            <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="{{ $tab['id'] }}-tab" href="#{{ $tab['id'] }}" data-toggle="tab" aria-controls="{{ $tab['id'] }}" aria-selected="true">
+            <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="{{ $tab['id'] }}-tab" href="#{{ $tab['id'] }}" data-bs-toggle="tab" aria-controls="{{ $tab['id'] }}" aria-selected="true">
                 {{ $tab['title'] }}
             </a>
         </li>
