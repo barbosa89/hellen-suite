@@ -42,7 +42,7 @@
         </div>
     @endif
     <div class="data-box text-center">
-        <img class="img-fluid image" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
+        <img class="img-fluid image" src="{{ empty($voucher->hotel->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
         <h3 class="fw-bold text-center">{{ $voucher->hotel->business_name }}</h3>
     </div>
 </div>

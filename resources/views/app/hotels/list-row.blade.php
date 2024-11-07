@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">
             <a href="{{ route('hotels.show', ['id' => id_encode($row->id)]) }}">
-                <img class="img-fluid" src="{{ empty($row->image) ? asset('/images/hotel.png') : asset(Storage::url($row->image)) }}" alt="{{ $row->business_name }}">
+                <img class="img-fluid" src="{{ empty($row->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($row->image)) }}" alt="{{ $row->business_name }}">
             </a>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3   col-lg-3  align-self-center">

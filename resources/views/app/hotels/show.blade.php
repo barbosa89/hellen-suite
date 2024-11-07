@@ -35,7 +35,7 @@
 
         <div class="row mb-4">
             <div class="col-xs-2 col-sm-2 col-md-2 col-md-2">
-                <img class="img-fluid" src="{{ empty($hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($hotel->image)) }}" alt="{{ $hotel->business_name }}">
+                <img class="img-fluid" src="{{ empty($hotel->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($hotel->image)) }}" alt="{{ $hotel->business_name }}">
             </div>
             <div class="col-xs-10 col-sm-10 col-md-10 col-md-10">
                 <div class="row">

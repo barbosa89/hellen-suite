@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                 <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
-                    <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
+                    <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
                 </a>
             </div>
             <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 align-self-center">
@@ -145,7 +145,7 @@
             </div>
             <div class="col-md-5 text-end dont-break-out">
                 <a href="{{ route('hotels.show', ['id' => id_encode($voucher->hotel->id)]) }}">
-                    <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
+                    <img class="img-fluid" src="{{ empty($voucher->hotel->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($voucher->hotel->image)) }}" alt="{{ $voucher->hotel->business_name }}">
                 </a>
             </div>
         </div>
