@@ -96,7 +96,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 import ContextMenu from '../ContextMenu.vue'
 
 export default {
@@ -125,27 +125,27 @@ export default {
     created() {
         this.menuActions = [
             {
-                label: trans('common.assign'),
+                label: wTrans('common.assign'),
                 action: 'assign',
             },
             {
-                label: trans('common.select'),
+                label: wTrans('common.select'),
                 action: 'select',
             },
             {
-                label: trans('common.enable'),
+                label: wTrans('common.enable'),
                 action: 'enable',
             },
             {
-                label: trans('common.disable'),
+                label: wTrans('common.disable'),
                 action: 'disable',
             },
             {
-                label: trans('rooms.maintenance'),
+                label: wTrans('rooms.maintenance'),
                 action: 'maintenance',
             },
             {
-                label: trans('common.show'),
+                label: wTrans('common.show'),
                 action: 'show',
             },
         ]
@@ -171,7 +171,7 @@ export default {
                     }
                 })
                 .catch(e => {
-                    toast.error(trans('common.try'))
+                    toast.error(wTrans('common.try'))
                 })
         },
         prepare() {
@@ -253,7 +253,7 @@ export default {
                     room.selected = true
                 }
             } else {
-                toast.error(trans('common.not.allowed'))
+                toast.error(wTrans('common.not.allowed'))
             }
         },
         select() {
@@ -277,7 +277,7 @@ export default {
 
                 window.location.href = this.buildLink(this.hotelId, [this.target])
             } else {
-                toast.info(trans('rooms.cannot.add'))
+                toast.info(wTrans('rooms.cannot.add'))
             }
         },
         pool() {
@@ -310,31 +310,31 @@ export default {
                         }
                     })
                 }).catch(e => {
-                    toast.error(trans('common.try'))
+                    toast.error(wTrans('common.try'))
                 });
             } else {
-                toast.error(trans('rooms.cannot.enable'))
+                toast.error(wTrans('rooms.cannot.enable'))
             }
         },
         enable() {
             if (_.indexOf(['2', '3', '4'], this.target.status) != -1) {
                 this.changeStatus('1')
             } else {
-                toast.info(trans('rooms.cannot.enable'));
+                toast.info(wTrans('rooms.cannot.enable'));
             }
         },
         disable() {
             if (_.indexOf(['1', '2', '4'], this.target.status) != -1) {
                 this.changeStatus('3')
             } else {
-                toast.info(trans('rooms.cannot.enable'));
+                toast.info(wTrans('rooms.cannot.enable'));
             }
         },
         changeStatusToMaintenance() {
             if (_.indexOf(['1', '2', '3'], this.target.status) != -1) {
                 this.changeStatus('4')
             } else {
-                toast.error(trans('rooms.cannot.enable'))
+                toast.error(wTrans('rooms.cannot.enable'))
             }
         },
         getStatusIcon(room) {

@@ -76,7 +76,7 @@
 @section('scripts')
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 document.querySelector('#from').addEventListener('change', function () {
     if (this.value !== null && this.value !== "") {

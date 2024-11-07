@@ -38,7 +38,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     props: {
@@ -56,7 +56,7 @@ export default {
             if (this.hotel.length > 0) {
                 window.location.href = '/tags/' + tag.hash + '/hotel/' + this.hotel
             } else {
-                toast.info(trans('hotels.choose'))
+                toast.info(wTrans('hotels.choose'))
             }
         },
         showResults(results) {
@@ -77,10 +77,10 @@ export default {
                             return tag.hash != data.tag.hash
                         })
 
-                        toast.success(trans('common.deletedSuccessfully'))
+                        toast.success(wTrans('common.deletedSuccessfully'))
                     }
                 }).catch(_error => {
-                    toast.info(trans('common.error'))
+                    toast.info(wTrans('common.error'))
                 })
         }
     },

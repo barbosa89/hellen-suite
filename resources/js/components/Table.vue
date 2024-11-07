@@ -3,7 +3,7 @@
         <div v-if="hasUrl">
             <div class="d-flex flex-column">
                 <span>
-                    {{ trans('display') }}:
+                    {{ wTrans('display') }}:
                 </span>
             </div>
             <div class="d-flex mb-4">
@@ -17,7 +17,7 @@
                 </div>
                 <div class="ml-auto w-25">
                     <div class="input-group">
-                        <input class="form-control" type="search" v-model="search" :placeholder="trans('search')" />
+                        <input class="form-control" type="search" v-model="search" :placeholder="wTrans('search')" />
                         <div class="input-group-append">
                             <button v-if="hasIcon" class="input-group-text" id="btnGroupAddon">
                                 <em :class="searchIcon"></em>
@@ -57,7 +57,7 @@
         <div v-if="hasUrl" class="d-flex">
             <div class="mr-auto">
                 <div class="mb-4 text-center text-sm-center text-md-left align-self-center">
-                    <p>{{ trans('record') }} {{ this.from }} {{ trans('of') }} {{ this.to }} / {{ trans('total') }} {{ this.total }}</p>
+                    <p>{{ wTrans('record') }} {{ this.from }} {{ wTrans('of') }} {{ this.to }} / {{ wTrans('total') }} {{ this.total }}</p>
                 </div>
             </div>
             <div class="ml-auto">
@@ -449,7 +449,7 @@
                     asc: `&ordered_asc=${header.sortable}`,
                 };
             },
-            trans(key) {
+            wTrans(key) {
                 return this.locales[this.lang][key]
             }
         },

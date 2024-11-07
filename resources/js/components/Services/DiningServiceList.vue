@@ -94,7 +94,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     mounted() {
@@ -139,10 +139,10 @@ export default {
                             } else {
                                 this.services = []
 
-                                toast.info(trans('common.without.results'));
+                                toast.info(wTrans('common.without.results'));
                             }
                         }).catch(_e => {
-                            toast.error(trans('common.try'));
+                            toast.error(wTrans('common.try'));
                         });
                 }
             }

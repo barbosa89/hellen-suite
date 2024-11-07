@@ -28,7 +28,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     props: {
@@ -43,13 +43,13 @@ export default {
             guests: [],
             headers: [
                 {
-                    description: trans('common.name')
+                    description: wTrans('common.name')
                 },
                 {
-                    description: trans('common.idNumber')
+                    description: wTrans('common.idNumber')
                 },
                 {
-                    description: trans('common.options')
+                    description: wTrans('common.options')
                 },
             ]
         }
@@ -62,7 +62,7 @@ export default {
                     this.guests = data.guests.data
                 }, 500)
             } else {
-                toast.info(trans('common.without.results'))
+                toast.info(wTrans('common.without.results'))
             }
         },
         redirect(guest) {

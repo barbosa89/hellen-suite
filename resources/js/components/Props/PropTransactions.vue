@@ -8,21 +8,21 @@ export default {
             process_uri: '/props/vouchers',
             search_uri: '/props/search',
             module_uri: '/props',
-            title: trans('props.transactions'),
-            module_name: trans('props.title'),
+            title: wTrans('props.transactions'),
+            module_name: wTrans('props.title'),
             types: [
                 {
-                    description: trans('transactions.entry'),
+                    description: wTrans('transactions.entry'),
                     value: 'entry',
                     permission: 'transactions.entry'
                 },
                 {
-                    description: trans('transactions.discard'),
+                    description: wTrans('transactions.discard'),
                     value: 'discard',
                     permission: 'transactions.discard'
                 },
                 {
-                    description: trans('transactions.loss'),
+                    description: wTrans('transactions.loss'),
                     value: 'loss',
                     permission: 'transactions.loss'
                 }

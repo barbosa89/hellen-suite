@@ -48,13 +48,13 @@ export default {
             date: moment(),
             headers: [
                 {
-                    description: trans('common.date')
+                    description: wTrans('common.date')
                 },
                 {
-                    description: trans('notes.content')
+                    description: wTrans('notes.content')
                 },
                 {
-                    description: trans('common.name')
+                    description: wTrans('common.name')
                 }
             ]
         }

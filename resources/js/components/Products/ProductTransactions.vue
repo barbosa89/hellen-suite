@@ -8,26 +8,26 @@ export default {
             process_uri: '/products/vouchers',
             search_uri: '/products/search',
             module_uri: '/products',
-            title: trans('products.transactions'),
-            module_name: trans('products.title'),
+            title: wTrans('products.transactions'),
+            module_name: wTrans('products.title'),
             types: [
                 {
-                    description: trans('transactions.entry'),
+                    description: wTrans('transactions.entry'),
                     value: 'entry',
                     permission: 'transactions.entry'
                 },
                 {
-                    description: trans('transactions.sale'),
+                    description: wTrans('transactions.sale'),
                     value: 'sale',
                     permission: 'transactions.sale'
                 },
                 {
-                    description: trans('transactions.discard'),
+                    description: wTrans('transactions.discard'),
                     value: 'discard',
                     permission: 'transactions.discard'
                 },
                 {
-                    description: trans('transactions.loss'),
+                    description: wTrans('transactions.loss'),
                     value: 'loss',
                     permission: 'transactions.loss'
                 }

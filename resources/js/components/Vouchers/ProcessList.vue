@@ -169,7 +169,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     mounted() {
@@ -255,15 +255,15 @@ export default {
                         })
 
                         if (this.vouchers.length > 0) {
-                            toast.error(trans('vouchers.incomplete.processing'));
+                            toast.error(wTrans('vouchers.incomplete.processing'));
                         } else {
-                            toast.success(trans('vouchers.complete.processing'));
+                            toast.success(wTrans('vouchers.complete.processing'));
                         }
                     }).catch(e => {
-                        toast.error(trans('common.try'));
+                        toast.error(wTrans('common.try'));
                     });
             } else {
-                toast.error(trans('common.noRecords'));
+                toast.error(wTrans('common.noRecords'));
             }
         }
     },

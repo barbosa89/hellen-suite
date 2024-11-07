@@ -39,7 +39,7 @@
             </option>
         </select>
 
-        <textarea name="comments" id="comments" cols="30" rows="2" class="form-control" v-model="comments" :placeholder="trans('common.comments')"></textarea>
+        <textarea name="comments" id="comments" cols="30" rows="2" class="form-control" v-model="comments" :placeholder="wTrans('common.comments')"></textarea>
 
         <div class="crud-list" v-if="selecteds.length != 0">
             <div class="crud-list-heading mt-2">
@@ -131,7 +131,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     props: ['hotels', 'companies'],
@@ -182,7 +182,7 @@ export default {
         exists(element) {
             _.map(this.selecteds, selected => {
                 if (selected.hash == element.hash) {
-                    this.info.push(trans('transactions.element.exists'))
+                    this.info.push(wTrans('transactions.element.exists'))
                 }
             })
         },
@@ -251,15 +251,15 @@ export default {
                     })
 
                     if (this.selecteds.length) {
-                        toast.error(trans('transactions.partial.processed'));
+                        toast.error(wTrans('transactions.partial.processed'));
                     } else {
-                        toast.success(trans('transactions.all.processed'));
+                        toast.success(wTrans('transactions.all.processed'));
                     }
                 }).catch(e => {
-                        toast.error(trans('common.try'));
+                        toast.error(wTrans('common.try'));
                 });
             } else {
-                toast.info(trans('transactions.has.errors'));
+                toast.info(wTrans('transactions.has.errors'));
             }
         },
         validate() {
@@ -267,28 +267,28 @@ export default {
 
             if (this.selecteds.length == 0) {
                 status = false
-                this.errors.push(trans('transactions.no.item'))
+                this.errors.push(wTrans('transactions.no.item'))
             }
 
             if (!this.hotel) {
                 status = false
-                this.errors.push(trans('transactions.choose.hotel'))
+                this.errors.push(wTrans('transactions.choose.hotel'))
             }
 
             if (!this.type) {
                 status = false
-                this.errors.push(trans('transactions.choose.type'))
+                this.errors.push(wTrans('transactions.choose.type'))
             }
 
             if (this.type == 'entry' && this.company == '') {
                 status = false
-                this.errors.push(trans('transactions.choose.company'))
+                this.errors.push(wTrans('transactions.choose.company'))
             }
 
             this.selecteds.forEach(selected => {
                 if (selected.amount == 0) {
                     status = false
-                    this.errors.push(trans('transactions.amount.zero'))
+                    this.errors.push(wTrans('transactions.amount.zero'))
                 }
             })
 
@@ -297,19 +297,19 @@ export default {
         checkStock(element) {
             if (this.type !== 'entry') {
                 if (parseInt(element.quantity) === 0) {
-                    this.info.push(trans('transactions.no.stock'))
+                    this.info.push(wTrans('transactions.no.stock'))
                 }
             }
         },
         checkAmount() {
             if (parseInt(this.amount) <= 0 || this.amount == '') {
-                this.info.push(trans('transactions.amount.zero'))
+                this.info.push(wTrans('transactions.amount.zero'))
             }
         },
         checkActiveEdition() {
             _.each(this.selecteds, selected => {
                 if (selected.editing == true) {
-                    this.info.push(trans('transactions.active.edition'))
+                    this.info.push(wTrans('transactions.active.edition'))
                 }
             })
         }

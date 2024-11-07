@@ -53,19 +53,19 @@ export default {
             empty: false,
             headers: [
                 {
-                    description: trans('common.date')
+                    description: wTrans('common.date')
                 },
                 {
-                    description: trans('common.number')
+                    description: wTrans('common.number')
                 },
                 {
                     description: 'Hotel'
                 },
                 {
-                    description: trans('common.type')
+                    description: wTrans('common.type')
                 },
                 {
-                    description: trans('common.value')
+                    description: wTrans('common.value')
                 },
             ]
         }

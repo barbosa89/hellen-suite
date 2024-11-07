@@ -11,7 +11,7 @@
 
 <script>
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     props: {
@@ -58,14 +58,14 @@ watch: {
                             if (results.length > 0) {
                                 this.$emit('results', results)
                             } else {
-                                toast.info(trans('common.without.results'))
+                                toast.info(wTrans('common.without.results'))
                             }
                         } else {
                             this.$emit('results', response.data)
                         }
 
                     }).catch(e => {
-                        toast.error(trans('common.try'))
+                        toast.error(wTrans('common.try'))
                     })
             }
         }

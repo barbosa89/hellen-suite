@@ -71,18 +71,18 @@ export default {
         headers() {
             return [
                 {
-                    description: wTrans('common.date')
+                    description: wwTrans('common.date')
                 },
                 {
-                    description: wTrans('common.number'),
+                    description: wwTrans('common.number'),
                     sortable: 'number'
                 },
                 {
-                    description: wTrans('common.type'),
+                    description: wwTrans('common.type'),
                     sortable: 'type'
                 },
                 {
-                    description: wTrans('common.value')
+                    description: wwTrans('common.value')
                 },
             ]
         }

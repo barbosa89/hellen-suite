@@ -80,7 +80,7 @@
 import VueTagsInput from '@james090500/vue-tagsinput'
 import Editor from '@tinymce/tinymce-vue'
 import { toast } from 'vue3-toastify'
-import { trans } from 'laravel-vue-i18n'
+import { wTrans } from 'laravel-vue-i18n'
 
 export default {
     mounted() {
@@ -124,14 +124,14 @@ export default {
         create() {
             if (this.validate()) {
                 Swal.fire({
-                    title: trans('common.confirm'),
-                    text: trans('common.confirmAction'),
+                    title: wTrans('common.confirm'),
+                    text: wTrans('common.confirmAction'),
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: trans('common.continue'),
-                    cancelButtonText: trans('common.cancel')
+                    confirmButtonText: wTrans('common.continue'),
+                    cancelButtonText: wTrans('common.cancel')
                 }).then((result) => {
                     if (result.value) {
                         this.send()
@@ -139,7 +139,7 @@ export default {
                 })
             } else {
                 if (this.errors.length == 0) {
-                    toast.info(trans('notes.check'))
+                    toast.info(wTrans('notes.check'))
                 }
 
                 this.showErrors()
@@ -174,13 +174,13 @@ export default {
                 if (response.data.status) {
                     this.reset()
 
-                    toast.success(trans('common.createdSuccessfully'))
+                    toast.success(wTrans('common.createdSuccessfully'))
                 }
             }).catch(error => {
                 if (error.response.status == '422') {
                     toast.info(error.response.data.errors.hotel_id)
                 } else {
-                    toast.error(trans('common.error'))
+                    toast.error(wTrans('common.error'))
                 }
             })
         },
@@ -198,7 +198,7 @@ export default {
                 }
 
             }).catch(_error => {
-                toast.error(trans('common.error'))
+                toast.error(wTrans('common.error'))
             })
         },
         existsTag(hash) {
@@ -237,7 +237,7 @@ export default {
                         .get('/vouchers/search?query=' + number)
                         .then(response => {
                             if (response.data.data.length == 0) {
-                                this.errors.push(trans('vouchers.notfound') + ': #' + number)
+                                this.errors.push(wTrans('vouchers.notfound') + ': #' + number)
                             }
                         })
                 }
