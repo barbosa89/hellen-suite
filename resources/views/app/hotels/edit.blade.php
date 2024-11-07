@@ -109,7 +109,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-dark me-2">@lang('common.update')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
+                    <a href="{{ route('hotels.index') }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
