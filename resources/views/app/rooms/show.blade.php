@@ -221,7 +221,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        generate_chart('myChart', Array.from({!! $data->toJson() !!}))
-    </script>
+<script type="module">
+import { generate_chart } from '{{ Vite::asset("resources/js/common.js") }}'
+
+generate_chart('myChart', Array.from({!! $data->toJson() !!}))
+</script>
 @endsection
