@@ -3,8 +3,8 @@
     "file": "assets/bootstrap.esm-DiaGsIN1.js",
     "name": "bootstrap.esm"
   },
-  "_index-DiNVdKB3.js": {
-    "file": "assets/index-DiNVdKB3.js",
+  "_index-DLEaQH21.js": {
+    "file": "assets/index-DLEaQH21.js",
     "name": "index"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot": {
@@ -67,14 +67,6 @@
     "file": "assets/fa-solid-900-BUswJgRo.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
-  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
-    "file": "assets/bootstrap-icons-BOrJxbIo.woff",
-    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
-  },
-  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
-    "file": "assets/bootstrap-icons-BtvjY1KL.woff2",
-    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
-  },
   "resources/css/landing.css": {
     "file": "assets/landing-Bs3POC3w.css",
     "src": "resources/css/landing.css",
@@ -130,25 +122,25 @@
     "src": "resources/images/white-logo.png"
   },
   "resources/js/app.js": {
-    "file": "assets/app-DMoasOzr.js",
+    "file": "assets/app-D_UM1JU0.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
       "_bootstrap.esm-DiaGsIN1.js",
-      "_index-DiNVdKB3.js"
+      "_index-DLEaQH21.js"
     ],
     "css": [
-      "assets/app-BpYg-1BR.css"
+      "assets/app-CvAGwrZc.css"
     ]
   },
   "resources/js/common.js": {
-    "file": "assets/common-CSvrhEXJ.js",
+    "file": "assets/common-C4rjycp9.js",
     "name": "common",
     "src": "resources/js/common.js",
     "isEntry": true,
     "imports": [
-      "_index-DiNVdKB3.js"
+      "_index-DLEaQH21.js"
     ]
   },
   "resources/js/landing.js": {
@@ -167,7 +159,7 @@
     "isEntry": true
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-uezGrSz8.css",
+    "file": "assets/app-CqF8f12W.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   }
