@@ -18,10 +18,8 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrap();
 
@@ -237,10 +235,8 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(\App\Contracts\VoucherPrinter::class, \App\Services\VoucherPrinter::class);
         $this->app->bind(\App\Contracts\RoomRepository::class, \App\Repositories\RoomRepository::class);
