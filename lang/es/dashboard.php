@@ -1,8 +1,8 @@
 <?php
 
-return array (
-  'settings' => 'Configuraciones',
-  'profile' => 'Perfil',
-  'search' => 'Buscar',
-  'dashboard' => 'Panel de control',
-);
+return [
+    'settings' => 'Configuraciones',
+    'profile' => 'Perfil',
+    'search' => 'Buscar',
+    'dashboard' => 'Panel de control',
+];

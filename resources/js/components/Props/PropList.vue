@@ -60,11 +60,11 @@
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 align-self-center">
                             <div class="dropdown">
-                                <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                                <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                     <i class="fa fa-ellipsis-v"></i>
                                 </button>
 
-                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                     <a v-if="$can('props.edit')" :href="'/props/' + prop.hash + '/edit'" class="dropdown-item">
                                         {{ $t('common.edit') }}
                                     </a>
@@ -92,6 +92,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -136,16 +139,10 @@ export default {
                         } else {
                             this.props = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
+                            toast.info(wTrans('common.without.results'));
                         }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
+                    }).catch(_e => {
+                        toast.error(wTrans('common.try'));
                     });
                 }
             }

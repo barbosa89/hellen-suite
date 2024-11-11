@@ -29,7 +29,7 @@ class StoreProp extends FormRequest
             'price' => 'required|numeric|min:1',
             'hotel' => 'required|string|hashed_exists:hotels,id',
             'comments' => 'nullable|string|max:400',
-            'company' => 'nullable|string|hashed_exists:companies,id'
+            'company' => 'nullable|string|hashed_exists:companies,id',
         ];
     }
 }

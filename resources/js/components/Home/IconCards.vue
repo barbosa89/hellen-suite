@@ -36,140 +36,140 @@
 </template>
 
 <script>
-    import IconCard from './IconCard'
-    import Bus from '../../Bus'
+import IconCard from './IconCard.vue'
+import { trans } from "laravel-vue-i18n"
 
-    export default {
-        mounted() {
+export default {
+    mounted() {
+        this.buildRoomData()
+
+    },
+    props: {
+        hotelId: {
+            type: String,
+            default: function () {
+                return ''
+            }
+        }
+    },
+    data() {
+        return {
+            cards: {
+                rooms: {
+                    content: '',
+                    icon: 'fa-bed',
+                    bg: 'bg-info',
+                    url: route('rooms.index')
+                },
+                guests: {
+                    content: '',
+                    icon: 'fa-users',
+                    bg: 'bg-warning',
+                    url: route('guests.index')
+                },
+                companies: {
+                    content: '',
+                    icon: 'fa-building',
+                    bg: 'bg-success',
+                    url: route('companies.index')
+                },
+                vouchers: {
+                    content: '',
+                    icon: 'fa-receipt',
+                    bg: 'bg-dark',
+                    url: route('vouchers.index')
+                }
+            }
+        }
+    },
+    components: {
+        IconCard
+    },
+    watch: {
+        hotelId() {
             this.buildRoomData()
+        }
+    },
+    methods: {
+        buildRoomData() {
+            axios
+                .get(route('api.web.rooms.index', this.hotelId))
+                .then(response => {
+                    if (response.data.rooms) {
+                        let rooms = response.data.rooms
+                        let assigned = _.filter(rooms, {status: '1'})
 
-        },
-        props: {
-            hotelId: {
-                type: String,
-                default: function () {
-                    return ''
-                }
-            }
-        },
-        data() {
-            return {
-                cards: {
-                    rooms: {
-                        content: '',
-                        icon: 'fa-bed',
-                        bg: 'bg-info',
-                        url: route('rooms.index')
-                    },
-                    guests: {
-                        content: '',
-                        icon: 'fa-users',
-                        bg: 'bg-warning',
-                        url: route('guests.index')
-                    },
-                    companies: {
-                        content: '',
-                        icon: 'fa-building',
-                        bg: 'bg-success',
-                        url: route('companies.index')
-                    },
-                    vouchers: {
-                        content: '',
-                        icon: 'fa-receipt',
-                        bg: 'bg-dark',
-                        url: route('vouchers.index')
+                        this.cards.rooms.content = `${assigned.length} / ${rooms.length} ${wTrans('rooms.title')}`
                     }
-                }
-            }
-        },
-        components: {
-            IconCard
-        },
-        watch: {
-            hotelId() {
-                this.buildRoomData()
-            }
-        },
-        methods: {
-            buildRoomData() {
-                axios
-                    .get(route('api.web.rooms.index', this.hotelId))
-                    .then(response => {
-                        if (response.data.rooms) {
-                            let rooms = response.data.rooms
-                            let assigned = _.filter(rooms, {status: '1'})
+                })
+                .finally(() => {
+                    if (this.cards.guests.content.length == 0) {
+                        this.builGuestData()
+                    }
 
-                            this.cards.rooms.content = `${assigned.length} / ${rooms.length} ${this.$root.$t('rooms.title')}`
-                        }
-                    })
-                    .finally(() => {
-                        if (this.cards.guests.content.length == 0) {
-                            this.builGuestData()
-                        }
+                    this.builVoucherData()
+                })
+        },
+        builGuestData() {
+            axios
+                .get(route('api.web.guests.index'))
+                .then(response => {
+                    const quantity = response.data.guests.data.length
 
-                        this.builVoucherData()
-                    })
-            },
-            builGuestData() {
-                axios
-                    .get(route('api.web.guests.index'))
-                    .then(response => {
-                        const quantity = response.data.guests.data.length
+                    if (quantity == 0) {
+                        this.cards.guests.content = wTrans('guests.new.none')
+                    } else if (quantity == 1) {
+                        this.cards.guests.content = `${quantity} ${wTrans('guests.new.one')}`
+                    } else {
+                        this.cards.guests.content = `${quantity} ${wTrans('guests.new.many')}`
+                    }
+                })
+                .finally(() => {
+                    if (this.cards.companies.content.length == 0) {
+                        this.builCompanyData()
+                    }
+                })
+        },
+        builCompanyData() {
+            axios
+                .get(route('api.web.companies.index'))
+                .then(response => {
+                    const quantity = response.data.companies.data.length
 
-                        if (quantity == 0) {
-                            this.cards.guests.content = this.$root.$t('guests.new.none')
-                        } else if (quantity == 1) {
-                            this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.one')}`
+                    if (quantity == 0) {
+                        this.cards.companies.content = wTrans('companies.new.none')
+                    } else if (quantity == 1) {
+                        this.cards.companies.content = `${quantity} ${wTrans('companies.new.one')}`
+                    } else {
+                        this.cards.companies.content = `${quantity} ${wTrans('companies.new.many')}`
+                    }
+                })
+        },
+        builVoucherData() {
+            const date = moment().subtract(1, 'days').format('Y-M-D')
+
+            axios
+                .get(route('api.web.vouchers.index', this.hotelId), {
+                    params: {
+                        from_date: date
+                    }
+                })
+                .then(response => {
+                    const quantity = response.data.vouchers.data.length
+
+                    if (quantity > 0) {
+                        if (quantity == 1) {
+                            this.cards.vouchers.content = `${quantity} ${wTrans('vouchers.new.one')}`
                         } else {
-                            this.cards.guests.content = `${quantity} ${this.$root.$t('guests.new.many')}`
+                            this.cards.vouchers.content = `${quantity} ${wTrans('vouchers.new.many')}`
                         }
-                    })
-                    .finally(() => {
-                        if (this.cards.companies.content.length == 0) {
-                            this.builCompanyData()
-                        }
-                    })
-            },
-            builCompanyData() {
-                axios
-                    .get(route('api.web.companies.index'))
-                    .then(response => {
-                        const quantity = response.data.companies.data.length
 
-                        if (quantity == 0) {
-                            this.cards.companies.content = this.$root.$t('companies.new.none')
-                        } else if (quantity == 1) {
-                            this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.one')}`
-                        } else {
-                            this.cards.companies.content = `${quantity} ${this.$root.$t('companies.new.many')}`
-                        }
-                    })
-            },
-            builVoucherData() {
-                const date = moment().subtract(1, 'days').format('Y-M-D')
-
-                axios
-                    .get(route('api.web.vouchers.index', this.hotelId), {
-                        params: {
-                            from_date: date
-                        }
-                    })
-                    .then(response => {
-                        const quantity = response.data.vouchers.data.length
-
-                        if (quantity > 0) {
-                            if (quantity == 1) {
-                                this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.one')}`
-                            } else {
-                                this.cards.vouchers.content = `${quantity} ${this.$root.$t('vouchers.new.many')}`
-                            }
-
-                            Bus.$emit('last-vouchers', response.data.vouchers.data)
-                        } else {
-                            this.cards.vouchers.content = this.$root.$t('vouchers.new.none')
-                        }
-                    })
-            }
-        },
-    }
+                        // Bus.$emit('last-vouchers', response.data.vouchers.data)
+                    } else {
+                        this.cards.vouchers.content = wTrans('vouchers.new.none')
+                    }
+                })
+        }
+    },
+}
 </script>

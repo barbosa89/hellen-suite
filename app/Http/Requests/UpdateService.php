@@ -26,7 +26,7 @@ class UpdateService extends FormRequest
         $id = id_decode($this->route('id'));
 
         return [
-            'description' => 'required|string|max:191|unique_with:services,hotel#hotel_id,' . $id,
+            'description' => 'required|string|max:191|unique_with:services,hotel#hotel_id,'.$id,
             'price' => 'required|numeric|min:1',
         ];
     }

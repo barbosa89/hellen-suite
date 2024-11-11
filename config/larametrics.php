@@ -13,7 +13,7 @@ return [
     |
     */
     'modelsWatched' => [
-        'App\Models\User'
+        \App\Models\User::class,
     ],
 
     /*
@@ -62,7 +62,7 @@ return [
     |
     */
     'requestsToSkip' => [
-        'login'
+        'login',
     ],
 
     /*
@@ -159,7 +159,7 @@ return [
     'notificationMethods' => [
         'email' => env('LARAMETRICS_NOTIFICATION_EMAIL', 'admin@localhost'),
         'slack' => env('LARAMETRICS_NOTIFICATION_SLACK_WEBHOOK', ''),
-        'webhook' => env('LARAMETRICS_NOTIFICATION_CUSTOM_WEBHOOK', '')
-    ]
+        'webhook' => env('LARAMETRICS_NOTIFICATION_CUSTOM_WEBHOOK', ''),
+    ],
 
 ];

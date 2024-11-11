@@ -6,9 +6,9 @@ use App\Exports\VehiclesReport;
 use App\Http\Requests\StoreVehicle;
 use App\Http\Requests\StoreVehicleForVoucher;
 use App\Http\Requests\UpdateVehicle;
-use App\Models\Voucher;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
+use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,10 +24,9 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
-                'type' => function ($query)
-                {
+                'type' => function ($query): void {
                     $query->select(['id', 'type']);
-                }
+                },
             ])->orderBy('created_at', 'DESC')
             ->limit(100)
             ->paginate(config('settings.paginate'), fields_get('vehicles'));
@@ -55,7 +54,7 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicle $request)
     {
-        $vehicle = new Vehicle();
+        $vehicle = new Vehicle;
         $vehicle->registration = $request->registration;
         $vehicle->brand = $request->get('brand', null);
         $vehicle->color = $request->get('color', null);
@@ -85,10 +84,10 @@ class VehicleController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_get('guests'))
                         ->withPivot('main');
-                }
+                },
             ])->first(fields_get('vouchers'));
 
         if (empty($voucher)) {
@@ -113,20 +112,20 @@ class VehicleController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_get('guests'))
                         ->withPivot('main');
                 },
-                'guests.vehicles' => function ($query) use ($id) {
+                'guests.vehicles' => function ($query) use ($id): void {
                     $query->select(fields_dotted('vehicles'))
                         ->wherePivot('voucher_id', id_decode($id));
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->first(fields_dotted('vouchers'));
 
         if (empty($voucher)) {
@@ -137,7 +136,7 @@ class VehicleController extends Controller
             flash(trans('vouchers.hasVehicles'))->error();
 
             return redirect()->route('vouchers.vehicles.create', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
@@ -149,7 +148,7 @@ class VehicleController extends Controller
         }
 
         if (empty($existingVehicle)) {
-            $vehicle = new Vehicle();
+            $vehicle = new Vehicle;
             $vehicle->registration = $request->registration;
             $vehicle->brand = $request->get('brand', null);
             $vehicle->color = $request->get('color', null);
@@ -159,7 +158,7 @@ class VehicleController extends Controller
             if ($vehicle->save()) {
                 $vehicle->guests()->attach($voucher->guests->where('id', id_decode($request->guest))->first()->id, [
                     'voucher_id' => $voucher->id,
-                    'created_at' => Carbon::now()->toDateTimeString()
+                    'created_at' => Carbon::now()->toDateTimeString(),
                 ]);
 
                 // Create note
@@ -172,28 +171,28 @@ class VehicleController extends Controller
                 flash(trans('common.createdSuccessfully'))->success();
 
                 return redirect()->route('vouchers.vehicles.search', [
-                    'id' => id_encode($voucher->id)
+                    'id' => id_encode($voucher->id),
                 ]);
             }
 
             flash(trans('common.error'))->error();
 
             return redirect()->route('vouchers.vehicles.create', [
-                'id' => id_encode($voucher->id)
+                'id' => id_encode($voucher->id),
             ]);
         }
 
         flash(trans('vouchers.vehicleAttached'))->error();
 
         return redirect()->route('vouchers.vehicles.create', [
-            'id' => id_encode($voucher->id)
+            'id' => id_encode($voucher->id),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -207,10 +206,9 @@ class VehicleController extends Controller
         }
 
         $vehicle->load([
-            'type' => function ($query)
-            {
+            'type' => function ($query): void {
                 $query->select(['id', 'type']);
-            }
+            },
         ]);
 
         $types = VehicleType::where('id', '!=', $vehicle->type->id)
@@ -223,7 +221,7 @@ class VehicleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateVehicle $request, $id)
@@ -255,7 +253,7 @@ class VehicleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -285,7 +283,7 @@ class VehicleController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -301,8 +299,7 @@ class VehicleController extends Controller
             ->get(fields_get('vehicles'));
 
         if ($request->ajax()) {
-            $vehicles = $vehicles->map(function ($vehicle)
-            {
+            $vehicles = $vehicles->map(function ($vehicle) {
                 $vehicle->user_id = id_encode($vehicle->user_id);
                 $vehicle->vehicle_type_id = id_encode($vehicle->vehicle_type_id);
 
@@ -310,7 +307,7 @@ class VehicleController extends Controller
             });
 
             return response()->json([
-                'data' => $vehicles->toJson()
+                'data' => $vehicles->toJson(),
             ]);
         }
 
@@ -326,14 +323,12 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::where('user_id', id_parent())
             ->with([
-                'type' => function ($query)
-                {
+                'type' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
-                'guests' => function ($query)
-                {
+                'guests' => function ($query): void {
                     $query->select(['id', 'name', 'last_name']);
-                }
+                },
             ])->get(fields_get('vehicles'));
 
         if ($vehicles->isEmpty()) {
@@ -342,6 +337,6 @@ class VehicleController extends Controller
             return redirect()->route('vehicles.index');
         }
 
-        return Excel::download(new VehiclesReport($vehicles), trans('vehicles.title') . '.xlsx');
+        return Excel::download(new VehiclesReport($vehicles), trans('vehicles.title').'.xlsx');
     }
 }

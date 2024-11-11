@@ -12,8 +12,8 @@
             </div>
         </div>
         <a class="card-footer text-white clearfix small z-1" :href="url">
-            <span class="float-left">{{ $t('common.view.details') }}</span>
-            <span class="float-right">
+            <span class="float-start">{{ $t('common.view.details') }}</span>
+            <span class="float-end">
                 <i class="fa fa-angle-right"></i>
             </span>
         </a>

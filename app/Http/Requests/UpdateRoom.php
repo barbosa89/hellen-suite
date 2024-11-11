@@ -30,7 +30,7 @@ class UpdateRoom extends FormRequest
             'min_price' => 'required|numeric|lte:price',
             'capacity' => 'required|integer|min:1|max:12',
             'tax_status' => 'required|in:0,1,2',
-            'tax' => 'nullable|numeric|min:0.01|max:0.5'
+            'tax' => 'nullable|numeric|min:0.01|max:0.5',
         ];
     }
 }

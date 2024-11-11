@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Invoice;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class InvoicePayment extends Model
 {
     use HasFactory;
 
     public const ERROR = 'ERROR';
+
     public const APPROVED = 'APPROVED';
+
     public const DECLINED = 'DECLINED';
 
     /**

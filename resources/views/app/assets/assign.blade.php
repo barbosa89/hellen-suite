@@ -38,7 +38,7 @@
 
                     <div class="form-group{{ $errors->has('asset') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('assets.title'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="asset" id="asset" required>
+                        <select class="form-control" title="{{ trans('common.chooseOption') }}" name="asset" id="asset" required>
                             @foreach ($assets as $asset)
                                 <option value="{{ id_encode($asset->id) }}" {{ $loop->first ? 'selected' : '' }}>
                                     {{ $asset->description }} No. {{ $asset->number }}
@@ -53,7 +53,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-dark">
                         @lang('common.assign')
                     </button>
                     <a href="{{ route('assets.index') }}" class="btn btn-default">

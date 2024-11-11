@@ -25,7 +25,7 @@ class StoreAdditional extends FormRequest
     {
         return [
             'description' => 'required|string|max:191',
-            'value' => 'required|numeric|min:0.01|max:9999999'
+            'value' => 'required|numeric|min:0.01|max:9999999',
         ];
     }
 }

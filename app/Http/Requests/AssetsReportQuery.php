@@ -15,7 +15,7 @@ class AssetsReportQuery extends FormRequest
     {
         return [
             'type' => 'required|string|in:all,one',
-            'hotel' => 'nullable|string|hashed_exists:hotels,id'
+            'hotel' => 'nullable|string|hashed_exists:hotels,id',
         ];
     }
 }

@@ -23,7 +23,7 @@ class ServicesReport implements FromView
     public function view(): View
     {
         return view('app.services.exports.services', [
-            'hotels' => $this->hotels
+            'hotels' => $this->hotels,
         ]);
     }
 }

@@ -2,44 +2,23 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Models\Hotel;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class VerifyTeamMemberEmail extends Notification
 {
     use Queueable;
 
-    /**
-     * The new team member
-     *
-     * @var App\Models\User
-     */
-    public $user;
+    public User $user;
 
-    /**
-     * The hotel headquarters
-     *
-     * @var App\Models\Hotel
-     */
-    public $hotel;
+    public Hotel $hotel;
 
-    /**
-     * Temporary password
-     *
-     * @var string
-     */
-    public $password;
+    public string $password;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(User $user, Hotel $hotel, string $password)
     {
         $this->user = $user;
@@ -47,51 +26,33 @@ class VerifyTeamMemberEmail extends Notification
         $this->password = $password;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         $url = URL::temporarySignedRoute(
             'accounts.verify',
-            now()->addDay(1),
+            now()->addDay(),
             [
                 'email' => $this->user->email,
-                'token' => $this->user->token
+                'token' => $this->user->token,
             ]
         );
 
         return (new MailMessage)
-                    ->subject('Verificación de correo electrónico')
-                    ->greeting('Hola, ' . $this->user->name)
-                    ->line($this->hotel->business_name . ' te ha agregado como miembro de su equipo.')
-                    ->line('Tu contraseña temporal es: ' . $this->password)
-                    ->line('Por favor, haz clic en el siguiente enlace para verificar tu correo.')
-                    ->action('Verificar correo', $url)
-                    ->line('Gracias por ser parte de ' . config('app.name'));
+            ->subject('Verificación de correo electrónico')
+            ->greeting('Hola, '.$this->user->name)
+            ->line($this->hotel->business_name.' te ha agregado como miembro de su equipo.')
+            ->line('Tu contraseña temporal es: '.$this->password)
+            ->line('Por favor, haz clic en el siguiente enlace para verificar tu correo.')
+            ->action('Verificar correo', $url)
+            ->line('Gracias por ser parte de '.config('app.name'));
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [
             //

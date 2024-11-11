@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return [
     'title' => 'Rooms',
     'disabled' => 'Disabled',
     'free' => 'Free',
@@ -19,7 +19,7 @@ return array (
     'changeRoom' => 'Change room',
     'currentRoom' => 'Current room',
     'deliver' => 'Deliver the room',
-    'no' =>  [
+    'no' => [
         'created' => 'There are no rooms created',
     ],
     'type' => 'Indicates if the room is a suite',
@@ -33,4 +33,4 @@ return array (
     'change' => [
         'disabled' => 'The room cannot be changed',
     ],
-);
+];

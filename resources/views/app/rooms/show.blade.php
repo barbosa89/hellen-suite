@@ -142,22 +142,22 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                <a class="nav-link active" id="vouchers-tab" data-bs-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
                     @lang('transactions.title')
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                <a class="nav-link" id="charts-tab" data-bs-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
                     @lang('common.chart')
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="assets-tab" data-toggle="tab" href="#assets" role="tab" aria-controls="assets" aria-selected="false">
+                <a class="nav-link" id="assets-tab" data-bs-toggle="tab" href="#assets" role="tab" aria-controls="assets" aria-selected="false">
                     @lang('assets.title')
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="false">
+                <a class="nav-link" id="products-tab" data-bs-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="false">
                     @lang('products.title')
                 </a>
             </li>
@@ -221,7 +221,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        generate_chart('myChart', Array.from({!! $data->toJson() !!}))
-    </script>
+<script type="module">
+import { generate_chart } from '{{ Vite::asset("resources/js/common.js") }}'
+
+generate_chart('myChart', Array.from({!! $data->toJson() !!}))
+</script>
 @endsection

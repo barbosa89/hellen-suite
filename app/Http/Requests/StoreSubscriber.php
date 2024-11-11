@@ -24,7 +24,7 @@ class StoreSubscriber extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email:rfc,dns,spoof,filter,strict'
+            'email' => 'required|email:rfc,dns,spoof,filter,strict',
         ];
     }
 }

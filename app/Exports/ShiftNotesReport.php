@@ -24,14 +24,12 @@ class ShiftNotesReport implements FromView, WithTitle
     public function view(): View
     {
         return view('app.shifts.exports.notes', [
-            'shift' => $this->shift
+            'shift' => $this->shift,
         ]);
     }
 
     /**
      * Sheet title
-     *
-     * @return string
      */
     public function title(): string
     {

@@ -1,18 +1,15 @@
 <?php
 
-return array (
-  'title' => 'Dining service',
-  'new' => 
-  array (
-    'item' => 'New item',
-    'menu' => 
-    array (
-      'item' => 'New menu item',
-    ),
-  ),
-  'menu' => 
-  array (
-    'item' => 'Menu item',
-  ),
-  'item' => 'Item',
-);
+return [
+    'title' => 'Dining service',
+    'new' => [
+        'item' => 'New item',
+        'menu' => [
+            'item' => 'New menu item',
+        ],
+    ],
+    'menu' => [
+        'item' => 'Menu item',
+    ],
+    'item' => 'Item',
+];

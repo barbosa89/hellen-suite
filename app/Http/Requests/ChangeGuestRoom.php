@@ -24,7 +24,7 @@ class ChangeGuestRoom extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'required|string|exists:rooms,number'
+            'number' => 'required|string|exists:rooms,number',
         ];
     }
 }

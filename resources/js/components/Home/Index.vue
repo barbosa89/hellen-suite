@@ -35,10 +35,10 @@
 </template>
 
 <script>
-    import IconCards from './IconCards'
-    import NoteCardList from '../Notes/CardList'
-    import GuestChartCard from '../Guests/ChartCard'
-    import VoucherCardList from '../Vouchers/CardList'
+    import IconCards from './IconCards.vue'
+    import NoteCardList from '../Notes/CardList.vue'
+    import GuestChartCard from '../Guests/ChartCard.vue'
+    import VoucherCardList from '../Vouchers/CardList.vue'
 
     export default {
         components: {

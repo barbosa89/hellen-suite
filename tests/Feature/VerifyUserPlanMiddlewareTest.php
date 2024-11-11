@@ -2,17 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Constants\Roles;
+use App\Models\Hotel;
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\Hotel;
-use App\Constants\Roles;
 use Database\Seeders\PlanSeeder;
-use Spatie\Permission\Models\Role;
-use Database\Seeders\RolesTableSeeder;
-use Spatie\Permission\Models\Permission;
-use Database\Seeders\PermissionsTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class VerifyUserPlanMiddlewareTest extends TestCase
 {
@@ -24,17 +22,17 @@ class VerifyUserPlanMiddlewareTest extends TestCase
 
         Role::create([
             'name' => Roles::MANAGER,
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'hotels.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'hotels.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->seed(PlanSeeder::class);

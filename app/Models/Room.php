@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Traits\Queryable;
 use App\Traits\InteractWithLogs;
+use App\Traits\Queryable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Room extends Model
 {
-    use Queryable;
     use HasFactory;
-    use LogsActivity;
     use InteractWithLogs;
+    use LogsActivity;
+    use Queryable;
 
     public const OCCUPIED = '0';
 
@@ -31,7 +31,7 @@ class Room extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'description', 'price', 'min_price', 'status', 'is_suite', 'capacity', 'floor'
+        'number', 'description', 'price', 'min_price', 'status', 'is_suite', 'capacity', 'floor',
     ];
 
     /**
@@ -72,25 +72,16 @@ class Room extends Model
         return $this->attributes['hotel_hash'] = id_encode($this->attributes['hotel_id']);
     }
 
-    /**
-     * @return string
-     */
     public function getAvailableAttribute(): string
     {
         return self::AVAILABLE;
     }
 
-    /**
-     * @return string
-     */
     public function getDisabledAttribute(): string
     {
         return self::DISABLED;
     }
 
-    /**
-     * @return string
-     */
     public function getMaintenanceAttribute(): string
     {
         return self::MAINTENANCE;
@@ -145,41 +136,26 @@ class Room extends Model
         return $query->select(['id', 'user_id', 'hotel_id', ...$this->fillable]);
     }
 
-    /**
-     * @return boolean
-     */
     public function canDisable(): bool
     {
         return in_array($this->status, [self::AVAILABLE, self::CLEANING, self::MAINTENANCE]);
     }
 
-    /**
-     * @return boolean
-     */
     public function canEnable(): bool
     {
         return in_array($this->status, [self::CLEANING, self::DISABLED, self::MAINTENANCE]);
     }
 
-    /**
-     * @return boolean
-     */
     public function canDoMaintenance(): bool
     {
         return in_array($this->status, [self::AVAILABLE, self::CLEANING, self::DISABLED]);
     }
 
-    /**
-     * @return boolean
-     */
     public function isToggleable(): bool
     {
         return $this->status != self::OCCUPIED;
     }
 
-    /**
-     * @return boolean
-     */
     public function isFree(): bool
     {
         return $this->status == self::AVAILABLE;

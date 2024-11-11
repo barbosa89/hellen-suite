@@ -36,7 +36,7 @@
 
         <div class="form-group{{ $errors->has('guest') ? ' has-error' : '' }}">
             <label for="pwd">@lang('guests.guest'):</label>
-            <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
+            <select class="form-control" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
                 @foreach ($voucher->guests as $guest)
                     <option value="{{ id_encode($guest->id) }}">{{ $guest->full_name }}</option>
                 @endforeach
@@ -88,13 +88,16 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $('#guest').change(function () {
-            if ($('#guest').val()) {
-                if ($('#search-input').is(':hidden')) {
-                    $('#search-input').fadeIn();
+        document.querySelector('#guest').addEventListener('change', function() {
+            const guestValue = document.querySelector('#guest').value;
+            const searchInput = document.querySelector('#search-input');
+
+            if (guestValue) {
+                if (searchInput.style.display === 'none' || searchInput.style.display === '') {
+                    searchInput.style.display = 'block';
                 }
             } else {
-                $('#search-input').fadeOut();
+                searchInput.style.display = 'none';
             }
         });
 
@@ -112,7 +115,7 @@
                 cancelButtonText: translator.trans('common.cancel')
             }).then(result => {
                 if (result.value) {
-                    window.location.href = url + $('#guest').val();
+                    window.location.href = url + document.querySelector('#guest').value;
                 }
             });
         }

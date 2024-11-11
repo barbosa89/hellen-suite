@@ -23,7 +23,7 @@ class ProductReport implements FromView
     public function view(): View
     {
         return view('app.products.exports.product', [
-            'product' => $this->product
+            'product' => $this->product,
         ]);
     }
 }

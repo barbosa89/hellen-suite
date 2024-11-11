@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use App\Traits\InteractWithLogs;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shift extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use InteractWithLogs;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -57,9 +57,6 @@ class Shift extends Model
 
     /**
      * Get the current shift
-     *
-     * @param integer $hotel_id
-     * @return \App\Models\Shift
      */
     public static function current(int $hotel_id): Shift
     {
@@ -77,13 +74,10 @@ class Shift extends Model
 
     /**
      * Create new Shift
-     *
-     * @param integer $hotel_id
-     * @return \App\Models\Shift
      */
     public static function start(int $hotel_id): Shift
     {
-        $shift = new Shift();
+        $shift = new Shift;
         $shift->team_member = auth()->user()->id;
         $shift->team_member_name = auth()->user()->name;
         $shift->user()->associate(id_parent());

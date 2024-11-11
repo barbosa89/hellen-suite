@@ -16,7 +16,7 @@
                             </a>
                         </td>
                         <td>
-                            <button class="btn btn-primary btn-sm" @click="redirect(record)">
+                            <button class="btn btn-dark btn-sm" @click="redirect(record)">
                                 <em class="fa fa-plus"></em>
                             </button>
                         </td>
@@ -27,56 +27,49 @@
 </template>
 
 <script>
-    import SearchInput from '../SearchInput'
-    import VueTable from '@barbosa89/vue-table'
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
 
-    export default {
-        props: {
-            voucherHash: {
-                type: String,
-                required: true
+export default {
+    props: {
+        voucherHash: {
+            type: String,
+            required: true
+        }
+    },
+    data() {
+        return {
+            url: route('api.web.guests.index', {status: 'is_not_staying', per_page: 100}),
+            guests: [],
+            headers: [
+                {
+                    description: wTrans('common.name')
+                },
+                {
+                    description: wTrans('common.idNumber')
+                },
+                {
+                    description: wTrans('common.options')
+                },
+            ]
+        }
+    },
+    methods: {
+        setData(data) {
+            if (data.guests.data.length > 0) {
+                this.guests = []
+                setTimeout(() => {
+                    this.guests = data.guests.data
+                }, 500)
+            } else {
+                toast.info(wTrans('common.without.results'))
             }
         },
-        data() {
-            return {
-                url: route('api.web.guests.index', {status: 'is_not_staying', per_page: 100}),
-                guests: [],
-                headers: [
-                    {
-                        description: this.$root.$t('common.name')
-                    },
-                    {
-                        description: this.$root.$t('common.idNumber')
-                    },
-                    {
-                        description: this.$root.$t('common.options')
-                    },
-                ]
-            }
-        },
-        components: {
-            SearchInput,
-            VueTable
-        },
-        methods: {
-            setData(data) {
-                if (data.guests.data.length > 0) {
-                    this.guests = []
-                    setTimeout(() => {
-                        this.guests = data.guests.data
-                    }, 500)
-                } else {
-                    toastr.info(
-                        this.$root.$t('common.without.results'),
-                        this.$root.$t('common.sorry')
-                    )
-                }
-            },
-            redirect(guest) {
-                let route = window.route('vouchers.guests', {id: this.voucherHash, guest: guest.hash})
+        redirect(guest) {
+            let route = window.route('vouchers.guests', {id: this.voucherHash, guest: guest.hash})
 
-                window.location.href = route
-            }
+            window.location.href = route
         }
     }
+}
 </script>

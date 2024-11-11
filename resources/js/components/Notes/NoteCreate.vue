@@ -64,11 +64,11 @@
 
         <div class="row my-4">
             <div class="col-12">
-                <button role="button" class="btn btn-primary" @click="create">
+                <button role="button" class="btn btn-dark" @click="create">
                     {{ $t('common.create') }}
                 </button>
 
-                <a href="/notes" class="btn btn-secondary">
+                <a href="/notes" class="btn btn-light">
                     {{ $t('common.back') }}
                 </a>
             </div>
@@ -77,192 +77,177 @@
 </template>
 
 <script>
-    import VoerroTagsInput from '@voerro/vue-tagsinput'
-    import Editor from '@tinymce/tinymce-vue'
+import VueTagsInput from '@james090500/vue-tagsinput'
+import Editor from '@tinymce/tinymce-vue'
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
 
-    export default {
-        mounted() {
-            this.loadTags()
+export default {
+    mounted() {
+        this.loadTags()
+    },
+    data() {
+        return {
+            hotels: [],
+            selected_tags: [],
+            hotel: '',
+            content: '',
+            add: false,
+            tags: [],
+            errors: []
+        }
+    },
+    components: {
+        "tags-input": VueTagsInput,
+        'editor': Editor
+    },
+    watch: {
+        content(current, old) {
+            // Check hashtags in content
+            this.checkVoucherNumbers()
+        }
+    },
+    methods: {
+        loadTags() {
+            axios.get('/tags')
+                .then(response => {
+                    if (response.data.length) {
+                        this.tags = response.data
+                    }
+                })
         },
-        data() {
-            return {
-                hotels: [],
-                selected_tags: [],
-                hotel: '',
-                content: '',
-                add: false,
-                tags: [],
-                errors: []
+        tagAdded(tag) {
+            if (tag.hasOwnProperty('key')) {
+                this.createTag(tag)
             }
         },
-        components: {
-            "tags-input": VoerroTagsInput,
-            'editor': Editor
-        },
-        watch: {
-            content(current, old) {
-                // Check hashtags in content
-                this.checkVoucherNumbers()
-            }
-        },
-        methods: {
-            loadTags() {
-                axios.get('/tags')
-                    .then(response => {
-                        if (response.data.length) {
-                            this.tags = response.data
-                        }
-                    })
-            },
-            tagAdded(tag) {
-                if (tag.hasOwnProperty('key')) {
-                    this.createTag(tag)
+        create() {
+            if (this.validate()) {
+                Swal.fire({
+                    title: wTrans('common.confirm'),
+                    text: wTrans('common.confirmAction'),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: wTrans('common.continue'),
+                    cancelButtonText: wTrans('common.cancel')
+                }).then((result) => {
+                    if (result.value) {
+                        this.send()
+                    }
+                })
+            } else {
+                if (this.errors.length == 0) {
+                    toast.info(wTrans('notes.check'))
                 }
-            },
-            create() {
-                if (this.validate()) {
-                    Swal.fire({
-                        title: this.$root.$t('common.confirm'),
-                        text: this.$root.$t('common.confirmAction'),
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: this.$root.$t('common.continue'),
-                        cancelButtonText: this.$root.$t('common.cancel')
-                    }).then((result) => {
-                        if (result.value) {
-                            this.send()
-                        }
-                    })
+
+                this.showErrors()
+            }
+        },
+        validate() {
+            if (this.hotel.length == 0) {
+                return false
+            }
+
+            if (this.content.length == 0) {
+                return false
+            }
+
+            if (this.selected_tags.length == 0) {
+                return false
+            }
+
+            if (this.errors.length) {
+                return false
+            }
+
+            return true
+        },
+        send() {
+            axios.post('/notes', {
+                hotel_id: this.hotel,
+                content: this.content,
+                tags: this.selected_tags,
+                add: this.add
+            }).then(response => {
+                if (response.data.status) {
+                    this.reset()
+
+                    toast.success(wTrans('common.createdSuccessfully'))
+                }
+            }).catch(error => {
+                if (error.response.status == '422') {
+                    toast.info(error.response.data.errors.hotel_id)
                 } else {
-                    if (this.errors.length == 0) {
-                        toastr.info(
-                            this.$root.$t('notes.check'),
-                            this.$root.$t('common.sorry')
-                        )
-                    }
-
-                    this.showErrors()
+                    toast.error(wTrans('common.error'))
                 }
-            },
-            validate() {
-                if (this.hotel.length == 0) {
-                    return false
-                }
+            })
+        },
+        createTag(tag) {
+            axios.post('/tags', {
+                tag: tag.value
+            }).then(response => {
+                tag.hash = response.data.hash
 
-                if (this.content.length == 0) {
-                    return false
+                if (!this.existsTag(response.data.hash)) {
+                    this.tags.push({
+                        hash: response.data.hash,
+                        value: response.data.value,
+                    })
                 }
 
-                if (this.selected_tags.length == 0) {
-                    return false
-                }
+            }).catch(_error => {
+                toast.error(wTrans('common.error'))
+            })
+        },
+        existsTag(hash) {
+            let results = _.find(this.tags, tag => {
+                return tag.hash == hash
+            })
 
-                if (this.errors.length) {
-                    return false
-                }
+            return typeof results === Object
+        },
+        reset() {
+            this.selected_tags = []
+            this.hotel = ''
+            this.content = ''
+            this.add = false
+            this.errors = []
+        },
+        checkVoucherNumbers() {
+            // Reset errors
+            this.errors = []
 
-                return true
-            },
-            send() {
-                axios.post('/notes', {
-                    hotel_id: this.hotel,
-                    content: this.content,
-                    tags: this.selected_tags,
-                    add: this.add
-                }).then(response => {
-                    if (response.data.status) {
-                        this.reset()
+            // Get all hashtags
+            let hashtags =  this.getHashtags()
 
-                        toastr.success(
-                            this.$root.$t('common.createdSuccessfully'),
-                            this.$root.$t('common.great'),
-                        )
-                    }
-                }).catch(error => {
-                    if (error.response.status == '422') {
-                        toastr.info(
-                            error.response.data.errors.hotel_id,
-                            this.$root.$t('common.sorry'),
-                        )
-                    } else {
-                        toastr.error(
-                            this.$root.$t('common.error'),
-                            'Error'
-                        )
-                    }
-                })
-            },
-            createTag(tag) {
-                axios.post('/tags', {
-                    tag: tag.value
-                }).then(response => {
-                    this.$set(tag, 'hash', response.data.hash)
+            // Validate each voucher number exists
+            this.checkHashtags(hashtags)
+        },
+        getHashtags() {
+            return this.content.match(/#(\w+)/g);
+        },
+        checkHashtags(hashtags) {
+            _.each(hashtags, hashtag => {
+                let number = hashtag.replace('#', '')
 
-                    if (!this.existsTag(response.data.hash)) {
-                        this.tags.push({
-                            hash: response.data.hash,
-                            value: response.data.value,
-                        })
-                    }
-
-                }).catch(error => {
-                    toastr.error(
-                        this.$root.$t('common.error'),
-                        'Error'
-                    )
-                })
-            },
-            existsTag(hash) {
-                let results = _.find(this.tags, tag => {
-                    return tag.hash == hash
-                })
-
-                return typeof results === Object
-            },
-            reset() {
-                this.selected_tags = []
-                this.hotel = ''
-                this.content = ''
-                this.add = false
-                this.errors = []
-            },
-            checkVoucherNumbers() {
-                // Reset errors
-                this.errors = []
-
-                // Get all hashtags
-                let hashtags =  this.getHashtags()
-
-                // Validate each voucher number exists
-                this.checkHashtags(hashtags)
-            },
-            getHashtags() {
-                return this.content.match(/#(\w+)/g);
-            },
-            checkHashtags(hashtags) {
-                _.each(hashtags, hashtag => {
-                    let number = hashtag.replace('#', '')
-
-                    if (number.length == 12) {
-                        axios.get('/vouchers/search?query=' + number)
+                if (number.length == 12) {
+                    axios
+                        .get('/vouchers/search?query=' + number)
                         .then(response => {
                             if (response.data.data.length == 0) {
-                                this.errors.push(this.$root.$t('vouchers.notfound') + ': #' + number)
+                                this.errors.push(wTrans('vouchers.notfound') + ': #' + number)
                             }
                         })
-                    }
-                })
-            },
-            showErrors() {
-                _.each(this.errors, error => {
-                    toastr.error(
-                        error,
-                        'Error'
-                    )
-                })
-            }
+                }
+            })
         },
-    }
+        showErrors() {
+            _.each(this.errors, error => {
+                toast.error(error)
+            })
+        }
+    },
+}
 </script>

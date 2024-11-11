@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Spatie\Newsletter\Facades\Newsletter;
+use Tests\TestCase;
 
 class SubscriberTest extends TestCase
 {
@@ -22,7 +22,7 @@ class SubscriberTest extends TestCase
         Newsletter::shouldReceive('subscribePending')->once()->with($email);
 
         $this->post('/subscribe', [
-            'email' => $email
+            'email' => $email,
         ])->assertRedirect('/');
 
         $message = session('flash_notification')->first();
@@ -42,7 +42,7 @@ class SubscriberTest extends TestCase
         Newsletter::shouldNotReceive('subscribePending');
 
         $this->post('/subscribe', [
-            'email' => $email
+            'email' => $email,
         ])->assertRedirect('/');
 
         $message = session('flash_notification')->first();
@@ -61,7 +61,7 @@ class SubscriberTest extends TestCase
         Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(true);
         Newsletter::shouldReceive('unsubscribe')->once()->with($email);
 
-        $this->get('/unsubscribe/' . $email)
+        $this->get('/unsubscribe/'.$email)
             ->assertRedirect('/');
 
         $message = session('flash_notification')->first();
@@ -80,7 +80,7 @@ class SubscriberTest extends TestCase
         Newsletter::shouldReceive('isSubscribed')->once()->with($email)->andReturn(false);
         Newsletter::shouldNotReceive('unsubscribe');
 
-        $this->get('/unsubscribe/' . $email)
+        $this->get('/unsubscribe/'.$email)
             ->assertRedirect('/');
 
         $message = session('flash_notification')->first();

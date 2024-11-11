@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\Shift;
 use App\Models\Voucher;
+use Closure;
 
 class OpenShift
 {
@@ -12,7 +12,6 @@ class OpenShift
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

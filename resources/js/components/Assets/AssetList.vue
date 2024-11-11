@@ -74,11 +74,11 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
-                            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                 <em class="fa fa-ellipsis-v"></em>
                             </button>
 
-                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                 <a v-if="$can('assets.show')" :href="'/assets/' + asset.hash" class="dropdown-item">
                                     {{ $t('common.show') }}
                                 </a>
@@ -112,6 +112,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -152,16 +155,10 @@ export default {
                         } else {
                             this.assets = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
+                            toast.info(wTrans('common.without.results'));
                         }
                     }).catch(_e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
+                        toast.error(wTrans('common.try'));
                     });
                 }
             }

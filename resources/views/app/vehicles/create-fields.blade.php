@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
     <label for="type">@lang('common.type'):</label>
-    <select name="type" id="type" class="form-control selectpicker" required>
+    <select name="type" id="type" class="form-control" required>
         @foreach ($types as $type)
             <option value="{{ id_encode($type->id) }}">{{ trans('vehicles.' . $type->type) }}</option>
         @endforeach

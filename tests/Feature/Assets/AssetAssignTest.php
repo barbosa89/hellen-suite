@@ -2,25 +2,28 @@
 
 namespace Tests\Feature\Assets;
 
-use Tests\TestCase;
-use App\Models\Room;
-use App\Models\User;
 use App\Models\Asset;
 use App\Models\Hotel;
-use Tests\Traits\HasPermissions;
-use Tests\Traits\HasFlashMessages;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Tests\TestCase;
+use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetAssignTest extends TestCase
 {
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
 
     private User $user;
+
     private Hotel $hotel;
+
     private Room $room;
+
     private Asset $asset;
 
     public function setUp(): void
@@ -72,12 +75,8 @@ class AssetAssignTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.assign')
-            ->assertViewHas('assets', function (Collection $data) {
-                return $data->first()->is($this->asset);
-            })
-            ->assertViewHas('room', function (Room $data) {
-                return $data->is($this->room);
-            });
+            ->assertViewHas('assets', fn (Collection $data) => $data->first()->is($this->asset))
+            ->assertViewHas('room', fn (Room $data) => $data->is($this->room));
     }
 
     public function test_guest_user_cannot_assign_asset_to_room(): void

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     'title' => 'Vouchers',
     'forCompany' => 'For company',
     'tourism' => 'Tourism',
@@ -53,67 +53,53 @@ return array(
     'process' => 'Process',
     'nothingToProcess' => 'There are no vouchers to process',
     'processing' => 'Voucher processing',
-    'has' =>
-    array(
-        'one' =>
-        array(
+    'has' => [
+        'one' => [
             'room' => 'This voucher only has one room',
-        ),
-    ),
-    'delivered' =>
-    array(
+        ],
+    ],
+    'delivered' => [
         'room' => 'The room was delivered',
-    ),
-    'impossible' =>
-    array(
-        'room' =>
-        array(
+    ],
+    'impossible' => [
+        'room' => [
             'change' => 'It is not possible to change the guest of your current room',
-        ),
-    ),
-    'inactive' =>
-    array(
+        ],
+    ],
+    'inactive' => [
         'guest' => 'The guest is inactive in the current voucher',
-    ),
-    'complete' =>
-    array(
+    ],
+    'complete' => [
         'processing' => 'All vouchers were processed',
-    ),
-    'incomplete' =>
-    array(
+    ],
+    'incomplete' => [
         'processing' => 'There are pending vouchers for processing',
-    ),
-    'load' =>
-    array(
-        'external' =>
-        array(
+    ],
+    'load' => [
+        'external' => [
             'services' => 'Load thirdparty services',
-        ),
-        'dining' =>
-        array(
+        ],
+        'dining' => [
             'services' => 'Load dining services',
-        ),
-    ),
+        ],
+    ],
     'back' => 'Back to voucher',
     'notfound' => 'Voucher not found',
-    'new' =>
-    array(
+    'new' => [
         'many' => 'new vouchers',
         'none' => 'No recent vouchers created',
         'one' => 'new voucher',
-    ),
-    'add' =>
-    array(
+    ],
+    'add' => [
         'companies' => 'Add companies',
-    ),
-    'register' =>
-    array(
+    ],
+    'register' => [
         'vehicles' => 'Register vehicles',
-    ),
+    ],
     'filters' => 'Voucher filters',
     'messages' => [
         'rooms' => [
             'unavailable' => 'No rooms available',
         ],
     ],
-);
+];

@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\Tag;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Hotel;
 use App\Constants\Roles;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\Hotel;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class TagTest extends TestCase
 {
@@ -23,12 +23,12 @@ class TagTest extends TestCase
 
         Role::create([
             'name' => Roles::MANAGER,
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'tags.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->user = User::factory()->create();
@@ -50,8 +50,8 @@ class TagTest extends TestCase
                     'description' => $tag->description,
                     'slug' => $tag->slug,
                     'hash' => $tag->hash,
-                    'value' => $tag->description
-                ]
+                    'value' => $tag->description,
+                ],
             ]);
     }
 
@@ -70,7 +70,7 @@ class TagTest extends TestCase
     {
         Permission::create([
             'name' => 'tags.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->user->givePermissionTo('tags.create');
@@ -87,7 +87,7 @@ class TagTest extends TestCase
         $this->assertDatabaseCount('tags', 1)
             ->assertDatabaseHas('tags', [
                 'description' => 'foo',
-                'user_id' => $this->user->id
+                'user_id' => $this->user->id,
             ]);
     }
 
@@ -95,7 +95,7 @@ class TagTest extends TestCase
     {
         Permission::create([
             'name' => 'tags.show',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->user->givePermissionTo('tags.show');
@@ -103,7 +103,7 @@ class TagTest extends TestCase
         $tag = Tag::factory()->for($this->user)->create();
 
         $hotel = Hotel::factory()->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
 
         $response = $this->get("/tags/{$tag->hash}/hotel/{$hotel->hash}");

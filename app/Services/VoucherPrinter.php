@@ -3,15 +3,14 @@
 namespace App\Services;
 
 use App\Contracts\VoucherPrinter as VoucherPrinterContract;
-use App\Models\Voucher;
 use App\Helpers\Customer;
+use App\Models\Voucher;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use LaravelDaily\Invoices\Invoice;
 use Illuminate\Support\Facades\Storage;
-use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
-use ReflectionClass;
+use LaravelDaily\Invoices\Classes\Party;
+use LaravelDaily\Invoices\Invoice;
 
 class VoucherPrinter implements VoucherPrinterContract
 {
@@ -46,9 +45,9 @@ class VoucherPrinter implements VoucherPrinterContract
         $customer = $this->getCustomer();
 
         $this->customer = new Party([
-            'name'          => $customer->name ?? '',
-            'address'       => $customer->address ?? '',
-            'code'          => $customer->tin ?? '',
+            'name' => $customer->name ?? '',
+            'address' => $customer->address ?? '',
+            'code' => $customer->tin ?? '',
             'phone' => $customer->phone ?? '',
             'custom_fields' => [
                 trans('common.email') => $customer->email ?? '',
@@ -72,7 +71,7 @@ class VoucherPrinter implements VoucherPrinterContract
             'phone' => $this->voucher->hotel->phone,
             'custom_fields' => [
                 trans('common.email') => $this->voucher->hotel->email,
-            ]
+            ],
         ]);
 
         return $this;
@@ -80,8 +79,8 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setRoomItems(): self
     {
-        $this->voucher->rooms->each(function ($room) {
-            $item = new InvoiceItem();
+        $this->voucher->rooms->each(function ($room): void {
+            $item = new InvoiceItem;
 
             $item->title(trans('rooms.number', ['number' => $room->number]))
                 ->pricePerUnit($room->pivot->subvalue)
@@ -96,8 +95,8 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setProductItems(): self
     {
-        $this->voucher->products->each(function ($product) {
-            $item = new InvoiceItem();
+        $this->voucher->products->each(function ($product): void {
+            $item = new InvoiceItem;
 
             $item->title($product->description)
                 ->pricePerUnit($product->price)
@@ -112,8 +111,8 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setServiceItems(): self
     {
-        $this->voucher->services->each(function ($service) {
-            $item = new InvoiceItem();
+        $this->voucher->services->each(function ($service): void {
+            $item = new InvoiceItem;
 
             $item->title($service->description)
                 ->pricePerUnit($service->price)
@@ -128,8 +127,8 @@ class VoucherPrinter implements VoucherPrinterContract
 
     public function setAditionalItems(): self
     {
-        $this->voucher->additionals->each(function ($aditional) {
-            $item = new InvoiceItem();
+        $this->voucher->additionals->each(function ($aditional): void {
+            $item = new InvoiceItem;
 
             $item->title($aditional->description)
                 ->pricePerUnit($aditional->value)

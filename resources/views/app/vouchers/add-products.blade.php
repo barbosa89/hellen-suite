@@ -53,17 +53,19 @@
 @section('scripts')
     <script type="text/javascript">
         function showTotal() {
-            const product = $('#product').val();
-            const quantity = $('#quantity').val();
-            const max = $('#product').find(':selected').data('max');
+            const productElement = document.querySelector('#product');
+            const product = productElement.value;
+            const quantityElement = document.querySelector('#quantity');
+            const quantity = quantityElement.value;
+            const max = productElement.options[productElement.selectedIndex].getAttribute('data-max');
             const url = '{{ route('products.total') }}';
 
-            if(validate(quantity, max)) {
+            if (validate(quantity, max)) {
                 calculateTotal(url, product, quantity);
             }
 
-            if(quantity > max) {
-                $('#quantity').val(1);
+            if (quantity > max) {
+                quantityElement.value = 1;
                 calculateTotal(url, product, 1);
             }
         }

@@ -1,18 +1,15 @@
 <?php
 
-return array (
-  'title' => 'Servicio de comedor',
-  'new' => 
-  array (
-    'item' => 'Nuevo ítem',
-    'menu' => 
-    array (
-      'item' => 'Nuevo ítem del menú',
-    ),
-  ),
-  'menu' => 
-  array (
-    'item' => 'Ítem del menú',
-  ),
-  'item' => 'Ítem',
-);
+return [
+    'title' => 'Servicio de comedor',
+    'new' => [
+        'item' => 'Nuevo ítem',
+        'menu' => [
+            'item' => 'Nuevo ítem del menú',
+        ],
+    ],
+    'menu' => [
+        'item' => 'Ítem del menú',
+    ],
+    'item' => 'Ítem',
+];

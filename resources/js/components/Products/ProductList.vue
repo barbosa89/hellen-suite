@@ -96,14 +96,14 @@
                                 <button
                                     type="button"
                                     id="dropdownMenuButton"
-                                    data-toggle="dropdown"
+                                    data-bs-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                     class="btn btn-link"
                                     >
                                 <i class="fa fa-ellipsis-v"></i>
                                 </button>
-                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                                <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                     <a
                                         :href="'/products/' + product.hash + '/increase'"
                                         class="dropdown-item"
@@ -168,6 +168,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -213,16 +216,10 @@ export default {
                             } else {
                                 this.products = []
 
-                                toastr.info(
-                                    this.$root.$t('common.without.results'),
-                                    this.$root.$t('common.sorry')
-                                );
+                                toast.info(wTrans('common.without.results'));
                             }
-                        }).catch(e => {
-                            toastr.error(
-                                this.$root.$t('common.try'),
-                                'Error'
-                            )
+                        }).catch(_e => {
+                            toast.error(wTrans('common.try'))
                         })
                 }
             }

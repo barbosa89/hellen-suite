@@ -2,20 +2,19 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
-use App\Models\Room;
-use App\Models\User;
 use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Models\Country;
+use App\Models\Room;
+use App\Models\User;
 use App\Models\Voucher;
 use Carbon\CarbonPeriod;
+use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\IdentificationTypesTableSeeder;
+use Tests\TestCase;
 
 class VoucherTest extends TestCase
 {
@@ -182,7 +181,7 @@ class VoucherTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -198,7 +197,7 @@ class VoucherTest extends TestCase
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         Check::factory()->create([
@@ -225,15 +224,12 @@ class VoucherTest extends TestCase
                         'data' => $this->generateData($labels, $date),
                         'backgroundColor' => $colors['backgroundColor'],
                         'borderColor' => $colors['borderColor'],
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
     /**
-     * @param string $column
-     * @param bool $status
-     * @param string $filterValue
      * @dataProvider statusProvider
      */
     public function test_user_can_filter_vouchers_by_status(string $column, bool $status, string $filterValue): void
@@ -251,7 +247,7 @@ class VoucherTest extends TestCase
         $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
-            $column => !$status,
+            $column => ! $status,
         ]);
 
         /** @var Voucher $filterableVoucher */
@@ -280,7 +276,6 @@ class VoucherTest extends TestCase
     }
 
     /**
-     * @param string $type
      * @dataProvider typeProvider
      */
     public function test_user_can_filter_vouchers_by_type(string $type): void
@@ -298,7 +293,7 @@ class VoucherTest extends TestCase
         $voucher = Voucher::factory()->create([
             'hotel_id' => $hotel->id,
             'user_id' => $manager->id,
-            'type' => Arr::first(Voucher::TYPES, fn($t) => $t !== $type),
+            'type' => Arr::first(Voucher::TYPES, fn ($t) => $t !== $type),
         ]);
 
         /** @var Voucher $filterableVoucher */
@@ -365,7 +360,7 @@ class VoucherTest extends TestCase
                 [
                     'type' => [
                         Voucher::DINING,
-                        Voucher::SALE
+                        Voucher::SALE,
                     ],
                 ]
             );

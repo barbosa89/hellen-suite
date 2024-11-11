@@ -2,23 +2,23 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Invoice;
-use Illuminate\Support\Str;
+use App\Models\User;
 use App\Services\PaymentGateway;
-use Database\Seeders\PlanSeeder;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Database\Seeders\PlanSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class PaymentGatewayTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+    use WithFaker;
 
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class PaymentGatewayTest extends TestCase
     {
         $user = User::factory()->create();
         $invoice = Invoice::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $gateway = PaymentGateway::create($invoice);
@@ -45,7 +45,7 @@ class PaymentGatewayTest extends TestCase
     {
         $user = User::factory()->create();
         $invoice = Invoice::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $redirect = PaymentGateway::create($invoice)->redirect();
@@ -60,7 +60,7 @@ class PaymentGatewayTest extends TestCase
 
         $user = User::factory()->create();
         $invoice = Invoice::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $gateway = new PaymentGateway($invoice);
@@ -78,9 +78,6 @@ class PaymentGatewayTest extends TestCase
 
         PaymentGateway::confirm($id);
 
-
-        Http::assertSent(function ($request) use ($id) {
-            return $request->url() == config('settings.payments.confirm') . $id;
-        });
+        Http::assertSent(fn ($request) => $request->url() == config('settings.payments.confirm').$id);
     }
 }

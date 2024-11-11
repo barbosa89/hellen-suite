@@ -9,14 +9,17 @@
 
     <title>{{ config('app.name') }}</title>
 
+    <link href="{{ Vite::asset('resources/images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
+    @routes
+
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/styles.css') }}" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/css/panel.css', 'resources/js/app.js'])
 </head>
 <body id="page-top">
     <div id="app">
@@ -55,18 +58,9 @@
     </div>
 
     <!-- Scripts -->
-    <script>
-        @auth
-            window.Permissions = @json(get_user_permissions());
-        @else
-            window.Permissions = [];
-        @endauth
-    </script>
-    @routes
-    @translations
+    @vite(['resources/js/panel.js', 'resources/js/common.js'])
+
     @yield('editor')
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ mix('js/scripts.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

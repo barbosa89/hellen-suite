@@ -1,7 +1,7 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a v-if="$can('vouchers.index')" href="/vouchers" class="navbar-brand text-muted">
+        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-end-0 border-start-0">
+            <a v-if="$can('vouchers.index')" href="/vouchers" class="navbar-brand text-body-secondary">
                 {{ $t('vouchers.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
@@ -168,6 +168,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -238,40 +241,29 @@ export default {
                     numbers.push(voucher.number)
                 })
 
-                axios.post('/vouchers/process', {
-                    numbers: numbers,
-                    hotel: this.hotel
-                }).then(response => {
-                    let processed = Array.from(response.data.processed)
+                axios
+                    .post('/vouchers/process', {
+                        numbers: numbers,
+                        hotel: this.hotel
+                    }).then(response => {
+                        let processed = Array.from(response.data.processed)
 
-                    processed.forEach((number, index) => {
-                        this.vouchers = _.filter(this.vouchers, (voucher) => {
-                            return voucher.number != number
+                        processed.forEach((number, index) => {
+                            this.vouchers = _.filter(this.vouchers, (voucher) => {
+                                return voucher.number != number
+                            })
                         })
-                    })
 
-                    if (this.vouchers.length > 0) {
-                        toastr.error(
-                            this.$root.$t('vouchers.incomplete.processing'),
-                            this.$root.$t('common.sorry')
-                        );
-                    } else {
-                        toastr.success(
-                            this.$root.$t('vouchers.complete.processing'),
-                            this.$root.$t('common.successful')
-                        );
-                    }
-                }).catch(e => {
-                    toastr.error(
-                        this.$root.$t('common.try'),
-                        'Error'
-                    );
-                });
+                        if (this.vouchers.length > 0) {
+                            toast.error(wTrans('vouchers.incomplete.processing'));
+                        } else {
+                            toast.success(wTrans('vouchers.complete.processing'));
+                        }
+                    }).catch(e => {
+                        toast.error(wTrans('common.try'));
+                    });
             } else {
-                toastr.error(
-                    this.$root.$t('common.noRecords'),
-                    'Error'
-                );
+                toast.error(wTrans('common.noRecords'));
             }
         }
     },

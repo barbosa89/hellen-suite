@@ -31,7 +31,7 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="start">{{ trans('common.startDate') }}:</label>
-                                <input type="text" class="form-control datepicker @error('start') is-invalid @enderror" name="start" id="start" value="{{ $start }}" required>
+                                <input type="date" class="form-control @error('start') is-invalid @enderror" name="start" id="start" value="{{ $start }}" required>
 
                                 @error ('start')
                                     <span class="invalid-feedback d-block" role="alert">
@@ -43,7 +43,7 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="end">{{ trans('common.endDate') }}:</label>
-                                <input type="text" class="form-control datepicker @error('end') is-invalid @enderror" name="end" id="end" value="{{ $end }}" required>
+                                <input type="date" class="form-control @error('end') is-invalid @enderror" name="end" id="end" value="{{ $end }}" required>
 
                                 @error ('end')
                                     <span class="invalid-feedback d-block" role="alert">
@@ -69,7 +69,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" role="button" class="btn btn-primary">
+                            <button type="submit" role="button" class="btn btn-dark">
                                 {{ trans('common.query') }}
                             </button>
                         </div>

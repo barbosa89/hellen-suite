@@ -2,20 +2,20 @@
 
 namespace Tests\Feature\Assets;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Asset;
 use App\Models\Hotel;
-use Tests\Traits\HasPermissions;
-use Illuminate\Support\Collection;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Tests\TestCase;
 use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetExportTest extends TestCase
 {
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
 
     private User $user;
 
@@ -68,10 +68,8 @@ class AssetExportTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.export')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel) {
-                return $hotels->count() === 1 &&
-                    $hotels->first()->is($hotel);
-            });
+            ->assertViewHas('hotels', fn (Collection $hotels) => $hotels->count() === 1 &&
+                $hotels->first()->is($hotel));
     }
 
     public function test_authorized_user_can_export_all_assets(): void
@@ -91,7 +89,7 @@ class AssetExportTest extends TestCase
             ]);
 
         $response->assertOk()
-            ->assertHeader('Content-Disposition', 'attachment; filename=Assets.xlsx');;
+            ->assertHeader('Content-Disposition', 'attachment; filename=Assets.xlsx');
     }
 
     public function test_authorized_user_can_export_assets_by_hotel(): void
@@ -112,6 +110,6 @@ class AssetExportTest extends TestCase
             ]);
 
         $response->assertOk()
-            ->assertHeader('Content-Disposition', 'attachment; filename=Assets.xlsx');;
+            ->assertHeader('Content-Disposition', 'attachment; filename=Assets.xlsx');
     }
 }

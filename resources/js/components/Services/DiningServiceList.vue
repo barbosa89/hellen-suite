@@ -60,17 +60,17 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
-                            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                 <i class="fa fa-ellipsis-v"></i>
                             </button>
 
-                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                 <a v-if="$can('dining.edit')" :href="'/dining/' + service.hash + '/edit'" class="dropdown-item">{{ $t('common.edit') }}</a>
                                 <a v-if="$can('dining.edit')" :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
                                     {{ service.status == 1 ? $t('common.disable') : $t('common.disable') }}
                                 </a>
                                 <a v-if="$can('dining.destroy')" href="#" :data-url="'/dining/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete.item') }}</a>
+                                    {{ $t('common.delete.item') }}
                                 </a>
                             </div>
                         </div>
@@ -93,6 +93,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -124,28 +127,23 @@ export default {
                 this.updateServiceList()
             } else {
                 if (current.length >= 3) {
-                    axios.post('/dining/search', {
-                        query: this.query,
-                        hotel: this.hotel
-                    }).then(response => {
-                        let services = JSON.parse(response.data.services);
+                    axios
+                        .post('/dining/search', {
+                            query: this.query,
+                            hotel: this.hotel
+                        }).then(response => {
+                            let services = JSON.parse(response.data.services);
 
-                        if (services.length > 0) {
-                            this.services = services
-                        } else {
-                            this.services = []
+                            if (services.length > 0) {
+                                this.services = services
+                            } else {
+                                this.services = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
-                        }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
-                    });
+                                toast.info(wTrans('common.without.results'));
+                            }
+                        }).catch(_e => {
+                            toast.error(wTrans('common.try'));
+                        });
                 }
             }
         }

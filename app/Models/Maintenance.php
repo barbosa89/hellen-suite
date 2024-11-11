@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Maintenance extends Model
 {
-    use Queryable;
     use HasFactory;
+    use Queryable;
 
     /**
      * @var array
@@ -39,7 +39,7 @@ class Maintenance extends Model
         return $query->whereHasMorph(
             'maintainable',
             $maintainableType,
-            function (Builder $query) use ($maintainableId) {
+            function (Builder $query) use ($maintainableId): void {
                 $query->where('id', id_decode($maintainableId));
             }
         );

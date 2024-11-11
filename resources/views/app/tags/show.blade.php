@@ -41,7 +41,7 @@
                     <div class="col-12">
                         <div class="row">
                             <div class="col-12 mt-2">
-                                <p class="text-muted border-top">
+                                <p class="text-body-secondary border-top">
                                     <small>{{ trans('common.created.at') }}: {{ $note->created_at }}</small>
                                 </p>
                             </div>

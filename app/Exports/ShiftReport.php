@@ -11,36 +11,13 @@ class ShiftReport implements WithMultipleSheets
 {
     use Exportable;
 
-    /**
-     * The shift to export.
-     *
-     * @var \App\Models\Shift
-     */
-    protected Shift $shift;
-
-    /**
-     * The Hotel Rooms.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected Collection $rooms;
-
-    /**
-     * Construct function
-     *
-     * @param Shift $shift
-     * @param Collection $rooms
-     */
-    public function __construct(Shift $shift, Collection $rooms)
-    {
-        $this->shift = $shift;
-        $this->rooms = $rooms;
-    }
+    public function __construct(
+        protected Shift $shift,
+        protected Collection $rooms
+    ) {}
 
     /**
      * Report sheets
-     *
-     * @return array
      */
     public function sheets(): array
     {

@@ -36,8 +36,8 @@
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                         <label for="date">@lang('common.date'):</label>
                         <input
-                            type="text"
-                            class="form-control datepicker"
+                            type="date"
+                            class="form-control"
                             name="date" id="date"
                             value="{{ $maintenance->date }}"
                             required
@@ -90,7 +90,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.register')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.register')</button>
                     <a href="{{ route('assets.show', ['id' => $maintenance->maintainable->hash]) }}" class="btn btn-default">
                         @lang('common.back')
                     </a>

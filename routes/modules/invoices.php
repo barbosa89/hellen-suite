@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvoiceController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('invoices/{number}/payments/confirm', [InvoiceController::class, 'confirmPayment'])
     ->name('invoices.payments.confirm')

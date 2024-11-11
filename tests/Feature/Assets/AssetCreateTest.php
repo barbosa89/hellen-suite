@@ -2,20 +2,20 @@
 
 namespace Tests\Feature\Assets;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Hotel;
 use App\Models\Room;
-use Tests\Traits\HasPermissions;
-use Illuminate\Support\Collection;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Tests\TestCase;
 use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetCreateTest extends TestCase
 {
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
 
     private const RESOURCE_NAME = 'assets.create';
 
@@ -93,9 +93,7 @@ class AssetCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.create')
-            ->assertViewHas('hotels', function (Collection $hotels) use ($hotel, $room) {
-                return $hotels->first()->is($hotel)
-                    && $hotels->first()->rooms->first()->is($room);
-            });
+            ->assertViewHas('hotels', fn (Collection $hotels) => $hotels->first()->is($hotel)
+                && $hotels->first()->rooms->first()->is($room));
     }
 }

@@ -2,29 +2,32 @@
 
 namespace Tests\Feature\Assets;
 
-use Tests\TestCase;
-use App\Models\Room;
-use App\Models\User;
 use App\Models\Asset;
 use App\Models\Hotel;
-use Tests\Traits\HasPermissions;
-use Tests\Traits\HasFlashMessages;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetShowTest extends TestCase
 {
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
 
     private const RESOURCE_NAME = 'assets.show';
 
     private string $route;
-    private User $user;
-    private Hotel $hotel;
-    private Room $room;
-    private Asset $asset;
 
+    private User $user;
+
+    private Hotel $hotel;
+
+    private Room $room;
+
+    private Asset $asset;
 
     public function setUp(): void
     {
@@ -78,10 +81,8 @@ class AssetShowTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.assets.show')
-            ->assertViewHas('asset', function (Asset $data) {
-                return $data->is($this->asset)
-                    && $data->hotel->is($this->hotel)
-                    && $data->room->is($this->room);
-            });
+            ->assertViewHas('asset', fn (Asset $data) => $data->is($this->asset)
+                && $data->hotel->is($this->hotel)
+                && $data->room->is($this->room));
     }
 }

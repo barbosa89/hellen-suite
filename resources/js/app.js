@@ -1,87 +1,78 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import.meta.glob([
+    '../images/**',
+])
 
-require('./bootstrap')
+import './bootstrap'
 
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { i18nVue } from 'laravel-vue-i18n'
+import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
+import Vue3Toastify from 'vue3-toastify'
+import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 
-window.Vue = Vue
+import SearchInput from './components/SearchInput.vue'
+import Table from './components/Table.vue'
+import HotelSelect from './components/Hotels/Select.vue'
+import TransactionSelects from './components/Transactions/TransactionSelects.vue'
+import TransactionLiveSearch from './components/Transactions/TransactionLiveSearch.vue'
+import ServiceList from './components/Services/ServiceList.vue'
+import DiningServiceList from './components/Services/DiningServiceList.vue'
+import ProductTransactions from './components/Products/ProductTransactions.vue'
+import ProductList from './components/Products/ProductList.vue'
+import RoomList from './components/Rooms/RoomList.vue'
+import PropTransactions from './components/Props/PropTransactions.vue'
+import PropList from './components/Props/PropList.vue'
+import AssetList from './components/Assets/AssetList.vue'
+import NoteCreate from './components/Notes/NoteCreate.vue'
+import TagList from './components/Tags/TagList.vue'
+import SearchGuests from './components/Vouchers/SearchGuests.vue'
+import ProcessList from './components/Vouchers/ProcessList.vue'
+import VoucherIndex from './components/Vouchers/Index.vue'
+import HomeIndex from './components/Home/Index.vue'
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+const app = createApp()
 
-import VueRouter from 'vue-router'
-import Permissions from './mixins/Permissions'
+app.component('search-input', SearchInput)
+app.component('vue-table', Table)
 
-// Commom
-Vue.component('search-input', require('./components/SearchInput.vue').default)
-Vue.component('hotel-select', require('./components/Hotels/Select.vue').default)
-Vue.component('transaction-selects', require('./components/Transactions/TransactionSelects.vue').default)
-Vue.component('transaction-live-search', require('./components/Transactions/TransactionLiveSearch.vue').default)
+app.component('hotel-select', HotelSelect)
+app.component('transaction-selects', TransactionSelects)
+app.component('transaction-live-search', TransactionLiveSearch)
 
-Vue.component('service-list', require('./components/Services/ServiceList.vue').default)
-Vue.component('dining-service-list', require('./components/Services/DiningServiceList.vue').default)
+app.component('service-list', ServiceList)
+app.component('dining-service-list', DiningServiceList)
 
-Vue.component('product-transactions', require('./components/Products/ProductTransactions.vue').default)
-Vue.component('product-list', require('./components/Products/ProductList.vue').default)
+app.component('product-transactions', ProductTransactions)
+app.component('product-list', ProductList)
 
-Vue.component('room-list', require('./components/Rooms/RoomList.vue').default)
+app.component('room-list', RoomList)
 
-Vue.component('prop-transactions', require('./components/Props/PropTransactions.vue').default)
-Vue.component('prop-list', require('./components/Props/PropList.vue').default)
+app.component('prop-transactions', PropTransactions)
+app.component('prop-list', PropList)
 
-Vue.component('asset-list', require('./components/Assets/AssetList.vue').default)
+app.component('asset-list', AssetList)
 
-Vue.component('note-create', require('./components/Notes/NoteCreate.vue').default)
-Vue.component('tag-list', require('./components/Tags/TagList.vue').default)
+app.component('note-create', NoteCreate)
+app.component('tag-list', TagList)
 
-Vue.component('search-guests', require('./components/Vouchers/SearchGuests.vue').default)
-Vue.component('process-list', require('./components/Vouchers/ProcessList.vue').default)
-Vue.component('vouchers-index', require('./components/Vouchers/Index.vue').default);
+app.component('search-guests', SearchGuests)
+app.component('process-list', ProcessList)
+app.component('vouchers-index', VoucherIndex);
 
-Vue.component('home-index', require('./components/Home/Index.vue').default);
+app.component('home-index', HomeIndex);
 
-import VueInternationalization from 'vue-i18n';
-import Locale from './vue-i18n-locales.generated';
+app.use(ZiggyVue)
+app.use(LaravelPermissionToVueJS)
+app.use(Vue3Toastify, {
+    autoClose: 3000,
+})
 
-Vue.mixin(Permissions);
+app.use(i18nVue, {
+    resolve: lang => {
+        const langs = import.meta.glob('../../lang/*.json', { eager: true });
 
-Vue.use(VueRouter);
-Vue.use(VueInternationalization);
+        return langs[`../../lang/${lang}.json`].default;
+    },
+})
 
-const lang = document.documentElement.lang.substr(0, 2);
-
-const i18n = new VueInternationalization({
-    locale: lang,
-    messages: Locale
-});
-
-const router = new VueRouter({
-    mode: 'history'
-});
-
-Vue.filter('date', function(value) {
-    if (value) {
-        return moment(String(value)).format('YY-MM-DD')
-    }
-
-    return ''
-});
-
-Vue.mixin({
-    methods: {
-        route: route
-    }
-});
-
-const app = new Vue({
-    el: '#app',
-    i18n,
-    router: router
-});
+app.mount("#app")

@@ -11,7 +11,7 @@ class NoteFactory extends Factory
         return [
             'content' => $this->faker->sentence(20),
             'team_member_name' => $this->faker->name,
-            'team_member_email' => $this->faker->email
+            'team_member_email' => $this->faker->email,
         ];
     }
 }

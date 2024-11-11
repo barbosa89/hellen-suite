@@ -4,18 +4,18 @@ namespace App\Models;
 
 use App\Traits\InteractWithLogs;
 use App\Traits\Queryable;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Asset extends Model
 {
-    use Queryable;
     use HasFactory;
-    use LogsActivity;
     use InteractWithLogs;
+    use LogsActivity;
+    use Queryable;
 
     /**
      * @var array

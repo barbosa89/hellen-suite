@@ -10,12 +10,11 @@ class SubscriberController extends Controller
     /**
      * Store a newly created subscriber in MailChimp API.
      *
-     * @param  \App\Http\Requests\StoreSubscriber  $request
      * @return \Illuminate\Http\Response
      */
     public function subscribe(StoreSubscriber $request)
     {
-        if (!Newsletter::isSubscribed($request->email)) {
+        if (! Newsletter::isSubscribed($request->email)) {
             Newsletter::subscribePending($request->email);
 
             flash()->overlay(trans('landing.subscribers.pending'), trans('landing.subscribers.title'));
@@ -36,7 +35,7 @@ class SubscriberController extends Controller
     {
         if (Newsletter::isSubscribed($email)) {
             Newsletter::unsubscribe($email);
-;
+
             flash()->overlay(trans('landing.subscribers.leaves'), trans('landing.subscribers.title'));
         } else {
             flash()->overlay(trans('landing.subscribers.unknown'), trans('landing.subscribers.title'));

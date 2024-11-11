@@ -2,30 +2,34 @@
 
 namespace Tests\Feature\Assets\Maintenances;
 
-use Tests\TestCase;
-use App\Models\Room;
-use App\Models\User;
 use App\Models\Asset;
 use App\Models\Hotel;
-use Illuminate\Support\Carbon;
-use Tests\Traits\HasPermissions;
-use Illuminate\Http\UploadedFile;
-use Tests\Traits\HasFlashMessages;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+use Tests\Traits\HasFlashMessages;
+use Tests\Traits\HasPermissions;
 
 class AssetMaintenanceStoreTest extends TestCase
 {
-    use WithFaker;
+    use HasFlashMessages;
     use HasPermissions;
     use RefreshDatabase;
-    use HasFlashMessages;
+    use WithFaker;
 
     private string $route;
+
     private User $user;
+
     private Hotel $hotel;
+
     private Room $room;
+
     private Asset $asset;
 
     public function setUp(): void
@@ -109,8 +113,6 @@ class AssetMaintenanceStoreTest extends TestCase
     }
 
     /**
-     * @param string $field
-     * @param array $data
      * @dataProvider errorProvider
      */
     public function test_it_checks_validation_errors(string $field, array $data): void

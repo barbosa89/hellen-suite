@@ -19,26 +19,26 @@ class PlanSeeder extends Seeder
                 'price' => 0,
                 'months' => 1,
                 'type' => Plan::FREE,
-                'status' => true
+                'status' => true,
             ],
             [
                 'price' => 365000,
                 'months' => 12,
                 'type' => Plan::BASIC,
-                'status' => true
+                'status' => true,
             ],
             [
                 'price' => 700000,
                 'months' => 12,
                 'type' => Plan::PREMIUM,
-                'status' => false
+                'status' => false,
             ],
             [
                 'price' => 0,
                 'months' => 12,
                 'type' => Plan::SPONSOR,
-                'status' => true
-            ]
+                'status' => true,
+            ],
         ]);
     }
 }

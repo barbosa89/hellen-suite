@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Repository;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,13 +12,10 @@ class TagRepository implements Repository
 {
     /**
      * Create new Tag
-     *
-     * @param array $data
-     * @return \App\Models\Tag
      */
     public function create(array $data): Tag
     {
-        $tag = new Tag();
+        $tag = new Tag;
         $tag->description = $data['tag'];
         $tag->user()->associate(id_parent());
         $tag->saveOrFail();
@@ -30,9 +25,6 @@ class TagRepository implements Repository
 
     /**
      * Retrieve model by ID
-     *
-     * @param  integer $id
-     * @return \App\Models\Tag
      */
     public function get(int $id): Tag
     {
@@ -47,10 +39,6 @@ class TagRepository implements Repository
 
     /**
      * Update model
-     *
-     * @param int $id
-     * @param array $data
-     * @return \App\Models\Tag
      */
     public function update(int $id, array $data): Tag
     {
@@ -63,9 +51,6 @@ class TagRepository implements Repository
 
     /**
      * Destroy model
-     *
-     * @param integer $id
-     * @return boolean
      */
     public function destroy(int $id): bool
     {
@@ -76,8 +61,6 @@ class TagRepository implements Repository
 
     /**
      * Get all tags
-     *
-     * @return \Illuminate\Support\Collection
      */
     public function all(): Collection
     {
@@ -88,9 +71,6 @@ class TagRepository implements Repository
 
     /**
      * Tag search by query text
-     *
-     * @param string $query
-     * @return \Illuminate\Support\Collection
      */
     public function search(string $query): Collection
     {

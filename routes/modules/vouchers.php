@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VoucherController;
+use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function() {
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
     Route::get('vouchers/{id}/rooms/{room}/deliver', [VoucherController::class, 'deliverRoom'])
         ->name('vouchers.rooms.deliver')
         ->middleware(['permission:vouchers.edit', 'open_shift']);

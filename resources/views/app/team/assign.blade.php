@@ -34,7 +34,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="hotel">Sede laboral:</label>
-                        <select class="form-control selectpicker" name="hotel" id="hotel" required>
+                        <select class="form-control" name="hotel" id="hotel" required>
                             @if ($member->headquarters->count() > 0)
                                 @foreach ($member->headquarters as $hotel)
                                     <option value="{{ id_encode($hotel->id) }}" selected>{{ $hotel->business_name }}</option>
@@ -53,8 +53,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.assign')</button>
-                    <a href="{{ route('team.index') }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('common.assign')</button>
+                    <a href="{{ route('team.index') }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>

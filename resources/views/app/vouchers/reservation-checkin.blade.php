@@ -46,7 +46,7 @@
             @endif
         </div>
 
-        <button type="submit" class="btn btn-primary">@lang('common.register')</button>
+        <button type="submit" class="btn btn-dark">@lang('common.register')</button>
         <a href="{{ route('rooms.index') }}" class="btn btn-link">
             @lang('common.cancel')
         </a>

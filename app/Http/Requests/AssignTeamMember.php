@@ -24,7 +24,7 @@ class AssignTeamMember extends FormRequest
     public function rules()
     {
         return [
-            'hotel' => 'required|string|max:50|hashed_exists:hotels,id'
+            'hotel' => 'required|string|max:50|hashed_exists:hotels,id',
         ];
     }
 }

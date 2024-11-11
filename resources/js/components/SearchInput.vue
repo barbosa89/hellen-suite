@@ -10,69 +10,66 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            url: {
-                type: String,
-                default: function () {
-                    return ''
-                }
-            },
-            hotel: {
-                type: String,
-                default: function () {
-                    return ''
-                }
-            },
-        },
-        data() {
-            return {
-                query: ''
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
+export default {
+    props: {
+        url: {
+            type: String,
+            default: function () {
+                return ''
             }
         },
-    watch: {
-        query: function(current, old) {
-            if (current.length == 0 || this.query.length == 0) {
-                this.$emit('reset')
-            } else {
-                if (current.length >= 3) {
-                    let params = {
-                        query_by: this.query,
-                    }
-
-                    if (this.hotel.length > 0) {
-                        params.hotel = this.hotel
-                    }
-
-                    axios
-                        .get(this.url, {
-                            params: params
-                        })
-                        .then(response => {
-                            if (response.data.hasOwnProperty('results')) {
-                                let results = response.data.results
-
-                                if (results.length > 0) {
-                                    this.$emit('results', results)
-                                } else {
-                                    toastr.info(
-                                        this.$root.$t('common.without.results'),
-                                        this.$root.$t('common.sorry')
-                                    )
-                                }
-                            } else {
-                                this.$emit('results', response.data)
-                            }
-
-                        }).catch(e => {
-                            toastr.error(
-                                this.$root.$t('common.try'),
-                                'Error'
-                            )
-                        })
-                }
+        hotel: {
+            type: String,
+            default: function () {
+                return ''
             }
+        },
+    },
+    data() {
+        return {
+            query: ''
         }
     },
+watch: {
+    query: function(current, old) {
+        if (current.length == 0 || this.query.length == 0) {
+            this.$emit('reset')
+        } else {
+            if (current.length >= 3) {
+                let params = {
+                    query_by: this.query,
+                }
+
+                if (this.hotel.length > 0) {
+                    params.hotel = this.hotel
+                }
+
+                axios
+                    .get(this.url, {
+                        params: params
+                    })
+                    .then(response => {
+                        if (response.data.hasOwnProperty('results')) {
+                            let results = response.data.results
+
+                            if (results.length > 0) {
+                                this.$emit('results', results)
+                            } else {
+                                toast.info(wTrans('common.without.results'))
+                            }
+                        } else {
+                            this.$emit('results', response.data)
+                        }
+
+                    }).catch(e => {
+                        toast.error(wTrans('common.try'))
+                    })
+            }
+        }
     }
+},
+}
 </script>

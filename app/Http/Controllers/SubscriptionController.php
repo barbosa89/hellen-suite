@@ -30,7 +30,6 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +40,6 @@ class SubscriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
     public function show(Subscription $subscription)
@@ -52,7 +50,6 @@ class SubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
     public function edit(Subscription $subscription)
@@ -63,8 +60,6 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Subscription $subscription)
@@ -75,7 +70,6 @@ class SubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
     public function destroy(Subscription $subscription)

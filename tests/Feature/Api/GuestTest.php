@@ -2,20 +2,21 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Guest;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class GuestTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+    use WithFaker;
 
     private const PERMISSION = 'guests.index';
+
     private Permission $permission;
 
     public function setUp(): void
@@ -77,7 +78,7 @@ class GuestTest extends TestCase
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
             'user_id' => $manager->id,
-            'created_at' => now()->subDays(6)
+            'created_at' => now()->subDays(6),
         ]);
 
         $response = $this->actingAs($manager)
@@ -107,8 +108,6 @@ class GuestTest extends TestCase
     }
 
     /**
-     * @param bool $status
-     * @param string $filter
      * @dataProvider filterByStatus
      */
     public function test_user_can_filter_guests_by_status(bool $status, string $filter)
@@ -135,27 +134,27 @@ class GuestTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment([
-                "data" => [
+                'data' => [
                     [
-                        "address" => $guest->address,
-                        "banned" => 0,
-                        "birthdate" => $guest->birthdate ?? null,
-                        "country_id" => $guest->country_id,
-                        "created_at" => $guest->created_at,
-                        "dni" => (string) $guest->dni,
-                        "email" => $guest->email,
-                        "gender" => $guest->gender ?? null,
-                        "hash" => $guest->hash,
-                        "identification_type_id" => $guest->identification_type_id,
-                        "last_name" => $guest->last_name,
-                        "name" => $guest->name,
-                        "full_name" => $guest->full_name,
-                        "phone" => $guest->phone ?? null,
-                        "profession" => $guest->profession ?? null,
-                        "responsible_adult" => 0,
-                        "status" => $status ? 1 : 0,
-                        "updated_at" => $guest->updated_at,
-                        "user_id" => $guest->user_id,
+                        'address' => $guest->address,
+                        'banned' => 0,
+                        'birthdate' => $guest->birthdate ?? null,
+                        'country_id' => $guest->country_id,
+                        'created_at' => $guest->created_at,
+                        'dni' => (string) $guest->dni,
+                        'email' => $guest->email,
+                        'gender' => $guest->gender ?? null,
+                        'hash' => $guest->hash,
+                        'identification_type_id' => $guest->identification_type_id,
+                        'last_name' => $guest->last_name,
+                        'name' => $guest->name,
+                        'full_name' => $guest->full_name,
+                        'phone' => $guest->phone ?? null,
+                        'profession' => $guest->profession ?? null,
+                        'responsible_adult' => 0,
+                        'status' => $status ? 1 : 0,
+                        'updated_at' => $guest->updated_at,
+                        'user_id' => $guest->user_id,
                     ],
                 ],
             ]);
@@ -166,18 +165,16 @@ class GuestTest extends TestCase
         return [
             'filter guests staying at the hotel' => [
                 true,
-                'is_staying'
+                'is_staying',
             ],
             'filter guests who are not staying at the hotel' => [
                 false,
-                'is_not_staying'
+                'is_not_staying',
             ],
         ];
     }
 
     /**
-     * @param bool $status
-     * @param string $filter
      * @dataProvider filterByOppositeStatus
      */
     public function test_user_can_not_filter_guests_with_opposite_status(bool $status, string $filter)
@@ -203,7 +200,7 @@ class GuestTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment([
-                "data" => []
+                'data' => [],
             ]);
     }
 
@@ -212,11 +209,11 @@ class GuestTest extends TestCase
         return [
             'filter guests staying at the hotel' => [
                 false,
-                'is_staying'
+                'is_staying',
             ],
             'filter guests who are not staying at the hotel' => [
                 true,
-                'is_not_staying'
+                'is_not_staying',
             ],
         ];
     }
@@ -236,7 +233,7 @@ class GuestTest extends TestCase
         /** @var Guest $guest */
         $guest = Guest::factory()->create([
             'user_id' => $manager->id,
-            'created_at' => now()->subDays(6)
+            'created_at' => now()->subDays(6),
         ]);
 
         $response = $this->actingAs($manager)
@@ -265,4 +262,3 @@ class GuestTest extends TestCase
             ]);
     }
 }
-

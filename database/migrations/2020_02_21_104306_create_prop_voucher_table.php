@@ -21,7 +21,7 @@ class CreatePropVoucherTable extends Migration
             $table->dateTime('created_at');
 
             $table->foreign('voucher_id')->references('id')->on('vouchers')
-            ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('prop_id')->references('id')->on('props')
                 ->onUpdate('cascade')->onDelete('cascade');
         });

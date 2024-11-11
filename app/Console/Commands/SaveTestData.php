@@ -51,9 +51,9 @@ class SaveTestData extends Command
             'model_has_roles',
             'role_has_permissions',
             'rooms',
-            'users'
+            'users',
         ];
 
-        Artisan::call('iseed ' . implode(',', $tables) .  ' --force');
+        Artisan::call('iseed '.implode(',', $tables).' --force');
     }
 }

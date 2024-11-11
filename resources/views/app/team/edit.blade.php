@@ -49,7 +49,7 @@
 
                     <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                         <label for="role">Rol:</label>
-                        <select class="form-control selectpicker" name="role" id="role" required>
+                        <select class="form-control" name="role" id="role" required>
                             <option value="{{ $member->roles->first()->name }}">
                                 {{ trans('users.' . $member->roles->first()->name) }}
                             </option>
@@ -65,8 +65,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('common.update')</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>

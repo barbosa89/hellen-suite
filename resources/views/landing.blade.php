@@ -16,7 +16,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Icon -->
-    <link href="{{ asset('images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ Vite::asset('resources/images/blue-logo.png') }}" rel="shortcut icon" type="image/x-icon">
     <link rel="canonical" href="{{ config('app.url') }}">
 
     <meta name="description" content="{{ trans('landing.meta.description') }}">
@@ -40,8 +40,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta property="fb:app_id" content="1595428934178032" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/landing.css') }}" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/css/landing.css', 'resources/js/landing.js'])
 
     <script>
         addEventListener("load", function () {
@@ -68,8 +67,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body>
     <div id="app">
-        @include('flash::message')
-
     <!-- header -->
     <header class="index-banner">
         <!-- nav -->
@@ -80,7 +77,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div id="brand">
                                 <div id="logo" class="text-center pt-2">
                                     <a href="{{ url('/') }}">
-                                        <img src="{{ asset('images/white-logo.png') }}" width="40" height="40" alt="{{ config('app.name') }}">
+                                        <img src="{{ Vite::asset('resources/images/white-logo.png') }}" width="40" height="40" alt="{{ config('app.name') }}">
                                     </a>
                                 </div>
                                 <div id="word-mark">
@@ -156,11 +153,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </h2>
                         </div>
                         <h3 class="txt-w3_agile">@lang('landing.slogan.section.two')</h3>
-                        <a class="btn mt-4 mr-2 text-capitalize"  href="#overview" role="button">@lang('landing.more')</a>
+                        <a class="btn mt-4 me-2 text-capitalize"  href="#overview" role="button">@lang('landing.more')</a>
                         <a class="btn mt-4 text-capitalize" href="#contact" role="button">@lang('landing.contact')</a>
                     </div>
                     <div class="col-lg-4 col-md-8 mt-lg-0 mt-5 banner-form">
-                        <h5><i class="fas mr-2 fa-laptop"></i> @lang('common.register')</h5>
+                        <h5><i class="fas me-2 fa-laptop"></i> @lang('common.register')</h5>
                         <form action="{{ route('register') }}" class="mt-4" method="post">
                             @csrf
                             @honeypot
@@ -216,12 +213,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </p>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
+                        <img src="{{ Vite::asset('resources/images/b1.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                 </div>
                 <div class="row process-grids mt-5">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center">
-                        <img src="{{ asset('images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
+                        <img src="{{ Vite::asset('resources/images/b2.jpg') }}" alt="" class="img-fluid rounded"/>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <h4 class="mb-4">
@@ -243,7 +240,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-md-3">
                 <h3 class="heading mb-5 text-center"> @lang('landing.why.choose')</h3>
                 <div class="feature-grids row">
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon1 p-4">
                             <i class="fas fa-cubes"></i>
                             <h3 class="my-3">
@@ -254,7 +251,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon2 p-4">
                             <i class="fas fa-shield-alt"></i>
                             <h3 class="my-3">@lang('landing.why.security.title')</h3>
@@ -263,7 +260,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </p>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-6 mt-lg-0 mt-4">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mt-lg-0 mt-4">
                         <div class="f1 icon3 p-4">
                             <i class="fas fa-palette"></i>
                             <h3 class="my-3">@lang('landing.why.design.title')</h3>
@@ -282,7 +279,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <h4>
                     @lang('landing.advantage')
                 </h4>
-                <div class="start text-right mt-4">
+                <div class="start text-end mt-4">
                     <a href="#contact" class="scroll">@lang('landing.contact')</a>
                 </div>
                 <div class="clearfix"></div>
@@ -459,10 +456,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>john watson</h4>
                                         <span class="">- congue leo</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
                                             <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -480,10 +477,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>Paul walkner</h4>
                                         <span class="">- lacinia eget</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
-                                            <li><i class="fa mr-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
+                                            <li><i class="fa me-1 fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -501,10 +498,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <h4>Anderson</h4>
                                         <span class="">- Donec rutru</span>
                                         <ul class="d-flex mt-2">
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
-                                            <li><i class="fas mr-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
+                                            <li><i class="fas me-1 fa-star"></i></li>
                                             <li><i class="fas fa-star"></i></li>
                                         </ul>
                                     </div>
@@ -595,7 +592,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="footer-grid_section text-center">
                         <div class="footer-title mb-3">
                             <a href="{{ url('/') }}">
-                                <img src="{{ asset('images/blue-logo.png') }}" alt="{{ config('app.name') }}">
+                                <img src="{{ Vite::asset('resources/images/blue-logo.png') }}" alt="{{ config('app.name') }}">
                                 @include('partials.name')
                             </a>
                         </div>
@@ -607,12 +604,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <ul class="social_section_1info">
                             <li class="mb-2 facebook">
                                 <a href="https://www.facebook.com/HellenSuite" target="_blank" rel="noopener noreferrer">
-                                    <i class="fab mr-1 fa-facebook-f"></i>facebook
+                                    <i class="fab me-1 fa-facebook-f"></i>facebook
                                 </a>
                             </li>
                             <li class="mb-2 twitter">
                                 <a href="https://twitter.com/@Hellen_Suite" target="_blank" rel="noopener noreferrer">
-                                    <i class="fab mr-1 fa-twitter"></i>twitter
+                                    <i class="fab me-1 fa-twitter"></i>twitter
                                 </a>
                             </li>
                         </ul>
@@ -678,55 +675,63 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //copyright -->
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ asset('js/theme.js') }}"></script>
-    <script src="{{ asset('js/landing.js') }}"></script>
     <script>
-		$(() => {
-            //On Scroll Functionality
-            $(window).scroll(() => {
-                var windowTop = $(window).scrollTop();
-                windowTop> 100 ? $('nav').addClass('navShadow') : $('nav').removeClass('navShadow');
-                windowTop> 100 ? $('ul.nav-agile').css('top', '50px') : $('ul.nav-agile').css('top', '160px');
+        document.addEventListener('DOMContentLoaded', () => {
+            // On Scroll Functionality
+            window.addEventListener('scroll', () => {
+                var windowTop = window.scrollY;
+                
+                // Add or remove shadow to the nav element
+                if (windowTop > 100) {
+                    document.querySelector('nav').classList.add('navShadow');
+                    document.querySelector('ul.nav-agile').style.top = '50px';
+                } else {
+                    document.querySelector('nav').classList.remove('navShadow');
+                    document.querySelector('ul.nav-agile').style.top = '160px';
+                }
             });
 
-            //Click Logo To Scroll To Top
-            $('#logo').on('click', () => {
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 500);
+            // Click Logo to Scroll to Top
+            document.querySelector('#logo').addEventListener('click', (event) => {
+                event.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            //Toggle Menu
-            $('#menu-toggle').on('click', () => {
-                $('#menu-toggle').toggleClass('closeMenu');
-                $('ul#menu-list').toggleClass('showMenu');
+            // Toggle Menu
+            const menuToggle = document.querySelector('#menu-toggle');
+            const menuList = document.querySelector('ul#menu-list');
 
-                $('li').on('click', () => {
-                    $('ul#menu-list').removeClass('showMenu');
-                    $('#menu-toggle').removeClass('closeMenu');
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('closeMenu');
+                menuList.classList.toggle('showMenu');
+            });
+
+            // Close menu when a list item is clicked
+            document.querySelectorAll('ul#menu-list li').forEach(item => {
+                item.addEventListener('click', () => {
+                    menuList.classList.remove('showMenu');
+                    menuToggle.classList.remove('closeMenu');
                 });
             });
-		});
 
-        $(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
+            document.querySelectorAll('.scroll').forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
 
-                $('html,body').animate({
-                    scrollTop: $(this.hash).offset().top
-                }, 900);
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const targetPosition = targetElement.offsetTop;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
-
-        $(document).ready(function () {
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
-
-        });
-
-        $('#flash-overlay-modal').modal();
     </script>
     <script type="application/ld+json" async>
         {

@@ -27,7 +27,7 @@ class ReportQuery extends FormRequest
             'type' => 'required|string|in:all,one',
             'hotel' => 'nullable|string|hashed_exists:hotels,id',
             'start' => 'required|date',
-            'end' => 'required|date|after:start'
+            'end' => 'required|date|after:start',
         ];
     }
 }

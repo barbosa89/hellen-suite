@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Chart;
-use App\Models\User;
+use App\Http\Requests\StoreHotel;
+use App\Http\Requests\UpdateHotel;
 use App\Models\Hotel;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\{StoreHotel, UpdateHotel};
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -47,7 +48,7 @@ class HotelController extends Controller
      */
     public function store(StoreHotel $request)
     {
-        $hotel = new Hotel();
+        $hotel = new Hotel;
         $hotel->business_name = $request->business_name;
         $hotel->tin = $request->tin;
         $hotel->address = $request->address;
@@ -56,14 +57,14 @@ class HotelController extends Controller
         $hotel->email = $request->email;
         $hotel->owner()->associate(auth()->user()->id);
 
-        if (!empty($request->main_hotel)) {
+        if (! empty($request->main_hotel)) {
             $hotel->main_hotel = id_decode($request->main_hotel);
         }
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storeAs(
                 'public',
-                time() . "_" . $request->file('image')->getClientOriginalName()
+                time().'_'.$request->file('image')->getClientOriginalName()
             );
             $hotel->image = $path;
         }
@@ -83,7 +84,7 @@ class HotelController extends Controller
      * Display the specified resource.
      *
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -97,16 +98,14 @@ class HotelController extends Controller
         }
 
         $hotel->load([
-            'main' => function ($query)
-            {
+            'main' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
-            }
+            },
         ]);
 
         $data = Chart::create($hotel->vouchers)
@@ -119,7 +118,7 @@ class HotelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -127,10 +126,9 @@ class HotelController extends Controller
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
             ->with([
-                'main' => function ($query)
-                {
+                'main' => function ($query): void {
                     $query->select(['id', 'business_name']);
-                }
+                },
             ])->first(fields_get('hotels'));
 
         if (empty($hotel)) {
@@ -144,7 +142,7 @@ class HotelController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateHotel $request, $id)
@@ -163,13 +161,13 @@ class HotelController extends Controller
         $hotel->email = $request->email;
 
         if ($request->hasFile('image')) {
-            if (!empty($hotel->image)) {
+            if (! empty($hotel->image)) {
                 Storage::delete($hotel->image);
             }
 
             $path = $request->file('image')->storeAs(
                 'public',
-                time() . "_" . $request->file('image')->getClientOriginalName()
+                time().'_'.$request->file('image')->getClientOriginalName()
             );
             $hotel->image = $path;
         }
@@ -188,19 +186,17 @@ class HotelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
-            ->whereDoesntHave('headquarters', function ($query)
-            {
+            ->whereDoesntHave('headquarters', function ($query): void {
                 $query->select(['id', 'main_hotel']);
             })
-            ->whereDoesntHave('vouchers', function ($query)
-            {
+            ->whereDoesntHave('vouchers', function ($query): void {
                 $query->select(['id', 'hotel_id']);
             })->first(fields_get('hotels'));
 
@@ -227,7 +223,7 @@ class HotelController extends Controller
     /**
      * Toggle status for the specified resource from storage.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function toggle($id)
@@ -240,7 +236,7 @@ class HotelController extends Controller
             return abort(404);
         }
 
-        $hotel->status = !$hotel->status;
+        $hotel->status = ! $hotel->status;
 
         if ($hotel->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
@@ -256,7 +252,6 @@ class HotelController extends Controller
     /**
      * Return a hotels list different to ID received.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function getDifferentTo(Request $request)
@@ -267,7 +262,7 @@ class HotelController extends Controller
                 ->get(['id', 'business_name']);
 
             return response()->json([
-                'hotels' => $hotels->toJson()
+                'hotels' => $hotels->toJson(),
             ]);
         }
 
@@ -286,7 +281,7 @@ class HotelController extends Controller
         $hotels = Hotel::assigned()->get(fields_get('hotels'));
 
         return response()->json([
-            'hotels' =>$hotels
+            'hotels' => $hotels,
         ]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Asset;
-use Illuminate\Http\UploadedFile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 
 class MaintenanceFactory extends Factory
 {
@@ -22,7 +22,7 @@ class MaintenanceFactory extends Factory
             'invoice' => $path,
             'maintainable_id' => Asset::factory()->create(),
             'maintainable_type' => Asset::class,
-            'user_id' => User::factory()->create()
+            'user_id' => User::factory()->create(),
         ];
     }
 }

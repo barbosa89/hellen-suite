@@ -1,8 +1,8 @@
 <?php
 
-return array (
-  'shift' => 'Shift',
-  'title' => 'Shifts',
-  'open' => 'Open',
-  'close' => 'Close',
-);
+return [
+    'shift' => 'Shift',
+    'title' => 'Shifts',
+    'open' => 'Open',
+    'close' => 'Close',
+];

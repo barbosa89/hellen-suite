@@ -27,10 +27,10 @@ class UpdateHotel extends FormRequest
 
         return [
             'address' => 'required|string|max:100',
-            'phone' => 'required|string|max:10',
-            'mobile' => 'required|string|max:10',
-            'email' => 'required|email|max:100|unique:hotels,email,' . $id,
-            'image' => 'nullable|file|max:200|mimes:jpeg,png'
+            'phone' => 'required|string|max:20',
+            'mobile' => 'required|string|max:20',
+            'email' => 'required|email|max:100|unique:hotels,email,'.$id,
+            'image' => 'nullable|file|max:200|mimes:jpeg,png',
         ];
     }
 }

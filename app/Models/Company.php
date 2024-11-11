@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use App\Traits\Queryable;
 use App\Traits\InteractWithLogs;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\Queryable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Company extends Model
 {
-    use Queryable;
     use HasFactory;
-    use LogsActivity;
     use InteractWithLogs;
+    use LogsActivity;
+    use Queryable;
 
     public const SCOPE_FILTERS = [
         'from_date',

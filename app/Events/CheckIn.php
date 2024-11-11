@@ -5,38 +5,21 @@ namespace App\Events;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\Voucher;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class CheckIn
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Voucher $voucher;
-
-    public Guest $guest;
-
-    public Room $room;
-
     /**
      * Create a new event instance.
      *
-     * @param Voucher $voucher
-     * @param Guest $guest
-     * @param Room $room
      * @return void
      */
-    public function __construct(Voucher $voucher, Guest $guest, Room $room)
-    {
-        $this->guest = $guest;
-        $this->voucher = $voucher;
-        $this->room = $room;
-    }
+    public function __construct(public Voucher $voucher, public Guest $guest, public Room $room) {}
 
     /**
      * Get the channels the event should broadcast on.

@@ -32,7 +32,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-dark">
                         @lang('common.update')
                     </button>
                     <a href="{{ url()->previous() }}" class="btn btn-default">

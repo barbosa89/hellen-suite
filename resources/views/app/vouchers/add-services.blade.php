@@ -53,8 +53,8 @@
 @section('scripts')
     <script type="text/javascript">
         function showTotal () {
-            const product = $('#service').val();
-            const quantity = $('#quantity').val();
+            const product = document.querySelector('#service').value;
+            const quantity = document.querySelector('#quantity').value;
             const url = '{{ route('services.total') }}';
 
             calculateTotal(url, product, quantity);

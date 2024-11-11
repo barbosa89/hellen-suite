@@ -6,41 +6,40 @@ namespace App\Helpers;
 
 class Parameter
 {
-	/**
+    /**
      * Remove malicious chars from input param.
      *
-     * @param  int|string $value
+     * @param  int|string  $value
      * @return int|string
      */
-	public static function clean($value = null, $encoding = 'UTF-8')
-	{
-		if (empty($value)) {
-			return null;
-		}
+    public static function clean($value = null, $encoding = 'UTF-8')
+    {
+        if (empty($value)) {
+            return null;
+        }
 
-		return htmlentities((string) $value, ENT_QUOTES | ENT_HTML5, $encoding);
-	}
+        return htmlentities((string) $value, ENT_QUOTES | ENT_HTML5, $encoding);
+    }
 
-	/**
+    /**
      * Convert value to boolean value.
      *
-     * @param  int|string $value
-     * @return boolean
+     * @param  int|string  $value
      */
-	public static function bool($value = null): bool
-	{
-		if (is_null($value)) {
-			return false;
-		}
+    public static function bool($value = null): bool
+    {
+        if (is_null($value)) {
+            return false;
+        }
 
-		if ((int) $value) {
-			return true;
-		}
+        if ((int) $value) {
+            return true;
+        }
 
-		if ($value == 'on') {
-			return true;
-		}
+        if ($value == 'on') {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

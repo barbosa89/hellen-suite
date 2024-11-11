@@ -26,7 +26,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="hotel">@lang('team.workplace'):</label>
-                        <select class="form-control selectpicker" name="hotel" id="hotel" required>
+                        <select class="form-control" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -63,7 +63,7 @@
 
                     <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                         <label for="role">Rol:</label>
-                        <select class="form-control selectpicker" name="role" id="role" required>
+                        <select class="form-control" name="role" id="role" required>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}">{{ trans('users.' . $role->name) }}</option>
                             @endforeach
@@ -76,8 +76,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('common.create')</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
@@ -86,17 +86,19 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $("#type").on('change', function(e) {
-            if (this.value == 'headquarters') {
-                if ($('#main-hotel').is(':hidden')) {
-                    $('#main-hotel').fadeIn();
-                }
-            } else {
-                if ($('#main-hotel').is(':visible')) {
-                    $('#main-hotel').fadeOut();
-                }
+<script type="text/javascript">
+    document.getElementById('type').addEventListener('change', function () {
+        const mainHotel = document.getElementById('main-hotel');
+
+        if (this.value === 'headquarters') {
+            if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
+                mainHotel.style.display = 'block'; // Equivalent to fadeIn
             }
-        });
-    </script>
+        } else {
+            if (mainHotel.style.display === 'block') {
+                mainHotel.style.display = 'none'; // Equivalent to fadeOut
+            }
+        }
+    });
+</script>
 @endsection

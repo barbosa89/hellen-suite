@@ -4,9 +4,9 @@
 
 @foreach ($name as $item)
     @if ($loop->first)
-        <span class="font-weight-bold">{{ $item }}</span>
+        <span class="fw-bold">{{ $item }}</span>
     @else
-        <span class="font-weight-light">{{ $item }}</span>
+        <span class="fw-light">{{ $item }}</span>
     @endif
 @endforeach
 

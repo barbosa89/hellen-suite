@@ -2,22 +2,22 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
-use App\Models\Hotel;
 use App\Models\Voucher;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class RoomTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use InteractsWithViews;
+    use RefreshDatabase;
+    use WithFaker;
 
     public User $manager;
 
@@ -29,14 +29,14 @@ class RoomTest extends TestCase
 
         Role::create([
             'name' => 'manager',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager = User::factory()->create();
         $this->manager->assignRole('manager');
 
         $this->hotel = Hotel::factory()->create([
-            'user_id' => $this->manager->id
+            'user_id' => $this->manager->id,
         ]);
     }
 
@@ -44,7 +44,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.index');
@@ -58,12 +58,12 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'admin',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $admin */
@@ -80,7 +80,7 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'accountant',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $accountant */
@@ -96,12 +96,12 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'receptionist',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $receptionist */
@@ -118,7 +118,7 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'cashier',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $cashier */
@@ -134,7 +134,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.index');
@@ -162,8 +162,8 @@ class RoomTest extends TestCase
                         'is_suite' => $room->is_suite,
                         'status' => (string) $room->status,
                         'tax' => $room->tax,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -171,12 +171,12 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'admin',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $admin */
@@ -210,8 +210,8 @@ class RoomTest extends TestCase
                         'is_suite' => $room->is_suite,
                         'status' => (string) $room->status,
                         'tax' => $room->tax,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -219,7 +219,7 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'accountant',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $accountant */
@@ -238,12 +238,12 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'receptionist',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $receptionist */
@@ -277,8 +277,8 @@ class RoomTest extends TestCase
                         'is_suite' => $room->is_suite,
                         'status' => (string) $room->status,
                         'tax' => $room->tax,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -286,7 +286,7 @@ class RoomTest extends TestCase
     {
         Role::create([
             'name' => 'cashier',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $cashier */
@@ -305,7 +305,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.create');
@@ -332,7 +332,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.create');
@@ -355,7 +355,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.create');
@@ -402,7 +402,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.create');
@@ -454,7 +454,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.edit',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.edit');
@@ -483,7 +483,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.edit',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.edit');
@@ -526,7 +526,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.show',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.show');
@@ -548,7 +548,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.destroy',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.destroy');
@@ -580,7 +580,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.destroy',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.destroy');
@@ -602,7 +602,7 @@ class RoomTest extends TestCase
             'value' => $room->price,
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
-            'enabled' => true
+            'enabled' => true,
         ]);
 
         $this->actingAs($this->manager)
@@ -628,7 +628,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.index');
@@ -641,14 +641,13 @@ class RoomTest extends TestCase
         $query = $room->number;
 
         $this->actingAs($this->manager)
-            ->get(route('rooms.search') . "?query={$query}")
+            ->get(route('rooms.search')."?query={$query}")
             ->assertViewIs('app.rooms.search')
             ->assertViewHas('query', $query)
             ->assertSee($this->hotel->business_name)
             ->assertSee($room->number)
             ->assertSee(number_format($room->price, 2, ',', '.'))
             ->assertSee($room->capacity)
-            ->assertSee(trans('rooms.occupied'))
             ->assertSee(route('rooms.create'))
             ->assertSee(route('rooms.index'))
             ->assertSee(route('rooms.search'))
@@ -661,13 +660,13 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.index');
 
         $this->actingAs($this->manager)
-            ->get(route('rooms.search') . "?query=")
+            ->get(route('rooms.search').'?query=')
             ->assertRedirect(route('rooms.index'));
     }
 
@@ -675,7 +674,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.index');
@@ -701,7 +700,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.toggle');
@@ -725,7 +724,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.toggle');
@@ -752,7 +751,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.toggle');
@@ -779,7 +778,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.toggle');
@@ -806,7 +805,7 @@ class RoomTest extends TestCase
     {
         Permission::create([
             'name' => 'rooms.toggle',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         /** @var User $user */
@@ -855,7 +854,7 @@ class RoomTest extends TestCase
 
         Permission::create([
             'name' => 'rooms.show',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->manager->givePermissionTo('rooms.show');

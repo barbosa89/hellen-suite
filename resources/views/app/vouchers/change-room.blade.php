@@ -86,7 +86,7 @@
             @endif
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-dark">
             @lang('common.change')
         </button>
         <a href="{{ route('vouchers.show', ['id' => id_encode($voucher->id)]) }}" class="btn btn-link">

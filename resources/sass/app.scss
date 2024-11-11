@@ -1,18 +1,22 @@
+$fa-font-path: "@fortawesome/fontawesome-free/webfonts";
+
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
 // Variables
 @import "variables";
+
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
-// Font awesome
-// @import 'node_modules/font-awesome/scss/font-awesome.scss';
+@import 'bootstrap/scss/bootstrap';
+
 // Font Awesome
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
-// Vue Context
-@import '~vue-context/dist/css/vue-context.css';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/brands';
+
+@import 'vue3-toastify/dist/index.css';
+
 $greyBackground: #f8f8f8;
 $greyBorder: #e7e7e7;
 $borderTable: #ddd;

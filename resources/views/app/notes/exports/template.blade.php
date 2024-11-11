@@ -238,7 +238,7 @@
             margin-bottom: 1.5rem!important;
         }
 
-        .text-muted {
+        .text-body-secondary {
             color: #6c757d!important;
         }
     </style>

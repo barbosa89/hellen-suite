@@ -8,34 +8,27 @@ use Illuminate\Support\Collection;
 
 class Chart implements ChartInterface
 {
-    protected Collection $vouchers;
-
     /**
      * @var Collection|array
      */
     protected $data;
 
     /**
-     * @param  \Illuminate\Support\Collection $vouchers
      * @return void
      */
-    public function __construct(Collection $vouchers)
-    {
-        $this->vouchers = $vouchers;
-    }
+    public function __construct(protected Collection $vouchers) {}
 
-	/**
+    /**
      * Assign the default zero value for months that have no vouchers
      *
-     * @param  array $data
      * @return array $data
      */
     private function fillDataAnually(array $data): array
     {
-        for ($i=1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 12; $i++) {
             foreach (array_keys($data) as $type) {
                 // Check if the month exists in the array
-                if (!isset($data[$type][$i])) {
+                if (! isset($data[$type][$i])) {
                     $data[$type][$i] = 0;
                 }
 
@@ -49,30 +42,25 @@ class Chart implements ChartInterface
 
     /**
      * Return Chart object
-     *
-     * @param  \Illuminate\Support\Collection $vouchers
-     * @return \App\Helpers\Chart
      */
-	public static function create(Collection $vouchers): Chart
-	{
+    public static function create(Collection $vouchers): Chart
+    {
         $chart = new Chart($vouchers);
 
         return $chart->group();
-	}
+    }
 
     /**
      * Grouping by type and month
-     *
-     * @return \App\Helpers\Chart
      */
     public function group(): Chart
     {
         $this->data = $this->vouchers->groupBy([
-            function($voucher) {
+            function ($voucher): mixed {
                 return $voucher->type;
-            }, function ($voucher) {
+            }, function ($voucher): mixed {
                 return $voucher->created_at->month;
-            }
+            },
         ]);
 
         return $this;
@@ -80,9 +68,6 @@ class Chart implements ChartInterface
 
     /**
      * Create the chart array data
-     *
-     * @param  \Closure $calc
-     * @return void
      */
     private function process(Closure $calc): void
     {
@@ -114,59 +99,40 @@ class Chart implements ChartInterface
 
     /**
      * Count the quantities of the products or services associated with the voucher.
-     *
-     * @return \App\Helpers\Chart
      */
     public function countItems(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add quantity in the pivot table
-            return $voucher['pivot']['quantity'];
-        });
+        $this->process(fn ($vouchers, $voucher) => $voucher['pivot']['quantity']);
 
         return $this;
     }
 
     /**
      * Count the amount of vouchers per month.
-     *
-     * @return \App\Helpers\Chart
      */
     public function countVouchers(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            return 1;
-        });
+        $this->process(fn ($vouchers, $voucher): int => 1);
 
         return $this;
     }
 
     /**
      * Add the voucher values.
-     *
-     * @return \App\Helpers\Chart
      */
     public function addValues(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add voucher value
-            return (float) $voucher['value'];
-        });
+        $this->process(fn ($vouchers, $voucher): float => (float) $voucher['value']);
 
         return $this;
     }
 
     /**
      * Add the voucher item value.
-     *
-     * @return \App\Helpers\Chart
      */
     public function addItemValues(): Chart
     {
-        $this->process(function ($vouchers, $voucher) {
-            // Add voucher item value
-            return (float) $voucher['pivot']['value'];
-        });
+        $this->process(fn ($vouchers, $voucher): float => (float) $voucher['pivot']['value']);
 
         return $this;
     }
@@ -182,13 +148,13 @@ class Chart implements ChartInterface
 
         foreach ($this->data as $type => $value) {
             // Set label by voucher type
-            $set['label'] = trans('transactions.' . $type);
+            $set['label'] = trans('transactions.'.$type);
 
             // Get type data
             $set['data'] = array_values($value);
 
             // Fill background color and border color of chart bars by voucher type
-            for ($i=0; $i < count($set['data']); $i++) {
+            for ($i = 0; $i < count($set['data']); $i++) {
                 $set['backgroundColor'][] = config('settings.colors')[$type]['bar'];
                 $set['borderColor'][] = config('settings.colors')[$type]['border'];
             }

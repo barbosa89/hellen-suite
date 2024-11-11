@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('hotels.title'),
@@ -67,7 +66,7 @@
 
                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                         <label for="phone">@lang('common.phone'):</label>
-                        <input type="string" class="form-control" name="phone" id="phone" value="{{ $hotel->phone }}" maxlength="10" pattern="\d{7,10}" title="1230987, 0371230987" required>
+                        <input type="string" class="form-control" name="phone" id="phone" value="{{ $hotel->phone }}" maxlength="20" required>
 
                         @if ($errors->has('phone'))
                             <span class="help-block">
@@ -78,7 +77,7 @@
 
                     <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                         <label for="mobile">@lang('common.mobile'):</label>
-                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ $hotel->mobile }}" maxlength="10" pattern="\d{10}" title="3151230987" required>
+                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ $hotel->mobile }}" maxlength="20" required>
 
                         @if ($errors->has('mobile'))
                             <span class="help-block">
@@ -109,11 +108,10 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.update')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark me-2">@lang('common.update')</button>
+                    <a href="{{ route('hotels.index') }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
     </div>
-
 @endsection
