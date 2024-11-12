@@ -1,5 +1,5 @@
 <script>
-import { trans } from "laravel-vue-i18n"
+import { wTrans } from "laravel-vue-i18n"
 import Transactions from '../Transactions/TransactionsBase.vue'
 
 export default {

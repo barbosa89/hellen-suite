@@ -1,4 +1,4 @@
-import { trans } from "laravel-vue-i18n"
+import { wTrans } from "laravel-vue-i18n"
 import { toast } from 'vue3-toastify'
 import { Chart } from "chart.js"
 
@@ -239,8 +239,8 @@ document.getElementById('hotel')?.addEventListener('change', () => {
 
     // Update the 'assign' dropdown options
     assignSelect.innerHTML = `
-        <option value="room">${trans('rooms.room')}</option>
-        <option value="any">${trans('assets.anyPlace')}</option>
+        <option value="room">${wTrans('rooms.room')}</option>
+        <option value="any">${wTrans('assets.anyPlace')}</option>
     `;
 });
 
@@ -286,14 +286,14 @@ function confirmRedirect(e, url) {
     e.preventDefault()
 
     Swal.fire({
-        title: trans('common.attention'),
-        text: trans('common.confirmAction'),
+        title: wTrans('common.attention'),
+        text: wTrans('common.confirmAction'),
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: trans('common.continue'),
-        cancelButtonText: trans('common.cancel')
+        confirmButtonText: wTrans('common.continue'),
+        cancelButtonText: wTrans('common.cancel')
     }).then(result => {
         if (result.value) {
             window.location.href = url
@@ -355,11 +355,11 @@ function std_search(event, query, params) {
 
                     listElement.style.display = 'block';
                 } else {
-                    toast.info(trans('common.noRecords'));
+                    toast.info(wTrans('common.noRecords'));
                 }
             })
             .catch(() => {
-                toast.error(trans('common.error'))
+                toast.error(wTrans('common.error'))
             });
     }
 }
@@ -378,18 +378,18 @@ export function generate_chart(id, datasets) {
         type: 'bar',
         data: {
             labels: [
-                trans('months.january'),
-                trans('months.february'),
-                trans('months.march'),
-                trans('months.april'),
-                trans('months.may'),
-                trans('months.june'),
-                trans('months.july'),
-                trans('months.august'),
-                trans('months.september'),
-                trans('months.october'),
-                trans('months.november'),
-                trans('months.december')
+                wTrans('months.january'),
+                wTrans('months.february'),
+                wTrans('months.march'),
+                wTrans('months.april'),
+                wTrans('months.may'),
+                wTrans('months.june'),
+                wTrans('months.july'),
+                wTrans('months.august'),
+                wTrans('months.september'),
+                wTrans('months.october'),
+                wTrans('months.november'),
+                wTrans('months.december')
             ],
             datasets: datasets
         }

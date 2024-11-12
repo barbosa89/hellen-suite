@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { trans } from "laravel-vue-i18n"
+import { wTrans } from "laravel-vue-i18n"
 
 export default {
     mounted() {
