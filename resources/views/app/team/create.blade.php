@@ -87,18 +87,20 @@
 
 @section('scripts')
 <script type="text/javascript">
-    document.getElementById('type').addEventListener('change', function () {
-        const mainHotel = document.getElementById('main-hotel');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('type').addEventListener('change', function () {
+            const mainHotel = document.getElementById('main-hotel')
 
-        if (this.value === 'headquarters') {
-            if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
-                mainHotel.style.display = 'block'; // Equivalent to fadeIn
+            if (this.value === 'headquarters') {
+                if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
+                    mainHotel.style.display = 'block' // Equivalent to fadeIn
+                }
+            } else {
+                if (mainHotel.style.display === 'block') {
+                    mainHotel.style.display = 'none' // Equivalent to fadeOut
+                }
             }
-        } else {
-            if (mainHotel.style.display === 'block') {
-                mainHotel.style.display = 'none'; // Equivalent to fadeOut
-            }
-        }
-    });
+        })
+    })
 </script>
 @endsection

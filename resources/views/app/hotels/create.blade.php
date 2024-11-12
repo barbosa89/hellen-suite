@@ -110,7 +110,7 @@
                     @if($hotels->isNotEmpty())
                         <div class="form-group{{ $errors->has('main_hotel') ? ' has-error' : '' }}" id="main-hotel" style="display:none;">
                             <label for="main_hotel">@lang('hotels.headquarters'):</label>
-                            <select class="form-control" name="main_hotel" id="main_hotel">
+                            <select class="form-control" name="main_hotel" id="main-hotel">
                                 @foreach ($hotels as $hotel)
                                     <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                                 @endforeach
@@ -152,18 +152,22 @@
 
 @section('scripts')
 <script type="text/javascript">
-    document.getElementById('type').addEventListener('change', function () {
-        const mainHotel = document.getElementById('main-hotel');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('type').addEventListener('change', function () {
+                const mainHotel = document.getElementById('main-hotel')
 
-        if (this.value === 'headquarters') {
-            if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
-                mainHotel.style.display = 'block'; // Equivalent to fadeIn
-            }
-        } else {
-            if (mainHotel.style.display === 'block') {
-                mainHotel.style.display = 'none'; // Equivalent to fadeOut
-            }
-        }
-    });
+                if (this.value === 'headquarters') {
+                    if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
+                        mainHotel.style.display = 'block' // Equivalent to fadeIn
+                    }
+                } else {
+                    if (mainHotel.style.display === 'block') {
+                        mainHotel.style.display = 'none' // Equivalent to fadeOut
+                    }
+                }
+            })
+        })
+    })
 </script>
 @endsection

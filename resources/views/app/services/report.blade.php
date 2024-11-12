@@ -89,18 +89,20 @@
 
 @section('scripts')
     <script>
-        document.getElementById('type').addEventListener('change', function () {
-            const hotelSelect = document.getElementById('hotel-select');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('type').addEventListener('change', function () {
+                const hotelSelect = document.getElementById('hotel-select')
 
-            if (this.value === 'one') {
-                if (hotelSelect.style.display === 'none' || hotelSelect.style.display === '') {
-                    hotelSelect.style.display = 'block'; // Equivalent to fadeIn
+                if (this.value === 'one') {
+                    if (hotelSelect.style.display === 'none' || hotelSelect.style.display === '') {
+                        hotelSelect.style.display = 'block' // Equivalent to fadeIn
+                    }
+                } else {
+                    if (hotelSelect.style.display === 'block') {
+                        hotelSelect.style.display = 'none' // Equivalent to fadeOut
+                    }
                 }
-            } else {
-                if (hotelSelect.style.display === 'block') {
-                    hotelSelect.style.display = 'none'; // Equivalent to fadeOut
-                }
-            }
-        });
+            })
+        })
     </script>
 @endsection
