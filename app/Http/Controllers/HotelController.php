@@ -7,46 +7,36 @@ use App\Http\Requests\StoreHotel;
 use App\Http\Requests\UpdateHotel;
 use App\Models\Hotel;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
         $hotels = Hotel::where('user_id', id_parent())
-            ->paginate(config('settings.paginate', fields_get('hotels')))
-            ->sort();
+            ->latest('id')
+            ->paginate(config('settings.paginate', fields_get('hotels')));
 
         return view('app.hotels.index', compact('hotels'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        $hotels = User::find(auth()->user()->id)->hotels()
+        /** @var User $user */
+        $user = auth()->user();
+
+        $hotels = $user->hotels()
             ->where('main_hotel', null)
             ->get(fields_get('hotels'));
 
         return view('app.hotels.create', compact('hotels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreHotel $request)
+    public function store(StoreHotel $request): RedirectResponse
     {
         $hotel = new Hotel;
         $hotel->business_name = $request->business_name;
@@ -80,21 +70,14 @@ class HotelController extends Controller
         return redirect()->route('hotels.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(string $id): View
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
-            return abort(404);
+            abort(404);
         }
 
         $hotel->load([
@@ -115,13 +98,7 @@ class HotelController extends Controller
         return view('app.hotels.show', compact('hotel', 'data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(string $id): View
     {
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
@@ -132,27 +109,21 @@ class HotelController extends Controller
             ])->first(fields_get('hotels'));
 
         if (empty($hotel)) {
-            return abort(404);
+            abort(404);
         }
 
         return view('app.hotels.edit', compact('hotel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateHotel $request, $id)
+    public function update(UpdateHotel $request, string $id): RedirectResponse
     {
+        /** @var Hotel $hotel */
         $hotel = User::find(auth()->user()->id, ['id'])->hotels()
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
-            return abort(404);
+            abort(404);
         }
 
         $hotel->address = $request->address;
@@ -183,14 +154,9 @@ class HotelController extends Controller
         return redirect()->route('hotels.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(string $id): RedirectResponse
     {
+        /** @var Hotel $hotel */
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
             ->whereDoesntHave('headquarters', function ($query): void {
@@ -220,20 +186,15 @@ class HotelController extends Controller
         return redirect()->route('hotels.index');
     }
 
-    /**
-     * Toggle status for the specified resource from storage.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle($id)
+    public function toggle(string $id): RedirectResponse
     {
+        /** @var Hotel $hotel */
         $hotel = User::find(auth()->user()->id)->hotels()
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
         if (empty($hotel)) {
-            return abort(404);
+            abort(404);
         }
 
         $hotel->status = ! $hotel->status;
@@ -249,12 +210,7 @@ class HotelController extends Controller
         return back();
     }
 
-    /**
-     * Return a hotels list different to ID received.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getDifferentTo(Request $request)
+    public function getDifferentTo(Request $request): JsonResponse
     {
         if ($request->ajax()) {
             $hotels = Hotel::where('id', '!=', id_decode($request->hotel))
@@ -269,15 +225,8 @@ class HotelController extends Controller
         abort(404);
     }
 
-    /**
-     * Return assigned hotel list.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getAssigned()
+    public function getAssigned(): JsonResponse
     {
-        // Using assigned scoped
         $hotels = Hotel::assigned()->get(fields_get('hotels'));
 
         return response()->json([
