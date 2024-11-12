@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -76,9 +77,7 @@ class HotelController extends Controller
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
-        if (empty($hotel)) {
-            abort(404);
-        }
+        abort_if(empty($hotel), Response::HTTP_NOT_FOUND);
 
         $hotel->load([
             'main' => function ($query): void {
@@ -108,9 +107,7 @@ class HotelController extends Controller
                 },
             ])->first(fields_get('hotels'));
 
-        if (empty($hotel)) {
-            abort(404);
-        }
+        abort_if(empty($hotel), Response::HTTP_NOT_FOUND);
 
         return view('app.hotels.edit', compact('hotel'));
     }
@@ -122,9 +119,7 @@ class HotelController extends Controller
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
-        if (empty($hotel)) {
-            abort(404);
-        }
+        abort_if(empty($hotel), Response::HTTP_NOT_FOUND);
 
         $hotel->address = $request->address;
         $hotel->phone = $request->phone;
@@ -193,9 +188,7 @@ class HotelController extends Controller
             ->where('id', id_decode($id))
             ->first(fields_get('hotels'));
 
-        if (empty($hotel)) {
-            abort(404);
-        }
+        abort_if(empty($hotel), Response::HTTP_NOT_FOUND);
 
         $hotel->status = ! $hotel->status;
 
@@ -222,7 +215,7 @@ class HotelController extends Controller
             ]);
         }
 
-        abort(404);
+        abort(Response::HTTP_NOT_FOUND);
     }
 
     public function getAssigned(): JsonResponse
