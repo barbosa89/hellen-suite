@@ -1,7 +1,7 @@
 <?php
 
-use Diglactic\Breadcrumbs\Generator;
 use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator;
 
 // Home
 Breadcrumbs::for('home', function (Generator $trail): void {

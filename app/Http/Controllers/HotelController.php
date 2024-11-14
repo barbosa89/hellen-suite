@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\HotelType;
 use App\Helpers\Chart;
 use App\Http\Requests\StoreHotel;
 use App\Http\Requests\UpdateHotel;
@@ -48,25 +49,17 @@ class HotelController extends Controller
         $hotel->email = $request->email;
         $hotel->owner()->associate(auth()->user()->id);
 
-        if ($request->type === 'headquarters') {
+        if ($request->type === HotelType::HEADQUARTERS->value) {
             $hotel->main_hotel = id_decode($request->main_hotel);
         }
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->storeAs(
-                'public',
-                time().'_'.$request->file('image')->getClientOriginalName()
-            );
-            $hotel->image = $path;
+            $hotel->image = $request->file('image')->store(path: '', options: ['disk' => 'public']);
         }
 
-        if ($hotel->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
+        $hotel->save();
 
-            return redirect()->route('hotels.index');
-        }
-
-        flash(trans('common.error'))->error();
+        flash(trans('common.createdSuccessfully'))->success();
 
         return redirect()->route('hotels.index');
     }
