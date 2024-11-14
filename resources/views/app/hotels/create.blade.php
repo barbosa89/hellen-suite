@@ -1,7 +1,7 @@
 @extends('layouts.panel')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('hotels') }}
+    {{ Breadcrumbs::render('hotels.create') }}
 @endsection
 
 @section('content')
@@ -110,7 +110,7 @@
                     @if($hotels->isNotEmpty())
                         <div class="form-group{{ $errors->has('main_hotel') ? ' has-error' : '' }}" id="main-hotel" style="display:none;">
                             <label for="main_hotel">@lang('hotels.headquarters'):</label>
-                            <select class="form-control" name="main_hotel" id="main-hotel">
+                            <select class="form-control" name="main_hotel" id="main_hotel">
                                 @foreach ($hotels as $hotel)
                                     <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                                 @endforeach
@@ -153,20 +153,19 @@
 @section('scripts')
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('type').addEventListener('change', function () {
-                const mainHotel = document.getElementById('main-hotel')
+        document.getElementById('type').addEventListener('change', function () {
+            const mainHotel = document.getElementById('main-hotel')
 
-                if (this.value === 'headquarters') {
-                    if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
-                        mainHotel.style.display = 'block' // Equivalent to fadeIn
-                    }
-                } else {
-                    if (mainHotel.style.display === 'block') {
-                        mainHotel.style.display = 'none' // Equivalent to fadeOut
-                    }
+            if (this.value === 'headquarters') {
+                if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
+                    mainHotel.style.display = 'block'
                 }
-            })
+            } else {
+                if (mainHotel.style.display === 'block') {
+                    mainHotel.style.display = 'none'
+                }
+
+            }
         })
     })
 </script>

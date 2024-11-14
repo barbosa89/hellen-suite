@@ -31,7 +31,7 @@ class HotelController extends Controller
         $user = auth()->user();
 
         $hotels = $user->hotels()
-            ->where('main_hotel', null)
+            ->whereNull('main_hotel')
             ->get(fields_get('hotels'));
 
         return view('app.hotels.create', compact('hotels'));
@@ -48,7 +48,7 @@ class HotelController extends Controller
         $hotel->email = $request->email;
         $hotel->owner()->associate(auth()->user()->id);
 
-        if (! empty($request->main_hotel)) {
+        if ($request->type === 'headquarters') {
             $hotel->main_hotel = id_decode($request->main_hotel);
         }
 

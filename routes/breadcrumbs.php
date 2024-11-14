@@ -1,193 +1,199 @@
 <?php
 
+use Diglactic\Breadcrumbs\Generator;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // Home
-Breadcrumbs::for('home', function ($trail): void {
+Breadcrumbs::for('home', function (Generator $trail): void {
     $trail->push(trans('dashboard.dashboard'), route('home'));
 });
 
-Breadcrumbs::for('rooms', function ($trail): void {
+Breadcrumbs::for('rooms', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('rooms.title'), route('rooms.index'));
 });
 
-Breadcrumbs::for('room', function ($trail, $room): void {
+Breadcrumbs::for('room', function (Generator $trail, $room): void {
     $trail->parent('rooms');
     $trail->push($room->number, route('rooms.show', ['id' => id_encode($room->id)]));
 });
 
-Breadcrumbs::for('hotels', function ($trail): void {
+Breadcrumbs::for('hotels.create', function (Generator $trail): void {
+    $trail->parent('hotels');
+    $trail->push(trans('common.create'), route('hotels.create'));
+});
+
+Breadcrumbs::for('hotels', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('hotels.title'), route('hotels.index'));
 });
 
-Breadcrumbs::for('hotel', function ($trail, $hotel): void {
+Breadcrumbs::for('hotel', function (Generator $trail, $hotel): void {
     $trail->parent('hotels');
     $trail->push($hotel->business_name, route('hotels.show', ['id' => id_encode($hotel->id)]));
 });
 
-Breadcrumbs::for('team', function ($trail): void {
+Breadcrumbs::for('team', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('team.title'), route('team.index'));
 });
 
-Breadcrumbs::for('member', function ($trail, $member): void {
+Breadcrumbs::for('member', function (Generator $trail, $member): void {
     $trail->parent('team');
     $trail->push($member->name, route('hotels.show', ['id' => id_encode($member->id)]));
 });
 
-Breadcrumbs::for('vouchers', function ($trail): void {
+Breadcrumbs::for('vouchers', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('vouchers.title'), route('vouchers.index'));
 });
 
-Breadcrumbs::for('process', function ($trail): void {
+Breadcrumbs::for('process', function (Generator $trail): void {
     $trail->parent('vouchers');
     $trail->push(trans('vouchers.process'), route('vouchers.process.form'));
 });
 
-Breadcrumbs::for('voucher', function ($trail, $voucher): void {
+Breadcrumbs::for('voucher', function (Generator $trail, $voucher): void {
     $trail->parent('vouchers');
     $trail->push($voucher->number, route('vouchers.show', ['id' => id_encode($voucher->id)]));
 });
 
-Breadcrumbs::for('payments', function ($trail, $voucher): void {
+Breadcrumbs::for('payments', function (Generator $trail, $voucher): void {
     $trail->parent('voucher', $voucher);
     $trail->push(trans('payments.title'), route('vouchers.show', ['id' => id_encode($voucher->id)]));
 });
 
-Breadcrumbs::for('companies', function ($trail): void {
+Breadcrumbs::for('companies', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('companies.title'), route('companies.index'));
 });
 
-Breadcrumbs::for('company', function ($trail, $company): void {
+Breadcrumbs::for('company', function (Generator $trail, $company): void {
     $trail->parent('companies');
     $trail->push($company->business_name, route('companies.show', ['id' => id_encode($company->id)]));
 });
 
-Breadcrumbs::for('guests', function ($trail): void {
+Breadcrumbs::for('guests', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('guests.title'), route('guests.index'));
 });
 
-Breadcrumbs::for('guest', function ($trail, $guest): void {
+Breadcrumbs::for('guest', function (Generator $trail, $guest): void {
     $trail->parent('guests');
     $trail->push($guest->full_name, route('guests.show', ['id' => id_encode($guest->id)]));
 });
 
-Breadcrumbs::for('products', function ($trail): void {
+Breadcrumbs::for('products', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('products.title'), route('products.index'));
 });
 
-Breadcrumbs::for('product', function ($trail, $product): void {
+Breadcrumbs::for('product', function (Generator $trail, $product): void {
     $trail->parent('products');
     $trail->push($product->description, route('products.show', ['id' => id_encode($product->id)]));
 });
 
-Breadcrumbs::for('product-transactions', function ($trail): void {
+Breadcrumbs::for('product-transactions', function (Generator $trail): void {
     $trail->parent('products');
     $trail->push(trans('transactions.title'), route('products.index'));
 });
 
-Breadcrumbs::for('services', function ($trail): void {
+Breadcrumbs::for('services', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('services.title'), route('services.index'));
 });
 
-Breadcrumbs::for('service', function ($trail, $service): void {
+Breadcrumbs::for('service', function (Generator $trail, $service): void {
     $trail->parent('services');
     $trail->push($service->description, route('services.show', ['id' => id_encode($service->id)]));
 });
 
-Breadcrumbs::for('dining', function ($trail): void {
+Breadcrumbs::for('dining', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('dining.title'), route('dining.index'));
 });
 
-Breadcrumbs::for('dining-service', function ($trail, $service): void {
+Breadcrumbs::for('dining-service', function (Generator $trail, $service): void {
     $trail->parent('dining');
     $trail->push($service->description, route('dining.show', ['id' => id_encode($service->id)]));
 });
 
-Breadcrumbs::for('assets', function ($trail): void {
+Breadcrumbs::for('assets', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('assets.title'), route('assets.index'));
 });
 
-Breadcrumbs::for('asset', function ($trail, $asset): void {
+Breadcrumbs::for('asset', function (Generator $trail, $asset): void {
     $trail->parent('assets');
     $trail->push($asset->description, route('assets.show', ['id' => id_encode($asset->id)]));
 });
 
-Breadcrumbs::for('props', function ($trail): void {
+Breadcrumbs::for('props', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('props.title'), route('props.index'));
 });
 
-Breadcrumbs::for('prop', function ($trail, $prop): void {
+Breadcrumbs::for('prop', function (Generator $trail, $prop): void {
     $trail->parent('props');
     $trail->push($prop->description, route('props.show', ['id' => id_encode($prop->id)]));
 });
 
-Breadcrumbs::for('replicate prop', function ($trail): void {
+Breadcrumbs::for('replicate prop', function (Generator $trail): void {
     $trail->parent('props');
     $trail->push('Replicar', route('props.index'));
 });
 
-Breadcrumbs::for('vehicles', function ($trail): void {
+Breadcrumbs::for('vehicles', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('vehicles.title'), route('vehicles.index'));
 });
 
-Breadcrumbs::for('vehicle', function ($trail, $vehicle): void {
+Breadcrumbs::for('vehicle', function (Generator $trail, $vehicle): void {
     $trail->parent('vehicles');
     $trail->push($vehicle->registration, route('vehicles.show', ['id' => id_encode($vehicle->id)]));
 });
 
-Breadcrumbs::for('shifts', function ($trail): void {
+Breadcrumbs::for('shifts', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('shifts.title'), route('shifts.index'));
 });
 
-Breadcrumbs::for('shift', function ($trail, $shift): void {
+Breadcrumbs::for('shift', function (Generator $trail, $shift): void {
     $trail->parent('shifts');
     $trail->push($shift->hotel->business_name, route('shifts.show', ['id' => id_encode($shift->id)]));
 });
 
-Breadcrumbs::for('notes', function ($trail): void {
+Breadcrumbs::for('notes', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('notes.title'), route('notes.index'));
 });
 
-Breadcrumbs::for('tags', function ($trail): void {
+Breadcrumbs::for('tags', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push('Tags', route('tags.index'));
 });
 
-Breadcrumbs::for('tag', function ($trail, $tag): void {
+Breadcrumbs::for('tag', function (Generator $trail, $tag): void {
     $trail->parent('tags');
     $trail->push($tag->slug, route('tags.index'));
 });
 
-Breadcrumbs::for('plans', function ($trail): void {
+Breadcrumbs::for('plans', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('plans.title'), route('plans.index'));
 });
 
-Breadcrumbs::for('invoices', function ($trail): void {
+Breadcrumbs::for('invoices', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('invoices.title'), route('invoices.index'));
 });
 
-Breadcrumbs::for('invoice', function ($trail, $invoice): void {
+Breadcrumbs::for('invoice', function (Generator $trail, $invoice): void {
     $trail->parent('invoices');
     $trail->push($invoice->number, route('invoices.show', ['invoice' => id_encode($invoice->id)]));
 });
 
-Breadcrumbs::for('accounts', function ($trail): void {
+Breadcrumbs::for('accounts', function (Generator $trail): void {
     $trail->parent('home');
     $trail->push(trans('accounts.title'), route('home'));
 });
