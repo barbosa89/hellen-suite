@@ -2110,16 +2110,16 @@
         },
         {
             "name": "kwn/number-to-words",
-            "version": "2.11.0",
+            "version": "2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kwn/number-to-words.git",
-                "reference": "4eecd25251335114f0f9fb9cea5d141609a07f21"
+                "reference": "64a324325991ff6fa29f798071712409df3a961f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kwn/number-to-words/zipball/4eecd25251335114f0f9fb9cea5d141609a07f21",
-                "reference": "4eecd25251335114f0f9fb9cea5d141609a07f21",
+                "url": "https://api.github.com/repos/kwn/number-to-words/zipball/64a324325991ff6fa29f798071712409df3a961f",
+                "reference": "64a324325991ff6fa29f798071712409df3a961f",
                 "shasum": ""
             },
             "require": {
@@ -2157,9 +2157,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kwn/number-to-words/issues",
-                "source": "https://github.com/kwn/number-to-words/tree/2.11.0"
+                "source": "https://github.com/kwn/number-to-words/tree/2.11.1"
             },
-            "time": "2024-11-04T21:09:14+00:00"
+            "time": "2024-11-14T20:05:27+00:00"
         },
         {
             "name": "laracasts/flash",
@@ -9754,16 +9754,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.14.6",
+            "version": "v3.14.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "14e4517bd49130d6119228107eb21ae47ae120ab"
+                "reference": "f484b8c9124de0b163da39958331098ffcd4a65e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/14e4517bd49130d6119228107eb21ae47ae120ab",
-                "reference": "14e4517bd49130d6119228107eb21ae47ae120ab",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/f484b8c9124de0b163da39958331098ffcd4a65e",
+                "reference": "f484b8c9124de0b163da39958331098ffcd4a65e",
                 "shasum": ""
             },
             "require": {
@@ -9822,7 +9822,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.14.6"
+                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.14.7"
             },
             "funding": [
                 {
@@ -9834,7 +9834,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-18T13:15:12+00:00"
+            "time": "2024-11-14T09:12:35+00:00"
         },
         {
             "name": "beyondcode/laravel-dump-server",
