@@ -26,3 +26,9 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 backup
+.agents
+.zed
+.atl
+AGENTS.md
+boost.json
+opencode.json
