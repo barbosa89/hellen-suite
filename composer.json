@@ -11,14 +11,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "cviebrock/eloquent-sluggable": "^9.0",
+        "cviebrock/eloquent-sluggable": "^10.0",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "drewm/mailchimp-api": "^2.5",
         "guzzlehttp/guzzle": "^7.8",
         "jamesmills/laravel-timezone": "^1.13",
         "kwn/number-to-words": "^2.9",
         "laracasts/flash": "^3.2",
-        "laravel/framework": "^9.52",
+        "laravel/framework": "^10.10",
         "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.9",
@@ -35,32 +35,33 @@
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-view-models": "^1.6",
         "tightenco/ziggy": "^2.2",
-        "vinkla/hashids": "^10.0"
+        "vinkla/hashids": "^11.0"
     },
     "require-dev": {
-        "barbosa89/laravel-vue-i18n-generator": "^1.0",
         "barryvdh/laravel-debugbar": "^3.13",
         "beyondcode/laravel-dump-server": "^2.0",
         "beyondcode/laravel-query-detector": "^1.8",
-        "bpocallaghan/generators": "^8.0",
+        "bpocallaghan/generators": "^9.0",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.16",
-        "laravel/sail": "^1.0.1",
+        "laravel/sail": "^1.18",
         "mbezhanov/faker-provider-collection": "^2.0",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
+        "nunomaduro/collision": "^7.0",
         "nunomaduro/laravel-mojito": "^0.2.10",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^10.1",
         "rector/rector": "^1.2",
-        "spatie/laravel-ignition": "^1.7"
+        "spatie/laravel-ignition": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "treeware/plant": true
+            "treeware/plant": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "extra": {
