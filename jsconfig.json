@@ -1,23 +1,10 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "paths": {
-            "@/*": [
-                "./resources/js/*"
-            ]
-        },
-        "jsx": "preserve",
-        "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "bundler",
-        "strict": false,
-        "noEmit": true
+            "@/*": ["resources/js/*"],
+            "ziggy-js": ["./vendor/tightenco/ziggy"]
+        }
     },
-    "include": [
-        "resources/js/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "public",
-        "vendor"
-    ]
+    "exclude": ["node_modules", "public", "vendor"]
 }
