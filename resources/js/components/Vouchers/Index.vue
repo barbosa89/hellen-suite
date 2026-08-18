@@ -1,7 +1,7 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light app-nav border border-top-0 border-right-0 border-left-0">
-            <a href="/vouchers" class="navbar-brand text-muted">
+        <nav class="navbar navbar-expand-lg navbar-light app-nav">
+            <a href="/vouchers" class="navbar-brand text-body-secondary">
                 {{ $t('vouchers.title') }}
             </a>
             <button type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler">
@@ -35,7 +35,7 @@
                     :search-icon='"fas fa-search"'
                     :params='params'>
                     <template v-slot:record="{ record }">
-                        <td>{{ record.created_at | date }}</td>
+                        <td>{{ record.created_at }}</td>
                         <td>
                             <a :href='route("vouchers.show", record.hash)'>
                                 {{ record.number }}
@@ -53,77 +53,81 @@
 </template>
 
 <script>
-    import VueTable from '@barbosa89/vue-table'
-    import FilterModal from './FilterModal'
+import { wTrans } from "laravel-vue-i18n"
 
-    export default {
-        mounted() {
-            this.lang = document.documentElement.lang
+import FilterModal from './FilterModal.vue'
+
+export default {
+    mounted() {
+        this.lang = document.documentElement.lang
+    },
+    components: {
+        FilterModal
+    },
+    computed: {
+        canDisplayList() {
+            return this.url.length > 0
         },
-        components: {
-            VueTable,
-            FilterModal
-        },
-        computed: {
-            canDisplayList() {
-                return this.url.length > 0
-            }
-        },
-        data() {
-            return {
-                url: '',
-                hotelHash: '',
-                headers: [
-                    {
-                        description: this.$root.$t('common.date')
-                    },
-                    {
-                        description: this.$root.$t('common.number'),
-                        sortable: 'number'
-                    },
-                    {
-                        description: this.$root.$t('common.type'),
-                        sortable: 'type'
-                    },
-                    {
-                        description: this.$root.$t('common.value')
-                    },
-                ],
-                lang: '',
-                params: {}
-            }
-        },
-        watch: {
-            hotelHash() {
-                if (this.hotelHash.length) {
-                    this.url = ''
+        headers() {
+            return [
+                {
+                    description: wwTrans('common.date')
+                },
+                {
+                    description: wwTrans('common.number'),
+                    sortable: 'number'
+                },
+                {
+                    description: wwTrans('common.type'),
+                    sortable: 'type'
+                },
+                {
+                    description: wwTrans('common.value')
+                },
+            ]
+        }
+    },
+    data() {
+        return {
+            url: '',
+            hotelHash: '',
+            lang: '',
+            params: {}
+        }
+    },
+    watch: {
+        hotelHash() {
+            if (this.hotelHash.length) {
+                this.url = ''
 
-                    this.url = route('api.web.vouchers.index', this.hotelHash)
-                }
-            }
-        },
-        methods: {
-            close() {
-                $('#voucher-filter').modal('hide')
-            },
-            toggle() {
-                $('#voucher-filter').modal('toggle')
-            },
-            setFilters(filters) {
-                const params = {}
-
-                if (filters.hasOwnProperty('status') && filters.status.length) {
-                    params.status = filters.status
-                }
-
-                if (filters.hasOwnProperty('type') && filters.type.length) {
-                    params.type = filters.type
-                }
-
-                this.params = Object.assign({}, params)
-
-                this.close()
+                this.url = route('api.web.vouchers.index', this.hotelHash)
             }
         }
+    },
+    methods: {
+        close() {
+            const modal = new bootstrap.Modal('#voucher-filter')
+            modal.show()
+        },
+        toggle() {
+            const modal = new bootstrap.Modal('#voucher-filter')
+            modal.toggle()
+        },
+        setFilters(filters) {
+            const params = {}
+
+            if (filters.hasOwnProperty('status') && filters.status.length) {
+                params.status = filters.status
+            }
+
+            if (filters.hasOwnProperty('type') && filters.type.length) {
+                params.type = filters.type
+            }
+
+            this.params = Object.assign({}, params)
+
+            this.close()
+        }
     }
+}
 </script>

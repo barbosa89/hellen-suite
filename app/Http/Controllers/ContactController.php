@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SendMessageContact;
 use App\Mail\ContactMessage;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\SendFailedException;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -15,16 +17,16 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function message(SendMessageContact $request)
-    {
-        Mail::to(config('mail.from.address'))
-            ->send(new ContactMessage($request));
+{
+    try {
+        Mail::to(config('mail.from.address'))->send(new ContactMessage($request));
 
-        if (Mail::failures()) {
-            flash()->overlay(trans('email.fail'), trans('common.sorry'));
-        } else {
-            flash()->overlay(trans('email.sent'), trans('common.great'));
-        }
-
-        return redirect('/');
+        flash()->overlay(trans('email.sent'), trans('common.great'));
+    } catch (SendFailedException $e) {
+        flash()->overlay(trans('email.fail'), trans('common.sorry'));
+        Log::error('Error al enviar el correo: ' . $e->getMessage());
     }
+
+    return redirect('/');
+}
 }

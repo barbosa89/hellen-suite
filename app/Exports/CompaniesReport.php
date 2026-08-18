@@ -2,8 +2,8 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class CompaniesReport implements FromView
@@ -23,7 +23,7 @@ class CompaniesReport implements FromView
     public function view(): View
     {
         return view('app.companies.exports.companies', [
-            'companies' => $this->companies
+            'companies' => $this->companies,
         ]);
     }
 }

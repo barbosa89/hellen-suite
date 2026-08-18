@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\User;
 use Database\Seeders\PlanSeeder;
 use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -44,7 +44,7 @@ class UserTest extends TestCase
 
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => Plan::where('type', Plan::SPONSOR)->first(['id'])->id,
-            'user_id' => $manager->id
+            'user_id' => $manager->id,
         ]);
     }
 }

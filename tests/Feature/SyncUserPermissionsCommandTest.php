@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Constants\Roles;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class SyncUserPermissionsCommandTest extends TestCase
 {
@@ -20,12 +20,12 @@ class SyncUserPermissionsCommandTest extends TestCase
 
         Role::create([
             'name' => Roles::MANAGER,
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'rooms.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
     }
 

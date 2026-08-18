@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use Exception;
-use App\Models\Room;
-use Illuminate\Support\Collection;
 use App\Contracts\RoomRepository as Repository;
+use App\Models\Room;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Pure Eloquent Repository
@@ -14,58 +14,41 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class RoomRepository implements Repository
 {
     /**
-     * @param int $id
      * @throws Exception
-     * @return \App\Models\Room
      */
     public function find(int $id): Room
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('id', $id)
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])
             ->firstOrFail(fields_get('rooms'));
     }
 
-    /**
-     * @param integer $hotel
-     * @param integer $perPage
-     * @param array $filters
-     * @return LengthAwarePaginator
-     */
     public function paginate(int $hotel, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('hotel_id', $hotel)
             ->latest()
             ->paginate($perPage);
     }
 
-    /**
-     * @param integer $hotel
-     * @param array $filters
-     * @return Collection
-     */
     public function all(int $hotel, array $filters = []): Collection
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->where('hotel_id', $hotel)
             ->get();
     }
 
     /**
-     * @param integer $hotel
-     * @param array $data
      * @throws Exception
-     * @return \App\Models\Room
      */
     public function create(int $hotel, array $data): Room
     {
-        $room = new Room();
+        $room = new Room;
         $room->fill($data);
         $room->status = Room::AVAILABLE;
 
@@ -81,16 +64,12 @@ class RoomRepository implements Repository
     }
 
     /**
-     * @param  integer $id
-     * @param  array $data
      * @throws Exception
-     * @return \App\Models\Room
      */
     public function update(int $id, array $data): Room
     {
         $room = $this->find($id);
         $room->fill($data);
-
 
         if ((int) $data['tax_status'] == 1) {
             $room->tax = (float) $data['tax'];
@@ -107,13 +86,10 @@ class RoomRepository implements Repository
 
     /**
      * Destroy model
-     *
-     * @param integer $id
-     * @return boolean
      */
     public function destroy(int $id): bool
     {
-        $room = Room::owner()
+        $room = Room::whereOwner()
             ->where('id', $id)
             ->doesntHave('vouchers')
             ->first(fields_get('rooms'));
@@ -125,19 +101,14 @@ class RoomRepository implements Repository
         return $room->delete();
     }
 
-    /**
-     * @param string $query
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
     public function search(string $query): LengthAwarePaginator
     {
-        return Room::owner()
+        return Room::whereOwner()
             ->whereLike(['number', 'description'], $query)
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query): void {
                     $query->select(['id', 'business_name']);
-                }
+                },
             ])
             ->paginate(config('settings.paginate'), fields_get('rooms'));
     }
@@ -145,14 +116,11 @@ class RoomRepository implements Repository
     /**
      * Change Room status
      *
-     * @param integer $id
-     * @param string $status
      * @throws Exception
-     * @return \App\Models\Room
      */
     public function toggle(int $id, string $status): Room
     {
-        $room = Room::owner()
+        $room = Room::whereOwner()
             ->where('id', $id)
             ->where('status', '!=', Room::OCCUPIED)
             ->firstOrFail(fields_get('rooms'));

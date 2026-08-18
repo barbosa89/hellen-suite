@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}">
     <label for="room">@lang('rooms.title'):</label>
-    <select class="form-control selectpicker" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
+    <select class="form-control" title="{{ trans('rooms.chooseRoom') }}" name="room" id="room" required>
         @foreach($voucher->rooms as $room)
             <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
         @endforeach
@@ -15,7 +15,7 @@
 
 <div class="form-group{{ $errors->has('product') ? ' has-error' : '' }}">
     <label for="product">@lang('products.title'):</label>
-    <select class="form-control selectpicker" title="{{ trans('products.chooseProduct') }}" name="product" id="product" required onchange="showTotal()">
+    <select class="form-control" title="{{ trans('products.chooseProduct') }}" name="product" id="product" required onchange="showTotal()">
         @foreach($products as $product)
             <option value="{{ id_encode($product->id) }}" data-max="{{ $product->quantity }}">
                 {{ $product->description }} 

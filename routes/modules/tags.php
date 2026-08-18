@@ -1,33 +1,34 @@
 <?php
 
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth', 'verified']], function() {
-	Route::get('tags/search', 'TagController@search')
-		->name('tags.search')
-		->middleware('permission:tags.index');
+Route::group(['middleware' => ['auth', 'verified']], function (): void {
+    Route::get('tags/search', [TagController::class, 'search'])
+        ->name('tags.search')
+        ->middleware('permission:tags.index');
 
-	Route::delete('tags/{id}', 'TagController@destroy')
-		->name('tags.destroy')
-		->middleware('permission:tags.destroy');
+    Route::delete('tags/{id}', [TagController::class, 'destroy'])
+        ->name('tags.destroy')
+        ->middleware('permission:tags.destroy');
 
-	Route::put('tags/{id}', 'TagController@update')
-		->name('tags.update')
-		->middleware('permission:tags.edit');
+    Route::put('tags/{id}', [TagController::class, 'update'])
+        ->name('tags.update')
+        ->middleware('permission:tags.edit');
 
-	Route::get('tags/{id}/edit', 'TagController@edit')
-		->name('tags.edit')
-		->middleware('permission:tags.edit');
+    Route::get('tags/{id}/edit', [TagController::class, 'edit'])
+        ->name('tags.edit')
+        ->middleware('permission:tags.edit');
 
-	Route::post('tags', 'TagController@store')
-		->name('tags.store')
-		->middleware('permission:tags.create');
+    Route::post('tags', [TagController::class, 'store'])
+        ->name('tags.store')
+        ->middleware('permission:tags.create');
 
-	Route::get('tags/{id}/hotel/{hotel}', 'TagController@show')
-		->name('tags.show')
-		->middleware('permission:tags.show');
+    Route::get('tags/{id}/hotel/{hotel}', [TagController::class, 'show'])
+        ->name('tags.show')
+        ->middleware('permission:tags.show');
 
-	Route::get('tags', 'TagController@index')
-		->name('tags.index')
-		->middleware('permission:tags.index');
+    Route::get('tags', [TagController::class, 'index'])
+        ->name('tags.index')
+        ->middleware('permission:tags.index');
 });

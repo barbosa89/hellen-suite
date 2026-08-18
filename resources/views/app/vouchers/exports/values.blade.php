@@ -1,9 +1,9 @@
 <div class="values">
     <div class="row mt-2 list-content">
-        <div class="col-xs-8 font-weight-bold">
+        <div class="col-xs-8 fw-bold">
             SUBTOTAL
         </div>
-        <div class="col-xs-4 text-right font-weight-bold">$ {{ number_format($voucher->subvalue, 2, ',', '.') }} </div>
+        <div class="col-xs-4 text-right fw-bold">$ {{ number_format($voucher->subvalue, 2, ',', '.') }} </div>
     </div>
     <div class="row mt-2 list-content">
         <div class="col-xs-8">
@@ -22,10 +22,10 @@
     </div>
     <div class="row mt-2 list-content">
         <div class="col-xs-8">
-            <h3 class="font-weight-bold">TOTAL</h3>
+            <h3 class="fw-bold">TOTAL</h3>
         </div>
         <div class="col-xs-4 text-right">
-            <h3 class="font-weight-bold">$ {{ number_format($voucher->value, 2, ',', '.') }}</h3>
+            <h3 class="fw-bold">$ {{ number_format($voucher->value, 2, ',', '.') }}</h3>
         </div>
     </div>
 </div>

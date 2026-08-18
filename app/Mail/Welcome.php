@@ -4,38 +4,18 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class Welcome extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The recipient user.
-     *
-     * @var User
-     */
-    private $user;
-
-    /**
-     * Temporal password.
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(User $user, $password)
-    {
-        $this->user = $user;
-        $this->password = $password;
-    }
+    public function __construct(
+        private User $user,
+        private $password
+    ) {}
 
     /**
      * Build the message.
@@ -45,15 +25,15 @@ class Welcome extends Mailable implements ShouldQueue
     public function build()
     {
         $this->user->load([
-            'roles' => function ($query) {
+            'roles' => function ($query): void {
                 $query->select('id', 'name');
             },
-            'father' => function ($query) {
+            'father' => function ($query): void {
                 $query->select('id', 'name');
-            }
+            },
         ]);
 
-        return $this->view('emails.welcome.' . $this->user->roles->first()->name)
+        return $this->view('emails.welcome.'.$this->user->roles->first()->name)
             ->subject(trans('email.active'))
             ->with([
                 'user' => $this->user,

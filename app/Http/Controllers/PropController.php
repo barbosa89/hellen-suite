@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\User;
-use App\Models\Prop;
-use App\Models\Hotel;
 use App\Exports\PropReport;
 use App\Exports\PropsReport;
 use App\Helpers\Chart;
 use App\Helpers\Random;
 use App\Http\Requests\DateRangeQuery;
 use App\Http\Requests\ReportQuery;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreProp;
 use App\Http\Requests\UpdateProp;
 use App\Models\Company;
+use App\Models\Hotel;
+use App\Models\Prop;
+use App\Models\User;
 use App\Models\Voucher;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
@@ -33,13 +32,12 @@ class PropController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->where('status', true)
             ->with([
-                'props' => function ($query)
-                {
+                'props' => function ($query): void {
                     $query->select(fields_get('props'));
-                }
+                },
             ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             if (auth()->user()->can('hotels.index')) {
@@ -62,12 +60,10 @@ class PropController extends Controller
      */
     public function encodeIds(Collection $hotels)
     {
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
-            $hotel->props = $hotel->props->map(function ($prop)
-            {
+            $hotel->props = $hotel->props->map(function ($prop) {
                 $prop->hotel_id = id_encode($prop->hotel_id);
                 $prop->user_id = id_encode($prop->user_id);
 
@@ -91,7 +87,7 @@ class PropController extends Controller
             ->where('status', true)
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('props.index');
@@ -112,7 +108,7 @@ class PropController extends Controller
      */
     public function store(StoreProp $request)
     {
-        $prop = new Prop();
+        $prop = new Prop;
         $prop->description = $request->description;
         $prop->price = (float) $request->price;
         $prop->quantity = (int) $request->quantity;
@@ -121,7 +117,7 @@ class PropController extends Controller
 
         if ($prop->save()) {
             // Voucher creation
-            $voucher = new Voucher();
+            $voucher = new Voucher;
             $voucher->number = Random::consecutive();
             $voucher->open = false;
             $voucher->payment_status = true;
@@ -133,7 +129,7 @@ class PropController extends Controller
             $voucher->hotel()->associate(id_decode($request->hotel));
             $voucher->user()->associate(id_parent());
 
-            if (!empty($request->company)) {
+            if (! empty($request->company)) {
                 $voucher->company()->associate(id_decode($request->company));
             }
 
@@ -144,7 +140,7 @@ class PropController extends Controller
                     [
                         'quantity' => $prop->quantity,
                         'value' => $prop->price * $prop->quantity,
-                        'created_at' => now()
+                        'created_at' => now(),
                     ]
                 );
             }
@@ -152,7 +148,7 @@ class PropController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('props.show', [
-                'id' => id_encode($prop->id)
+                'id' => id_encode($prop->id),
             ]);
         }
 
@@ -178,17 +174,15 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity');
-            }
+            },
         ]);
 
         $data = Chart::create($prop->vouchers)
@@ -209,10 +203,9 @@ class PropController extends Controller
         $prop = User::find(id_parent(), ['id'])->props()
             ->where('id', id_decode($id))
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query): void {
                     $query->select(['id', 'business_name']);
-                }
+                },
             ])->first(fields_get('props'));
 
         if (empty($prop)) {
@@ -247,7 +240,7 @@ class PropController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('props.show', [
-                'id' => id_encode($prop->id)
+                'id' => id_encode($prop->id),
             ]);
         }
 
@@ -286,7 +279,6 @@ class PropController extends Controller
     /**
      * Return a rooms list by hotel ID.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -299,8 +291,7 @@ class PropController extends Controller
                 ->whereLike('description', $query)
                 ->get(fields_get('props'));
 
-            $props = $props->map(function ($prop)
-            {
+            $props = $props->map(function ($prop) {
                 $prop->hotel_id = id_encode($prop->hotel_id);
                 $prop->user_id = id_encode($prop->user_id);
 
@@ -308,7 +299,7 @@ class PropController extends Controller
             });
 
             return response()->json([
-                'props' => $props->toJson()
+                'props' => $props->toJson(),
             ]);
         }
 
@@ -332,10 +323,9 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
-            }
+            },
         ]);
 
         return view('app.props.prop-report', compact('prop'));
@@ -359,22 +349,19 @@ class PropController extends Controller
         }
 
         $prop->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request)
-            {
+            'vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
-                        Carbon::parse($request->end)->endOfDay()
+                        Carbon::parse($request->end)->endOfDay(),
                     ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) use ($request)
-            {
+            'vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -385,7 +372,7 @@ class PropController extends Controller
             return redirect()->route('props.prop.report', ['id' => id_encode($prop->id)]);
         }
 
-        return Excel::download(new PropReport($prop), trans('props.prop') . '.xlsx');
+        return Excel::download(new PropReport($prop), trans('props.prop').'.xlsx');
     }
 
     /**
@@ -398,7 +385,7 @@ class PropController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('props.index');
@@ -416,30 +403,27 @@ class PropController extends Controller
     public function exportReport(ReportQuery $request)
     {
         $props = Prop::where('user_id', id_parent())
-            ->when($request->hotel, function ($query) use ($request) {
+            ->when($request->hotel, function ($query) use ($request): void {
                 $query->where('id', id_decode($request->hotel));
             })
             ->with([
-                'hotel' => function ($query)
-                {
+                'hotel' => function ($query): void {
                     $query->select(fields_dotted('hotels'));
                 },
-                'vouchers' => function ($query) use ($request)
-                {
+                'vouchers' => function ($query) use ($request): void {
                     $query->whereBetween('vouchers.created_at', [
-                            Carbon::parse($request->start)->startOfDay(),
-                            Carbon::parse($request->end)->endOfDay()
-                        ])
+                        Carbon::parse($request->start)->startOfDay(),
+                        Carbon::parse($request->end)->endOfDay(),
+                    ])
                         ->orderBy('vouchers.created_at', 'DESC')
                         ->withPivot('quantity', 'value');
                 },
-                'vouchers.company' => function ($query)
-                {
+                'vouchers.company' => function ($query): void {
                     $query->select(fields_dotted('companies'));
-                }
+                },
             ])
             ->get();
 
-        return Excel::download(new PropsReport($props), trans('props.title') . '.xlsx');
+        return Excel::download(new PropsReport($props), trans('props.title').'.xlsx');
     }
 }

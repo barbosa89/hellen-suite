@@ -44,7 +44,7 @@
 
                     <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
                         <label for="pwd">Rol:</label>
-                        <select class="form-control selectpicker" title="{{ trans('users.chooseRole') }}" name="role" id="role" required>
+                        <select class="form-control" title="{{ trans('users.chooseRole') }}" name="role" id="role" required>
                             @foreach($roles as $role)
                                 @if($loop->first)
                                     <option selected value="{{ id_encode($role->id) }}">{{ trans('users.'. $role->name) }}</option>
@@ -61,7 +61,7 @@
                         @endif
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.create')</button>
                 </form> 
             </div>
         </div>

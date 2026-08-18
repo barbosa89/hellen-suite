@@ -15,7 +15,7 @@ class NoteController extends Controller
      */
     public function index(string $hotelId): JsonResponse
     {
-        $notes = Note::owner()
+        $notes = Note::whereOwner()
             ->ofHotel(id_decode($hotelId))
             ->latest()
             ->paginate(

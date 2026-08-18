@@ -1,23 +1,24 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('invoices/{number}/payments/confirm', 'InvoiceController@confirmPayment')
+Route::get('invoices/{number}/payments/confirm', [InvoiceController::class, 'confirmPayment'])
     ->name('invoices.payments.confirm')
     ->middleware(['auth', 'verified', 'role:manager']);
 
-Route::delete('invoices/{invoice}', 'InvoiceController@destroy')
+Route::delete('invoices/{invoice}', [InvoiceController::class, 'destroy'])
     ->name('invoices.destroy')
     ->middleware(['auth', 'verified', 'role:manager']);
 
-Route::post('invoices', 'InvoiceController@store')
+Route::post('invoices', [InvoiceController::class, 'store'])
     ->name('invoices.store')
     ->middleware(['auth', 'verified', 'role:manager']);
 
-Route::get('invoices/{invoice}', 'InvoiceController@show')
+Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])
     ->name('invoices.show')
     ->middleware(['auth', 'verified', 'role:manager']);
 
-Route::get('invoices', 'InvoiceController@index')
+Route::get('invoices', [InvoiceController::class, 'index'])
     ->name('invoices.index')
     ->middleware(['auth', 'verified', 'role:manager']);

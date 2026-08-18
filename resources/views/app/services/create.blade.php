@@ -26,7 +26,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
+                        <select class="form-control" title="Elige un hotel o sede" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -61,7 +61,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.create')</button>
                 </form>
             </div>
         </div>

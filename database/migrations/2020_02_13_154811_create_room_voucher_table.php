@@ -27,7 +27,7 @@ class CreateRoomVoucherTable extends Migration
             $table->boolean('enabled'); // The room can be processed
 
             $table->foreign('voucher_id')->references('id')->on('vouchers')
-            ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')
                 ->onUpdate('cascade')->onDelete('cascade');
 

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 use Spatie\Permission\Models\Permission;
@@ -22,12 +23,12 @@ class SyncUserPermissions extends Command
 
     public function handle(): int
     {
-        DB::transaction(function () {
+        DB::transaction(function (): void {
             $permissions = Permission::all(['id', 'name', 'guard_name']);
 
-            LazyCollection::make(function () {
+            LazyCollection::make(function (): array|Collection {
                 return User::owner()->get(['id']);
-            })->each(function (User $user) use ($permissions) {
+            })->each(function (User $user) use ($permissions): void {
                 $user->syncPermissions($permissions);
             });
         });

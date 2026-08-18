@@ -8,7 +8,7 @@
             <template v-if="vouchers.length > 0">
                 <vue-table :headers='headers' :user-data='vouchers'>
                     <template v-slot:record="{ record }">
-                        <td>{{ record.created_at | date }}</td>
+                        <td>{{ record.created_at }}</td>
                         <td>
                             <a :href="'/vouchers/' +record.hash">
                                 {{ record.number }}
@@ -29,50 +29,46 @@
                 </div>
             </template>
         </div>
-        <div class="card-footer small text-muted">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
+        <div class="card-footer small text-body-secondary">{{ $t('common.updated.at') }}: {{ date.format('YY-MM-DD HH:mm:ss') }}</div>
     </div>
 </template>
 
 <script>
-    import Bus from '../../Bus'
-    import VueTable from '@barbosa89/vue-table'
+import { trans } from "laravel-vue-i18n"
 
-    export default {
-        mounted() {
-            Bus.$on('last-vouchers', (vouchers) => {
-                this.vouchers = vouchers
-            })
+export default {
+    mounted() {
+        // Bus.$on('last-vouchers', (vouchers) => {
+        //     this.vouchers = vouchers
+        // })
 
-            setTimeout(() => {
-                this.empty = true
-            }, 5000);
-        },
-        data() {
-            return {
-                vouchers: [],
-                date: moment(),
-                empty: false,
-                headers: [
-                    {
-                        description: this.$root.$t('common.date')
-                    },
-                    {
-                        description: this.$root.$t('common.number')
-                    },
-                    {
-                        description: 'Hotel'
-                    },
-                    {
-                        description: this.$root.$t('common.type')
-                    },
-                    {
-                        description: this.$root.$t('common.value')
-                    },
-                ]
-            }
-        },
-        components: {
-            VueTable
-        },
+        setTimeout(() => {
+            this.empty = true
+        }, 5000);
+    },
+    data() {
+        return {
+            vouchers: [],
+            date: moment(),
+            empty: false,
+            headers: [
+                {
+                    description: wTrans('common.date')
+                },
+                {
+                    description: wTrans('common.number')
+                },
+                {
+                    description: 'Hotel'
+                },
+                {
+                    description: wTrans('common.type')
+                },
+                {
+                    description: wTrans('common.value')
+                },
+            ]
+        }
     }
+}
 </script>

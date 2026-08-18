@@ -1,11 +1,11 @@
 <div class="container">
     <div class="row">
             <div class="col-sm-12">
-                <div class="row text-muted">
+                <div class="row text-body-secondary">
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -24,7 +24,7 @@
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -43,7 +43,7 @@
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -62,7 +62,7 @@
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -82,7 +82,7 @@
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -101,7 +101,7 @@
                     <div class="col room">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-right">
+                                <p class="text-end">
                                     <a href="#" class="btn btn-light btn-circle text-info">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
@@ -118,11 +118,11 @@
                         </p>
                     </div>
                 </div>
-                <div class="row text-muted">
+                <div class="row text-body-secondary">
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -141,7 +141,7 @@
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -160,7 +160,7 @@
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -179,7 +179,7 @@
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -199,7 +199,7 @@
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -218,7 +218,7 @@
                         <div class="col room">
                             <div class="row">
                                 <div class="col-12">
-                                    <p class="text-right">
+                                    <p class="text-end">
                                         <a href="#" class="btn btn-light btn-circle text-info">
                                             <i class="fa fa-ellipsis-v"></i>
                                         </a>
@@ -235,11 +235,11 @@
                             </p>
                         </div>
                     </div>
-                    <div class="row text-muted">
+                    <div class="row text-body-secondary">
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -258,7 +258,7 @@
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -277,7 +277,7 @@
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -296,7 +296,7 @@
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -316,7 +316,7 @@
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -335,7 +335,7 @@
                             <div class="col room">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="text-right">
+                                        <p class="text-end">
                                             <a href="#" class="btn btn-light btn-circle text-info">
                                                 <i class="fa fa-ellipsis-v"></i>
                                             </a>
@@ -352,11 +352,11 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="row text-muted">
+                        <div class="row text-body-secondary">
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>
@@ -375,7 +375,7 @@
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>
@@ -394,7 +394,7 @@
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>
@@ -413,7 +413,7 @@
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>
@@ -433,7 +433,7 @@
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>
@@ -452,7 +452,7 @@
                                 <div class="col room">
                                     <div class="row">
                                         <div class="col-12">
-                                            <p class="text-right">
+                                            <p class="text-end">
                                                 <a href="#" class="btn btn-light btn-circle text-info">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                 </a>

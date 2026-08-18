@@ -11,7 +11,7 @@ class HotelFactory extends Factory
     {
         return [
             'business_name' => $this->faker->text(20),
-            'tin' => $this->faker->randomNumber(3) . '-' . $this->faker->randomNumber(3) . '-' . $this->faker->randomNumber(3),
+            'tin' => $this->faker->randomNumber(3).'-'.$this->faker->randomNumber(3).'-'.$this->faker->randomNumber(3),
             'address' => $this->faker->address,
             'phone' => $this->faker->e164PhoneNumber,
             'mobile' => $this->faker->e164PhoneNumber,

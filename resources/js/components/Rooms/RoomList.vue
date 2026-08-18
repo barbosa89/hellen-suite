@@ -10,22 +10,22 @@
                 <div class="row">
                     <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
                         <div class="btn-group pull-left" role="group" id="filters">
-                            <button type="button" class="btn btn-default pressed" id="all" @click.prevent="showAll" :title="this.$root.$t('common.all')">
+                            <button type="button" class="btn btn-default pressed" id="all" @click.prevent="showAll" :title="$t('common.all')">
                                 <i class="fa fa-th"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="available" @click.prevent="showAvailable" :title="this.$root.$t('rooms.available')">
+                            <button type="button" class="btn btn-default" id="available" @click.prevent="showAvailable" :title="$t('rooms.available')">
                                 <i class="fa fa-check-circle"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" :title="this.$root.$t('rooms.occupied')">
+                            <button type="button" class="btn btn-default" id="occupied" @click.prevent="showOccupied" :title="$t('rooms.occupied')">
                                 <i class="fa fa-tags"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" :title="this.$root.$t('rooms.cleaning')">
+                            <button type="button" class="btn btn-default" id="cleaning" @click.prevent="showCleaning" :title="$t('rooms.cleaning')">
                                 <i class="fa fa-broom"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" :title="this.$root.$t('rooms.maintenance')">
+                            <button type="button" class="btn btn-default" id="maintenance" @click.prevent="showMaintenance" :title="$t('rooms.maintenance')">
                                 <i class="fa fa-wrench"></i>
                             </button>
-                            <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" :title="this.$root.$t('rooms.disabled')">
+                            <button type="button" class="btn btn-default" id="disabled" @click.prevent="showDisabled" :title="$t('rooms.disabled')">
                                 <i class="fa fa-lock"></i>
                             </button>
                         </div>
@@ -44,14 +44,14 @@
                 <div class="row">
                     <div class="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 room"
                         v-for="room in chunk" :key="room.id"
-                        @contextmenu.prevent="$refs.menu.open($event, { room })"
+                        @contextmenu.prevent="showContextMenu($event, room)"
                         @dblclick="pushSelected(room)"
                         :class="room.selected == true ? 'selected-room' : ''"
                         data-toggle="tooltip" data-placement="top" :title="room.description">
                         <div class="row">
                             <div class="col-12 without-padding">
                                 <p class="text-right">
-                                    <a href="#" class="text-info context-option d-none d-md-inline d-lg-inline d-xl-inline" @click.stop="$refs.menu.open($event, { room })">
+                                    <a href="#" class="text-info context-option d-none d-md-inline d-lg-inline d-xl-inline" @click.stop="showContextMenu($event, room)">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
                                     <a href="#" class="text-info context-option d-inline d-md-none d-lg-none d-xl-none" @click.prevent="pushSelected(room)">
@@ -83,300 +83,319 @@
             </div>
         </div>
 
-        <vue-context ref="menu">
-            <template slot-scope="child">
-                <li>
-                    <a href="#" @click.prevent="assign($event.target.innerText, child.data)">
-                        {{ $t('common.assign') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" @click.prevent="select($event.target.innerText, child.data)">
-                        {{ $t('common.select') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" @click.prevent="enable($event.target.innerText, child.data)">
-                        {{ $t('common.enable') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" @click.prevent="disable($event.target.innerText, child.data)">
-                        {{ $t('common.disable') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" @click.prevent="changeStatusToMaintenance($event.target.innerText, child.data)">
-                        {{ $t('rooms.maintenance') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#" @click.prevent="show($event.target.innerText, child.data)">
-                        {{ $t('common.show') }}
-                    </a>
-                </li>
-            </template>
-        </vue-context>
+        <context-menu
+            v-if="showMenu"
+            v-model="showMenu"
+            :actions="menuActions"
+            @action-clicked="handleAction"
+            :x="x"
+            :y="y"
+            ></context-menu>
     </div>
 </template>
 
 <script>
-    import { VueContext } from 'vue-context';
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+import ContextMenu from '../ContextMenu.vue'
 
-    export default {
-        data() {
-            return {
-                hotelId: '',
-                rooms: [],
-                filteredRooms: [],
-                selectedRooms: [],
-                showStatus: false
+export default {
+    components: {
+        ContextMenu
+    },
+    data() {
+        return {
+            showMenu: false,
+            x: 0,
+            y: 0,
+            hotelId: '',
+            rooms: [],
+            filteredRooms: [],
+            selectedRooms: [],
+            showStatus: false,
+            menuActions: [],
+            target: null
+        }
+    },
+    watch: {
+        hotelId() {
+            this.queryRooms()
+        }
+    },
+    created() {
+        this.menuActions = [
+            {
+                label: wTrans('common.assign'),
+                action: 'assign',
+            },
+            {
+                label: wTrans('common.select'),
+                action: 'select',
+            },
+            {
+                label: wTrans('common.enable'),
+                action: 'enable',
+            },
+            {
+                label: wTrans('common.disable'),
+                action: 'disable',
+            },
+            {
+                label: wTrans('rooms.maintenance'),
+                action: 'maintenance',
+            },
+            {
+                label: wTrans('common.show'),
+                action: 'show',
+            },
+        ]
+    },
+    computed: {
+        chunkedItems() {
+            return _.chunk(this.filteredRooms, 6)
+        }
+    },
+    methods: {
+        queryRooms() {
+            axios
+                .get(route('api.web.rooms.index', this.hotelId))
+                .then(response => {
+                    if (response.data.rooms.length) {
+                        this.rooms = response.data.rooms
+
+                        this.prepare()
+                    } else {
+                        this.rooms = []
+
+                        this.filteredRooms = []
+                    }
+                })
+                .catch(e => {
+                    toast.error(wTrans('common.try'))
+                })
+        },
+        prepare() {
+            if (this.rooms.length > 0) {
+                // Add custom property to selected items
+                this.rooms = _.each(this.rooms, function (room) {
+                    room.selected = false
+                    room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
+                })
+
+                this.filteredRooms = this.rooms
             }
         },
-        watch: {
-            hotelId() {
-                this.queryRooms()
+        pressed(event) {
+            let buttons = document.getElementById('filters')
+            let ArrBtn = Array.from(buttons.children)
+
+            ArrBtn.forEach(function (button, index) {
+                button.classList.remove('pressed')
+            })
+
+            let tag = event.target.localName
+            let id = tag == 'i' ? event.target.parentNode.id : event.target.id
+
+            let button = document.getElementById(id)
+            button.classList.add('pressed')
+        },
+        showAll(event) {
+            this.filteredRooms = this.rooms
+            this.pressed(event)
+        },
+        showAvailable(event) {
+            this.filteredRooms = _.filter(this.rooms, (room) => {
+                return room.status == '1'
+            })
+
+            this.pressed(event)
+        },
+        showOccupied(event) {
+            this.filteredRooms = _.filter(this.rooms, (room) => {
+                return room.status == '0'
+            })
+
+            this.pressed(event)
+        },
+        showMaintenance(event) {
+            this.filteredRooms = _.filter(this.rooms, (room) => {
+                return room.status == '4'
+            })
+
+            this.pressed(event)
+        },
+        showDisabled(event) {
+            this.filteredRooms = _.filter(this.rooms, (room) => {
+                return room.status == '3'
+            })
+
+            this.pressed(event)
+        },
+        showCleaning(event) {
+            this.filteredRooms = _.filter(this.rooms, (room) => {
+                return room.status == '2'
+            })
+
+            this.pressed(event)
+        },
+        pushSelected(room) {
+            if (room.status == '1') {
+                let contains = _.includes(this.selectedRooms, room)
+
+                if (contains) {
+                    this.selectedRooms = _.filter(this.selectedRooms, (selected) => {
+                        return selected.hash != room.hash
+                    })
+
+                    room.selected = false
+                } else {
+                    this.selectedRooms.push(room)
+                    room.selected = true
+                }
+            } else {
+                toast.error(wTrans('common.not.allowed'))
             }
         },
-        computed: {
-            chunkedItems() {
-                return _.chunk(this.filteredRooms, 6)
+        select() {
+            this.pushSelected(this.target);
+        },
+        clear() {
+            _.each(this.selectedRooms, function (room) {
+                room.selected = false
+            })
+
+            this.selectedRooms = []
+        },
+        show() {
+            let url = '/rooms/' + this.target.hash
+
+            window.location.href = url
+        },
+        assign() {
+            if (this.target.status == '1') {
+                this.pushSelected(this.target)
+
+                window.location.href = this.buildLink(this.hotelId, [this.target])
+            } else {
+                toast.info(wTrans('rooms.cannot.add'))
             }
         },
-        components: {
-            VueContext
+        pool() {
+            window.location.href = this.buildLink(this.hotelId, this.selectedRooms)
         },
-        methods: {
-            queryRooms() {
-                axios
-                    .get(route('api.web.rooms.index', this.hotelId))
-                    .then(response => {
-                        if (response.data.rooms.length) {
-                            this.rooms = response.data.rooms
+        buildLink(hotel, rooms) {
+            let params = ''
 
-                            this.prepare()
-                        } else {
-                            this.rooms = []
+            rooms.forEach(room => {
+                params += `&rooms[]=${room.hash}`
+            })
 
-                            this.filteredRooms = []
+            return `/vouchers/create?hotel=${hotel}${params}`
+        },
+        changeStatus(status) {
+            if (_.indexOf(['0', '1', '2', '3', '4'], this.target.status) != -1) {
+                axios.post(route('api.web.rooms.toggle'), {
+                    room: this.target.hash,
+                    status: status
+                }).then(response => {
+                    this.rooms = _.each(this.rooms, (room) => {
+                        if (response.this.target.hash == room.hash) {
+                            room.status = status
                         }
                     })
-                    .catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        )
+
+                    this.filteredRooms = _.each(this.filteredRooms, (room) => {
+                        if (response.this.target.hash == room.hash) {
+                            room.status = status
+                        }
                     })
-            },
-            prepare() {
-                if (this.rooms.length > 0) {
-                    // Add custom property to selected items
-                    this.rooms = _.each(this.rooms, function (room) {
-                        room.selected = false
-                        room.price = parseFloat(room.price) + (parseFloat(room.price) * parseFloat(room.tax))
-                    })
-
-                    this.filteredRooms = this.rooms
-                }
-            },
-            pressed(event) {
-                let buttons = document.getElementById('filters')
-                let ArrBtn = Array.from(buttons.children)
-
-                ArrBtn.forEach(function (button, index) {
-                    button.classList.remove('pressed')
-                })
-
-                let tag = event.target.localName
-                let id = tag == 'i' ? event.target.parentNode.id : event.target.id
-
-                let button = document.getElementById(id)
-                button.classList.add('pressed')
-            },
-            showAll(event) {
-                this.filteredRooms = this.rooms
-                this.pressed(event)
-            },
-            showAvailable(event) {
-                this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '1'
-                })
-
-                this.pressed(event)
-            },
-            showOccupied(event) {
-                this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '0'
-                })
-
-                this.pressed(event)
-            },
-            showMaintenance(event) {
-                this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '4'
-                })
-
-                this.pressed(event)
-            },
-            showDisabled(event) {
-                this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '3'
-                })
-
-                this.pressed(event)
-            },
-            showCleaning(event) {
-                this.filteredRooms = _.filter(this.rooms, (room) => {
-                    return room.status == '2'
-                })
-
-                this.pressed(event)
-            },
-            pushSelected(room) {
-                if (room.status == '1') {
-                    let contains = _.includes(this.selectedRooms, room)
-
-                    if (contains) {
-                        this.selectedRooms = _.filter(this.selectedRooms, (selected) => {
-                            return selected.hash != room.hash
-                        })
-
-                        room.selected = false
-                    } else {
-                        this.selectedRooms.push(room)
-                        room.selected = true
-                    }
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.add'),
-                        this.$root.$t('common.not.allowed')
-                    );
-                }
-            },
-            select(text, data) {
-                this.pushSelected(data.room);
-            },
-            clear() {
-                _.each(this.selectedRooms, function (room) {
-                    room.selected = false
-                })
-
-                this.selectedRooms = []
-            },
-            show(text, data) {
-                let url = '/rooms/' + data.room.hash
-
-                window.location.href = url
-            },
-            assign(text, data) {
-                if (data.room.status == '1') {
-                    this.pushSelected(data.room)
-
-                    window.location.href = this.buildLink(this.hotelId, [data.room])
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.add'),
-                        this.$root.$t('common.not.allowed')
-                    )
-                }
-            },
-            pool() {
-                window.location.href = this.buildLink(this.hotelId, this.selectedRooms)
-            },
-            buildLink(hotel, rooms) {
-                let params = ''
-
-                rooms.forEach(room => {
-                    params += `&rooms[]=${room.hash}`
-                })
-
-                return `/vouchers/create?hotel=${hotel}${params}`
-            },
-            changeStatus(data, status) {
-                if (_.indexOf(['0', '1', '2', '3', '4'], data.room.status) != -1) {
-                    axios.post(route('api.web.rooms.toggle'), {
-                        room: data.room.hash,
-                        status: status
-                    }).then(response => {
-                        this.rooms = _.each(this.rooms, (room) => {
-                            if (response.data.room.hash == room.hash) {
-                                room.status = status
-                            }
-                        })
-
-                        this.filteredRooms = _.each(this.filteredRooms, (room) => {
-                            if (response.data.room.hash == room.hash) {
-                                room.status = status
-                            }
-                        })
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
-                    });
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.enable'),
-                        this.$root.$t('common.not.allowed')
-                    );
-                }
-            },
-            enable(text, data) {
-                if (_.indexOf(['2', '3', '4'], data.room.status) != -1) {
-                    this.changeStatus(data, '1')
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.enable'),
-                        this.$root.$t('common.not.allowed')
-                    );
-                }
-            },
-            disable(text, data) {
-                if (_.indexOf(['1', '2', '4'], data.room.status) != -1) {
-                    this.changeStatus(data, '3')
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.enable'),
-                        this.$root.$t('common.not.allowed')
-                    );
-                }
-            },
-            changeStatusToMaintenance(text, data) {
-                if (_.indexOf(['1', '2', '3'], data.room.status) != -1) {
-                    this.changeStatus(data, '4')
-                } else {
-                    toastr.info(
-                        this.$root.$t('rooms.cannot.enable'),
-                        this.$root.$t('common.not.allowed')
-                    );
-                }
-            },
-            getStatusIcon(room) {
-                if (room.status == '0') {
-                    return 'fa-tags'
-                }
-
-                if (room.status == '1') {
-                    return 'fa-check'
-                }
-
-                if (room.status == '2') {
-                    return 'fa-broom'
-                }
-
-                if (room.status == '3') {
-                    return 'fa-lock'
-                }
-
-                if (room.status == '4') {
-                    return 'fa-wrench'
-                }
-
-                return 'fa-lock'
+                }).catch(e => {
+                    toast.error(wTrans('common.try'))
+                });
+            } else {
+                toast.error(wTrans('rooms.cannot.enable'))
             }
         },
-    }
+        enable() {
+            if (_.indexOf(['2', '3', '4'], this.target.status) != -1) {
+                this.changeStatus('1')
+            } else {
+                toast.info(wTrans('rooms.cannot.enable'));
+            }
+        },
+        disable() {
+            if (_.indexOf(['1', '2', '4'], this.target.status) != -1) {
+                this.changeStatus('3')
+            } else {
+                toast.info(wTrans('rooms.cannot.enable'));
+            }
+        },
+        changeStatusToMaintenance() {
+            if (_.indexOf(['1', '2', '3'], this.target.status) != -1) {
+                this.changeStatus('4')
+            } else {
+                toast.error(wTrans('rooms.cannot.enable'))
+            }
+        },
+        getStatusIcon(room) {
+            if (room.status == '0') {
+                return 'fa-tags'
+            }
+
+            if (room.status == '1') {
+                return 'fa-check'
+            }
+
+            if (room.status == '2') {
+                return 'fa-broom'
+            }
+
+            if (room.status == '3') {
+                return 'fa-lock'
+            }
+
+            if (room.status == '4') {
+                return 'fa-wrench'
+            }
+
+            return 'fa-lock'
+        },
+        showContextMenu(event, room) {
+            event.preventDefault()
+            this.showMenu = true
+            this.target = room
+
+            this.x = event.clientX
+            this.y = event.clientY
+        },
+        handleAction(action) {
+            try {
+                switch (action) {
+                    case 'assign':
+                        this.assign()
+                        break;
+                    case 'select':
+                        this.select()
+                        break;
+                    case 'enable':
+                        this.enable()
+                        break;
+                    case 'disable':
+                        this.disable()
+                        break;
+                    case 'maintenance':
+                        this.changeStatusToMaintenance()
+                        break;
+                    default:
+                        this.show()
+                        break;
+                }
+            } catch (error) {
+                console.log({error})
+            }
+        }
+    },
+}
 </script>
 
 <style scoped>

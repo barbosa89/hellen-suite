@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Random;
+use App\Http\Requests\StoreUser;
+use App\Mail\Welcome;
+use App\Models\Plan;
 use App\Models\User;
 use App\Role;
-use App\Mail\Welcome;
-use App\Helpers\Random;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreUser;
-use App\Models\Plan;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -20,13 +20,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereHas('roles', function($query) {
-                $query->where('name', 'manager');
-            })->with([
-                'employees' => function ($query) {
-                    $query->select('id', 'name', 'parent');
-                }
-            ])->get(['id', 'name', 'email', 'status', 'created_at', 'email_verified_at']);
+        $users = User::whereHas('roles', function ($query): void {
+            $query->where('name', 'manager');
+        })->with([
+            'employees' => function ($query): void {
+                $query->select('id', 'name', 'parent');
+            },
+        ])->get(['id', 'name', 'email', 'status', 'created_at', 'email_verified_at']);
 
         return view('app.users.index', compact('users'));
     }
@@ -54,7 +54,7 @@ class UserController extends Controller
         $password = str_random(8);
         $token = Random::token(40);
 
-        $user = new User();
+        $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->token = $token;
@@ -100,7 +100,6 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -123,7 +122,6 @@ class UserController extends Controller
     /**
      * Undocumented function
      *
-     * @param string $id
      * @return \Illuminate\Http\Response
      */
     public function assign(string $id)

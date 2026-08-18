@@ -27,7 +27,7 @@ class StoreMaintenance extends FormRequest
             'date' => 'required|date|before:tomorrow',
             'commentary' => 'required|string|max:255',
             'value' => 'nullable|numeric|min:0.1|max:99999999',
-            'invoice' => 'nullable|file|max:200|mimes:jpeg,png,pdf'
+            'invoice' => 'nullable|file|max:200|mimes:jpeg,png,pdf',
         ];
     }
 }

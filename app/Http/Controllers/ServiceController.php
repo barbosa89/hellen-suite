@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Hotel;
-use App\Helpers\Chart;
-use App\Models\Service;
-use Illuminate\Http\Request;
 use App\Exports\ServiceReport;
-use Illuminate\Support\Carbon;
 use App\Exports\ServicesReport;
+use App\Helpers\Chart;
+use App\Http\Requests\DateRangeQuery;
+use App\Http\Requests\ReportQuery;
+use App\Http\Requests\StoreService;
+use App\Http\Requests\UpdateService;
+use App\Models\Hotel;
+use App\Models\Service;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\{DateRangeQuery, ReportQuery, StoreService, UpdateService};
 
 class ServiceController extends Controller
 {
@@ -24,19 +27,16 @@ class ServiceController extends Controller
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->with([
-                'services' => function ($query)
-                {
+                'services' => function ($query): void {
                     $query->select(fields_get('services'))
                         ->where('is_dining_service', false);
-                }
+                },
             ])->get(fields_get('hotels'));
 
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
-            $hotel->services = $hotel->services->map(function ($service)
-            {
+            $hotel->services = $hotel->services->map(function ($service) {
                 $service->hotel_id = id_encode($service->hotel_id);
                 $service->user_id = id_encode($service->user_id);
 
@@ -77,7 +77,7 @@ class ServiceController extends Controller
      */
     public function store(StoreService $request)
     {
-        $service = new Service();
+        $service = new Service;
         $service->description = $request->description;
         $service->price = (float) $request->price;
         $service->user()->associate(auth()->user()->id);
@@ -87,7 +87,7 @@ class ServiceController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('services.show', [
-                'id' => id_encode($service->id)
+                'id' => id_encode($service->id),
             ]);
         }
 
@@ -114,15 +114,15 @@ class ServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function($query) {
+            'hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
             },
-            'vouchers' => function ($query) {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
-                ->latest()
-                ->limit(20)
+                    ->latest()
+                    ->limit(20)
                     ->withPivot(['quantity', 'value']);
-            }
+            },
         ]);
 
         $data = Chart::create($service->vouchers)
@@ -144,9 +144,9 @@ class ServiceController extends Controller
             ->where('id', id_decode($id))
             ->where('is_dining_service', false)
             ->with([
-                'hotel' => function($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->first(fields_get('services'));
 
         if (empty($service)) {
@@ -181,7 +181,7 @@ class ServiceController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('services.show', [
-                'id' => id_encode($service->id)
+                'id' => id_encode($service->id),
             ]);
         }
 
@@ -208,8 +208,7 @@ class ServiceController extends Controller
         }
 
         $service->load([
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query): void {
                 $query->select('id');
             },
         ]);
@@ -238,7 +237,6 @@ class ServiceController extends Controller
     /**
      * Return price of resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function calculateTotal(Request $request)
@@ -262,7 +260,7 @@ class ServiceController extends Controller
     /**
      * Toggle status for the specified resource from storage.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function toggle($id)
@@ -275,7 +273,7 @@ class ServiceController extends Controller
             return abort(404);
         }
 
-        $service->status = !$service->status;
+        $service->status = ! $service->status;
 
         if ($service->save()) {
             flash(trans('common.updatedSuccessfully'))->success();
@@ -291,7 +289,6 @@ class ServiceController extends Controller
     /**
      * Return a rooms list by hotel ID.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -305,8 +302,7 @@ class ServiceController extends Controller
                 ->whereLike('description', $query)
                 ->get(fields_get('services'));
 
-            $services = $services->map(function ($service)
-            {
+            $services = $services->map(function ($service) {
                 $service->hotel_id = id_encode($service->hotel_id);
                 $service->user_id = id_encode($service->user_id);
 
@@ -314,7 +310,7 @@ class ServiceController extends Controller
             });
 
             return response()->json([
-                'services' => $services->toJson()
+                'services' => $services->toJson(),
             ]);
         }
 
@@ -339,10 +335,9 @@ class ServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
-            }
+            },
         ]);
 
         return view('app.services.service-report', compact('service'));
@@ -367,22 +362,19 @@ class ServiceController extends Controller
         }
 
         $service->load([
-            'hotel' => function ($query)
-            {
+            'hotel' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'vouchers' => function ($query) use ($request)
-            {
+            'vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
-                        Carbon::parse($request->end)->endOfDay()
+                        Carbon::parse($request->end)->endOfDay(),
                     ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'vouchers.company' => function ($query) use ($request)
-            {
+            'vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
             },
         ]);
@@ -393,7 +385,7 @@ class ServiceController extends Controller
             return redirect()->route('services.service.report', ['id' => id_encode($service->id)]);
         }
 
-        return Excel::download(new ServiceReport($service), trans('services.service') . '.xlsx');
+        return Excel::download(new ServiceReport($service), trans('services.service').'.xlsx');
     }
 
     /**
@@ -406,7 +398,7 @@ class ServiceController extends Controller
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('services.index');
@@ -426,39 +418,37 @@ class ServiceController extends Controller
         $query = Hotel::query();
         $query->where('user_id', id_parent());
 
-        if (!empty($request->hotel)) {
+        if (! empty($request->hotel)) {
             $query->where('id', id_decode($request->hotel));
         }
 
         $query->with([
-            'services' => function($query) {
+            'services' => function ($query): void {
                 $query->select(fields_get('services'))
                     ->where('is_dining_service', false);
             },
-            'services.vouchers' => function ($query) use ($request)
-            {
+            'services.vouchers' => function ($query) use ($request): void {
                 $query->select(fields_dotted('vouchers'))
                     ->whereBetween('vouchers.created_at', [
                         Carbon::parse($request->start)->startOfDay(),
-                        Carbon::parse($request->end)->endOfDay()
+                        Carbon::parse($request->end)->endOfDay(),
                     ])
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->withPivot('quantity', 'value');
             },
-            'services.vouchers.company' => function ($query) use ($request)
-            {
+            'services.vouchers.company' => function ($query): void {
                 $query->select(fields_dotted('companies'));
-            }
+            },
         ]);
 
         $hotels = $query->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return back();
         }
 
-        return Excel::download(new ServicesReport($hotels), trans('services.title') . '.xlsx');
+        return Excel::download(new ServicesReport($hotels), trans('services.title').'.xlsx');
     }
 }

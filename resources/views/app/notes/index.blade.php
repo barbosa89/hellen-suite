@@ -39,7 +39,7 @@
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label for="start">{{ trans('common.startDate') }}:</label>
-                        <input type="text" class="form-control datepicker @error('start') is-invalid @enderror" name="start" id="start" value="{{ old('start') }}" required placeholder="{{ trans('common.required') }}">
+                        <input type="date" class="form-control @error('start') is-invalid @enderror" name="start" id="start" value="{{ old('start') }}" required placeholder="{{ trans('common.required') }}">
 
                         @error ('start')
                             <span class="invalid-feedback d-block" role="alert">
@@ -52,7 +52,7 @@
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="form-group">
                         <label for="end">{{ trans('common.endDate') }}:</label>
-                        <input type="text" class="form-control datepicker @error('end') is-invalid @enderror" name="end" id="end" value="{{ old('end') }}" required placeholder="{{ trans('common.required') }}">
+                        <input type="date" class="form-control @error('end') is-invalid @enderror" name="end" id="end" value="{{ old('end') }}" required placeholder="{{ trans('common.required') }}">
 
                         @error ('end')
                             <span class="invalid-feedback d-block" role="alert">
@@ -80,7 +80,7 @@
 
             <div class="row my-4">
                 <div class="col-12">
-                    <button type="submit" role="button" class="btn btn-primary" onclick="javascript: form.action='{{ route('notes.search') }}';">
+                    <button type="submit" role="button" class="btn btn-dark" onclick="javascript: form.action='{{ route('notes.search') }}';">
                         <i class="fas fa-search"></i> {{ trans('common.query') }}
                     </button>
                     <button type="submit" role="button" class="btn btn-outline-info" onclick="javascript: form.action='{{ route('notes.export') }}';">
@@ -94,9 +94,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            buildHotelSelect('hotel')
-        })
-    </script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        buildHotelSelect('hotel');
+    });
+</script>
 @endsection

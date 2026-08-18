@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
     <label for="type">@lang('common.idType'):</label>
-    <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
+    <select class="form-control" title="{{ trans('users.chooseType') }}" name="type" id="type" required>
         <option value="{{ id_encode($guest->identificationType->id) }}" selected>
             {{ trans('common.' . $guest->identificationType->type) }}
         </option>
@@ -96,7 +96,7 @@
 
 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
     <label for="gender">@lang('common.gender'):</label>
-    <select class="form-control selectpicker" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
+    <select class="form-control" title="{{ trans('guests.chooseGender') }}" name="gender" id="gender">
         @if (empty($guest->gender))
             <option value="f">@lang('common.f')</option>
             <option value="m">@lang('common.m')</option>
@@ -120,7 +120,7 @@
 
 <div class="form-group{{ $errors->has('nationality') ? ' has-error' : '' }}">
     <label for="nationality">Pais de nacimiento:</label>
-    <select class="form-control selectpicker" title="Elige un pais" name="nationality" id="nationality" required>
+    <select class="form-control" title="Elige un pais" name="nationality" id="nationality" required>
             <option value="{{ id_encode($guest->country->id) }}" selected>{{ $guest->country->name }}</option>
         @foreach ($countries as $country)
             <option value="{{ id_encode($country->id) }}">{{ $country->name }}</option>
@@ -136,7 +136,7 @@
 
 <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
     <label for="birthdate">@lang('common.birthdate'):</label>
-    <input type="string" class="form-control datepicker" name="birthdate" id="birthdate" value="{{ $guest->birthdate }}">
+    <input type="date" class="form-control" name="birthdate" id="birthdate" value="{{ $guest->birthdate }}">
 
     @if ($errors->has('birthdate'))
         <span class="help-block">

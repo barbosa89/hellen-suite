@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Room;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ChangeRoomStatus extends FormRequest
 {
@@ -34,8 +34,8 @@ class ChangeRoomStatus extends FormRequest
                     Room::AVAILABLE,
                     Room::DISABLED,
                     Room::MAINTENANCE,
-                ])
-            ]
+                ]),
+            ],
         ];
     }
 }

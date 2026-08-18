@@ -69,11 +69,11 @@
             display: block;
         }
 
-        .font-weight-light {
+        .fw-light {
             font-weight: 100;
         }
 
-        .font-weight-bold {
+        .fw-bold {
             font-weight: bold;
         }
 
@@ -411,7 +411,7 @@
 
                             <!-- pagination -->
                             <div class="vouche-pagination text-right">
-                                <p class="text-muted text-right">@lang('common.page') {{ $loop->iteration }} @lang('common.of') {{ count($pages) }}</p>
+                                <p class="text-body-secondary text-right">@lang('common.page') {{ $loop->iteration }} @lang('common.of') {{ count($pages) }}</p>
                             </div>
                             <!-- end pagination -->
                         </div>

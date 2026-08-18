@@ -2,48 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Room;
+use App\Exports\AssetsReport;
+use App\Http\Requests\AssetsReportQuery;
+use App\Http\Requests\AssignAsset;
+use App\Http\Requests\StoreAsset;
+use App\Http\Requests\UpdateAsset;
 use App\Models\Asset;
 use App\Models\Hotel;
-use App\Models\Maintenance;
-use Illuminate\Http\Request;
-use App\Exports\AssetsReport;
-use App\Contracts\RoomRepository;
-use App\Http\Requests\AssignAsset;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\{AssetsReportQuery, StoreAsset, StoreMaintenance, UpdateAsset};
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
 {
-    public RoomRepository $room;
-
-    public function __construct(RoomRepository $room)
+    public function index(): RedirectResponse|View
     {
-        $this->room = $room;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->with([
-            'assets' => function ($query)
-            {
+            'assets' => function ($query): void {
                 $query->select(fields_get('assets'));
-            }
+            },
         ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
@@ -54,20 +42,12 @@ class AssetController extends Controller
         return view('app.assets.index', compact('hotels'));
     }
 
-    /**
-     * Encode all ID's from collection
-     *
-     * @param  \Illuminate\Support\Collection
-     * @return \Illuminate\Support\Collection
-     */
-    private function prepareData(Collection $hotels)
+    private function prepareData(Collection $hotels): Collection
     {
-        $hotels = $hotels->map(function ($hotel)
-        {
+        $hotels = $hotels->map(function ($hotel) {
             $hotel->user_id = id_encode($hotel->user_id);
             $hotel->main_hotel = empty($hotel->main_hotel) ? null : id_encode($hotel->main_hotel);
-            $hotel->assets = $hotel->assets->map(function ($asset)
-            {
+            $hotel->assets = $hotel->assets->map(function ($asset) {
                 $asset->hotel_id = id_encode($asset->hotel_id);
                 $asset->user_id = id_encode($asset->user_id);
                 $asset->room_id = $asset->room_id ? id_encode($asset->room_id) : null;
@@ -81,36 +61,26 @@ class AssetController extends Controller
         return $hotels;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): RedirectResponse|View
     {
-        $hotels = Hotel::whereHas('owner', function (Builder $query)
-        {
+        $hotels = Hotel::whereHas('owner', function (Builder $query): void {
             $query->where('id', id_parent());
         })->where('status', true)
-        ->with([
-            'rooms' => function ($query)
-            {
-                $query->select(fields_get('rooms'));
-            }
-        ])->get(fields_get('hotels'));
+            ->with([
+                'rooms' => function ($query): void {
+                    $query->select(fields_get('rooms'));
+                },
+            ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
 
-        $rooms = $hotels->sum(function ($hotel)
-        {
-            return $hotel->rooms->count();
-        });
+        $rooms = $hotels->sum(fn ($hotel) => $hotel->rooms->count());
 
-        if($rooms == 0) {
+        if ($rooms === 0) {
             flash(trans('rooms.no.created'))->info();
 
             return redirect()->route('assets.index');
@@ -119,99 +89,68 @@ class AssetController extends Controller
         return view('app.assets.create', compact('hotels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAsset $request)
+    public function store(StoreAsset $request): RedirectResponse
     {
-        $asset = new Asset();
-        $asset->number = $request->number;
-        $asset->description = $request->description;
-        $asset->brand = $request->get('brand', null);
-        $asset->model = $request->get('model', null);
-        $asset->serial_number = $request->get('serial_number', null);
-        $asset->price = (float) $request->price;
-        $asset->location = $request->get('location', null);
+        $asset = new Asset;
+        $asset->number = $request->input('number');
+        $asset->description = $request->input('description');
+        $asset->brand = $request->input('brand');
+        $asset->model = $request->input('model');
+        $asset->serial_number = $request->input('serial_number');
+        $asset->price = (float) $request->input('price');
+        $asset->location = $request->input('location');
         $asset->user()->associate(id_parent());
         $asset->hotel()->associate(id_decode($request->hotel));
 
-        if (!empty($request->get('room', null))) {
-            $asset->room()->associate(id_decode($request->room));
+        if ($request->filled('room')) {
+            $asset->room()->associate(id_decode($request->input('room')));
         }
 
-        if ($asset->save()) {
-            flash(trans('common.updatedSuccessfully'))->success();
+        $asset->save();
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.createdSuccessfully'))->success();
 
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('assets.index');
+        return redirect()->route('assets.show', [
+            'id' => $asset->hash,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(string $id): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('assets'));
 
         $asset->load([
-            'room' => function ($query) {
+            'room' => function ($query): void {
                 $query->select('id', 'number', 'description');
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'maintenances' => function ($query)
-            {
+            'maintenances' => function ($query): void {
                 $query->select(fields_get('maintenances'))
                     ->orderBy('date', 'DESC');
-            }
+            },
         ]);
 
         return view('app.assets.show', compact('asset'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(string $id): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
+            ->firstOrFail(fields_get('assets'));
 
         $asset->load([
-            'room' => function ($query) {
+            'room' => function ($query): void {
                 $query->select('id', 'number');
             },
-            'hotel' => function ($query) {
+            'hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'hotel.rooms' => function ($query) {
+            'hotel.rooms' => function ($query): void {
                 $query->select('id', 'number', 'hotel_id');
             },
         ]);
@@ -233,409 +172,140 @@ class AssetController extends Controller
      */
     public function update(UpdateAsset $request, $id)
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
             ->where('hotel_id', id_decode($request->hotel))
-            ->first(fields_get('assets'));
+            ->firstOrFail(fields_get('assets'));
 
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->description = $request->description;
-        $asset->brand = $request->get('brand', null);
-        $asset->model = $request->get('model', null);
-        $asset->serial_number = $request->get('serial_number', null);
-        $asset->price = (float) $request->price;
-        $asset->location = $request->get('location', null);
+        $asset->description = $request->input('description');
+        $asset->brand = $request->input('brand');
+        $asset->model = $request->input('model');
+        $asset->serial_number = $request->input('serial_number');
+        $asset->price = (float) $request->input('price');
+        $asset->location = $request->input('location');
         $asset->hotel()->associate(id_decode($request->hotel));
 
-        if (empty($request->get('room', null))) {
+        if (empty($request->input('room'))) {
             $asset->room()->dissociate();
         } else {
             $room = Room::where('id', id_decode($request->room))
                 ->where('hotel_id', id_decode($request->hotel))
                 ->where('user_id', id_parent())
-                ->first(['id']);
+                ->firstOrFail(['id']);
 
-            if (empty($room)) {
-                flash('La habitación seleccionada no corresponde al hotel')->error();
-
-                return back();
-            }
-
-            $asset->room()->associate($room->id);
+            $asset->room()->associate($room);
         }
 
-        if ($asset->update()) {
-            flash(trans('common.updatedSuccessfully'))->success();
+        $asset->save();
 
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
+        flash(trans('common.updatedSuccessfully'))->success();
 
-        flash(trans('common.error'))->error();
-
-        return redirect()->route('assets.index');
+        return redirect()->route('assets.show', [
+            'id' => $asset->hash,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(string $id): RedirectResponse
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
+        $asset = Asset::whereOwner()
             ->where('id', id_decode($id))
-            ->first(['id']);
+            ->firstOrFail(['id']);
 
-        if (empty($asset)) {
-            abort(404);
-        }
+        $asset->delete();
 
-        if ($asset->delete()) {
-            flash(trans('common.deletedSuccessfully'))->success();
-
-            return redirect()->route('assets.index');
-        }
-
-        flash(trans('common.error'))->error();
+        flash(trans('common.deletedSuccessfully'))->success();
 
         return redirect()->route('assets.index');
     }
 
-    /**
-     * Return a rooms list by hotel ID.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
-        if ($request->ajax()) {
-            $query = clean_param($request->get('query', null));
+        $query = clean_param($request->get('query', null));
 
-            $assets = Asset::where('hotel_id', id_decode($request->hotel))
-                ->where('user_id', id_parent())
-                ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
-                ->get(fields_get('assets'));
+        /** @var \Illuminate\Support\Collection $assets */
+        $assets = Asset::where('hotel_id', id_decode($request->hotel))
+            ->where('user_id', id_parent())
+            ->whereLike(['number', 'description', 'brand', 'model', 'serial_number', 'location'], $query)
+            ->get(fields_get('assets'));
 
-            $assets = $assets->map(function ($asset)
-            {
-                $asset->hotel_id = id_encode($asset->hotel_id);
-                $asset->user_id = id_encode($asset->user_id);
+        $assets->transform(function ($asset) {
+            $asset->hotel_id = id_encode($asset->hotel_id);
+            $asset->user_id = id_encode($asset->user_id);
 
-                return $asset;
-            });
+            return $asset;
+        });
 
-            return response()->json([
-                'assets' => $assets->toJson()
-            ]);
-        }
-
-        abort(404);
+        return response()->json([
+            'assets' => $assets,
+        ]);
     }
 
-    /**
-     * Display the report form to query between dates and hotels.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showReportForm()
+    public function showExportForm(): RedirectResponse|View
     {
         $hotels = Hotel::where('user_id', id_parent())
             ->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('hotels.index');
         }
 
-        return view('app.assets.report', compact('hotels'));
+        return view('app.assets.export', compact('hotels'));
     }
 
-    /**
-     * Export the props report in an excel document.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function report(AssetsReportQuery $request)
+    public function export(AssetsReportQuery $request): BinaryFileResponse
     {
-        if (empty($request->get('hotel', null))) {
-            $hotels = Hotel::where('user_id', id_parent())
-                ->with([
-                    'assets' => function($query) {
-                        $query->select(fields_get('assets'));
-                    },
-                    'assets.room' => function ($query)
-                    {
-                        $query->select(fields_get('rooms'));
-                    }
-                ])->get(fields_get('hotels'));
-        } else {
-            $hotels = Hotel::where('user_id', id_parent())
-                ->where('id', id_decode($request->hotel))
-                ->with([
-                    'assets' => function($query) {
-                        $query->select(fields_get('assets'));
-                    },
-                    'assets.room' => function ($query)
-                    {
-                        $query->select(fields_get('rooms'));
-                    }
-                ])->get(fields_get('hotels'));
-        }
+        $hotels = Hotel::where('user_id', id_parent())
+            ->when($request->filled('hotel'), function ($query) use ($request): void {
+                $query->where('id', id_decode($request->hotel));
+            })
+            ->with([
+                'assets' => function ($query): void {
+                    $query->select(fields_get('assets'));
+                },
+                'assets.room' => function ($query): void {
+                    $query->select(fields_get('rooms'));
+                },
+            ])->get(fields_get('hotels'));
 
-        if($hotels->isEmpty()) {
-            flash(trans('hotels.no.registered'))->info();
-
-            return redirect()->route('hotels.index');
-        }
-
-        return Excel::download(new AssetsReport($hotels), trans('assets.title') . '.xlsx');
+        return Excel::download(new AssetsReport($hotels), trans('assets.title').'.xlsx');
     }
 
-    /**
-     * Display the maintenance form to add new record.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showMaintenanceForm($id)
+    public function assignment(string $room): View
     {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
+        $room = Room::where('id', id_decode($room))
+            ->with([
+                'hotel' => function ($query): void {
+                    $query->select(fields_get('hotels'));
+                },
+            ])
+            ->firstOrFail(fields_get('rooms'));
 
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'room' => function ($query) {
-                $query->select('id', 'number');
-            },
-            'hotel' => function ($query) {
-                $query->select('id', 'business_name');
-            }
-        ]);
-
-        return view('app.assets.maintenance', compact('asset'));
-    }
-
-    /**
-     * Store the asset maintenance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function maintenance(StoreMaintenance $request, $id)
-    {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $maintenance = new Maintenance();
-        $maintenance->date = $request->date;
-        $maintenance->commentary = $request->commentary;
-        $maintenance->value = $request->get('value', null);
-        $maintenance->user()->associate(id_parent());
-
-        if ($request->hasFile('invoice')) {
-            $path = $request->file('invoice')->storeAs(
-                'public',
-                time() . "_" . $request->file('invoice')->getClientOriginalName()
-            );
-
-            $maintenance->invoice = $path;
-        }
-
-        if ($asset->maintenances()->save($maintenance)) {
-            flash(trans('common.createdSuccessfully'))->success();
-
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
-    }
-
-    /**
-     * Display the maintenance form to edit record.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showMaintenanceEditForm($id, $maintenance)
-    {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'room' => function ($query) {
-                $query->select('id', 'number');
-            },
-            'hotel' => function ($query) {
-                $query->select('id', 'business_name');
-            },
-            'maintenances' => function ($query) use ($id, $maintenance)
-            {
-                $query->select(fields_get('maintenances'))
-                    ->where('maintainable_id', id_decode($id))
-                    ->where('id', id_decode($maintenance));
-            }
-        ]);
-
-        return view('app.assets.maintenance-edit', compact('asset'));
-    }
-
-    /**
-     * Store the asset maintenance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateMaintenance(StoreMaintenance $request, $id, $maintenance)
-    {
-        $asset = User::find(id_parent(), ['id'])->assets()
-            ->where('id', id_decode($id))
-            ->first(fields_get('assets'));
-
-        if (empty($asset)) {
-            abort(404);
-        }
-
-        $asset->load([
-            'maintenances' => function ($query) use ($id, $maintenance)
-            {
-                $query->select(fields_get('maintenances'))
-                    ->where('maintainable_id', id_decode($id))
-                    ->where('id', id_decode($maintenance));
-            }
-        ]);
-
-        $maintenance = $asset->maintenances->first();
-        $maintenance->date = $request->date;
-        $maintenance->commentary = $request->commentary;
-        $maintenance->value = $request->get('value', null);
-
-        if ($request->hasFile('invoice')) {
-            if (!empty($maintenance->invoice)) {
-                Storage::delete($maintenance->invoice);
-            }
-
-            $path = $request->file('invoice')->storeAs(
-                'public',
-                time() . "_" . $request->file('invoice')->getClientOriginalName()
-            );
-            $maintenance->invoice = $path;
-        }
-
-        if ($maintenance->save()) {
-            flash(trans('common.createdSuccessfully'))->success();
-
-            return redirect()->route('assets.show', [
-                'id' => id_encode($asset->id)
-            ]);
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroyMaintenance($id, $maintenanceId)
-    {
-        $maintenance = Maintenance::where('user_id', id_parent())
-            ->where('id', id_decode($maintenanceId))
-            ->where('maintainable_id', id_decode($id))
-            ->first(fields_get('maintenances'));
-
-        if (empty($maintenance)) {
-            abort(404);
-        }
-
-        $voucher = $maintenance->invoice;
-
-        if ($maintenance->delete()) {
-            Storage::delete($voucher);
-
-            flash(trans('common.deletedSuccessfully'))->success();
-
-            return back();
-        }
-
-        flash(trans('common.error'))->error();
-
-        return back();
-    }
-
-    /**
-     * @param string $room
-     * @return \Illuminate\Http\Response
-     */
-    public function assignment(string $room)
-    {
-        $room = $this->room->find(id_decode($room));
-
-        $assets = Asset::where('hotel_id', $room->hotel->id)
+        $assets = Asset::where('hotel_id', $room->hotel_id)
             ->doesntHave('room')
             ->get(fields_get('assets'));
 
         return view('app.assets.assign', compact('room', 'assets'));
     }
 
-    /**
-     * @param \App\Http\Requests\AssignAsset $request
-     * @param string $room
-     * @return \Illuminate\Http\Response
-     */
-    public function assign(AssignAsset $request, string $room)
+    public function assign(AssignAsset $request, string $room): RedirectResponse
     {
-        try {
-            $room = $this->room->find(id_decode($room));
+        $room = Room::findOrFail(id_decode($room), fields_get('rooms'));
 
-            $asset = Asset::where('hotel_id', $room->hotel->id)
-                ->where('id', $request->asset)
-                ->doesntHave('room')
-                ->first(fields_get('assets'));
+        $asset = Asset::where('hotel_id', $room->hotel_id)
+            ->where('id', $request->input('asset'))
+            ->doesntHave('room')
+            ->firstOrFail(fields_get('assets'));
 
-            $asset->location = null;
-            $asset->room()->associate($room);
-            $asset->saveOrFail();
+        $asset->location = null;
+        $asset->room()->associate($room);
+        $asset->saveOrFail();
 
-            flash(trans('common.updatedSuccessfully'))->success();
+        flash(trans('common.updatedSuccessfully'))->success();
 
-            return redirect()->route('assets.assignment', [
-                'room' => id_encode($room->id),
-            ]);
-        } catch (\Throwable $th) {
-            flash(trans('common.error'))->error();
-
-            return redirect()->route('assets.assignment', [
-                'room' => id_encode($room->id),
-            ]);
-        }
+        return redirect()->route('assets.assignment', [
+            'room' => $room->hash,
+        ]);
     }
 }

@@ -2,46 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Room;
-use App\Helpers\Chart;
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreRoom;
 use App\Contracts\RoomRepository;
-use App\Http\Requests\UpdateRoom;
+use App\Helpers\Chart;
 use App\Http\Requests\ChangeRoomStatus;
+use App\Http\Requests\StoreRoom;
+use App\Http\Requests\UpdateRoom;
+use App\Models\Room;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public RoomRepository $room;
+    public function __construct(public RoomRepository $room) {}
 
-    public function __construct(RoomRepository $room)
-    {
-        $this->room = $room;
-    }
-
-    /**
-     * Display a listing of the resources.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
         return view('app.rooms.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): RedirectResponse|View
     {
         $hotels = User::find(id_parent(), ['id'])
             ->hotels()
             ->get(fields_get('hotels'));
 
-        // Check if is empty
         if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
@@ -51,13 +38,7 @@ class RoomController extends Controller
         return view('app.rooms.create', compact('hotels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreRoom $request)
+    public function store(StoreRoom $request): RedirectResponse
     {
         $room = $this->room->create($request->hotel_id, $request->validated());
 
@@ -66,32 +47,23 @@ class RoomController extends Controller
         return redirect()->route('rooms.show', ['id' => id_encode($room->id)]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(string $id)
+    public function show(string $id): View
     {
         $room = $this->room->find(id_decode($id));
 
         $room->load([
-            'assets' => function ($query)
-            {
+            'assets' => function ($query): void {
                 $query->select(fields_dotted('assets'));
             },
-            'products' => function ($query)
-            {
+            'products' => function ($query): void {
                 $query->select(fields_dotted('products'));
             },
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->orderBy('vouchers.created_at', 'DESC')
                     ->limit(20)
                     ->withPivot('value');
-            }
+            },
         ]);
 
         $data = Chart::create($room->vouchers)
@@ -101,44 +73,25 @@ class RoomController extends Controller
         return view('app.rooms.show', compact('room', 'data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         $room = $this->room->find(id_decode($id));
 
         return view('app.rooms.edit', compact('room'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRoom $request, string $id)
+    public function update(UpdateRoom $request, string $id): RedirectResponse
     {
         $room = $this->room->update(id_decode($id), $request->validated());
 
         flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('rooms.show', [
-            'id' => id_encode($room->id)
+            'id' => id_encode($room->id),
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         if ($this->room->destroy(id_decode($id))) {
             flash(trans('common.deletedSuccessfully'))->success();
@@ -149,18 +102,11 @@ class RoomController extends Controller
         flash(trans('rooms.cannot.destroy'))->error();
 
         return redirect()->route('rooms.show', [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
+    public function search(Request $request): RedirectResponse|View
     {
         $query = clean_param($request->get('query', null));
 
@@ -173,13 +119,7 @@ class RoomController extends Controller
         return view('app.rooms.search', compact('rooms', 'query'));
     }
 
-    /**
-     * Return the price and min price of a room.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getPrice(Request $request)
+    public function getPrice(Request $request): JsonResponse
     {
         $room = Room::where('user_id', id_parent())
             ->where('hotel_id', id_decode($request->hotel))
@@ -190,17 +130,11 @@ class RoomController extends Controller
         return response()->json([
             'price' => $room->price,
             'min_price' => $room->min_price,
-            'tax' => $room->tax
+            'tax' => $room->tax,
         ]);
     }
 
-    /**
-     * Change room status
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle(ChangeRoomStatus $request)
+    public function toggle(ChangeRoomStatus $request): RedirectResponse
     {
         $room = $this->room->toggle(id_decode($request->room), $request->status);
 

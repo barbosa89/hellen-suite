@@ -14,7 +14,7 @@
             'options' => [
                 [
                     'option' => trans('reports.list'),
-                    'url' => route('assets.report'),
+                    'url' => route('assets.export.form'),
                     'permission' => 'assets.create'
                 ],
                 [

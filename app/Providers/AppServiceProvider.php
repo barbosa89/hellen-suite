@@ -2,26 +2,24 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Models\Shift;
+use App\Models\User;
 use App\Models\Voucher;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Observers\VoucherObserver;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrap();
 
@@ -73,16 +71,15 @@ class AppServiceProvider extends ServiceProvider
         // Check if the receptionist has an assigned headquarters
         Validator::extend('has_headquarters', function ($attribute, $value, $parameters, $validator) {
             $user = User::where('email', $value)
-                ->whereHas('roles', function ($query)
-                {
+                ->whereHas('roles', function ($query): void {
                     $query->where('name', 'receptionist');
                 })->with([
-                    'headquarters' => function($query) {
+                    'headquarters' => function ($query): void {
                         $query->select(['id', 'business_name']);
-                    }
+                    },
                 ])->first(['id', 'email']);
 
-            if (!empty($user)) {
+            if (! empty($user)) {
                 return $user->headquarters->isNotEmpty();
             }
 
@@ -124,10 +121,10 @@ class AppServiceProvider extends ServiceProvider
             // Parent field
             // $alias[0]: Parent field name in the form
             // $alias[1]: Parent field name in table table
-            $alias = explode('#', $parameters[1]);
-            $parentField = isset($alias[1]) ? $alias[1] : $alias[0];
+            $alias = explode('#', (string) $parameters[1]);
+            $parentField = $alias[1] ?? $alias[0];
             $parentId = is_string($data[$alias[0]]) ? id_decode($data[$alias[0]]) : $data[$alias[0]];
-            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+            $exception = isset($parameters[2]) ? (int) trim((string) $parameters[2]) : null;
 
             $results = DB::table($parameters[0])
                 ->where($attribute, $value)
@@ -135,7 +132,7 @@ class AppServiceProvider extends ServiceProvider
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
-            if (!empty($exception)) {
+            if (! empty($exception)) {
                 if ($results->count() === 1 and $results->first()->id === $exception) {
                     return true;
                 }
@@ -152,7 +149,7 @@ class AppServiceProvider extends ServiceProvider
          * $parameters[2]   Except
          */
         Validator::extend('unique_per_user', function ($attribute, $value, $parameters, $validator) {
-            $exception = isset($parameters[2]) ? (int) trim($parameters[2]) : null;
+            $exception = isset($parameters[2]) ? (int) trim((string) $parameters[2]) : null;
 
             $results = DB::table($parameters[0])
                 ->where($parameters[1], $value)
@@ -160,7 +157,7 @@ class AppServiceProvider extends ServiceProvider
                 ->get(['id']);
 
             // Update method: Only must be exists one record in the table
-            if (!empty($exception)) {
+            if (! empty($exception)) {
                 if ($results->isEmpty()) {
                     return true;
                 }
@@ -175,8 +172,7 @@ class AppServiceProvider extends ServiceProvider
             return $results->count() === 0;
         });
 
-        Validator::extend('verified', function($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('verified', function ($attribute, $value, $parameters, $validator) {
             $users = DB::table('users')
                 ->where($attribute, $value)
                 ->where('email_verified_at', '!=', null)
@@ -186,14 +182,13 @@ class AppServiceProvider extends ServiceProvider
             return $users->count() === 1;
         });
 
-        Validator::extend('price', function($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('price', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
             if (isset($data[$parameters[1]])) {
                 $id = $data[$parameters[1]];
             } else {
-                $keys = explode(".", $attribute);
+                $keys = explode('.', $attribute);
                 $id = $data[$keys[0]][$keys[1]][$parameters[1]];
             }
 
@@ -216,18 +211,18 @@ class AppServiceProvider extends ServiceProvider
         // Macros
 
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {
-            $this->where(function (Builder $query) use ($attributes, $searchTerm) {
+            $this->where(function (Builder $query) use ($attributes, $searchTerm): void {
                 foreach (Arr::wrap($attributes) as $attribute) {
                     $query->when(
                         Str::contains($attribute, '.'),
-                        function (Builder $query) use ($attribute, $searchTerm) {
-                            [$relationName, $relationAttribute] = explode('.', $attribute);
+                        function (Builder $query) use ($attribute, $searchTerm): void {
+                            [$relationName, $relationAttribute] = explode('.', (string) $attribute);
 
-                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm): void {
                                 $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
                             });
                         },
-                        function (Builder $query) use ($attribute, $searchTerm) {
+                        function (Builder $query) use ($attribute, $searchTerm): void {
                             $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
                         }
                     );
@@ -240,10 +235,8 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(\App\Contracts\VoucherPrinter::class, \App\Services\VoucherPrinter::class);
         $this->app->bind(\App\Contracts\RoomRepository::class, \App\Repositories\RoomRepository::class);

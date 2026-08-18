@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Guest;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class GuestTableSeeder extends Seeder
@@ -15,10 +15,10 @@ class GuestTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', 'manager@dev.com')->first(['id']);
+        $user = User::where('email', 'manager@app.com')->first(['id']);
 
         Guest::factory(20)->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
     }
 }

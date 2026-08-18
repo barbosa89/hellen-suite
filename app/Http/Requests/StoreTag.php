@@ -24,7 +24,7 @@ class StoreTag extends FormRequest
     public function rules()
     {
         return [
-            'tag' => 'required|string|max:30|unique_per_user:tags,description'
+            'tag' => 'required|string|max:30|unique_per_user:tags,description',
         ];
     }
 }

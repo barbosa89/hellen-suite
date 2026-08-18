@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
-use NunoMaduro\LaravelMojito\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use NunoMaduro\LaravelMojito\InteractsWithViews;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class AccountTest extends TestCase
 {
-    use RefreshDatabase, WithFaker, InteractsWithViews;
+    use InteractsWithViews, RefreshDatabase, WithFaker;
 
     public function setUp(): void
     {
@@ -22,7 +21,7 @@ class AccountTest extends TestCase
 
         Role::create([
             'name' => 'root',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
     }
 
@@ -62,7 +61,7 @@ class AccountTest extends TestCase
 
         /** @var \App\Models\User $user */
         $user = User::factory()->create([
-            'password' => bcrypt($password)
+            'password' => bcrypt($password),
         ]);
 
         $user->assignRole('root');

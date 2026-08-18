@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Shift;
 use App\Helpers\Random;
 use App\Models\Company;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Shift;
+use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +25,7 @@ class ProductVoucherController extends Controller
     {
         $hotels = $this->getHotels();
 
-        if($hotels->isEmpty()) {
+        if ($hotels->isEmpty()) {
             flash(trans('hotels.no.registered'))->info();
 
             return redirect()->route('products.index');
@@ -41,17 +41,16 @@ class ProductVoucherController extends Controller
     /**
      * Return the hotel list
      *
-     * @return  \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     private function getHotels()
     {
         if (auth()->user()->hasRole('receptionist')) {
             $user = auth()->user()->load([
-                'headquarters' => function ($query)
-                {
+                'headquarters' => function ($query): void {
                     $query->select(fields_dotted('hotels'))
                         ->where('status', true);
-                }
+                },
             ]);
 
             return $user->headquarters;
@@ -68,7 +67,6 @@ class ProductVoucherController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -77,10 +75,10 @@ class ProductVoucherController extends Controller
         $products = $this->getProducts($request, $ids);
         $processed = collect();
 
-        DB::transaction(function () use (&$processed, $request, $products) {
+        DB::transaction(function () use (&$processed, $request, $products): void {
             try {
                 // Voucher creation
-                $voucher = new Voucher();
+                $voucher = new Voucher;
                 $voucher->number = Random::consecutive();
                 $voucher->open = false;
                 $voucher->payment_status = true;
@@ -91,7 +89,7 @@ class ProductVoucherController extends Controller
                 $voucher->user()->associate(id_parent());
 
                 // Check if a supplier was selected
-                if (!empty($request->company)) {
+                if (! empty($request->company)) {
                     $voucher->company()->associate(id_decode($request->company));
                 }
 
@@ -116,7 +114,7 @@ class ProductVoucherController extends Controller
                     $attach[$product->id] = [
                         'quantity' => $element['amount'],
                         'value' => $product->price * $element['amount'],
-                        'created_at' => now()
+                        'created_at' => now(),
                     ];
 
                     // On product save, add values to voucher
@@ -148,7 +146,7 @@ class ProductVoucherController extends Controller
 
                             if ($shift->save()) {
                                 // Add new automatic payment
-                                $payment = new Payment();
+                                $payment = new Payment;
                                 $payment->date = now();
                                 $payment->commentary = trans('payments.automatic');
                                 $payment->payment_method = 'cash';
@@ -169,15 +167,13 @@ class ProductVoucherController extends Controller
         });
 
         return response()->json([
-            'processed' => $processed->toArray()
+            'processed' => $processed->toArray(),
         ]);
     }
 
     /**
      * Return a products collections.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $ids
      * @return \Illuminate\Support\Collection
      */
     public function getProducts(Request $request, array $ids)

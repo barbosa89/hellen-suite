@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan;
-use App\Models\Currency;
 use App\Http\Requests\UpdatePlan;
+use App\Models\Currency;
 use App\Models\IdentificationType;
+use App\Models\Plan;
 use Illuminate\Support\Collection;
 
 class PlanController extends Controller
@@ -25,7 +25,6 @@ class PlanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string $id
      * @return \Illuminate\Http\Response
      */
     public function edit(string $id)
@@ -38,8 +37,6 @@ class PlanController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePlan  $request
-     * @param  string $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePlan $request, string $id)
@@ -77,7 +74,6 @@ class PlanController extends Controller
     /**
      * Form to buy a plan.
      *
-     * @param string $id
      * @return \Illuminate\Http\Response
      */
     public function buy(string $id)
@@ -92,7 +88,7 @@ class PlanController extends Controller
                 ->plans()
                 ->attach($plan, ['ends_at' => now()->addMonths($plan->months)]);
 
-            $type = trans('plans.type.' . $plan->getType());
+            $type = trans('plans.type.'.$plan->getType());
 
             flash(trans('plans.ready', ['plan' => $type]))->success();
 
@@ -134,24 +130,16 @@ class PlanController extends Controller
 
     /**
      * Check if user has active plans.
-     *
-     * @param \Illuminate\Support\Collection $plans
-     * @return boolean
      */
     private function hasActivePlans(Collection $plans): bool
     {
-        $actives = $plans->filter(function ($plan) {
-            return $plan->isActive();
-        });
+        $actives = $plans->filter(fn ($plan) => $plan->isActive());
 
         return $actives->isNotEmpty();
     }
 
     /**
      * Check if user has free expired plan.
-     *
-     * @param \Illuminate\Support\Collection $plans
-     * @return boolean
      */
     private function hasFreeExpiredPlan(Collection $plans): bool
     {

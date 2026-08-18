@@ -26,7 +26,7 @@ class UpdatePlan extends FormRequest
         return [
             'price' => 'required|integer|min:0|max:1000000',
             'months' => 'required|integer|min:2|max:12',
-            'status' => 'required|boolean'
+            'status' => 'required|boolean',
         ];
     }
 }

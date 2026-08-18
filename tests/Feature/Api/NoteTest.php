@@ -2,20 +2,19 @@
 
 namespace Tests\Feature\Api;
 
-use Tests\TestCase;
+use App\Models\Hotel;
 use App\Models\Note;
 use App\Models\User;
-use App\Models\Hotel;
-use App\Models\Country;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class NoteTest extends TestCase
 {
-    use WithFaker;
     use RefreshDatabase;
+    use WithFaker;
 
     public function setUp(): void
     {

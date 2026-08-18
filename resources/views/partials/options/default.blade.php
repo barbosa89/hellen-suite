@@ -1,5 +1,5 @@
 <li class="nav-item">
-    <a class="nav-link {{ isset($option['active']) ? 'active btn btn-secondary text-white' : '' }}"
+    <a class="nav-link {{ isset($option['active']) ? 'active btn btn-light text-white' : '' }}"
     href="{{ $option['url'] }}"
     {{ isset($option['id']) ? 'id=' . $option['id'] : '' }}
     {{ isset($option['target']) ? 'target=' . $option['target'] : '' }}

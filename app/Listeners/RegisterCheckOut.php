@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Models\Check;
 use App\Events\CheckOut;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Check;
 
 class RegisterCheckOut
 {
@@ -22,7 +20,6 @@ class RegisterCheckOut
     /**
      * Handle the event.
      *
-     * @param  CheckOut  $event
      * @return void
      */
     public function handle(CheckOut $event)

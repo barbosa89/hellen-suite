@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Tag;
-use App\Models\Note;
-use App\Models\Room;
 use App\Models\Hotel;
+use App\Models\Note;
 use App\Models\Product;
+use App\Models\Room;
 use App\Models\Service;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class HotelTableSeeder extends Seeder
@@ -20,31 +20,30 @@ class HotelTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('email', 'manager@dev.com')->first(['id']);
+        $user = User::where('email', 'manager@app.com')->first(['id']);
 
-        factory(Hotel::class, 2)->create([
-            'user_id' => $user->id
+        Hotel::factory(2)->create([
+            'user_id' => $user->id,
         ])->each(function ($hotel) use ($user) {
-            $hotel->rooms()->saveMany(factory(Room::class, 10)->make([
-                'user_id' => $user->id
+            $hotel->rooms()->saveMany(Room::factory(10)->make([
+                'user_id' => $user->id,
             ]));
 
-            $hotel->products()->saveMany(factory(Product::class, 10)->make([
-                'user_id' => $user->id
+            $hotel->products()->saveMany(Product::factory(10)->make([
+                'user_id' => $user->id,
             ]));
 
-            $hotel->services()->saveMany(factory(Service::class, 30)->make([
-                'user_id' => $user->id
+            $hotel->services()->saveMany(Service::factory(30)->make([
+                'user_id' => $user->id,
             ]));
 
-            $hotel->notes()->saveMany(factory(Note::class, 30)->make([
-                'user_id' => $user->id
+            $hotel->notes()->saveMany(Note::factory(30)->make([
+                'user_id' => $user->id,
             ]));
 
-            $hotel->notes->each(function ($note) use ($user)
-            {
-                $note->tags()->saveMany(factory(Tag::class, 3)->make([
-                    'user_id' => $user->id
+            $hotel->notes->each(function ($note) use ($user) {
+                $note->tags()->saveMany(Tag::factory(3)->make([
+                    'user_id' => $user->id,
                 ]));
             });
         });

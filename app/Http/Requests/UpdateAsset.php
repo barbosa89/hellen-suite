@@ -6,27 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAsset extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         $id = id_decode($this->route('id'));
 
         return [
-            'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id,' . $id,
+            'number' => 'required|string|max:20|unique_with:assets,hotel#hotel_id,'.$id,
             'description' => 'required|string|max:191',
             'brand' => 'nullable|string|max:50',
             'model' => 'nullable|string|max:50',
@@ -39,12 +29,7 @@ class UpdateAsset extends FormRequest
         ];
     }
 
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'location' => $this->assign == 'room' ? null : $this->location,
@@ -52,12 +37,7 @@ class UpdateAsset extends FormRequest
         ]);
     }
 
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
         return [
             'number.unique_with' => 'El número ya existe en el hotel seleccionado.',

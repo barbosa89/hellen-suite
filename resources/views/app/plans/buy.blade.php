@@ -29,7 +29,7 @@
 
                     <div class="form-group{{ $errors->has('type_id') ? ' has-error' : '' }}">
                         <label for="type_id">@lang('common.idType'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('users.chooseType') }}" name="type_id" id="type_id" required>
+                        <select class="form-control" title="{{ trans('users.chooseType') }}" name="type_id" id="type_id" required>
                             @foreach($types as $type)
                                 @if($loop->first)
                                     <option selected value="{{ id_encode($type->id) }}">{{ trans('common.' . $type->type) }}</option>
@@ -70,7 +70,7 @@
 
                     <div class="form-group{{ $errors->has('currency_id') ? ' has-error' : '' }}">
                         <label for="currency_id">@lang('currencies.currency'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="currency_id" id="currency_id" required>
+                        <select class="form-control" title="{{ trans('common.chooseOption') }}" name="currency_id" id="currency_id" required>
                             @foreach($currencies as $currency)
                                 @if($loop->first)
                                     <option selected value="{{ id_encode($currency->id) }}">{{ trans('currencies.' . Str::lower($currency->code)) }} - {{ $currency->code }}</option>
@@ -102,8 +102,8 @@
                         <input type="text" class="form-control" name="total" id="total" value="$ {{ number_format($plan->price, 2, ',', '.') }}" placeholder="{{ trans('common.required') }}" readonly>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('landing.buy')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark">@lang('landing.buy')</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
@@ -112,14 +112,14 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $('select#currency_id').change(function (e) {
-            var rates = {
-                '{{ id_encode($currencies->first()->id) }}': '$ {{ number_format($plan->price, 2, ',', '.') }}',
-                '{{ id_encode($currencies->last()->id) }}': '$ {{ number_format($plan->getDollarPrice(), 2, ',', '.') }}',
-            };
+<script>
+    document.querySelector('select#currency_id').addEventListener('change', function (e) {
+        const rates = {
+            '{{ id_encode($currencies->first()->id) }}': '$ {{ number_format($plan->price, 2, ',', '.') }}',
+            '{{ id_encode($currencies->last()->id) }}': '$ {{ number_format($plan->getDollarPrice(), 2, ',', '.') }}'
+        };
 
-            $('input#total').attr('value', rates[this.value])
-        })
-    </script>
+        document.querySelector('input#total').setAttribute('value', rates[this.value]);
+    });
+</script>
 @endsection

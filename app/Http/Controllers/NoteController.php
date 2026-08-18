@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNote;
-use App\Repositories\NoteRepository;
 use App\Models\Hotel;
 use App\Models\Note;
 use App\Models\Shift;
+use App\Repositories\NoteRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
@@ -14,22 +14,9 @@ use Illuminate\Validation\Validator as ValidationValidator;
 
 class NoteController extends Controller
 {
-    /**
-     * Note repository Eloquent based
-     *
-     * @var NoteRepository
-     */
-    public NoteRepository $note;
-
-    /**
-     * Construct function
-     *
-     * @param \App\Repositories\NoteRepository $note
-     */
-    public function __construct(NoteRepository $note)
-    {
-        $this->note = $note;
-    }
+    public function __construct(
+        public NoteRepository $note
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -69,14 +56,13 @@ class NoteController extends Controller
         }
 
         return response()->json([
-            'status' => $note instanceof Note
+            'status' => $note instanceof Note,
         ]);
     }
 
     /**
      * Search notes between dates and hotel.
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -85,8 +71,8 @@ class NoteController extends Controller
 
         if ($validator->fails()) {
             return redirect(url()->previous())
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $start = clean_param($request->start);
@@ -102,11 +88,9 @@ class NoteController extends Controller
         return view('app.notes.search', compact('notes', 'start', 'end', 'hotel', 'text'));
     }
 
-
     /**
      * Export the notes between dates and hotel in PDF format.
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function export(Request $request)
@@ -115,8 +99,8 @@ class NoteController extends Controller
 
         if ($validator->fails()) {
             return redirect(url()->previous())
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $start = clean_param($request->start);
@@ -140,15 +124,14 @@ class NoteController extends Controller
     /**
      * Validate data query
      *
-     * @param array $data
      * @return \Illuminate\Validation\ValidationValidator
      */
-    public function validation(array $data = null): ValidationValidator
+    public function validation(?array $data = null): ValidationValidator
     {
         return Validator::make($data, [
             'hotel' => 'required|string|hashed_exists:hotels,id',
             'start' => 'required|date|before_or_equal:today',
-            'end' => 'required|date|after_or_equal:start|before_or_equal:today'
+            'end' => 'required|date|after_or_equal:start|before_or_equal:today',
         ]);
     }
 }

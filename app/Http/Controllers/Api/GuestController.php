@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Guest;
-use Illuminate\Http\Request;
 use App\Contracts\GuestRepository;
 use App\Http\Controllers\Controller;
+use App\Models\Guest;
 use Illuminate\Support\Arr;
 
 class GuestController extends Controller
 {
-    public GuestRepository $guest;
-
-    public function __construct(GuestRepository $guest)
-    {
-        $this->guest = $guest;
-    }
+    public function __construct(public GuestRepository $guest) {}
 
     /**
      * Display a listing of the resource.

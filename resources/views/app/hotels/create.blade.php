@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     <div id="page-wrapper">
         @include('partials.page-header', [
             'title' => trans('hotels.title'),
@@ -59,7 +58,7 @@
 
                     <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                         <label for="phone">@lang('common.phone'):</label>
-                        <input type="string" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" maxlength="10" pattern="\d{7,10}" title="1230987, 0371230987" required>
+                        <input type="string" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" maxlength="20" required>
 
                         @if ($errors->has('phone'))
                             <span class="help-block">
@@ -70,7 +69,7 @@
 
                     <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                         <label for="mobile">@lang('common.mobile'):</label>
-                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" maxlength="10" pattern="\d{10}" title="3151230987" required>
+                        <input type="string" class="form-control" name="mobile" id="mobile" value="{{ old('mobile') }}" maxlength="20" required>
 
                         @if ($errors->has('mobile'))
                             <span class="help-block">
@@ -92,7 +91,7 @@
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                         <label for="type">@lang('common.type'):</label>
-                        <select class="form-control selectpicker" name="type" id="type" required>
+                        <select class="form-control" name="type" id="type" required>
                             @if ($hotels->isEmpty())
                                 <option value="main" selected>@lang('hotels.independent')</option>
                             @else
@@ -111,7 +110,7 @@
                     @if($hotels->isNotEmpty())
                         <div class="form-group{{ $errors->has('main_hotel') ? ' has-error' : '' }}" id="main-hotel" style="display:none;">
                             <label for="main_hotel">@lang('hotels.headquarters'):</label>
-                            <select class="form-control selectpicker" name="main_hotel" id="main_hotel">
+                            <select class="form-control" name="main_hotel" id="main_hotel">
                                 @foreach ($hotels as $hotel)
                                     <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                                 @endforeach
@@ -136,8 +135,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">@lang('common.back')</a>
+                    <button type="submit" class="btn btn-dark me-2">@lang('common.create')</button>
+                    <a href="{{ route('hotels.index') }}" class="btn btn-light">@lang('common.back')</a>
                 </form>
             </div>
         </div>
@@ -152,17 +151,19 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $("#type").on('change', function(e) {
-            if (this.value == 'headquarters') {
-                if ($('#main-hotel').is(':hidden')) {
-                    $('#main-hotel').fadeIn();
-                }
-            } else {
-                if ($('#main-hotel').is(':visible')) {
-                    $('#main-hotel').fadeOut();
-                }
+<script type="text/javascript">
+    document.getElementById('type').addEventListener('change', function () {
+        const mainHotel = document.getElementById('main-hotel');
+
+        if (this.value === 'headquarters') {
+            if (mainHotel.style.display === 'none' || mainHotel.style.display === '') {
+                mainHotel.style.display = 'block'; // Equivalent to fadeIn
             }
-        });
-    </script>
+        } else {
+            if (mainHotel.style.display === 'block') {
+                mainHotel.style.display = 'none'; // Equivalent to fadeOut
+            }
+        }
+    });
+</script>
 @endsection

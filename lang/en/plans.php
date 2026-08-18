@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'title' => 'Plans',
+    'own' => 'My plan',
+    'type' => [
+        'basic' => 'Basic',
+        'free' => 'Free',
+        'premium' => 'Premium',
+        'sponsor' => 'Sponsor',
+    ],
+    'types' => 'Plans type',
+    'duration' => 'Duration time in months',
+    'descriptions' => [
+        'basic' => 'All modules for :months months',
+        'free' => 'All modules for :months month|All modules for :months months',
+        'premium' => 'All modules and electronic invoicing for 12 months',
+        'sponsor' => 'All platform features without time limit',
+    ],
+    'prices' => 'Plan prices',
+    'features' => [
+        'all' => 'All modules',
+        'sponsor' => 'If you want to support the platform development. This plan is assignable in direct negotiation.',
+        'support' => [
+            'mail' => 'Email support only',
+            'priority' => 'Priority technical support',
+        ],
+        'unique' => ':months month one time|:months months one time',
+        'renewable' => ':months months',
+        'default' => 'Please, contact us to purchase this plan',
+    ],
+    'ready' => 'Your :plan plan was activated',
+];

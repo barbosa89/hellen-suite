@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Room;
 use App\Models\Hotel;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RoomFactory extends Factory
@@ -20,9 +20,7 @@ class RoomFactory extends Factory
             'is_suite' => 0,
             'status' => Room::AVAILABLE,
             'tax' => 0,
-            'hotel_id' => function () {
-                return Hotel::factory()->create()->id;
-            },
+            'hotel_id' => Hotel::factory()->create(),
         ];
     }
 }

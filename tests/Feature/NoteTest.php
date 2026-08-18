@@ -2,20 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\Tag;
-use Tests\TestCase;
-use App\Models\Note;
-use App\Models\User;
 use App\Models\Hotel;
+use App\Models\Note;
 use App\Models\Shift;
-use Database\Seeders\RolesTableSeeder;
-use Database\Seeders\UsersTableSeeder;
-use Database\Seeders\AssignmentsSeeder;
+use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Database\Seeders\PermissionsTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\TestCase;
 
 class NoteTest extends TestCase
 {
@@ -31,17 +27,17 @@ class NoteTest extends TestCase
 
         Role::create([
             'name' => 'manager',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'notes.index',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         Permission::create([
             'name' => 'notes.create',
-            'guard_name' => config('auth.defaults.guard')
+            'guard_name' => config('auth.defaults.guard'),
         ]);
 
         $this->user = User::factory()->create();
@@ -50,7 +46,7 @@ class NoteTest extends TestCase
         $this->user->givePermissionTo('notes.create');
 
         $this->hotel = Hotel::factory()->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
 
         $this->be($this->user);
@@ -68,13 +64,13 @@ class NoteTest extends TestCase
     {
         $note = Note::factory()->create([
             'user_id' => $this->user->id,
-            'hotel_id' => $this->hotel->id
+            'hotel_id' => $this->hotel->id,
         ]);
 
         $response = $this->call(Request::METHOD_GET, '/notes/search', [
-            "hotel" => $this->hotel->hash,
-            "start" => now()->subDay()->toDateString(),
-            "end" => now()->toDateString(),
+            'hotel' => $this->hotel->hash,
+            'start' => now()->subDay()->toDateString(),
+            'end' => now()->toDateString(),
         ]);
 
         $response->assertOk()
@@ -87,14 +83,14 @@ class NoteTest extends TestCase
         $note = Note::factory()->create([
             'content' => 'Custom content',
             'user_id' => $this->user->id,
-            'hotel_id' => $this->hotel->id
+            'hotel_id' => $this->hotel->id,
         ]);
 
         $response = $this->call(Request::METHOD_GET, '/notes/search', [
-            "hotel" => $this->hotel->hash,
-            "start" => now()->subDay()->toDateString(),
-            "end" => now()->toDateString(),
-            "text" => "custom",
+            'hotel' => $this->hotel->hash,
+            'start' => now()->subDay()->toDateString(),
+            'end' => now()->toDateString(),
+            'text' => 'custom',
         ]);
 
         $response->assertOk()
@@ -105,19 +101,19 @@ class NoteTest extends TestCase
     public function test_user_can_store_note(): void
     {
         $tags = Tag::factory(2)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
 
         $response = $this->post(self::NOTES_ROUTE, [
             'hotel_id' => $this->hotel->hash,
             'content' => 'content',
             'tags' => $tags->toArray(),
-            'add' => false
+            'add' => false,
         ]);
 
         $response->assertOk()
             ->assertJson([
-                'status' => true
+                'status' => true,
             ]);
 
         $this->assertDatabaseHas('notes', [
@@ -146,12 +142,12 @@ class NoteTest extends TestCase
             'hotel_id' => $this->hotel->hash,
             'content' => 'content',
             'tags' => $tags->toArray(),
-            'add' => true
+            'add' => true,
         ]);
 
         $response->assertOk()
             ->assertJson([
-                'status' => true
+                'status' => true,
             ]);
 
         $noteId = Note::latest('id')->value('id');

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Hotel;
 use App\Helpers\Permissions;
 use App\Helpers\Random;
 use App\Http\Requests\AssignTeamMember;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTeamMember;
+use App\Models\Hotel;
+use App\Models\User;
 use App\Notifications\VerifyTeamMemberEmail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class TeamController extends Controller
 {
@@ -26,13 +26,12 @@ class TeamController extends Controller
     {
         $team = User::where('parent', auth()->user()->id)
             ->with([
-                'headquarters' => function($query) {
+                'headquarters' => function ($query): void {
                     $query->select(['id', 'business_name']);
                 },
-                'roles' => function ($query)
-                {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name']);
-                }
+                },
             ])->get(fields_get('users'));
 
         return view('app.team.index', compact('team'));
@@ -75,7 +74,7 @@ class TeamController extends Controller
         $password = Str::random(12);
         $token = Random::token(48);
 
-        $member = new User();
+        $member = new User;
         $member->name = $request->name;
         $member->email = $request->email;
         $member->token = $token;
@@ -98,7 +97,7 @@ class TeamController extends Controller
             // Send notification
             $member->notify(new VerifyTeamMemberEmail($member, $hotel, $password));
 
-            flash(trans('common.createdSuccessfully') . '. El usuario debe verificar su correo electrónico.')->success();
+            flash(trans('common.createdSuccessfully').'. El usuario debe verificar su correo electrónico.')->success();
 
             return redirect()->route('team.permissions', ['id' => id_encode($member->id)]);
         }
@@ -125,21 +124,18 @@ class TeamController extends Controller
         }
 
         $member->load([
-            'headquarters' => function($query) {
+            'headquarters' => function ($query): void {
                 $query->select(['id', 'business_name']);
             },
-            'roles' => function ($query)
-            {
+            'roles' => function ($query): void {
                 $query->select(['id', 'name']);
             },
-            'shifts' => function ($query)
-            {
+            'shifts' => function ($query): void {
                 $query->select(fields_get('shifts'));
             },
-            'shifts.hotel' => function ($query)
-            {
+            'shifts.hotel' => function ($query): void {
                 $query->select(fields_get('hotels'));
-            }
+            },
         ]);
 
         return view('app.team.show', compact('member'));
@@ -148,7 +144,6 @@ class TeamController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(string $id)
@@ -167,8 +162,6 @@ class TeamController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, string $id)
@@ -205,9 +198,9 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'roles' => function($query) {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name']);
-                }
+                },
             ])->first(fields_get('users'));
 
         $member->removeRole($member->roles()->first()->name);
@@ -234,9 +227,9 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'headquarters' => function($query) {
+                'headquarters' => function ($query): void {
                     $query->select(['id', 'business_name']);
-                }
+                },
             ])->first(fields_get('users'));
 
         // Check if the team member has an assigned headquarters,
@@ -245,8 +238,7 @@ class TeamController extends Controller
         $hasHeadquarters = $member->headquarters->isNotEmpty();
 
         $hotels = User::find(auth()->user()->id, ['id'])->hotels()
-            ->when($hasHeadquarters, function ($query) use ($member)
-            {
+            ->when($hasHeadquarters, function ($query) use ($member): void {
                 $query->where('id', '!=', $member->headquarters()->first()->id);
             })->get(fields_get('hotels'));
 
@@ -288,7 +280,7 @@ class TeamController extends Controller
         flash(trans('common.updatedSuccessfully'))->success();
 
         return redirect()->route('team.show', [
-            'id' => id_encode($member->id)
+            'id' => id_encode($member->id),
         ]);
     }
 
@@ -304,21 +296,19 @@ class TeamController extends Controller
         $member = User::find(auth()->user()->id, ['id'])->employees()
             ->where('id', id_decode($id))
             ->with([
-                'roles' => function($query) {
+                'roles' => function ($query): void {
                     $query->select(['id', 'name', 'guard_name']);
                 },
-                'permissions' => function($query) {
+                'permissions' => function ($query): void {
                     $query->select(['id', 'name', 'guard_name']);
-                }
+                },
             ])->first(fields_get('users'));
 
         // All permissions from database
         $allPermissions = Permission::get(['id', 'name', 'guard_name']);
 
         // Grouping by modules
-        $permissions = $allPermissions->groupBy(function ($permission) {
-            return explode('.', $permission->name)[0];
-        });
+        $permissions = $allPermissions->groupBy(fn ($permission) => explode('.', $permission->name)[0]);
 
         return view('app.team.permissions', compact('member', 'permissions'));
     }
@@ -326,7 +316,6 @@ class TeamController extends Controller
     /**
      * Attach hotel headquarters to the team member.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

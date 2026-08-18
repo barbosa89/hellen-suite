@@ -92,7 +92,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="Elige un hotel o sede" name="hotel" id="hotel" required>
+                        <select class="form-control" title="Elige un hotel o sede" name="hotel" id="hotel" required>
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}" {{ $loop->first ? 'selected' : '' }}>{{ $hotel->business_name }}</option>
                             @endforeach
@@ -107,7 +107,7 @@
 
                     <div class="form-group{{ $errors->has('assign') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('assets.assignTo'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
+                        <select class="form-control" title="{{ trans('common.optional') }}" name="assign" id="assign" required>
                             <option value="room">@lang('rooms.room')</option>
                             <option value="any">@lang('assets.anyPlace')</option>
                         </select>
@@ -121,7 +121,7 @@
 
                     <div class="form-group{{ $errors->has('room') ? ' has-error' : '' }}" id="room-list" style="display:none;">
                         <label for="pwd">@lang('rooms.room') No.:</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.optional') }}" name="room" id="room">
+                        <select class="form-control" title="{{ trans('common.optional') }}" name="room" id="room">
                             @foreach($hotels->first()->rooms as $room)
                                 <option value="{{ id_encode($room->id) }}">{{ $room->number }}</option>
                             @endforeach
@@ -145,7 +145,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-dark">
                         @lang('common.create')
                     </button>
                     <button type="button" class="btn btn-default" id="remove-room">

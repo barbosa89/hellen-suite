@@ -8,10 +8,8 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call(RolesTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
@@ -21,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(PlanSeeder::class);
 
-        if (app()->environment('local')) {
+        if (! app()->isProduction()) {
             $this->call(UsersTableSeeder::class);
             $this->call(AssignmentsSeeder::class);
             $this->call(HotelTableSeeder::class);

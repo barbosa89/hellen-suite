@@ -3,7 +3,7 @@
         <h5 class="card-title">
             {{ trans('plans.type.sponsor') }}
         </h5>
-        <h6 class="card-subtitle mb-2 text-muted mh-card-subtitle">
+        <h6 class="card-subtitle mb-2 text-body-secondary mh-card-subtitle">
             {{ trans('plans.descriptions.sponsor') }}
         </h6>
         <p class="card-text">
@@ -11,7 +11,7 @@
                 @include('app.plans.types.features.sponsor')
             </ul>
         </p>
-        <a class="btn btn-primary card-link" href="mailto:{{ config('mail.from.address') }}">
+        <a class="btn btn-dark card-link" href="mailto:{{ config('mail.from.address') }}">
             @lang('landing.contact')
         </a>
     </div>

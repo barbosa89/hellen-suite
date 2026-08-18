@@ -27,7 +27,7 @@
 
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                         <label for="pwd">@lang('reports.type'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="type" id="type" required>
+                        <select class="form-control" title="{{ trans('common.chooseOption') }}" name="type" id="type" required>
                             <option value="all" selected>@lang('hotels.all')</option>
                             <option value="one">@lang('hotels.one')</option>
                         </select>
@@ -41,7 +41,7 @@
 
                     <div class="form-group{{ $errors->has('hotel') ? ' has-error' : '' }}" id="hotel-select" style="display:none;">
                         <label for="pwd">@lang('hotels.title'):</label>
-                        <select class="form-control selectpicker" title="{{ trans('hotels.choose') }}" name="hotel" id="hotel">
+                        <select class="form-control" title="{{ trans('hotels.choose') }}" name="hotel" id="hotel">
                             @foreach ($hotels as $hotel)
                                 <option value="{{ id_encode($hotel->id) }}">{{ $hotel->business_name }}</option>
                             @endforeach
@@ -56,7 +56,7 @@
 
                     <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
                         <label for="start">@lang('common.startDate'):</label>
-                        <input type="text" class="form-control datepicker" name="start" id="start" value="{{ old('start') }}" required>
+                        <input type="date" class="form-control" name="start" id="start" value="{{ old('start') }}" required>
 
                         @if ($errors->has('start'))
                             <span class="help-block">
@@ -67,7 +67,7 @@
 
                     <div class="form-group{{ $errors->has('end') ? ' has-error' : '' }}">
                         <label for="end">@lang('common.endDate'):</label>
-                        <input type="text" class="form-control datepicker" name="end" id="end" value="{{ old('end') }}" required>
+                        <input type="date" class="form-control" name="end" id="end" value="{{ old('end') }}" required>
 
                         @if ($errors->has('end'))
                             <span class="help-block">
@@ -76,7 +76,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.query')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.query')</button>
                     <a href="{{ route('products.index') }}" class="btn btn-default">
                         @lang('common.back')
                     </a>
@@ -88,17 +88,19 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $('#type').change(function () {
-            if (this.value === 'one') {
-                if ($('#hotel-select').is(':hidden')) {
-                    $('#hotel-select').fadeIn()
-                }
-            } else {
-                if ($('#hotel-select').is(':visible')) {
-                    $('#hotel-select').fadeOut()
-                }
+<script>
+    document.getElementById('type').addEventListener('change', function () {
+        const hotelSelect = document.getElementById('hotel-select');
+
+        if (this.value === 'one') {
+            if (hotelSelect.style.display === 'none' || hotelSelect.style.display === '') {
+                hotelSelect.style.display = 'block'; // Equivalent to fadeIn
             }
-        })
-    </script>
+        } else {
+            if (hotelSelect.style.display === 'block') {
+                hotelSelect.style.display = 'none'; // Equivalent to fadeOut
+            }
+        }
+    });
+</script>
 @endsection

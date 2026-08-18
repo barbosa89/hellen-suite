@@ -87,14 +87,14 @@ return [
         'id' => env('ALGOLIA_APP_ID', ''),
         'secret' => env('ALGOLIA_SECRET', ''),
     ],
-    
+
     'tntsearch' => [
-        'storage'  => storage_path() . '/indexes',
+        'storage' => storage_path().'/indexes',
         'fuzziness' => env('TNTSEARCH_FUZZINESS', false),
         'fuzzy' => [
             'prefix_length' => 1,
             'max_expansions' => 50,
-            'distance' => 2
+            'distance' => 2,
         ],
     ],
 

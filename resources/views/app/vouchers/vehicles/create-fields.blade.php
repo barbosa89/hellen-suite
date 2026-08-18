@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('guest') ? ' has-error' : '' }}">
     <label for="pwd">@lang('guests.guest'):</label>
-    <select class="form-control selectpicker" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
+    <select class="form-control" title="{{ trans('common.chooseOption') }}" name="guest" id="guest" required>
         @foreach ($voucher->guests as $guest)
             <option value="{{ id_encode($guest->id) }}">{{ $guest->full_name }}</option>
         @endforeach

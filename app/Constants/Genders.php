@@ -5,6 +5,7 @@ namespace App\Constants;
 class Genders
 {
     public const MALE = 'm';
+
     public const FEMALE = 'f';
 
     public const DESCRIPTION = [

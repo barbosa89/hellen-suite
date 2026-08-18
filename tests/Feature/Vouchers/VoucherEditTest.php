@@ -2,31 +2,30 @@
 
 namespace Tests\Feature\Vouchers;
 
-use Tests\TestCase;
-use App\Models\Room;
-use App\Models\User;
+use App\Events\CheckIn;
+use App\Events\CheckOut;
+use App\Events\RoomCheckOut;
 use App\Models\Check;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Events\CheckIn;
-use App\Models\Country;
+use App\Models\Room;
+use App\Models\User;
 use App\Models\Voucher;
-use App\Events\CheckOut;
-use Illuminate\Support\Str;
-use App\Events\RoomCheckOut;
+use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\IdentificationTypesTableSeeder;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class VoucherEditTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use InteractsWithViews;
+    use RefreshDatabase;
+    use WithFaker;
 
     private User $manager;
 
@@ -125,7 +124,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -234,7 +233,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -291,7 +290,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -344,7 +343,7 @@ class VoucherEditTest extends TestCase
 
         $content = str_replace('{link}', $link, trans('notes.checkin.of'));
         $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).'.';
 
         $this->assertDatabaseHas('notes', [
             'content' => $content,
@@ -396,7 +395,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -411,9 +410,7 @@ class VoucherEditTest extends TestCase
                 'room' => $room->hash,
             ]);
 
-        Event::assertDispatched(CheckIn::class, function ($event) use ($guest) {
-            return $event->guest->id == $guest->id;
-        });
+        Event::assertDispatched(CheckIn::class, fn ($event) => $event->guest->id == $guest->id);
     }
 
     public function test_user_can_add_guest_to_voucher_with_responsible_adult(): void
@@ -454,7 +451,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -539,7 +536,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -555,7 +552,7 @@ class VoucherEditTest extends TestCase
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -642,7 +639,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -653,7 +650,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -663,11 +660,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         Check::factory()->create([
@@ -679,9 +676,7 @@ class VoucherEditTest extends TestCase
         $this->actingAs($user)
             ->get("vouchers/{$voucher->hash}/guests/{$guest->hash}/remove");
 
-        Event::assertDispatched(CheckOut::class, function ($event) use ($guest) {
-            return $event->guest->id == $guest->id;
-        });
+        Event::assertDispatched(CheckOut::class, fn ($event) => $event->guest->id == $guest->id);
     }
 
     public function test_user_can_remove_guest_from_voucher(): void
@@ -723,7 +718,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -734,7 +729,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -744,11 +739,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $now = now()->format('Y-m-d H:i:s');
@@ -801,7 +796,7 @@ class VoucherEditTest extends TestCase
 
         $content = str_replace('{link}', $link, trans('notes.checkout.of'));
         $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).'.';
 
         $this->assertDatabaseHas('notes', [
             'content' => $content,
@@ -850,7 +845,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -861,11 +856,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -932,7 +927,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -947,7 +942,7 @@ class VoucherEditTest extends TestCase
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         /** @var Guest $mainGuest */
@@ -957,7 +952,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($mainGuest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $additionalGuest */
@@ -967,7 +962,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($additionalGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $response = $this->actingAs($user)
@@ -1034,7 +1029,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => false
+                'enabled' => false,
             ]
         );
 
@@ -1049,7 +1044,7 @@ class VoucherEditTest extends TestCase
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         /** @var Guest $mainGuest */
@@ -1059,7 +1054,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($mainGuest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $additionalGuest */
@@ -1069,7 +1064,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($additionalGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $response = $this->actingAs($user)
@@ -1142,7 +1137,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1154,7 +1149,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -1164,11 +1159,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         Check::factory()->create([
@@ -1206,7 +1201,7 @@ class VoucherEditTest extends TestCase
 
         $content = str_replace('{link}', $link, trans('notes.checkout.of'));
         $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).'.';
 
         $this->assertDatabaseHas('notes', [
             'content' => $content,
@@ -1269,7 +1264,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1281,7 +1276,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => false,
-            'active' => false
+            'active' => false,
         ]);
 
         /** @var Guest $mainGuest */
@@ -1291,11 +1286,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($mainGuest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         Check::factory()->create([
@@ -1333,7 +1328,7 @@ class VoucherEditTest extends TestCase
 
         $content = str_replace('{link}', $link, trans('notes.checkin.of'));
         $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).'.';
 
         $this->assertDatabaseHas('notes', [
             'content' => $content,
@@ -1396,7 +1391,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => false
+                'enabled' => false,
             ]
         );
 
@@ -1407,7 +1402,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => false
+            'active' => false,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -1417,11 +1412,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => false
+            'active' => false,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -1495,7 +1490,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1507,11 +1502,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -1585,7 +1580,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1597,7 +1592,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -1608,15 +1603,15 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $secondaryGuest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $now = now()->format('Y-m-d H:i:s');
@@ -1682,11 +1677,11 @@ class VoucherEditTest extends TestCase
 
         $type = Str::upper($guest->identificationType->type);
         $content .= " {$guest->full_name} {$type} {$guest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . ',';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).',';
 
         $type = Str::upper($secondaryGuest->identificationType->type);
         $content .= " {$secondaryGuest->full_name} {$type} {$secondaryGuest->dni}, ";
-        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])) . '.';
+        $content .= lcfirst(trans('rooms.number', ['number' => $room->number])).'.';
 
         $this->assertDatabaseHas('notes', [
             'content' => $content,
@@ -1751,7 +1746,7 @@ class VoucherEditTest extends TestCase
                 'value' => $room->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1763,7 +1758,7 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         /** @var Guest $secondaryGuest */
@@ -1774,15 +1769,15 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($secondaryGuest->id, [
             'main' => false,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $secondaryGuest->rooms()->attach($room, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $now = now()->format('Y-m-d H:i:s');
@@ -1804,9 +1799,7 @@ class VoucherEditTest extends TestCase
         $this->actingAs($user)
             ->post("vouchers/{$voucher->hash}/close");
 
-        Event::assertDispatched(RoomCheckOut::class, function ($event) use ($voucher) {
-            return $event->voucher->id == $voucher->id;
-        });
+        Event::assertDispatched(RoomCheckOut::class, fn ($event) => $event->voucher->id == $voucher->id);
     }
 
     public function test_user_can_see_form_to_change_assigned_room_to_any_available_room_in_hotel(): void
@@ -1855,7 +1848,7 @@ class VoucherEditTest extends TestCase
                 'value' => $assignedRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1867,11 +1860,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -1882,16 +1875,10 @@ class VoucherEditTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.vouchers.change-room')
-            ->assertViewHas('voucher', function ($data) use ($voucher) {
-                return $data->id === $voucher->id;
-            })
-            ->assertViewHas('rooms', function ($data) use ($availableRoom) {
-                return $data->count() === 1
-                    && $data->first()->id == $availableRoom->id;
-            })
-            ->assertViewHas('room', function ($data) use ($assignedRoom) {
-                return $data->id == $assignedRoom->id;
-            });
+            ->assertViewHas('voucher', fn ($data) => $data->id === $voucher->id)
+            ->assertViewHas('rooms', fn ($data) => $data->count() === 1
+                && $data->first()->id == $availableRoom->id)
+            ->assertViewHas('room', fn ($data) => $data->id == $assignedRoom->id);
     }
 
     public function test_user_can_change_assigned_room_to_any_available_room(): void
@@ -1940,7 +1927,7 @@ class VoucherEditTest extends TestCase
                 'value' => $assignedRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -1952,11 +1939,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $data = [
@@ -1985,7 +1972,7 @@ class VoucherEditTest extends TestCase
             'value' => $availableRoom->price,
             'start' => now()->toDateString(),
             'end' => now()->toDateString(),
-            'enabled' => true
+            'enabled' => true,
         ]);
 
         $this->assertDatabaseMissing('room_voucher', [
@@ -2063,7 +2050,7 @@ class VoucherEditTest extends TestCase
                 'value' => $assignedRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -2078,7 +2065,7 @@ class VoucherEditTest extends TestCase
                 'value' => $availableRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -2090,11 +2077,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         /** @var Guest $anotherGuest */
@@ -2105,11 +2092,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($anotherGuest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $anotherGuest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $response = $this->actingAs($user)
@@ -2121,19 +2108,13 @@ class VoucherEditTest extends TestCase
         $response->assertSessionHasNoErrors()
             ->assertOk()
             ->assertViewIs('app.vouchers.change-guest-room')
-            ->assertViewHas('voucher', function ($data) use ($voucher, $assignedRoom, $availableRoom) {
-                return $data->id === $voucher->id
-                    && $data->rooms->whereIn('id', [
-                        $assignedRoom->id,
-                        $availableRoom->id,
-                    ])->count() === 2;
-            })
-            ->assertViewHas('room', function ($data) use ($assignedRoom) {
-                return $data->id == $assignedRoom->id;
-            })
-            ->assertViewHas('guest', function ($data) use ($guest) {
-                return $data->id == $guest->id;
-            });
+            ->assertViewHas('voucher', fn ($data) => $data->id === $voucher->id
+                && $data->rooms->whereIn('id', [
+                    $assignedRoom->id,
+                    $availableRoom->id,
+                ])->count() === 2)
+            ->assertViewHas('room', fn ($data) => $data->id == $assignedRoom->id)
+            ->assertViewHas('guest', fn ($data) => $data->id == $guest->id);
     }
 
     public function test_user_can_change_guest_to_any_available_room_in_voucher(): void
@@ -2183,7 +2164,7 @@ class VoucherEditTest extends TestCase
                 'value' => $assignedRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -2198,7 +2179,7 @@ class VoucherEditTest extends TestCase
                 'value' => $availableRoom->price,
                 'start' => now(),
                 'end' => now(),
-                'enabled' => true
+                'enabled' => true,
             ]
         );
 
@@ -2210,11 +2191,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($guest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $guest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         /** @var Guest $anotherGuest */
@@ -2225,11 +2206,11 @@ class VoucherEditTest extends TestCase
 
         $voucher->guests()->attach($anotherGuest->id, [
             'main' => true,
-            'active' => true
+            'active' => true,
         ]);
 
         $anotherGuest->rooms()->attach($assignedRoom, [
-            'voucher_id' => $voucher->id
+            'voucher_id' => $voucher->id,
         ]);
 
         $data = [
@@ -2258,5 +2239,3 @@ class VoucherEditTest extends TestCase
         ]);
     }
 }
-
-

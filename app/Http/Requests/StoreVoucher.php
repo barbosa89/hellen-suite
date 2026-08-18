@@ -31,7 +31,7 @@ class StoreVoucher extends FormRequest
             'room.*.end' => 'nullable|date|after:room.*.start',
             'registry' => 'required|string|in:checkin,reservation',
             'origin' => 'nullable|string|max:120',
-            'destination' => 'nullable|string|max:120'
+            'destination' => 'nullable|string|max:120',
         ];
     }
 

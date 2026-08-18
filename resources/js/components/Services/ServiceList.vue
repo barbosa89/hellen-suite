@@ -60,17 +60,17 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
-                            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
                                 <i class="fa fa-ellipsis-v"></i>
                             </button>
 
-                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
+                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
                                 <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/edit'" class="dropdown-item">{{ $t('common.edit') }}</a>
                                 <a v-if="$can('services.edit')" :href="'/services/' + service.hash + '/toggle'" class="dropdown-item">
                                     {{ service.status == 1 ? $t('common.disable') : $t('common.disable') }}
                                 </a>
                                 <a v-if="$can('services.destroy')" href="#" :data-url="'/services/' + service.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete.item') }}</a>
+                                    {{ $t('common.delete.item') }}
                                 </a>
                             </div>
                         </div>
@@ -93,6 +93,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -135,16 +138,10 @@ export default {
                         } else {
                             this.services = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
+                            toast.info(wTrans('common.without.results'));
                         }
                     }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
+                        toast.error(wTrans('common.try'));
                     });
                 }
             }

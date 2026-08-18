@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Helpers\Fields;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +10,6 @@ class VoucherObserver
     /**
      * Handle to the voucher "created" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function created(Voucher $voucher)
@@ -22,7 +20,6 @@ class VoucherObserver
     /**
      * Handle the voucher "updated" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function updated(Voucher $voucher)
@@ -33,28 +30,27 @@ class VoucherObserver
     /**
      * Handle the voucher "deleting" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleting(Voucher $voucher)
     {
         $voucher->load([
-            'guests' => function ($query) {
+            'guests' => function ($query): void {
                 $query->select(fields_get('guests'));
             },
-            'rooms' => function ($query) {
+            'rooms' => function ($query): void {
                 $query->select(fields_dotted('rooms'));
             },
         ]);
 
-        $voucher->rooms->each(function ($room, $index) use ($voucher) {
+        $voucher->rooms->each(function ($room, $index): void {
             $room->number = $room->number;
             $room->description = $room->description;
             $room->status = '1';
             $room->save();
         });
 
-        $voucher->guests->each(function ($guest, $index) {
+        $voucher->guests->each(function ($guest, $index): void {
             $guest->dni = $guest->dni;
             $guest->name = $guest->name;
             $guest->last_name = $guest->last_name;
@@ -71,7 +67,6 @@ class VoucherObserver
     /**
      * Handle the voucher "deleted" event.
      *
-     * @param  \App\Models\Voucher  $voucher
      * @return void
      */
     public function deleted(Voucher $voucher)

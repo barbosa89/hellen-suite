@@ -30,7 +30,7 @@
 
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                         <label for="date">@lang('common.date'):</label>
-                        <input type="text" class="form-control datepicker" name="date" id="date" value="{{ old('date') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
+                        <input type="date" class="form-control" name="date" id="date" value="{{ old('date') }}" required maxlength="191" placeholder="{{ trans('common.required') }}">
 
                         @if ($errors->has('date'))
                             <span class="help-block">
@@ -52,7 +52,7 @@
 
                     <div class="form-group{{ $errors->has('method') ? ' has-error' : '' }}">
                         <label for="method">@lang('payments.method'):</label>
-                        <select class="form-control selectpicker" name="method" id="method" required>
+                        <select class="form-control" name="method" id="method" required>
                             <option value="cash">@lang('payments.cash')</option>
                             <option value="transfer">@lang('payments.transfer')</option>
                             <option value="courtesy">@lang('payments.courtesy')</option>
@@ -87,7 +87,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-primary">@lang('common.create')</button>
+                    <button type="submit" class="btn btn-dark">@lang('common.create')</button>
                     <a href="{{ route('payments.index', ['voucher' => id_encode($voucher->id)]) }}" class="btn btn-link">
                         @lang('common.back')
                     </a>

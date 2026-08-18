@@ -2,25 +2,23 @@
 
 namespace Tests\Feature\Vouchers;
 
-use Tests\TestCase;
+use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
-use App\Models\Hotel;
-use App\Models\Country;
-use App\Models\Voucher;
+use Database\Seeders\IdentificationTypesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
 use NunoMaduro\LaravelMojito\InteractsWithViews;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\IdentificationTypesTableSeeder;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class VoucherCreateTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use InteractsWithViews;
+    use RefreshDatabase;
+    use WithFaker;
 
     private User $manager;
 
@@ -89,12 +87,10 @@ class VoucherCreateTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.vouchers.create')
-            ->assertViewHas('hotel', function ($hotel) use ($room) {
-                return $hotel
-                    ->rooms
-                    ->where('id', $room->id)
-                    ->isNotEmpty();
-            });
+            ->assertViewHas('hotel', fn ($hotel) => $hotel
+                ->rooms
+                ->where('id', $room->id)
+                ->isNotEmpty());
     }
 
     public function test_user_cannot_see_form_to_create_a_voucher_when_params_are_wrong(): void
@@ -116,5 +112,3 @@ class VoucherCreateTest extends TestCase
             ->assertSessionHasErrors(['hotel']);
     }
 }
-
-

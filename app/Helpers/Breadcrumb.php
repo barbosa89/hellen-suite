@@ -11,31 +11,31 @@ class Breadcrumb
      *
      * @var string
      */
-	public $text;
+    public $text;
 
-	/**
+    /**
      * The link URL.
      *
      * @var string
      */
-	public $url;
+    public $url;
 
-	public static function get()
-	{
-		$breadcrumb = new Breadcrumb();
-		$breadcrumb->setURI();
-		$breadcrumb->setText();
+    public static function get()
+    {
+        $breadcrumb = new Breadcrumb;
+        $breadcrumb->setURI();
+        $breadcrumb->setText();
 
-		return $breadcrumb;
-	}
+        return $breadcrumb;
+    }
 
-	public function setURI()
-	{
-		$this->url = implode('/', Request::segments());
-	}
+    public function setURI()
+    {
+        $this->url = implode('/', Request::segments());
+    }
 
-	public function setText()
-	{
-		$this->text = trans(Request::segment(1) . '.title');
-	}
+    public function setText()
+    {
+        $this->text = trans(Request::segment(1).'.title');
+    }
 }

@@ -12,9 +12,9 @@
             'url' => route('assets.index'),
             'options' => [
                 [
-                    'option' => trans('maintenances.maintenance'),
-                    'url' => route('assets.maintenance.form', [
-                        'id' => id_encode($asset->id)
+                    'option' => trans('maintenances.actions.create'),
+                    'url' => route('assets.maintenances.create', [
+                        'asset' => $asset->hash
                     ]),
                 ],
                 [
@@ -24,14 +24,14 @@
                         [
                             'option' => trans('common.edit'),
                             'url' => route('assets.edit', [
-                                'id' => id_encode($asset->id)
+                                'id' => $asset->hash
                             ]),
                         ],
                         [
                             'type' => 'confirm',
                             'option' => trans('common.delete.item'),
                             'url' => route('assets.destroy', [
-                                'id' => id_encode($asset->id)
+                                'id' => $asset->hash
                             ]),
                             'method' => 'DELETE'
                         ],
@@ -39,7 +39,7 @@
                 ],
                 [
                     'option' => trans('common.back'),
-                    'url' => url()->previous()
+                    'url' => route('assets.index')
                 ],
             ]
         ])
@@ -59,8 +59,8 @@
                 </h3>
                 @include('partials.list', [
                     'data' => $asset->maintenances,
-                    'listHeading' => 'app.assets.maintenance-list-heading',
-                    'listRow' => 'app.assets.maintenance-list-row'
+                    'listHeading' => 'app.assets.maintenances.list-heading',
+                    'listRow' => 'app.assets.maintenances.list-row'
                 ])
             </div>
         </div>

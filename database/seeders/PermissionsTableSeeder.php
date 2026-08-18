@@ -19,27 +19,27 @@ class PermissionsTableSeeder extends Seeder
 
         foreach (config('settings.modules') as $module) {
             Permission::findOrCreate(
-                $module . '.index',
+                $module.'.index',
                 config('auth.defaults.guard')
             );
 
             Permission::findOrCreate(
-                $module . '.create',
+                $module.'.create',
                 config('auth.defaults.guard')
             );
 
             Permission::findOrCreate(
-                $module . '.edit',
+                $module.'.edit',
                 config('auth.defaults.guard')
             );
 
             Permission::findOrCreate(
-                $module . '.destroy',
+                $module.'.destroy',
                 config('auth.defaults.guard')
             );
 
             Permission::findOrCreate(
-                $module . '.show',
+                $module.'.show',
                 config('auth.defaults.guard')
             );
         }

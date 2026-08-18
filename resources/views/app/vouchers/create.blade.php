@@ -109,7 +109,7 @@
                                     <i class="fas fa-calendar-plus"></i>
                                 </div>
                             </div>
-                            <input type="string" class="form-control datepicker start-date" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
+                            <input type="date" class="form-control start-date" name="room[{{ $loop->index }}][start]" value="{{ old('room.' . $loop->index . '.start') }}" required>
                         </div>
 
                         @if ($errors->has('room.' . $loop->index. '.start'))
@@ -132,7 +132,7 @@
                                     <i class="fas fa-calendar-times"></i>
                                 </div>
                             </div>
-                            <input type="string" class="form-control datepicker{{ !$loop->first ? ' end-date' : '' }}" name="room[{{ $loop->index }}][end]" {{ $loop->first ? 'id=common-date' : '' }} value="{{ old('room.' . $loop->index . '.end') }}" placeholder="Campo no obligatorio">
+                            <input type="date" class="form-control{{ !$loop->first ? ' end-date' : '' }}" name="room[{{ $loop->index }}][end]" {{ $loop->first ? 'id=common-date' : '' }} value="{{ old('room.' . $loop->index . '.end') }}" placeholder="Campo no obligatorio">
                         </div>
 
                         @if ($errors->has('room.' . $loop->index . '.end'))
@@ -147,7 +147,7 @@
 
         <div class="form-group{{ $errors->has('registry') ? ' has-error' : '' }} mt-4">
             <label for="start">@lang('common.register'):</label>
-            <select class="form-control selectpicker" title="Tipo de registro" name="registry" id="registry" required>
+            <select class="form-control" title="Tipo de registro" name="registry" id="registry" required>
                 <option value="checkin">@lang('vouchers.checkin')</option>
                 <option value="reservation">@lang('common.reservation')</option>
             </select>
@@ -183,7 +183,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-dark">
             @lang('common.add')
         </button>
         <a href="{{ route('rooms.index') }}" class="btn btn-link">
@@ -196,38 +196,48 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $("#registry").change(function () {
-            if (this.value == 'checkin') {
-                $("#route:hidden").fadeIn();
-            } else {
-                $("#route:visible").fadeOut();
+<script>
+    document.querySelector("#registry").addEventListener("change", function () {
+        const routeElement = document.querySelector("#route");
+        if (this.value === "checkin") {
+            if (routeElement.style.display === "none") {
+                routeElement.style.display = "block";
+                routeElement.style.opacity = 0;
+                let opacity = 0;
+                const fadeIn = setInterval(() => {
+                    if (opacity >= 1) clearInterval(fadeIn);
+                    routeElement.style.opacity = opacity;
+                    opacity += 0.1;
+                }, 30);
             }
-        })
-
-        $(".start-date").each(function (index, item) {
-            var date = new Date()
-            var year = date.getFullYear()
-
-            if (date.getMonth() > 8) {
-                var month = date.getMonth() + 1
-            } else {
-                var month = '0' + (date.getMonth() + 1)
+        } else {
+            if (routeElement.style.display === "block") {
+                let opacity = 1;
+                const fadeOut = setInterval(() => {
+                    if (opacity <= 0) {
+                        clearInterval(fadeOut);
+                        routeElement.style.display = "none";
+                    }
+                    routeElement.style.opacity = opacity;
+                    opacity -= 0.1;
+                }, 30);
             }
+        }
+    });
 
-            if (date.getDate() > 8) {
-                var day = date.getDate()
-            } else {
-                var day = '0' + date.getDate()
-            }
+    document.querySelectorAll(".start-date").forEach((item) => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
 
-            item.setAttribute('value', year + '-' + month + '-' + day)
+        item.setAttribute("value", `${year}-${month}-${day}`);
+    });
+
+    document.querySelector("#common-date").addEventListener("change", function () {
+        document.querySelectorAll(".end-date").forEach((item) => {
+            item.setAttribute("value", this.value);
         });
-
-        $("#common-date").change(function () {
-            $(".end-date").each((index, item) => {
-                item.setAttribute('value', this.value)
-            })
-        })
-    </script>
+    });
+</script>
 @endsection

@@ -15,7 +15,7 @@
                     <input class="form-control" type="search" name="query" v-model="query" :placeholder='$t("common.search")' aria-label="Search" required>
                     <div class="input-group-append">
                         <button class="input-group-text" id="btnGroupAddon">
-                            <i class="fa fa-search"></i>
+                            <em class="fa fa-search"></em>
                         </button>
                     </div>
                 </div>
@@ -74,19 +74,22 @@
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2 align-self-center">
                         <div class="dropdown">
-                            <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
-                                <i class="fa fa-ellipsis-v"></i>
+                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-link">
+                                <em class="fa fa-ellipsis-v"></em>
                             </button>
 
-                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-right">
-                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash + '/maintenance'" class="dropdown-item">
-                                    Mantenimiento
+                            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu dropdown-menu-end">
+                                <a v-if="$can('assets.show')" :href="'/assets/' + asset.hash" class="dropdown-item">
+                                    {{ $t('common.show') }}
                                 </a>
-                                <a v-if="$can('assets.edit')" :href="'/assets/' +  + '/edit'" class="dropdown-item">
-                                    Editar
+                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash + '/maintenances/create'" class="dropdown-item">
+                                    {{ $t('maintenances.actions.create') }}
                                 </a>
-                                <a v-if="$can('destroy.edit')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
-                                    {{ $t('common.delete.item') }}</a>
+                                <a v-if="$can('assets.edit')" :href="'/assets/' + asset.hash  + '/edit'" class="dropdown-item">
+                                    {{ $t('common.edit') }}
+                                </a>
+                                <a v-if="$can('assets.destroy')" href="#" :data-url="'/assets/' + asset.hash" data-method="DELETE" id="modal-confirm" onclick="confirmAction(this, event)" class="dropdown-item">
+                                    {{ $t('common.delete.item') }}
                                 </a>
                             </div>
                         </div>
@@ -109,6 +112,9 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
+
 export default {
     mounted() {
         if (this.hotels.length > 0) {
@@ -144,23 +150,15 @@ export default {
                         query: this.query,
                         hotel: this.hotel
                     }).then(response => {
-                        let assets = JSON.parse(response.data.assets);
-
-                        if (assets.length > 0) {
-                            this.assets = assets
+                        if (response.data.assets.length > 0) {
+                            this.assets = response.data.assets
                         } else {
                             this.assets = []
 
-                            toastr.info(
-                                this.$root.$t('common.without.results'),
-                                this.$root.$t('common.sorry')
-                            );
+                            toast.info(wTrans('common.without.results'));
                         }
-                    }).catch(e => {
-                        toastr.error(
-                            this.$root.$t('common.try'),
-                            'Error'
-                        );
+                    }).catch(_e => {
+                        toast.error(wTrans('common.try'));
                     });
                 }
             }

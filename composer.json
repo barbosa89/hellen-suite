@@ -2,6 +2,7 @@
     "name": "barbosa89/hellen-suite",
     "type": "project",
     "description": "Hotel management application",
+    "homepage": "https://hellensuite.com",
     "keywords": [
         "framework",
         "laravel",
@@ -9,59 +10,58 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "cviebrock/eloquent-sluggable": "^8.0.8",
-        "diglactic/laravel-breadcrumbs": "^7.1.1",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^2.0",
-        "genealabs/laravel-model-caching": "0.11.7",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "jamesmills/laravel-timezone": "^1.11",
-        "kwn/number-to-words": "^2.2.1",
-        "laracasts/flash": "^3.2.1",
-        "laravel/framework": "^8.0",
-        "laravel/passport": "^10.0",
-        "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4",
-        "laraveldaily/laravel-invoices": "^3.0",
+        "php": "^8.1",
+        "cviebrock/eloquent-sluggable": "^10.0",
+        "diglactic/laravel-breadcrumbs": "^9.0",
+        "drewm/mailchimp-api": "^2.5",
+        "guzzlehttp/guzzle": "^7.8",
+        "jamesmills/laravel-timezone": "^1.13",
+        "kwn/number-to-words": "^2.9",
+        "laracasts/flash": "^3.2",
+        "laravel/framework": "^10.10",
+        "laravel/passport": "^12.2",
+        "laravel/sanctum": "^3.3",
+        "laravel/tinker": "^2.9",
+        "laravel/ui": "^4.5",
+        "laraveldaily/laravel-invoices": "^3.3",
         "maatwebsite/excel": "^3.1",
-        "mews/purifier": "^3.3.7",
-        "owen-it/laravel-auditing": "^13.0.2",
-        "rap2hpoutre/laravel-log-viewer": "^2.1",
-        "shetabit/visitor": "^3.1.2",
-        "spatie/laravel-activitylog": "^4.4.2",
-        "spatie/laravel-backup": "^7.8",
-        "spatie/laravel-honeypot": "^4.1.0",
-        "spatie/laravel-newsletter": "^4.1.1",
-        "spatie/laravel-permission": "^5.5.2",
-        "spatie/laravel-view-models": "^1.5.2",
-        "thepinecode/i18n": "^1.2.0",
-        "tightenco/ziggy": "^1.4.4",
-        "vinkla/hashids": "^9.1.0"
+        "mews/purifier": "^3.4",
+        "owen-it/laravel-auditing": "^13.6",
+        "shetabit/visitor": "^4.3",
+        "spatie/laravel-activitylog": "^4.8",
+        "spatie/laravel-backup": "^8.2",
+        "spatie/laravel-honeypot": "^4.5",
+        "spatie/laravel-newsletter": "^5.1",
+        "spatie/laravel-permission": "^6.9",
+        "spatie/laravel-view-models": "^1.6",
+        "tightenco/ziggy": "^2.2",
+        "vinkla/hashids": "^11.0"
     },
     "require-dev": {
-        "barbosa89/laravel-vue-i18n-generator": "^1.0",
-        "barryvdh/laravel-debugbar": "^3.6",
-        "beyondcode/laravel-dump-server": "^1.4",
-        "beyondcode/laravel-query-detector": "^1.2",
-        "bpocallaghan/generators": "^7.0.2",
-        "facade/ignition": "^2.5",
+        "barryvdh/laravel-debugbar": "^3.13",
+        "beyondcode/laravel-dump-server": "^2.0",
+        "beyondcode/laravel-query-detector": "^1.8",
+        "bpocallaghan/generators": "^9.0",
         "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.15",
-        "mbezhanov/faker-provider-collection": "^2.0.1",
+        "larastan/larastan": "^2.9",
+        "laravel/pint": "^1.16",
+        "laravel/sail": "^1.18",
+        "mbezhanov/faker-provider-collection": "^2.0",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "nunomaduro/larastan": "^1.0.3",
-        "nunomaduro/laravel-mojito": "^0.2.4",
-        "phpunit/phpunit": "^9.5.10"
+        "nunomaduro/collision": "^7.0",
+        "nunomaduro/laravel-mojito": "^0.2.10",
+        "phpunit/phpunit": "^10.1",
+        "rector/rector": "^1.2",
+        "spatie/laravel-ignition": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "treeware/plant": true
+            "treeware/plant": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "extra": {
@@ -84,7 +84,7 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
@@ -100,8 +100,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test": [
-            "vendor/bin/phpunit --verbose --testdox"
-        ]
+        "test": "XDEBUG_MODE=off vendor/bin/phpunit -d memory_limit=1024M",
+        "test:debug": "vendor/bin/phpunit -d memory_limit=1024M",
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit -d memory_limit=1024M",
+        "sail": "vendor/bin/sail",
+        "format": "vendor/bin/pint",
+        "code:upgrade": "vendor/bin/rector"
     }
 }

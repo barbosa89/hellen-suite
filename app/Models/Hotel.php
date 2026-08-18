@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\Queryable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
-    use Queryable;
     use HasFactory;
+    use Queryable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +25,7 @@ class Hotel extends Model
         'email',
         'status',
         'image',
-        'created_at'
+        'created_at',
     ];
 
     /**
@@ -122,10 +122,8 @@ class Hotel extends Model
     {
         return $query->whereUserId(id_parent())
             ->whereStatus(true)
-            ->when(auth()->user()->hasRole('receptionist'), function ($query)
-            {
-                $query->whereHas('employees', function ($query)
-                {
+            ->when(auth()->user()->hasRole('receptionist'), function ($query): void {
+                $query->whereHas('employees', function ($query): void {
                     $query->where('id', auth()->user()->id);
                 });
             });
@@ -135,7 +133,6 @@ class Hotel extends Model
      * Scope a query to get a hotel by id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $id
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeById($query, int $id)

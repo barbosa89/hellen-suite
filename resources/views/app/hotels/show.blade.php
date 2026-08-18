@@ -35,7 +35,7 @@
 
         <div class="row mb-4">
             <div class="col-xs-2 col-sm-2 col-md-2 col-md-2">
-                <img class="img-fluid" src="{{ empty($hotel->image) ? asset('/images/hotel.png') : asset(Storage::url($hotel->image)) }}" alt="{{ $hotel->business_name }}">
+                <img class="img-fluid" src="{{ empty($hotel->image) ? Vite::asset('resources/images/hotel.png') : asset(Storage::url($hotel->image)) }}" alt="{{ $hotel->business_name }}">
             </div>
             <div class="col-xs-10 col-sm-10 col-md-10 col-md-10">
                 <div class="row">
@@ -72,12 +72,12 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="vouchers-tab" data-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
+                <a class="nav-link active" id="vouchers-tab" data-bs-toggle="tab" href="#vouchers" role="tab" aria-controls="vouchers" aria-selected="true">
                     @lang('transactions.title')
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
+                <a class="nav-link" id="charts-tab" data-bs-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="false">
                     @lang('common.chart')
                 </a>
             </li>
@@ -102,7 +102,9 @@
 
 
 @section('scripts')
-    <script type="text/javascript">
-        generate_chart('myChart', Array.from({!! $data->toJson() !!}))
-    </script>
+<script type="module">
+import { generate_chart } from '{{ Vite::asset("resources/js/common.js") }}'
+
+generate_chart('myChart', Array.from({!! $data->toJson() !!}))
+</script>
 @endsection

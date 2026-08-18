@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Mail\ContactMessage;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class ContactTest extends TestCase
 {
@@ -20,7 +20,7 @@ class ContactTest extends TestCase
             'contact_lastname' => $this->faker->lastName,
             'contact_email' => 'contacto@omarbarbosa.com',
             'contact_phone' => '1231231230',
-            'contact_message' => $this->faker->sentence(20)
+            'contact_message' => $this->faker->sentence(20),
         ];
 
         $this->post(route('message'), $data)
@@ -34,8 +34,6 @@ class ContactTest extends TestCase
         $this->assertEquals(false, $message->important);
         $this->assertEquals(true, $message->overlay);
 
-        Mail::assertSent(function (ContactMessage $mail) use ($data) {
-            return $mail->message->contact_email === $data['contact_email'];
-        });
+        Mail::assertSent(fn (ContactMessage $mail) => $mail->message->contact_email === $data['contact_email']);
     }
 }

@@ -32,20 +32,20 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.0]
-        laravel: [8.*]
+        php: [8.2]
+        laravel: [10.*]
         stability: [prefer-stable]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Cache PHP dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: vendor
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -76,7 +76,7 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose --testdox
+        run: vendor/bin/phpunit --testdox
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
 

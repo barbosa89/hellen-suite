@@ -27,14 +27,14 @@ class UpdateGuest extends FormRequest
 
         return [
             'type' => 'required|string|hashed_exists:identification_types,id',
-            'dni' => 'required|alpha_num|min:5|max:15|unique_per_user:guests,dni,' . $id,
+            'dni' => 'required|alpha_num|min:5|max:15|unique_per_user:guests,dni,'.$id,
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'nullable|email|unique_per_user:guests,email,' . $id,
+            'email' => 'nullable|email|unique_per_user:guests,email,'.$id,
             'gender' => 'nullable|string|in:f,m,x',
             'birtdate' => 'nullable|date',
             'profession' => 'nullable|string',
-            'nationality' => 'required|string|hashed_exists:countries,id'
+            'nationality' => 'required|string|hashed_exists:countries,id',
         ];
     }
 }

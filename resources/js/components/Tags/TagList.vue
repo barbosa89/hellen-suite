@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <vue-context ref="menu">
+        <!-- <vue-context ref="menu">
             <template slot-scope="child">
                 <li>
                     <a href="#" @click.prevent="edit($event.target.innerText, child.data)">
@@ -32,69 +32,59 @@
                     </a>
                 </li>
             </template>
-        </vue-context>
+        </vue-context> -->
     </div>
 </template>
 
 <script>
-    import { VueContext } from 'vue-context';
+import { toast } from 'vue3-toastify'
+import { wTrans } from 'laravel-vue-i18n'
 
-    export default {
-        props: {
-            tags: Array
-        },
-        data() {
-            return {
-                hotel: '',
-                list: this.tags
+export default {
+    props: {
+        tags: Array
+    },
+    data() {
+        return {
+            hotel: '',
+            list: this.tags
+        }
+    },
+    methods: {
+        go(tag) {
+            // Redirect on click
+            if (this.hotel.length > 0) {
+                window.location.href = '/tags/' + tag.hash + '/hotel/' + this.hotel
+            } else {
+                toast.info(wTrans('hotels.choose'))
             }
         },
-        components: {
-            VueContext
+        showResults(results) {
+            this.list = results
         },
-        methods: {
-            go(tag) {
-                // Redirect on click
-                if (this.hotel.length > 0) {
-                    window.location.href = '/tags/' + tag.hash + '/hotel/' + this.hotel
-                } else {
-                    toastr.info(
-                        this.$root.$t('hotels.choose'),
-                        'Ey'
-                    )
-                }
-            },
-            showResults(results) {
-                this.list = results
-            },
-            reset() {
-                this.list = this.tags
-            },
-            edit(text, data) {
-                window.location.href = `/tags/${data.tag.hash}/edit`
-            },
-            destroy(text, data) {
-                axios.delete(`tags/${data.tag.hash}`)
-                    .then(response => {
-                        if (response.data.status) {
-                            this.list = _.filter(this.list, tag => {
-                                return tag.hash != data.tag.hash
-                            })
+        reset() {
+            this.list = this.tags
+        },
+        edit(text, data) {
+            window.location.href = `/tags/${data.tag.hash}/edit`
+        },
+        destroy(text, data) {
+            axios
+                .delete(`tags/${data.tag.hash}`)
+                .then(response => {
+                    if (response.data.status) {
+                        this.list = _.filter(this.list, tag => {
+                            return tag.hash != data.tag.hash
+                        })
 
-                            toastr.success(
-                                this.$root.$t('common.deletedSuccessfully'),
-                                this.$root.$t('common.great'),
-                            )
-                        }
-                    }).catch(error => {
-                        toastr.info(
-                            this.$root.$t('common.error'),
-                            'Error',
-                        )
-                    })
-            }
-        },
-    }
+                        toast.success(wTrans('common.deletedSuccessfully'))
+                    }
+                }).catch(_error => {
+                    toast.info(wTrans('common.error'))
+                })
+        }
+    },
+}
 </script>
 
 <style scoped>

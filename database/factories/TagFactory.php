@@ -9,7 +9,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => $this->faker->unique()->word
+            'description' => $this->faker->unique()->word,
         ];
     }
 }

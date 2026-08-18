@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Models\Currency;
+use App\Models\IdentificationType;
 use App\Models\Plan;
 use App\Models\User;
-use App\Models\Currency;
-use Database\Seeders\PlanSeeder;
-use App\Models\IdentificationType;
 use Database\Seeders\CurrencySeeder;
-use Illuminate\Support\Facades\Http;
-use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Database\Seeders\IdentificationTypesTableSeeder;
+use Database\Seeders\PlanSeeder;
+use Database\Seeders\RolesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
+use Tests\TestCase;
 
 class PlanTest extends TestCase
 {
@@ -41,7 +41,7 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.index')
-            ->assertSeeText(trans('plans.descriptions.' . $plan->getType()))
+            ->assertSeeText(trans('plans.descriptions.'.$plan->getType()))
             ->assertSeeText(number_format($plan->price, 2, '.', ','))
             ->assertSeeText($plan->months)
             ->assertSee($plan->status)
@@ -72,7 +72,7 @@ class PlanTest extends TestCase
         $data = [
             'price' => $this->faker->numberBetween(0, 300000),
             'months' => $this->faker->numberBetween(2, 12),
-            'status' => $this->faker->numberBetween(0, 1)
+            'status' => $this->faker->numberBetween(0, 1),
         ];
 
         $response = $this->actingAs($user)
@@ -96,11 +96,9 @@ class PlanTest extends TestCase
             ->assertSee(trans('plans.type.free'))
             ->assertSee(trans('plans.type.basic'))
             ->assertSee(trans('plans.type.sponsor'))
-            ->assertViewHas('plans', function ($data) {
-                return $data
-                    ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
-                    ->count() == 3;
-            });
+            ->assertViewHas('plans', fn ($data) => $data
+                ->whereIn('type', [Plan::FREE, Plan::BASIC, Plan::SPONSOR])
+                ->count() == 3);
     }
 
     public function test_user_can_choose_the_free_plan()
@@ -119,12 +117,12 @@ class PlanTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => $plan->id,
             'user_id' => $user->id,
-            'ends_at' => now()->addMonths($plan->months)
+            'ends_at' => now()->addMonths($plan->months),
         ]);
 
         $message = session('flash_notification')->first();
 
-        $this->assertEquals(trans('plans.ready', ['plan' => ucfirst($plan->getType())]), $message->message);
+        $this->assertEquals(trans('plans.ready', ['plan' => ucfirst((string) $plan->getType())]), $message->message);
         $this->assertEquals('success', $message->level);
         $this->assertEquals(false, $message->important);
         $this->assertEquals(false, $message->overlay);
@@ -132,11 +130,9 @@ class PlanTest extends TestCase
 
     public function test_user_can_choose_the_basic_plan(): void
     {
-        Http::fake(function ($request) {
-            return Http::response(json_encode([
-                'USD_COP' => 3000
-            ]), Response::HTTP_OK);
-        });
+        Http::fake(fn ($request) => Http::response(json_encode([
+            'USD_COP' => 3000,
+        ]), Response::HTTP_OK));
 
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
@@ -170,20 +166,16 @@ class PlanTest extends TestCase
 
         $response->assertOk()
             ->assertViewIs('app.plans.choose')
-            ->assertViewHas('plans', function ($data) {
-                return $data
-                    ->where('type', Plan::FREE)
-                    ->count() == 0;
-            });
+            ->assertViewHas('plans', fn ($data) => $data
+                ->where('type', Plan::FREE)
+                ->count() == 0);
     }
 
     public function test_user_can_buy_the_basic_plan()
     {
-        Http::fake(function ($request) {
-            return Http::response(json_encode([
-                'USD_COP' => 3000
-            ]), Response::HTTP_OK);
-        });
+        Http::fake(fn ($request) => Http::response(json_encode([
+            'USD_COP' => 3000,
+        ]), Response::HTTP_OK));
 
         $user = User::factory()->create();
         $user->assignRole('manager');

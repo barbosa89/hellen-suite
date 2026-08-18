@@ -26,7 +26,7 @@ class AddGuests extends FormRequest
         return [
             'guest' => 'required|string|hashed_exists:guests,id',
             'room' => 'required|string|hashed_exists:rooms,id',
-            'responsible_adult' => 'nullable|string|hashed_exists:guests,id'
+            'responsible_adult' => 'nullable|string|hashed_exists:guests,id',
         ];
     }
 }

@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Events\CheckIn;
 use App\Events\CheckOut;
 use App\Exports\GuestsReport;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use App\Helpers\{Chart, Customer};
+use App\Helpers\Chart;
+use App\Helpers\Customer;
 use App\Http\Requests\StoreGuest;
 use App\Http\Requests\StoreVoucherGuest;
 use App\Http\Requests\UpdateGuest;
-use App\Models\{Country, Guest, IdentificationType, Room, Voucher};
+use App\Models\Country;
+use App\Models\Guest;
+use App\Models\IdentificationType;
+use App\Models\Room;
+use App\Models\Voucher;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
@@ -52,7 +56,7 @@ class GuestController extends Controller
      */
     public function store(StoreGuest $request)
     {
-        $guest = new Guest();
+        $guest = new Guest;
         $guest->name = $request->name;
         $guest->last_name = $request->last_name;
         $guest->dni = $request->dni;
@@ -62,7 +66,7 @@ class GuestController extends Controller
         $guest->gender = $request->get('gender', null);
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);
-        $guest->status = false; # Not in hotel
+        $guest->status = false; // Not in hotel
         $guest->identificationType()->associate(id_decode($request->type));
         $guest->user()->associate(id_parent());
         $guest->country()->associate(id_decode($request->nationality));
@@ -71,7 +75,7 @@ class GuestController extends Controller
             flash(trans('common.createdSuccessfully'))->success();
 
             return redirect()->route('guests.show', [
-                'id' => id_encode($guest->id)
+                'id' => id_encode($guest->id),
             ]);
         }
 
@@ -83,7 +87,6 @@ class GuestController extends Controller
     /**
      * Show the form for creating a new voucher guest.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function createForVoucher($id)
@@ -94,25 +97,24 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select('id', 'number', 'status')
                         ->withPivot('enabled');
                 },
-                'rooms.guests' => function ($query) use ($id) {
+                'rooms.guests' => function ($query) use ($id): void {
                     $query->select('id', 'name', 'last_name')
                         ->wherePivot('voucher_id', $id);
                 },
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->withPivot('main', 'active');
                 },
-                'company' => function ($query) {
+                'company' => function ($query): void {
                     $query->select(fields_get('companies'));
                 },
-                'payments' => function ($query)
-                {
+                'payments' => function ($query): void {
                     $query->select(fields_get('payments'));
-                }
+                },
             ])->first(fields_get('vouchers'));
 
         if (empty($voucher)) {
@@ -123,8 +125,7 @@ class GuestController extends Controller
         $countries = Country::all(['id', 'name']);
         $guests = 0;
 
-        $voucher->rooms->each(function ($room) use (&$guests)
-        {
+        $voucher->rooms->each(function ($room) use (&$guests): void {
             $guests += $room->guests->count();
         });
 
@@ -137,7 +138,6 @@ class GuestController extends Controller
      * Store a newly created guest in storage and attaching to voucher.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function storeForVoucher(StoreVoucherGuest $request, $id)
@@ -147,10 +147,10 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select('id');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
                 },
             ])->first(fields_dotted('vouchers'));
@@ -159,7 +159,7 @@ class GuestController extends Controller
             abort(404);
         }
 
-        $guest = new Guest();
+        $guest = new Guest;
         $guest->name = $request->name;
         $guest->last_name = $request->last_name;
         $guest->dni = $request->dni;
@@ -178,7 +178,7 @@ class GuestController extends Controller
         $isMinor = Customer::isMinor($request->get('birthdate', null));
         $responsible = $request->get('responsible_adult', null);
 
-        if ($isMinor and !empty($responsible)) {
+        if ($isMinor and ! empty($responsible)) {
             $guest->responsible_adult = id_decode($responsible);
         }
 
@@ -186,11 +186,11 @@ class GuestController extends Controller
             $main = $voucher->guests->isEmpty() ? true : false;
             $voucher->guests()->attach($guest->id, [
                 'main' => $main,
-                'active' => true
+                'active' => true,
             ]);
 
             $guest->rooms()->attach(id_decode($request->room), [
-                'voucher_id' => $voucher->id
+                'voucher_id' => $voucher->id,
             ]);
 
             // Create Note
@@ -213,7 +213,6 @@ class GuestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -227,18 +226,15 @@ class GuestController extends Controller
         }
 
         $guest->load([
-            'vouchers' => function ($query)
-            {
+            'vouchers' => function ($query): void {
                 $query->select(fields_dotted('vouchers'))
                     ->limit(20)
                     ->orderBy('vouchers.created_at', 'DESC');
             },
-            'vouchers.hotel' => function ($query)
-            {
+            'vouchers.hotel' => function ($query): void {
                 $query->select('id', 'business_name');
             },
-            'country' => function ($query)
-            {
+            'country' => function ($query): void {
                 $query->select('id', 'name');
             },
         ]);
@@ -253,7 +249,6 @@ class GuestController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -267,14 +262,12 @@ class GuestController extends Controller
         }
 
         $guest->load([
-            'identificationType' => function ($query)
-            {
+            'identificationType' => function ($query): void {
                 $query->select(['id', 'type']);
             },
-            'country' => function ($query)
-            {
+            'country' => function ($query): void {
                 $query->select(['id', 'name']);
-            }
+            },
         ]);
 
         $types = IdentificationType::where('id', '!=', $guest->identificationType->id)
@@ -290,7 +283,6 @@ class GuestController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateGuest $request, $id)
@@ -313,11 +305,11 @@ class GuestController extends Controller
         $guest->birthdate = $request->get('birthdate', null);
         $guest->profession = $request->get('profession', null);
 
-        if (!empty($request->type)) {
+        if (! empty($request->type)) {
             $guest->identificationType()->associate(id_decode($request->type));
         }
 
-        if (!empty($request->nationality)) {
+        if (! empty($request->nationality)) {
             $guest->country()->associate(id_decode($request->nationality));
         }
 
@@ -325,21 +317,20 @@ class GuestController extends Controller
             flash(trans('common.updatedSuccessfully'))->success();
 
             return redirect()->route('guests.show', [
-                'id' => id_encode($guest->id)
+                'id' => id_encode($guest->id),
             ]);
         }
 
         flash(trans('common.error'))->error();
 
         return redirect()->route('guests.show', [
-            'id' => id_encode($guest->id)
+            'id' => id_encode($guest->id),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -369,7 +360,7 @@ class GuestController extends Controller
     /**
      * Display a listing of searched records.
      *
-     * @param  Illuminate\Http\Request $request
+     * @param  Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request)
@@ -396,14 +387,12 @@ class GuestController extends Controller
     {
         $guests = Guest::where('user_id', id_parent())
             ->with([
-                'identificationType' => function ($query)
-                {
+                'identificationType' => function ($query): void {
                     $query->select(['id', 'type']);
                 },
-                'country' => function ($query)
-                {
+                'country' => function ($query): void {
                     $query->select(['id', 'name']);
-                }
+                },
             ])
             ->get(fields_get('guests'));
 
@@ -413,13 +402,13 @@ class GuestController extends Controller
             return redirect()->route('guests.index');
         }
 
-        return Excel::download(new GuestsReport($guests), trans('guests.title') . '.xlsx');
+        return Excel::download(new GuestsReport($guests), trans('guests.title').'.xlsx');
     }
 
     /**
      * Toggle status for the specified resource from storage.
      *
-     * @param  string   $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function toggle($id, $voucher)
@@ -429,25 +418,25 @@ class GuestController extends Controller
             ->where('open', true)
             ->where('status', true)
             ->with([
-                'guests' => function ($query) {
+                'guests' => function ($query): void {
                     $query->select(fields_dotted('guests'))
                         ->where('responsible_adult', false)
                         ->withPivot('main', 'active');
                 },
-                'guests.rooms' => function ($query) use ($voucher) {
+                'guests.rooms' => function ($query) use ($voucher): void {
                     $query->select(fields_dotted('rooms'))
                         ->wherePivot('voucher_id', id_decode($voucher));
                 },
-                'guests.identificationType' => function ($query) {
+                'guests.identificationType' => function ($query): void {
                     $query->select('id', 'type');
                 },
-                'rooms' => function ($query) {
+                'rooms' => function ($query): void {
                     $query->select(fields_dotted('rooms'))
                         ->withPivot('enabled');
                 },
-                'hotel' => function ($query) {
+                'hotel' => function ($query): void {
                     $query->select(fields_get('hotels'));
-                }
+                },
             ])->firstOrFail(fields_dotted('vouchers'));
 
         // Check if the voucher only has a guest
@@ -475,10 +464,9 @@ class GuestController extends Controller
                 $voucher->guests()->updateExistingPivot(
                     $guest,
                     [
-                        'active' => false
+                        'active' => false,
                     ]
                 );
-
 
             }
 
@@ -489,7 +477,7 @@ class GuestController extends Controller
                 $voucher->guests()->updateExistingPivot(
                     $guest,
                     [
-                        'active' => true
+                        'active' => true,
                     ]
                 );
             }

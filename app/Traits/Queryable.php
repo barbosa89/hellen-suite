@@ -4,39 +4,29 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 trait Queryable
 {
-    /**
-     * @return array
-     */
-    public static function getColumnNames(array $columns = [], array $default = ['id', 'created_at', 'updated_at']) : array
+    public static function getColumnNames(array $columns = [], array $default = ['id', 'created_at', 'updated_at']): array
     {
         return array_merge($default, $columns, (new static)->fillable);
     }
 
-    /**
-     * @return array
-     */
     public function getTableColumns(): array
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeAllColumns(Builder $query, bool $dotted = false): Builder
     {
         if ($dotted) {
             $columns = [];
 
             foreach ($this->getTableColumns() as $column) {
-                $columns[] = $this->getTable() . '.' . $column;
+                $columns[] = $this->getTable().'.'.$column;
             }
 
             return $query->select($columns);
@@ -45,21 +35,12 @@ trait Queryable
         return $query->select($this->getTableColumns());
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int $id
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeId(Builder $query, int $id): Builder
     {
         return $query->where('id', $id);
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOwner(Builder $query): Builder
+    public function scopeWhereOwner(Builder $query): Builder
     {
         return $query->where('user_id', id_parent());
     }
@@ -74,7 +55,7 @@ trait Queryable
             $filter = clean_param(Str::camel($filter));
             $param = $this->parseParam($param);
 
-            if($query->hasNamedScope($filter)) {
+            if ($query->hasNamedScope($filter)) {
                 $query->{$filter}($param);
             }
         }
@@ -83,10 +64,9 @@ trait Queryable
     }
 
     /**
-     * @param mixed $value
      * @return mixed
      */
-    private function parseParam($value)
+    private function parseParam(mixed $value)
     {
         if (is_array($value)) {
             foreach ($value as $param) {
@@ -103,20 +83,6 @@ trait Queryable
         return $parsed;
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
-    public function normalizeParam($value)
-    {
-        # code...
-    }
-
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param string $date
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeFromDate(Builder $query, string $date): Builder
     {
         $date = Carbon::parse($date);

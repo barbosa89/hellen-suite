@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Contracts\CompanyRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use Illuminate\Support\Arr;
 
 class CompanyController extends Controller
 {
-    public CompanyRepository $company;
-
-    public function __construct(CompanyRepository $company)
-    {
-        $this->company = $company;
-    }
+    public function __construct(public CompanyRepository $company) {}
 
     /**
      * Display a listing of the resource.
@@ -25,7 +19,7 @@ class CompanyController extends Controller
     public function index()
     {
         $validated = request()->validate([
-            'from_date' => 'bail|nullable|date|before_or_equal:today'
+            'from_date' => 'bail|nullable|date|before_or_equal:today',
         ]);
 
         $companies = $this->company->paginate(

@@ -28,7 +28,7 @@ class PropsTransaction extends FormRequest
             'props.*.hash' => 'required|string|hashed_exists:props,id',
             'props.*.amount' => 'required|numeric|min:1',
             'props.*.commentary' => 'required|string|max:255',
-            'type' => 'required|string|in:input,output'
+            'type' => 'required|string|in:input,output',
         ];
     }
 
