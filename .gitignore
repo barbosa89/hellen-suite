@@ -29,6 +29,13 @@ backup
 .agents
 .zed
 .atl
+.opencode
+.github/skills
+.github/agents
+.impeccable
+.ai
 AGENTS.md
+PRODUCT.md
 boost.json
 opencode.json
+.github/hooks/impeccable.json
