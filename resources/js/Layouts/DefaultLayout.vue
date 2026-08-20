@@ -3,7 +3,9 @@ import { ref } from 'vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import LocaleDropdown from '@/Components/LocaleDropdown.vue';
 import Sidebar from '@/Components/Sidebar.vue';
+import ThemeToggle from '@/Components/ThemeToggle.vue';
 
 const sidebarOpen = ref(true);
 
@@ -44,6 +46,11 @@ const toggleSidebar = () => {
                             class="text-primary-600 block h-8 w-auto fill-current"
                         />
                     </Link>
+
+                    <div class="ms-auto flex items-center gap-3">
+                        <ThemeToggle />
+                        <LocaleDropdown />
+                    </div>
                 </div>
             </nav>
 

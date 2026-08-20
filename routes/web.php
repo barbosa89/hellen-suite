@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::post('/locale', [LocaleController::class, 'update'])->name('locale.update');
 
 Route::get('/', function () {
     return Inertia::render('Dashboard');
