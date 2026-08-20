@@ -35,7 +35,7 @@ const navigation = [
 <template>
     <aside
         :class="open ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed inset-y-0 start-0 z-40 flex w-64 flex-col border-e border-neutral-200 bg-white transition-transform duration-300 ease-in-out dark:border-neutral-800 dark:bg-neutral-900"
+        class="fixed inset-y-0 inset-s-0 z-40 flex w-64 flex-col border-e border-neutral-200 bg-white transition-transform duration-300 ease-in-out dark:border-neutral-800 dark:bg-neutral-900"
     >
         <Link
             :href="route('dashboard')"
