@@ -36,7 +36,8 @@ export default {
                 "edit": "Edit hotel",
                 "delete": "Delete hotel",
                 "create": "Create hotel",
-                "rooms": "Rooms"
+                "rooms": "Rooms",
+                "manage": "Manage"
             },
             "fields": {
                 "id": {
@@ -300,7 +301,8 @@ export default {
                 "edit": "Editar hotel",
                 "delete": "Eliminar hotel",
                 "create": "Crear hotel",
-                "rooms": "Habitaciones"
+                "rooms": "Habitaciones",
+                "manage": "Administrar"
             },
             "fields": {
                 "id": {

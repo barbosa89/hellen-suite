@@ -168,7 +168,14 @@ function destroy(hotel) {
                                     <td
                                         class="px-6 py-4 text-sm font-medium whitespace-nowrap text-neutral-900 dark:text-neutral-100"
                                     >
-                                        {{ hotel.business_name }}
+                                        <Link
+                                            :href="
+                                                route('hotels.show', hotel.id)
+                                            "
+                                            class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+                                        >
+                                            {{ hotel.business_name }}
+                                        </Link>
                                     </td>
                                     <td
                                         class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500 tabular-nums dark:text-neutral-400"
@@ -196,6 +203,23 @@ function destroy(hotel) {
                                         <div
                                             class="flex items-center justify-end gap-2"
                                         >
+                                            <Link
+                                                :href="
+                                                    route(
+                                                        'hotels.rooms.index',
+                                                        hotel.id,
+                                                    )
+                                                "
+                                                class="focus:ring-primary-500 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold tracking-widest text-neutral-700 uppercase shadow-xs transition duration-150 ease-in-out hover:bg-neutral-50 focus:ring-2 focus:ring-offset-2 focus:outline-hidden dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:ring-offset-neutral-950"
+                                                :aria-label="
+                                                    t('hotels.actions.manage')
+                                                "
+                                                :title="
+                                                    t('hotels.actions.manage')
+                                                "
+                                            >
+                                                {{ $t('hotels.actions.manage') }}
+                                            </Link>
                                             <Link
                                                 :href="
                                                     route(

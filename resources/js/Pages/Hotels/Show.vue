@@ -140,21 +140,27 @@ const fieldClasses =
                             </div>
                         </dl>
 
-                        <div
+                        <figure
                             v-if="props.hotel.image"
-                            class="mt-4 rounded-lg bg-neutral-50 p-4 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-neutral-700"
+                            class="mt-6 overflow-hidden rounded-lg bg-neutral-50 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-neutral-700"
                         >
-                            <dt
-                                class="text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
+                            <figcaption
+                                class="border-b border-neutral-200 px-4 py-3 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:border-neutral-700 dark:text-neutral-400"
                             >
                                 {{ t('hotels.fields.image.label') }}
-                            </dt>
-                            <img
-                                :src="props.hotel.image"
-                                :alt="props.hotel.business_name"
-                                class="mt-3 aspect-video w-full rounded-md object-cover"
-                            />
-                        </div>
+                            </figcaption>
+
+                            <div
+                                class="flex h-64 items-center justify-center bg-white p-3 sm:h-80 sm:p-4 lg:h-96 dark:bg-neutral-950"
+                            >
+                                <img
+                                    :src="props.hotel.image"
+                                    :alt="props.hotel.business_name"
+                                    class="h-full w-full rounded-md object-contain"
+                                    decoding="async"
+                                />
+                            </div>
+                        </figure>
                     </div>
 
                     <div
@@ -168,16 +174,6 @@ const fieldClasses =
                         </Link>
 
                         <div class="flex items-center gap-3">
-                            <Link
-                                :href="
-                                    route('hotels.rooms.index', props.hotel.id)
-                                "
-                                :class="primaryLinkClasses"
-                            >
-                                <RectangleGroupIcon class="h-4 w-4" />
-                                {{ t('hotels.actions.rooms') }}
-                            </Link>
-
                             <Link
                                 :href="route('hotels.edit', props.hotel.id)"
                                 :class="primaryLinkClasses"
