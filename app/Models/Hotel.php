@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Observers\HotelObserver;
@@ -11,7 +13,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -45,9 +46,9 @@ class Hotel extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value): ?string => $value === null || str_starts_with($value, 'http')
+            get: fn (null|string $value): null|string => $value === null
                 ? $value
-                : Storage::disk('public')->url($value),
+                : route('hotels.image', $this),
         );
     }
 }

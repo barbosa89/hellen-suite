@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Hotel;
@@ -74,7 +76,7 @@ class HotelStoreTest extends TestCase
         $imagePath = $hotel->getRawOriginal('image');
 
         Storage::disk('public')->assertExists($imagePath);
-        $this->assertSame(Storage::disk('public')->url($imagePath), $hotel->image);
+        $this->assertSame(route('hotels.image', $hotel), $hotel->image);
     }
 
     #[Test]
@@ -91,5 +93,41 @@ class HotelStoreTest extends TestCase
             'tin' => '987654321',
             'image' => UploadedFile::fake()->image('hotel.jpg')->size(1025),
         ])->assertSessionHasErrors('image');
+    }
+
+    #[Test]
+    public function it_serves_a_stored_hotel_image_through_the_image_route(): void
+    {
+        Storage::fake('public');
+
+        $this->post(route('hotels.store'), [
+            'business_name' => 'Hotel Paradise',
+            'tin' => '123456789',
+            'image' => UploadedFile::fake()->image('hotel.png')->size(512),
+        ])->assertRedirect(route('hotels.index'));
+
+        $hotel = Hotel::query()->where('tin', '123456789')->firstOrFail();
+
+        $this->get(route('hotels.image', $hotel))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/png');
+    }
+
+    #[Test]
+    public function it_keeps_external_image_urls_untouched(): void
+    {
+        $hotel = Hotel::factory()->create(['image' => 'https://example.com/hotel.png']);
+
+        $this->assertSame('https://example.com/hotel.png', $hotel->image);
+    }
+
+    #[Test]
+    public function it_returns_404_when_the_stored_image_is_missing(): void
+    {
+        Storage::fake('public');
+
+        $hotel = Hotel::factory()->create(['image' => 'hotels/missing.png']);
+
+        $this->get(route('hotels.image', $hotel))->assertNotFound();
     }
 }

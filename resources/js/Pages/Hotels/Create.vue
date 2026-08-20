@@ -1,19 +1,37 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelLayout from '@/Layouts/HotelLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Form, Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
+import UploadInput from '@/Components/UploadInput.vue';
 
 const { t } = useI18n();
+
+const form = useForm({
+    business_name: '',
+    tin: '',
+    address: '',
+    phone: '',
+    mobile: '',
+    email: '',
+    image: null,
+});
+
+function submit() {
+    form.post(route('hotels.store'), {
+        forceFormData: true,
+        onSuccess: () => form.reset(),
+    });
+}
 </script>
 
 <template>
     <Head :title="t('hotels.pages.create.heading')" />
 
-    <DefaultLayout>
+    <HotelLayout>
         <template #header>
             <h2
                 class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
@@ -27,12 +45,7 @@ const { t } = useI18n();
                 <div
                     class="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700"
                 >
-                    <Form
-                        :action="route('hotels.store')"
-                        method="post"
-                        class="contents"
-                        #default="{ errors, processing }"
-                    >
+                    <form @submit.prevent="submit">
                         <div class="space-y-6 p-6">
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <div>
@@ -51,10 +64,11 @@ const { t } = useI18n();
                                         class="mt-1 block w-full"
                                         required
                                         autofocus
+                                        v-model="form.business_name"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.business_name"
+                                        :message="form.errors.business_name"
                                     />
                                 </div>
 
@@ -70,10 +84,11 @@ const { t } = useI18n();
                                         class="mt-1 block w-full"
                                         required
                                         autocomplete="off"
+                                        v-model="form.tin"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.tin"
+                                        :message="form.errors.tin"
                                     />
                                 </div>
                             </div>
@@ -88,10 +103,11 @@ const { t } = useI18n();
                                     name="address"
                                     type="text"
                                     class="mt-1 block w-full"
+                                    v-model="form.address"
                                 />
                                 <InputError
                                     class="mt-2"
-                                    :message="errors.address"
+                                    :message="form.errors.address"
                                 />
                             </div>
 
@@ -107,10 +123,11 @@ const { t } = useI18n();
                                         type="tel"
                                         class="mt-1 block w-full"
                                         autocomplete="tel"
+                                        v-model="form.phone"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.phone"
+                                        :message="form.errors.phone"
                                     />
                                 </div>
 
@@ -125,10 +142,11 @@ const { t } = useI18n();
                                         type="tel"
                                         class="mt-1 block w-full"
                                         autocomplete="tel"
+                                        v-model="form.mobile"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.mobile"
+                                        :message="form.errors.mobile"
                                     />
                                 </div>
                             </div>
@@ -145,10 +163,11 @@ const { t } = useI18n();
                                         type="email"
                                         class="mt-1 block w-full"
                                         autocomplete="email"
+                                        v-model="form.email"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.email"
+                                        :message="form.errors.email"
                                     />
                                 </div>
 
@@ -157,15 +176,16 @@ const { t } = useI18n();
                                         for="image"
                                         :value="t('hotels.fields.image.label')"
                                     />
-                                    <TextInput
+                                    <UploadInput
                                         id="image"
                                         name="image"
-                                        type="url"
                                         class="mt-1 block w-full"
+                                        accept="image/png,image/jpeg,image/webp"
+                                        v-model="form.image"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.image"
+                                        :message="form.errors.image"
                                     />
                                 </div>
                             </div>
@@ -182,15 +202,16 @@ const { t } = useI18n();
                             </Link>
 
                             <PrimaryButton
-                                :class="{ 'opacity-25': processing }"
-                                :disabled="processing"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                                type="submit"
                             >
                                 {{ t('hotels.actions.create') }}
                             </PrimaryButton>
                         </div>
-                    </Form>
+                    </form>
                 </div>
             </div>
         </div>
-    </DefaultLayout>
+    </HotelLayout>
 </template>

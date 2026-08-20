@@ -1,10 +1,11 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelLayout from '@/Layouts/HotelLayout.vue';
 import {
     BuildingOffice2Icon,
     EnvelopeIcon,
     MapPinIcon,
     PhoneIcon,
+    RectangleGroupIcon,
 } from '@heroicons/vue/24/outline';
 import { Head, Link } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
@@ -28,7 +29,7 @@ const fieldClasses =
 <template>
     <Head :title="props.hotel.business_name" />
 
-    <DefaultLayout>
+    <HotelLayout>
         <template #header>
             <div class="flex items-center justify-between gap-4">
                 <h2
@@ -166,15 +167,27 @@ const fieldClasses =
                             {{ t('app.back') }}
                         </Link>
 
-                        <Link
-                            :href="route('hotels.edit', props.hotel.id)"
-                            :class="primaryLinkClasses"
-                        >
-                            {{ t('hotels.actions.edit') }}
-                        </Link>
+                        <div class="flex items-center gap-3">
+                            <Link
+                                :href="
+                                    route('hotels.rooms.index', props.hotel.id)
+                                "
+                                :class="primaryLinkClasses"
+                            >
+                                <RectangleGroupIcon class="h-4 w-4" />
+                                {{ t('hotels.actions.rooms') }}
+                            </Link>
+
+                            <Link
+                                :href="route('hotels.edit', props.hotel.id)"
+                                :class="primaryLinkClasses"
+                            >
+                                {{ t('hotels.actions.edit') }}
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </DefaultLayout>
+    </HotelLayout>
 </template>

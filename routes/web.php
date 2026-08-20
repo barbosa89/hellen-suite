@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
@@ -13,6 +15,8 @@ Route::get('/', function () {
 });
 
 Route::resource('hotels', HotelController::class);
+use App\Http\Controllers\HotelImageController;
+Route::get('/hotels/{hotel}/image', [HotelImageController::class, 'show'])->name('hotels.image');
 Route::get('/hotels/{hotel}/rooms', [RoomController::class, 'index'])->name('hotels.rooms.index');
 
 Route::get('/dashboard', function () {
@@ -25,4 +29,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
