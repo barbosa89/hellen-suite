@@ -19,7 +19,7 @@ class UpdateHotel extends CreateHotel
         if (isset($this->data['image'])) {
             $this->data['image'] = $this->storeImage($this->data['image']);
 
-            if($image = $this->hotel->getRawOriginal('image')) {
+            if ($image = $this->hotel->getRawOriginal('image')) {
                 Storage::disk('public')->delete($image);
             }
         }

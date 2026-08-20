@@ -29,7 +29,7 @@ class CreateHotel
     protected function storeImage(UploadedFile $upload): string
     {
         $image = Image::decode($upload);
-        $path = Arr::join(['hotels', Str::random(40).'.'.$upload->getClientOriginalExtension()], DIRECTORY_SEPARATOR);
+        $path = Arr::join(['hotels', Str::random(40) . '.' . $upload->getClientOriginalExtension()], DIRECTORY_SEPARATOR);
 
         Storage::put($path, $image->encodeUsingFileExtension($upload->getClientOriginalExtension()));
 

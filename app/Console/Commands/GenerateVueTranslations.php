@@ -79,7 +79,7 @@ class GenerateVueTranslations extends Command
 
     protected function findTranslationFiles(string $path): array|false
     {
-        return glob($path.'/{,*/}*.{json,php}', GLOB_BRACE);
+        return glob($path . '/{,*/}*.{json,php}', GLOB_BRACE);
     }
 
     /**
@@ -124,8 +124,8 @@ class GenerateVueTranslations extends Command
     protected function removeEscapeCharacter(string $line): string
     {
         return preg_replace_callback(
-            '/'.preg_quote('!', '/')."(:\w+)/",
-            fn ($matches) => '{'.mb_substr($matches[0], 1).'}',
+            '/' . preg_quote('!', '/') . "(:\w+)/",
+            fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line,
         );
     }
@@ -136,8 +136,8 @@ class GenerateVueTranslations extends Command
     protected function transformCollonsToBraces(string $line): string
     {
         return preg_replace_callback(
-            '/(?<!mailto|tel|'.preg_quote('!', '/')."):\w+/",
-            fn ($matches) => '{'.mb_substr($matches[0], 1).'}',
+            '/(?<!mailto|tel|' . preg_quote('!', '/') . "):\w+/",
+            fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line,
         );
     }
@@ -169,6 +169,6 @@ class GenerateVueTranslations extends Command
     {
         $json = json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-        return "export default {$json}".PHP_EOL;
+        return "export default {$json}" . PHP_EOL;
     }
 }

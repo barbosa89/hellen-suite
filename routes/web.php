@@ -16,6 +16,7 @@ Route::get('/', function () {
 
 Route::resource('hotels', HotelController::class);
 use App\Http\Controllers\HotelImageController;
+
 Route::get('/hotels/{hotel}/image', [HotelImageController::class, 'show'])->name('hotels.image');
 Route::get('/hotels/{hotel}/rooms', [RoomController::class, 'index'])->name('hotels.rooms.index');
 
