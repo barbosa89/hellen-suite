@@ -1,5 +1,5 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelLayout from '@/Layouts/HotelLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
 import {
     BuildingOffice2Icon,
@@ -50,7 +50,7 @@ function destroy(hotel) {
 <template>
     <Head :title="t('hotels.title')" />
 
-    <DefaultLayout>
+    <HotelLayout>
         <template #header>
             <h2
                 class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
@@ -294,5 +294,5 @@ function destroy(hotel) {
                 </div>
             </div>
         </div>
-    </DefaultLayout>
+    </HotelLayout>
 </template>
