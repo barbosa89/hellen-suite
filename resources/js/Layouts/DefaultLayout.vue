@@ -9,6 +9,13 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
 
 const sidebarOpen = ref(true);
 
+const props = defineProps({
+    hotel: {
+        type: Object,
+        default: null,
+    },
+});
+
 const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value;
 };
@@ -16,7 +23,11 @@ const toggleSidebar = () => {
 
 <template>
     <div>
-        <Sidebar :open="sidebarOpen" @toggle="toggleSidebar" />
+        <Sidebar
+            :open="sidebarOpen"
+            :hotel="props.hotel"
+            @toggle="toggleSidebar"
+        />
 
         <div
             :class="sidebarOpen ? 'lg:pl-64' : 'lg:pl-0'"

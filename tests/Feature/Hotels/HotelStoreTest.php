@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Hotel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -55,5 +57,39 @@ class HotelStoreTest extends TestCase
             'business_name' => 'Hotel Duplicate',
             'tin' => '123456789',
         ])->assertSessionHasErrors('tin');
+    }
+
+    #[Test]
+    public function it_stores_an_uploaded_hotel_image_publicly(): void
+    {
+        Storage::fake('public');
+
+        $this->post(route('hotels.store'), [
+            'business_name' => 'Hotel Paradise',
+            'tin' => '123456789',
+            'image' => UploadedFile::fake()->image('hotel.png')->size(512),
+        ])->assertRedirect(route('hotels.index'));
+
+        $hotel = Hotel::query()->where('tin', '123456789')->firstOrFail();
+        $imagePath = $hotel->getRawOriginal('image');
+
+        Storage::disk('public')->assertExists($imagePath);
+        $this->assertSame(Storage::disk('public')->url($imagePath), $hotel->image);
+    }
+
+    #[Test]
+    public function it_rejects_images_with_invalid_formats_or_sizes(): void
+    {
+        $this->post(route('hotels.store'), [
+            'business_name' => 'Hotel GIF',
+            'tin' => '123456789',
+            'image' => UploadedFile::fake()->create('hotel.gif', 100, 'image/gif'),
+        ])->assertSessionHasErrors('image');
+
+        $this->post(route('hotels.store'), [
+            'business_name' => 'Hotel Large',
+            'tin' => '987654321',
+            'image' => UploadedFile::fake()->image('hotel.jpg')->size(1025),
+        ])->assertSessionHasErrors('image');
     }
 }

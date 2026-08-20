@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Hotel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -47,12 +49,36 @@ class HotelUpdateTest extends TestCase
     #[Test]
     public function it_deletes_a_hotel(): void
     {
-        $hotel = Hotel::factory()->create();
+        Storage::fake('public');
+        Storage::disk('public')->put('hotels/hotel.png', 'hotel image');
+
+        $hotel = Hotel::factory()->create(['image' => 'hotels/hotel.png']);
 
         $response = $this->delete(route('hotels.destroy', $hotel));
 
         $response->assertRedirect(route('hotels.index'));
 
         $this->assertDatabaseMissing('hotels', ['id' => $hotel->id]);
+        Storage::disk('public')->assertMissing('hotels/hotel.png');
+    }
+
+    #[Test]
+    public function it_replaces_an_existing_hotel_image(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('hotels/previous.png', 'previous image');
+
+        $hotel = Hotel::factory()->create(['image' => 'hotels/previous.png']);
+
+        $this->patch(route('hotels.update', $hotel), [
+            'business_name' => $hotel->business_name,
+            'tin' => $hotel->tin,
+            'image' => UploadedFile::fake()->image('hotel.webp')->size(512),
+        ])->assertRedirect(route('hotels.index'));
+
+        $imagePath = $hotel->refresh()->getRawOriginal('image');
+
+        Storage::disk('public')->assertMissing('hotels/previous.png');
+        Storage::disk('public')->assertExists($imagePath);
     }
 }

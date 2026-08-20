@@ -19,4 +19,8 @@ return [
         'of' => 'of',
         'pagination' => 'Pagination',
     ],
+    'upload' => [
+        'select' => 'Select a file',
+        'drop_hint' => 'Drag and drop a file here or click to select one',
+    ],
 ];

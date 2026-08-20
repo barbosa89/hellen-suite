@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hotels\CreateHotel;
+use App\Actions\Hotels\UpdateHotel;
 use App\Http\Requests\StoreHotelRequest;
 use App\Http\Requests\UpdateHotelRequest;
 use App\Models\Hotel;
@@ -25,7 +27,7 @@ class HotelController extends Controller
 
     public function store(StoreHotelRequest $request): RedirectResponse
     {
-        Hotel::create($request->validated());
+        new CreateHotel($request->validated())->execute();
 
         return redirect()->route('hotels.index')
             ->with('success', trans('hotels.messages.created'));
@@ -43,7 +45,7 @@ class HotelController extends Controller
 
     public function update(UpdateHotelRequest $request, Hotel $hotel): RedirectResponse
     {
-        $hotel->update($request->validated());
+        new UpdateHotel($hotel, $request->validated())->execute();
 
         return redirect()->route('hotels.index')
             ->with('success', trans('hotels.messages.updated'));

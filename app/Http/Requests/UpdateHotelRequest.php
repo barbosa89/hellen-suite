@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class UpdateHotelRequest extends FormRequest
 {
@@ -30,7 +31,11 @@ class UpdateHotelRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:20'],
             'mobile' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:100'],
-            'image' => ['nullable', 'string', 'max:100'],
+            'image' => [
+                'nullable',
+                File::image()->max('1mb'),
+                'mimes:jpg,jpeg,png,webp',
+            ],
         ];
     }
 }

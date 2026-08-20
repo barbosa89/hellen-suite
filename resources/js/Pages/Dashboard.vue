@@ -1,12 +1,12 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelLayout from '@/Layouts/HotelLayout.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
     <Head title="Dashboard" />
 
-    <DefaultLayout>
+    <HotelLayout>
         <template #header>
             <h2
                 class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
@@ -26,5 +26,5 @@ import { Head } from '@inertiajs/vue3';
                 </div>
             </div>
         </div>
-    </DefaultLayout>
+    </HotelLayout>
 </template>

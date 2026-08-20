@@ -3,19 +3,20 @@
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::post('/locale', [LocaleController::class, 'update'])->name('locale.update');
 
 Route::get('/', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->route('hotels.index');
 });
 
 Route::resource('hotels', HotelController::class);
+Route::get('/hotels/{hotel}/rooms', [RoomController::class, 'index'])->name('hotels.rooms.index');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->route('hotels.index');
 })->name('dashboard');
 
 Route::middleware('auth')->group(function () {

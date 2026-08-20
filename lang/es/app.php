@@ -19,4 +19,8 @@ return [
         'of' => 'de',
         'pagination' => 'Paginación',
     ],
+    'upload' => [
+        'select' => 'Seleccionar un archivo',
+        'drop_hint' => 'Arrastra y suelta un archivo aquí o haz clic para seleccionar uno',
+    ],
 ];
