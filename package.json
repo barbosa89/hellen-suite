@@ -9,7 +9,8 @@
     },
     "devDependencies": {
         "@heroicons/vue": "^2.2.0",
-        "@inertiajs/vue3": "^2.0.0",
+        "@inertiajs/vite": "^3.6.1",
+        "@inertiajs/vue3": "^3.6.1",
         "@rushstack/eslint-patch": "^1.8.0",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/postcss": "^4.3.3",
