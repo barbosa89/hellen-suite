@@ -1,0 +1,20 @@
+{
+    "rules": {
+        "new_with_parentheses": true,
+        "concat_space": {
+            "spacing": "one"
+        },
+        "declare_strict_types": true,
+        "nullable_type_declaration": {
+            "syntax": "union"
+        },
+        "ordered_imports": {
+            "sort_algorithm": "alpha",
+            "imports_order": [
+                "class",
+                "function",
+                "const"
+            ]
+        }
+    }
+}
