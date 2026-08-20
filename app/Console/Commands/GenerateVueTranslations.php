@@ -33,7 +33,7 @@ class GenerateVueTranslations extends Command
             ? base_path($this->option('path'))
             : lang_path();
 
-        if (!is_dir($this->languagePath)) {
+        if (! is_dir($this->languagePath)) {
             $this->error("\"{$this->languagePath}\" does not exists.");
 
             return self::FAILURE;
@@ -48,7 +48,7 @@ class GenerateVueTranslations extends Command
         $this->table(
             ['Language', 'Translations'],
             array_map(
-                fn($language, $lines) => [$language, count($lines)],
+                fn ($language, $lines) => [$language, count($lines)],
                 array_keys($translations),
                 array_values($translations),
             ),
@@ -62,10 +62,10 @@ class GenerateVueTranslations extends Command
     public function getTranslations(array $paths): array
     {
         return Collection::make($paths)
-            ->flatMap(fn($path) => $this->findTranslationFiles($path))
-            ->groupBy(fn($paths) => $this->getTranslationLanguage($paths))
-            ->map(fn(Collection $files) => $files->flatMap(fn($file) => $this->readTranslationFile($file)))
-            ->map(fn($content) => $this->convertTranslations($content))
+            ->flatMap(fn ($path) => $this->findTranslationFiles($path))
+            ->groupBy(fn ($paths) => $this->getTranslationLanguage($paths))
+            ->map(fn (Collection $files) => $files->flatMap(fn ($file) => $this->readTranslationFile($file)))
+            ->map(fn ($content) => $this->convertTranslations($content))
             ->all();
     }
 
@@ -79,7 +79,7 @@ class GenerateVueTranslations extends Command
 
     protected function findTranslationFiles(string $path): array|false
     {
-        return glob($path . '/{,*/}*.{json,php}', GLOB_BRACE);
+        return glob($path.'/{,*/}*.{json,php}', GLOB_BRACE);
     }
 
     /**
@@ -99,7 +99,7 @@ class GenerateVueTranslations extends Command
     protected function convertTranslations(Collection $lines): array
     {
         return $lines
-            ->mapWithKeys(fn($translation, $key) => [
+            ->mapWithKeys(fn ($translation, $key) => [
                 $this->convertTranslation($key) => $this->convertTranslation($translation),
             ])
             ->all();
@@ -110,7 +110,7 @@ class GenerateVueTranslations extends Command
         if (is_array($content)) {
             return array_combine(
                 array_keys($content),
-                array_map(fn($value) => $this->convertTranslation($value), $content),
+                array_map(fn ($value) => $this->convertTranslation($value), $content),
             );
         }
 
@@ -124,8 +124,8 @@ class GenerateVueTranslations extends Command
     protected function removeEscapeCharacter(string $line): string
     {
         return preg_replace_callback(
-            '/' . preg_quote('!', '/') . "(:\w+)/",
-            fn($matches) => '{' . mb_substr($matches[0], 1) . '}',
+            '/'.preg_quote('!', '/')."(:\w+)/",
+            fn ($matches) => '{'.mb_substr($matches[0], 1).'}',
             $line,
         );
     }
@@ -136,8 +136,8 @@ class GenerateVueTranslations extends Command
     protected function transformCollonsToBraces(string $line): string
     {
         return preg_replace_callback(
-            '/(?<!mailto|tel|' . preg_quote('!', '/') . "):\w+/",
-            fn($matches) => '{' . mb_substr($matches[0], 1) . '}',
+            '/(?<!mailto|tel|'.preg_quote('!', '/')."):\w+/",
+            fn ($matches) => '{'.mb_substr($matches[0], 1).'}',
             $line,
         );
     }
@@ -146,13 +146,13 @@ class GenerateVueTranslations extends Command
     {
         return preg_replace_callback(
             "/\{0\}\s(.*)\|\{1\}(.*)\|\[2,\*\](.*)/",
-            fn($matches) => "{$matches[1]}|{$matches[2]}|{$matches[3]}",
+            fn ($matches) => "{$matches[1]}|{$matches[2]}|{$matches[3]}",
             $line,
         );
     }
 
     /**
-     * @param array<string,array> $translations
+     * @param  array<string,array>  $translations
      */
     protected function generateVue18nFile(string $filename, array $translations): int|false
     {
@@ -163,12 +163,12 @@ class GenerateVueTranslations extends Command
     }
 
     /**
-     * @param array<string,array> $translations
+     * @param  array<string,array>  $translations
      */
     protected function convertTranslationsToVue18n(array $translations): string
     {
         $json = json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-        return "export default {$json}" . PHP_EOL;
+        return "export default {$json}".PHP_EOL;
     }
 }

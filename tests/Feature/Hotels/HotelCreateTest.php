@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Hotels;
 
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
-use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class HotelCreateTest extends TestCase
 {

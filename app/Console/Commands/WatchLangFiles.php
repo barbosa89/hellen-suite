@@ -23,7 +23,7 @@ class WatchLangFiles extends Command
 
     public function handle(): int
     {
-        if (!app()->isProduction()) {
+        if (! app()->isProduction()) {
             $this->newLine();
             $this->info('Watching language files for changes...');
 
@@ -36,7 +36,7 @@ class WatchLangFiles extends Command
 
                     $this->newLine();
 
-                    if (Command::SUCCESS !== $exitCode) {
+                    if ($exitCode !== Command::SUCCESS) {
                         $this->error('Failed to update translations.');
 
                         throw new RuntimeException('Failed to update translations.');

@@ -6,6 +6,7 @@ use Database\Factories\HotelFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -16,9 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $mobile
  * @property string|null $email
  * @property string|null $image
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
-
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
  * @mixin \Eloquent
  */
 #[Fillable(['business_name', 'tin', 'address', 'phone', 'mobile', 'email', 'image'])]
