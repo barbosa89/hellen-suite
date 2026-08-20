@@ -1,10 +1,11 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelLayout from '@/Layouts/HotelLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Form, Head, Link } from '@inertiajs/vue3';
+import UploadInput from '@/Components/UploadInput.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -15,12 +16,31 @@ const props = defineProps({
         required: true,
     },
 });
+
+const form = useForm({
+    business_name: props.hotel.business_name,
+    tin: props.hotel.tin,
+    address: props.hotel.address,
+    phone: props.hotel.phone,
+    mobile: props.hotel.mobile,
+    email: props.hotel.email,
+    image: null,
+});
+
+function submit() {
+    form
+        .transform((data) => ({ ...data, _method: 'put' }))
+        .post(route('hotels.update', props.hotel.id), {
+            forceFormData: true,
+            onSuccess: () => form.reset('image'),
+        });
+}
 </script>
 
 <template>
     <Head :title="t('hotels.pages.edit.heading')" />
 
-    <DefaultLayout>
+    <HotelLayout>
         <template #header>
             <h2
                 class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
@@ -34,12 +54,7 @@ const props = defineProps({
                 <div
                     class="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700"
                 >
-                    <Form
-                        :action="route('hotels.update', props.hotel.id)"
-                        method="put"
-                        class="contents"
-                        #default="{ errors, processing }"
-                    >
+                    <form @submit.prevent="submit">
                         <div class="space-y-6 p-6">
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <div>
@@ -58,13 +73,11 @@ const props = defineProps({
                                         class="mt-1 block w-full"
                                         required
                                         autofocus
-                                        :defaultValue="
-                                            props.hotel.business_name
-                                        "
+                                        v-model="form.business_name"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.business_name"
+                                        :message="form.errors.business_name"
                                     />
                                 </div>
 
@@ -80,11 +93,11 @@ const props = defineProps({
                                         class="mt-1 block w-full"
                                         required
                                         autocomplete="off"
-                                        :defaultValue="props.hotel.tin"
+                                        v-model="form.tin"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.tin"
+                                        :message="form.errors.tin"
                                     />
                                 </div>
                             </div>
@@ -99,11 +112,11 @@ const props = defineProps({
                                     name="address"
                                     type="text"
                                     class="mt-1 block w-full"
-                                    :defaultValue="props.hotel.address"
+                                    v-model="form.address"
                                 />
                                 <InputError
                                     class="mt-2"
-                                    :message="errors.address"
+                                    :message="form.errors.address"
                                 />
                             </div>
 
@@ -119,11 +132,11 @@ const props = defineProps({
                                         type="tel"
                                         class="mt-1 block w-full"
                                         autocomplete="tel"
-                                        :defaultValue="props.hotel.phone"
+                                        v-model="form.phone"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.phone"
+                                        :message="form.errors.phone"
                                     />
                                 </div>
 
@@ -138,11 +151,11 @@ const props = defineProps({
                                         type="tel"
                                         class="mt-1 block w-full"
                                         autocomplete="tel"
-                                        :defaultValue="props.hotel.mobile"
+                                        v-model="form.mobile"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.mobile"
+                                        :message="form.errors.mobile"
                                     />
                                 </div>
                             </div>
@@ -159,11 +172,11 @@ const props = defineProps({
                                         type="email"
                                         class="mt-1 block w-full"
                                         autocomplete="email"
-                                        :defaultValue="props.hotel.email"
+                                        v-model="form.email"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.email"
+                                        :message="form.errors.email"
                                     />
                                 </div>
 
@@ -172,16 +185,22 @@ const props = defineProps({
                                         for="image"
                                         :value="t('hotels.fields.image.label')"
                                     />
-                                    <TextInput
+                                    <img
+                                        v-if="props.hotel.image"
+                                        :src="props.hotel.image"
+                                        :alt="props.hotel.business_name"
+                                        class="mt-2 h-24 w-24 rounded-md border border-neutral-200 object-cover dark:border-neutral-700"
+                                    />
+                                    <UploadInput
                                         id="image"
                                         name="image"
-                                        type="url"
                                         class="mt-1 block w-full"
-                                        :defaultValue="props.hotel.image"
+                                        accept="image/png,image/jpeg,image/webp"
+                                        v-model="form.image"
                                     />
                                     <InputError
                                         class="mt-2"
-                                        :message="errors.image"
+                                        :message="form.errors.image"
                                     />
                                 </div>
                             </div>
@@ -198,15 +217,15 @@ const props = defineProps({
                             </Link>
 
                             <PrimaryButton
-                                :class="{ 'opacity-25': processing }"
-                                :disabled="processing"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
                             >
                                 {{ t('app.save') }}
                             </PrimaryButton>
                         </div>
-                    </Form>
+                    </form>
                 </div>
             </div>
         </div>
-    </DefaultLayout>
+    </HotelLayout>
 </template>
