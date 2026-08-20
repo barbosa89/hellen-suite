@@ -19,7 +19,7 @@ const props = defineProps({
 });
 
 const primaryLinkClasses =
-    'inline-flex items-center gap-2 rounded-md border border-transparent bg-primary-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:bg-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-hidden active:bg-primary-900 dark:bg-primary-500 dark:text-neutral-950 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-600 dark:focus:ring-offset-neutral-950';
+    'inline-flex items-center gap-2 rounded-md border border-transparent bg-primary-500 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primary-800 focus:bg-primary-800 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-hidden active:bg-primary-900 dark:bg-primary-400 dark:text-neutral-950 dark:hover:bg-primary-500 dark:focus:bg-primary-500 dark:active:bg-primary-600 dark:focus:ring-offset-neutral-950';
 
 const fieldClasses =
     'col-span-1 rounded-lg bg-neutral-50 p-4 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-neutral-700';

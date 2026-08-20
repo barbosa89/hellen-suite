@@ -25,7 +25,7 @@ defineProps({
 });
 
 const primaryLinkClasses =
-    'inline-flex items-center gap-2 rounded-md border border-transparent bg-primary-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:bg-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-hidden active:bg-primary-900 dark:bg-primary-500 dark:text-neutral-950 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-600 dark:focus:ring-offset-neutral-950';
+    'inline-flex items-center gap-2 rounded-md border border-transparent bg-primary-500 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primary-800 focus:bg-primary-800 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-hidden active:bg-primary-900 dark:bg-primary-400 dark:text-neutral-950 dark:hover:bg-primary-500 dark:focus:bg-primary-500 dark:active:bg-primary-600 dark:focus:ring-offset-neutral-950';
 
 const iconLinkClasses =
     'inline-flex h-8 w-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-500 shadow-xs transition duration-150 ease-in-out hover:bg-neutral-100 hover:text-neutral-700 focus:ring-2 focus:ring-primary-500 focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-100';
@@ -299,19 +299,19 @@ function destroy(hotel) {
                             <span
                                 class="font-semibold text-neutral-900 dark:text-neutral-100"
                             >
-                                {{ hotels.from }}
+                                {{ hotels?.from ?? 0 }}
                             </span>
                             {{ t('app.pagination.to') }}
                             <span
                                 class="font-semibold text-neutral-900 dark:text-neutral-100"
                             >
-                                {{ hotels.to }}
+                                {{ hotels?.to ?? 0 }}
                             </span>
                             {{ t('app.pagination.of') }}
                             <span
                                 class="font-semibold text-neutral-900 dark:text-neutral-100"
                             >
-                                {{ hotels.total }}
+                                {{ hotels?.total ?? 0 }}
                             </span>
                         </p>
 
@@ -320,7 +320,7 @@ function destroy(hotel) {
                             :aria-label="t('app.pagination.pagination')"
                         >
                             <template
-                                v-for="link in hotels.links"
+                                v-for="link in hotels?.links ?? []"
                                 :key="link.label"
                             >
                                 <Link
@@ -329,7 +329,7 @@ function destroy(hotel) {
                                     class="focus:ring-primary-500 min-w-8 rounded-md px-3 py-2 text-sm font-medium transition duration-150 ease-in-out focus:ring-2 focus:outline-hidden"
                                     :class="
                                         link.active
-                                            ? 'bg-primary-800 dark:bg-primary-500 text-white dark:text-neutral-950'
+                                            ? 'bg-primary-500 dark:bg-primary-400 text-white dark:text-neutral-950'
                                             : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-neutral-100'
                                     "
                                 >
