@@ -244,16 +244,12 @@ const completionPercentage = computed(() =>
                                     <h3
                                         class="font-semibold text-neutral-950 dark:text-white"
                                     >
-                                        {{ t('hotels.actions.rooms') }}
+                                        {{ t('rooms.title') }}
                                     </h3>
                                     <p
                                         class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
                                     >
-                                        {{
-                                            t(
-                                                'hotels.management.rooms_description',
-                                            )
-                                        }}
+                                        {{ t('rooms.management.description') }}
                                     </p>
                                 </div>
                             </div>

@@ -23,7 +23,7 @@ const props = defineProps({
 <template>
     <Head
         :title="
-            t('hotels.pages.rooms.heading', {
+            t('rooms.pages.index.heading', {
                 hotel: props.hotel.business_name,
             })
         "
@@ -33,9 +33,9 @@ const props = defineProps({
         <div class="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8 2xl:px-10">
             <div class="grid gap-7">
                 <PageHeader
-                    :title="t('hotels.actions.rooms')"
+                    :title="t('rooms.title')"
                     :description="
-                        t('hotels.pages.rooms.description', {
+                        t('rooms.pages.index.description', {
                             hotel: props.hotel.business_name,
                         })
                     "
@@ -67,12 +67,12 @@ const props = defineProps({
                     <h2
                         class="mt-6 text-xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-white"
                     >
-                        {{ t('hotels.pages.rooms.empty_title') }}
+                        {{ t('rooms.pages.index.empty_title') }}
                     </h2>
                     <p
                         class="mt-2 max-w-lg text-sm leading-6 text-neutral-600 dark:text-neutral-400"
                     >
-                        {{ t('hotels.pages.rooms.empty') }}
+                        {{ t('rooms.pages.index.empty') }}
                     </p>
                 </section>
             </div>

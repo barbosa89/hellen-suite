@@ -56,7 +56,6 @@ export default {
                 "edit": "Edit hotel",
                 "delete": "Delete hotel",
                 "create": "Create hotel",
-                "rooms": "Rooms",
                 "manage": "Manage",
                 "open": "Open hotel"
             },
@@ -110,12 +109,6 @@ export default {
                 "show": {
                     "description": "Review the legal and contact information registered for this property.",
                     "no_image": "This hotel does not have an image yet."
-                },
-                "rooms": {
-                    "heading": "Rooms for {hotel}",
-                    "description": "Manage the rooms associated with {hotel}.",
-                    "empty_title": "The module is ready",
-                    "empty": "The room structure already belongs to this hotel. Its management tools will be added here."
                 }
             },
             "form": {
@@ -141,7 +134,6 @@ export default {
                 "complete_profile": "Complete information",
                 "modules": "Hotel modules",
                 "modules_description": "Open the tools that work exclusively with this property.",
-                "rooms_description": "Reserved space for room inventory and management.",
                 "open_module": "Open module"
             },
             "messages": {
@@ -160,6 +152,20 @@ export default {
             "throttled": "Please wait before retrying.",
             "token": "This password reset token is invalid.",
             "user": "We can't find a user with that email address."
+        },
+        "rooms": {
+            "title": "Rooms",
+            "pages": {
+                "index": {
+                    "heading": "Rooms for {hotel}",
+                    "description": "Manage the rooms associated with {hotel}.",
+                    "empty_title": "The module is ready",
+                    "empty": "The room structure already belongs to this hotel. Its management tools will be added here."
+                }
+            },
+            "management": {
+                "description": "Reserved space for room inventory and management."
+            }
         },
         "validation": {
             "accepted": "The {attribute} field must be accepted.",
@@ -382,7 +388,6 @@ export default {
                 "edit": "Editar hotel",
                 "delete": "Eliminar hotel",
                 "create": "Crear hotel",
-                "rooms": "Habitaciones",
                 "manage": "Administrar",
                 "open": "Abrir hotel"
             },
@@ -436,12 +441,6 @@ export default {
                 "show": {
                     "description": "Consulta la información legal y de contacto registrada para esta propiedad.",
                     "no_image": "Este hotel aún no tiene una imagen registrada."
-                },
-                "rooms": {
-                    "heading": "Habitaciones de {hotel}",
-                    "description": "Gestiona las habitaciones asociadas a {hotel}.",
-                    "empty_title": "El módulo está preparado",
-                    "empty": "La estructura de habitaciones ya pertenece a este hotel. Sus herramientas de gestión se incorporarán aquí."
                 }
             },
             "form": {
@@ -467,7 +466,6 @@ export default {
                 "complete_profile": "Completar información",
                 "modules": "Módulos del hotel",
                 "modules_description": "Entra a las herramientas que trabajan exclusivamente con esta propiedad.",
-                "rooms_description": "Espacio reservado para el inventario y la gestión de habitaciones.",
                 "open_module": "Abrir módulo"
             },
             "messages": {
@@ -486,6 +484,20 @@ export default {
             "throttled": "Por favor espere antes de intentar de nuevo.",
             "token": "El token de restablecimiento de contraseña es inválido.",
             "user": "No encontramos ningún usuario con ese correo electrónico."
+        },
+        "rooms": {
+            "title": "Habitaciones",
+            "pages": {
+                "index": {
+                    "heading": "Habitaciones de {hotel}",
+                    "description": "Gestiona las habitaciones asociadas a {hotel}.",
+                    "empty_title": "El módulo está preparado",
+                    "empty": "La estructura de habitaciones ya pertenece a este hotel. Sus herramientas de gestión se incorporarán aquí."
+                }
+            },
+            "management": {
+                "description": "Espacio reservado para el inventario y la gestión de habitaciones."
+            }
         },
         "validation": {
             "accepted": "El campo {attribute} debe ser aceptado.",

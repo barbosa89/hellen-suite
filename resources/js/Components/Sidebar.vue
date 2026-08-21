@@ -44,7 +44,7 @@ const navigation = computed(() => [
         icon: Squares2X2Icon,
     },
     {
-        name: t('hotels.actions.rooms'),
+        name: t('rooms.title'),
         href: route('hotels.rooms.index', props.hotel.id),
         active: route().current('hotels.rooms.*'),
         icon: RectangleGroupIcon,
