@@ -1,16 +1,22 @@
 <script setup>
+import ActionLink from '@/Components/ActionLink.vue';
+import HotelAvatar from '@/Components/HotelAvatar.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import HotelLayout from '@/Layouts/HotelLayout.vue';
 import {
+    ArrowLeftIcon,
+    ArrowTopRightOnSquareIcon,
     BuildingOffice2Icon,
+    DevicePhoneMobileIcon,
     EnvelopeIcon,
+    IdentificationIcon,
     MapPinIcon,
+    PencilSquareIcon,
     PhoneIcon,
-    RectangleGroupIcon,
+    PhotoIcon,
 } from '@heroicons/vue/24/outline';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 
 const props = defineProps({
     hotel: {
@@ -19,170 +25,159 @@ const props = defineProps({
     },
 });
 
-const primaryLinkClasses =
-    'inline-flex items-center gap-2 rounded-md border border-transparent bg-primary-500 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-primary-800 focus:bg-primary-800 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-hidden active:bg-primary-900 dark:bg-primary-400 dark:text-neutral-950 dark:hover:bg-primary-500 dark:focus:bg-primary-500 dark:active:bg-primary-600 dark:focus:ring-offset-neutral-950';
+const { t } = useI18n();
 
-const fieldClasses =
-    'col-span-1 rounded-lg bg-neutral-50 p-4 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-neutral-700';
+const details = [
+    { key: 'business_name', icon: BuildingOffice2Icon },
+    { key: 'tin', icon: IdentificationIcon, tabular: true },
+    { key: 'address', icon: MapPinIcon },
+    { key: 'phone', icon: PhoneIcon, tabular: true },
+    { key: 'mobile', icon: DevicePhoneMobileIcon, tabular: true },
+    { key: 'email', icon: EnvelopeIcon },
+];
 </script>
 
 <template>
     <Head :title="props.hotel.business_name" />
 
     <HotelLayout>
-        <template #header>
-            <div class="flex items-center justify-between gap-4">
-                <h2
-                    class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
+        <div class="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8 2xl:px-10">
+            <div class="mx-auto grid w-full max-w-[100rem] gap-7">
+                <PageHeader
+                    :title="props.hotel.business_name"
+                    :description="t('hotels.pages.show.description')"
                 >
-                    {{ props.hotel.business_name }}
-                </h2>
+                    <template #meta>
+                        <span
+                            class="bg-primary-50 text-primary-800 ring-primary-200 dark:bg-primary-950 dark:text-primary-300 dark:ring-primary-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1"
+                        >
+                            {{
+                                t('hotels.pages.index.hotel_identifier', {
+                                    id: props.hotel.id,
+                                })
+                            }}
+                        </span>
+                    </template>
 
-                <span
-                    class="bg-primary-50 text-primary-800 ring-primary-200 dark:bg-primary-900/30 dark:text-primary-300 dark:ring-primary-800 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ring-1"
+                    <template #actions>
+                        <ActionLink
+                            :href="route('hotels.index')"
+                            variant="ghost"
+                        >
+                            <ArrowLeftIcon class="h-4 w-4" />
+                            {{ t('navigation.all_hotels') }}
+                        </ActionLink>
+                        <ActionLink
+                            :href="route('hotels.edit', props.hotel.id)"
+                            variant="secondary"
+                        >
+                            <PencilSquareIcon class="h-4 w-4" />
+                            {{ t('hotels.actions.edit') }}
+                        </ActionLink>
+                        <ActionLink
+                            :href="
+                                route('hotels.management.index', props.hotel.id)
+                            "
+                            prefetch
+                        >
+                            <ArrowTopRightOnSquareIcon class="h-4 w-4" />
+                            {{ t('hotels.actions.open') }}
+                        </ActionLink>
+                    </template>
+                </PageHeader>
+
+                <section
+                    class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"
                 >
-                    <span
-                        class="bg-primary-600 dark:bg-primary-400 h-1.5 w-1.5 rounded-full"
-                    ></span>
-                    #{{ props.hotel.id }}
-                </span>
-            </div>
-        </template>
-
-        <div class="px-4 py-8 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-3xl">
-                <div
-                    class="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700"
-                >
-                    <div class="p-6">
-                        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
-                                >
-                                    <BuildingOffice2Icon class="h-4 w-4" />
-                                    {{ t('hotels.fields.business_name.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm font-medium text-neutral-900 dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.business_name }}
-                                </dd>
+                    <div
+                        class="grid xl:grid-cols-[minmax(0,1.35fr)_minmax(22rem,0.65fr)]"
+                    >
+                        <div class="p-5 sm:p-7 lg:p-8">
+                            <div class="mb-7 flex items-center gap-4">
+                                <HotelAvatar :hotel="props.hotel" size="lg" />
+                                <div class="min-w-0">
+                                    <h2
+                                        class="truncate text-xl font-semibold text-neutral-950 dark:text-white"
+                                    >
+                                        {{ props.hotel.business_name }}
+                                    </h2>
+                                    <p
+                                        class="mt-1 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
+                                    >
+                                        {{ props.hotel.tin }}
+                                    </p>
+                                </div>
                             </div>
 
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
+                            <dl
+                                class="divide-y divide-neutral-200 border-y border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800"
+                            >
+                                <div
+                                    v-for="detail in details"
+                                    :key="detail.key"
+                                    class="grid gap-2 py-4 sm:grid-cols-[13rem_minmax(0,1fr)] sm:items-start"
                                 >
-                                    {{ t('hotels.fields.tin.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm font-medium text-neutral-900 tabular-nums dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.tin }}
-                                </dd>
-                            </div>
-
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
-                                >
-                                    <MapPinIcon class="h-4 w-4" />
-                                    {{ t('hotels.fields.address.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm text-neutral-900 dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.address ?? '—' }}
-                                </dd>
-                            </div>
-
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
-                                >
-                                    <PhoneIcon class="h-4 w-4" />
-                                    {{ t('hotels.fields.phone.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm text-neutral-900 tabular-nums dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.phone ?? '—' }}
-                                </dd>
-                            </div>
-
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
-                                >
-                                    <PhoneIcon class="h-4 w-4" />
-                                    {{ t('hotels.fields.mobile.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm text-neutral-900 tabular-nums dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.mobile ?? '—' }}
-                                </dd>
-                            </div>
-
-                            <div :class="fieldClasses">
-                                <dt
-                                    class="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
-                                >
-                                    <EnvelopeIcon class="h-4 w-4" />
-                                    {{ t('hotels.fields.email.label') }}
-                                </dt>
-                                <dd
-                                    class="mt-2 text-sm text-neutral-900 dark:text-neutral-100"
-                                >
-                                    {{ props.hotel.email ?? '—' }}
-                                </dd>
-                            </div>
-                        </dl>
+                                    <dt
+                                        class="flex items-center gap-2 text-sm font-semibold text-neutral-600 dark:text-neutral-400"
+                                    >
+                                        <component
+                                            :is="detail.icon"
+                                            class="h-4 w-4 shrink-0"
+                                        />
+                                        {{
+                                            t(
+                                                `hotels.fields.${detail.key}.label`,
+                                            )
+                                        }}
+                                    </dt>
+                                    <dd
+                                        class="text-sm font-medium text-neutral-950 dark:text-neutral-100"
+                                        :class="
+                                            detail.tabular ? 'tabular-nums' : ''
+                                        "
+                                    >
+                                        {{
+                                            props.hotel[detail.key] ??
+                                            t('app.not_provided')
+                                        }}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
 
                         <figure
-                            v-if="props.hotel.image"
-                            class="mt-6 overflow-hidden rounded-lg bg-neutral-50 ring-1 ring-neutral-200 dark:bg-neutral-900 dark:ring-neutral-700"
+                            class="border-t border-neutral-200 bg-neutral-50 p-5 sm:p-7 xl:border-s xl:border-t-0 dark:border-neutral-800 dark:bg-neutral-950/60"
                         >
                             <figcaption
-                                class="border-b border-neutral-200 px-4 py-3 text-xs font-semibold tracking-wider text-neutral-500 uppercase dark:border-neutral-700 dark:text-neutral-400"
+                                class="mb-4 flex items-center gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200"
                             >
+                                <PhotoIcon class="h-4 w-4 text-neutral-500" />
                                 {{ t('hotels.fields.image.label') }}
                             </figcaption>
 
                             <div
-                                class="flex h-64 items-center justify-center bg-white p-3 sm:h-80 sm:p-4 lg:h-96 dark:bg-neutral-950"
+                                class="flex min-h-72 items-center justify-center overflow-hidden rounded-xl bg-white dark:bg-neutral-900"
                             >
                                 <img
+                                    v-if="props.hotel.image"
                                     :src="props.hotel.image"
                                     :alt="props.hotel.business_name"
-                                    class="h-full w-full rounded-md object-contain"
+                                    class="h-full max-h-[34rem] w-full object-contain"
                                     decoding="async"
                                 />
+                                <div
+                                    v-else
+                                    class="flex flex-col items-center gap-3 px-6 py-12 text-center text-neutral-600 dark:text-neutral-400"
+                                >
+                                    <PhotoIcon class="h-8 w-8" />
+                                    <p class="text-sm">
+                                        {{ t('hotels.pages.show.no_image') }}
+                                    </p>
+                                </div>
                             </div>
                         </figure>
                     </div>
-
-                    <div
-                        class="flex items-center justify-between gap-3 border-t border-neutral-200 bg-neutral-50 px-6 py-4 dark:border-neutral-700 dark:bg-neutral-900"
-                    >
-                        <Link
-                            :href="route('hotels.index')"
-                            class="focus:ring-primary-500 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-xs font-semibold tracking-widest text-neutral-700 uppercase shadow-xs transition duration-150 ease-in-out hover:bg-neutral-50 focus:ring-2 focus:ring-offset-2 focus:outline-hidden dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:ring-offset-neutral-950"
-                        >
-                            {{ t('app.back') }}
-                        </Link>
-
-                        <div class="flex items-center gap-3">
-                            <Link
-                                :href="route('hotels.edit', props.hotel.id)"
-                                :class="primaryLinkClasses"
-                            >
-                                {{ t('hotels.actions.edit') }}
-                            </Link>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
     </HotelLayout>

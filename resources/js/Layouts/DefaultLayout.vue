@@ -1,82 +1,102 @@
 <script setup>
-import { ref } from 'vue';
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { Link } from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import HotelAvatar from '@/Components/HotelAvatar.vue';
 import LocaleDropdown from '@/Components/LocaleDropdown.vue';
 import Sidebar from '@/Components/Sidebar.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
-
-const sidebarOpen = ref(true);
+import { Bars3Icon } from '@heroicons/vue/24/outline';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
     hotel: {
         type: Object,
-        default: null,
+        required: true,
     },
 });
 
-const toggleSidebar = () => {
-    sidebarOpen.value = !sidebarOpen.value;
-};
+const mobileSidebarOpen = ref(false);
+const sidebarCollapsed = ref(false);
+const sidebar = ref(null);
+const menuButton = ref(null);
+
+onMounted(() => {
+    sidebarCollapsed.value =
+        localStorage.getItem('hotel-sidebar-collapsed') === 'true';
+});
+
+function toggleCollapsed() {
+    sidebarCollapsed.value = !sidebarCollapsed.value;
+    localStorage.setItem(
+        'hotel-sidebar-collapsed',
+        sidebarCollapsed.value.toString(),
+    );
+}
+
+watch(mobileSidebarOpen, async (isOpen) => {
+    await nextTick();
+
+    if (isOpen) {
+        sidebar.value?.focus();
+    } else {
+        menuButton.value?.focus();
+    }
+});
 </script>
 
 <template>
-    <div>
+    <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
         <Sidebar
-            :open="sidebarOpen"
+            ref="sidebar"
             :hotel="props.hotel"
-            @toggle="toggleSidebar"
+            :mobile-open="mobileSidebarOpen"
+            :collapsed="sidebarCollapsed"
+            @close="mobileSidebarOpen = false"
+            @toggle-collapsed="toggleCollapsed"
         />
 
         <div
-            :class="sidebarOpen ? 'lg:pl-64' : 'lg:pl-0'"
-            class="min-h-screen bg-neutral-100 transition-[padding] duration-300 ease-in-out dark:bg-neutral-950"
+            class="min-h-screen transition-[padding] duration-200 ease-out motion-reduce:transition-none"
+            :class="sidebarCollapsed ? 'lg:ps-20' : 'lg:ps-[17rem]'"
         >
             <nav
-                class="border-b border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
+                class="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 dark:border-neutral-800 dark:bg-neutral-950/95"
             >
-                <div class="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+                <div
+                    class="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8 2xl:px-10"
+                >
                     <button
+                        ref="menuButton"
                         type="button"
-                        class="focus:ring-primary-500 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-neutral-500 transition duration-150 ease-in-out hover:bg-neutral-100 hover:text-neutral-700 focus:ring-2 focus:outline-hidden dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
-                        :aria-label="
-                            sidebarOpen ? 'Ocultar menú' : 'Mostrar menú'
-                        "
-                        @click="toggleSidebar"
+                        class="focus-visible:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none lg:hidden dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white"
+                        :aria-label="$t('navigation.open_menu')"
+                        @click="mobileSidebarOpen = true"
                     >
-                        <XMarkIcon v-if="sidebarOpen" class="h-5 w-5" />
-                        <Bars3Icon v-else class="h-5 w-5" />
+                        <Bars3Icon class="h-5 w-5" />
                     </button>
 
-                    <Link
-                        :href="route('dashboard')"
-                        class="flex shrink-0 items-center lg:hidden"
-                    >
-                        <ApplicationLogo
-                            class="text-primary-600 block h-8 w-auto fill-current"
-                        />
-                    </Link>
+                    <div class="flex min-w-0 items-center gap-3 lg:hidden">
+                        <HotelAvatar :hotel="props.hotel" size="sm" />
+                        <div class="min-w-0">
+                            <p
+                                class="truncate text-sm font-semibold text-neutral-950 dark:text-white"
+                            >
+                                {{ props.hotel.business_name }}
+                            </p>
+                            <p
+                                class="truncate text-xs text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ $t('hotels.selected_hotel') }}
+                            </p>
+                        </div>
+                    </div>
 
-                    <div class="ms-auto flex items-center gap-3">
+                    <div class="ms-auto flex items-center gap-2">
                         <ThemeToggle />
                         <LocaleDropdown />
                     </div>
                 </div>
             </nav>
 
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow-sm dark:bg-neutral-900"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
+            <main class="min-h-[calc(100vh-4rem)]">
                 <slot />
             </main>
         </div>

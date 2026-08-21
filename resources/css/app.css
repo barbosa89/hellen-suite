@@ -79,6 +79,32 @@
   looks the same as it did with Tailwind CSS v3.
 */
 @layer base {
+  html {
+    min-width: 320px;
+    background: var(--color-neutral-50);
+    color-scheme: light;
+    scrollbar-color: var(--color-neutral-300) var(--color-neutral-100);
+  }
+
+  html.dark {
+    background: var(--color-neutral-950);
+    color-scheme: dark;
+    scrollbar-color: var(--color-neutral-700) var(--color-neutral-950);
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--color-neutral-50);
+    color: var(--color-neutral-900);
+    caret-color: var(--color-primary-600);
+  }
+
+  .dark body {
+    background: var(--color-neutral-950);
+    color: var(--color-neutral-100);
+    caret-color: var(--color-primary-400);
+  }
+
   *,
   ::after,
   ::before,
@@ -90,5 +116,13 @@
   ::selection {
     background-color: var(--color-primary-500);
     color: var(--color-neutral-950);
+  }
+
+  :focus-visible {
+    outline-color: var(--color-primary-500);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
   }
 }

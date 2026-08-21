@@ -3,7 +3,11 @@ export default {
         "app": {
             "actions": "Actions",
             "back": "Back",
+            "cancel": "Cancel",
+            "deleting": "Deleting…",
+            "not_provided": "Not provided",
             "save": "Save",
+            "saving": "Saving…",
             "language": "Language",
             "theme": {
                 "light": "Light mode",
@@ -21,7 +25,11 @@ export default {
             },
             "upload": {
                 "select": "Select a file",
-                "drop_hint": "Drag and drop a file here or click to select one"
+                "drop_title": "Add a hotel image",
+                "drop_hint": "PNG, JPG, or WebP. You can also drag the file here.",
+                "files_selected": "One file selected|{count} files selected",
+                "remove": "Remove {name}",
+                "uploading": "Uploading image"
             }
         },
         "auth": {
@@ -31,13 +39,16 @@ export default {
         },
         "hotels": {
             "title": "Hotels",
+            "directory": "Hotel directory",
+            "selected_hotel": "Selected hotel",
             "actions": {
                 "view": "View hotel",
                 "edit": "Edit hotel",
                 "delete": "Delete hotel",
                 "create": "Create hotel",
                 "rooms": "Rooms",
-                "manage": "Manage"
+                "manage": "Manage",
+                "open": "Open hotel"
             },
             "fields": {
                 "id": {
@@ -67,27 +78,77 @@ export default {
             },
             "pages": {
                 "index": {
+                    "description": "Manage your properties and enter each hotel workspace.",
+                    "directory_label": "Registered hotel directory",
                     "registered": "registered hotel|registered hotels",
+                    "contact": "Contact",
+                    "hotel_identifier": "Hotel #{id}",
+                    "open_actions": "Open actions for {name}",
                     "no_hotels": "No hotels registered yet",
                     "no_hotels_hint": "Add your first hotel to keep the registry up to date.",
+                    "delete_title": "Delete hotel",
                     "delete_confirm": "Are you sure you want to delete \"{name}\"?"
                 },
                 "create": {
-                    "heading": "Create hotel"
+                    "heading": "Create hotel",
+                    "description": "Register the identity, location, and contact details of the new property."
                 },
                 "edit": {
-                    "heading": "Edit hotel"
+                    "heading": "Edit hotel",
+                    "description": "Update the information registered for {name}."
+                },
+                "show": {
+                    "description": "Review the legal and contact information registered for this property.",
+                    "no_image": "This hotel does not have an image yet."
                 },
                 "rooms": {
                     "heading": "Rooms for {hotel}",
-                    "empty": "The rooms module is ready for this hotel."
+                    "description": "Manage the rooms associated with {hotel}.",
+                    "empty_title": "The module is ready",
+                    "empty": "The room structure already belongs to this hotel. Its management tools will be added here."
                 }
+            },
+            "form": {
+                "identity": {
+                    "title": "Hotel identity",
+                    "description": "These details identify the property legally and commercially."
+                },
+                "contact": {
+                    "title": "Location and contact",
+                    "description": "Keep the channels used by the team for daily operations available."
+                },
+                "image": {
+                    "title": "Property image",
+                    "description": "Use a recognizable photo to find the hotel quickly in the directory."
+                }
+            },
+            "management": {
+                "heading": "Hotel overview",
+                "description": "Information and available modules for {name}.",
+                "contact_phone": "Contact phone",
+                "profile_status": "Profile status",
+                "profile_progress": "{completed} of {total} main details registered.",
+                "complete_profile": "Complete information",
+                "modules": "Hotel modules",
+                "modules_description": "Open the tools that work exclusively with this property.",
+                "rooms_description": "Reserved space for room inventory and management.",
+                "open_module": "Open module"
             },
             "messages": {
                 "created": "Hotel created successfully.",
                 "updated": "Hotel updated successfully.",
                 "deleted": "Hotel deleted successfully."
             }
+        },
+        "navigation": {
+            "all_hotels": "All hotels",
+            "overview": "Overview",
+            "modules": "Modules",
+            "hotel_navigation": "Hotel navigation",
+            "open_menu": "Open menu",
+            "close_menu": "Close menu",
+            "collapse_menu": "Collapse menu",
+            "expand_menu": "Expand menu"
         },
         "pagination": {
             "previous": "&laquo; Previous",
@@ -268,7 +329,11 @@ export default {
         "app": {
             "actions": "Acciones",
             "back": "Atrás",
+            "cancel": "Cancelar",
+            "deleting": "Eliminando…",
+            "not_provided": "Sin registrar",
             "save": "Guardar",
+            "saving": "Guardando…",
             "language": "Idioma",
             "theme": {
                 "light": "Modo claro",
@@ -286,7 +351,11 @@ export default {
             },
             "upload": {
                 "select": "Seleccionar un archivo",
-                "drop_hint": "Arrastra y suelta un archivo aquí o haz clic para seleccionar uno"
+                "drop_title": "Agrega una imagen del hotel",
+                "drop_hint": "PNG, JPG o WebP. También puedes arrastrar el archivo aquí.",
+                "files_selected": "Un archivo seleccionado|{count} archivos seleccionados",
+                "remove": "Quitar {name}",
+                "uploading": "Subiendo imagen"
             }
         },
         "auth": {
@@ -296,13 +365,16 @@ export default {
         },
         "hotels": {
             "title": "Hoteles",
+            "directory": "Directorio de hoteles",
+            "selected_hotel": "Hotel seleccionado",
             "actions": {
                 "view": "Ver hotel",
                 "edit": "Editar hotel",
                 "delete": "Eliminar hotel",
                 "create": "Crear hotel",
                 "rooms": "Habitaciones",
-                "manage": "Administrar"
+                "manage": "Administrar",
+                "open": "Abrir hotel"
             },
             "fields": {
                 "id": {
@@ -332,27 +404,77 @@ export default {
             },
             "pages": {
                 "index": {
+                    "description": "Administra tus propiedades y entra al espacio de trabajo de cada hotel.",
+                    "directory_label": "Directorio de hoteles registrados",
                     "registered": "hotel registrado|hoteles registrados",
+                    "contact": "Contacto",
+                    "hotel_identifier": "Hotel #{id}",
+                    "open_actions": "Abrir acciones para {name}",
                     "no_hotels": "No hay hoteles registrados aún",
                     "no_hotels_hint": "Agrega tu primer hotel para mantener el registro actualizado.",
+                    "delete_title": "Eliminar hotel",
                     "delete_confirm": "¿Estás seguro de que deseas eliminar \"{name}\"?"
                 },
                 "create": {
-                    "heading": "Crear hotel"
+                    "heading": "Crear hotel",
+                    "description": "Registra la identidad, ubicación y datos de contacto de la nueva propiedad."
                 },
                 "edit": {
-                    "heading": "Editar hotel"
+                    "heading": "Editar hotel",
+                    "description": "Actualiza la información registrada para {name}."
+                },
+                "show": {
+                    "description": "Consulta la información legal y de contacto registrada para esta propiedad.",
+                    "no_image": "Este hotel aún no tiene una imagen registrada."
                 },
                 "rooms": {
                     "heading": "Habitaciones de {hotel}",
-                    "empty": "El módulo de habitaciones está listo para este hotel."
+                    "description": "Gestiona las habitaciones asociadas a {hotel}.",
+                    "empty_title": "El módulo está preparado",
+                    "empty": "La estructura de habitaciones ya pertenece a este hotel. Sus herramientas de gestión se incorporarán aquí."
                 }
+            },
+            "form": {
+                "identity": {
+                    "title": "Identidad del hotel",
+                    "description": "Estos datos identifican legal y comercialmente la propiedad."
+                },
+                "contact": {
+                    "title": "Ubicación y contacto",
+                    "description": "Mantén disponibles los canales que utiliza el equipo para atender la operación."
+                },
+                "image": {
+                    "title": "Imagen de la propiedad",
+                    "description": "Usa una fotografía reconocible para encontrar el hotel rápidamente en el directorio."
+                }
+            },
+            "management": {
+                "heading": "Resumen del hotel",
+                "description": "Información y módulos disponibles para {name}.",
+                "contact_phone": "Teléfono de contacto",
+                "profile_status": "Estado del perfil",
+                "profile_progress": "{completed} de {total} datos principales registrados.",
+                "complete_profile": "Completar información",
+                "modules": "Módulos del hotel",
+                "modules_description": "Entra a las herramientas que trabajan exclusivamente con esta propiedad.",
+                "rooms_description": "Espacio reservado para el inventario y la gestión de habitaciones.",
+                "open_module": "Abrir módulo"
             },
             "messages": {
                 "created": "Hotel creado con éxito.",
                 "updated": "Hotel actualizado con éxito.",
                 "deleted": "Hotel eliminado con éxito."
             }
+        },
+        "navigation": {
+            "all_hotels": "Todos los hoteles",
+            "overview": "Resumen",
+            "modules": "Módulos",
+            "hotel_navigation": "Navegación del hotel",
+            "open_menu": "Abrir menú",
+            "close_menu": "Cerrar menú",
+            "collapse_menu": "Contraer menú",
+            "expand_menu": "Expandir menú"
         },
         "pagination": {
             "previous": "&laquo; Anterior",

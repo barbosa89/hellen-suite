@@ -14,9 +14,9 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col items-center justify-between gap-4 border-t border-neutral-200 px-6 py-4 sm:flex-row dark:border-neutral-700"
+        class="flex flex-col items-center justify-between gap-4 border-t border-neutral-200 bg-neutral-50 px-5 py-4 sm:flex-row xl:px-6 dark:border-neutral-800 dark:bg-neutral-950/60"
     >
-        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+        <p class="text-sm text-neutral-600 tabular-nums dark:text-neutral-400">
             {{ t('app.pagination.showing') }}
             <span class="font-semibold text-neutral-900 dark:text-neutral-100">
                 {{ pagination?.from ?? 0 }}
@@ -39,18 +39,18 @@ defineProps({
                 <Link
                     v-if="link.url"
                     :href="link.url"
-                    class="focus:ring-primary-500 min-w-8 rounded-md px-3 py-2 text-sm font-medium transition duration-150 ease-in-out focus:ring-2 focus:outline-hidden"
+                    class="focus-visible:ring-primary-500 min-h-11 min-w-11 rounded-lg px-3 py-2 text-center text-sm font-semibold transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none sm:min-h-9 sm:min-w-9"
                     :class="
                         link.active
-                            ? 'bg-primary-500 dark:bg-primary-400 text-white dark:text-neutral-950'
-                            : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-neutral-100'
+                            ? 'bg-primary-800 dark:bg-primary-300 text-white dark:text-neutral-950'
+                            : 'text-neutral-600 hover:bg-white hover:text-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white'
                     "
                 >
                     <span v-html="link.label" />
                 </Link>
                 <span
                     v-else
-                    class="min-w-8 cursor-default rounded-md px-3 py-2 text-sm font-medium text-neutral-400 dark:text-neutral-600"
+                    class="min-h-11 min-w-11 cursor-default rounded-lg px-3 py-2 text-center text-sm font-medium text-neutral-400 sm:min-h-9 sm:min-w-9 dark:text-neutral-600"
                     v-html="link.label"
                 />
             </template>

@@ -1,11 +1,14 @@
 <script setup>
+import ActionLink from '@/Components/ActionLink.vue';
+import PageHeader from '@/Components/PageHeader.vue';
+import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import {
+    ArrowLeftIcon,
     BuildingOffice2Icon,
     RectangleGroupIcon,
 } from '@heroicons/vue/24/outline';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 
 const { t } = useI18n();
 
@@ -27,46 +30,51 @@ const props = defineProps({
     />
 
     <DefaultLayout :hotel="props.hotel">
-        <template #header>
-            <div class="flex items-center gap-3">
-                <RectangleGroupIcon
-                    class="text-primary-600 dark:text-primary-400 h-6 w-6"
-                />
-                <div>
-                    <h2
-                        class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
+        <div class="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8 2xl:px-10">
+            <div class="grid gap-7">
+                <PageHeader
+                    :title="t('hotels.actions.rooms')"
+                    :description="
+                        t('hotels.pages.rooms.description', {
+                            hotel: props.hotel.business_name,
+                        })
+                    "
+                >
+                    <template #actions>
+                        <ActionLink
+                            :href="
+                                route('hotels.management.index', props.hotel.id)
+                            "
+                            variant="ghost"
+                        >
+                            <ArrowLeftIcon class="h-4 w-4" />
+                            {{ t('navigation.overview') }}
+                        </ActionLink>
+                    </template>
+                </PageHeader>
+
+                <section
+                    class="flex min-h-[26rem] flex-col items-center justify-center rounded-2xl bg-white px-6 py-16 text-center shadow-sm dark:bg-neutral-900"
+                >
+                    <span
+                        class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 relative flex h-16 w-16 items-center justify-center rounded-2xl"
                     >
-                        {{
-                            t('hotels.pages.rooms.heading', {
-                                hotel: props.hotel.business_name,
-                            })
-                        }}
+                        <RectangleGroupIcon class="h-8 w-8" />
+                        <BuildingOffice2Icon
+                            class="absolute -end-2 -bottom-2 h-7 w-7 rounded-lg bg-white p-1.5 text-neutral-600 shadow-sm dark:bg-neutral-800 dark:text-neutral-300"
+                        />
+                    </span>
+                    <h2
+                        class="mt-6 text-xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-white"
+                    >
+                        {{ t('hotels.pages.rooms.empty_title') }}
                     </h2>
                     <p
-                        class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                        class="mt-2 max-w-lg text-sm leading-6 text-neutral-600 dark:text-neutral-400"
                     >
-                        {{ props.hotel.business_name }}
+                        {{ t('hotels.pages.rooms.empty') }}
                     </p>
-                </div>
-            </div>
-        </template>
-
-        <div class="px-4 py-8 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-7xl">
-                <div
-                    class="rounded-lg bg-white p-6 shadow-sm ring-1 ring-neutral-200 dark:bg-neutral-800 dark:ring-neutral-700"
-                >
-                    <div
-                        class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300"
-                    >
-                        <BuildingOffice2Icon
-                            class="text-primary-600 dark:text-primary-400 h-6 w-6 shrink-0"
-                        />
-                        <p class="text-sm">
-                            {{ t('hotels.pages.rooms.empty') }}
-                        </p>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
     </DefaultLayout>

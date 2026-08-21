@@ -29,6 +29,14 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <!--
+        THESIS: Hellen Suite is a property directory that opens into a focused hotel workspace, never a generic card dashboard.
+        OWN-WORLD: Porcelain and graphite surfaces, fine directory rails, compact geometry, and fixed cyan for location and primary action; amber appears only when attention is required.
+        STORY: The operator finds a hotel, opens it, understands which property is active, and moves through that hotel's modules without losing context.
+        FIRST VIEWPORT: A compact utility bar leads into a fluid heading and a full-width linear hotel directory; the create action remains visible and every row ends in one clear open action.
+        FORM: Contemporary reception directory, chosen from grounded direction 7; seed 4d791dc3.
+        FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+        -->
         @inertia
     </body>
 </html>

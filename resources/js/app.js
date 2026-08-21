@@ -12,6 +12,6 @@ createInertiaApp({
         app.use(createAppI18n()).use(ZiggyVue);
     },
     progress: {
-        color: '#4B5563',
+        color: '#00bcd4',
     },
 });

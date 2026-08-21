@@ -12,7 +12,7 @@ const props = defineProps({
     },
     contentClasses: {
         type: String,
-        default: 'py-1 bg-white dark:bg-neutral-800',
+        default: 'py-1.5 bg-white dark:bg-neutral-900',
     },
 });
 
@@ -58,22 +58,22 @@ const open = ref(false);
         ></div>
 
         <Transition
-            enter-active-class="transition ease-out duration-200"
+            enter-active-class="transition ease-out duration-200 motion-reduce:transition-none"
             enter-from-class="opacity-0 scale-95"
             enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
+            leave-active-class="transition ease-in duration-75 motion-reduce:transition-none"
             leave-from-class="opacity-100 scale-100"
             leave-to-class="opacity-0 scale-95"
         >
             <div
                 v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
+                class="absolute z-50 mt-2 rounded-xl shadow-xl"
                 :class="[widthClass, alignmentClasses]"
                 style="display: none"
                 @click="open = false"
             >
                 <div
-                    class="ring-opacity-5 rounded-md ring-1 ring-black"
+                    class="overflow-hidden rounded-xl ring-1 ring-neutral-900/10 dark:ring-white/10"
                     :class="contentClasses"
                 >
                     <slot name="content" />
