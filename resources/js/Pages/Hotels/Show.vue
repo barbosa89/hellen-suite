@@ -65,7 +65,7 @@ const details = [
                             variant="ghost"
                         >
                             <ArrowLeftIcon class="h-4 w-4" />
-                            {{ t('navigation.all_hotels') }}
+                            {{ t('app.navigation.all_hotels') }}
                         </ActionLink>
                         <ActionLink
                             :href="route('hotels.edit', props.hotel.id)"

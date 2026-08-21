@@ -19,6 +19,16 @@ return [
         'en' => 'English',
         'es' => 'Spanish',
     ],
+    'navigation' => [
+        'all_hotels' => 'All hotels',
+        'overview' => 'Overview',
+        'modules' => 'Modules',
+        'hotel_navigation' => 'Hotel navigation',
+        'open_menu' => 'Open menu',
+        'close_menu' => 'Close menu',
+        'collapse_menu' => 'Collapse menu',
+        'expand_menu' => 'Expand menu',
+    ],
     'pagination' => [
         'showing' => 'Showing',
         'to' => 'to',

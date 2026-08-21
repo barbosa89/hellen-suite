@@ -67,7 +67,7 @@ watch(mobileSidebarOpen, async (isOpen) => {
                         ref="menuButton"
                         type="button"
                         class="focus-visible:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none lg:hidden dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white"
-                        :aria-label="$t('navigation.open_menu')"
+                        :aria-label="$t('app.navigation.open_menu')"
                         @click="mobileSidebarOpen = true"
                     >
                         <Bars3Icon class="h-5 w-5" />

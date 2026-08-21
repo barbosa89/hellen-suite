@@ -17,6 +17,16 @@ export default {
                 "en": "English",
                 "es": "Spanish"
             },
+            "navigation": {
+                "all_hotels": "All hotels",
+                "overview": "Overview",
+                "modules": "Modules",
+                "hotel_navigation": "Hotel navigation",
+                "open_menu": "Open menu",
+                "close_menu": "Close menu",
+                "collapse_menu": "Collapse menu",
+                "expand_menu": "Expand menu"
+            },
             "pagination": {
                 "showing": "Showing",
                 "to": "to",
@@ -139,16 +149,6 @@ export default {
                 "updated": "Hotel updated successfully.",
                 "deleted": "Hotel deleted successfully."
             }
-        },
-        "navigation": {
-            "all_hotels": "All hotels",
-            "overview": "Overview",
-            "modules": "Modules",
-            "hotel_navigation": "Hotel navigation",
-            "open_menu": "Open menu",
-            "close_menu": "Close menu",
-            "collapse_menu": "Collapse menu",
-            "expand_menu": "Expand menu"
         },
         "pagination": {
             "previous": "&laquo; Previous",
@@ -343,6 +343,16 @@ export default {
                 "en": "Inglés",
                 "es": "Español"
             },
+            "navigation": {
+                "all_hotels": "Todos los hoteles",
+                "overview": "Resumen",
+                "modules": "Módulos",
+                "hotel_navigation": "Navegación del hotel",
+                "open_menu": "Abrir menú",
+                "close_menu": "Cerrar menú",
+                "collapse_menu": "Contraer menú",
+                "expand_menu": "Expandir menú"
+            },
             "pagination": {
                 "showing": "Mostrando",
                 "to": "a",
@@ -465,16 +475,6 @@ export default {
                 "updated": "Hotel actualizado con éxito.",
                 "deleted": "Hotel eliminado con éxito."
             }
-        },
-        "navigation": {
-            "all_hotels": "Todos los hoteles",
-            "overview": "Resumen",
-            "modules": "Módulos",
-            "hotel_navigation": "Navegación del hotel",
-            "open_menu": "Abrir menú",
-            "close_menu": "Cerrar menú",
-            "collapse_menu": "Contraer menú",
-            "expand_menu": "Expandir menú"
         },
         "pagination": {
             "previous": "&laquo; Anterior",

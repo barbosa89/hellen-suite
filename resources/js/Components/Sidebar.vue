@@ -38,7 +38,7 @@ let desktopMediaQuery;
 
 const navigation = computed(() => [
     {
-        name: t('navigation.overview'),
+        name: t('app.navigation.overview'),
         href: route('hotels.management.index', props.hotel.id),
         active: route().current('hotels.management.*'),
         icon: Squares2X2Icon,
@@ -113,7 +113,7 @@ defineExpose({
             mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
             collapsed ? 'lg:w-20' : 'lg:w-[17rem]',
         ]"
-        :aria-label="t('navigation.hotel_navigation')"
+        :aria-label="t('app.navigation.hotel_navigation')"
         :aria-hidden="!mobileOpen && !isDesktop ? 'true' : undefined"
         :aria-modal="!isDesktop && mobileOpen ? 'true' : undefined"
         :inert="!mobileOpen && !isDesktop"
@@ -145,7 +145,7 @@ defineExpose({
                 ref="mobileCloseButton"
                 type="button"
                 class="focus-visible:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden lg:hidden dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white"
-                :aria-label="t('navigation.close_menu')"
+                :aria-label="t('app.navigation.close_menu')"
                 @click="$emit('close')"
             >
                 <XMarkIcon class="h-5 w-5" />
@@ -157,12 +157,12 @@ defineExpose({
                 :href="route('hotels.index')"
                 prefetch
                 class="group focus-visible:ring-primary-500 mb-4 flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white"
-                :title="collapsed ? t('navigation.all_hotels') : undefined"
+                :title="collapsed ? t('app.navigation.all_hotels') : undefined"
                 @click="$emit('close')"
             >
                 <ArrowLeftIcon class="h-5 w-5 shrink-0" />
                 <span :class="collapsed ? 'lg:hidden' : ''">{{
-                    t('navigation.all_hotels')
+                    t('app.navigation.all_hotels')
                 }}</span>
             </Link>
 
@@ -189,7 +189,7 @@ defineExpose({
                 class="mb-2 px-3 text-xs font-semibold text-neutral-600 dark:text-neutral-400"
                 :class="collapsed ? 'lg:sr-only' : ''"
             >
-                {{ t('navigation.modules') }}
+                {{ t('app.navigation.modules') }}
             </p>
 
             <nav class="grid gap-1">
@@ -233,8 +233,8 @@ defineExpose({
                 :class="collapsed ? 'justify-center px-2' : ''"
                 :aria-label="
                     collapsed
-                        ? t('navigation.expand_menu')
-                        : t('navigation.collapse_menu')
+                        ? t('app.navigation.expand_menu')
+                        : t('app.navigation.collapse_menu')
                 "
                 @click="$emit('toggle-collapsed')"
             >
@@ -244,7 +244,7 @@ defineExpose({
                 />
                 <ChevronDoubleLeftIcon v-else class="h-5 w-5 shrink-0" />
                 <span v-if="!collapsed">{{
-                    t('navigation.collapse_menu')
+                    t('app.navigation.collapse_menu')
                 }}</span>
             </button>
         </div>
@@ -262,7 +262,7 @@ defineExpose({
             v-if="mobileOpen"
             type="button"
             class="fixed inset-0 z-40 bg-neutral-950/55 lg:hidden"
-            :aria-label="t('navigation.close_menu')"
+            :aria-label="t('app.navigation.close_menu')"
             @click="$emit('close')"
         />
     </Transition>

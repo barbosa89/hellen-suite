@@ -48,7 +48,7 @@ const props = defineProps({
                             variant="ghost"
                         >
                             <ArrowLeftIcon class="h-4 w-4" />
-                            {{ t('navigation.overview') }}
+                            {{ t('app.navigation.overview') }}
                         </ActionLink>
                     </template>
                 </PageHeader>
