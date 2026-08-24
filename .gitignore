@@ -36,6 +36,7 @@ backup
 .ai
 AGENTS.md
 PRODUCT.md
+DESIGN.md
 boost.json
 opencode.json
 .github/hooks/impeccable.json
