@@ -8,7 +8,6 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
-use Native\Desktop\Drivers\Electron\ElectronServiceProvider;
 
 #[Signature('app:native:install
     {--force : Overwrite existing NativePHP files by default}
@@ -41,8 +40,8 @@ class InstallNative extends Command
         $this->components->info('Running NativePHP Electron postinstall...');
 
         $result = Process::run('node ./vendor/nativephp/desktop/resources/electron/node_modules/electron/install.js', function (string $_, string $output): void {
-                $this->output->write($output);
-            });
+            $this->output->write($output);
+        });
 
         if ($result->failed()) {
             $this->components->error("NativePHP Electron postinstall failed with exit code {$result->exitCode()}.");
