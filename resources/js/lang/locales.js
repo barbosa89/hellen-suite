@@ -142,6 +142,14 @@ export default {
                 "deleted": "Hotel deleted successfully."
             }
         },
+        "identification_types": {
+            "cc": "Citizenship ID card",
+            "ce": "Foreigner ID card",
+            "ti": "Identity card",
+            "rc": "Civil birth registration",
+            "passport": "Passport",
+            "national_id": "Foreign national ID"
+        },
         "pagination": {
             "previous": "&laquo; Previous",
             "next": "Next &raquo;"
@@ -615,6 +623,14 @@ export default {
                 "updated": "Hotel actualizado con éxito.",
                 "deleted": "Hotel eliminado con éxito."
             }
+        },
+        "identification_types": {
+            "cc": "Cédula de ciudadanía",
+            "ce": "Cédula de extranjería",
+            "ti": "Tarjeta de identidad",
+            "rc": "Registro civil de nacimiento",
+            "passport": "Pasaporte",
+            "national_id": "Documento nacional de identidad extranjero"
         },
         "pagination": {
             "previous": "&laquo; Anterior",
