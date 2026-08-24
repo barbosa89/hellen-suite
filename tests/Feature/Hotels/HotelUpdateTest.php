@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\Hotels;
 
 use App\Models\Hotel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
