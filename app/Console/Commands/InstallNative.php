@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
@@ -38,9 +40,7 @@ class InstallNative extends Command
     {
         $this->components->info('Running NativePHP Electron postinstall...');
 
-        $result = Process::path(ElectronServiceProvider::electronPath())
-            ->forever()
-            ->run('node ./node_modules/electron-builder/cli.js install-app-deps', function (string $_, string $output): void {
+        $result = Process::run('node ./vendor/nativephp/desktop/resources/electron/node_modules/electron/install.js', function (string $_, string $output): void {
                 $this->output->write($output);
             });
 
