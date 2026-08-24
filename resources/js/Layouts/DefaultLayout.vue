@@ -3,7 +3,8 @@ import HotelAvatar from '@/Components/HotelAvatar.vue';
 import LocaleDropdown from '@/Components/LocaleDropdown.vue';
 import Sidebar from '@/Components/Sidebar.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
-import { Bars3Icon } from '@heroicons/vue/24/outline';
+import { Bars3Icon, Cog6ToothIcon } from '@heroicons/vue/24/outline';
+import { Link } from '@inertiajs/vue3';
 import { nextTick, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
@@ -90,6 +91,13 @@ watch(mobileSidebarOpen, async (isOpen) => {
                     </div>
 
                     <div class="ms-auto flex items-center gap-2">
+                        <Link
+                            :href="route('settings.edit')"
+                            class="focus-visible:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden sm:h-9 sm:w-9 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white dark:focus-visible:ring-offset-neutral-950"
+                            :aria-label="$t('settings.title')"
+                        >
+                            <Cog6ToothIcon class="h-5 w-5" />
+                        </Link>
                         <ThemeToggle />
                         <LocaleDropdown />
                     </div>

@@ -10,12 +10,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "alcohol/iso4217": "^4.3",
         "inertiajs/inertia-laravel": "^3.0",
         "intervention/image-laravel": "^4.1",
         "laravel/framework": "^13.17",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "nativephp/desktop": "^2.2",
+        "spatie/laravel-settings": "^3.9",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

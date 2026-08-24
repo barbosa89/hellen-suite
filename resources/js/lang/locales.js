@@ -153,18 +153,160 @@ export default {
             "token": "This password reset token is invalid.",
             "user": "We can't find a user with that email address."
         },
+        "room_types": {
+            "title": "Room types",
+            "capacity": "{count} guest|{count} guests",
+            "rooms_count": "{count} room|{count} rooms",
+            "actions": {
+                "create": "Create type",
+                "edit": "Edit type",
+                "delete": "Delete type"
+            },
+            "fields": {
+                "name": {
+                    "label": "Name"
+                },
+                "capacity": {
+                    "label": "Capacity"
+                },
+                "rooms_count": {
+                    "label": "Linked rooms"
+                }
+            },
+            "pages": {
+                "index": {
+                    "heading": "Room types for {hotel}",
+                    "description": "Define the configurations that can be assigned to the inventory for {hotel}.",
+                    "empty_title": "There are no room types yet",
+                    "empty": "Create the first type to start registering physical rooms.",
+                    "delete_title": "Delete room type",
+                    "delete_confirm": "Are you sure you want to delete “{name}”?",
+                    "delete_disabled": "This type cannot be deleted while it has linked rooms."
+                },
+                "create": {
+                    "heading": "Create room type",
+                    "description": "Define the name and capacity that distinguish this configuration."
+                },
+                "edit": {
+                    "heading": "Edit {name}",
+                    "description": "Update this configuration’s name or capacity."
+                }
+            },
+            "form": {
+                "title": "Type configuration",
+                "description": "These details describe an inventory category, not a physical room."
+            },
+            "messages": {
+                "created": "Room type created successfully.",
+                "updated": "Room type updated successfully.",
+                "deleted": "Room type deleted successfully.",
+                "delete_blocked": "A type with linked rooms cannot be deleted."
+            }
+        },
         "rooms": {
             "title": "Rooms",
+            "module_navigation": "Inventory navigation",
+            "actions": {
+                "create": "Create room",
+                "edit": "Edit room",
+                "delete": "Delete room"
+            },
+            "fields": {
+                "number": {
+                    "label": "Number"
+                },
+                "room_type": {
+                    "label": "Type"
+                },
+                "floor": {
+                    "label": "Floor"
+                },
+                "reference_price": {
+                    "label": "Reference rate"
+                },
+                "housekeeping_status": {
+                    "label": "Housekeeping status"
+                },
+                "is_active": {
+                    "label": "Active room"
+                },
+                "operation": {
+                    "label": "Operation"
+                }
+            },
+            "housekeeping": {
+                "clean": "Clean",
+                "dirty": "Needs cleaning"
+            },
+            "activity": {
+                "active": "Active",
+                "inactive": "Inactive"
+            },
             "pages": {
                 "index": {
                     "heading": "Rooms for {hotel}",
-                    "description": "Manage the rooms associated with {hotel}.",
-                    "empty_title": "The module is ready",
-                    "empty": "The room structure already belongs to this hotel. Its management tools will be added here."
+                    "description": "Review and update the operational inventory for {hotel}.",
+                    "inventory_label": "Room inventory",
+                    "empty_title": "No rooms have been registered yet",
+                    "empty": "Create the room types used by this property, then register each room.",
+                    "currency_required_title": "Set the currency before registering rates",
+                    "currency_required": "The reference rate needs a global currency. Set it now and return to the inventory.",
+                    "delete_title": "Delete room",
+                    "delete_confirm": "Are you sure you want to delete room {number}?"
+                },
+                "create": {
+                    "heading": "Create room",
+                    "description": "Register its type, location, rate, and initial operating status."
+                },
+                "edit": {
+                    "heading": "Edit room {number}",
+                    "description": "Update this room’s administrative and operational details."
                 }
             },
-            "management": {
-                "description": "Reserved space for room inventory and management."
+            "form": {
+                "assignment": {
+                    "title": "Identification and location",
+                    "description": "Associate the room with the type that matches its physical configuration."
+                },
+                "operation": {
+                    "title": "Rate and operation",
+                    "description": "The rate is for reference, and housekeeping can be updated directly from inventory."
+                },
+                "select_type": "Select a room type",
+                "reference_price_hint": "Stores up to two decimals in the configured currency.",
+                "activity_hint": "Inactive rooms remain in the inventory."
+            },
+            "messages": {
+                "created": "Room created successfully.",
+                "updated": "Room updated successfully.",
+                "deleted": "Room deleted successfully.",
+                "activity_updated": "Room activity was updated.",
+                "housekeeping_updated": "Housekeeping status was updated."
+            }
+        },
+        "settings": {
+            "title": "Settings",
+            "actions": {
+                "configure_currency": "Configure currency"
+            },
+            "pages": {
+                "edit": {
+                    "heading": "Application settings",
+                    "description": "Define the global preferences used by Hellen Suite."
+                }
+            },
+            "currency": {
+                "title": "Reference currency",
+                "description": "Select the currency that identifies reference rates for every room.",
+                "label": "Currency",
+                "placeholder": "Select a currency",
+                "hint": "All ISO 4217 codes are available and rates are stored with two decimals.",
+                "reference_title": "Reference use",
+                "reference_description": "Changing currency does not convert or alter existing rates. The selected code only indicates how they are interpreted and displayed."
+            },
+            "messages": {
+                "updated": "Currency settings were updated.",
+                "currency_required": "Configure a currency before creating or editing rooms."
             }
         },
         "validation": {
@@ -485,18 +627,160 @@ export default {
             "token": "El token de restablecimiento de contraseña es inválido.",
             "user": "No encontramos ningún usuario con ese correo electrónico."
         },
+        "room_types": {
+            "title": "Tipos de habitación",
+            "capacity": "{count} huésped|{count} huéspedes",
+            "rooms_count": "{count} habitación|{count} habitaciones",
+            "actions": {
+                "create": "Crear tipo",
+                "edit": "Editar tipo",
+                "delete": "Eliminar tipo"
+            },
+            "fields": {
+                "name": {
+                    "label": "Nombre"
+                },
+                "capacity": {
+                    "label": "Capacidad"
+                },
+                "rooms_count": {
+                    "label": "Habitaciones asociadas"
+                }
+            },
+            "pages": {
+                "index": {
+                    "heading": "Tipos de habitación de {hotel}",
+                    "description": "Define las configuraciones que se podrán asignar al inventario de {hotel}.",
+                    "empty_title": "Aún no hay tipos de habitación",
+                    "empty": "Crea el primer tipo para empezar a registrar las habitaciones físicas.",
+                    "delete_title": "Eliminar tipo de habitación",
+                    "delete_confirm": "¿Estás seguro de que deseas eliminar “{name}”?",
+                    "delete_disabled": "No puedes eliminar este tipo mientras tenga habitaciones asociadas."
+                },
+                "create": {
+                    "heading": "Crear tipo de habitación",
+                    "description": "Define el nombre y la capacidad que distinguirán esta configuración."
+                },
+                "edit": {
+                    "heading": "Editar {name}",
+                    "description": "Actualiza el nombre o capacidad de esta configuración."
+                }
+            },
+            "form": {
+                "title": "Configuración del tipo",
+                "description": "Estos datos describen una categoría del inventario, no una habitación física."
+            },
+            "messages": {
+                "created": "Tipo de habitación creado con éxito.",
+                "updated": "Tipo de habitación actualizado con éxito.",
+                "deleted": "Tipo de habitación eliminado con éxito.",
+                "delete_blocked": "No puedes eliminar un tipo que todavía tiene habitaciones asociadas."
+            }
+        },
         "rooms": {
             "title": "Habitaciones",
+            "module_navigation": "Navegación del inventario",
+            "actions": {
+                "create": "Crear habitación",
+                "edit": "Editar habitación",
+                "delete": "Eliminar habitación"
+            },
+            "fields": {
+                "number": {
+                    "label": "Número"
+                },
+                "room_type": {
+                    "label": "Tipo"
+                },
+                "floor": {
+                    "label": "Piso"
+                },
+                "reference_price": {
+                    "label": "Tarifa de referencia"
+                },
+                "housekeeping_status": {
+                    "label": "Estado de limpieza"
+                },
+                "is_active": {
+                    "label": "Habitación activa"
+                },
+                "operation": {
+                    "label": "Operación"
+                }
+            },
+            "housekeeping": {
+                "clean": "Limpia",
+                "dirty": "Pendiente de limpieza"
+            },
+            "activity": {
+                "active": "Activa",
+                "inactive": "Inactiva"
+            },
             "pages": {
                 "index": {
                     "heading": "Habitaciones de {hotel}",
-                    "description": "Gestiona las habitaciones asociadas a {hotel}.",
-                    "empty_title": "El módulo está preparado",
-                    "empty": "La estructura de habitaciones ya pertenece a este hotel. Sus herramientas de gestión se incorporarán aquí."
+                    "description": "Consulta y actualiza el inventario operativo de {hotel}.",
+                    "inventory_label": "Inventario de habitaciones",
+                    "empty_title": "Aún no hay habitaciones registradas",
+                    "empty": "Primero crea los tipos que utilizará la propiedad y después registra cada habitación.",
+                    "currency_required_title": "Configura la moneda antes de registrar tarifas",
+                    "currency_required": "La tarifa de referencia necesita una moneda global. Puedes configurarla ahora y regresar al inventario.",
+                    "delete_title": "Eliminar habitación",
+                    "delete_confirm": "¿Estás seguro de que deseas eliminar la habitación {number}?"
+                },
+                "create": {
+                    "heading": "Crear habitación",
+                    "description": "Registra su tipo, ubicación, tarifa y estado operativo inicial."
+                },
+                "edit": {
+                    "heading": "Editar habitación {number}",
+                    "description": "Actualiza los datos administrativos y operativos de esta habitación."
                 }
             },
-            "management": {
-                "description": "Espacio reservado para el inventario y la gestión de habitaciones."
+            "form": {
+                "assignment": {
+                    "title": "Identificación y ubicación",
+                    "description": "Relaciona la habitación con el tipo que corresponde a su configuración física."
+                },
+                "operation": {
+                    "title": "Tarifa y operación",
+                    "description": "La tarifa es referencial y el estado de limpieza puede actualizarse rápidamente desde el inventario."
+                },
+                "select_type": "Selecciona un tipo de habitación",
+                "reference_price_hint": "Guarda hasta dos decimales en la moneda configurada.",
+                "activity_hint": "Las habitaciones inactivas se conservan en el inventario."
+            },
+            "messages": {
+                "created": "Habitación creada con éxito.",
+                "updated": "Habitación actualizada con éxito.",
+                "deleted": "Habitación eliminada con éxito.",
+                "activity_updated": "El estado de actividad fue actualizado.",
+                "housekeeping_updated": "El estado de limpieza fue actualizado."
+            }
+        },
+        "settings": {
+            "title": "Configuración",
+            "actions": {
+                "configure_currency": "Configurar moneda"
+            },
+            "pages": {
+                "edit": {
+                    "heading": "Configuración de la aplicación",
+                    "description": "Define las preferencias globales que utiliza Hellen Suite."
+                }
+            },
+            "currency": {
+                "title": "Moneda de referencia",
+                "description": "Selecciona la moneda que identifica las tarifas de referencia de todas las habitaciones.",
+                "label": "Moneda",
+                "placeholder": "Selecciona una moneda",
+                "hint": "La selección admite todos los códigos ISO 4217 y las tarifas se guardan con dos decimales.",
+                "reference_title": "Uso referencial",
+                "reference_description": "Cambiar la moneda no convierte ni modifica las tarifas existentes. El código seleccionado solo indica cómo deben interpretarse y mostrarse."
+            },
+            "messages": {
+                "updated": "La configuración de moneda fue actualizada.",
+                "currency_required": "Configura una moneda antes de crear o editar habitaciones."
             }
         },
         "validation": {

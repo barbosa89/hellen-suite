@@ -43,12 +43,24 @@ class Hotel extends Model
         return $this->hasMany(Room::class);
     }
 
+    /**
+     * @return HasMany<RoomType, $this>
+     */
+    public function roomTypes(): HasMany
+    {
+        return $this->hasMany(RoomType::class);
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (null|string $value): null|string => $value === null
-                ? $value
-                : route('hotels.image', $this),
+            get: function (null|string $value): null|string {
+                if ($value === null || str_starts_with($value, 'http')) {
+                    return $value;
+                }
+
+                return route('hotels.image', $this);
+            },
         );
     }
 }
