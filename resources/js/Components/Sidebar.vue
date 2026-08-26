@@ -3,10 +3,12 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import HotelAvatar from '@/Components/HotelAvatar.vue';
 import {
     ArrowLeftIcon,
+    CalendarDaysIcon,
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
     RectangleGroupIcon,
     Squares2X2Icon,
+    UserGroupIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline';
 import { Link } from '@inertiajs/vue3';
@@ -48,6 +50,18 @@ const navigation = computed(() => [
         href: route('hotels.rooms.index', props.hotel.id),
         active: route().current('hotels.rooms.*'),
         icon: RectangleGroupIcon,
+    },
+    {
+        name: t('guests.title'),
+        href: route('hotels.guests.index', props.hotel.id),
+        active: route().current('hotels.guests.*'),
+        icon: UserGroupIcon,
+    },
+    {
+        name: t('stays.title'),
+        href: route('hotels.stays.index', props.hotel.id),
+        active: route().current('hotels.stays.*'),
+        icon: CalendarDaysIcon,
     },
 ]);
 

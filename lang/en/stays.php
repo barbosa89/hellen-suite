@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'title' => 'Stays',
+    'actions' => ['create' => 'New check-in', 'check_in' => 'Confirm check-in', 'check_out' => 'Check out', 'transfer' => 'Transfer room', 'extend' => 'Change expected checkout'],
+    'fields' => ['expected_check_out_on' => ['label' => 'Expected checkout'], 'nightly_rate' => ['label' => 'Nightly rate'], 'room' => ['label' => 'Room'], 'guests' => ['label' => 'Guests']],
+    'pages' => [
+        'index' => ['heading' => 'Stays', 'description' => 'Manage arrivals, in-house guests, and departures for :hotel.', 'empty_title' => 'No stays have been registered', 'empty' => 'Start a check-in to register the first stay.'],
+        'create' => ['heading' => 'New check-in', 'description' => 'Register the group, assign available rooms, and confirm the stay.'],
+        'show' => ['heading' => 'Stay', 'occupancies' => 'Assigned rooms', 'group' => 'Registered group', 'active' => 'Active', 'checked_out' => 'Checked out'],
+    ],
+    'form' => [
+        'steps' => ['label' => 'Check-in progress', 'guests' => 'Guests', 'rooms' => 'Rooms', 'review' => 'Confirmation'],
+        'actions' => ['back' => 'Back', 'continue' => 'Continue'],
+        'stay' => ['check_in_today' => 'Check-in: today', 'check_in_hint' => 'Check-in time is recorded when the stay is confirmed.'],
+        'guests' => ['title' => 'Guest group', 'description' => 'Find an existing profile or register every person without leaving check-in.', 'responsible' => 'Stay responsible', 'companion' => 'Companion', 'add_companion' => 'Add companion', 'new_guest' => 'Register new guest', 'search' => 'Find existing guest'],
+        'rooms' => [
+            'title' => 'Select rooms',
+            'description' => 'Choose clean, available rooms and explicitly assign every guest.',
+            'available_title' => 'Available rooms',
+            'available_description' => 'Select one or more rooms for this stay.',
+            'available_count' => ':count available',
+            'room_number' => 'Room :number',
+            'capacity' => ':count guests',
+            'night' => 'night',
+            'empty' => 'There are no clean, available rooms at this time.',
+            'selected_title' => 'Selected rooms',
+            'selected_description' => 'Capture the rate now to preserve this stay’s historical value.',
+            'assigned' => 'assigned',
+            'remove_room' => 'Remove room :number',
+            'assign_title' => 'Assign every guest',
+            'assign_description' => 'Each person must occupy exactly one room.',
+            'assign_label' => 'Assigned room',
+            'assign_placeholder' => 'Select a room',
+        ],
+        'review' => ['title' => 'Final review', 'description' => 'Confirm the group and rooms before recording the check-in.', 'guests' => 'Guests', 'rooms' => 'Rooms'],
+        'summary' => ['title' => 'Stay summary', 'guests' => 'Guests', 'rooms' => 'Rooms', 'no_rooms' => 'No rooms have been selected yet.'],
+        'messages' => ['complete_guests' => 'Complete each guest’s required information before continuing.', 'select_check_out' => 'Set the expected checkout date.', 'select_room' => 'Select at least one available room.', 'assign_guests' => 'Assign every guest to a room without exceeding capacity.'],
+    ],
+    'messages' => ['checked_in' => 'Check-in registered successfully.', 'checked_out' => 'The stay was closed and rooms now need cleaning.', 'expected_check_out_updated' => 'Expected checkout was updated.', 'room_transferred' => 'Room transferred successfully.'],
+    'validation' => ['responsible_required' => 'Select a valid responsible guest.', 'unknown_guest' => 'The assignment includes a guest not in the group.', 'assign_every_guest_once' => 'Every guest must be assigned to exactly one room.', 'duplicate_guest' => 'A guest with this document already exists; find and select them.', 'room_unavailable' => 'The room is no longer available for this stay.', 'room_capacity' => 'The assignment exceeds the room capacity.', 'stay_closed' => 'The stay is already closed.', 'occupancy_closed' => 'The selected occupancy is already closed.'],
+];

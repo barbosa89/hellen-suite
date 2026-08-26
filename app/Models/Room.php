@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -45,6 +46,16 @@ class Room extends Model
         'is_active' => true,
     ];
 
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'reference_price' => 'decimal:2',
+            'housekeeping_status' => HousekeepingStatus::class,
+            'is_active' => 'boolean',
+        ];
+    }
+
     /**
      * @return BelongsTo<Hotel, $this>
      */
@@ -61,13 +72,9 @@ class Room extends Model
         return $this->belongsTo(RoomType::class);
     }
 
-    /** @return array<string, string> */
-    protected function casts(): array
+    /** @return HasMany<RoomOccupancy, $this> */
+    public function roomOccupancies(): HasMany
     {
-        return [
-            'reference_price' => 'decimal:2',
-            'housekeeping_status' => HousekeepingStatus::class,
-            'is_active' => 'boolean',
-        ];
+        return $this->hasMany(RoomOccupancy::class);
     }
 }

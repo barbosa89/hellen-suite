@@ -10,6 +10,8 @@ return [
     'not_provided' => 'Not provided',
     'save' => 'Save',
     'saving' => 'Saving…',
+    'searching' => 'Searching…',
+    'remove' => 'Remove',
     'language' => 'Language',
     'theme' => [
         'light' => 'Light mode',

@@ -51,6 +51,18 @@ class Hotel extends Model
         return $this->hasMany(RoomType::class);
     }
 
+    /** @return HasMany<Guest, $this> */
+    public function guests(): HasMany
+    {
+        return $this->hasMany(Guest::class);
+    }
+
+    /** @return HasMany<Stay, $this> */
+    public function stays(): HasMany
+    {
+        return $this->hasMany(Stay::class);
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

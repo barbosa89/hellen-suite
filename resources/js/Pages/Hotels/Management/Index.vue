@@ -6,6 +6,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import {
     ArrowTopRightOnSquareIcon,
     BuildingOffice2Icon,
+    CalendarDaysIcon,
     CheckCircleIcon,
     EnvelopeIcon,
     IdentificationIcon,
@@ -13,6 +14,7 @@ import {
     PencilSquareIcon,
     PhoneIcon,
     RectangleGroupIcon,
+    UserGroupIcon,
 } from '@heroicons/vue/24/outline';
 import { Head } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -232,36 +234,133 @@ const completionPercentage = computed(() =>
                         </div>
 
                         <div
-                            class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+                            class="grid divide-y divide-neutral-200 dark:divide-neutral-800"
                         >
-                            <div class="flex items-center gap-4">
-                                <span
-                                    class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
-                                >
-                                    <RectangleGroupIcon class="h-5 w-5" />
-                                </span>
-                                <div>
-                                    <h3
-                                        class="font-semibold text-neutral-950 dark:text-white"
-                                    >
-                                        {{ t('rooms.title') }}
-                                    </h3>
-                                    <p
-                                        class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
-                                    >
-                                        {{ t('rooms.management.description') }}
-                                    </p>
-                                </div>
-                            </div>
-                            <ActionLink
-                                :href="
-                                    route('hotels.rooms.index', props.hotel.id)
-                                "
-                                prefetch
+                            <div
+                                class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
                             >
-                                {{ t('hotels.management.open_module') }}
-                                <ArrowTopRightOnSquareIcon class="h-4 w-4" />
-                            </ActionLink>
+                                <div class="flex items-center gap-4">
+                                    <span
+                                        class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                                    >
+                                        <RectangleGroupIcon class="h-5 w-5" />
+                                    </span>
+                                    <div>
+                                        <h3
+                                            class="font-semibold text-neutral-950 dark:text-white"
+                                        >
+                                            {{ t('rooms.title') }}
+                                        </h3>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                                        >
+                                            {{
+                                                t(
+                                                    'rooms.management.description',
+                                                )
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <ActionLink
+                                    :href="
+                                        route(
+                                            'hotels.rooms.index',
+                                            props.hotel.id,
+                                        )
+                                    "
+                                    prefetch
+                                >
+                                    {{ t('hotels.management.open_module') }}
+                                    <ArrowTopRightOnSquareIcon
+                                        class="h-4 w-4"
+                                    />
+                                </ActionLink>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+                            >
+                                <div class="flex items-center gap-4">
+                                    <span
+                                        class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                                        ><UserGroupIcon class="h-5 w-5"
+                                    /></span>
+                                    <div>
+                                        <h3
+                                            class="font-semibold text-neutral-950 dark:text-white"
+                                        >
+                                            {{ t('guests.title') }}
+                                        </h3>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                                        >
+                                            {{
+                                                t(
+                                                    'guests.pages.index.description',
+                                                    {
+                                                        hotel: props.hotel
+                                                            .business_name,
+                                                    },
+                                                )
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <ActionLink
+                                    :href="
+                                        route(
+                                            'hotels.guests.index',
+                                            props.hotel.id,
+                                        )
+                                    "
+                                    prefetch
+                                    >{{ t('hotels.management.open_module')
+                                    }}<ArrowTopRightOnSquareIcon
+                                        class="h-4 w-4"
+                                /></ActionLink>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+                            >
+                                <div class="flex items-center gap-4">
+                                    <span
+                                        class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                                        ><CalendarDaysIcon class="h-5 w-5"
+                                    /></span>
+                                    <div>
+                                        <h3
+                                            class="font-semibold text-neutral-950 dark:text-white"
+                                        >
+                                            {{ t('stays.title') }}
+                                        </h3>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                                        >
+                                            {{
+                                                t(
+                                                    'stays.pages.index.description',
+                                                    {
+                                                        hotel: props.hotel
+                                                            .business_name,
+                                                    },
+                                                )
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <ActionLink
+                                    :href="
+                                        route(
+                                            'hotels.stays.index',
+                                            props.hotel.id,
+                                        )
+                                    "
+                                    prefetch
+                                    >{{ t('hotels.management.open_module')
+                                    }}<ArrowTopRightOnSquareIcon
+                                        class="h-4 w-4"
+                                /></ActionLink>
+                            </div>
                         </div>
                     </section>
                 </div>

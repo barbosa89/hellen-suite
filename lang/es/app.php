@@ -10,6 +10,8 @@ return [
     'not_provided' => 'Sin registrar',
     'save' => 'Guardar',
     'saving' => 'Guardando…',
+    'searching' => 'Buscando…',
+    'remove' => 'Quitar',
     'language' => 'Idioma',
     'theme' => [
         'light' => 'Modo claro',

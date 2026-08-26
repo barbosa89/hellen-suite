@@ -9,6 +9,7 @@ use Database\Factories\IdentificationTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -24,6 +25,12 @@ class IdentificationType extends Model
 {
     /** @use HasFactory<IdentificationTypeFactory> */
     use HasFactory;
+
+    /** @return HasMany<Guest, $this> */
+    public function guests(): HasMany
+    {
+        return $this->hasMany(Guest::class);
+    }
 
     /** @return array<string, string> */
     protected function casts(): array
