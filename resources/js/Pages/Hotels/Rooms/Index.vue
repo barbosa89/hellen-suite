@@ -16,6 +16,7 @@ import {
     TrashIcon,
     WrenchScrewdriverIcon,
 } from '@heroicons/vue/24/outline';
+import { CheckIcon } from '@heroicons/vue/24/solid';
 import { Head, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -253,41 +254,106 @@ function destroy() {
                                 >
                                     {{ t('rooms.fields.operation.label') }}
                                 </p>
-                                <div class="flex flex-wrap gap-2">
-                                    <button
-                                        type="button"
-                                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden dark:focus-visible:ring-offset-neutral-950"
-                                        :class="
-                                            room.housekeeping_status === 'clean'
-                                                ? 'border-success-200 bg-success-50 text-success-800 dark:border-success-900 dark:bg-success-900/25 dark:text-success-300'
-                                                : 'hover:border-success-300 hover:bg-success-50 dark:hover:border-success-800 dark:hover:bg-success-900/25 border-neutral-300 bg-white text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200'
-                                        "
-                                        :aria-pressed="
-                                            room.housekeeping_status === 'clean'
-                                        "
-                                        @click="
-                                            setHousekeepingStatus(room, 'clean')
-                                        "
-                                    >
-                                        {{ t('rooms.housekeeping.clean') }}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden dark:focus-visible:ring-offset-neutral-950"
-                                        :class="
-                                            room.housekeeping_status === 'dirty'
-                                                ? 'border-secondary-200 bg-secondary-50 text-secondary-800 dark:border-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300'
-                                                : 'hover:border-secondary-300 hover:bg-secondary-50 dark:hover:border-secondary-800 dark:hover:bg-secondary-900/30 border-neutral-300 bg-white text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200'
-                                        "
-                                        :aria-pressed="
-                                            room.housekeeping_status === 'dirty'
-                                        "
-                                        @click="
-                                            setHousekeepingStatus(room, 'dirty')
-                                        "
-                                    >
-                                        {{ t('rooms.housekeeping.dirty') }}
-                                    </button>
+                                <div class="flex flex-wrap items-end gap-3">
+                                    <fieldset>
+                                        <legend
+                                            class="mb-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-400"
+                                        >
+                                            {{
+                                                t(
+                                                    'rooms.fields.housekeeping_status.label',
+                                                )
+                                            }}
+                                        </legend>
+                                        <div
+                                            class="inline-flex max-w-full overflow-hidden rounded-lg border bg-white dark:bg-neutral-900"
+                                            :class="
+                                                room.housekeeping_status ===
+                                                'clean'
+                                                    ? 'border-success-300 dark:border-success-800'
+                                                    : 'border-secondary-300 dark:border-secondary-800'
+                                            "
+                                        >
+                                            <input
+                                                :id="`room-${room.id}-clean`"
+                                                :checked="
+                                                    room.housekeeping_status ===
+                                                    'clean'
+                                                "
+                                                :name="`room-${room.id}-housekeeping-status`"
+                                                class="peer/clean sr-only"
+                                                type="radio"
+                                                value="clean"
+                                                @change="
+                                                    setHousekeepingStatus(
+                                                        room,
+                                                        'clean',
+                                                    )
+                                                "
+                                            />
+                                            <label
+                                                :for="`room-${room.id}-clean`"
+                                                class="peer-checked/clean:bg-success-50 peer-checked/clean:text-success-800 peer-focus-visible/clean:ring-primary-500 hover:bg-success-50 hover:text-success-800 dark:peer-checked/clean:bg-success-900/25 dark:peer-checked/clean:text-success-300 dark:hover:bg-success-900/25 dark:hover:text-success-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-s-[7px] px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/clean:relative peer-checked/clean:z-10 peer-focus-visible/clean:relative peer-focus-visible/clean:z-20 peer-focus-visible/clean:ring-2 peer-focus-visible/clean:ring-inset dark:text-neutral-200"
+                                            >
+                                                <CheckIcon
+                                                    class="h-3.5 w-3.5 shrink-0"
+                                                    :class="
+                                                        room.housekeeping_status ===
+                                                        'clean'
+                                                            ? 'opacity-100'
+                                                            : 'opacity-0'
+                                                    "
+                                                />
+                                                {{
+                                                    t(
+                                                        'rooms.housekeeping.clean',
+                                                    )
+                                                }}
+                                            </label>
+                                            <input
+                                                :id="`room-${room.id}-dirty`"
+                                                :checked="
+                                                    room.housekeeping_status ===
+                                                    'dirty'
+                                                "
+                                                :name="`room-${room.id}-housekeeping-status`"
+                                                class="peer/dirty sr-only"
+                                                type="radio"
+                                                value="dirty"
+                                                @change="
+                                                    setHousekeepingStatus(
+                                                        room,
+                                                        'dirty',
+                                                    )
+                                                "
+                                            />
+                                            <label
+                                                :for="`room-${room.id}-dirty`"
+                                                class="peer-checked/dirty:bg-secondary-50 peer-checked/dirty:text-secondary-800 peer-focus-visible/dirty:ring-primary-500 hover:bg-secondary-50 hover:text-secondary-800 dark:peer-checked/dirty:bg-secondary-900/30 dark:peer-checked/dirty:text-secondary-300 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-e-[7px] border-s px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/dirty:relative peer-checked/dirty:z-10 peer-focus-visible/dirty:relative peer-focus-visible/dirty:z-20 peer-focus-visible/dirty:ring-2 peer-focus-visible/dirty:ring-inset dark:text-neutral-200"
+                                                :class="
+                                                    room.housekeeping_status ===
+                                                    'clean'
+                                                        ? 'border-success-300 dark:border-success-800'
+                                                        : 'border-secondary-300 dark:border-secondary-800'
+                                                "
+                                            >
+                                                <CheckIcon
+                                                    class="h-3.5 w-3.5 shrink-0"
+                                                    :class="
+                                                        room.housekeeping_status ===
+                                                        'dirty'
+                                                            ? 'opacity-100'
+                                                            : 'opacity-0'
+                                                    "
+                                                />
+                                                {{
+                                                    t(
+                                                        'rooms.housekeeping.dirty',
+                                                    )
+                                                }}
+                                            </label>
+                                        </div>
+                                    </fieldset>
                                     <button
                                         type="button"
                                         class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden dark:focus-visible:ring-offset-neutral-950"
@@ -307,7 +373,9 @@ function destroy() {
                                     </button>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 lg:justify-end">
+                            <div
+                                class="flex items-center gap-2 lg:justify-end lg:self-end"
+                            >
                                 <ActionLink
                                     :href="
                                         route('hotels.rooms.edit', [
