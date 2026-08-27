@@ -307,6 +307,8 @@ export default {
                 create: 'Create room',
                 edit: 'Edit room',
                 delete: 'Delete room',
+                activate: 'Activate room',
+                deactivate: 'Deactivate room',
             },
             fields: {
                 number: {
@@ -354,6 +356,7 @@ export default {
                     delete_title: 'Delete room',
                     delete_confirm:
                         'Are you sure you want to delete room {number}?',
+                    open_actions: 'Open actions for room {number}',
                 },
                 create: {
                     heading: 'Create room',
@@ -1084,6 +1087,8 @@ export default {
                 create: 'Crear habitación',
                 edit: 'Editar habitación',
                 delete: 'Eliminar habitación',
+                activate: 'Activar habitación',
+                deactivate: 'Desactivar habitación',
             },
             fields: {
                 number: {
@@ -1131,6 +1136,7 @@ export default {
                     delete_title: 'Eliminar habitación',
                     delete_confirm:
                         '¿Estás seguro de que deseas eliminar la habitación {number}?',
+                    open_actions: 'Abrir acciones de la habitación {number}',
                 },
                 create: {
                     heading: 'Crear habitación',

@@ -1,6 +1,8 @@
 <script setup>
 import ActionLink from '@/Components/ActionLink.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
 import Modal from '@/Components/Modal.vue';
 import PageHeader from '@/Components/PageHeader.vue';
@@ -10,8 +12,10 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import {
     BuildingOffice2Icon,
+    EllipsisVerticalIcon,
     PencilSquareIcon,
     PlusIcon,
+    PowerIcon,
     RectangleGroupIcon,
     TrashIcon,
     WrenchScrewdriverIcon,
@@ -254,19 +258,76 @@ function destroy() {
                                 >
                                     {{ t('rooms.fields.operation.label') }}
                                 </p>
-                                <div class="flex flex-wrap items-end gap-3">
-                                    <fieldset>
-                                        <legend
-                                            class="mb-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-400"
-                                        >
-                                            {{
-                                                t(
-                                                    'rooms.fields.housekeeping_status.label',
+                                <fieldset>
+                                    <legend
+                                        class="mb-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-400"
+                                    >
+                                        {{
+                                            t(
+                                                'rooms.fields.housekeeping_status.label',
+                                            )
+                                        }}
+                                    </legend>
+                                    <div
+                                        class="inline-flex max-w-full overflow-hidden rounded-lg border bg-white dark:bg-neutral-900"
+                                        :class="
+                                            room.housekeeping_status === 'clean'
+                                                ? 'border-success-300 dark:border-success-800'
+                                                : 'border-secondary-300 dark:border-secondary-800'
+                                        "
+                                    >
+                                        <input
+                                            :id="`room-${room.id}-clean`"
+                                            :checked="
+                                                room.housekeeping_status ===
+                                                'clean'
+                                            "
+                                            :name="`room-${room.id}-housekeeping-status`"
+                                            class="peer/clean sr-only"
+                                            type="radio"
+                                            value="clean"
+                                            @change="
+                                                setHousekeepingStatus(
+                                                    room,
+                                                    'clean',
                                                 )
-                                            }}
-                                        </legend>
-                                        <div
-                                            class="inline-flex max-w-full overflow-hidden rounded-lg border bg-white dark:bg-neutral-900"
+                                            "
+                                        />
+                                        <label
+                                            :for="`room-${room.id}-clean`"
+                                            class="peer-checked/clean:bg-success-50 peer-checked/clean:text-success-800 peer-focus-visible/clean:ring-primary-500 hover:bg-success-50 hover:text-success-800 dark:peer-checked/clean:bg-success-900/25 dark:peer-checked/clean:text-success-300 dark:hover:bg-success-900/25 dark:hover:text-success-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-s-[7px] px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/clean:relative peer-checked/clean:z-10 peer-focus-visible/clean:relative peer-focus-visible/clean:z-20 peer-focus-visible/clean:ring-2 peer-focus-visible/clean:ring-inset dark:text-neutral-200"
+                                        >
+                                            <CheckIcon
+                                                class="h-3.5 w-3.5 shrink-0"
+                                                :class="
+                                                    room.housekeeping_status ===
+                                                    'clean'
+                                                        ? 'opacity-100'
+                                                        : 'opacity-0'
+                                                "
+                                            />
+                                            {{ t('rooms.housekeeping.clean') }}
+                                        </label>
+                                        <input
+                                            :id="`room-${room.id}-dirty`"
+                                            :checked="
+                                                room.housekeeping_status ===
+                                                'dirty'
+                                            "
+                                            :name="`room-${room.id}-housekeeping-status`"
+                                            class="peer/dirty sr-only"
+                                            type="radio"
+                                            value="dirty"
+                                            @change="
+                                                setHousekeepingStatus(
+                                                    room,
+                                                    'dirty',
+                                                )
+                                            "
+                                        />
+                                        <label
+                                            :for="`room-${room.id}-dirty`"
+                                            class="peer-checked/dirty:bg-secondary-50 peer-checked/dirty:text-secondary-800 peer-focus-visible/dirty:ring-primary-500 hover:bg-secondary-50 hover:text-secondary-800 dark:peer-checked/dirty:bg-secondary-900/30 dark:peer-checked/dirty:text-secondary-300 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-e-[7px] border-s px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/dirty:relative peer-checked/dirty:z-10 peer-focus-visible/dirty:relative peer-focus-visible/dirty:z-20 peer-focus-visible/dirty:ring-2 peer-focus-visible/dirty:ring-inset dark:text-neutral-200"
                                             :class="
                                                 room.housekeeping_status ===
                                                 'clean'
@@ -274,131 +335,85 @@ function destroy() {
                                                     : 'border-secondary-300 dark:border-secondary-800'
                                             "
                                         >
-                                            <input
-                                                :id="`room-${room.id}-clean`"
-                                                :checked="
-                                                    room.housekeeping_status ===
-                                                    'clean'
-                                                "
-                                                :name="`room-${room.id}-housekeeping-status`"
-                                                class="peer/clean sr-only"
-                                                type="radio"
-                                                value="clean"
-                                                @change="
-                                                    setHousekeepingStatus(
-                                                        room,
-                                                        'clean',
-                                                    )
-                                                "
-                                            />
-                                            <label
-                                                :for="`room-${room.id}-clean`"
-                                                class="peer-checked/clean:bg-success-50 peer-checked/clean:text-success-800 peer-focus-visible/clean:ring-primary-500 hover:bg-success-50 hover:text-success-800 dark:peer-checked/clean:bg-success-900/25 dark:peer-checked/clean:text-success-300 dark:hover:bg-success-900/25 dark:hover:text-success-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-s-[7px] px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/clean:relative peer-checked/clean:z-10 peer-focus-visible/clean:relative peer-focus-visible/clean:z-20 peer-focus-visible/clean:ring-2 peer-focus-visible/clean:ring-inset dark:text-neutral-200"
-                                            >
-                                                <CheckIcon
-                                                    class="h-3.5 w-3.5 shrink-0"
-                                                    :class="
-                                                        room.housekeeping_status ===
-                                                        'clean'
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    "
-                                                />
-                                                {{
-                                                    t(
-                                                        'rooms.housekeeping.clean',
-                                                    )
-                                                }}
-                                            </label>
-                                            <input
-                                                :id="`room-${room.id}-dirty`"
-                                                :checked="
-                                                    room.housekeeping_status ===
-                                                    'dirty'
-                                                "
-                                                :name="`room-${room.id}-housekeeping-status`"
-                                                class="peer/dirty sr-only"
-                                                type="radio"
-                                                value="dirty"
-                                                @change="
-                                                    setHousekeepingStatus(
-                                                        room,
-                                                        'dirty',
-                                                    )
-                                                "
-                                            />
-                                            <label
-                                                :for="`room-${room.id}-dirty`"
-                                                class="peer-checked/dirty:bg-secondary-50 peer-checked/dirty:text-secondary-800 peer-focus-visible/dirty:ring-primary-500 hover:bg-secondary-50 hover:text-secondary-800 dark:peer-checked/dirty:bg-secondary-900/30 dark:peer-checked/dirty:text-secondary-300 dark:hover:bg-secondary-900/30 dark:hover:text-secondary-300 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-e-[7px] border-s px-2.5 py-1.5 text-xs font-semibold text-neutral-700 transition-colors peer-checked/dirty:relative peer-checked/dirty:z-10 peer-focus-visible/dirty:relative peer-focus-visible/dirty:z-20 peer-focus-visible/dirty:ring-2 peer-focus-visible/dirty:ring-inset dark:text-neutral-200"
+                                            <CheckIcon
+                                                class="h-3.5 w-3.5 shrink-0"
                                                 :class="
                                                     room.housekeeping_status ===
-                                                    'clean'
-                                                        ? 'border-success-300 dark:border-success-800'
-                                                        : 'border-secondary-300 dark:border-secondary-800'
+                                                    'dirty'
+                                                        ? 'opacity-100'
+                                                        : 'opacity-0'
                                                 "
-                                            >
-                                                <CheckIcon
-                                                    class="h-3.5 w-3.5 shrink-0"
-                                                    :class="
-                                                        room.housekeeping_status ===
-                                                        'dirty'
-                                                            ? 'opacity-100'
-                                                            : 'opacity-0'
-                                                    "
-                                                />
-                                                {{
-                                                    t(
-                                                        'rooms.housekeeping.dirty',
-                                                    )
-                                                }}
-                                            </label>
-                                        </div>
-                                    </fieldset>
-                                    <button
-                                        type="button"
-                                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden dark:focus-visible:ring-offset-neutral-950"
-                                        :class="
-                                            room.is_active
-                                                ? 'border-primary-200 bg-primary-50 text-primary-800 dark:border-primary-900 dark:bg-primary-950 dark:text-primary-300'
-                                                : 'border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800'
-                                        "
-                                        :aria-pressed="room.is_active"
-                                        @click="toggleActivity(room)"
-                                    >
-                                        {{
-                                            room.is_active
-                                                ? t('rooms.activity.active')
-                                                : t('rooms.activity.inactive')
-                                        }}
-                                    </button>
-                                </div>
+                                            />
+                                            {{ t('rooms.housekeeping.dirty') }}
+                                        </label>
+                                    </div>
+                                </fieldset>
                             </div>
                             <div
                                 class="flex items-center gap-2 lg:justify-end lg:self-end"
                             >
-                                <ActionLink
-                                    :href="
-                                        route('hotels.rooms.edit', [
-                                            hotel.id,
-                                            room.id,
-                                        ])
-                                    "
-                                    variant="secondary"
-                                    size="sm"
-                                >
-                                    <PencilSquareIcon class="h-4 w-4" />
-                                    <span class="lg:sr-only">{{
-                                        t('rooms.actions.edit')
-                                    }}</span>
-                                </ActionLink>
-                                <button
-                                    type="button"
-                                    class="focus-visible:ring-danger-500 border-danger-200 text-danger-700 hover:border-danger-300 hover:bg-danger-50 dark:border-danger-900 dark:text-danger-300 dark:hover:bg-danger-900/30 inline-flex min-h-11 items-center justify-center rounded-lg border bg-white px-3 py-1.5 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden sm:min-h-9 dark:bg-neutral-900 dark:focus-visible:ring-offset-neutral-950"
-                                    :aria-label="t('rooms.actions.delete')"
-                                    @click="requestDeletion(room)"
-                                >
-                                    <TrashIcon class="h-4 w-4" />
-                                </button>
+                                <Dropdown align="right" width="48">
+                                    <template #trigger>
+                                        <button
+                                            type="button"
+                                            class="focus-visible:ring-primary-500 inline-flex h-11 w-11 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-600 shadow-sm transition-colors hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none sm:h-9 sm:w-9 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                            :aria-label="
+                                                t(
+                                                    'rooms.pages.index.open_actions',
+                                                    { number: room.number },
+                                                )
+                                            "
+                                        >
+                                            <EllipsisVerticalIcon
+                                                class="h-5 w-5"
+                                            />
+                                        </button>
+                                    </template>
+
+                                    <template #content>
+                                        <button
+                                            type="button"
+                                            class="flex min-h-11 w-full items-center gap-2 px-4 py-2 text-start text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-hidden motion-reduce:transition-none dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                                            @click="toggleActivity(room)"
+                                        >
+                                            <PowerIcon class="h-4 w-4" />
+                                            {{
+                                                room.is_active
+                                                    ? t(
+                                                          'rooms.actions.deactivate',
+                                                      )
+                                                    : t(
+                                                          'rooms.actions.activate',
+                                                      )
+                                            }}
+                                        </button>
+                                        <DropdownLink
+                                            :href="
+                                                route('hotels.rooms.edit', [
+                                                    hotel.id,
+                                                    room.id,
+                                                ])
+                                            "
+                                        >
+                                            <span
+                                                class="flex items-center gap-2"
+                                            >
+                                                <PencilSquareIcon
+                                                    class="h-4 w-4"
+                                                />
+                                                {{ t('rooms.actions.edit') }}
+                                            </span>
+                                        </DropdownLink>
+                                        <button
+                                            type="button"
+                                            class="text-danger-700 hover:bg-danger-50 focus:bg-danger-50 dark:text-danger-300 dark:hover:bg-danger-900/30 dark:focus:bg-danger-900/30 flex min-h-11 w-full items-center gap-2 border-t border-neutral-200 px-4 py-2 text-start text-sm font-medium transition-colors focus:outline-hidden motion-reduce:transition-none dark:border-neutral-800"
+                                            @click="requestDeletion(room)"
+                                        >
+                                            <TrashIcon class="h-4 w-4" />
+                                            {{ t('rooms.actions.delete') }}
+                                        </button>
+                                    </template>
+                                </Dropdown>
                             </div>
                         </li>
                     </ul>

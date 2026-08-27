@@ -5,7 +5,13 @@ declare(strict_types=1);
 return [
     'title' => 'Rooms',
     'module_navigation' => 'Inventory navigation',
-    'actions' => ['create' => 'Create room', 'edit' => 'Edit room', 'delete' => 'Delete room'],
+    'actions' => [
+        'create' => 'Create room',
+        'edit' => 'Edit room',
+        'delete' => 'Delete room',
+        'activate' => 'Activate room',
+        'deactivate' => 'Deactivate room',
+    ],
     'fields' => [
         'number' => ['label' => 'Number'],
         'room_type' => ['label' => 'Type'],
@@ -28,6 +34,7 @@ return [
             'currency_required' => 'The reference rate needs a global currency. Set it now and return to the inventory.',
             'delete_title' => 'Delete room',
             'delete_confirm' => 'Are you sure you want to delete room :number?',
+            'open_actions' => 'Open actions for room :number',
         ],
         'create' => ['heading' => 'Create room', 'description' => 'Register its type, location, rate, and initial operating status.'],
         'edit' => ['heading' => 'Edit room :number', 'description' => 'Update this room’s administrative and operational details.'],

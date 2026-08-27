@@ -5,7 +5,13 @@ declare(strict_types=1);
 return [
     'title' => 'Habitaciones',
     'module_navigation' => 'Navegación del inventario',
-    'actions' => ['create' => 'Crear habitación', 'edit' => 'Editar habitación', 'delete' => 'Eliminar habitación'],
+    'actions' => [
+        'create' => 'Crear habitación',
+        'edit' => 'Editar habitación',
+        'delete' => 'Eliminar habitación',
+        'activate' => 'Activar habitación',
+        'deactivate' => 'Desactivar habitación',
+    ],
     'fields' => [
         'number' => ['label' => 'Número'], 'room_type' => ['label' => 'Tipo'], 'floor' => ['label' => 'Piso'],
         'reference_price' => ['label' => 'Tarifa de referencia'], 'housekeeping_status' => ['label' => 'Estado de limpieza'],
@@ -21,6 +27,7 @@ return [
             'currency_required_title' => 'Configura la moneda antes de registrar tarifas',
             'currency_required' => 'La tarifa de referencia necesita una moneda global. Puedes configurarla ahora y regresar al inventario.',
             'delete_title' => 'Eliminar habitación', 'delete_confirm' => '¿Estás seguro de que deseas eliminar la habitación :number?',
+            'open_actions' => 'Abrir acciones de la habitación :number',
         ],
         'create' => ['heading' => 'Crear habitación', 'description' => 'Registra su tipo, ubicación, tarifa y estado operativo inicial.'],
         'edit' => ['heading' => 'Editar habitación :number', 'description' => 'Actualiza los datos administrativos y operativos de esta habitación.'],
