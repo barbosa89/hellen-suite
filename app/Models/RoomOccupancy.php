@@ -64,9 +64,9 @@ class RoomOccupancy extends Model
     {
         return [
             'nightly_rate' => 'decimal:2',
-            'checked_in_at' => 'datetime',
-            'expected_check_out_on' => 'date',
-            'checked_out_at' => 'datetime',
+            'checked_in_at' => 'datetime:Y-m-d H:i:s',
+            'expected_check_out_on' => 'date:Y-m-d',
+            'checked_out_at' => 'datetime:Y-m-d H:i:s',
             'end_reason' => RoomOccupancyEndReason::class,
         ];
     }

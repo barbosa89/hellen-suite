@@ -67,9 +67,9 @@ class Stay extends Model
     {
         return [
             'status' => StayStatus::class,
-            'checked_in_at' => 'datetime',
-            'expected_check_out_on' => 'date',
-            'checked_out_at' => 'datetime',
+            'checked_in_at' => 'datetime:Y-m-d H:i:s',
+            'expected_check_out_on' => 'date:Y-m-d',
+            'checked_out_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 }
