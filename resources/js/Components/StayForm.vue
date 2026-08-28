@@ -1,5 +1,6 @@
 <script setup>
 import GuestFields from '@/Components/GuestFields.vue';
+import GuestLookupField from '@/Components/GuestLookupField.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -12,13 +13,12 @@ import {
     CheckIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
-    MagnifyingGlassIcon,
     UserGroupIcon,
     UserPlusIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline';
 import { useForm } from '@inertiajs/vue3';
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -30,10 +30,6 @@ const props = defineProps({
 const { t } = useI18n();
 const currentStep = ref(1);
 const flowError = ref('');
-const searchTerms = reactive({});
-const searchResults = reactive({});
-const searching = reactive({});
-const searchTimers = {};
 
 const steps = computed(() => [
     { number: 1, label: t('stays.form.steps.guests') },
@@ -150,26 +146,6 @@ function roomCanReceiveGuest(room, entry) {
     );
 }
 
-function searchGuests(entry) {
-    clearTimeout(searchTimers[entry.key]);
-    const term = searchTerms[entry.key]?.trim();
-    if (!term || term.length < 2) {
-        searchResults[entry.key] = [];
-        return;
-    }
-    searchTimers[entry.key] = setTimeout(async () => {
-        searching[entry.key] = true;
-        try {
-            const response = await fetch(
-                `${route('hotels.guests.lookup', props.hotel.id)}?search=${encodeURIComponent(term)}`,
-            );
-            const data = response.ok ? await response.json() : { guests: [] };
-            searchResults[entry.key] = data.guests ?? [];
-        } finally {
-            searching[entry.key] = false;
-        }
-    }, 250);
-}
 function selectGuest(entry, selectedGuest) {
     Object.assign(entry, {
         key: entry.key,
@@ -181,13 +157,9 @@ function selectGuest(entry, selectedGuest) {
         mobile: selectedGuest.mobile ?? '',
         email: selectedGuest.email ?? '',
     });
-    searchTerms[entry.key] = '';
-    searchResults[entry.key] = [];
 }
 function registerNew(entry) {
     Object.assign(entry, guest(entry.key));
-    searchResults[entry.key] = [];
-    searchTerms[entry.key] = '';
 }
 
 function validateGuests() {
@@ -392,62 +364,13 @@ function submit() {
                                     </button>
                                 </div>
                             </div>
-                            <div v-if="!entry.guest_id" class="relative mb-5">
-                                <InputLabel
-                                    :for="`guest-search-${entry.key}`"
-                                    :value="t('stays.form.guests.search')"
-                                />
-                                <div class="relative mt-2">
-                                    <MagnifyingGlassIcon
-                                        class="absolute start-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-500"
-                                    /><TextInput
-                                        :id="`guest-search-${entry.key}`"
-                                        v-model="searchTerms[entry.key]"
-                                        class="w-full ps-10"
-                                        autocomplete="off"
-                                        @input="searchGuests(entry)"
-                                    />
-                                </div>
-                                <p
-                                    v-if="searching[entry.key]"
-                                    class="mt-2 text-xs text-neutral-600 dark:text-neutral-400"
-                                >
-                                    {{ t('app.searching') }}
-                                </p>
-                                <ul
-                                    v-if="searchResults[entry.key]?.length"
-                                    class="absolute z-10 mt-2 max-h-52 w-full overflow-y-auto rounded-xl border border-neutral-200 bg-white p-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-900"
-                                >
-                                    <li
-                                        v-for="result in searchResults[
-                                            entry.key
-                                        ]"
-                                        :key="result.id"
-                                    >
-                                        <button
-                                            type="button"
-                                            class="focus-visible:ring-primary-500 w-full rounded-lg px-3 py-2 text-start hover:bg-neutral-100 focus-visible:ring-2 focus-visible:outline-hidden dark:hover:bg-neutral-800"
-                                            @click="selectGuest(entry, result)"
-                                        >
-                                            <span
-                                                class="block font-semibold text-neutral-950 dark:text-white"
-                                                >{{ result.first_name }}
-                                                {{ result.last_name }}</span
-                                            ><span
-                                                class="text-xs text-neutral-600 dark:text-neutral-400"
-                                                >{{
-                                                    result.identification_type
-                                                        .code
-                                                }}
-                                                ·
-                                                {{
-                                                    result.identification_number
-                                                }}</span
-                                            >
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
+                            <GuestLookupField
+                                v-if="!entry.guest_id"
+                                class="mb-5"
+                                :hotel="hotel"
+                                :id="`guest-search-${entry.key}`"
+                                @select="selectGuest(entry, $event)"
+                            />
                             <GuestFields
                                 :guest="entry"
                                 :identification-types="identificationTypes"

@@ -74,6 +74,7 @@ class StayController extends Controller
         return Inertia::render('Hotels/Stays/Show', [
             'hotel' => $hotel,
             'stay' => $stay,
+            'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
             'rooms' => $hotel->rooms()
                 ->select(['id', 'hotel_id', 'room_type_id', 'number', 'floor', 'reference_price'])
                 ->with('roomType:id,name,capacity')

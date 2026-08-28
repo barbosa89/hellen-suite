@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 return [
     'title' => 'Stays',
-    'actions' => ['create' => 'New check-in', 'check_in' => 'Confirm check-in', 'check_out' => 'Check out', 'transfer' => 'Transfer room', 'extend' => 'Change expected checkout'],
+    'actions' => ['create' => 'New check-in', 'check_in' => 'Confirm check-in', 'check_out' => 'Check out', 'transfer' => 'Transfer room', 'extend' => 'Change expected checkout', 'add_guest' => 'Add guest'],
     'fields' => ['expected_check_out_on' => ['label' => 'Expected checkout'], 'nightly_rate' => ['label' => 'Nightly rate'], 'room' => ['label' => 'Room'], 'guests' => ['label' => 'Guests']],
     'pages' => [
         'index' => ['heading' => 'Stays', 'description' => 'Manage arrivals, in-house guests, and departures for :hotel.', 'empty_title' => 'No stays have been registered', 'empty' => 'Start a check-in to register the first stay.'],
         'create' => ['heading' => 'New check-in', 'description' => 'Register the group, assign available rooms, and confirm the stay.'],
-        'show' => ['heading' => 'Stay', 'occupancies' => 'Assigned rooms', 'group' => 'Registered group', 'active' => 'Active', 'checked_out' => 'Checked out'],
+        'show' => [
+            'heading' => 'Stay',
+            'occupancies' => 'Assigned rooms',
+            'group' => 'Registered group',
+            'active' => 'Active',
+            'checked_out' => 'Checked out',
+            'add_guest_description' => 'Find or register a companion and assign them to a room with available capacity.',
+            'no_room_capacity' => 'There is no capacity available to add another guest.',
+        ],
     ],
     'form' => [
         'steps' => ['label' => 'Check-in progress', 'guests' => 'Guests', 'rooms' => 'Rooms', 'review' => 'Confirmation'],
@@ -39,6 +47,6 @@ return [
         'summary' => ['title' => 'Stay summary', 'guests' => 'Guests', 'rooms' => 'Rooms', 'no_rooms' => 'No rooms have been selected yet.'],
         'messages' => ['complete_guests' => 'Complete each guest’s required information before continuing.', 'select_check_out' => 'Set the expected checkout date.', 'select_room' => 'Select at least one available room.', 'assign_guests' => 'Assign every guest to a room without exceeding capacity.'],
     ],
-    'messages' => ['checked_in' => 'Check-in registered successfully.', 'checked_out' => 'The stay was closed and rooms now need cleaning.', 'expected_check_out_updated' => 'Expected checkout was updated.', 'room_transferred' => 'Room transferred successfully.'],
-    'validation' => ['responsible_required' => 'Select a valid responsible guest.', 'unknown_guest' => 'The assignment includes a guest not in the group.', 'assign_every_guest_once' => 'Every guest must be assigned to exactly one room.', 'duplicate_guest' => 'A guest with this document already exists; find and select them.', 'room_unavailable' => 'The room is no longer available for this stay.', 'room_capacity' => 'The assignment exceeds the room capacity.', 'stay_closed' => 'The stay is already closed.', 'occupancy_closed' => 'The selected occupancy is already closed.'],
+    'messages' => ['checked_in' => 'Check-in registered successfully.', 'checked_out' => 'The stay was closed and rooms now need cleaning.', 'expected_check_out_updated' => 'Expected checkout was updated.', 'room_transferred' => 'Room transferred successfully.', 'guest_added' => 'Guest added to the stay successfully.'],
+    'validation' => ['responsible_required' => 'Select a valid responsible guest.', 'unknown_guest' => 'The assignment includes a guest not in the group.', 'assign_every_guest_once' => 'Every guest must be assigned to exactly one room.', 'duplicate_guest' => 'A guest with this document already exists; find and select them.', 'room_unavailable' => 'The room is no longer available for this stay.', 'room_capacity' => 'The assignment exceeds the room capacity.', 'stay_closed' => 'The stay is already closed.', 'occupancy_closed' => 'The selected occupancy is already closed.', 'occupancy_invalid' => 'The selected room is not assigned to this stay.', 'guest_already_in_stay' => 'This guest is already registered in the stay.'],
 ];

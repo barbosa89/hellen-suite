@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 return [
     'title' => 'Estancias',
-    'actions' => ['create' => 'Nuevo check-in', 'check_in' => 'Confirmar check-in', 'check_out' => 'Dar salida', 'transfer' => 'Trasladar habitación', 'extend' => 'Cambiar salida esperada'],
+    'actions' => ['create' => 'Nuevo check-in', 'check_in' => 'Confirmar check-in', 'check_out' => 'Dar salida', 'transfer' => 'Trasladar habitación', 'extend' => 'Cambiar salida esperada', 'add_guest' => 'Agregar huésped'],
     'fields' => ['expected_check_out_on' => ['label' => 'Salida esperada'], 'nightly_rate' => ['label' => 'Tarifa nocturna'], 'room' => ['label' => 'Habitación'], 'guests' => ['label' => 'Huéspedes']],
     'pages' => [
         'index' => ['heading' => 'Estancias', 'description' => 'Gestiona llegadas, huéspedes alojados y salidas de :hotel.', 'empty_title' => 'No hay estancias registradas', 'empty' => 'Inicia un check-in para registrar la primera estancia.'],
         'create' => ['heading' => 'Nuevo check-in', 'description' => 'Registra el grupo, asigna habitaciones disponibles y confirma la estancia.'],
-        'show' => ['heading' => 'Estancia', 'occupancies' => 'Habitaciones asignadas', 'group' => 'Grupo registrado', 'active' => 'Activa', 'checked_out' => 'Finalizada'],
+        'show' => [
+            'heading' => 'Estancia',
+            'occupancies' => 'Habitaciones asignadas',
+            'group' => 'Grupo registrado',
+            'active' => 'Activa',
+            'checked_out' => 'Finalizada',
+            'add_guest_description' => 'Busca o registra un acompañante y asígnalo a una habitación con cupo disponible.',
+            'no_room_capacity' => 'No hay cupo disponible para agregar otro huésped.',
+        ],
     ],
     'form' => [
         'steps' => ['label' => 'Progreso del check-in', 'guests' => 'Huéspedes', 'rooms' => 'Habitaciones', 'review' => 'Confirmación'],
@@ -39,6 +47,6 @@ return [
         'summary' => ['title' => 'Resumen de estancia', 'guests' => 'Huéspedes', 'rooms' => 'Habitaciones', 'no_rooms' => 'Aún no hay habitaciones seleccionadas.'],
         'messages' => ['complete_guests' => 'Completa los datos obligatorios de cada huésped antes de continuar.', 'select_check_out' => 'Indica la fecha esperada de salida.', 'select_room' => 'Selecciona al menos una habitación disponible.', 'assign_guests' => 'Asigna cada huésped a una habitación sin exceder su capacidad.'],
     ],
-    'messages' => ['checked_in' => 'Check-in registrado con éxito.', 'checked_out' => 'La estancia fue cerrada y las habitaciones quedaron pendientes de limpieza.', 'expected_check_out_updated' => 'La salida esperada fue actualizada.', 'room_transferred' => 'La habitación fue trasladada con éxito.'],
-    'validation' => ['responsible_required' => 'Selecciona un huésped responsable válido.', 'unknown_guest' => 'La asignación contiene un huésped que no pertenece al grupo.', 'assign_every_guest_once' => 'Cada huésped debe estar asignado a exactamente una habitación.', 'duplicate_guest' => 'Ya existe un huésped con este documento; búscalo y selecciónalo.', 'room_unavailable' => 'La habitación ya no está disponible para esta estancia.', 'room_capacity' => 'La asignación supera la capacidad de la habitación.', 'stay_closed' => 'La estancia ya se encuentra cerrada.', 'occupancy_closed' => 'La ocupación seleccionada ya se encuentra cerrada.'],
+    'messages' => ['checked_in' => 'Check-in registrado con éxito.', 'checked_out' => 'La estancia fue cerrada y las habitaciones quedaron pendientes de limpieza.', 'expected_check_out_updated' => 'La salida esperada fue actualizada.', 'room_transferred' => 'La habitación fue trasladada con éxito.', 'guest_added' => 'El huésped fue agregado a la estancia con éxito.'],
+    'validation' => ['responsible_required' => 'Selecciona un huésped responsable válido.', 'unknown_guest' => 'La asignación contiene un huésped que no pertenece al grupo.', 'assign_every_guest_once' => 'Cada huésped debe estar asignado a exactamente una habitación.', 'duplicate_guest' => 'Ya existe un huésped con este documento; búscalo y selecciónalo.', 'room_unavailable' => 'La habitación ya no está disponible para esta estancia.', 'room_capacity' => 'La asignación supera la capacidad de la habitación.', 'stay_closed' => 'La estancia ya se encuentra cerrada.', 'occupancy_closed' => 'La ocupación seleccionada ya se encuentra cerrada.', 'occupancy_invalid' => 'La habitación seleccionada no pertenece a esta estancia.', 'guest_already_in_stay' => 'Este huésped ya está registrado en la estancia.'],
 ];

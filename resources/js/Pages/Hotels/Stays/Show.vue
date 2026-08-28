@@ -1,4 +1,6 @@
 <script setup>
+import GuestFields from '@/Components/GuestFields.vue';
+import GuestLookupField from '@/Components/GuestLookupField.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
@@ -11,6 +13,7 @@ import {
     ArrowPathIcon,
     ArrowsRightLeftIcon,
     CheckIcon,
+    UserPlusIcon,
 } from '@heroicons/vue/24/outline';
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
@@ -20,17 +23,39 @@ const props = defineProps({
     hotel: Object,
     stay: Object,
     rooms: Array,
+    identificationTypes: Array,
     currency: String,
 });
 const { t } = useI18n();
 const isTransferOpen = ref(false);
+const isGuestModalOpen = ref(false);
 const selectedOccupancy = ref(null);
 const expectedCheckOutForm = useForm({
     expected_check_out_on: props.stay.expected_check_out_on,
 });
 const checkOutForm = useForm({});
 const transferForm = useForm({ room_id: '', nightly_rate: '' });
+const guestForm = useForm({
+    room_occupancy_id: '',
+    guest_id: null,
+    first_name: '',
+    last_name: '',
+    identification_type_id: '',
+    identification_number: '',
+    mobile: '',
+    email: '',
+});
 const isActive = computed(() => props.stay.status === 'active');
+const availableOccupancies = computed(() =>
+    props.stay.room_occupancies.filter(
+        (occupancy) =>
+            !occupancy.checked_out_at &&
+            occupancy.guests.length < occupancy.room.room_type.capacity,
+    ),
+);
+const stayGuestIds = computed(() =>
+    props.stay.stay_guests.map((stayGuest) => stayGuest.guest.id),
+);
 
 function updateExpectedCheckOut() {
     expectedCheckOutForm.patch(
@@ -71,6 +96,50 @@ function transfer() {
             onSuccess: () => {
                 isTransferOpen.value = false;
             },
+        },
+    );
+}
+
+function resetGuestForm() {
+    guestForm.reset();
+    guestForm.clearErrors();
+}
+
+function openGuestModal() {
+    resetGuestForm();
+    isGuestModalOpen.value = true;
+}
+
+function closeGuestModal() {
+    isGuestModalOpen.value = false;
+    resetGuestForm();
+}
+
+function selectGuest(guest) {
+    Object.assign(guestForm, {
+        guest_id: guest.id,
+        first_name: guest.first_name,
+        last_name: guest.last_name,
+        identification_type_id: guest.identification_type_id,
+        identification_number: guest.identification_number,
+        mobile: guest.mobile ?? '',
+        email: guest.email ?? '',
+    });
+}
+
+function registerNewGuest() {
+    const roomOccupancyId = guestForm.room_occupancy_id;
+
+    resetGuestForm();
+    guestForm.room_occupancy_id = roomOccupancyId;
+}
+
+function addGuest() {
+    guestForm.post(
+        route('hotels.stays.guests.store', [props.hotel.id, props.stay.id]),
+        {
+            preserveScroll: true,
+            onSuccess: closeGuestModal,
         },
     );
 }
@@ -233,13 +302,30 @@ function transfer() {
                     class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"
                 >
                     <div
-                        class="border-b border-neutral-200 px-5 py-5 sm:px-7 dark:border-neutral-800"
+                        class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 px-5 py-5 sm:px-7 dark:border-neutral-800"
                     >
-                        <h2
-                            class="text-lg font-semibold text-neutral-950 dark:text-white"
+                        <div>
+                            <h2
+                                class="text-lg font-semibold text-neutral-950 dark:text-white"
+                            >
+                                {{ t('stays.pages.show.group') }}
+                            </h2>
+                            <p
+                                v-if="isActive && !availableOccupancies.length"
+                                class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ t('stays.pages.show.no_room_capacity') }}
+                            </p>
+                        </div>
+                        <PrimaryButton
+                            v-if="isActive"
+                            type="button"
+                            :disabled="!availableOccupancies.length"
+                            @click="openGuestModal"
                         >
-                            {{ t('stays.pages.show.group') }}
-                        </h2>
+                            <UserPlusIcon class="h-4 w-4" />
+                            {{ t('stays.actions.add_guest') }}
+                        </PrimaryButton>
                     </div>
                     <ul
                         class="divide-y divide-neutral-200 dark:divide-neutral-800"
@@ -266,6 +352,116 @@ function transfer() {
                 </section>
             </div>
         </div>
+
+        <Modal
+            :show="isGuestModalOpen"
+            max-width="2xl"
+            @close="closeGuestModal"
+        >
+            <form class="grid gap-6 p-6" @submit.prevent="addGuest">
+                <div>
+                    <h2
+                        class="text-xl font-semibold text-neutral-950 dark:text-white"
+                    >
+                        {{ t('stays.actions.add_guest') }}
+                    </h2>
+                    <p
+                        class="mt-2 text-sm leading-6 text-neutral-600 dark:text-neutral-400"
+                    >
+                        {{ t('stays.pages.show.add_guest_description') }}
+                    </p>
+                </div>
+
+                <div class="grid gap-2">
+                    <InputLabel
+                        for="guest-room-occupancy"
+                        :value="t('stays.form.rooms.assign_label')"
+                        required
+                    />
+                    <select
+                        id="guest-room-occupancy"
+                        v-model="guestForm.room_occupancy_id"
+                        class="focus:border-primary-500 focus:ring-primary-500/20 min-h-11 rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm focus:ring-2 focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-100"
+                    >
+                        <option value="" disabled>
+                            {{ t('stays.form.rooms.assign_placeholder') }}
+                        </option>
+                        <option
+                            v-for="occupancy in availableOccupancies"
+                            :key="occupancy.id"
+                            :value="occupancy.id"
+                        >
+                            {{ occupancy.room.number }} ·
+                            {{ occupancy.room.room_type.name }} ·
+                            {{ occupancy.guests.length }}/{{
+                                occupancy.room.room_type.capacity
+                            }}
+                        </option>
+                    </select>
+                    <InputError :message="guestForm.errors.room_occupancy_id" />
+                </div>
+
+                <div v-if="guestForm.guest_id" class="grid gap-3">
+                    <div
+                        class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800"
+                    >
+                        <div>
+                            <p
+                                class="font-semibold text-neutral-950 dark:text-white"
+                            >
+                                {{ guestForm.first_name }}
+                                {{ guestForm.last_name }}
+                            </p>
+                            <p
+                                class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ guestForm.identification_number }}
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            class="text-primary-700 hover:text-primary-800 dark:text-primary-300 text-sm font-semibold"
+                            @click="registerNewGuest"
+                        >
+                            {{ t('stays.form.guests.new_guest') }}
+                        </button>
+                    </div>
+                    <InputError :message="guestForm.errors.guest_id" />
+                </div>
+
+                <GuestLookupField
+                    v-else
+                    :hotel="hotel"
+                    :excluded-guest-ids="stayGuestIds"
+                    id="stay-guest-search"
+                    @select="selectGuest"
+                />
+
+                <GuestFields
+                    :guest="guestForm"
+                    :identification-types="identificationTypes"
+                    :errors="guestForm.errors"
+                    id-prefix="stay-guest"
+                    :disabled="Boolean(guestForm.guest_id)"
+                    @update:guest="Object.assign(guestForm, $event)"
+                />
+
+                <div
+                    class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"
+                >
+                    <SecondaryButton type="button" @click="closeGuestModal">
+                        {{ t('app.cancel') }}
+                    </SecondaryButton>
+                    <PrimaryButton
+                        type="submit"
+                        :disabled="guestForm.processing"
+                    >
+                        <UserPlusIcon class="h-4 w-4" />
+                        {{ t('stays.actions.add_guest') }}
+                    </PrimaryButton>
+                </div>
+            </form>
+        </Modal>
 
         <Modal
             :show="isTransferOpen"

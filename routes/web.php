@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\StayGuestController;
 use App\Http\Controllers\CheckOutStayController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestLookupController;
@@ -57,10 +58,17 @@ Route::patch('/hotels/{hotel}/stays/{stay}/expected-check-out', UpdateStayExpect
     ->scopeBindings()
     ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.expected-check-out.update');
+
 Route::post('/hotels/{hotel}/stays/{stay}/check-out', CheckOutStayController::class)
     ->scopeBindings()
     ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.check-out');
+
+    Route::post('/hotels/{hotel}/stays/{stay}/guests', StayGuestController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.stays.guests.store');
+
 Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/transfer', TransferRoomOccupancyController::class)
     ->scopeBindings()
     ->middleware(EnsureCurrencyConfigured::class)
@@ -69,6 +77,7 @@ Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/trans
 Route::patch('/hotels/{hotel}/rooms/{room}/toggle', [RoomController::class, 'toggle'])
     ->scopeBindings()
     ->name('hotels.rooms.toggle');
+
 Route::patch('/hotels/{hotel}/rooms/{room}/housekeeping-status', UpdateRoomHousekeepingStatusController::class)
     ->scopeBindings()
     ->name('hotels.rooms.housekeeping-status.update');
