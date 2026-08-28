@@ -1,7 +1,7 @@
 <script setup>
-import StayForm from '@/Components/StayForm.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import StayForm from '@/Pages/Hotels/Stays/Components/StayForm.vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 

@@ -7,9 +7,9 @@ import FlashMessage from '@/Components/FlashMessage.vue';
 import Modal from '@/Components/Modal.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination.vue';
-import RoomModuleTabs from '@/Components/RoomModuleTabs.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import RoomModuleTabs from '@/Pages/Hotels/Rooms/Components/RoomModuleTabs.vue';
 import {
     BuildingOffice2Icon,
     EllipsisVerticalIcon,

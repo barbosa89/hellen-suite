@@ -1,6 +1,6 @@
 <script setup>
 import ActionLink from '@/Components/ActionLink.vue';
-import GuestFields from '@/Components/GuestFields.vue';
+import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { CheckIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline';
 import { useForm } from '@inertiajs/vue3';

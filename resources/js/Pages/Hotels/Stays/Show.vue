@@ -1,6 +1,4 @@
 <script setup>
-import GuestFields from '@/Components/GuestFields.vue';
-import GuestLookupField from '@/Components/GuestLookupField.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
@@ -9,6 +7,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
+import GuestLookupField from '@/Pages/Hotels/Guests/Components/GuestLookupField.vue';
 import {
     ArrowPathIcon,
     ArrowsRightLeftIcon,

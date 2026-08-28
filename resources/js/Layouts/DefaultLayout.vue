@@ -1,8 +1,8 @@
 <script setup>
-import HotelAvatar from '@/Components/HotelAvatar.vue';
 import LocaleDropdown from '@/Components/LocaleDropdown.vue';
 import Sidebar from '@/Components/Sidebar.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
+import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import { Bars3Icon, Cog6ToothIcon } from '@heroicons/vue/24/outline';
 import { Link } from '@inertiajs/vue3';
 import { nextTick, onMounted, ref, watch } from 'vue';

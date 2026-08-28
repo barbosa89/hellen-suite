@@ -3,12 +3,12 @@ import ActionLink from '@/Components/ActionLink.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import HotelAvatar from '@/Components/HotelAvatar.vue';
 import Modal from '@/Components/Modal.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import HotelLayout from '@/Layouts/HotelLayout.vue';
+import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowTopRightOnSquareIcon,
     BuildingOffice2Icon,

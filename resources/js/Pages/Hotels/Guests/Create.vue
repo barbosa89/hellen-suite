@@ -1,7 +1,7 @@
 <script setup>
-import GuestForm from '@/Components/GuestForm.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import GuestForm from '@/Pages/Hotels/Guests/Components/GuestForm.vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 defineProps({ hotel: Object, identificationTypes: Array });

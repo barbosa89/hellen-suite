@@ -1,6 +1,6 @@
 <script setup>
-import GuestFields from '@/Components/GuestFields.vue';
-import GuestLookupField from '@/Components/GuestLookupField.vue';
+import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
+import GuestLookupField from '@/Pages/Hotels/Guests/Components/GuestLookupField.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';

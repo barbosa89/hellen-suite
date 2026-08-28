@@ -1,7 +1,7 @@
 <script setup>
 import PageHeader from '@/Components/PageHeader.vue';
-import RoomTypeForm from '@/Components/RoomTypeForm.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import RoomTypeForm from '@/Pages/Hotels/Rooms/Components/RoomTypeForm.vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 

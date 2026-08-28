@@ -1,6 +1,6 @@
 <script setup>
 import ActionLink from '@/Components/ActionLink.vue';
-import HotelAvatar from '@/Components/HotelAvatar.vue';
+import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';

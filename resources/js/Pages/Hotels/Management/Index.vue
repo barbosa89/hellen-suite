@@ -1,8 +1,8 @@
 <script setup>
 import ActionLink from '@/Components/ActionLink.vue';
-import HotelAvatar from '@/Components/HotelAvatar.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowTopRightOnSquareIcon,
     BuildingOffice2Icon,

@@ -1,6 +1,6 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import HotelAvatar from '@/Components/HotelAvatar.vue';
+import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowLeftIcon,
     CalendarDaysIcon,
