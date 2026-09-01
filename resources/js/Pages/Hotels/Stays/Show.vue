@@ -22,11 +22,12 @@ import { useI18n } from 'vue-i18n';
 const props = defineProps({
     hotel: Object,
     stay: Object,
+    stayCostSummary: Object,
     rooms: Array,
     identificationTypes: Array,
     currency: String,
 });
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const isTransferOpen = ref(false);
 const isGuestModalOpen = ref(false);
 const selectedOccupancy = ref(null);
@@ -56,6 +57,27 @@ const availableOccupancies = computed(() =>
 const stayGuestIds = computed(() =>
     props.stay.stay_guests.map((stayGuest) => stayGuest.guest.id),
 );
+const costItemsByOccupancyId = computed(() =>
+    Object.fromEntries(
+        props.stayCostSummary.items.map((item) => [
+            item.room_occupancy_id,
+            item,
+        ]),
+    ),
+);
+
+function formatMoney(value) {
+    return new Intl.NumberFormat(locale.value === 'es' ? 'es-CO' : 'en-US', {
+        style: 'currency',
+        currency: props.currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(Number(value));
+}
+
+function formatNights(count) {
+    return t('stays.pages.show.costs.nights_count', { count });
+}
 
 function updateExpectedCheckOut() {
     expectedCheckOutForm.patch(
@@ -173,6 +195,182 @@ function addGuest() {
                 </PageHeader>
 
                 <section
+                    class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"
+                >
+                    <div
+                        class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(18rem,0.75fr)_minmax(0,1.25fr)] lg:gap-0"
+                    >
+                        <div class="grid content-start gap-5 lg:pr-7">
+                            <div>
+                                <h2
+                                    class="text-lg font-semibold text-neutral-950 dark:text-white"
+                                >
+                                    {{ t('stays.pages.show.costs.heading') }}
+                                </h2>
+                                <p
+                                    class="mt-1 max-w-prose text-sm text-neutral-600 dark:text-neutral-400"
+                                >
+                                    {{
+                                        stayCostSummary.is_estimate
+                                            ? t(
+                                                  'stays.pages.show.costs.estimate_description',
+                                              )
+                                            : t(
+                                                  'stays.pages.show.costs.final_description',
+                                              )
+                                    }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p
+                                    class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
+                                >
+                                    {{
+                                        stayCostSummary.is_estimate
+                                            ? t(
+                                                  'stays.pages.show.costs.estimated_total',
+                                              )
+                                            : t('stays.pages.show.costs.total')
+                                    }}
+                                </p>
+                                <p
+                                    class="mt-2 text-3xl font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                >
+                                    {{
+                                        formatMoney(
+                                            stayCostSummary.total_amount,
+                                        )
+                                    }}
+                                </p>
+                            </div>
+
+                            <dl
+                                class="grid grid-cols-2 gap-4 border-t border-neutral-200 pt-5 dark:border-neutral-800"
+                            >
+                                <div>
+                                    <dt
+                                        class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                    >
+                                        {{
+                                            t(
+                                                'stays.pages.show.costs.billable_nights',
+                                            )
+                                        }}
+                                    </dt>
+                                    <dd
+                                        class="mt-1 text-sm font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                    >
+                                        {{
+                                            formatNights(
+                                                stayCostSummary.total_nights,
+                                            )
+                                        }}
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt
+                                        class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                    >
+                                        {{
+                                            t('stays.pages.show.costs.currency')
+                                        }}
+                                    </dt>
+                                    <dd
+                                        class="mt-1 text-sm font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                    >
+                                        {{ currency }}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <div
+                            class="border-t border-neutral-200 pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-7 dark:border-neutral-800"
+                        >
+                            <div
+                                class="grid grid-cols-[minmax(0,1fr)_auto] gap-4 pb-3 text-xs font-semibold text-neutral-600 dark:text-neutral-400"
+                            >
+                                <span>{{
+                                    t('stays.pages.show.costs.room_period')
+                                }}</span>
+                                <span>{{
+                                    t('stays.pages.show.costs.subtotal')
+                                }}</span>
+                            </div>
+                            <ul
+                                class="divide-y divide-neutral-200 border-t border-neutral-200 dark:divide-neutral-800 dark:border-neutral-800"
+                            >
+                                <li
+                                    v-for="occupancy in stay.room_occupancies"
+                                    :key="`cost-${occupancy.id}`"
+                                    class="grid grid-cols-[minmax(0,1fr)_auto] gap-4 py-4"
+                                >
+                                    <div class="min-w-0">
+                                        <p
+                                            class="font-medium text-neutral-950 dark:text-white"
+                                        >
+                                            {{ occupancy.room.number }} ·
+                                            {{ occupancy.room.room_type.name }}
+                                        </p>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
+                                        >
+                                            {{
+                                                costItemsByOccupancyId[
+                                                    occupancy.id
+                                                ].period_start_on
+                                            }}
+                                            -
+                                            {{
+                                                costItemsByOccupancyId[
+                                                    occupancy.id
+                                                ].period_end_on
+                                            }}
+                                        </p>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
+                                        >
+                                            {{
+                                                formatNights(
+                                                    costItemsByOccupancyId[
+                                                        occupancy.id
+                                                    ].billable_nights,
+                                                )
+                                            }}
+                                            ·
+                                            {{
+                                                formatMoney(
+                                                    costItemsByOccupancyId[
+                                                        occupancy.id
+                                                    ].nightly_rate,
+                                                )
+                                            }}
+                                            {{
+                                                t(
+                                                    'stays.pages.show.costs.per_night',
+                                                )
+                                            }}
+                                        </p>
+                                    </div>
+                                    <p
+                                        class="text-right font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                    >
+                                        {{
+                                            formatMoney(
+                                                costItemsByOccupancyId[
+                                                    occupancy.id
+                                                ].subtotal_amount,
+                                            )
+                                        }}
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section
                     v-if="isActive"
                     class="grid gap-5 rounded-2xl bg-white p-5 shadow-sm sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end dark:bg-neutral-900"
                 >
@@ -281,7 +479,7 @@ function addGuest() {
                                 <p
                                     class="mt-2 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
                                 >
-                                    {{ occupancy.nightly_rate }}
+                                    {{ formatMoney(occupancy.nightly_rate) }}
                                     {{ currency }} ·
                                     {{ occupancy.expected_check_out_on }}
                                 </p>

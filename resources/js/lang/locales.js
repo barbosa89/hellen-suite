@@ -429,6 +429,19 @@ export default {
                     "group": "Registered group",
                     "active": "Active",
                     "checked_out": "Checked out",
+                    "costs": {
+                        "heading": "Stay costs",
+                        "estimate_description": "Projected lodging charges using the expected checkout date.",
+                        "final_description": "Final lodging charges from the actual occupied nights.",
+                        "estimated_total": "Estimated lodging total",
+                        "total": "Lodging total",
+                        "billable_nights": "Billable nights",
+                        "currency": "Currency",
+                        "room_period": "Room and period",
+                        "subtotal": "Subtotal",
+                        "per_night": "per night",
+                        "nights_count": "{count} night|{count} nights"
+                    },
                     "add_guest_description": "Find or register a companion and assign them to a room with available capacity.",
                     "no_room_capacity": "There is no capacity available to add another guest."
                 }
@@ -1109,6 +1122,19 @@ export default {
                     "group": "Grupo registrado",
                     "active": "Activa",
                     "checked_out": "Finalizada",
+                    "costs": {
+                        "heading": "Costos de la estancia",
+                        "estimate_description": "Cargos de hospedaje proyectados con la salida esperada.",
+                        "final_description": "Cargos finales de hospedaje según las noches ocupadas.",
+                        "estimated_total": "Total estimado de hospedaje",
+                        "total": "Total de hospedaje",
+                        "billable_nights": "Noches cobrables",
+                        "currency": "Moneda",
+                        "room_period": "Habitación y periodo",
+                        "subtotal": "Subtotal",
+                        "per_night": "por noche",
+                        "nights_count": "{count} noche|{count} noches"
+                    },
                     "add_guest_description": "Busca o registra un acompañante y asígnalo a una habitación con cupo disponible.",
                     "no_room_capacity": "No hay cupo disponible para agregar otro huésped."
                 }
