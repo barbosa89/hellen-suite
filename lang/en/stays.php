@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 return [
     'title' => 'Stays',
-    'actions' => ['create' => 'New check-in', 'check_in' => 'Confirm check-in', 'check_out' => 'Check out', 'transfer' => 'Transfer room', 'extend' => 'Change expected checkout', 'add_guest' => 'Add guest'],
+    'actions' => [
+        'create' => 'New check-in',
+        'check_in' => 'Confirm check-in',
+        'check_out' => 'Check out',
+        'transfer' => 'Transfer room',
+        'extend' => 'Change expected checkout',
+        'add_guest' => 'Add guest',
+        'view' => 'View stay',
+    ],
     'fields' => ['expected_check_out_on' => ['label' => 'Expected checkout'], 'nightly_rate' => ['label' => 'Nightly rate'], 'room' => ['label' => 'Room'], 'guests' => ['label' => 'Guests']],
     'pages' => [
         'index' => ['heading' => 'Stays', 'description' => 'Manage arrivals, in-house guests, and departures for :hotel.', 'empty_title' => 'No stays have been registered', 'empty' => 'Start a check-in to register the first stay.'],

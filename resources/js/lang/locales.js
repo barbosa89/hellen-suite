@@ -395,7 +395,8 @@ export default {
                 "check_out": "Check out",
                 "transfer": "Transfer room",
                 "extend": "Change expected checkout",
-                "add_guest": "Add guest"
+                "add_guest": "Add guest",
+                "view": "View stay"
             },
             "fields": {
                 "expected_check_out_on": {
@@ -1074,7 +1075,8 @@ export default {
                 "check_out": "Dar salida",
                 "transfer": "Trasladar habitación",
                 "extend": "Cambiar salida esperada",
-                "add_guest": "Agregar huésped"
+                "add_guest": "Agregar huésped",
+                "view": "Ver estancia"
             },
             "fields": {
                 "expected_check_out_on": {

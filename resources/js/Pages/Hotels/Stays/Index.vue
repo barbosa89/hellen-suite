@@ -111,7 +111,7 @@ const { t } = useI18n();
                                 variant="secondary"
                                 size="sm"
                             >
-                                {{ t('guests.actions.view') }}
+                                {{ t('stays.actions.view') }}
                                 <ArrowRightIcon class="h-4 w-4" />
                             </ActionLink>
                         </li>

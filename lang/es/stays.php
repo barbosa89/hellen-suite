@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 return [
     'title' => 'Estancias',
-    'actions' => ['create' => 'Nuevo check-in', 'check_in' => 'Confirmar check-in', 'check_out' => 'Dar salida', 'transfer' => 'Trasladar habitación', 'extend' => 'Cambiar salida esperada', 'add_guest' => 'Agregar huésped'],
+    'actions' => [
+        'create' => 'Nuevo check-in',
+        'check_in' => 'Confirmar check-in',
+        'check_out' => 'Dar salida',
+        'transfer' => 'Trasladar habitación',
+        'extend' => 'Cambiar salida esperada',
+        'add_guest' => 'Agregar huésped',
+        'view' => 'Ver estancia',
+    ],
     'fields' => ['expected_check_out_on' => ['label' => 'Salida esperada'], 'nightly_rate' => ['label' => 'Tarifa nocturna'], 'room' => ['label' => 'Habitación'], 'guests' => ['label' => 'Huéspedes']],
     'pages' => [
         'index' => ['heading' => 'Estancias', 'description' => 'Gestiona llegadas, huéspedes alojados y salidas de :hotel.', 'empty_title' => 'No hay estancias registradas', 'empty' => 'Inicia un check-in para registrar la primera estancia.'],
