@@ -19,7 +19,7 @@
         "lodash": "^4.17.21",
         "moment": "^2.30.01",
         "pretty-checkbox": "^3.0.3",
-        "sass": "^1.80.6",
+        "sass": "^1.104.0",
         "sweetalert2": "^11.6.13",
         "tinymce": "^7.4.1",
         "vite": "^5.0.0",
