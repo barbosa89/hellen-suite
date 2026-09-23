@@ -15,21 +15,19 @@ use App\Models\RoomOccupancy;
 use App\Models\RoomType;
 use App\Models\Stay;
 use App\Models\StayGuest;
-use App\Settings\GeneralSettings;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class StayOperationsTest extends TestCase
+class StayOperationsTest extends OperationalTestCase
 {
     use RefreshDatabase;
 
     #[Test]
     public function it_updates_the_expected_check_out_for_an_active_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay] = $this->activeStay();
         $expectedCheckOut = now()->addDays(3)->toDateString();
 
@@ -44,7 +42,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_checks_out_a_stay_and_sends_the_room_to_housekeeping(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
 
         $this->post(route('hotels.stays.check-out', [$hotel, $stay]))
@@ -59,7 +56,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_transfers_an_active_room_occupancy_without_fragmenting_the_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $newRoom = Room::factory()->for($hotel)->for($occupancy->room->roomType)->create(['number' => '202']);
 
@@ -86,7 +82,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_enforces_one_guest_assignment_per_room_occupancy(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [, , $occupancy] = $this->activeStay();
 
         $guestId = $occupancy->guests()->sole()->id;
@@ -99,7 +94,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_prevents_a_second_check_out(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay] = $this->activeStay();
 
         $this->post(route('hotels.stays.check-out', [$hotel, $stay]))->assertSessionHasNoErrors();
@@ -110,7 +104,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_summarizes_final_lodging_costs_for_a_checked_out_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $stay->update([
             'status' => StayStatus::CheckedOut,
@@ -144,7 +137,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_charges_at_least_one_night_for_same_day_checkout(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $stay->update([
             'status' => StayStatus::CheckedOut,
@@ -172,7 +164,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_summarizes_active_stay_costs_as_an_estimate(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $stay->update([
             'checked_in_at' => '2026-08-25 14:00:00',
@@ -196,7 +187,6 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_sums_lodging_costs_across_transferred_room_occupancies(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $firstOccupancy] = $this->activeStay();
         $secondRoom = Room::factory()->for($hotel)->for($firstOccupancy->room->roomType)->create(['number' => '202']);
         $stay->update([

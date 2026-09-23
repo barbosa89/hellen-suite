@@ -6,13 +6,12 @@ namespace Tests\Feature\Reservations;
 
 use App\Constants\ReservationStatus;
 use App\Models\Reservation;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ReservationIndexTest extends TestCase
+class ReservationIndexTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -20,7 +19,6 @@ class ReservationIndexTest extends TestCase
     #[Test]
     public function it_lists_only_the_selected_hotels_reservations_and_filters_by_status(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation] = $this->reservationWithDetails(ReservationStatus::Confirmed);
         Reservation::factory()->create();
 

@@ -6,12 +6,11 @@ namespace Tests\Feature\Reservations;
 
 use App\Constants\ReservationStatus;
 use App\Models\Guest;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ConfirmReservationTest extends TestCase
+class ConfirmReservationTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -19,7 +18,6 @@ class ConfirmReservationTest extends TestCase
     #[Test]
     public function it_confirms_a_draft_and_blocks_an_overlapping_reservation(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation, $room] = $this->reservationWithDetails();
 
         $this->patch(route('hotels.reservations.confirm', [$reservation->hotel, $reservation]))
@@ -37,7 +35,6 @@ class ConfirmReservationTest extends TestCase
     #[Test]
     public function it_allows_adjacent_confirmed_reservations(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$firstReservation, $room] = $this->reservationWithDetails(
             ReservationStatus::Confirmed,
             now()->addDay()->toDateString(),

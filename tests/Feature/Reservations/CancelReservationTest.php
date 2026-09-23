@@ -6,12 +6,11 @@ namespace Tests\Feature\Reservations;
 
 use App\Constants\ReservationStatus;
 use App\Models\Guest;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class CancelReservationTest extends TestCase
+class CancelReservationTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -19,7 +18,6 @@ class CancelReservationTest extends TestCase
     #[Test]
     public function it_cancels_a_confirmed_reservation_and_releases_the_room(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation, $room] = $this->reservationWithDetails(ReservationStatus::Confirmed);
 
         $this->patch(route('hotels.reservations.cancel', [$reservation->hotel, $reservation]))

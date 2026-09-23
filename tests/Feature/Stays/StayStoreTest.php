@@ -14,19 +14,17 @@ use App\Models\Room;
 use App\Models\RoomOccupancy;
 use App\Models\RoomType;
 use App\Models\Stay;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class StayStoreTest extends TestCase
+class StayStoreTest extends OperationalTestCase
 {
     use RefreshDatabase;
 
     #[Test]
     public function it_checks_in_a_group_with_existing_and_new_guests(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $identificationType = IdentificationType::factory()->create();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
@@ -67,7 +65,6 @@ class StayStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_dirty_or_occupied_room(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $identificationType = IdentificationType::factory()->create();
         $guest = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
@@ -81,7 +78,6 @@ class StayStoreTest extends TestCase
     #[Test]
     public function it_rejects_an_assignment_over_room_capacity(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $identificationType = IdentificationType::factory()->create();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
@@ -105,7 +101,6 @@ class StayStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_guest_or_room_from_another_hotel(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $otherHotel = Hotel::factory()->create();
         $guest = Guest::factory()->for($otherHotel)->create();
@@ -124,7 +119,6 @@ class StayStoreTest extends TestCase
     #[Test]
     public function it_rejects_an_inactive_or_occupied_room(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $guest = Guest::factory()->for($hotel)->create();
         [$room] = $this->rooms($hotel);
@@ -144,7 +138,6 @@ class StayStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_duplicate_new_guest_and_an_invalid_check_out_date(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $identificationType = IdentificationType::factory()->create();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);

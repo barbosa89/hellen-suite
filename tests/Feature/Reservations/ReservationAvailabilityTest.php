@@ -6,12 +6,11 @@ namespace Tests\Feature\Reservations;
 
 use App\Constants\ReservationStatus;
 use App\Models\Guest;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ReservationAvailabilityTest extends TestCase
+class ReservationAvailabilityTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -19,7 +18,6 @@ class ReservationAvailabilityTest extends TestCase
     #[Test]
     public function confirmed_reservations_protect_walk_in_availability(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation, $room] = $this->reservationWithDetails(
             ReservationStatus::Confirmed,
             today()->toDateString(),

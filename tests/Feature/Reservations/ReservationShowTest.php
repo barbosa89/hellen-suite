@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Reservations;
 
 use App\Models\Hotel;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ReservationShowTest extends TestCase
+class ReservationShowTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -19,7 +18,6 @@ class ReservationShowTest extends TestCase
     #[Test]
     public function it_shows_the_plan_quote_group_rooms_and_history(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation] = $this->reservationWithDetails();
 
         $this->get(route('hotels.reservations.show', [$reservation->hotel, $reservation]))
@@ -36,7 +34,6 @@ class ReservationShowTest extends TestCase
     #[Test]
     public function scoped_binding_hides_another_hotels_reservation(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation] = $this->reservationWithDetails();
         $otherHotel = Hotel::factory()->create();
 

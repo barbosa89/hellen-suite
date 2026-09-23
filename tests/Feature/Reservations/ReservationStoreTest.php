@@ -10,12 +10,11 @@ use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\IdentificationType;
 use App\Models\Reservation;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ReservationStoreTest extends TestCase
+class ReservationStoreTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -23,7 +22,6 @@ class ReservationStoreTest extends TestCase
     #[Test]
     public function it_creates_a_draft_with_guests_rooms_rates_assignments_and_history(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $identificationType = IdentificationType::factory()->create();
         $guest = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
@@ -44,8 +42,6 @@ class ReservationStoreTest extends TestCase
     #[Test]
     public function it_rejects_cross_hotel_records_and_duplicate_assignments(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
-
         $hotel = Hotel::factory()->create();
         $otherHotel = Hotel::factory()->create();
         $foreignGuest = Guest::factory()->for($otherHotel)->create();

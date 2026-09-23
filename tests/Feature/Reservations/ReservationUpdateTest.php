@@ -6,12 +6,11 @@ namespace Tests\Feature\Reservations;
 
 use App\Constants\ReservationEventType;
 use App\Constants\ReservationStatus;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class ReservationUpdateTest extends TestCase
+class ReservationUpdateTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -19,8 +18,6 @@ class ReservationUpdateTest extends TestCase
     #[Test]
     public function it_updates_a_confirmed_reservation_without_conflicting_with_itself(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
-
         [$reservation, $room, $guest] = $this->reservationWithDetails(ReservationStatus::Confirmed);
 
         $payload = $this->reservationPayload($guest, $room);
@@ -36,8 +33,6 @@ class ReservationUpdateTest extends TestCase
     #[Test]
     public function it_rejects_updates_to_terminal_reservations(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
-
         [$reservation, $room, $guest] = $this->reservationWithDetails(ReservationStatus::Cancelled);
 
         $this->patch(

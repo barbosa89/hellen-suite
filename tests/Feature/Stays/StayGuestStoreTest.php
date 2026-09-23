@@ -12,19 +12,17 @@ use App\Models\Room;
 use App\Models\RoomOccupancy;
 use App\Models\RoomType;
 use App\Models\Stay;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class StayGuestStoreTest extends TestCase
+class StayGuestStoreTest extends OperationalTestCase
 {
     use RefreshDatabase;
 
     #[Test]
     public function it_adds_an_existing_guest_to_an_active_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $guest = Guest::factory()->for($hotel)->create();
 
@@ -42,7 +40,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_creates_and_adds_a_new_guest_to_an_active_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy, $responsibleGuest] = $this->activeStay();
 
         $this->post(route('hotels.stays.guests.store', [$hotel, $stay]), [
@@ -67,7 +64,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_guest_when_the_stay_is_closed(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $guest = Guest::factory()->for($hotel)->create();
         $stay->update([
@@ -86,7 +82,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_closed_or_unrelated_occupancy(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $guest = Guest::factory()->for($hotel)->create();
         $occupancy->update(['checked_out_at' => now()]);
@@ -113,7 +108,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_guest_when_the_selected_room_is_full_without_persisting_a_profile(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy, $responsibleGuest] = $this->activeStay(1);
 
         $this->post(route('hotels.stays.guests.store', [$hotel, $stay]), [
@@ -132,7 +126,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_guest_already_registered_in_the_stay(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy, $responsibleGuest] = $this->activeStay();
 
         $this->post(route('hotels.stays.guests.store', [$hotel, $stay]), [
@@ -146,7 +139,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_guest_from_another_hotel(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy] = $this->activeStay();
         $guest = Guest::factory()->create();
 
@@ -161,7 +153,6 @@ class StayGuestStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_new_guest_with_an_existing_document(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$hotel, $stay, $occupancy, $responsibleGuest] = $this->activeStay();
 
         $this->post(route('hotels.stays.guests.store', [$hotel, $stay]), [

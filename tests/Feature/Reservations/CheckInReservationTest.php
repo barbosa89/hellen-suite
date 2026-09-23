@@ -8,12 +8,11 @@ use App\Constants\HousekeepingStatus;
 use App\Constants\ReservationStatus;
 use App\Constants\StayStatus;
 use App\Models\Stay;
-use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class CheckInReservationTest extends TestCase
+class CheckInReservationTest extends OperationalTestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;
@@ -21,8 +20,6 @@ class CheckInReservationTest extends TestCase
     #[Test]
     public function it_converts_a_due_reservation_to_one_linked_stay_with_the_agreed_terms(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
-
         [$reservation, $room, $guest] = $this->reservationWithDetails(
             ReservationStatus::Confirmed,
             today()->toDateString(),
@@ -45,7 +42,6 @@ class CheckInReservationTest extends TestCase
     #[Test]
     public function it_rechecks_housekeeping_and_prevents_duplicate_check_in(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         [$reservation, $room] = $this->reservationWithDetails(
             ReservationStatus::Confirmed,
             today()->toDateString(),

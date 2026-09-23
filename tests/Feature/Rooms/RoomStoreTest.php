@@ -11,16 +11,15 @@ use App\Models\RoomType;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\OperationalTestCase;
 
-class RoomStoreTest extends TestCase
+class RoomStoreTest extends OperationalTestCase
 {
     use RefreshDatabase;
 
     #[Test]
     public function it_creates_a_room_for_its_hotel(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $roomType = RoomType::factory()->for($hotel)->create();
 
@@ -42,7 +41,6 @@ class RoomStoreTest extends TestCase
     #[Test]
     public function it_rejects_a_room_type_from_another_hotel(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $foreignRoomType = RoomType::factory()->create();
 
@@ -69,7 +67,6 @@ class RoomStoreTest extends TestCase
     #[Test]
     public function it_updates_and_deletes_a_room(): void
     {
-        GeneralSettings::fake(['currency' => 'COP']);
         $hotel = Hotel::factory()->create();
         $room = Room::factory()->for($hotel)->create(['number' => '101']);
 
