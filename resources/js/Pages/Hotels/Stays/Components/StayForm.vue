@@ -18,7 +18,7 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline';
 import { useForm } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -30,6 +30,8 @@ const props = defineProps({
 const { t } = useI18n();
 const currentStep = ref(1);
 const flowError = ref('');
+const availableRooms = ref(props.rooms);
+let availabilityRequest;
 
 const steps = computed(() => [
     { number: 1, label: t('stays.form.steps.guests') },
@@ -75,7 +77,9 @@ function guestName(entry, index) {
     return name || `${t('stays.form.guests.companion')} ${index + 1}`;
 }
 function roomForId(roomId) {
-    return props.rooms.find((room) => Number(room.id) === Number(roomId));
+    return availableRooms.value.find(
+        (room) => Number(room.id) === Number(roomId),
+    );
 }
 function occupancyForRoom(roomId) {
     return form.room_occupancies.find(
@@ -231,6 +235,36 @@ function submit() {
         },
     });
 }
+
+async function refreshAvailableRooms() {
+    if (!form.expected_check_out_on) return;
+
+    availabilityRequest?.abort();
+    availabilityRequest = new AbortController();
+    const parameters = new URLSearchParams({
+        planned_check_in_on: new Date().toISOString().slice(0, 10),
+        planned_check_out_on: form.expected_check_out_on,
+    });
+
+    try {
+        const response = await fetch(
+            `${route('hotels.reservations.availability', props.hotel.id)}?${parameters}`,
+            { signal: availabilityRequest.signal },
+        );
+        const data = response.ok ? await response.json() : { rooms: [] };
+        availableRooms.value = data.rooms ?? [];
+        const availableIds = availableRooms.value.map((room) =>
+            Number(room.id),
+        );
+        form.room_occupancies = form.room_occupancies.filter((occupancy) =>
+            availableIds.includes(Number(occupancy.room_id)),
+        );
+    } catch (error) {
+        if (error.name !== 'AbortError') availableRooms.value = [];
+    }
+}
+
+watch(() => form.expected_check_out_on, refreshAvailableRooms);
 </script>
 
 <template>
@@ -487,17 +521,17 @@ function submit() {
                                 >
                                     {{
                                         t('stays.form.rooms.available_count', {
-                                            count: rooms.length,
+                                            count: availableRooms.length,
                                         })
                                     }}
                                 </p>
                             </div>
                             <div
-                                v-if="rooms.length"
+                                v-if="availableRooms.length"
                                 class="mt-5 grid gap-3 md:grid-cols-2"
                             >
                                 <button
-                                    v-for="room in rooms"
+                                    v-for="room in availableRooms"
                                     :key="room.id"
                                     type="button"
                                     class="focus-visible:ring-primary-500 relative min-h-36 rounded-xl border p-4 text-start transition-[border-color,background-color,box-shadow] duration-150 ease-out focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none"

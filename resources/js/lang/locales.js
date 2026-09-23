@@ -228,6 +228,163 @@ export default {
             "token": "This password reset token is invalid.",
             "user": "We can't find a user with that email address."
         },
+        "reservations": {
+            "title": "Reservations",
+            "statuses": {
+                "draft": "Draft",
+                "confirmed": "Confirmed",
+                "checked_in": "Checked in",
+                "cancelled": "Cancelled",
+                "no_show": "No-show"
+            },
+            "actions": {
+                "create": "New reservation",
+                "view": "View reservation",
+                "edit": "Edit",
+                "confirm": "Confirm reservation",
+                "cancel": "Cancel reservation",
+                "no_show": "Mark no-show",
+                "check_in": "Check in",
+                "save_draft": "Save draft",
+                "continue": "Continue",
+                "back": "Back"
+            },
+            "fields": {
+                "check_in": "Planned arrival",
+                "check_out": "Planned departure",
+                "rate": "Nightly rate",
+                "nights": "Nights",
+                "guests": "Guests",
+                "rooms": "Rooms",
+                "quote": "Agreed quote"
+            },
+            "pages": {
+                "index": {
+                    "description": "Future commitments, arrivals, and reservation history for {hotel}.",
+                    "search": "Search by guest or identification",
+                    "all_statuses": "All statuses",
+                    "empty_title": "No reservations yet",
+                    "empty": "Create a draft, assign the party, and confirm only after the terms are agreed."
+                },
+                "create": {
+                    "heading": "Create reservation",
+                    "description": "Prepare dates, party, concrete rooms, and quote before confirming the commitment."
+                },
+                "edit": {
+                    "heading": "Edit reservation",
+                    "description": "Changes are recorded and availability is checked again."
+                },
+                "show": {
+                    "heading": "Reservation #{id}",
+                    "plan": "Reserved plan",
+                    "quote_note": "This quote remains as historical context even if reference prices change.",
+                    "reserved_plan": "Original reservation plan",
+                    "current_stay": "Current stay",
+                    "open_stay": "Open stay",
+                    "rooms": "Rooms and guests",
+                    "history": "Reservation history"
+                }
+            },
+            "form": {
+                "steps": {
+                    "label": "Reservation steps",
+                    "dates": "Dates",
+                    "guests": "Party",
+                    "rooms": "Rooms",
+                    "review": "Review"
+                },
+                "dates": {
+                    "title": "Define the interval",
+                    "description": "The departure date does not consume a night and may match another arrival."
+                },
+                "guests": {
+                    "title": "Register the party",
+                    "description": "Search existing guests before creating a new record.",
+                    "responsible": "Responsible guest",
+                    "companion": "Companion",
+                    "unnamed": "Unnamed guest",
+                    "new": "Register another",
+                    "add": "Add companion"
+                },
+                "rooms": {
+                    "title": "Reserve concrete rooms",
+                    "description": "Only sellable rooms free for the entire interval are shown.",
+                    "loading": "Checking availability...",
+                    "empty": "No rooms are available for these dates.",
+                    "number": "Room {number}",
+                    "capacity": "capacity {count}",
+                    "night": "night",
+                    "assigned": "assigned",
+                    "assign": "Assign every guest",
+                    "choose": "Choose room"
+                },
+                "review": {
+                    "title": "Review the commitment",
+                    "description": "Confirm dates, assignments, and rates before saving.",
+                    "draft_note": "The reservation will be saved as a draft and will not block inventory until confirmed."
+                },
+                "summary": {
+                    "title": "Reservation summary"
+                },
+                "errors": {
+                    "dates": "Select a valid interval.",
+                    "guests": "Complete every guest’s required information.",
+                    "rooms": "Select rooms and assign every guest exactly once."
+                }
+            },
+            "events": {
+                "created": "Reservation created",
+                "updated": "Reservation updated",
+                "confirmed": "Reservation confirmed",
+                "cancelled": "Reservation cancelled",
+                "no_show": "Marked as no-show",
+                "checked_in": "Check-in recorded"
+            },
+            "dialogs": {
+                "confirm": {
+                    "title": "Confirm reservation",
+                    "description": "Confirmation will block these rooms for the planned interval.",
+                    "action": "Confirm"
+                },
+                "cancel": {
+                    "title": "Cancel reservation",
+                    "description": "The rooms will be released while history remains available.",
+                    "action": "Cancel reservation"
+                },
+                "no-show": {
+                    "title": "Mark no-show",
+                    "description": "Record that the party did not arrive and release rooms without creating a stay.",
+                    "action": "Mark no-show"
+                },
+                "check-in": {
+                    "title": "Check in",
+                    "description": "A stay will be created with the agreed party, rooms, and rates.",
+                    "action": "Create stay"
+                }
+            },
+            "validation": {
+                "room_unavailable": "One or more rooms are no longer available for the selected interval.",
+                "room_unavailable_at_check_in": "One or more rooms are not clean or available for check-in.",
+                "room_capacity": "The assignment exceeds room capacity.",
+                "responsible_required": "Select a valid responsible guest.",
+                "unknown_guest": "The assignment contains an unknown guest.",
+                "assign_every_guest_once": "Every guest must be assigned to exactly one room.",
+                "duplicate_guest": "A guest with this identification already exists. Search and select that guest.",
+                "immutable": "This reservation can no longer be edited.",
+                "cannot_confirm": "Only a current draft can be confirmed.",
+                "cannot_cancel": "This reservation can no longer be cancelled.",
+                "cannot_mark_no_show": "Only a due confirmed reservation can be marked no-show.",
+                "cannot_check_in": "This reservation is not eligible for check-in or was already processed."
+            },
+            "messages": {
+                "created": "Reservation saved as draft.",
+                "updated": "Reservation updated.",
+                "confirmed": "Reservation confirmed and rooms protected.",
+                "cancelled": "Reservation cancelled.",
+                "no_show": "Reservation marked as no-show.",
+                "checked_in": "Check-in created from reservation."
+            }
+        },
         "room_types": {
             "title": "Room types",
             "capacity": "{count} guest|{count} guests",
@@ -272,6 +429,7 @@ export default {
                 "description": "These details describe an inventory category, not a physical room."
             },
             "messages": {
+                "capacity_blocked": "Capacity cannot be lower than an active or confirmed guest assignment.",
                 "created": "Room type created successfully.",
                 "updated": "Room type updated successfully.",
                 "deleted": "Room type deleted successfully.",
@@ -359,7 +517,9 @@ export default {
                 "updated": "Room updated successfully.",
                 "deleted": "Room deleted successfully.",
                 "activity_updated": "Room activity was updated.",
-                "housekeeping_updated": "Housekeeping status was updated."
+                "housekeeping_updated": "Housekeeping status was updated.",
+                "delete_blocked": "This room has stay or reservation history and cannot be deleted.",
+                "inventory_blocked": "This room has an active stay or confirmed reservation and cannot be deactivated."
             }
         },
         "settings": {
@@ -921,6 +1081,163 @@ export default {
             "token": "El token de restablecimiento de contraseña es inválido.",
             "user": "No encontramos ningún usuario con ese correo electrónico."
         },
+        "reservations": {
+            "title": "Reservas",
+            "statuses": {
+                "draft": "Borrador",
+                "confirmed": "Confirmada",
+                "checked_in": "Ingresada",
+                "cancelled": "Cancelada",
+                "no_show": "No-show"
+            },
+            "actions": {
+                "create": "Nueva reserva",
+                "view": "Ver reserva",
+                "edit": "Modificar",
+                "confirm": "Confirmar reserva",
+                "cancel": "Cancelar reserva",
+                "no_show": "Marcar no-show",
+                "check_in": "Hacer check-in",
+                "save_draft": "Guardar borrador",
+                "continue": "Continuar",
+                "back": "Atrás"
+            },
+            "fields": {
+                "check_in": "Llegada planeada",
+                "check_out": "Salida planeada",
+                "rate": "Tarifa por noche",
+                "nights": "Noches",
+                "guests": "Huéspedes",
+                "rooms": "Habitaciones",
+                "quote": "Cotización acordada"
+            },
+            "pages": {
+                "index": {
+                    "description": "Compromisos futuros, llegadas y reservas históricas de {hotel}.",
+                    "search": "Buscar por huésped o identificación",
+                    "all_statuses": "Todos los estados",
+                    "empty_title": "Todavía no hay reservas",
+                    "empty": "Crea un borrador, asigna el grupo y confirma sólo cuando las condiciones estén acordadas."
+                },
+                "create": {
+                    "heading": "Crear reserva",
+                    "description": "Prepara fechas, grupo, habitaciones concretas y cotización antes de confirmar el compromiso."
+                },
+                "edit": {
+                    "heading": "Modificar reserva",
+                    "description": "Los cambios se registran y vuelven a comprobar la disponibilidad completa."
+                },
+                "show": {
+                    "heading": "Reserva #{id}",
+                    "plan": "Plan reservado",
+                    "quote_note": "Esta cotización permanece como contexto histórico aunque cambie el precio de referencia.",
+                    "reserved_plan": "Plan original de la reserva",
+                    "current_stay": "Estancia vigente",
+                    "open_stay": "Abrir estancia",
+                    "rooms": "Habitaciones y huéspedes",
+                    "history": "Historial de reserva"
+                }
+            },
+            "form": {
+                "steps": {
+                    "label": "Pasos de la reserva",
+                    "dates": "Fechas",
+                    "guests": "Grupo",
+                    "rooms": "Habitaciones",
+                    "review": "Revisión"
+                },
+                "dates": {
+                    "title": "Define el intervalo",
+                    "description": "La salida no consume noche y puede coincidir con la llegada de otro grupo."
+                },
+                "guests": {
+                    "title": "Registra el grupo",
+                    "description": "Busca huéspedes existentes antes de crear un registro nuevo.",
+                    "responsible": "Huésped responsable",
+                    "companion": "Acompañante",
+                    "unnamed": "Huésped sin nombre",
+                    "new": "Registrar otro",
+                    "add": "Agregar acompañante"
+                },
+                "rooms": {
+                    "title": "Reserva habitaciones concretas",
+                    "description": "Sólo se muestran habitaciones vendibles y libres durante todo el intervalo.",
+                    "loading": "Comprobando disponibilidad...",
+                    "empty": "No hay habitaciones disponibles para estas fechas.",
+                    "number": "Habitación {number}",
+                    "capacity": "capacidad {count}",
+                    "night": "noche",
+                    "assigned": "asignados",
+                    "assign": "Distribuye cada huésped",
+                    "choose": "Elegir habitación"
+                },
+                "review": {
+                    "title": "Revisa el compromiso",
+                    "description": "Confirma fechas, distribución y tarifa antes de guardar.",
+                    "draft_note": "La reserva se guardará como borrador y no bloqueará inventario hasta que la confirmes."
+                },
+                "summary": {
+                    "title": "Resumen de reserva"
+                },
+                "errors": {
+                    "dates": "Selecciona un intervalo válido.",
+                    "guests": "Completa los datos obligatorios de cada huésped.",
+                    "rooms": "Selecciona habitaciones y asigna cada huésped exactamente una vez."
+                }
+            },
+            "events": {
+                "created": "Reserva creada",
+                "updated": "Reserva modificada",
+                "confirmed": "Reserva confirmada",
+                "cancelled": "Reserva cancelada",
+                "no_show": "Marcada como no-show",
+                "checked_in": "Check-in registrado"
+            },
+            "dialogs": {
+                "confirm": {
+                    "title": "Confirmar reserva",
+                    "description": "La confirmación bloqueará las habitaciones durante el intervalo planeado.",
+                    "action": "Confirmar"
+                },
+                "cancel": {
+                    "title": "Cancelar reserva",
+                    "description": "Las habitaciones dejarán de estar comprometidas. El historial se conservará.",
+                    "action": "Cancelar reserva"
+                },
+                "no-show": {
+                    "title": "Marcar no-show",
+                    "description": "Registra que el grupo no llegó y libera las habitaciones sin crear una estancia.",
+                    "action": "Marcar no-show"
+                },
+                "check-in": {
+                    "title": "Hacer check-in",
+                    "description": "Se creará una estancia con el grupo, las habitaciones y las tarifas acordadas.",
+                    "action": "Crear estancia"
+                }
+            },
+            "validation": {
+                "room_unavailable": "Una o más habitaciones ya no están disponibles para el intervalo seleccionado.",
+                "room_unavailable_at_check_in": "Una o más habitaciones no están limpias o disponibles para hacer check-in.",
+                "room_capacity": "La asignación supera la capacidad de la habitación.",
+                "responsible_required": "Selecciona un huésped responsable válido.",
+                "unknown_guest": "La asignación contiene un huésped desconocido.",
+                "assign_every_guest_once": "Cada huésped debe estar asignado exactamente a una habitación.",
+                "duplicate_guest": "Ya existe un huésped con esta identificación. Búscalo y selecciónalo.",
+                "immutable": "Esta reserva ya no se puede modificar.",
+                "cannot_confirm": "Sólo un borrador con llegada vigente puede confirmarse.",
+                "cannot_cancel": "Esta reserva ya no se puede cancelar.",
+                "cannot_mark_no_show": "Sólo una reserva confirmada cuya llegada ya venció puede marcarse no-show.",
+                "cannot_check_in": "La reserva todavía no admite check-in o ya fue procesada."
+            },
+            "messages": {
+                "created": "Reserva guardada como borrador.",
+                "updated": "Reserva actualizada.",
+                "confirmed": "Reserva confirmada; las habitaciones quedaron protegidas.",
+                "cancelled": "Reserva cancelada.",
+                "no_show": "Reserva marcada como no-show.",
+                "checked_in": "Check-in creado desde la reserva."
+            }
+        },
         "room_types": {
             "title": "Tipos de habitación",
             "capacity": "{count} huésped|{count} huéspedes",
@@ -965,6 +1282,7 @@ export default {
                 "description": "Estos datos describen una categoría del inventario, no una habitación física."
             },
             "messages": {
+                "capacity_blocked": "La capacidad no puede ser menor que una asignación activa o confirmada.",
                 "created": "Tipo de habitación creado con éxito.",
                 "updated": "Tipo de habitación actualizado con éxito.",
                 "deleted": "Tipo de habitación eliminado con éxito.",
@@ -1052,7 +1370,9 @@ export default {
                 "updated": "Habitación actualizada con éxito.",
                 "deleted": "Habitación eliminada con éxito.",
                 "activity_updated": "El estado de actividad fue actualizado.",
-                "housekeeping_updated": "El estado de limpieza fue actualizado."
+                "housekeeping_updated": "El estado de limpieza fue actualizado.",
+                "delete_blocked": "Esta habitación tiene historial de estancias o reservas y no se puede eliminar.",
+                "inventory_blocked": "Esta habitación tiene una estancia activa o reserva confirmada y no se puede desactivar."
             }
         },
         "settings": {

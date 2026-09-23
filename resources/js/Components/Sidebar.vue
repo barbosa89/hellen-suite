@@ -3,6 +3,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowLeftIcon,
+    BookmarkSquareIcon,
     CalendarDaysIcon,
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
@@ -62,6 +63,12 @@ const navigation = computed(() => [
         href: route('hotels.stays.index', props.hotel.id),
         active: route().current('hotels.stays.*'),
         icon: CalendarDaysIcon,
+    },
+    {
+        name: t('reservations.title'),
+        href: route('hotels.reservations.index', props.hotel.id),
+        active: route().current('hotels.reservations.*'),
+        icon: BookmarkSquareIcon,
     },
 ]);
 

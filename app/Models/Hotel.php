@@ -63,6 +63,12 @@ class Hotel extends Model
         return $this->hasMany(Stay::class);
     }
 
+    /** @return HasMany<Reservation, $this> */
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

@@ -32,6 +32,7 @@ use Illuminate\Support\Carbon;
     'checked_in_at',
     'expected_check_out_on',
     'checked_out_at',
+    'reservation_id',
 ])]
 class Stay extends Model
 {
@@ -42,6 +43,12 @@ class Stay extends Model
     public function hotel(): BelongsTo
     {
         return $this->belongsTo(Hotel::class);
+    }
+
+    /** @return BelongsTo<Reservation, $this> */
+    public function reservation(): BelongsTo
+    {
+        return $this->belongsTo(Reservation::class);
     }
 
     /** @return BelongsTo<Guest, $this> */

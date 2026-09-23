@@ -52,5 +52,7 @@ return [
         'deleted' => 'Room deleted successfully.',
         'activity_updated' => 'Room activity was updated.',
         'housekeeping_updated' => 'Housekeeping status was updated.',
+        'delete_blocked' => 'This room has stay or reservation history and cannot be deleted.',
+        'inventory_blocked' => 'This room has an active stay or confirmed reservation and cannot be deactivated.',
     ],
 ];

@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Actions\Stays;
 
+use App\Actions\Rooms\RoomAvailability;
 use App\Constants\HousekeepingStatus;
 use App\Constants\RoomOccupancyEndReason;
 use App\Models\Hotel;
 use App\Models\RoomOccupancy;
 use App\Models\Stay;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 final class TransferRoomOccupancy
 {
+    public function __construct(private RoomAvailability $roomAvailability) {}
+
     public function execute(Hotel $hotel, Stay $stay, RoomOccupancy $occupancy, int $roomId, string $nightlyRate): RoomOccupancy
     {
-        return DB::transaction(function () use ($hotel, $stay, $occupancy, $roomId, $nightlyRate): RoomOccupancy {
+        return Cache::lock("hotels:{$hotel->id}:inventory", 10)->block(5, fn (): RoomOccupancy => DB::transaction(function () use ($hotel, $stay, $occupancy, $roomId, $nightlyRate): RoomOccupancy {
             $occupancy = $stay->roomOccupancies()
                 ->with(['room', 'guests'])
                 ->lockForUpdate()
@@ -28,17 +32,13 @@ final class TransferRoomOccupancy
                 ]);
             }
 
-            $newRoom = $hotel->rooms()
+            $newRoom = $this->roomAvailability
+                ->query($hotel, today()->toImmutable(), $stay->expected_check_out_on->toImmutable())
                 ->with('roomType:id,capacity')
                 ->lockForUpdate()
-                ->findOrFail($roomId);
+                ->find($roomId);
 
-            $isUnavailable = $newRoom->id === $occupancy->room_id
-                || ! $newRoom->is_active
-                || $newRoom->housekeeping_status !== HousekeepingStatus::Clean
-                || $newRoom->roomOccupancies()->whereNull('checked_out_at')->exists();
-
-            if ($isUnavailable || $occupancy->guests->count() > $newRoom->roomType->capacity) {
+            if ($newRoom === null || $newRoom->id === $occupancy->room_id || $occupancy->guests->count() > $newRoom->roomType->capacity) {
                 throw ValidationException::withMessages([
                     'room_id' => trans('stays.validation.room_unavailable'),
                 ]);
@@ -61,6 +61,6 @@ final class TransferRoomOccupancy
             $newOccupancy->guests()->attach($occupancy->guests->modelKeys());
 
             return $newOccupancy;
-        });
+        }));
     }
 }

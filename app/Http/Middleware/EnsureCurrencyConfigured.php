@@ -21,14 +21,22 @@ class EnsureCurrencyConfigured
      */
     public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
-        $routes = [
+        $currencyRoutes = [
             'hotels.rooms.create',
             'hotels.rooms.store',
             'hotels.rooms.edit',
             'hotels.rooms.update',
+            'hotels.stays.create',
+            'hotels.stays.store',
+            'hotels.stays.show',
+            'hotels.stays.expected-check-out.update',
+            'hotels.stays.check-out',
+            'hotels.stays.guests.store',
+            'hotels.stays.room-occupancies.transfer',
         ];
+        $routeName = $request->route()?->getName();
 
-        if (! in_array($request->route()?->getName(), $routes, true)) {
+        if (! str_starts_with((string) $routeName, 'hotels.reservations.') && ! in_array($routeName, $currencyRoutes, true)) {
             return $next($request);
         }
 

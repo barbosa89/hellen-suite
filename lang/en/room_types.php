@@ -43,6 +43,7 @@ return [
         'description' => 'These details describe an inventory category, not a physical room.',
     ],
     'messages' => [
+        'capacity_blocked' => 'Capacity cannot be lower than an active or confirmed guest assignment.',
         'created' => 'Room type created successfully.',
         'updated' => 'Room type updated successfully.',
         'deleted' => 'Room type deleted successfully.',

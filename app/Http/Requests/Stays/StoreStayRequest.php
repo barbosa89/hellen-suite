@@ -41,6 +41,7 @@ class StoreStayRequest extends FormRequest
             'room_occupancies.*.room_id' => [
                 'required',
                 'integer',
+                'distinct',
                 Rule::exists('rooms', 'id')->where('hotel_id', $this->route('hotel')->getKey()),
             ],
             'room_occupancies.*.nightly_rate' => ['required', 'decimal:0,2', 'gt:0', 'max:9999999999.99'],
@@ -72,13 +73,22 @@ class StoreStayRequest extends FormRequest
                 }
             }
 
-            foreach ($guestKeys as $guestKey) {
-                if (count(array_keys($assignedGuestKeys, $guestKey, true)) !== 1) {
-                    $validator->errors()->add('room_occupancies', trans('stays.validation.assign_every_guest_once'));
-
-                    break;
-                }
-            }
+            $this->validateEachGuestAssignedOnce($validator, $guestKeys, $assignedGuestKeys);
         }];
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $guestKeys
+     * @param  array<int, mixed>  $assignedGuestKeys
+     */
+    private function validateEachGuestAssignedOnce(Validator $validator, array $guestKeys, array $assignedGuestKeys): void
+    {
+        foreach ($guestKeys as $guestKey) {
+            if (count(array_keys($assignedGuestKeys, $guestKey, true)) !== 1) {
+                $validator->errors()->add('room_occupancies', trans('stays.validation.assign_every_guest_once'));
+
+                break;
+            }
+        }
     }
 }

@@ -18,6 +18,7 @@ return new class() extends Migration
             $table->timestamp('checked_out_at')->nullable();
             $table->foreignId('hotel_id')->constrained()->cascadeOnDelete();
             $table->foreignId('responsible_guest_id')->constrained('guests')->restrictOnDelete();
+            $table->foreignId('reservation_id')->nullable()->unique()->constrained()->restrictOnDelete();
             $table->timestamps();
 
             $table->index(['hotel_id', 'status', 'expected_check_out_on']);

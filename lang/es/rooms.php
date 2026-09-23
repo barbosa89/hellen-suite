@@ -42,5 +42,7 @@ return [
         'created' => 'Habitación creada con éxito.', 'updated' => 'Habitación actualizada con éxito.',
         'deleted' => 'Habitación eliminada con éxito.', 'activity_updated' => 'El estado de actividad fue actualizado.',
         'housekeeping_updated' => 'El estado de limpieza fue actualizado.',
+        'delete_blocked' => 'Esta habitación tiene historial de estancias o reservas y no se puede eliminar.',
+        'inventory_blocked' => 'Esta habitación tiene una estancia activa o reserva confirmada y no se puede desactivar.',
     ],
 ];

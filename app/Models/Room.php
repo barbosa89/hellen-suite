@@ -77,4 +77,10 @@ class Room extends Model
     {
         return $this->hasMany(RoomOccupancy::class);
     }
+
+    /** @return HasMany<ReservedRoom, $this> */
+    public function reservedRooms(): HasMany
+    {
+        return $this->hasMany(ReservedRoom::class);
+    }
 }

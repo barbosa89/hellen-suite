@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Rooms\RoomAvailability;
 use App\Actions\Stays\CreateStay;
 use App\Actions\Stays\CreateStayData;
 use App\Actions\Stays\SummarizeStayCosts;
-use App\Constants\HousekeepingStatus;
 use App\Http\Requests\Stays\StoreStayRequest;
 use App\Models\Hotel;
 use App\Models\IdentificationType;
@@ -35,14 +35,12 @@ class StayController extends Controller
         ]);
     }
 
-    public function create(Hotel $hotel, GeneralSettings $settings): Response
+    public function create(Hotel $hotel, GeneralSettings $settings, RoomAvailability $roomAvailability): Response
     {
-        $rooms = $hotel->rooms()
+        $rooms = $roomAvailability
+            ->query($hotel, today()->toImmutable(), today()->addDay()->toImmutable())
             ->select(['id', 'hotel_id', 'room_type_id', 'number', 'floor', 'reference_price'])
             ->with('roomType:id,name,capacity')
-            ->where('is_active', true)
-            ->where('housekeeping_status', HousekeepingStatus::Clean)
-            ->whereDoesntHave('roomOccupancies', fn ($query) => $query->whereNull('checked_out_at'))
             ->orderBy('number')
             ->get();
 
@@ -62,7 +60,7 @@ class StayController extends Controller
             ->with('success', trans('stays.messages.checked_in'));
     }
 
-    public function show(Hotel $hotel, Stay $stay, GeneralSettings $settings, SummarizeStayCosts $summarizeStayCosts): Response
+    public function show(Hotel $hotel, Stay $stay, GeneralSettings $settings, SummarizeStayCosts $summarizeStayCosts, RoomAvailability $roomAvailability): Response
     {
         $stay->load([
             'responsibleGuest:id,first_name,last_name,identification_number',
@@ -78,12 +76,10 @@ class StayController extends Controller
             'stay' => $stay,
             'stayCostSummary' => $summarizeStayCosts->execute($stay),
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
-            'rooms' => $hotel->rooms()
+            'rooms' => $roomAvailability
+                ->query($hotel, today()->toImmutable(), $stay->expected_check_out_on->toImmutable())
                 ->select(['id', 'hotel_id', 'room_type_id', 'number', 'floor', 'reference_price'])
                 ->with('roomType:id,name,capacity')
-                ->where('is_active', true)
-                ->where('housekeeping_status', HousekeepingStatus::Clean)
-                ->whereDoesntHave('roomOccupancies', fn ($query) => $query->whereNull('checked_out_at'))
                 ->orderBy('number')
                 ->get(),
             'currency' => $settings->currency,

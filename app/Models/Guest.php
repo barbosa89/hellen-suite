@@ -69,4 +69,16 @@ class Guest extends Model
     {
         return $this->belongsToMany(RoomOccupancy::class)->withTimestamps();
     }
+
+    /** @return HasMany<ReservationGuest, $this> */
+    public function reservationGuests(): HasMany
+    {
+        return $this->hasMany(ReservationGuest::class);
+    }
+
+    /** @return HasMany<Reservation, $this> */
+    public function responsibleReservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'responsible_guest_id');
+    }
 }

@@ -2,18 +2,24 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\StayGuestController;
+use App\Http\Controllers\CancelReservationController;
+use App\Http\Controllers\CheckInReservationController;
 use App\Http\Controllers\CheckOutStayController;
+use App\Http\Controllers\ConfirmReservationController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestLookupController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelImageController;
 use App\Http\Controllers\HotelManagementController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MarkReservationNoShowController;
+use App\Http\Controllers\ReservationAvailabilityController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StayController;
+use App\Http\Controllers\StayGuestController;
 use App\Http\Controllers\TransferRoomOccupancyController;
 use App\Http\Controllers\UpdateRoomHousekeepingStatusController;
 use App\Http\Controllers\UpdateStayExpectedCheckOutController;
@@ -54,6 +60,36 @@ Route::resource('hotels.stays', StayController::class)
     ->scoped()
     ->middleware(EnsureCurrencyConfigured::class);
 
+Route::get('/hotels/{hotel}/reservations/availability/{reservation?}', ReservationAvailabilityController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.reservations.availability');
+
+Route::resource('hotels.reservations', ReservationController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update'])
+    ->scoped()
+    ->middleware(EnsureCurrencyConfigured::class);
+
+Route::patch('/hotels/{hotel}/reservations/{reservation}/confirm', ConfirmReservationController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.reservations.confirm');
+
+Route::patch('/hotels/{hotel}/reservations/{reservation}/cancel', CancelReservationController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.reservations.cancel');
+
+Route::patch('/hotels/{hotel}/reservations/{reservation}/no-show', MarkReservationNoShowController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.reservations.no-show');
+
+Route::post('/hotels/{hotel}/reservations/{reservation}/check-in', CheckInReservationController::class)
+    ->scopeBindings()
+    ->middleware(EnsureCurrencyConfigured::class)
+    ->name('hotels.reservations.check-in');
+
 Route::patch('/hotels/{hotel}/stays/{stay}/expected-check-out', UpdateStayExpectedCheckOutController::class)
     ->scopeBindings()
     ->middleware(EnsureCurrencyConfigured::class)
@@ -64,7 +100,7 @@ Route::post('/hotels/{hotel}/stays/{stay}/check-out', CheckOutStayController::cl
     ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.check-out');
 
-    Route::post('/hotels/{hotel}/stays/{stay}/guests', StayGuestController::class)
+Route::post('/hotels/{hotel}/stays/{stay}/guests', StayGuestController::class)
     ->scopeBindings()
     ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.guests.store');

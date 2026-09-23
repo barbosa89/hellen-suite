@@ -23,6 +23,7 @@ return [
     ],
     'form' => ['title' => 'Configuración del tipo', 'description' => 'Estos datos describen una categoría del inventario, no una habitación física.'],
     'messages' => [
+        'capacity_blocked' => 'La capacidad no puede ser menor que una asignación activa o confirmada.',
         'created' => 'Tipo de habitación creado con éxito.',
         'updated' => 'Tipo de habitación actualizado con éxito.',
         'deleted' => 'Tipo de habitación eliminado con éxito.',

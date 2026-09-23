@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Constants\ReservationStatus;
 use App\Http\Requests\Rooms\StoreRoomRequest;
 use App\Http\Requests\Rooms\UpdateRoomRequest;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -70,7 +72,15 @@ class RoomController extends Controller
 
     public function update(UpdateRoomRequest $request, Hotel $hotel, Room $room): RedirectResponse
     {
-        $room->update($request->validated());
+        $data = $request->validated();
+        $hasActiveOccupanciesOrConfirmedReservations = $room->roomOccupancies()->whereNull('checked_out_at')->exists()
+            || $room->reservedRooms()->whereHas('reservation', fn ($query) => $query->where('status', ReservationStatus::Confirmed))->exists();
+
+        if (! $data['is_active'] && $hasActiveOccupanciesOrConfirmedReservations) {
+            throw ValidationException::withMessages(['is_active' => trans('rooms.messages.inventory_blocked')]);
+        }
+
+        $room->update($data);
 
         return redirect()->route('hotels.rooms.index', $hotel)
             ->with('success', trans('rooms.messages.updated'));
@@ -78,6 +88,10 @@ class RoomController extends Controller
 
     public function destroy(Hotel $hotel, Room $room): RedirectResponse
     {
+        if ($room->roomOccupancies()->exists() || $room->reservedRooms()->exists()) {
+            return back()->with('error', trans('rooms.messages.delete_blocked'));
+        }
+
         $room->delete();
 
         return redirect()->route('hotels.rooms.index', $hotel)
@@ -86,6 +100,13 @@ class RoomController extends Controller
 
     public function toggle(Hotel $hotel, Room $room): RedirectResponse
     {
+        $hasActiveOccupanciesOrConfirmedReservations = $room->roomOccupancies()->whereNull('checked_out_at')->exists()
+            || $room->reservedRooms()->whereHas('reservation', fn ($query) => $query->where('status', ReservationStatus::Confirmed))->exists();
+
+        if ($room->is_active && $hasActiveOccupanciesOrConfirmedReservations) {
+            return back()->with('error', trans('rooms.messages.inventory_blocked'));
+        }
+
         $room->update(['is_active' => ! $room->is_active]);
 
         return redirect()->route('hotels.rooms.index', $hotel)
