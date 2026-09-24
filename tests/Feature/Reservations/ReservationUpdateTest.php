@@ -8,9 +8,9 @@ use App\Constants\ReservationEventType;
 use App\Constants\ReservationStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\OperationalTestCase;
+use Tests\TestCase;
 
-class ReservationUpdateTest extends OperationalTestCase
+class ReservationUpdateTest extends TestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;

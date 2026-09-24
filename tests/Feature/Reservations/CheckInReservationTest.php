@@ -10,9 +10,9 @@ use App\Constants\StayStatus;
 use App\Models\Stay;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\OperationalTestCase;
+use Tests\TestCase;
 
-class CheckInReservationTest extends OperationalTestCase
+class CheckInReservationTest extends TestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;

@@ -23,10 +23,12 @@ use App\Http\Controllers\StayGuestController;
 use App\Http\Controllers\TransferRoomOccupancyController;
 use App\Http\Controllers\UpdateRoomHousekeepingStatusController;
 use App\Http\Controllers\UpdateStayExpectedCheckOutController;
-use App\Http\Middleware\EnsureCurrencyConfigured;
+use App\Http\Middleware\EnsureAppConfigured;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/locale', [LocaleController::class, 'update'])->name('locale.update');
+Route::post('/locale', [LocaleController::class, 'update'])
+    ->withoutMiddleware(EnsureAppConfigured::class)
+    ->name('locale.update');
 
 Route::get('/', function () {
     return redirect()->route('hotels.index');
@@ -34,8 +36,12 @@ Route::get('/', function () {
 
 Route::resource('hotels', HotelController::class);
 
-Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
-Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+Route::get('settings', [SettingsController::class, 'edit'])
+    ->withoutMiddleware(EnsureAppConfigured::class)
+    ->name('settings.edit');
+Route::put('settings', [SettingsController::class, 'update'])
+    ->withoutMiddleware(EnsureAppConfigured::class)
+    ->name('settings.update');
 
 Route::get('/hotels/{hotel}/management', [HotelManagementController::class, 'index'])->name('hotels.management.index');
 Route::get('/hotels/{hotel}/image', [HotelImageController::class, 'show'])->name('hotels.image');
@@ -45,8 +51,7 @@ Route::resource('hotels.room-types', RoomTypeController::class)
 
 Route::resource('hotels.rooms', RoomController::class)
     ->except('show')
-    ->scoped()
-    ->middleware(EnsureCurrencyConfigured::class);
+    ->scoped();
 
 Route::get('/hotels/{hotel}/guests/lookup', GuestLookupController::class)
     ->name('hotels.guests.lookup');
@@ -57,57 +62,46 @@ Route::resource('hotels.guests', GuestController::class)
 
 Route::resource('hotels.stays', StayController::class)
     ->only(['index', 'create', 'store', 'show'])
-    ->scoped()
-    ->middleware(EnsureCurrencyConfigured::class);
+    ->scoped();
 
 Route::get('/hotels/{hotel}/reservations/availability/{reservation?}', ReservationAvailabilityController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.reservations.availability');
 
 Route::resource('hotels.reservations', ReservationController::class)
     ->only(['index', 'create', 'store', 'show', 'edit', 'update'])
-    ->scoped()
-    ->middleware(EnsureCurrencyConfigured::class);
+    ->scoped();
 
 Route::patch('/hotels/{hotel}/reservations/{reservation}/confirm', ConfirmReservationController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.reservations.confirm');
 
 Route::patch('/hotels/{hotel}/reservations/{reservation}/cancel', CancelReservationController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.reservations.cancel');
 
 Route::patch('/hotels/{hotel}/reservations/{reservation}/no-show', MarkReservationNoShowController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.reservations.no-show');
 
 Route::post('/hotels/{hotel}/reservations/{reservation}/check-in', CheckInReservationController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.reservations.check-in');
 
 Route::patch('/hotels/{hotel}/stays/{stay}/expected-check-out', UpdateStayExpectedCheckOutController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.expected-check-out.update');
 
 Route::post('/hotels/{hotel}/stays/{stay}/check-out', CheckOutStayController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.check-out');
 
 Route::post('/hotels/{hotel}/stays/{stay}/guests', StayGuestController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.guests.store');
 
 Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/transfer', TransferRoomOccupancyController::class)
     ->scopeBindings()
-    ->middleware(EnsureCurrencyConfigured::class)
     ->name('hotels.stays.room-occupancies.transfer');
 
 Route::patch('/hotels/{hotel}/rooms/{room}/toggle', [RoomController::class, 'toggle'])

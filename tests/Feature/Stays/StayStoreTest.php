@@ -16,9 +16,9 @@ use App\Models\RoomType;
 use App\Models\Stay;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\OperationalTestCase;
+use Tests\TestCase;
 
-class StayStoreTest extends OperationalTestCase
+class StayStoreTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -13,11 +13,14 @@ import {
 } from '@heroicons/vue/24/outline';
 import { Head, useForm } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
+import VueSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps({
     currency: { type: String, default: null },
     currencies: { type: Array, required: true },
     flash: { type: Object, default: () => ({}) },
+    missingSettings: { type: Array, required: true },
 });
 
 const { t } = useI18n();
@@ -25,6 +28,14 @@ const form = useForm({ currency: props.currency ?? '' });
 
 function submit() {
     form.put(route('settings.update'));
+}
+
+function currencyCode(currency) {
+    return currency.code;
+}
+
+function currencyLabel(currency) {
+    return `${currency.code} — ${currency.name}`;
 }
 </script>
 
@@ -52,6 +63,11 @@ function submit() {
                 <FlashMessage
                     v-if="flash.error"
                     :message="flash.error"
+                    variant="error"
+                />
+                <FlashMessage
+                    v-if="missingSettings.length > 0 && !flash.error"
+                    :message="t('settings.messages.configuration_required')"
                     variant="error"
                 />
 
@@ -88,33 +104,39 @@ function submit() {
                                     :value="t('settings.currency.label')"
                                     required
                                 />
-                                <select
-                                    id="currency"
+                                <VueSelect
                                     v-model="form.currency"
-                                    name="currency"
-                                    required
-                                    class="focus:border-primary-500 focus:ring-primary-500/20 min-h-11 rounded-lg border bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm transition-[border-color,box-shadow] duration-150 focus:ring-2 focus:outline-hidden dark:bg-neutral-950 dark:text-neutral-100"
+                                    input-id="currency"
+                                    class="currency-select"
                                     :class="
                                         form.errors.currency
-                                            ? 'border-danger-500'
-                                            : 'border-neutral-300 dark:border-neutral-700'
+                                            ? 'currency-select--error'
+                                            : null
                                     "
-                                    :aria-invalid="
-                                        Boolean(form.errors.currency)
+                                    :options="currencies"
+                                    :reduce="currencyCode"
+                                    :get-option-label="currencyLabel"
+                                    :placeholder="
+                                        t('settings.currency.placeholder')
                                     "
-                                    aria-describedby="currency-help currency-error"
+                                    :clearable="false"
                                 >
-                                    <option value="" disabled>
-                                        {{ t('settings.currency.placeholder') }}
-                                    </option>
-                                    <option
-                                        v-for="item in currencies"
-                                        :key="item.code"
-                                        :value="item.code"
-                                    >
-                                        {{ item.code }} — {{ item.name }}
-                                    </option>
-                                </select>
+                                    <template #search="{ attributes, events }">
+                                        <input
+                                            class="vs__search"
+                                            v-bind="attributes"
+                                            :required="!form.currency"
+                                            :aria-invalid="
+                                                Boolean(form.errors.currency)
+                                            "
+                                            aria-describedby="currency-help currency-error"
+                                            v-on="events"
+                                        />
+                                    </template>
+                                    <template #no-options>
+                                        {{ t('settings.currency.no_results') }}
+                                    </template>
+                                </VueSelect>
                                 <p
                                     id="currency-help"
                                     class="text-xs leading-5 text-neutral-600 dark:text-neutral-400"
@@ -161,3 +183,84 @@ function submit() {
         </div>
     </HotelLayout>
 </template>
+
+<style>
+.currency-select {
+    --vs-border-color: var(--color-neutral-300);
+    --vs-border-radius: 0.5rem;
+    --vs-controls-color: var(--color-neutral-500);
+    --vs-dropdown-bg: white;
+    --vs-dropdown-color: var(--color-neutral-900);
+    --vs-dropdown-option--active-bg: var(--color-primary-600);
+    --vs-dropdown-option--active-color: white;
+    --vs-search-input-color: var(--color-neutral-900);
+    --vs-search-input-placeholder-color: var(--color-neutral-500);
+    --vs-selected-color: var(--color-neutral-900);
+}
+
+.currency-select .vs__dropdown-toggle {
+    min-height: 2.75rem;
+    padding: 0.25rem 0.5rem;
+    background: white;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    transition:
+        border-color 150ms,
+        box-shadow 150ms;
+}
+
+.currency-select .vs__dropdown-toggle:focus-within {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px rgb(0 188 212 / 0.2);
+}
+
+.currency-select .vs__search,
+.currency-select .vs__selected {
+    margin: 0;
+    padding: 0.375rem 0.25rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+}
+
+.currency-select .vs__search {
+    border: 0;
+    box-shadow: none;
+}
+
+.currency-select .vs__dropdown-menu {
+    margin-top: 0.25rem;
+    border-color: var(--color-neutral-200);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.16);
+}
+
+.currency-select .vs__dropdown-option {
+    padding: 0.625rem 0.875rem;
+    white-space: normal;
+}
+
+.currency-select--error {
+    --vs-border-color: var(--color-danger-500);
+}
+
+.dark .currency-select {
+    --vs-border-color: var(--color-neutral-700);
+    --vs-controls-color: var(--color-neutral-400);
+    --vs-dropdown-bg: var(--color-neutral-950);
+    --vs-dropdown-color: var(--color-neutral-100);
+    --vs-search-input-color: var(--color-neutral-100);
+    --vs-search-input-placeholder-color: var(--color-neutral-500);
+    --vs-selected-color: var(--color-neutral-100);
+}
+
+.dark .currency-select .vs__dropdown-toggle {
+    background: var(--color-neutral-950);
+}
+
+.dark .currency-select .vs__dropdown-menu {
+    border-color: var(--color-neutral-700);
+}
+
+.dark .currency-select--error {
+    --vs-border-color: var(--color-danger-500);
+}
+</style>

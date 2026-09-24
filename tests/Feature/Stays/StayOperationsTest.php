@@ -19,9 +19,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\OperationalTestCase;
+use Tests\TestCase;
 
-class StayOperationsTest extends OperationalTestCase
+class StayOperationsTest extends TestCase
 {
     use RefreshDatabase;
 

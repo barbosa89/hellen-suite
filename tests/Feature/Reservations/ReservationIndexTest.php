@@ -9,9 +9,9 @@ use App\Models\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\OperationalTestCase;
+use Tests\TestCase;
 
-class ReservationIndexTest extends OperationalTestCase
+class ReservationIndexTest extends TestCase
 {
     use InteractsWithReservations;
     use RefreshDatabase;

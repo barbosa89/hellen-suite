@@ -538,13 +538,14 @@ export default {
                 "description": "Select the currency that identifies reference rates for every room.",
                 "label": "Currency",
                 "placeholder": "Select a currency",
+                "no_results": "No currencies match your search.",
                 "hint": "All ISO 4217 codes are available and rates are stored with two decimals.",
                 "reference_title": "Reference use",
                 "reference_description": "Changing currency does not convert or alter existing rates. The selected code only indicates how they are interpreted and displayed."
             },
             "messages": {
                 "updated": "Currency settings were updated.",
-                "currency_required": "Configure a currency before creating or editing rooms."
+                "configuration_required": "Complete the required settings to continue. Pending fields are marked below."
             }
         },
         "stays": {
@@ -1391,13 +1392,14 @@ export default {
                 "description": "Selecciona la moneda que identifica las tarifas de referencia de todas las habitaciones.",
                 "label": "Moneda",
                 "placeholder": "Selecciona una moneda",
+                "no_results": "No hay monedas que coincidan con la búsqueda.",
                 "hint": "La selección admite todos los códigos ISO 4217 y las tarifas se guardan con dos decimales.",
                 "reference_title": "Uso referencial",
                 "reference_description": "Cambiar la moneda no convierte ni modifica las tarifas existentes. El código seleccionado solo indica cómo deben interpretarse y mostrarse."
             },
             "messages": {
                 "updated": "La configuración de moneda fue actualizada.",
-                "currency_required": "Configura una moneda antes de crear o editar habitaciones."
+                "configuration_required": "Completa las configuraciones requeridas para continuar. Los campos pendientes están marcados abajo."
             }
         },
         "stays": {

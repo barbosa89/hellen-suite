@@ -17,11 +17,14 @@ class SettingEditTest extends TestCase
     #[Test]
     public function it_displays_and_updates_the_reference_currency(): void
     {
+        GeneralSettings::fake(['currency' => null]);
+
         $this->get(route('settings.edit'))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Settings/Edit')
                 ->where('currency', null)
+                ->where('missingSettings', ['currency'])
                 ->has('currencies'));
 
         $this->put(route('settings.update'), ['currency' => 'COP'])

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Alcohol\ISO4217;
 use App\Http\Requests\UpdateGeneralSettingsRequest;
+use App\Settings\AppConfiguration;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ use Inertia\Response;
 
 class SettingsController extends Controller
 {
-    public function edit(GeneralSettings $settings, ISO4217 $iso4217): Response
+    public function edit(GeneralSettings $settings, AppConfiguration $configuration, ISO4217 $iso4217): Response
     {
         $currencies = collect($iso4217->getAll())
             ->sortBy('alpha3')
@@ -27,6 +28,7 @@ class SettingsController extends Controller
         return Inertia::render('Settings/Edit', [
             'currency' => $settings->currency,
             'currencies' => $currencies,
+            'missingSettings' => $configuration->missingSettings(),
         ]);
     }
 
