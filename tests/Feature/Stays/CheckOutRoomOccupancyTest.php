@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Stays;
 
 use App\Constants\HousekeepingStatus;
+use App\Constants\LodgingChargePolicy;
 use App\Constants\RoomOccupancyEndReason;
+use App\Constants\RoomOccupancyEventType;
+use App\Constants\StayGuestRole;
 use App\Constants\StayStatus;
 use App\Models\Guest;
 use App\Models\Hotel;
@@ -13,6 +16,8 @@ use App\Models\Room;
 use App\Models\RoomOccupancy;
 use App\Models\RoomType;
 use App\Models\Stay;
+use App\Models\StayGuest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
@@ -34,6 +39,9 @@ class CheckOutRoomOccupancyTest extends TestCase
     {
         [$hotel, $stay, $firstOccupancy, $secondOccupancy] = $this->stayWithTwoRooms();
         $checkedOutAt = now()->subDay();
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
             'checked_out_at' => $checkedOutAt->toDateTimeString(),
@@ -46,6 +54,14 @@ class CheckOutRoomOccupancyTest extends TestCase
         $this->assertSame(HousekeepingStatus::Dirty, $firstOccupancy->room->refresh()->housekeeping_status);
         $this->assertNull($secondOccupancy->refresh()->checked_out_at);
         $this->assertSame(HousekeepingStatus::Clean, $secondOccupancy->room->refresh()->housekeeping_status);
+
+        $event = $firstOccupancy->events()->sole();
+        $this->assertSame(RoomOccupancyEventType::CheckedOut, $event->type);
+        $this->assertSame($user->id, $event->user_id);
+        $this->assertNull($event->before_data['checked_out_at']);
+        $this->assertSame($firstOccupancy->expected_check_out_on->toDateString(), $event->before_data['expected_check_out_on']);
+        $this->assertSame($checkedOutAt->toDateTimeString(), $event->after_data['checked_out_at']);
+        $this->assertSame(LodgingChargePolicy::ConsumedNights->value, $event->after_data['lodging_charge_policy']);
     }
 
     #[Test]
@@ -82,10 +98,10 @@ class CheckOutRoomOccupancyTest extends TestCase
     public function it_prevents_a_second_check_out_for_the_same_room(): void
     {
         [$hotel, $stay, $firstOccupancy] = $this->stayWithTwoRooms();
-        $firstOccupancy->update([
-            'checked_out_at' => now()->subDay(),
-            'end_reason' => RoomOccupancyEndReason::CheckOut,
-        ]);
+
+        $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
+            'checked_out_at' => now()->subDay()->toDateTimeString(),
+        ])->assertSessionHasNoErrors();
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]))
             ->assertSessionHasErrors('checked_out_at');
@@ -109,10 +125,12 @@ class CheckOutRoomOccupancyTest extends TestCase
     public function it_reports_final_and_projected_costs_after_a_partial_check_out(): void
     {
         [$hotel, $stay, $firstOccupancy] = $this->stayWithTwoRooms();
-        $firstOccupancy->update([
-            'checked_out_at' => now()->subDay(),
-            'end_reason' => RoomOccupancyEndReason::CheckOut,
-        ]);
+
+        $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
+            'checked_out_at' => now()->subDay()->toDateTimeString(),
+        ])->assertSessionHasNoErrors();
+
+        $this->assertSame(1, $firstOccupancy->events()->count());
 
         $this->get(route('hotels.stays.show', [$hotel, $stay]))
             ->assertOk()
@@ -127,7 +145,12 @@ class CheckOutRoomOccupancyTest extends TestCase
                 ->where('stayCostSummary.items.0.is_estimate', false)
                 ->where('stayCostSummary.items.1.is_estimate', true)
                 ->where('stayCostSummary.items.1.check_out_now_billable_nights', 2)
-                ->where('stayCostSummary.items.1.check_out_now_subtotal_amount', '400000.00'));
+                ->where('stayCostSummary.items.1.check_out_now_subtotal_amount', '400000.00')
+                ->where('stay.room_occupancies.0.events.0.type', RoomOccupancyEventType::CheckedOut->value)
+                ->where('stay.room_occupancies.0.events.0.after_data.lodging_charge_policy', LodgingChargePolicy::ConsumedNights->value)
+                ->where('stay.room_occupancies.0.events.0.user', null)
+                ->has('stay.room_occupancies.0.guests', 1)
+                ->has('stay.room_occupancies.1.guests', 1));
     }
 
     /** @return array{Hotel, Stay, RoomOccupancy, RoomOccupancy} */
@@ -141,11 +164,14 @@ class CheckOutRoomOccupancyTest extends TestCase
         $firstRoom = Room::factory()->for($hotel)->for($roomType)->create(['number' => '201']);
         $secondRoom = Room::factory()->for($hotel)->for($roomType)->create(['number' => '202']);
         $responsibleGuest = Guest::factory()->for($hotel)->create();
+        $companionGuest = Guest::factory()->for($hotel)->create();
         $stay = Stay::factory()->for($hotel)->create([
             'responsible_guest_id' => $responsibleGuest->id,
             'checked_in_at' => $checkedInAt,
             'expected_check_out_on' => $expectedCheckOutOn,
         ]);
+        StayGuest::factory()->for($stay)->for($responsibleGuest)->create(['role' => StayGuestRole::Responsible]);
+        StayGuest::factory()->for($stay)->for($companionGuest)->create(['role' => StayGuestRole::Companion]);
         $firstOccupancy = RoomOccupancy::factory()->for($stay)->for($firstRoom)->create([
             'nightly_rate' => '100000.00',
             'checked_in_at' => $checkedInAt,
@@ -156,6 +182,8 @@ class CheckOutRoomOccupancyTest extends TestCase
             'checked_in_at' => $checkedInAt,
             'expected_check_out_on' => $expectedCheckOutOn,
         ]);
+        $firstOccupancy->guests()->attach($responsibleGuest);
+        $secondOccupancy->guests()->attach($companionGuest);
 
         return [$hotel, $stay, $firstOccupancy, $secondOccupancy];
     }

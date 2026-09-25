@@ -69,6 +69,8 @@ class StayController extends Controller
             'roomOccupancies.room:id,number,floor,room_type_id',
             'roomOccupancies.room.roomType:id,name,capacity',
             'roomOccupancies.guests:id,first_name,last_name,identification_number',
+            'roomOccupancies.events' => fn ($query) => $query->oldest(),
+            'roomOccupancies.events.user:id,name',
         ]);
 
         return Inertia::render('Hotels/Stays/Show', [

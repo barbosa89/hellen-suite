@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'title' => 'Stays',
+    'charge_policies' => ['consumed_nights' => 'Consumed nights only'],
     'actions' => [
         'create' => 'New check-in',
         'check_in' => 'Confirm check-in',
@@ -45,6 +46,8 @@ return [
             ],
             'add_guest_description' => 'Find or register a companion and assign them to a room with available capacity.',
             'no_room_capacity' => 'There is no capacity available to add another guest.',
+            'guest_status' => ['in_house' => 'In house', 'checked_out' => 'Checked out'],
+            'audit' => ['effective_departure' => 'Recorded departure', 'charge_policy' => 'Charge policy', 'recorded_by' => 'Recorded by', 'system' => 'System'],
             'partial_check_out' => [
                 'title' => 'Check out room :room',
                 'description' => 'This releases only the selected room. Other rooms and the stay will remain active.',
@@ -52,7 +55,8 @@ return [
                 'expected_departure' => 'Original expected departure',
                 'effective_departure' => 'Effective departure',
                 'lodging_charge' => 'Lodging charge if checked out now',
-                'warning' => 'The room will be marked for cleaning. This version does not record payments; this is the calculated lodging cost.',
+                'charge_policy' => 'Charge policy',
+                'warning' => 'The room will be marked for cleaning. The amount includes consumed lodging nights only.',
             ],
         ],
     ],

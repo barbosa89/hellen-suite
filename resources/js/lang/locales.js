@@ -550,6 +550,9 @@ export default {
         },
         "stays": {
             "title": "Stays",
+            "charge_policies": {
+                "consumed_nights": "Consumed nights only"
+            },
             "actions": {
                 "create": "New check-in",
                 "check_in": "Confirm check-in",
@@ -612,6 +615,16 @@ export default {
                     },
                     "add_guest_description": "Find or register a companion and assign them to a room with available capacity.",
                     "no_room_capacity": "There is no capacity available to add another guest.",
+                    "guest_status": {
+                        "in_house": "In house",
+                        "checked_out": "Checked out"
+                    },
+                    "audit": {
+                        "effective_departure": "Recorded departure",
+                        "charge_policy": "Charge policy",
+                        "recorded_by": "Recorded by",
+                        "system": "System"
+                    },
                     "partial_check_out": {
                         "title": "Check out room {room}",
                         "description": "This releases only the selected room. Other rooms and the stay will remain active.",
@@ -619,7 +632,8 @@ export default {
                         "expected_departure": "Original expected departure",
                         "effective_departure": "Effective departure",
                         "lodging_charge": "Lodging charge if checked out now",
-                        "warning": "The room will be marked for cleaning. This version does not record payments; this is the calculated lodging cost."
+                        "charge_policy": "Charge policy",
+                        "warning": "The room will be marked for cleaning. The amount includes consumed lodging nights only."
                     }
                 }
             },
@@ -1423,6 +1437,9 @@ export default {
         },
         "stays": {
             "title": "Estancias",
+            "charge_policies": {
+                "consumed_nights": "Solo noches consumidas"
+            },
             "actions": {
                 "create": "Nuevo check-in",
                 "check_in": "Confirmar check-in",
@@ -1485,6 +1502,16 @@ export default {
                     },
                     "add_guest_description": "Busca o registra un acompañante y asígnalo a una habitación con cupo disponible.",
                     "no_room_capacity": "No hay cupo disponible para agregar otro huésped.",
+                    "guest_status": {
+                        "in_house": "Alojado",
+                        "checked_out": "Salió"
+                    },
+                    "audit": {
+                        "effective_departure": "Salida registrada",
+                        "charge_policy": "Política de cobro",
+                        "recorded_by": "Registrado por",
+                        "system": "Sistema"
+                    },
                     "partial_check_out": {
                         "title": "Dar salida a la habitación {room}",
                         "description": "Esta operación libera únicamente la habitación seleccionada. Las demás habitaciones y la estancia seguirán activas.",
@@ -1492,7 +1519,8 @@ export default {
                         "expected_departure": "Salida esperada original",
                         "effective_departure": "Salida efectiva",
                         "lodging_charge": "Hospedaje al salir ahora",
-                        "warning": "La habitación quedará pendiente de limpieza. Esta versión no registra pagos; el importe es el costo calculado de hospedaje."
+                        "charge_policy": "Política de cobro",
+                        "warning": "La habitación quedará pendiente de limpieza. El importe incluye únicamente las noches de hospedaje consumidas."
                     }
                 }
             },

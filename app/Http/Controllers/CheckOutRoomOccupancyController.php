@@ -22,7 +22,7 @@ class CheckOutRoomOccupancyController extends Controller
         CheckOutRoomOccupancy $checkOutRoomOccupancy,
     ): RedirectResponse {
         $checkedOutAt = $request->date('checked_out_at')?->toImmutable() ?? CarbonImmutable::now();
-        $checkOutRoomOccupancy->execute($stay, $roomOccupancy, $checkedOutAt);
+        $checkOutRoomOccupancy->execute($stay, $roomOccupancy, $checkedOutAt, $request->user()?->getKey());
 
         return back()->with('success', trans('stays.messages.room_checked_out'));
     }

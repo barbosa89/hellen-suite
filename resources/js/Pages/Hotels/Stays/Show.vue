@@ -60,6 +60,16 @@ const availableOccupancies = computed(() =>
 const stayGuestIds = computed(() =>
     props.stay.stay_guests.map((stayGuest) => stayGuest.guest.id),
 );
+const activeGuestIds = computed(
+    () =>
+        new Set(
+            props.stay.room_occupancies
+                .filter((occupancy) => !occupancy.checked_out_at)
+                .flatMap((occupancy) =>
+                    occupancy.guests.map((guest) => guest.id),
+                ),
+        ),
+);
 const costItemsByOccupancyId = computed(() =>
     Object.fromEntries(
         props.stayCostSummary.items.map((item) => [
@@ -133,6 +143,14 @@ function isEarlyCheckOut(occupancy) {
     return (
         occupancy.checked_out_at?.slice(0, 10) < occupancy.expected_check_out_on
     );
+}
+
+function isGuestInHouse(guestId) {
+    return activeGuestIds.value.has(guestId);
+}
+
+function checkOutEvent(occupancy) {
+    return occupancy.events.find((event) => event.type === 'checked_out');
 }
 
 function openTransfer(occupancy) {
@@ -599,6 +617,72 @@ function addGuest() {
                                     {{ currency }} ·
                                     {{ occupancy.expected_check_out_on }}
                                 </p>
+                                <dl
+                                    v-if="checkOutEvent(occupancy)"
+                                    class="mt-3 grid gap-x-6 gap-y-2 border-t border-neutral-200 pt-3 text-sm sm:grid-cols-3 dark:border-neutral-800"
+                                >
+                                    <div>
+                                        <dt
+                                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                        >
+                                            {{
+                                                t(
+                                                    'stays.pages.show.audit.effective_departure',
+                                                )
+                                            }}
+                                        </dt>
+                                        <dd
+                                            class="mt-1 text-neutral-700 tabular-nums dark:text-neutral-300"
+                                        >
+                                            {{
+                                                checkOutEvent(occupancy)
+                                                    .after_data.checked_out_at
+                                            }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt
+                                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                        >
+                                            {{
+                                                t(
+                                                    'stays.pages.show.audit.charge_policy',
+                                                )
+                                            }}
+                                        </dt>
+                                        <dd
+                                            class="mt-1 text-neutral-700 dark:text-neutral-300"
+                                        >
+                                            {{
+                                                t(
+                                                    `stays.charge_policies.${checkOutEvent(occupancy).after_data.lodging_charge_policy}`,
+                                                )
+                                            }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt
+                                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                        >
+                                            {{
+                                                t(
+                                                    'stays.pages.show.audit.recorded_by',
+                                                )
+                                            }}
+                                        </dt>
+                                        <dd
+                                            class="mt-1 text-neutral-700 dark:text-neutral-300"
+                                        >
+                                            {{
+                                                checkOutEvent(occupancy).user
+                                                    ?.name ??
+                                                t(
+                                                    'stays.pages.show.audit.system',
+                                                )
+                                            }}
+                                        </dd>
+                                    </div>
+                                </dl>
                             </div>
                             <div
                                 v-if="isActive && !occupancy.checked_out_at"
@@ -664,14 +748,35 @@ function addGuest() {
                                 class="font-medium text-neutral-950 dark:text-white"
                                 >{{ stayGuest.guest.first_name }}
                                 {{ stayGuest.guest.last_name }}</span
-                            ><span
-                                class="text-sm text-neutral-600 dark:text-neutral-400"
-                                >{{
-                                    stayGuest.role === 'responsible'
-                                        ? t('stays.form.guests.responsible')
-                                        : t('stays.form.guests.companion')
-                                }}</span
                             >
+                            <div class="flex flex-wrap justify-end gap-2">
+                                <span
+                                    class="text-sm text-neutral-600 dark:text-neutral-400"
+                                    >{{
+                                        stayGuest.role === 'responsible'
+                                            ? t('stays.form.guests.responsible')
+                                            : t('stays.form.guests.companion')
+                                    }}</span
+                                >
+                                <span
+                                    class="rounded-full px-2.5 py-1 text-xs font-semibold"
+                                    :class="
+                                        isGuestInHouse(stayGuest.guest.id)
+                                            ? 'bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300'
+                                            : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
+                                    "
+                                >
+                                    {{
+                                        isGuestInHouse(stayGuest.guest.id)
+                                            ? t(
+                                                  'stays.pages.show.guest_status.in_house',
+                                              )
+                                            : t(
+                                                  'stays.pages.show.guest_status.checked_out',
+                                              )
+                                    }}
+                                </span>
+                            </div>
                         </li>
                     </ul>
                 </section>
@@ -885,6 +990,22 @@ function addGuest() {
                                     ].check_out_now_billable_nights,
                                 )
                             }}
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt
+                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                        >
+                            {{
+                                t(
+                                    'stays.pages.show.partial_check_out.charge_policy',
+                                )
+                            }}
+                        </dt>
+                        <dd
+                            class="mt-1 font-semibold text-neutral-950 dark:text-white"
+                        >
+                            {{ t('stays.charge_policies.consumed_nights') }}
                         </dd>
                     </div>
                 </dl>

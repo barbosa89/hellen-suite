@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Stays;
 
 use App\Constants\HousekeepingStatus;
+use App\Constants\LodgingChargePolicy;
 use App\Constants\RoomOccupancyEndReason;
 use App\Constants\StayGuestRole;
 use App\Constants\StayStatus;
@@ -51,6 +52,10 @@ class StayOperationsTest extends TestCase
         $this->assertNotNull($occupancy->refresh()->checked_out_at);
         $this->assertSame(RoomOccupancyEndReason::CheckOut, $occupancy->end_reason);
         $this->assertSame(HousekeepingStatus::Dirty, $occupancy->room->refresh()->housekeeping_status);
+        $this->assertSame(
+            LodgingChargePolicy::ConsumedNights->value,
+            $occupancy->events()->sole()->after_data['lodging_charge_policy'],
+        );
     }
 
     #[Test]

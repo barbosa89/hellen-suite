@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -57,6 +58,12 @@ class RoomOccupancy extends Model
     public function guests(): BelongsToMany
     {
         return $this->belongsToMany(Guest::class)->withTimestamps();
+    }
+
+    /** @return HasMany<RoomOccupancyEvent, $this> */
+    public function events(): HasMany
+    {
+        return $this->hasMany(RoomOccupancyEvent::class);
     }
 
     /** @return array<string, string> */

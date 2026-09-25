@@ -16,7 +16,7 @@ class CheckOutStayController extends Controller
     public function __invoke(CheckOutStayRequest $request, Hotel $hotel, Stay $stay, CheckOutStay $checkOutStay): RedirectResponse
     {
         $checkedOutAt = $request->date('checked_out_at')?->toImmutable() ?? CarbonImmutable::now();
-        $checkOutStay->execute($stay, $checkedOutAt);
+        $checkOutStay->execute($stay, $checkedOutAt, $request->user()?->getKey());
 
         return back()->with('success', trans('stays.messages.checked_out'));
     }
