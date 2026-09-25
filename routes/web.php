@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CancelReservationController;
 use App\Http\Controllers\CheckInReservationController;
+use App\Http\Controllers\CheckOutRoomOccupancyController;
 use App\Http\Controllers\CheckOutStayController;
 use App\Http\Controllers\ConfirmReservationController;
 use App\Http\Controllers\GuestController;
@@ -103,6 +104,10 @@ Route::post('/hotels/{hotel}/stays/{stay}/guests', StayGuestController::class)
 Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/transfer', TransferRoomOccupancyController::class)
     ->scopeBindings()
     ->name('hotels.stays.room-occupancies.transfer');
+
+Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/check-out', CheckOutRoomOccupancyController::class)
+    ->scopeBindings()
+    ->name('hotels.stays.room-occupancies.check-out');
 
 Route::patch('/hotels/{hotel}/rooms/{room}/toggle', [RoomController::class, 'toggle'])
     ->scopeBindings()

@@ -554,6 +554,7 @@ export default {
                 "create": "New check-in",
                 "check_in": "Confirm check-in",
                 "check_out": "Check out",
+                "check_out_room": "Check out room",
                 "transfer": "Transfer room",
                 "extend": "Change expected checkout",
                 "add_guest": "Add guest",
@@ -594,8 +595,14 @@ export default {
                         "heading": "Stay costs",
                         "estimate_description": "Projected lodging charges using the expected checkout date.",
                         "final_description": "Final lodging charges from the actual occupied nights.",
+                        "mixed_description": "Combines final charges for released rooms with projected charges for active rooms.",
                         "estimated_total": "Estimated lodging total",
                         "total": "Lodging total",
+                        "combined_total": "Final and projected total",
+                        "final_amount": "Final charges",
+                        "estimated_amount": "Projected charges",
+                        "final": "Final",
+                        "estimated": "Projected",
                         "billable_nights": "Billable nights",
                         "currency": "Currency",
                         "room_period": "Room and period",
@@ -604,7 +611,16 @@ export default {
                         "nights_count": "{count} night|{count} nights"
                     },
                     "add_guest_description": "Find or register a companion and assign them to a room with available capacity.",
-                    "no_room_capacity": "There is no capacity available to add another guest."
+                    "no_room_capacity": "There is no capacity available to add another guest.",
+                    "partial_check_out": {
+                        "title": "Check out room {room}",
+                        "description": "This releases only the selected room. Other rooms and the stay will remain active.",
+                        "early_departure": "Early departure",
+                        "expected_departure": "Original expected departure",
+                        "effective_departure": "Effective departure",
+                        "lodging_charge": "Lodging charge if checked out now",
+                        "warning": "The room will be marked for cleaning. This version does not record payments; this is the calculated lodging cost."
+                    }
                 }
             },
             "form": {
@@ -672,6 +688,7 @@ export default {
             "messages": {
                 "checked_in": "Check-in registered successfully.",
                 "checked_out": "The stay was closed and rooms now need cleaning.",
+                "room_checked_out": "The room was released and now needs cleaning.",
                 "expected_check_out_updated": "Expected checkout was updated.",
                 "room_transferred": "Room transferred successfully.",
                 "guest_added": "Guest added to the stay successfully."
@@ -686,7 +703,9 @@ export default {
                 "stay_closed": "The stay is already closed.",
                 "occupancy_closed": "The selected occupancy is already closed.",
                 "occupancy_invalid": "The selected room is not assigned to this stay.",
-                "guest_already_in_stay": "This guest is already registered in the stay."
+                "guest_already_in_stay": "This guest is already registered in the stay.",
+                "check_out_before_check_in": "Checkout cannot be before the room check-in.",
+                "check_out_future": "Checkout cannot be recorded in the future."
             }
         },
         "validation": {
@@ -1408,6 +1427,7 @@ export default {
                 "create": "Nuevo check-in",
                 "check_in": "Confirmar check-in",
                 "check_out": "Dar salida",
+                "check_out_room": "Dar salida a la habitación",
                 "transfer": "Trasladar habitación",
                 "extend": "Cambiar salida esperada",
                 "add_guest": "Agregar huésped",
@@ -1448,8 +1468,14 @@ export default {
                         "heading": "Costos de la estancia",
                         "estimate_description": "Cargos de hospedaje proyectados con la salida esperada.",
                         "final_description": "Cargos finales de hospedaje según las noches ocupadas.",
+                        "mixed_description": "Combina cargos definitivos de habitaciones liberadas con cargos proyectados de habitaciones activas.",
                         "estimated_total": "Total estimado de hospedaje",
                         "total": "Total de hospedaje",
+                        "combined_total": "Total definitivo y proyectado",
+                        "final_amount": "Cargos definitivos",
+                        "estimated_amount": "Cargos proyectados",
+                        "final": "Definitivo",
+                        "estimated": "Proyectado",
                         "billable_nights": "Noches cobrables",
                         "currency": "Moneda",
                         "room_period": "Habitación y periodo",
@@ -1458,7 +1484,16 @@ export default {
                         "nights_count": "{count} noche|{count} noches"
                     },
                     "add_guest_description": "Busca o registra un acompañante y asígnalo a una habitación con cupo disponible.",
-                    "no_room_capacity": "No hay cupo disponible para agregar otro huésped."
+                    "no_room_capacity": "No hay cupo disponible para agregar otro huésped.",
+                    "partial_check_out": {
+                        "title": "Dar salida a la habitación {room}",
+                        "description": "Esta operación libera únicamente la habitación seleccionada. Las demás habitaciones y la estancia seguirán activas.",
+                        "early_departure": "Salida anticipada",
+                        "expected_departure": "Salida esperada original",
+                        "effective_departure": "Salida efectiva",
+                        "lodging_charge": "Hospedaje al salir ahora",
+                        "warning": "La habitación quedará pendiente de limpieza. Esta versión no registra pagos; el importe es el costo calculado de hospedaje."
+                    }
                 }
             },
             "form": {
@@ -1526,6 +1561,7 @@ export default {
             "messages": {
                 "checked_in": "Check-in registrado con éxito.",
                 "checked_out": "La estancia fue cerrada y las habitaciones quedaron pendientes de limpieza.",
+                "room_checked_out": "La habitación fue liberada y quedó pendiente de limpieza.",
                 "expected_check_out_updated": "La salida esperada fue actualizada.",
                 "room_transferred": "La habitación fue trasladada con éxito.",
                 "guest_added": "El huésped fue agregado a la estancia con éxito."
@@ -1540,7 +1576,9 @@ export default {
                 "stay_closed": "La estancia ya se encuentra cerrada.",
                 "occupancy_closed": "La ocupación seleccionada ya se encuentra cerrada.",
                 "occupancy_invalid": "La habitación seleccionada no pertenece a esta estancia.",
-                "guest_already_in_stay": "Este huésped ya está registrado en la estancia."
+                "guest_already_in_stay": "Este huésped ya está registrado en la estancia.",
+                "check_out_before_check_in": "La salida no puede ser anterior a la entrada de la habitación.",
+                "check_out_future": "La salida no puede registrarse en el futuro."
             }
         },
         "validation": {

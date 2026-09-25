@@ -30,11 +30,14 @@ const props = defineProps({
 const { t, locale } = useI18n();
 const isTransferOpen = ref(false);
 const isGuestModalOpen = ref(false);
+const isRoomCheckOutOpen = ref(false);
 const selectedOccupancy = ref(null);
+const selectedCheckOutOccupancy = ref(null);
 const expectedCheckOutForm = useForm({
     expected_check_out_on: props.stay.expected_check_out_on,
 });
 const checkOutForm = useForm({});
+const roomCheckOutForm = useForm({});
 const transferForm = useForm({ room_id: '', nightly_rate: '' });
 const guestForm = useForm({
     room_occupancy_id: '',
@@ -65,6 +68,12 @@ const costItemsByOccupancyId = computed(() =>
         ]),
     ),
 );
+const hasFinalCosts = computed(
+    () => Number(props.stayCostSummary.final_amount) > 0,
+);
+const hasEstimatedCosts = computed(
+    () => Number(props.stayCostSummary.estimated_amount) > 0,
+);
 
 function formatMoney(value) {
     return new Intl.NumberFormat(locale.value === 'es' ? 'es-CO' : 'en-US', {
@@ -91,6 +100,38 @@ function updateExpectedCheckOut() {
 function checkOut() {
     checkOutForm.post(
         route('hotels.stays.check-out', [props.hotel.id, props.stay.id]),
+    );
+}
+
+function openRoomCheckOut(occupancy) {
+    selectedCheckOutOccupancy.value = occupancy;
+    roomCheckOutForm.clearErrors();
+    isRoomCheckOutOpen.value = true;
+}
+
+function closeRoomCheckOut() {
+    isRoomCheckOutOpen.value = false;
+    selectedCheckOutOccupancy.value = null;
+    roomCheckOutForm.clearErrors();
+}
+
+function checkOutRoom() {
+    roomCheckOutForm.post(
+        route('hotels.stays.room-occupancies.check-out', [
+            props.hotel.id,
+            props.stay.id,
+            selectedCheckOutOccupancy.value.id,
+        ]),
+        {
+            preserveScroll: true,
+            onSuccess: closeRoomCheckOut,
+        },
+    );
+}
+
+function isEarlyCheckOut(occupancy) {
+    return (
+        occupancy.checked_out_at?.slice(0, 10) < occupancy.expected_check_out_on
     );
 }
 
@@ -211,27 +252,83 @@ function addGuest() {
                                     class="mt-1 max-w-prose text-sm text-neutral-600 dark:text-neutral-400"
                                 >
                                     {{
-                                        stayCostSummary.is_estimate
+                                        hasFinalCosts && hasEstimatedCosts
                                             ? t(
-                                                  'stays.pages.show.costs.estimate_description',
+                                                  'stays.pages.show.costs.mixed_description',
                                               )
-                                            : t(
-                                                  'stays.pages.show.costs.final_description',
-                                              )
+                                            : stayCostSummary.is_estimate
+                                              ? t(
+                                                    'stays.pages.show.costs.estimate_description',
+                                                )
+                                              : t(
+                                                    'stays.pages.show.costs.final_description',
+                                                )
                                     }}
                                 </p>
                             </div>
+
+                            <dl
+                                v-if="hasFinalCosts && hasEstimatedCosts"
+                                class="grid grid-cols-2 gap-4 border-t border-neutral-200 pt-5 dark:border-neutral-800"
+                            >
+                                <div>
+                                    <dt
+                                        class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                    >
+                                        {{
+                                            t(
+                                                'stays.pages.show.costs.final_amount',
+                                            )
+                                        }}
+                                    </dt>
+                                    <dd
+                                        class="mt-1 text-sm font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                    >
+                                        {{
+                                            formatMoney(
+                                                stayCostSummary.final_amount,
+                                            )
+                                        }}
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt
+                                        class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                                    >
+                                        {{
+                                            t(
+                                                'stays.pages.show.costs.estimated_amount',
+                                            )
+                                        }}
+                                    </dt>
+                                    <dd
+                                        class="mt-1 text-sm font-semibold text-neutral-950 tabular-nums dark:text-white"
+                                    >
+                                        {{
+                                            formatMoney(
+                                                stayCostSummary.estimated_amount,
+                                            )
+                                        }}
+                                    </dd>
+                                </div>
+                            </dl>
 
                             <div>
                                 <p
                                     class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
                                 >
                                     {{
-                                        stayCostSummary.is_estimate
+                                        hasFinalCosts && hasEstimatedCosts
                                             ? t(
-                                                  'stays.pages.show.costs.estimated_total',
+                                                  'stays.pages.show.costs.combined_total',
                                               )
-                                            : t('stays.pages.show.costs.total')
+                                            : stayCostSummary.is_estimate
+                                              ? t(
+                                                    'stays.pages.show.costs.estimated_total',
+                                                )
+                                              : t(
+                                                    'stays.pages.show.costs.total',
+                                                )
                                     }}
                                 </p>
                                 <p
@@ -312,6 +409,21 @@ function addGuest() {
                                         >
                                             {{ occupancy.room.number }} ·
                                             {{ occupancy.room.room_type.name }}
+                                            <span
+                                                class="ml-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400"
+                                            >
+                                                {{
+                                                    costItemsByOccupancyId[
+                                                        occupancy.id
+                                                    ].is_estimate
+                                                        ? t(
+                                                              'stays.pages.show.costs.estimated',
+                                                          )
+                                                        : t(
+                                                              'stays.pages.show.costs.final',
+                                                          )
+                                                }}
+                                            </span>
                                         </p>
                                         <p
                                             class="mt-1 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
@@ -458,9 +570,13 @@ function addGuest() {
                                         >{{
                                             occupancy.end_reason === 'transfer'
                                                 ? t('stays.actions.transfer')
-                                                : t(
-                                                      'stays.pages.show.checked_out',
-                                                  )
+                                                : isEarlyCheckOut(occupancy)
+                                                  ? t(
+                                                        'stays.pages.show.partial_check_out.early_departure',
+                                                    )
+                                                  : t(
+                                                        'stays.pages.show.checked_out',
+                                                    )
                                         }}</span
                                     >
                                 </div>
@@ -484,14 +600,25 @@ function addGuest() {
                                     {{ occupancy.expected_check_out_on }}
                                 </p>
                             </div>
-                            <SecondaryButton
+                            <div
                                 v-if="isActive && !occupancy.checked_out_at"
-                                type="button"
-                                @click="openTransfer(occupancy)"
-                                ><ArrowsRightLeftIcon class="h-4 w-4" />{{
-                                    t('stays.actions.transfer')
-                                }}</SecondaryButton
+                                class="flex flex-col gap-2 sm:flex-row"
                             >
+                                <SecondaryButton
+                                    type="button"
+                                    @click="openTransfer(occupancy)"
+                                    ><ArrowsRightLeftIcon class="h-4 w-4" />{{
+                                        t('stays.actions.transfer')
+                                    }}</SecondaryButton
+                                >
+                                <PrimaryButton
+                                    type="button"
+                                    @click="openRoomCheckOut(occupancy)"
+                                    ><CheckIcon class="h-4 w-4" />{{
+                                        t('stays.actions.check_out_room')
+                                    }}</PrimaryButton
+                                >
+                            </div>
                         </li>
                     </ul>
                 </section>
@@ -659,6 +786,137 @@ function addGuest() {
                     </PrimaryButton>
                 </div>
             </form>
+        </Modal>
+
+        <Modal
+            :show="isRoomCheckOutOpen"
+            max-width="lg"
+            aria-labelledby="room-check-out-title"
+            @close="closeRoomCheckOut"
+        >
+            <div v-if="selectedCheckOutOccupancy" class="p-6 sm:p-7">
+                <span
+                    class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                >
+                    <CheckIcon class="h-5 w-5" />
+                </span>
+                <h2
+                    id="room-check-out-title"
+                    class="mt-5 text-xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-white"
+                >
+                    {{
+                        t('stays.pages.show.partial_check_out.title', {
+                            room: selectedCheckOutOccupancy.room.number,
+                        })
+                    }}
+                </h2>
+                <p
+                    class="mt-2 text-sm leading-6 text-neutral-600 dark:text-neutral-400"
+                >
+                    {{ t('stays.pages.show.partial_check_out.description') }}
+                </p>
+
+                <dl
+                    class="mt-6 grid gap-4 rounded-xl border border-neutral-200 p-4 sm:grid-cols-2 dark:border-neutral-800"
+                >
+                    <div>
+                        <dt
+                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                        >
+                            {{
+                                t(
+                                    'stays.pages.show.partial_check_out.expected_departure',
+                                )
+                            }}
+                        </dt>
+                        <dd
+                            class="mt-1 font-semibold text-neutral-950 tabular-nums dark:text-white"
+                        >
+                            {{
+                                selectedCheckOutOccupancy.expected_check_out_on
+                            }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt
+                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                        >
+                            {{
+                                t(
+                                    'stays.pages.show.partial_check_out.effective_departure',
+                                )
+                            }}
+                        </dt>
+                        <dd
+                            class="mt-1 font-semibold text-neutral-950 tabular-nums dark:text-white"
+                        >
+                            {{
+                                costItemsByOccupancyId[
+                                    selectedCheckOutOccupancy.id
+                                ].check_out_now_on
+                            }}
+                        </dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <dt
+                            class="text-xs font-medium text-neutral-500 dark:text-neutral-500"
+                        >
+                            {{
+                                t(
+                                    'stays.pages.show.partial_check_out.lodging_charge',
+                                )
+                            }}
+                        </dt>
+                        <dd
+                            class="mt-1 text-lg font-semibold text-neutral-950 tabular-nums dark:text-white"
+                        >
+                            {{
+                                formatMoney(
+                                    costItemsByOccupancyId[
+                                        selectedCheckOutOccupancy.id
+                                    ].check_out_now_subtotal_amount,
+                                )
+                            }}
+                            ·
+                            {{
+                                formatNights(
+                                    costItemsByOccupancyId[
+                                        selectedCheckOutOccupancy.id
+                                    ].check_out_now_billable_nights,
+                                )
+                            }}
+                        </dd>
+                    </div>
+                </dl>
+
+                <p
+                    class="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
+                >
+                    {{ t('stays.pages.show.partial_check_out.warning') }}
+                </p>
+                <InputError
+                    class="mt-3"
+                    :message="roomCheckOutForm.errors.checked_out_at"
+                />
+
+                <div
+                    class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"
+                >
+                    <SecondaryButton
+                        :disabled="roomCheckOutForm.processing"
+                        @click="closeRoomCheckOut"
+                    >
+                        {{ t('app.cancel') }}
+                    </SecondaryButton>
+                    <PrimaryButton
+                        :disabled="roomCheckOutForm.processing"
+                        @click="checkOutRoom"
+                    >
+                        <CheckIcon class="h-4 w-4" />
+                        {{ t('stays.actions.check_out_room') }}
+                    </PrimaryButton>
+                </div>
+            </div>
         </Modal>
 
         <Modal
