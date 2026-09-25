@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\User;
 use App\Settings\GeneralSettings;
@@ -67,6 +68,11 @@ class DatabaseSeeder extends Seeder
                     ],
                 );
             }
+
+            Guest::factory()
+                ->for($hotel, 'hotel')
+                ->count(10)
+                ->create();
 
             $settings = app(GeneralSettings::class);
             $settings->currency = 'USD';
