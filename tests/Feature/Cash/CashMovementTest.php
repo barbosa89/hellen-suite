@@ -24,13 +24,13 @@ class CashMovementTest extends TestCase
         $this->post(route('hotels.cash.store', $hotel), [
             'type' => CashMovementType::ManualEntry->value,
             'amount' => '500.00',
-            'comment' => 'Opening cash'
+            'comment' => 'Opening cash',
         ])->assertSessionHasNoErrors();
 
         $this->post(route('hotels.cash.store', $hotel), [
             'type' => CashMovementType::Withdrawal->value,
             'amount' => '125.00',
-            'comment' => 'Petty cash'
+            'comment' => 'Petty cash',
         ])->assertSessionHasNoErrors();
 
         $this->assertSame(CashMovementDirection::In, $hotel->cashMovements()->oldest('id')->firstOrFail()->direction);
@@ -46,7 +46,7 @@ class CashMovementTest extends TestCase
         $this->post(route('hotels.cash.store', $hotel), [
             'type' => CashMovementType::Withdrawal->value,
             'amount' => '100.01',
-            'comment' => 'Too much'
+            'comment' => 'Too much',
         ])->assertSessionHasErrors('amount');
 
         $this->assertSame(1, $hotel->cashMovements()->count());
