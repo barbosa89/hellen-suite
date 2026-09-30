@@ -268,6 +268,10 @@ export default {
             "charges": {
                 "lodging": "Lodging"
             },
+            "types": {
+                "receipt": "Payment received",
+                "refund": "Refund"
+            },
             "methods": {
                 "cash": "Cash",
                 "bank_transfer": "Bank transfer"
@@ -275,13 +279,17 @@ export default {
             "adjustments": {
                 "courtesy": "Courtesy",
                 "write_off": "Write-off",
-                "discount": "Discount"
+                "discount": "Discount",
+                "correction": "Correction"
             },
             "actions": {
                 "record_payment": "Record payment",
                 "add_charge": "Add charge",
                 "apply_adjustment": "Apply adjustment",
-                "refund": "Refund"
+                "refund": "Refund",
+                "view_support": "View evidence",
+                "print_a4": "Print A4",
+                "print_thermal": "Print 80 mm"
             },
             "fields": {
                 "folio": "Folio",
@@ -325,6 +333,40 @@ export default {
                 "overpayment": "The payment cannot exceed the folio balance.",
                 "over_adjustment": "The adjustment cannot exceed the folio balance.",
                 "refund_exceeds_payment": "The refund exceeds the available payment amount."
+            },
+            "voucher": {
+                "title": "Payment voucher",
+                "non_fiscal_notice": "This document confirms receipt of the stated payment. It is not an invoice or tax document.",
+                "non_fiscal_short": "Non-fiscal voucher. This is not an invoice.",
+                "available_after_checkout": "Available to print after the stay has been checked out.",
+                "tin": "TIN",
+                "responsible": "Responsible guest",
+                "stay": "Stay",
+                "check_in": "Check-in",
+                "check_out": "Check-out",
+                "services": "Services provided",
+                "description": "Description",
+                "period": "Period",
+                "quantity": "Qty.",
+                "unit_amount": "Unit amount",
+                "total": "Total",
+                "no_services": "No services are recorded in this folio.",
+                "payment_applied_here": "Payment applied to this folio",
+                "folio_charges": "Charges",
+                "folio_adjustments": "Adjustments",
+                "total_services": "Total services",
+                "total_adjustments": "Total adjustments",
+                "total_paid": "Total paid for the stay",
+                "final_balance": "Final balance",
+                "payment_received": "Payment covered by this voucher",
+                "date": "Date",
+                "folio": "Applied folio",
+                "recorded_by": "Recorded by",
+                "system": "System",
+                "support": "Evidence",
+                "attached": "Attached",
+                "not_attached": "Not attached",
+                "footer": "Internal document {code} · Keep this voucher as payment evidence."
             }
         },
         "reservations": {
@@ -1296,6 +1338,10 @@ export default {
             "charges": {
                 "lodging": "Hospedaje"
             },
+            "types": {
+                "receipt": "Pago recibido",
+                "refund": "Reembolso"
+            },
             "methods": {
                 "cash": "Efectivo",
                 "bank_transfer": "Transferencia"
@@ -1303,13 +1349,17 @@ export default {
             "adjustments": {
                 "courtesy": "Cortesía",
                 "write_off": "Pérdida",
-                "discount": "Descuento"
+                "discount": "Descuento",
+                "correction": "Corrección"
             },
             "actions": {
                 "record_payment": "Registrar pago",
                 "add_charge": "Agregar cargo",
                 "apply_adjustment": "Aplicar ajuste",
-                "refund": "Reembolsar"
+                "refund": "Reembolsar",
+                "view_support": "Ver soporte",
+                "print_a4": "Imprimir A4",
+                "print_thermal": "Imprimir 80 mm"
             },
             "fields": {
                 "folio": "Folio",
@@ -1353,6 +1403,40 @@ export default {
                 "overpayment": "El pago no puede superar el saldo del folio.",
                 "over_adjustment": "El ajuste no puede superar el saldo del folio.",
                 "refund_exceeds_payment": "El reembolso supera el importe disponible del pago."
+            },
+            "voucher": {
+                "title": "Comprobante de pago",
+                "non_fiscal_notice": "Este documento acredita la recepción del pago indicado. No constituye factura ni documento fiscal.",
+                "non_fiscal_short": "Comprobante no fiscal. No constituye factura.",
+                "available_after_checkout": "Disponible para imprimir cuando la estancia esté cerrada.",
+                "tin": "NIT",
+                "responsible": "Responsable de la estancia",
+                "stay": "Estancia",
+                "check_in": "Ingreso",
+                "check_out": "Salida",
+                "services": "Servicios prestados",
+                "description": "Concepto",
+                "period": "Periodo",
+                "quantity": "Cant.",
+                "unit_amount": "Valor unitario",
+                "total": "Total",
+                "no_services": "No hay servicios registrados en este folio.",
+                "payment_applied_here": "Pago aplicado a este folio",
+                "folio_charges": "Cargos",
+                "folio_adjustments": "Ajustes",
+                "total_services": "Total servicios",
+                "total_adjustments": "Total ajustes",
+                "total_paid": "Total pagado en la estancia",
+                "final_balance": "Saldo final",
+                "payment_received": "Pago acreditado por este comprobante",
+                "date": "Fecha",
+                "folio": "Folio aplicado",
+                "recorded_by": "Registrado por",
+                "system": "Sistema",
+                "support": "Soporte",
+                "attached": "Adjunto",
+                "not_attached": "No adjunto",
+                "footer": "Documento interno {code} · Conserve este comprobante como soporte del pago."
             }
         },
         "reservations": {

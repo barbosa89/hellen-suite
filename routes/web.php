@@ -19,6 +19,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MarkReservationNoShowController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentSupportController;
+use App\Http\Controllers\PaymentVoucherController;
 use App\Http\Controllers\RefundPaymentController;
 use App\Http\Controllers\ReservationAvailabilityController;
 use App\Http\Controllers\ReservationController;
@@ -129,6 +130,9 @@ Route::post('/hotels/{hotel}/stays/{stay}/payments/{payment}/refund', RefundPaym
 
 Route::get('/hotels/{hotel}/stays/{stay}/payments/{payment}/support', PaymentSupportController::class)
     ->name('hotels.stays.payments.support');
+
+Route::get('/hotels/{hotel}/stays/{stay}/payments/{payment}/voucher/{format}', PaymentVoucherController::class)
+    ->name('hotels.stays.payments.voucher');
 
 Route::get('/hotels/{hotel}/cash', [CashController::class, 'index'])->name('hotels.cash.index');
 Route::post('/hotels/{hotel}/cash', [CashController::class, 'store'])->name('hotels.cash.store');

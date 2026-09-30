@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -55,6 +56,18 @@ class Payment extends Model
     public function refunds(): HasMany
     {
         return $this->hasMany(self::class, 'parent_payment_id');
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function recordedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recorded_by_user_id');
+    }
+
+    /** @return HasOne<PaymentVoucher, $this> */
+    public function voucher(): HasOne
+    {
+        return $this->hasOne(PaymentVoucher::class);
     }
 
     protected function supportPath(): Attribute

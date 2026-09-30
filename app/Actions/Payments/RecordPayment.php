@@ -10,6 +10,7 @@ use App\Constants\CashMovementDirection;
 use App\Constants\CashMovementType;
 use App\Constants\PaymentMethod;
 use App\Constants\PaymentType;
+use App\Models\Hotel;
 use App\Models\Payment;
 use App\Models\StayFolio;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,7 @@ final class RecordPayment
     {
         return DB::transaction(function () use ($folio, $amount, $method, $comment, $supportPath, $userId): Payment {
             $folio = StayFolio::query()->with('stay')->lockForUpdate()->findOrFail($folio->id);
+            $hotel = Hotel::query()->lockForUpdate()->findOrFail($folio->hotel_id);
 
             if ($folio->closed_at !== null) {
                 throw ValidationException::withMessages(['payment' => trans('payments.validation.folio_closed')]);
@@ -52,8 +54,13 @@ final class RecordPayment
                 'recorded_by_user_id' => $userId,
             ]);
 
+            $payment->voucher()->create([
+                'hotel_id' => $hotel->id,
+                'number' => ((int) $hotel->paymentVouchers()->max('number')) + 1,
+            ]);
+
             if ($method === PaymentMethod::Cash) {
-                $folio->hotel->cashMovements()->create([
+                $hotel->cashMovements()->create([
                     'type' => CashMovementType::StayPayment,
                     'direction' => CashMovementDirection::In,
                     'amount_minor' => $amountMinor,
@@ -67,6 +74,6 @@ final class RecordPayment
             }
 
             return $payment;
-        });
+        }, attempts: 5);
     }
 }

@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.3",
         "alcohol/iso4217": "^4.3",
+        "barryvdh/laravel-dompdf": "^3.1",
         "inertiajs/inertia-laravel": "^3.0",
         "intervention/image-laravel": "^4.1",
         "laravel/framework": "^13.17",

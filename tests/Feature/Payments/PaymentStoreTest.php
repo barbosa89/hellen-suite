@@ -41,6 +41,7 @@ class PaymentStoreTest extends TestCase
 
         $this->assertSame(100000, $payment->amount_minor);
         $this->assertSame(PaymentMethod::Cash, $payment->method);
+        $this->assertSame(1, $payment->voucher->number);
         $this->assertSame($payment->id, $movement->payment_id);
         $this->assertSame(CashMovementDirection::In, $movement->direction);
     }

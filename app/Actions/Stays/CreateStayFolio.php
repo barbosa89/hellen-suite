@@ -12,6 +12,8 @@ final class CreateStayFolio
     public function execute(RoomOccupancy $occupancy): StayFolio
     {
         if ($occupancy->stay_folio_id !== null) {
+            $occupancy->loadMissing('folio');
+
             return $occupancy->folio;
         }
 

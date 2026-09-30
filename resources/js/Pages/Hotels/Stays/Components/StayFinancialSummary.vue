@@ -1,6 +1,7 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import FolioPaymentHistory from '@/Pages/Hotels/Stays/Components/FolioPaymentHistory.vue';
 import {
     BanknotesIcon,
     CheckCircleIcon,
@@ -225,6 +226,8 @@ function date(dateTime) {
                         {{ t('payments.summary.no_additional_charges') }}
                     </p>
                 </div>
+
+                <FolioPaymentHistory :payments="folio.payments" />
 
                 <div
                     v-if="active && !folio.closed_at"

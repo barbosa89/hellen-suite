@@ -81,6 +81,12 @@ class Hotel extends Model
         return $this->hasMany(CashMovement::class);
     }
 
+    /** @return HasMany<PaymentVoucher, $this> */
+    public function paymentVouchers(): HasMany
+    {
+        return $this->hasMany(PaymentVoucher::class);
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(
