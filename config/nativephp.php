@@ -17,7 +17,7 @@ return [
      * usually in the form of a reverse domain name.
      * For example: com.nativephp.app
      */
-    'app_id' => env('NATIVEPHP_APP_ID', 'com.nativephp.app'),
+    'app_id' => env('NATIVEPHP_APP_ID', 'com.omarbarbosa.hellensuite'),
 
     /**
      * If your application allows deep linking, you can specify the scheme
@@ -48,7 +48,7 @@ return [
     /**
      * The Website of your application.
      */
-    'website' => env('NATIVEPHP_APP_WEBSITE', 'https://nativephp.com'),
+    'website' => env('NATIVEPHP_APP_WEBSITE', 'https://hellensuite.com'),
 
     /**
      * The default service provider for your application. This provider
@@ -108,15 +108,15 @@ return [
          * Supported: "github", "s3", "spaces"
          * Note: The "s3" provider is compatible with S3-compatible services like Cloudflare R2.
          */
-        'default' => env('NATIVEPHP_UPDATER_PROVIDER', 'spaces'),
+        'default' => env('NATIVEPHP_UPDATER_PROVIDER', 'github'),
 
         'providers' => [
             'github' => [
                 'driver' => 'github',
-                'repo' => env('GITHUB_REPO'),
-                'owner' => env('GITHUB_OWNER'),
+                'repo' => env('GITHUB_REPO', 'hellen-suite'),
+                'owner' => env('GITHUB_OWNER', 'barbosa89'),
                 'token' => env('GITHUB_TOKEN'),
-                'vPrefixedTagName' => env('GITHUB_V_PREFIXED_TAG_NAME', true),
+                'vPrefixedTagName' => env('GITHUB_V_PREFIXED_TAG_NAME', false),
                 'private' => env('GITHUB_PRIVATE', false),
                 'autoupdate_token' => env('GITHUB_AUTOUPDATE_TOKEN'), // Read-only token used by the updater for private repos
                 'channel' => env('GITHUB_CHANNEL', 'latest'),
@@ -167,7 +167,8 @@ return [
      * Define your own scripts to run before and after the build process.
      */
     'prebuild' => [
-        // 'npm run build',
+        'npm run build',
+        'php artisan optimize',
     ],
 
     'postbuild' => [
