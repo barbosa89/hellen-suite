@@ -194,14 +194,14 @@ class AssetStoreTest extends TestCase
         $response->assertSessionHasErrors($field);
     }
 
-    private function hash(int $number): string
+    private static function hash(int $number): string
     {
         $hashids = new Hashids;
 
         return $hashids->encode($number);
     }
 
-    public function errorProvider(): array
+    public static function errorProvider(): array
     {
         return [
             'empty number' => [
@@ -285,7 +285,7 @@ class AssetStoreTest extends TestCase
             'non existing room identifier' => [
                 'field' => 'room',
                 'data' => [
-                    'room' => $this->hash(100),
+                    'room' => self::hash(100),
                 ],
             ],
             'empty hotel identifier' => [
@@ -303,7 +303,7 @@ class AssetStoreTest extends TestCase
             'non existing hotel identifier' => [
                 'field' => 'hotel',
                 'data' => [
-                    'hotel' => $this->hash(100),
+                    'hotel' => self::hash(100),
                 ],
             ],
         ];

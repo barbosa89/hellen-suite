@@ -160,7 +160,7 @@ class GuestTest extends TestCase
             ]);
     }
 
-    public function filterByStatus(): array
+    public static function filterByStatus(): array
     {
         return [
             'filter guests staying at the hotel' => [
@@ -204,7 +204,7 @@ class GuestTest extends TestCase
             ]);
     }
 
-    public function filterByOppositeStatus(): array
+    public static function filterByOppositeStatus(): array
     {
         return [
             'filter guests staying at the hotel' => [

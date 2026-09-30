@@ -16,12 +16,14 @@
         <include>
             <directory>app</directory>
         </include>
+    </source>
+    <coverage>
         <report>
             <html outputDirectory="tests/coverage/php/coverage"/>
             <text outputFile="tests/coverage/php/coverage.txt"/>
             <clover outputFile="tests/coverage/php/logs/clover.xml"/>
         </report>
-    </source>
+    </coverage>
     <logging>
         <junit outputFile="tests/coverage/php/report.junit.xml"/>
     </logging>
