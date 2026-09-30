@@ -12,6 +12,7 @@ use App\Notifications\VerifyTeamMemberEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -166,16 +167,27 @@ class TeamController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validated = $request->validate([
+            'name' => 'required|string|max:191',
+            'role' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::exists('roles', 'name'),
+                Rule::notIn(['root', 'manager']),
+            ],
+        ]);
+
         $member = User::where('parent', auth()->user()->id)
             ->where('id', id_decode($id))
             ->first(fields_get('users'));
 
-        $member->name = $request->name;
+        $member->name = $validated['name'];
 
         if ($member->save()) {
             $member->roles()->sync([]);
 
-            $member->assignRole($request->role);
+            $member->assignRole($validated['role']);
 
             flash(trans('common.updatedSuccessfully'))->success();
 

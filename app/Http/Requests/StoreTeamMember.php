@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTeamMember extends FormRequest
 {
@@ -27,7 +28,13 @@ class StoreTeamMember extends FormRequest
             'hotel' => 'required|string|max:50|hashed_exists:hotels,id',
             'name' => 'required|string|max:191',
             'email' => 'required|email:rfc,dns,spoof,filter|unique:users,email',
-            'role' => 'required|string|max:50|exists:roles,name',
+            'role' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::exists('roles', 'name'),
+                Rule::notIn(['root', 'manager']),
+            ],
         ];
     }
 }
