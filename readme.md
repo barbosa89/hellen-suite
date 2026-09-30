@@ -1,58 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hellen Suite
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Hellen Suite es una aplicación para la administración de hoteles y negocios similares. Facilita los controles operativos y la ejecución de tareas administrativas y de gestión.
 
-## About Laravel
+La aplicación se distribuye como web y como aplicación de escritorio mediante [NativePHP Desktop](https://nativephp.com/docs/desktop/2). Actualmente está en desarrollo y todavía no está preparada para producción.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sitio web: [hellensuite.com](https://hellensuite.com)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.3 o superior y Laravel 13.
+- NativePHP Desktop 2 y Electron.
+- Inertia 3 y Vue 3.
+- Tailwind CSS 4 y Vite 8.
+- SQLite.
+- PHPUnit 12.
 
-## Learning Laravel
+## Desarrollo
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Requisitos
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP, Composer y las extensiones requeridas por Laravel.
+- Node.js y npm.
+- SQLite.
+- Herramientas de compilación de la plataforma para trabajar con Electron y generar aplicaciones nativas.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Instalación inicial
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Clonar el repositorio y ejecutar desde su raíz:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer run setup
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Este comando instala las dependencias de Composer y npm, crea `.env` a partir de `.env.example`, genera `APP_KEY`, ejecuta las migraciones y compila el frontend.
 
-## Contributing
+Para preparar las dependencias de NativePHP y Electron:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan app:native:install --no-interaction
+```
 
-## Code of Conduct
+### Desarrollo web
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer run dev
+```
 
-## Security Vulnerabilities
+El comando inicia el servidor web de Laravel, Vite y los logs de desarrollo. La base de datos web se encuentra en `database/database.sqlite`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Si se crean migraciones nuevas, aplicarlas con:
 
-## License
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Desarrollo de escritorio
+
+```bash
+composer run native:dev
+```
+
+Este comando inicia la aplicación de Electron y Vite. La configuración de la ventana principal se encuentra en `app/Providers/NativeAppServiceProvider.php`.
+
+NativePHP utiliza su propia base de datos durante la ejecución nativa. Las migraciones se aplican con:
+
+```bash
+php artisan native:migrate
+```
+
+### Calidad y pruebas
+
+```bash
+# Suite de pruebas
+php artisan test --compact
+
+# Formato del código PHP modificado
+vendor/bin/pint --dirty --format agent
+
+# ESLint del frontend; aplica correcciones automáticamente
+npm run lint
+
+# Build de producción del frontend
+npm run build
+```
+
+El build de Vite descarga las fuentes configuradas en `vite.config.js`, por lo que necesita conexión de red.
+
+## Build de escritorio
+
+El build empaqueta Laravel, el frontend, Electron y el runtime requerido en una aplicación distribuible. Se genera un sistema operativo a la vez.
+
+Antes de construir una versión:
+
+1. Ejecutar las pruebas y `npm run build`.
+2. Incrementar `NATIVEPHP_APP_VERSION` en `.env`.
+3. Revisar las migraciones, porque NativePHP solo las ejecuta en los equipos instalados cuando cambia la versión.
+4. Configurar la firma de código correspondiente a Windows o macOS.
+5. Probar el instalador en cada plataforma objetivo.
+
+Build para la plataforma y arquitectura actuales:
+
+```bash
+php artisan native:build
+```
+
+Build indicando el sistema operativo:
+
+```bash
+php artisan native:build mac
+php artisan native:build win
+php artisan native:build linux
+```
+
+La compilación cruzada no está soportada para todas las combinaciones. Los artefactos deben probarse en el sistema operativo donde se distribuirán. En macOS, la aplicación debe estar firmada y notarizada para funcionar correctamente en otros equipos y recibir actualizaciones automáticas.
+
+## Publicación en GitHub Releases
+
+Hellen Suite utiliza el repositorio público [barbosa89/hellen-suite](https://github.com/barbosa89/hellen-suite) como proveedor de publicación y actualizaciones.
+
+### Configuración local
+
+Añadir estas variables al `.env` local:
+
+```dotenv
+NATIVEPHP_APP_VERSION=1.0.0
+NATIVEPHP_UPDATER_ENABLED=true
+NATIVEPHP_UPDATER_PROVIDER=github
+
+GITHUB_OWNER=barbosa89
+GITHUB_REPO=hellen-suite
+GITHUB_PRIVATE=false
+GITHUB_TOKEN=github_pat_REEMPLAZAR_CON_EL_TOKEN_REAL
+GITHUB_V_PREFIXED_TAG_NAME=true
+GITHUB_CHANNEL=latest
+GITHUB_RELEASE_TYPE=draft
+```
+
+El `.env` está excluido de Git. El token real nunca debe añadirse a `.env.example`, `config/nativephp.php`, el README ni otro archivo versionado. NativePHP elimina las variables `GITHUB_*` del `.env` incluido en el paquete final.
+
+Como el repositorio es público, `GITHUB_AUTOUPDATE_TOKEN` no debe definirse. Las aplicaciones instaladas pueden consultar las releases públicas sin autenticación; `GITHUB_TOKEN` solo autoriza la subida de artefactos durante la publicación.
+
+### Obtener `GITHUB_TOKEN`
+
+Crear un [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) con esta configuración:
+
+| Campo | Valor |
+| --- | --- |
+| Token name | `Hellen Suite NativePHP Publisher` |
+| Resource owner | `barbosa89` |
+| Repository access | `Only select repositories` |
+| Selected repositories | `hellen-suite` |
+| Contents | `Read and write` |
+| Metadata | `Read-only`, asignado automáticamente |
+
+Elegir una fecha de expiración, generar el token y copiarlo inmediatamente; GitHub solo lo muestra una vez. Guardarlo como `GITHUB_TOKEN` en el `.env` local o como secreto de CI.
+
+Después de cambiar las variables, limpiar la configuración cacheada:
+
+```bash
+php artisan config:clear
+```
+
+### Publicar una versión
+
+1. Incrementar `NATIVEPHP_APP_VERSION`; por ejemplo, de `1.0.0` a `1.1.0`.
+2. Ejecutar las pruebas, compilar el frontend y probar `php artisan native:build`.
+3. Crear una release en borrador en GitHub.
+4. Usar la versión con prefijo `v` como tag; para `1.1.0`, crear `v1.1.0`.
+5. Publicar los artefactos de cada plataforma con `native:publish`.
+6. Verificar los artefactos adjuntos y hacer pública la release.
+7. Validar la actualización desde una instalación de la versión anterior.
+
+```bash
+php artisan native:publish
+
+# O indicando el sistema operativo objetivo
+php artisan native:publish mac
+php artisan native:publish win
+php artisan native:publish linux
+```
+
+Mientras la release permanezca en borrador, repetir `native:publish` actualiza sus artefactos. Una release borrador no está disponible para los usuarios; debe publicarse después de verificarla.
+
+## Documentación de releases
+
+La guía completa sobre firma, build, publicación, actualizaciones, eventos del updater y migraciones está en [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md).
