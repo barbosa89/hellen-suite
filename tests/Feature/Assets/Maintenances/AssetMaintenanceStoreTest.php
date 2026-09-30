@@ -129,7 +129,7 @@ class AssetMaintenanceStoreTest extends TestCase
         $response->assertSessionHasErrors($field);
     }
 
-    public function errorProvider(): array
+    public static function errorProvider(): array
     {
         return [
             'empty date' => [

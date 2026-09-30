@@ -468,7 +468,7 @@ class VoucherTest extends TestCase
         return $chartColors;
     }
 
-    public function statusProvider(): array
+    public static function statusProvider(): array
     {
         return [
             'open vouchers' => [
@@ -499,7 +499,7 @@ class VoucherTest extends TestCase
         ];
     }
 
-    public function typeProvider(): array
+    public static function typeProvider(): array
     {
         return [
             'vouchers of sale type' => [Voucher::SALE],
