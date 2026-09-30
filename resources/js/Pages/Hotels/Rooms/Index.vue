@@ -4,14 +4,19 @@ import DangerButton from '@/Components/DangerButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import RoomModuleTabs from '@/Pages/Hotels/Rooms/Components/RoomModuleTabs.vue';
 import {
     BuildingOffice2Icon,
+    CalendarDaysIcon,
     EllipsisVerticalIcon,
     PencilSquareIcon,
     PlusIcon,
@@ -21,7 +26,7 @@ import {
     WrenchScrewdriverIcon,
 } from '@heroicons/vue/24/outline';
 import { CheckIcon } from '@heroicons/vue/24/solid';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -30,6 +35,8 @@ const props = defineProps({
     rooms: { type: Object, required: true },
     currency: { type: String, default: null },
     hasRoomTypes: { type: Boolean, required: true },
+    availabilityPeriod: { type: Object, required: true },
+    availabilitySummary: { type: Object, required: true },
     flash: { type: Object, default: () => ({}) },
 });
 
@@ -37,6 +44,20 @@ const { t, locale } = useI18n();
 const selectedRoom = ref(null);
 const deleting = ref(false);
 const isCurrencyConfigured = computed(() => props.currency !== null);
+const availabilityForm = useForm({
+    check_in_on: props.availabilityPeriod.check_in_on,
+    check_out_on: props.availabilityPeriod.check_out_on,
+});
+const minimumCheckOutOn = computed(() => {
+    if (!availabilityForm.check_in_on) {
+        return props.availabilityPeriod.today;
+    }
+
+    const date = new Date(`${availabilityForm.check_in_on}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + 1);
+
+    return date.toISOString().slice(0, 10);
+});
 
 function formatPrice(value) {
     if (!props.currency) {
@@ -49,6 +70,126 @@ function formatPrice(value) {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     }).format(Number(value));
+}
+
+function formatReservationDates(checkInOn, checkOutOn) {
+    const formatter = new Intl.DateTimeFormat(
+        locale.value === 'es' ? 'es-CO' : 'en-US',
+        {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            timeZone: 'UTC',
+        },
+    );
+
+    return formatter.formatRange(
+        new Date(`${checkInOn}T00:00:00Z`),
+        new Date(`${checkOutOn}T00:00:00Z`),
+    );
+}
+
+function updateAvailability() {
+    availabilityForm.get(route('hotels.rooms.index', props.hotel.id), {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true,
+    });
+}
+
+function overlapsSelectedPeriod(item) {
+    return (
+        item.planned_check_in_on < props.availabilityPeriod.check_out_on &&
+        item.planned_check_out_on > props.availabilityPeriod.check_in_on
+    );
+}
+
+function blockingReservation(room) {
+    return room.reserved_rooms.find(overlapsSelectedPeriod);
+}
+
+function blockingOccupancy(room) {
+    return room.room_occupancies.find(
+        (occupancy) =>
+            props.availabilityPeriod.check_in_on ===
+                props.availabilityPeriod.today ||
+            occupancy.expected_check_out_on >
+                props.availabilityPeriod.check_in_on,
+    );
+}
+
+function availabilityStatus(room) {
+    if (room.is_available) return 'available';
+    if (!room.is_active) return 'inactive';
+    if (room.housekeeping_status !== 'clean') return 'housekeeping';
+    if (blockingOccupancy(room)) return 'occupied';
+    if (blockingReservation(room)) return 'reserved';
+
+    return 'unavailable';
+}
+
+function availabilityDescription(room) {
+    const status = availabilityStatus(room);
+    const reservation = blockingReservation(room);
+    const occupancy = blockingOccupancy(room);
+
+    if (status === 'reserved' && reservation) {
+        return t('rooms.availability.reservation_conflict', {
+            dates: formatReservationDates(
+                reservation.planned_check_in_on,
+                reservation.planned_check_out_on,
+            ),
+        });
+    }
+
+    if (status === 'occupied' && occupancy) {
+        return t('rooms.availability.occupied_until', {
+            date: formatReservationDates(
+                occupancy.expected_check_out_on,
+                occupancy.expected_check_out_on,
+            ),
+        });
+    }
+
+    if (status === 'available' && room.reserved_rooms.length) {
+        const reservation = room.reserved_rooms[0];
+        const futureReservationCount = Math.max(
+            0,
+            room.reserved_rooms.length - 1,
+        );
+
+        return t(
+            futureReservationCount
+                ? 'rooms.availability.next_reservation_more'
+                : 'rooms.availability.next_reservation',
+            {
+                dates: formatReservationDates(
+                    reservation.planned_check_in_on,
+                    reservation.planned_check_out_on,
+                ),
+                count: futureReservationCount,
+            },
+        );
+    }
+
+    return t(`rooms.availability.descriptions.${status}`);
+}
+
+function availabilityBadgeClass(room) {
+    return {
+        available:
+            'bg-success-50 text-success-800 dark:bg-success-900/25 dark:text-success-300',
+        reserved:
+            'bg-secondary-50 text-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300',
+        occupied:
+            'bg-primary-50 text-primary-800 dark:bg-primary-950 dark:text-primary-300',
+        housekeeping:
+            'bg-secondary-50 text-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-300',
+        inactive:
+            'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
+        unavailable:
+            'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
+    }[availabilityStatus(room)];
 }
 
 function setHousekeepingStatus(room, housekeepingStatus) {
@@ -144,6 +285,102 @@ function destroy() {
                 />
 
                 <section
+                    v-if="isCurrencyConfigured && rooms.total"
+                    class="rounded-2xl bg-white p-5 shadow-sm sm:p-7 dark:bg-neutral-900"
+                    aria-labelledby="availability-title"
+                >
+                    <div
+                        class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(28rem,auto)] lg:items-end"
+                    >
+                        <div>
+                            <h2
+                                id="availability-title"
+                                class="text-lg font-semibold text-neutral-950 dark:text-white"
+                            >
+                                {{ t('rooms.availability.title') }}
+                            </h2>
+                            <p
+                                class="mt-1 max-w-2xl text-sm leading-6 text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ t('rooms.availability.description') }}
+                            </p>
+                            <p
+                                class="mt-3 text-sm font-semibold text-neutral-950 tabular-nums dark:text-white"
+                            >
+                                {{
+                                    t('rooms.availability.summary', {
+                                        available:
+                                            availabilitySummary.available,
+                                        total: availabilitySummary.total,
+                                    })
+                                }}
+                            </p>
+                        </div>
+
+                        <form
+                            class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-start"
+                            @submit.prevent="updateAvailability"
+                        >
+                            <div class="grid gap-2">
+                                <InputLabel
+                                    for="availability-check-in"
+                                    :value="t('rooms.availability.check_in')"
+                                />
+                                <TextInput
+                                    id="availability-check-in"
+                                    v-model="availabilityForm.check_in_on"
+                                    type="date"
+                                    :min="availabilityPeriod.today"
+                                    required
+                                    :invalid="
+                                        Boolean(
+                                            availabilityForm.errors.check_in_on,
+                                        )
+                                    "
+                                />
+                                <InputError
+                                    :message="
+                                        availabilityForm.errors.check_in_on
+                                    "
+                                />
+                            </div>
+                            <div class="grid gap-2">
+                                <InputLabel
+                                    for="availability-check-out"
+                                    :value="t('rooms.availability.check_out')"
+                                />
+                                <TextInput
+                                    id="availability-check-out"
+                                    v-model="availabilityForm.check_out_on"
+                                    type="date"
+                                    :min="minimumCheckOutOn"
+                                    required
+                                    :invalid="
+                                        Boolean(
+                                            availabilityForm.errors
+                                                .check_out_on,
+                                        )
+                                    "
+                                />
+                                <InputError
+                                    :message="
+                                        availabilityForm.errors.check_out_on
+                                    "
+                                />
+                            </div>
+                            <PrimaryButton
+                                type="submit"
+                                class="sm:mt-7"
+                                :disabled="availabilityForm.processing"
+                            >
+                                <CalendarDaysIcon class="h-4 w-4" />
+                                {{ t('rooms.availability.action') }}
+                            </PrimaryButton>
+                        </form>
+                    </div>
+                </section>
+
+                <section
                     v-if="!isCurrencyConfigured"
                     class="flex min-h-80 flex-col items-center justify-center rounded-2xl bg-white px-6 py-12 text-center shadow-sm dark:bg-neutral-900"
                 >
@@ -173,7 +410,7 @@ function destroy() {
                     :aria-label="t('rooms.pages.index.inventory_label')"
                 >
                     <div
-                        class="hidden min-h-11 grid-cols-[minmax(7rem,0.55fr)_minmax(12rem,1fr)_minmax(7rem,0.5fr)_minmax(10rem,0.8fr)_minmax(12rem,1fr)_auto] items-center gap-5 border-b border-neutral-200 bg-neutral-50 px-5 text-xs font-semibold text-neutral-600 lg:grid xl:px-6 dark:border-neutral-800 dark:bg-neutral-950/60 dark:text-neutral-400"
+                        class="hidden min-h-11 grid-cols-[minmax(5rem,0.4fr)_minmax(8rem,0.8fr)_minmax(4rem,0.35fr)_minmax(8rem,0.65fr)_minmax(11rem,1fr)_minmax(10rem,0.9fr)_auto] items-center gap-5 border-b border-neutral-200 bg-neutral-50 px-5 text-xs font-semibold text-neutral-600 xl:grid xl:px-6 dark:border-neutral-800 dark:bg-neutral-950/60 dark:text-neutral-400"
                     >
                         <span>{{ t('rooms.fields.number.label') }}</span>
                         <span>{{ t('rooms.fields.room_type.label') }}</span>
@@ -181,6 +418,7 @@ function destroy() {
                         <span>{{
                             t('rooms.fields.reference_price.label')
                         }}</span>
+                        <span>{{ t('rooms.fields.availability.label') }}</span>
                         <span>{{ t('rooms.fields.operation.label') }}</span>
                         <span class="sr-only">{{ t('app.actions') }}</span>
                     </div>
@@ -191,11 +429,11 @@ function destroy() {
                         <li
                             v-for="room in rooms.data"
                             :key="room.id"
-                            class="grid gap-5 px-5 py-5 lg:grid-cols-[minmax(7rem,0.55fr)_minmax(12rem,1fr)_minmax(7rem,0.5fr)_minmax(10rem,0.8fr)_minmax(12rem,1fr)_auto] lg:items-center xl:px-6"
+                            class="grid gap-5 px-5 py-5 sm:grid-cols-2 xl:grid-cols-[minmax(5rem,0.4fr)_minmax(8rem,0.8fr)_minmax(4rem,0.35fr)_minmax(8rem,0.65fr)_minmax(11rem,1fr)_minmax(10rem,0.9fr)_auto] xl:items-center xl:px-6"
                         >
                             <div>
                                 <p
-                                    class="mb-1 text-xs font-semibold text-neutral-600 lg:hidden dark:text-neutral-400"
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
                                 >
                                     {{ t('rooms.fields.number.label') }}
                                 </p>
@@ -207,7 +445,7 @@ function destroy() {
                             </div>
                             <div>
                                 <p
-                                    class="mb-1 text-xs font-semibold text-neutral-600 lg:hidden dark:text-neutral-400"
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
                                 >
                                     {{ t('rooms.fields.room_type.label') }}
                                 </p>
@@ -228,7 +466,7 @@ function destroy() {
                             </div>
                             <div>
                                 <p
-                                    class="mb-1 text-xs font-semibold text-neutral-600 lg:hidden dark:text-neutral-400"
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
                                 >
                                     {{ t('rooms.fields.floor.label') }}
                                 </p>
@@ -240,7 +478,7 @@ function destroy() {
                             </div>
                             <div>
                                 <p
-                                    class="mb-1 text-xs font-semibold text-neutral-600 lg:hidden dark:text-neutral-400"
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
                                 >
                                     {{
                                         t('rooms.fields.reference_price.label')
@@ -252,9 +490,34 @@ function destroy() {
                                     {{ formatPrice(room.reference_price) }}
                                 </p>
                             </div>
+                            <div>
+                                <p
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
+                                >
+                                    {{ t('rooms.fields.availability.label') }}
+                                </p>
+                                <span
+                                    class="inline-flex w-fit items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold"
+                                    :class="availabilityBadgeClass(room)"
+                                >
+                                    <CalendarDaysIcon
+                                        class="h-3.5 w-3.5 shrink-0"
+                                    />
+                                    {{
+                                        t(
+                                            `rooms.availability.statuses.${availabilityStatus(room)}`,
+                                        )
+                                    }}
+                                </span>
+                                <p
+                                    class="mt-1.5 text-xs leading-5 text-neutral-600 dark:text-neutral-400"
+                                >
+                                    {{ availabilityDescription(room) }}
+                                </p>
+                            </div>
                             <div class="grid gap-2">
                                 <p
-                                    class="mb-1 text-xs font-semibold text-neutral-600 lg:hidden dark:text-neutral-400"
+                                    class="mb-1 text-xs font-semibold text-neutral-600 xl:hidden dark:text-neutral-400"
                                 >
                                     {{ t('rooms.fields.operation.label') }}
                                 </p>
@@ -350,7 +613,7 @@ function destroy() {
                                 </fieldset>
                             </div>
                             <div
-                                class="flex items-center gap-2 lg:justify-end lg:self-end"
+                                class="flex items-center gap-2 sm:col-span-2 sm:justify-end xl:col-span-1 xl:self-end"
                             >
                                 <Dropdown align="right" width="48">
                                     <template #trigger>

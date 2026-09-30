@@ -16,7 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 final class TransferRoomOccupancy
 {
-    public function __construct(private RoomAvailability $roomAvailability) {}
+    public function __construct(
+        private RoomAvailability $roomAvailability,
+        private PostLodgingCharge $postLodgingCharge,
+    ) {}
 
     public function execute(Hotel $hotel, Stay $stay, RoomOccupancy $occupancy, int $roomId, string $nightlyRate): RoomOccupancy
     {
@@ -49,10 +52,14 @@ final class TransferRoomOccupancy
                 'checked_out_at' => $transferredAt,
                 'end_reason' => RoomOccupancyEndReason::Transfer,
             ]);
+
+            $this->postLodgingCharge->execute($occupancy->refresh(), $transferredAt->toImmutable());
+
             $occupancy->room->update(['housekeeping_status' => HousekeepingStatus::Dirty]);
 
             $newOccupancy = $stay->roomOccupancies()->create([
                 'room_id' => $newRoom->id,
+                'stay_folio_id' => $occupancy->stay_folio_id,
                 'nightly_rate' => $nightlyRate,
                 'checked_in_at' => $transferredAt,
                 'expected_check_out_on' => $stay->expected_check_out_on,

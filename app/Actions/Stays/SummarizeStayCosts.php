@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Stays;
 
+use App\Actions\Financial\ConvertAmountToMinor;
 use App\Models\RoomOccupancy;
 use App\Models\Stay;
 use Carbon\CarbonImmutable;
@@ -12,6 +13,8 @@ use function sprintf;
 
 final class SummarizeStayCosts
 {
+    public function __construct(private ConvertAmountToMinor $convertAmountToMinor) {}
+
     /**
      * @return array{
      *     is_estimate: bool,
@@ -49,7 +52,7 @@ final class SummarizeStayCosts
             $item = $this->summarizeOccupancy($occupancy);
 
             $totalNights += $item['billable_nights'];
-            $subtotalCents = $this->decimalToCents($item['subtotal_amount']);
+            $subtotalCents = $this->convertAmountToMinor->execute($item['subtotal_amount']);
             $totalCents += $subtotalCents;
 
             if ($item['is_estimate']) {
@@ -95,7 +98,7 @@ final class SummarizeStayCosts
         $periodEndOn = ($occupancy->checked_out_at ?? $occupancy->expected_check_out_on)->toDateString();
         $billableNights = $this->billableNights($periodStartOn, $periodEndOn);
         $nightlyRate = (string) $occupancy->nightly_rate;
-        $nightlyRateCents = $this->decimalToCents($nightlyRate);
+        $nightlyRateCents = $this->convertAmountToMinor->execute($nightlyRate);
         $subtotalCents = $nightlyRateCents * $billableNights;
         $checkOutNowOn = $occupancy->checked_out_at?->toDateString() ?? today()->toDateString();
         $checkOutNowBillableNights = $this->billableNights($periodStartOn, $checkOutNowOn);
@@ -120,13 +123,6 @@ final class SummarizeStayCosts
         $endOn = CarbonImmutable::parse($periodEndOn)->startOfDay();
 
         return max(1, (int) $startOn->diffInDays($endOn, false));
-    }
-
-    private function decimalToCents(string $amount): int
-    {
-        [$whole, $decimal] = array_pad(explode('.', $amount, 2), 2, '0');
-
-        return ((int) $whole * 100) + (int) str_pad(substr($decimal, 0, 2), 2, '0');
     }
 
     private function formatCents(int $cents): string

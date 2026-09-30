@@ -26,6 +26,7 @@ class StayFactory extends Factory
                 'hotel_id' => $attributes['hotel_id'],
             ]),
             'status' => StayStatus::Active,
+            'currency' => 'COP',
             'checked_in_at' => now(),
             'expected_check_out_on' => now()->addDay()->toDateString(),
             'checked_out_at' => null,

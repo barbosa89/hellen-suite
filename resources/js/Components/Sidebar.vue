@@ -4,6 +4,7 @@ import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowLeftIcon,
     BookmarkSquareIcon,
+    BanknotesIcon,
     CalendarDaysIcon,
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
@@ -69,6 +70,12 @@ const navigation = computed(() => [
         href: route('hotels.reservations.index', props.hotel.id),
         active: route().current('hotels.reservations.*'),
         icon: BookmarkSquareIcon,
+    },
+    {
+        name: t('cash.title'),
+        href: route('hotels.cash.index', props.hotel.id),
+        active: route().current('hotels.cash.*'),
+        icon: BanknotesIcon,
     },
 ]);
 

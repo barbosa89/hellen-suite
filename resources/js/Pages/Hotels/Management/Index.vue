@@ -5,6 +5,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowTopRightOnSquareIcon,
+    BanknotesIcon,
     BookmarkSquareIcon,
     BuildingOffice2Icon,
     CalendarDaysIcon,
@@ -396,6 +397,48 @@ const completionPercentage = computed(() =>
                                     :href="
                                         route(
                                             'hotels.reservations.index',
+                                            props.hotel.id,
+                                        )
+                                    "
+                                    prefetch
+                                >
+                                    {{ t('hotels.management.open_module') }}
+                                    <ArrowTopRightOnSquareIcon
+                                        class="h-4 w-4"
+                                    />
+                                </ActionLink>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+                            >
+                                <div class="flex items-center gap-4">
+                                    <span
+                                        class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                                    >
+                                        <BanknotesIcon class="h-5 w-5" />
+                                    </span>
+                                    <div>
+                                        <h3
+                                            class="font-semibold text-neutral-950 dark:text-white"
+                                        >
+                                            {{ t('cash.title') }}
+                                        </h3>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-600 dark:text-neutral-400"
+                                        >
+                                            {{
+                                                t('cash.description', {
+                                                    hotel: props.hotel
+                                                        .business_name,
+                                                })
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <ActionLink
+                                    :href="
+                                        route(
+                                            'hotels.cash.index',
                                             props.hotel.id,
                                         )
                                     "

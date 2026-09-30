@@ -48,6 +48,12 @@ return [
             'no_room_capacity' => 'There is no capacity available to add another guest.',
             'guest_status' => ['in_house' => 'In house', 'checked_out' => 'Checked out'],
             'audit' => ['effective_departure' => 'Recorded departure', 'charge_policy' => 'Charge policy', 'recorded_by' => 'Recorded by', 'system' => 'System'],
+            'check_out' => [
+                'title' => 'Confirm stay checkout',
+                'description' => 'The stay will be completed and all rooms that are still occupied will be released.',
+                'warning' => 'The rooms will be marked for cleaning. This action cannot be undone.',
+                'action' => 'Check out stay',
+            ],
             'partial_check_out' => [
                 'title' => 'Check out room :room',
                 'description' => 'This releases only the selected room. Other rooms and the stay will remain active.',

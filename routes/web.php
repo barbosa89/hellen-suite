@@ -3,10 +3,13 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CancelReservationController;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\CheckInReservationController;
 use App\Http\Controllers\CheckOutRoomOccupancyController;
 use App\Http\Controllers\CheckOutStayController;
 use App\Http\Controllers\ConfirmReservationController;
+use App\Http\Controllers\FolioAdjustmentController;
+use App\Http\Controllers\FolioChargeController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestLookupController;
 use App\Http\Controllers\HotelController;
@@ -14,6 +17,9 @@ use App\Http\Controllers\HotelImageController;
 use App\Http\Controllers\HotelManagementController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MarkReservationNoShowController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentSupportController;
+use App\Http\Controllers\RefundPaymentController;
 use App\Http\Controllers\ReservationAvailabilityController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\RoomController;
@@ -108,6 +114,24 @@ Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/trans
 Route::post('/hotels/{hotel}/stays/{stay}/room-occupancies/{roomOccupancy}/check-out', CheckOutRoomOccupancyController::class)
     ->scopeBindings()
     ->name('hotels.stays.room-occupancies.check-out');
+
+Route::post('/hotels/{hotel}/stays/{stay}/folios/{stayFolio}/payments', PaymentController::class)
+    ->name('hotels.stays.folios.payments.store');
+
+Route::post('/hotels/{hotel}/stays/{stay}/folios/{stayFolio}/charges', FolioChargeController::class)
+    ->name('hotels.stays.folios.charges.store');
+
+Route::post('/hotels/{hotel}/stays/{stay}/folios/{stayFolio}/adjustments', FolioAdjustmentController::class)
+    ->name('hotels.stays.folios.adjustments.store');
+
+Route::post('/hotels/{hotel}/stays/{stay}/payments/{payment}/refund', RefundPaymentController::class)
+    ->name('hotels.stays.payments.refund');
+
+Route::get('/hotels/{hotel}/stays/{stay}/payments/{payment}/support', PaymentSupportController::class)
+    ->name('hotels.stays.payments.support');
+
+Route::get('/hotels/{hotel}/cash', [CashController::class, 'index'])->name('hotels.cash.index');
+Route::post('/hotels/{hotel}/cash', [CashController::class, 'store'])->name('hotels.cash.store');
 
 Route::patch('/hotels/{hotel}/rooms/{room}/toggle', [RoomController::class, 'toggle'])
     ->scopeBindings()

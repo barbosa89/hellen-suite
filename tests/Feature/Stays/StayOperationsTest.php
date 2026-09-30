@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Stays;
 
+use App\Actions\Stays\CalculateOccupancyCharge;
+use App\Actions\Stays\CreateStayFolio;
+use App\Constants\FolioAdjustmentDirection;
+use App\Constants\FolioAdjustmentType;
 use App\Constants\HousekeepingStatus;
 use App\Constants\LodgingChargePolicy;
 use App\Constants\RoomOccupancyEndReason;
@@ -18,6 +22,7 @@ use App\Models\Stay;
 use App\Models\StayGuest;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -44,6 +49,7 @@ class StayOperationsTest extends TestCase
     public function it_checks_out_a_stay_and_sends_the_room_to_housekeeping(): void
     {
         [$hotel, $stay, $occupancy] = $this->activeStay();
+        $this->settleOccupancy($occupancy);
 
         $this->post(route('hotels.stays.check-out', [$hotel, $stay]))
             ->assertSessionHasNoErrors();
@@ -99,7 +105,8 @@ class StayOperationsTest extends TestCase
     #[Test]
     public function it_prevents_a_second_check_out(): void
     {
-        [$hotel, $stay] = $this->activeStay();
+        [$hotel, $stay, $occupancy] = $this->activeStay();
+        $this->settleOccupancy($occupancy);
 
         $this->post(route('hotels.stays.check-out', [$hotel, $stay]))->assertSessionHasNoErrors();
         $this->post(route('hotels.stays.check-out', [$hotel, $stay]))
@@ -240,5 +247,19 @@ class StayOperationsTest extends TestCase
         $occupancy->guests()->attach($stayGuest->guest_id);
 
         return [$hotel, $stay, $occupancy];
+    }
+
+    private function settleOccupancy(RoomOccupancy $occupancy): void
+    {
+        $folio = app(CreateStayFolio::class)->execute($occupancy);
+        $amount = app(CalculateOccupancyCharge::class)->execute($occupancy, now()->toImmutable());
+        $folio->adjustments()->create([
+            'type' => FolioAdjustmentType::Courtesy,
+            'direction' => FolioAdjustmentDirection::Credit,
+            'amount_minor' => $amount['total_amount_minor'],
+            'reason' => 'Operational checkout test settlement',
+            'occurred_at' => now(),
+            'idempotency_key' => (string) Str::uuid(),
+        ]);
     }
 }

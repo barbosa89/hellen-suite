@@ -17,7 +17,9 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $hotel_id
  * @property int $responsible_guest_id
+ * @property int|null $reservation_id
  * @property StayStatus $status
+ * @property string $currency
  * @property Carbon $checked_in_at
  * @property Carbon $expected_check_out_on
  * @property Carbon|null $checked_out_at
@@ -29,6 +31,7 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'responsible_guest_id',
     'status',
+    'currency',
     'checked_in_at',
     'expected_check_out_on',
     'checked_out_at',
@@ -67,6 +70,12 @@ class Stay extends Model
     public function roomOccupancies(): HasMany
     {
         return $this->hasMany(RoomOccupancy::class);
+    }
+
+    /** @return HasMany<StayFolio, $this> */
+    public function folios(): HasMany
+    {
+        return $this->hasMany(StayFolio::class);
     }
 
     /** @return array<string, string> */

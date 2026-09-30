@@ -10,7 +10,18 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $stay_id
+ * @property int $guest_id
+ * @property StayGuestRole $role
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @mixin \Eloquent
+ */
 #[Fillable(['guest_id', 'role'])]
 class StayGuest extends Model
 {

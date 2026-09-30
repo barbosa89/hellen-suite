@@ -9,6 +9,8 @@ import TextInput from '@/Components/TextInput.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
 import GuestLookupField from '@/Pages/Hotels/Guests/Components/GuestLookupField.vue';
+import FinancialActionModal from '@/Pages/Hotels/Stays/Components/FinancialActionModal.vue';
+import StayFinancialSummary from '@/Pages/Hotels/Stays/Components/StayFinancialSummary.vue';
 import {
     ArrowPathIcon,
     ArrowsRightLeftIcon,
@@ -23,6 +25,7 @@ const props = defineProps({
     hotel: Object,
     stay: Object,
     stayCostSummary: Object,
+    financialSummary: Object,
     rooms: Array,
     identificationTypes: Array,
     currency: String,
@@ -30,7 +33,10 @@ const props = defineProps({
 const { t, locale } = useI18n();
 const isTransferOpen = ref(false);
 const isGuestModalOpen = ref(false);
+const isCheckOutOpen = ref(false);
 const isRoomCheckOutOpen = ref(false);
+const financialAction = ref(null);
+const selectedFolio = ref(null);
 const selectedOccupancy = ref(null);
 const selectedCheckOutOccupancy = ref(null);
 const expectedCheckOutForm = useForm({
@@ -84,6 +90,19 @@ const hasFinalCosts = computed(
 const hasEstimatedCosts = computed(
     () => Number(props.stayCostSummary.estimated_amount) > 0,
 );
+const isFinanciallySettled = computed(
+    () => props.financialSummary.balance_minor === 0,
+);
+
+function openFinancialAction(mode, folio) {
+    selectedFolio.value = folio;
+    financialAction.value = mode;
+}
+
+function closeFinancialAction() {
+    financialAction.value = null;
+    selectedFolio.value = null;
+}
 
 function formatMoney(value) {
     return new Intl.NumberFormat(locale.value === 'es' ? 'es-CO' : 'en-US', {
@@ -110,7 +129,21 @@ function updateExpectedCheckOut() {
 function checkOut() {
     checkOutForm.post(
         route('hotels.stays.check-out', [props.hotel.id, props.stay.id]),
+        {
+            preserveScroll: true,
+            onSuccess: closeCheckOut,
+        },
     );
+}
+
+function openCheckOut() {
+    checkOutForm.clearErrors();
+    isCheckOutOpen.value = true;
+}
+
+function closeCheckOut() {
+    isCheckOutOpen.value = false;
+    checkOutForm.clearErrors();
 }
 
 function openRoomCheckOut(occupancy) {
@@ -500,6 +533,15 @@ function addGuest() {
                     </div>
                 </section>
 
+                <StayFinancialSummary
+                    :summary="financialSummary"
+                    :currency="currency"
+                    :active="isActive"
+                    @payment="openFinancialAction('payment', $event)"
+                    @charge="openFinancialAction('charge', $event)"
+                    @adjustment="openFinancialAction('adjustment', $event)"
+                />
+
                 <section
                     v-if="isActive"
                     class="grid gap-5 rounded-2xl bg-white p-5 shadow-sm sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end dark:bg-neutral-900"
@@ -546,13 +588,24 @@ function addGuest() {
                     </form>
                     <PrimaryButton
                         type="button"
-                        :disabled="checkOutForm.processing"
-                        @click="checkOut"
+                        :disabled="
+                            checkOutForm.processing || !isFinanciallySettled
+                        "
+                        aria-describedby="checkout-balance-message"
+                        @click="openCheckOut"
                         ><CheckIcon class="h-4 w-4" />{{
                             t('stays.actions.check_out')
                         }}</PrimaryButton
                     >
                 </section>
+
+                <p
+                    v-if="isActive && !isFinanciallySettled"
+                    id="checkout-balance-message"
+                    class="text-secondary-800 dark:text-secondary-300 -mt-3 text-sm font-medium"
+                >
+                    {{ t('payments.validation.balance_due') }}
+                </p>
 
                 <section
                     class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"
@@ -894,6 +947,65 @@ function addGuest() {
         </Modal>
 
         <Modal
+            :show="isCheckOutOpen"
+            max-width="lg"
+            :closeable="!checkOutForm.processing"
+            aria-labelledby="check-out-title"
+            @close="closeCheckOut"
+        >
+            <div class="p-6 sm:p-7">
+                <span
+                    class="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 flex h-11 w-11 items-center justify-center rounded-xl"
+                >
+                    <CheckIcon class="h-5 w-5" />
+                </span>
+                <h2
+                    id="check-out-title"
+                    class="mt-5 text-xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-white"
+                >
+                    {{ t('stays.pages.show.check_out.title') }}
+                </h2>
+                <p
+                    class="mt-2 text-sm leading-6 text-neutral-600 dark:text-neutral-400"
+                >
+                    {{ t('stays.pages.show.check_out.description') }}
+                </p>
+                <p
+                    class="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
+                >
+                    {{ t('stays.pages.show.check_out.warning') }}
+                </p>
+                <InputError
+                    class="mt-3"
+                    :message="
+                        checkOutForm.errors.stay ??
+                        checkOutForm.errors.checked_out_at
+                    "
+                />
+
+                <div
+                    class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"
+                >
+                    <SecondaryButton
+                        type="button"
+                        :disabled="checkOutForm.processing"
+                        @click="closeCheckOut"
+                    >
+                        {{ t('app.cancel') }}
+                    </SecondaryButton>
+                    <PrimaryButton
+                        type="button"
+                        :disabled="checkOutForm.processing"
+                        @click="checkOut"
+                    >
+                        <CheckIcon class="h-4 w-4" />
+                        {{ t('stays.pages.show.check_out.action') }}
+                    </PrimaryButton>
+                </div>
+            </div>
+        </Modal>
+
+        <Modal
             :show="isRoomCheckOutOpen"
             max-width="lg"
             aria-labelledby="room-check-out-title"
@@ -1110,5 +1222,13 @@ function addGuest() {
                 </div>
             </form></Modal
         >
+        <FinancialActionModal
+            :show="Boolean(financialAction)"
+            :mode="financialAction"
+            :folio="selectedFolio"
+            :hotel="hotel"
+            :stay="stay"
+            @close="closeFinancialAction"
+        />
     </DefaultLayout>
 </template>

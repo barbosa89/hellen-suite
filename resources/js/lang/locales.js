@@ -49,6 +49,38 @@ export default {
             "password": "The provided password is incorrect.",
             "throttle": "Too many login attempts. Please try again in {seconds} seconds."
         },
+        "cash": {
+            "title": "Cash",
+            "description": "Track only the physical cash available at {hotel}.",
+            "types": {
+                "stay_payment": "Stay payment",
+                "payment_refund": "Refund",
+                "manual_entry": "Manual entry",
+                "withdrawal": "Withdrawal"
+            },
+            "actions": {
+                "record": "Record movement"
+            },
+            "fields": {
+                "type": "Movement type",
+                "amount": "Amount",
+                "comment": "Reason or comment",
+                "date": "Date",
+                "guest": "Guest"
+            },
+            "summary": {
+                "balance": "Cash available",
+                "movements": "Cash movements",
+                "empty": "There are no cash movements yet.",
+                "automatic": "Created automatically from a payment"
+            },
+            "messages": {
+                "recorded": "Cash movement recorded successfully."
+            },
+            "validation": {
+                "insufficient_balance": "The withdrawal exceeds the available cash."
+            }
+        },
         "guests": {
             "title": "Guests",
             "actions": {
@@ -227,6 +259,73 @@ export default {
             "throttled": "Please wait before retrying.",
             "token": "This password reset token is invalid.",
             "user": "We can't find a user with that email address."
+        },
+        "payments": {
+            "title": "Folio and payments",
+            "folio": {
+                "room": "Room {room}"
+            },
+            "charges": {
+                "lodging": "Lodging"
+            },
+            "methods": {
+                "cash": "Cash",
+                "bank_transfer": "Bank transfer"
+            },
+            "adjustments": {
+                "courtesy": "Courtesy",
+                "write_off": "Write-off",
+                "discount": "Discount"
+            },
+            "actions": {
+                "record_payment": "Record payment",
+                "add_charge": "Add charge",
+                "apply_adjustment": "Apply adjustment",
+                "refund": "Refund"
+            },
+            "fields": {
+                "folio": "Folio",
+                "amount": "Amount",
+                "method": "Method",
+                "comment": "Comment",
+                "support": "Transfer evidence",
+                "support_hint": "JPG, PNG, or WebP · maximum 5 MB",
+                "description": "Description",
+                "type": "Type",
+                "reason": "Reason"
+            },
+            "summary": {
+                "description": "Charges, adjustments, and money received for each room.",
+                "charges": "Charges",
+                "adjustments": "Adjustments",
+                "paid": "Paid",
+                "balance": "Balance due",
+                "settled": "Settled",
+                "projected": "Includes projected lodging",
+                "empty": "There are no entries in this folio yet.",
+                "history": "Transactions",
+                "additional_charges": "Additional room charges",
+                "no_additional_charges": "No additional charges have been added to this room."
+            },
+            "dialogs": {
+                "payment_title": "Record payment",
+                "payment_description": "The payment will be applied to the selected folio.",
+                "charge_title": "Add manual charge",
+                "adjustment_title": "Apply courtesy or write-off"
+            },
+            "messages": {
+                "recorded": "Payment recorded successfully.",
+                "charge_recorded": "Charge recorded successfully.",
+                "adjustment_recorded": "Adjustment recorded successfully.",
+                "refunded": "Refund recorded successfully."
+            },
+            "validation": {
+                "balance_due": "The folio must have a zero balance before checkout.",
+                "folio_closed": "The folio is closed and cannot accept new entries.",
+                "overpayment": "The payment cannot exceed the folio balance.",
+                "over_adjustment": "The adjustment cannot exceed the folio balance.",
+                "refund_exceeds_payment": "The refund exceeds the available payment amount."
+            }
         },
         "reservations": {
             "title": "Reservations",
@@ -465,6 +564,12 @@ export default {
                 "is_active": {
                     "label": "Active room"
                 },
+                "reservations": {
+                    "label": "Reservations"
+                },
+                "availability": {
+                    "label": "Availability"
+                },
                 "operation": {
                     "label": "Operation"
                 }
@@ -476,6 +581,36 @@ export default {
             "activity": {
                 "active": "Active",
                 "inactive": "Inactive"
+            },
+            "reservations": {
+                "confirmed": "Reserved",
+                "none_confirmed": "No confirmed reservations"
+            },
+            "availability": {
+                "title": "Availability by stay",
+                "description": "Select arrival and departure dates to see which rooms can actually be assigned.",
+                "check_in": "Arrival",
+                "check_out": "Departure",
+                "action": "Check availability",
+                "summary": "{available} of {total} rooms available",
+                "statuses": {
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "occupied": "Occupied",
+                    "housekeeping": "Not ready",
+                    "inactive": "Inactive",
+                    "unavailable": "Unavailable"
+                },
+                "descriptions": {
+                    "available": "No commitments during the selected period.",
+                    "housekeeping": "Mark this room as clean before assigning it.",
+                    "inactive": "This room is outside the available inventory.",
+                    "unavailable": "This room cannot be assigned during the selected period."
+                },
+                "reservation_conflict": "Confirmed reservation: {dates}.",
+                "occupied_until": "Occupied until {date}.",
+                "next_reservation": "Next reservation: {dates}.",
+                "next_reservation_more": "Next reservation: {dates}. +{count} more."
             },
             "pages": {
                 "index": {
@@ -624,6 +759,12 @@ export default {
                         "charge_policy": "Charge policy",
                         "recorded_by": "Recorded by",
                         "system": "System"
+                    },
+                    "check_out": {
+                        "title": "Confirm stay checkout",
+                        "description": "The stay will be completed and all rooms that are still occupied will be released.",
+                        "warning": "The rooms will be marked for cleaning. This action cannot be undone.",
+                        "action": "Check out stay"
                     },
                     "partial_check_out": {
                         "title": "Check out room {room}",
@@ -936,6 +1077,38 @@ export default {
             "password": "La contraseña proporcionada es incorrecta.",
             "throttle": "Demasiados intentos de acceso. Por favor, intente nuevamente en {seconds} segundos."
         },
+        "cash": {
+            "title": "Caja",
+            "description": "Controla únicamente el efectivo disponible en {hotel}.",
+            "types": {
+                "stay_payment": "Pago de estancia",
+                "payment_refund": "Reembolso",
+                "manual_entry": "Entrada manual",
+                "withdrawal": "Retiro"
+            },
+            "actions": {
+                "record": "Registrar movimiento"
+            },
+            "fields": {
+                "type": "Tipo de movimiento",
+                "amount": "Importe",
+                "comment": "Motivo o comentario",
+                "date": "Fecha",
+                "guest": "Huésped"
+            },
+            "summary": {
+                "balance": "Efectivo disponible",
+                "movements": "Movimientos de caja",
+                "empty": "Aún no hay movimientos de efectivo.",
+                "automatic": "Generado automáticamente por un pago"
+            },
+            "messages": {
+                "recorded": "Movimiento de caja registrado con éxito."
+            },
+            "validation": {
+                "insufficient_balance": "El retiro supera el efectivo disponible."
+            }
+        },
         "guests": {
             "title": "Huéspedes",
             "actions": {
@@ -1114,6 +1287,73 @@ export default {
             "throttled": "Por favor espere antes de intentar de nuevo.",
             "token": "El token de restablecimiento de contraseña es inválido.",
             "user": "No encontramos ningún usuario con ese correo electrónico."
+        },
+        "payments": {
+            "title": "Folio y pagos",
+            "folio": {
+                "room": "Habitación {room}"
+            },
+            "charges": {
+                "lodging": "Hospedaje"
+            },
+            "methods": {
+                "cash": "Efectivo",
+                "bank_transfer": "Transferencia"
+            },
+            "adjustments": {
+                "courtesy": "Cortesía",
+                "write_off": "Pérdida",
+                "discount": "Descuento"
+            },
+            "actions": {
+                "record_payment": "Registrar pago",
+                "add_charge": "Agregar cargo",
+                "apply_adjustment": "Aplicar ajuste",
+                "refund": "Reembolsar"
+            },
+            "fields": {
+                "folio": "Folio",
+                "amount": "Importe",
+                "method": "Método",
+                "comment": "Comentario",
+                "support": "Soporte de transferencia",
+                "support_hint": "JPG, PNG o WebP · máximo 5 MB",
+                "description": "Descripción",
+                "type": "Tipo",
+                "reason": "Motivo"
+            },
+            "summary": {
+                "description": "Cargos, ajustes y dinero recibido por cada habitación.",
+                "charges": "Cargos",
+                "adjustments": "Ajustes",
+                "paid": "Pagado",
+                "balance": "Saldo por liquidar",
+                "settled": "Liquidado",
+                "projected": "Incluye hospedaje proyectado",
+                "empty": "Todavía no hay movimientos en este folio.",
+                "history": "Movimientos",
+                "additional_charges": "Cargos adicionales de la habitación",
+                "no_additional_charges": "No se han agregado cargos adicionales a esta habitación."
+            },
+            "dialogs": {
+                "payment_title": "Registrar pago",
+                "payment_description": "El pago se aplicará al folio seleccionado.",
+                "charge_title": "Agregar cargo manual",
+                "adjustment_title": "Aplicar cortesía o pérdida"
+            },
+            "messages": {
+                "recorded": "Pago registrado con éxito.",
+                "charge_recorded": "Cargo registrado con éxito.",
+                "adjustment_recorded": "Ajuste registrado con éxito.",
+                "refunded": "Reembolso registrado con éxito."
+            },
+            "validation": {
+                "balance_due": "El folio debe quedar con saldo cero antes del checkout.",
+                "folio_closed": "El folio ya está cerrado y no admite nuevos movimientos.",
+                "overpayment": "El pago no puede superar el saldo del folio.",
+                "over_adjustment": "El ajuste no puede superar el saldo del folio.",
+                "refund_exceeds_payment": "El reembolso supera el importe disponible del pago."
+            }
         },
         "reservations": {
             "title": "Reservas",
@@ -1352,6 +1592,12 @@ export default {
                 "is_active": {
                     "label": "Habitación activa"
                 },
+                "reservations": {
+                    "label": "Reservas"
+                },
+                "availability": {
+                    "label": "Disponibilidad"
+                },
                 "operation": {
                     "label": "Operación"
                 }
@@ -1363,6 +1609,36 @@ export default {
             "activity": {
                 "active": "Activa",
                 "inactive": "Inactiva"
+            },
+            "reservations": {
+                "confirmed": "Reservada",
+                "none_confirmed": "Sin reservas confirmadas"
+            },
+            "availability": {
+                "title": "Disponibilidad por estancia",
+                "description": "Selecciona las fechas de llegada y salida para saber qué habitaciones pueden asignarse realmente.",
+                "check_in": "Llegada",
+                "check_out": "Salida",
+                "action": "Consultar",
+                "summary": "{available} de {total} habitaciones disponibles",
+                "statuses": {
+                    "available": "Disponible",
+                    "reserved": "Reservada",
+                    "occupied": "Ocupada",
+                    "housekeeping": "No preparada",
+                    "inactive": "Inactiva",
+                    "unavailable": "No disponible"
+                },
+                "descriptions": {
+                    "available": "Sin compromisos para el intervalo seleccionado.",
+                    "housekeeping": "Debe marcarse como limpia antes de asignarla.",
+                    "inactive": "La habitación está fuera del inventario disponible.",
+                    "unavailable": "No puede asignarse durante el intervalo seleccionado."
+                },
+                "reservation_conflict": "Reserva confirmada: {dates}.",
+                "occupied_until": "Ocupada hasta {date}.",
+                "next_reservation": "Próxima reserva: {dates}.",
+                "next_reservation_more": "Próxima reserva: {dates}. +{count} futuras."
             },
             "pages": {
                 "index": {
@@ -1511,6 +1787,12 @@ export default {
                         "charge_policy": "Política de cobro",
                         "recorded_by": "Registrado por",
                         "system": "Sistema"
+                    },
+                    "check_out": {
+                        "title": "Confirmar salida de la estancia",
+                        "description": "Se finalizará la estancia y se liberarán todas las habitaciones que siguen ocupadas.",
+                        "warning": "Las habitaciones quedarán pendientes de limpieza. Esta acción no se puede deshacer.",
+                        "action": "Dar salida a la estancia"
                     },
                     "partial_check_out": {
                         "title": "Dar salida a la habitación {room}",

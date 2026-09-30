@@ -13,6 +13,7 @@ return new class() extends Migration
         Schema::create('stays', function (Blueprint $table) {
             $table->id();
             $table->string('status', 30);
+            $table->string('currency', 3)->default('USD');
             $table->timestamp('checked_in_at');
             $table->date('expected_check_out_on');
             $table->timestamp('checked_out_at')->nullable();

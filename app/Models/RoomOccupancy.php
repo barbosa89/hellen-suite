@@ -17,10 +17,11 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $stay_id
+ * @property int|null $stay_folio_id
  * @property int $room_id
  * @property string $nightly_rate
- * @property Carbon|null $checked_in_at
- * @property Carbon|null $expected_check_out_on
+ * @property Carbon $checked_in_at
+ * @property Carbon $expected_check_out_on
  * @property Carbon|null $checked_out_at
  * @property RoomOccupancyEndReason|null $end_reason
  * @property Carbon|null $created_at
@@ -30,6 +31,7 @@ use Illuminate\Support\Carbon;
  */
 #[Fillable([
     'stay_id',
+    'stay_folio_id',
     'room_id',
     'nightly_rate',
     'checked_in_at',
@@ -48,6 +50,12 @@ class RoomOccupancy extends Model
         return $this->belongsTo(Stay::class);
     }
 
+    /** @return BelongsTo<StayFolio, $this> */
+    public function folio(): BelongsTo
+    {
+        return $this->belongsTo(StayFolio::class, 'stay_folio_id');
+    }
+
     /** @return BelongsTo<Room, $this> */
     public function room(): BelongsTo
     {
@@ -64,6 +72,12 @@ class RoomOccupancy extends Model
     public function events(): HasMany
     {
         return $this->hasMany(RoomOccupancyEvent::class);
+    }
+
+    /** @return HasMany<FolioCharge, $this> */
+    public function charges(): HasMany
+    {
+        return $this->hasMany(FolioCharge::class);
     }
 
     /** @return array<string, string> */

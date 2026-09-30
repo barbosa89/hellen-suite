@@ -12,6 +12,7 @@ use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\Stay;
 use App\Models\StayGuest;
+use App\Settings\GeneralSettings;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Cache;
@@ -22,7 +23,11 @@ use function count;
 
 final class CreateStay
 {
-    public function __construct(private RoomAvailability $roomAvailability) {}
+    public function __construct(
+        private RoomAvailability $roomAvailability,
+        private CreateStayFolio $createStayFolio,
+        private GeneralSettings $settings,
+    ) {}
 
     public function execute(Hotel $hotel, CreateStayData $data): Stay
     {
@@ -40,6 +45,7 @@ final class CreateStay
             $stay = $hotel->stays()->create([
                 'responsible_guest_id' => $responsibleGuest->id,
                 'status' => StayStatus::Active,
+                'currency' => $this->settings->currency,
                 'checked_in_at' => $checkedInAt,
                 'expected_check_out_on' => $data->expectedCheckOutOn,
             ]);
@@ -96,6 +102,7 @@ final class CreateStay
             }
 
             $occupancy->guests()->attach($guestIds);
+            $this->createStayFolio->execute($occupancy);
         }
     }
 

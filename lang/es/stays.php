@@ -48,6 +48,12 @@ return [
             'no_room_capacity' => 'No hay cupo disponible para agregar otro huésped.',
             'guest_status' => ['in_house' => 'Alojado', 'checked_out' => 'Salió'],
             'audit' => ['effective_departure' => 'Salida registrada', 'charge_policy' => 'Política de cobro', 'recorded_by' => 'Registrado por', 'system' => 'Sistema'],
+            'check_out' => [
+                'title' => 'Confirmar salida de la estancia',
+                'description' => 'Se finalizará la estancia y se liberarán todas las habitaciones que siguen ocupadas.',
+                'warning' => 'Las habitaciones quedarán pendientes de limpieza. Esta acción no se puede deshacer.',
+                'action' => 'Dar salida a la estancia',
+            ],
             'partial_check_out' => [
                 'title' => 'Dar salida a la habitación :room',
                 'description' => 'Esta operación libera únicamente la habitación seleccionada. Las demás habitaciones y la estancia seguirán activas.',

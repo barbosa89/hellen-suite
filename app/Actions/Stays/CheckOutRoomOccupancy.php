@@ -18,41 +18,18 @@ use Illuminate\Validation\ValidationException;
 
 final class CheckOutRoomOccupancy
 {
-    public function __construct(private RoomOccupancySnapshot $roomOccupancySnapshot) {}
+    public function __construct(
+        private RoomOccupancySnapshot $roomOccupancySnapshot,
+        private PostLodgingCharge $postLodgingCharge,
+        private CalculateFolioBalance $calculateFolioBalance,
+    ) {}
 
     public function execute(Stay $stay, RoomOccupancy $roomOccupancy, CarbonImmutable $checkedOutAt, null|int $userId = null): RoomOccupancy
     {
         return Cache::lock("hotels:{$stay->hotel_id}:inventory", 10)->block(5, fn (): RoomOccupancy => DB::transaction(function () use ($stay, $roomOccupancy, $checkedOutAt, $userId): RoomOccupancy {
             $stay = Stay::query()->lockForUpdate()->findOrFail($stay->id);
 
-            if ($stay->status !== StayStatus::Active) {
-                throw ValidationException::withMessages([
-                    'checked_out_at' => trans('stays.validation.stay_closed'),
-                ]);
-            }
-
-            $roomOccupancy = $stay->roomOccupancies()
-                ->with(['room', 'guests:id'])
-                ->lockForUpdate()
-                ->findOrFail($roomOccupancy->id);
-
-            if ($roomOccupancy->checked_out_at !== null) {
-                throw ValidationException::withMessages([
-                    'checked_out_at' => trans('stays.validation.occupancy_closed'),
-                ]);
-            }
-
-            if ($checkedOutAt->isBefore($roomOccupancy->checked_in_at)) {
-                throw ValidationException::withMessages([
-                    'checked_out_at' => trans('stays.validation.check_out_before_check_in'),
-                ]);
-            }
-
-            if ($checkedOutAt->isFuture()) {
-                throw ValidationException::withMessages([
-                    'checked_out_at' => trans('stays.validation.check_out_future'),
-                ]);
-            }
+            $roomOccupancy = $this->lockAndValidate($stay, $roomOccupancy, $checkedOutAt);
 
             $before = $this->roomOccupancySnapshot->execute($roomOccupancy);
 
@@ -60,25 +37,90 @@ final class CheckOutRoomOccupancy
                 'checked_out_at' => $checkedOutAt,
                 'end_reason' => RoomOccupancyEndReason::CheckOut,
             ]);
-            $roomOccupancy->room->update(['housekeeping_status' => HousekeepingStatus::Dirty]);
-            $roomOccupancy->events()->create([
-                'type' => RoomOccupancyEventType::CheckedOut,
-                'user_id' => $userId,
-                'before_data' => $before,
-                'after_data' => [
-                    ...$this->roomOccupancySnapshot->execute($roomOccupancy->refresh()),
-                    'lodging_charge_policy' => LodgingChargePolicy::ConsumedNights->value,
-                ],
-            ]);
 
-            if (! $stay->roomOccupancies()->whereNull('checked_out_at')->exists()) {
-                $stay->update([
-                    'status' => StayStatus::CheckedOut,
-                    'checked_out_at' => $checkedOutAt,
-                ]);
-            }
+            $this->closeSettledFolio($roomOccupancy, $checkedOutAt, $userId);
+            $roomOccupancy->room->update(['housekeeping_status' => HousekeepingStatus::Dirty]);
+            $this->recordCheckedOutEvent($roomOccupancy, $before, $userId);
+            $this->closeStayIfFullyCheckedOut($stay, $checkedOutAt);
 
             return $roomOccupancy;
         }));
+    }
+
+    private function lockAndValidate(Stay $stay, RoomOccupancy $roomOccupancy, CarbonImmutable $checkedOutAt): RoomOccupancy
+    {
+        if ($stay->status !== StayStatus::Active) {
+            throw ValidationException::withMessages([
+                'checked_out_at' => trans('stays.validation.stay_closed'),
+            ]);
+        }
+
+        $roomOccupancy = $stay->roomOccupancies()
+            ->with(['room', 'guests:id'])
+            ->lockForUpdate()
+            ->findOrFail($roomOccupancy->id);
+
+        if ($roomOccupancy->checked_out_at !== null) {
+            throw ValidationException::withMessages([
+                'checked_out_at' => trans('stays.validation.occupancy_closed'),
+            ]);
+        }
+
+        if ($checkedOutAt->isBefore($roomOccupancy->checked_in_at)) {
+            throw ValidationException::withMessages([
+                'checked_out_at' => trans('stays.validation.check_out_before_check_in'),
+            ]);
+        }
+
+        if ($checkedOutAt->isFuture()) {
+            throw ValidationException::withMessages([
+                'checked_out_at' => trans('stays.validation.check_out_future'),
+            ]);
+        }
+
+        return $roomOccupancy;
+    }
+
+    private function closeSettledFolio(RoomOccupancy $roomOccupancy, CarbonImmutable $checkedOutAt, null|int $userId): void
+    {
+        $this->postLodgingCharge->execute($roomOccupancy->refresh(), $checkedOutAt, $userId);
+        $folio = $roomOccupancy->folio()->with(['charges', 'adjustments', 'payments'])->firstOrFail();
+
+        if ($this->calculateFolioBalance->execute($folio) !== 0) {
+            throw ValidationException::withMessages([
+                'payment' => trans('payments.validation.balance_due'),
+            ]);
+        }
+
+        $folio->update([
+            'closed_at' => $checkedOutAt,
+            'closed_by_user_id' => $userId,
+        ]);
+    }
+
+    /** @param array<string, mixed> $before */
+    private function recordCheckedOutEvent(RoomOccupancy $roomOccupancy, array $before, null|int $userId): void
+    {
+        $roomOccupancy->events()->create([
+            'type' => RoomOccupancyEventType::CheckedOut,
+            'user_id' => $userId,
+            'before_data' => $before,
+            'after_data' => [
+                ...$this->roomOccupancySnapshot->execute($roomOccupancy->refresh()),
+                'lodging_charge_policy' => LodgingChargePolicy::ConsumedNights->value,
+            ],
+        ]);
+    }
+
+    private function closeStayIfFullyCheckedOut(Stay $stay, CarbonImmutable $checkedOutAt): void
+    {
+        if ($stay->roomOccupancies()->whereNull('checked_out_at')->exists()) {
+            return;
+        }
+
+        $stay->update([
+            'status' => StayStatus::CheckedOut,
+            'checked_out_at' => $checkedOutAt,
+        ]);
     }
 }

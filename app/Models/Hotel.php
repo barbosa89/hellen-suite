@@ -69,6 +69,18 @@ class Hotel extends Model
         return $this->hasMany(Reservation::class);
     }
 
+    /** @return HasMany<StayFolio, $this> */
+    public function stayFolios(): HasMany
+    {
+        return $this->hasMany(StayFolio::class);
+    }
+
+    /** @return HasMany<CashMovement, $this> */
+    public function cashMovements(): HasMany
+    {
+        return $this->hasMany(CashMovement::class);
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

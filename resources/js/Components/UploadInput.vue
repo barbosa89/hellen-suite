@@ -26,6 +26,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    title: {
+        type: String,
+        default: null,
+    },
+    hint: {
+        type: String,
+        default: null,
+    },
 });
 
 const input = ref(null);
@@ -108,14 +116,14 @@ function onDrop(event) {
                 >
                     {{
                         files.length === 0
-                            ? t('app.upload.drop_title')
+                            ? (title ?? t('app.upload.drop_title'))
                             : t('app.upload.files_selected', files.length)
                     }}
                 </p>
                 <p
                     class="text-xs leading-5 text-neutral-600 dark:text-neutral-400"
                 >
-                    {{ t('app.upload.drop_hint') }}
+                    {{ hint ?? t('app.upload.drop_hint') }}
                 </p>
             </div>
 

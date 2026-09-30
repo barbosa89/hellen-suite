@@ -15,10 +15,25 @@ return [
     'fields' => [
         'number' => ['label' => 'Número'], 'room_type' => ['label' => 'Tipo'], 'floor' => ['label' => 'Piso'],
         'reference_price' => ['label' => 'Tarifa de referencia'], 'housekeeping_status' => ['label' => 'Estado de limpieza'],
-        'is_active' => ['label' => 'Habitación activa'], 'operation' => ['label' => 'Operación'],
+        'is_active' => ['label' => 'Habitación activa'], 'reservations' => ['label' => 'Reservas'], 'availability' => ['label' => 'Disponibilidad'], 'operation' => ['label' => 'Operación'],
     ],
     'housekeeping' => ['clean' => 'Limpia', 'dirty' => 'Pendiente de limpieza'],
     'activity' => ['active' => 'Activa', 'inactive' => 'Inactiva'],
+    'reservations' => ['confirmed' => 'Reservada', 'none_confirmed' => 'Sin reservas confirmadas'],
+    'availability' => [
+        'title' => 'Disponibilidad por estancia',
+        'description' => 'Selecciona las fechas de llegada y salida para saber qué habitaciones pueden asignarse realmente.',
+        'check_in' => 'Llegada',
+        'check_out' => 'Salida',
+        'action' => 'Consultar',
+        'summary' => ':available de :total habitaciones disponibles',
+        'statuses' => ['available' => 'Disponible', 'reserved' => 'Reservada', 'occupied' => 'Ocupada', 'housekeeping' => 'No preparada', 'inactive' => 'Inactiva', 'unavailable' => 'No disponible'],
+        'descriptions' => ['available' => 'Sin compromisos para el intervalo seleccionado.', 'housekeeping' => 'Debe marcarse como limpia antes de asignarla.', 'inactive' => 'La habitación está fuera del inventario disponible.', 'unavailable' => 'No puede asignarse durante el intervalo seleccionado.'],
+        'reservation_conflict' => 'Reserva confirmada: :dates.',
+        'occupied_until' => 'Ocupada hasta :date.',
+        'next_reservation' => 'Próxima reserva: :dates.',
+        'next_reservation_more' => 'Próxima reserva: :dates. +:count futuras.',
+    ],
     'pages' => [
         'index' => [
             'heading' => 'Habitaciones de :hotel', 'description' => 'Consulta y actualiza el inventario operativo de :hotel.',

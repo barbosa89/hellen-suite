@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Rooms\RoomAvailability;
 use App\Constants\ReservationStatus;
+use App\Http\Requests\Rooms\RoomIndexRequest;
 use App\Http\Requests\Rooms\StoreRoomRequest;
 use App\Http\Requests\Rooms\UpdateRoomRequest;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Settings\GeneralSettings;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -17,8 +20,13 @@ use Inertia\Response;
 
 class RoomController extends Controller
 {
-    public function index(Hotel $hotel, GeneralSettings $settings): Response
+    public function index(RoomIndexRequest $request, Hotel $hotel, GeneralSettings $settings, RoomAvailability $roomAvailability): Response
     {
+        $checkInOn = CarbonImmutable::parse($request->validated('check_in_on'));
+        $checkOutOn = CarbonImmutable::parse($request->validated('check_out_on'));
+        $availableRoomIds = $roomAvailability->query($hotel, $checkInOn, $checkOutOn)
+            ->pluck('rooms.id');
+
         $rooms = $hotel->rooms()
             ->select([
                 'id',
@@ -30,16 +38,40 @@ class RoomController extends Controller
                 'housekeeping_status',
                 'is_active',
             ])
-            ->with('roomType:id,name,capacity')
+            ->with([
+                'roomType:id,name,capacity',
+                'reservedRooms' => fn ($query) => $query
+                    ->select(['id', 'room_id', 'reservation_id', 'planned_check_in_on', 'planned_check_out_on'])
+                    ->whereHas('reservation', fn ($reservationQuery) => $reservationQuery->where('status', ReservationStatus::Confirmed))
+                    ->whereDate('planned_check_out_on', '>', today()->toDateString())
+                    ->orderBy('planned_check_in_on'),
+                'roomOccupancies' => fn ($query) => $query
+                    ->select(['id', 'room_id', 'checked_in_at', 'expected_check_out_on'])
+                    ->whereNull('checked_out_at'),
+            ])
             ->orderBy('number')
             ->paginate()
-            ->withQueryString();
+            ->withQueryString()
+            ->through(function (Room $room) use ($availableRoomIds): Room {
+                $room->setAttribute('is_available', $availableRoomIds->contains($room->id));
+
+                return $room;
+            });
 
         return Inertia::render('Hotels/Rooms/Index', [
             'hotel' => $hotel,
             'rooms' => $rooms,
             'currency' => $settings->currency,
             'hasRoomTypes' => $hotel->roomTypes()->exists(),
+            'availabilityPeriod' => [
+                'check_in_on' => $checkInOn->toDateString(),
+                'check_out_on' => $checkOutOn->toDateString(),
+                'today' => today()->toDateString(),
+            ],
+            'availabilitySummary' => [
+                'available' => $availableRoomIds->count(),
+                'total' => $hotel->rooms()->count(),
+            ],
         ]);
     }
 

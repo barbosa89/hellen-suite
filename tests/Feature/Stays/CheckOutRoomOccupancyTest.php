@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Stays;
 
+use App\Actions\Stays\CalculateOccupancyCharge;
+use App\Actions\Stays\CreateStayFolio;
+use App\Constants\FolioAdjustmentDirection;
+use App\Constants\FolioAdjustmentType;
 use App\Constants\HousekeepingStatus;
 use App\Constants\LodgingChargePolicy;
 use App\Constants\RoomOccupancyEndReason;
@@ -18,7 +22,9 @@ use App\Models\RoomType;
 use App\Models\Stay;
 use App\Models\StayGuest;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -40,6 +46,7 @@ class CheckOutRoomOccupancyTest extends TestCase
         [$hotel, $stay, $firstOccupancy, $secondOccupancy] = $this->stayWithTwoRooms();
         $checkedOutAt = now()->subDay();
         $user = User::factory()->create();
+        $this->settleOccupancy($firstOccupancy, $checkedOutAt);
 
         $this->actingAs($user);
 
@@ -72,6 +79,7 @@ class CheckOutRoomOccupancyTest extends TestCase
             'checked_out_at' => now()->subDay(),
             'end_reason' => RoomOccupancyEndReason::CheckOut,
         ]);
+        $this->settleOccupancy($secondOccupancy, now());
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $secondOccupancy]))
             ->assertSessionHasNoErrors();
@@ -85,6 +93,7 @@ class CheckOutRoomOccupancyTest extends TestCase
     public function it_rejects_a_check_out_before_the_room_check_in(): void
     {
         [$hotel, $stay, $firstOccupancy] = $this->stayWithTwoRooms();
+        $this->settleOccupancy($firstOccupancy, now()->subDay());
         $checkedOutAt = $firstOccupancy->checked_in_at->copy()->subSecond();
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
@@ -98,6 +107,7 @@ class CheckOutRoomOccupancyTest extends TestCase
     public function it_prevents_a_second_check_out_for_the_same_room(): void
     {
         [$hotel, $stay, $firstOccupancy] = $this->stayWithTwoRooms();
+        $this->settleOccupancy($firstOccupancy, now()->subDay());
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
             'checked_out_at' => now()->subDay()->toDateTimeString(),
@@ -125,6 +135,7 @@ class CheckOutRoomOccupancyTest extends TestCase
     public function it_reports_final_and_projected_costs_after_a_partial_check_out(): void
     {
         [$hotel, $stay, $firstOccupancy] = $this->stayWithTwoRooms();
+        $this->settleOccupancy($firstOccupancy, now()->subDay());
 
         $this->post(route('hotels.stays.room-occupancies.check-out', [$hotel, $stay, $firstOccupancy]), [
             'checked_out_at' => now()->subDay()->toDateTimeString(),
@@ -186,5 +197,19 @@ class CheckOutRoomOccupancyTest extends TestCase
         $secondOccupancy->guests()->attach($companionGuest);
 
         return [$hotel, $stay, $firstOccupancy, $secondOccupancy];
+    }
+
+    private function settleOccupancy(RoomOccupancy $occupancy, CarbonInterface $checkedOutAt): void
+    {
+        $folio = app(CreateStayFolio::class)->execute($occupancy);
+        $amount = app(CalculateOccupancyCharge::class)->execute($occupancy, $checkedOutAt->toImmutable());
+        $folio->adjustments()->create([
+            'type' => FolioAdjustmentType::Courtesy,
+            'direction' => FolioAdjustmentDirection::Credit,
+            'amount_minor' => $amount['total_amount_minor'],
+            'reason' => 'Operational checkout test settlement',
+            'occurred_at' => now(),
+            'idempotency_key' => (string) Str::uuid(),
+        ]);
     }
 }

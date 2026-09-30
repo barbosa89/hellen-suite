@@ -44,6 +44,14 @@ function formatMoney(value) {
         currency: props.currency,
     }).format(Number(value));
 }
+
+function formatDateTime(value) {
+    return new Intl.DateTimeFormat(locale.value === 'es' ? 'es-CO' : 'en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    }).format(new Date(value));
+}
+
 function actionRoute(action) {
     return route(`hotels.reservations.${action}`, [
         props.hotel.id,
@@ -325,11 +333,12 @@ function submitAction() {
                                 >
                                     {{ t(`reservations.events.${event.type}`) }}
                                 </p>
-                                <p
+                                <time
+                                    :datetime="event.created_at"
                                     class="mt-1 text-sm text-neutral-600 tabular-nums dark:text-neutral-400"
                                 >
-                                    {{ event.created_at }}
-                                </p>
+                                    {{ formatDateTime(event.created_at) }}
+                                </time>
                             </li>
                         </ol>
                     </section>

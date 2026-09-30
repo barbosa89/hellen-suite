@@ -19,13 +19,16 @@ use Illuminate\Support\Carbon;
  * @property int $hotel_id
  * @property int $responsible_guest_id
  * @property ReservationStatus $status
- * @property Carbon|null $planned_check_in_on
- * @property Carbon|null $planned_check_out_on
+ * @property Carbon $planned_check_in_on
+ * @property Carbon $planned_check_out_on
  * @property Carbon|null $confirmed_at
  * @property Carbon|null $cancelled_at
  * @property Carbon|null $no_show_at
  * @property Carbon|null $checked_in_at
- * @property Carbon|null $checked_out_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @mixin \Eloquent
  */
 #[Fillable([
     'responsible_guest_id',

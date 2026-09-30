@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Actions\Reservations;
 
 use App\Actions\Rooms\RoomAvailability;
+use App\Actions\Stays\CreateStayFolio;
 use App\Constants\ReservationEventType;
 use App\Constants\ReservationStatus;
 use App\Constants\StayStatus;
 use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Stay;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -20,6 +22,8 @@ final class CheckInReservation
     public function __construct(
         private RoomAvailability $roomAvailability,
         private ReservationSnapshot $reservationSnapshot,
+        private CreateStayFolio $createStayFolio,
+        private GeneralSettings $settings,
     ) {}
 
     public function execute(Hotel $hotel, Reservation $reservation): Stay
@@ -57,6 +61,7 @@ final class CheckInReservation
                 'reservation_id' => $reservation->id,
                 'responsible_guest_id' => $reservation->responsible_guest_id,
                 'status' => StayStatus::Active,
+                'currency' => $this->settings->currency,
                 'checked_in_at' => $checkedInAt,
                 'expected_check_out_on' => $reservation->planned_check_out_on,
             ]);
@@ -75,11 +80,14 @@ final class CheckInReservation
                     'checked_in_at' => $checkedInAt,
                     'expected_check_out_on' => $reservation->planned_check_out_on,
                 ]);
+
                 $occupancy->guests()->attach(
                     $reservedRoom->reservationGuests
                         ->map(fn ($reservationGuest): int => $reservationGuest->guest_id)
                         ->all(),
                 );
+
+                $this->createStayFolio->execute($occupancy);
             }
 
             $reservation->update([

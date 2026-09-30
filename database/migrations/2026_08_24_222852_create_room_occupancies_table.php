@@ -18,6 +18,7 @@ return new class() extends Migration
             $table->timestamp('checked_out_at')->nullable();
             $table->string('end_reason', 30)->nullable();
             $table->foreignId('stay_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('stay_folio_id')->nullable()->constrained()->restrictOnDelete();
             $table->foreignId('room_id')->constrained()->restrictOnDelete();
             $table->timestamps();
 
