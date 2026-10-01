@@ -87,14 +87,38 @@ return [
 
     'management' => [
         'heading' => 'Resumen del hotel',
-        'description' => 'Información y módulos disponibles para :name.',
+        'description' => 'Una vista clara de la operación diaria de :name.',
         'contact_phone' => 'Teléfono de contacto',
         'profile_status' => 'Estado del perfil',
         'profile_progress' => ':completed de :total datos principales registrados.',
         'complete_profile' => 'Completar información',
-        'modules' => 'Módulos del hotel',
-        'modules_description' => 'Entra a las herramientas que trabajan exclusivamente con esta propiedad.',
-        'open_module' => 'Abrir módulo',
+        'metrics' => [
+            'eyebrow' => 'Pulso operativo',
+            'title' => 'Lo que está pasando en el hotel',
+            'description' => 'Indicadores actuales y demanda confirmada para tomar decisiones con rapidez.',
+            'current_occupancy' => 'Ocupación actual',
+            'rooms_occupied' => ':occupied de :total habitaciones activas ocupadas',
+            'adr' => 'ADR actual',
+            'revpar' => 'RevPAR actual',
+            'available_rooms' => 'Habitaciones disponibles',
+            'arrivals_today' => 'Llegadas previstas hoy',
+            'departures_today' => 'Salidas previstas hoy',
+            'guests_in_house' => 'Huéspedes alojados',
+            'dirty_rooms' => 'Habitaciones por limpiar',
+            'outstanding_balance' => 'Saldo pendiente registrado',
+            'posted_balance_note' => 'Incluye cargos, ajustes, pagos y reembolsos ya registrados.',
+            'currency_unavailable' => 'Moneda sin configurar',
+        ],
+        'operations' => [
+            'title' => 'Operación de hoy',
+            'description' => 'Movimientos y tareas que requieren atención inmediata.',
+        ],
+        'forecast' => [
+            'title' => 'Proyección de ocupación',
+            'description' => 'Estadías activas y reservas confirmadas para los próximos 7 días.',
+            'tooltip' => ':rate% de ocupación',
+            'accessible_point' => ':date: :rate% de ocupación.',
+        ],
     ],
 
     'messages' => [

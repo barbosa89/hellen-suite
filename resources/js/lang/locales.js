@@ -226,14 +226,38 @@ export default {
             },
             "management": {
                 "heading": "Hotel overview",
-                "description": "Information and available modules for {name}.",
+                "description": "A clear view of the daily operation at {name}.",
                 "contact_phone": "Contact phone",
                 "profile_status": "Profile status",
                 "profile_progress": "{completed} of {total} main details registered.",
                 "complete_profile": "Complete information",
-                "modules": "Hotel modules",
-                "modules_description": "Open the tools that work exclusively with this property.",
-                "open_module": "Open module"
+                "metrics": {
+                    "eyebrow": "Operations pulse",
+                    "title": "What is happening at the hotel",
+                    "description": "Current indicators and confirmed demand for faster decisions.",
+                    "current_occupancy": "Current occupancy",
+                    "rooms_occupied": "{occupied} of {total} active rooms occupied",
+                    "adr": "Current ADR",
+                    "revpar": "Current RevPAR",
+                    "available_rooms": "Available rooms",
+                    "arrivals_today": "Expected arrivals today",
+                    "departures_today": "Expected departures today",
+                    "guests_in_house": "Guests in house",
+                    "dirty_rooms": "Rooms to clean",
+                    "outstanding_balance": "Posted outstanding balance",
+                    "posted_balance_note": "Includes charges, adjustments, payments, and refunds already posted.",
+                    "currency_unavailable": "Currency not configured"
+                },
+                "operations": {
+                    "title": "Today's operation",
+                    "description": "Movements and tasks requiring immediate attention."
+                },
+                "forecast": {
+                    "title": "Occupancy forecast",
+                    "description": "Active stays and confirmed reservations for the next 7 days.",
+                    "tooltip": "{rate}% occupancy",
+                    "accessible_point": "{date}: {rate}% occupancy."
+                }
             },
             "messages": {
                 "created": "Hotel created successfully.",
@@ -1296,14 +1320,38 @@ export default {
             },
             "management": {
                 "heading": "Resumen del hotel",
-                "description": "Información y módulos disponibles para {name}.",
+                "description": "Una vista clara de la operación diaria de {name}.",
                 "contact_phone": "Teléfono de contacto",
                 "profile_status": "Estado del perfil",
                 "profile_progress": "{completed} de {total} datos principales registrados.",
                 "complete_profile": "Completar información",
-                "modules": "Módulos del hotel",
-                "modules_description": "Entra a las herramientas que trabajan exclusivamente con esta propiedad.",
-                "open_module": "Abrir módulo"
+                "metrics": {
+                    "eyebrow": "Pulso operativo",
+                    "title": "Lo que está pasando en el hotel",
+                    "description": "Indicadores actuales y demanda confirmada para tomar decisiones con rapidez.",
+                    "current_occupancy": "Ocupación actual",
+                    "rooms_occupied": "{occupied} de {total} habitaciones activas ocupadas",
+                    "adr": "ADR actual",
+                    "revpar": "RevPAR actual",
+                    "available_rooms": "Habitaciones disponibles",
+                    "arrivals_today": "Llegadas previstas hoy",
+                    "departures_today": "Salidas previstas hoy",
+                    "guests_in_house": "Huéspedes alojados",
+                    "dirty_rooms": "Habitaciones por limpiar",
+                    "outstanding_balance": "Saldo pendiente registrado",
+                    "posted_balance_note": "Incluye cargos, ajustes, pagos y reembolsos ya registrados.",
+                    "currency_unavailable": "Moneda sin configurar"
+                },
+                "operations": {
+                    "title": "Operación de hoy",
+                    "description": "Movimientos y tareas que requieren atención inmediata."
+                },
+                "forecast": {
+                    "title": "Proyección de ocupación",
+                    "description": "Estadías activas y reservas confirmadas para los próximos 7 días.",
+                    "tooltip": "{rate}% de ocupación",
+                    "accessible_point": "{date}: {rate}% de ocupación."
+                }
             },
             "messages": {
                 "created": "Hotel creado con éxito.",
