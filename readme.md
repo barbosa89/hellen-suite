@@ -236,6 +236,44 @@ The upstream fix is for NativePHP's `BuildCommand::getEnvironmentVariables()` to
 'NATIVEPHP_UPDATER_ENABLED' => config('nativephp.updater.enabled') ? 'true' : 'false',
 ```
 
+### Troubleshooting NSIS on Apple Silicon
+
+Publishing a Windows installer from an Apple Silicon Mac may fail with an error similar to:
+
+```text
+Cannot spawn .../electron-builder/nsis-3.0.4.1/.../mac/makensis:
+Error: spawn Unknown system error -86
+```
+
+macOS error `-86` means that the executable uses an unsupported CPU architecture. Electron Builder's NSIS package includes an Intel `x86_64` build of `makensis`, while Apple Silicon Macs run `arm64`. Rosetta 2 is therefore required to execute this tool during a Windows cross-build.
+
+Install Rosetta using Apple's system updater and follow the prompts:
+
+```bash
+softwareupdate --install-rosetta
+```
+
+Verify that the cached NSIS executable can run:
+
+```bash
+"$HOME/Library/Caches/electron-builder/nsis-3.0.4.1/nsis-3.0.4.1-1mx3n/mac/makensis" -VERSION
+```
+
+It should print the NSIS version instead of `bad CPU type in executable`. Then retry the publication with the NativePHP updater workaround:
+
+```bash
+php artisan config:clear
+NATIVEPHP_UPDATER_ENABLED=true php artisan native:publish win x64
+```
+
+If the same error remains after Rosetta is installed, remove only the generated NSIS cache so Electron Builder can download it again:
+
+```bash
+rm -rf "$HOME/Library/Caches/electron-builder/nsis-3.0.4.1"
+```
+
+Building and publishing from a Windows machine or Windows CI runner is the alternative that avoids cross-compilation and Rosetta entirely.
+
 ## Release Documentation
 
 See [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md) for the complete guide to signing, building, publishing, automatic updates, updater events, and migrations.
