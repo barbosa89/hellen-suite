@@ -1,110 +1,134 @@
 # Hellen Suite
 
-Hellen Suite es una aplicación para la administración de hoteles y negocios similares. Facilita los controles operativos y la ejecución de tareas administrativas y de gestión.
+Hellen Suite is an application for managing hotels and similar businesses. It simplifies operational controls and administrative and management tasks.
 
-La aplicación se distribuye como web y como aplicación de escritorio mediante [NativePHP Desktop](https://nativephp.com/docs/desktop/2). Actualmente está en desarrollo y todavía no está preparada para producción.
+The application is available as both a web application and a desktop application powered by [NativePHP Desktop](https://nativephp.com/docs/desktop/2). It is currently under development and is not yet ready for production.
 
-Sitio web: [hellensuite.com](https://hellensuite.com)
+Website: [hellensuite.com](https://hellensuite.com)
 
 ## Stack
 
-- PHP 8.3 o superior y Laravel 13.
-- NativePHP Desktop 2 y Electron.
-- Inertia 3 y Vue 3.
-- Tailwind CSS 4 y Vite 8.
+- PHP 8.3 or later and Laravel 13.
+- NativePHP Desktop 2 and Electron.
+- Inertia 3 and Vue 3.
+- Tailwind CSS 4 and Vite 8.
 - SQLite.
 - PHPUnit 12.
 
-## Desarrollo
+## Development
 
-### Requisitos
+### Requirements
 
-- PHP, Composer y las extensiones requeridas por Laravel.
-- Node.js y npm.
+- PHP, Composer, and the extensions required by Laravel.
+- Node.js and npm.
 - SQLite.
-- Herramientas de compilación de la plataforma para trabajar con Electron y generar aplicaciones nativas.
+- Platform build tools for working with Electron and generating native applications.
 
-### Instalación inicial
+### Initial setup
 
-Clonar el repositorio y ejecutar desde su raíz:
+Clone the repository and run the following command from its root:
 
 ```bash
 composer run setup
 ```
 
-Este comando instala las dependencias de Composer y npm, crea `.env` a partir de `.env.example`, genera `APP_KEY`, ejecuta las migraciones y compila el frontend.
+This command installs the Composer and npm dependencies, creates `.env` from `.env.example`, generates `APP_KEY`, runs the migrations, and builds the frontend.
 
-Para preparar las dependencias de NativePHP y Electron:
+Prepare the NativePHP and Electron dependencies:
 
 ```bash
 php artisan app:native:install --no-interaction
 ```
 
-### Desarrollo web
+### Web development
 
 ```bash
 composer run dev
 ```
 
-El comando inicia el servidor web de Laravel, Vite y los logs de desarrollo. La base de datos web se encuentra en `database/database.sqlite`.
+This command starts the Laravel web server, Vite, and the development logs. The web database is located at `database/database.sqlite`.
 
-Si se crean migraciones nuevas, aplicarlas con:
+Apply new migrations with:
 
 ```bash
 php artisan migrate
 ```
 
-### Desarrollo de escritorio
+### Desktop development
 
 ```bash
 composer run native:dev
 ```
 
-Este comando inicia la aplicación de Electron y Vite. La configuración de la ventana principal se encuentra en `app/Providers/NativeAppServiceProvider.php`.
+This command starts the Electron application and Vite. The main window configuration is located at `app/Providers/NativeAppServiceProvider.php`.
 
-NativePHP utiliza su propia base de datos durante la ejecución nativa. Las migraciones se aplican con:
+NativePHP uses its own database during native execution. Apply its migrations with:
 
 ```bash
 php artisan native:migrate
 ```
 
-### Calidad y pruebas
+### Quality and testing
 
 ```bash
-# Suite de pruebas
+# Test suite
 php artisan test --compact
 
-# Formato del código PHP modificado
+# Format modified PHP code
 vendor/bin/pint --dirty --format agent
 
-# ESLint del frontend; aplica correcciones automáticamente
+# Frontend ESLint; applies fixes automatically
 npm run lint
 
-# Build de producción del frontend
+# Production frontend build
 npm run build
 ```
 
-El build de Vite descarga las fuentes configuradas en `vite.config.js`, por lo que necesita conexión de red.
+The Vite build downloads the fonts configured in `vite.config.js`, so it requires a network connection.
 
-## Build de escritorio
+## NativePHP Security
 
-El build empaqueta Laravel, el frontend, Electron y el runtime requerido en una aplicación distribuible. Se genera un sistema operativo a la vez.
+A desktop application is installed on devices outside the developer's control. The user's system must therefore be treated as a potentially hostile environment, and no secret included in the application bundle should be assumed to be inaccessible.
 
-Antes de construir una versión:
+The following principles apply to Hellen Suite:
 
-1. Ejecutar las pruebas y `npm run build`.
-2. Incrementar `NATIVEPHP_APP_VERSION` en `.env`.
-3. Revisar las migraciones, porque NativePHP solo las ejecuta en los equipos instalados cuando cambia la versión.
-4. Configurar la firma de código correspondiente a Windows o macOS.
-5. Probar el instalador en cada plataforma objetivo.
+- Do not bundle passwords, tokens, private keys, or infrastructure credentials in `.env` or the source code.
+- Generate unique keys for each installation on first run whenever possible instead of sharing one key among all users.
+- Use a robust protocol such as OAuth2 for private APIs, with unique, high-entropy, short-lived tokens. NativePHP recommends an expiration time of less than 48 hours.
+- Always use HTTPS when sending data between the application and external services.
+- Encrypt user-provided API keys if they must be stored in files or the database, and decrypt them only when needed.
+- Restrict file access to expected locations, primarily the `appdata` directory, the user's home directory, and its subdirectories, using the `Storage` disks provided by NativePHP.
+- Keep Laravel's CSRF and CORS protections enabled, and do not expose unnecessary routes or native actions.
 
-Build para la plataforma y arquitectura actuales:
+NativePHP runs local servers to connect Laravel and Electron. Their communication uses authenticated HTTP requests with a dynamic key regenerated on every startup. **Never bypass or replace this authentication**, as doing so could allow other applications or websites to call the internal APIs.
+
+NativePHP automatically applies the global `PreventRegularBrowserAccess` middleware to production builds. This middleware restricts route access to requests originating from the WebView that started the application.
+
+The PHP process runs with the current user's permissions and can therefore access anything available to that user. Every operation involving files, processes, or system resources must be validated and restricted to the minimum required scope. Other installed software could also use the bundled PHP executable, so users should only install applications from trusted sources.
+
+Before publishing, review `cleanup_env_keys` in `config/nativephp.php` and verify that it removes all credentials used exclusively during the build or publication process. This project removes `GITHUB_*`, `AWS_*`, `AZURE_*`, `DO_SPACES_*`, Apple credentials, and other sensitive values.
+
+Read the complete [NativePHP Desktop 2 security guide](https://nativephp.com/docs/desktop/2/digging-deeper/security) before distributing a release.
+
+## Desktop Build
+
+The build process packages Laravel, the frontend, Electron, and the required runtime into a distributable application. It targets one operating system at a time.
+
+Before building a release:
+
+1. Run the tests and `npm run build`.
+2. Increment `NATIVEPHP_APP_VERSION` in `.env`.
+3. Review the migrations because NativePHP only runs them on installed systems when the version changes.
+4. Configure the appropriate code signing for Windows or macOS.
+5. Test the installer on every target platform.
+
+Build for the current platform and architecture:
 
 ```bash
 php artisan native:build
 ```
 
-Build indicando el sistema operativo:
+Build for a specific operating system:
 
 ```bash
 php artisan native:build mac
@@ -112,15 +136,15 @@ php artisan native:build win
 php artisan native:build linux
 ```
 
-La compilación cruzada no está soportada para todas las combinaciones. Los artefactos deben probarse en el sistema operativo donde se distribuirán. En macOS, la aplicación debe estar firmada y notarizada para funcionar correctamente en otros equipos y recibir actualizaciones automáticas.
+Cross-compilation is not supported for every platform combination. Test artifacts on the operating system where they will be distributed. On macOS, the application must be signed and notarized to run correctly on other devices and receive automatic updates.
 
-## Publicación en GitHub Releases
+## Publishing to GitHub Releases
 
-Hellen Suite utiliza el repositorio público [barbosa89/hellen-suite](https://github.com/barbosa89/hellen-suite) como proveedor de publicación y actualizaciones.
+Hellen Suite uses the public [barbosa89/hellen-suite](https://github.com/barbosa89/hellen-suite) repository as its publishing and update provider.
 
-### Configuración local
+### Local configuration
 
-Añadir estas variables al `.env` local:
+Add these variables to the local `.env` file:
 
 ```dotenv
 NATIVEPHP_APP_VERSION=1.0.0
@@ -130,58 +154,88 @@ NATIVEPHP_UPDATER_PROVIDER=github
 GITHUB_OWNER=barbosa89
 GITHUB_REPO=hellen-suite
 GITHUB_PRIVATE=false
-GITHUB_TOKEN=github_pat_REEMPLAZAR_CON_EL_TOKEN_REAL
+GITHUB_TOKEN=github_pat_REPLACE_WITH_THE_REAL_TOKEN
 GITHUB_V_PREFIXED_TAG_NAME=true
 GITHUB_CHANNEL=latest
 GITHUB_RELEASE_TYPE=draft
 ```
 
-El `.env` está excluido de Git. El token real nunca debe añadirse a `.env.example`, `config/nativephp.php`, el README ni otro archivo versionado. NativePHP elimina las variables `GITHUB_*` del `.env` incluido en el paquete final.
+The `.env` file is excluded from Git. Never add the real token to `.env.example`, `config/nativephp.php`, this README, or any other versioned file. NativePHP removes `GITHUB_*` variables from the `.env` file included in the final application bundle.
 
-Como el repositorio es público, `GITHUB_AUTOUPDATE_TOKEN` no debe definirse. Las aplicaciones instaladas pueden consultar las releases públicas sin autenticación; `GITHUB_TOKEN` solo autoriza la subida de artefactos durante la publicación.
+Because the repository is public, do not define `GITHUB_AUTOUPDATE_TOKEN`. Installed applications can access public releases without authentication; `GITHUB_TOKEN` only authorizes artifact uploads during publication.
 
-### Obtener `GITHUB_TOKEN`
+### Obtaining `GITHUB_TOKEN`
 
-Crear un [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) con esta configuración:
+Create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) with the following configuration:
 
-| Campo | Valor |
+| Field | Value |
 | --- | --- |
 | Token name | `Hellen Suite NativePHP Publisher` |
 | Resource owner | `barbosa89` |
 | Repository access | `Only select repositories` |
 | Selected repositories | `hellen-suite` |
 | Contents | `Read and write` |
-| Metadata | `Read-only`, asignado automáticamente |
+| Metadata | `Read-only`, assigned automatically |
 
-Elegir una fecha de expiración, generar el token y copiarlo inmediatamente; GitHub solo lo muestra una vez. Guardarlo como `GITHUB_TOKEN` en el `.env` local o como secreto de CI.
+Choose an expiration date, generate the token, and copy it immediately; GitHub only displays it once. Store it as `GITHUB_TOKEN` in the local `.env` file or as a CI secret.
 
-Después de cambiar las variables, limpiar la configuración cacheada:
+Clear cached configuration after changing these variables:
 
 ```bash
 php artisan config:clear
 ```
 
-### Publicar una versión
+### Publishing a release
 
-1. Incrementar `NATIVEPHP_APP_VERSION`; por ejemplo, de `1.0.0` a `1.1.0`.
-2. Ejecutar las pruebas, compilar el frontend y probar `php artisan native:build`.
-3. Crear una release en borrador en GitHub.
-4. Usar la versión con prefijo `v` como tag; para `1.1.0`, crear `v1.1.0`.
-5. Publicar los artefactos de cada plataforma con `native:publish`.
-6. Verificar los artefactos adjuntos y hacer pública la release.
-7. Validar la actualización desde una instalación de la versión anterior.
+1. Increment `NATIVEPHP_APP_VERSION`; for example, from `1.0.0` to `1.1.0`.
+2. Run the tests, build the frontend, and test `php artisan native:build`.
+3. Create a draft release on GitHub.
+4. If use the `v`-prefixed version as its tag; for version `1.1.0`, create `v1.1.0`.
+5. Publish the artifacts for each platform with `native:publish`.
+6. Verify the attached artifacts and publish the release.
+7. Validate the update from an installation of the previous version.
 
 ```bash
 php artisan native:publish
 
-# O indicando el sistema operativo objetivo
+# Or specify the target operating system
 php artisan native:publish mac
 php artisan native:publish win
 php artisan native:publish linux
 ```
 
-Mientras la release permanezca en borrador, repetir `native:publish` actualiza sus artefactos. Una release borrador no está disponible para los usuarios; debe publicarse después de verificarla.
+Running `native:publish` again while the release remains a draft updates its artifacts. Draft releases are unavailable to users and must be published after verification.
 
-## Documentación de releases
+### Troubleshooting repository detection
 
-La guía completa sobre firma, build, publicación, actualizaciones, eventos del updater y migraciones está en [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md).
+NativePHP Desktop may fail during `native:publish` with this message even when `GITHUB_OWNER` and `GITHUB_REPO` are correctly defined:
+
+```text
+Cannot detect repository by .git/config. Please specify "repository" in the package.json.
+```
+
+This is a [known NativePHP Desktop issue](https://github.com/NativePHP/desktop/issues/102). Laravel reads `NATIVEPHP_UPDATER_ENABLED=true` from `.env`, but NativePHP does not pass that value to the Electron Builder process. Electron Builder consequently receives no `publish` configuration and tries to infer the repository from `.git/config` inside `vendor/nativephp/desktop/resources/electron`, where no Git repository exists.
+
+Clear the Laravel configuration cache and provide the variable directly to the publishing process:
+
+```bash
+php artisan config:clear
+
+# Current platform and architecture
+NATIVEPHP_UPDATER_ENABLED=true php artisan native:publish
+
+# Windows x64
+NATIVEPHP_UPDATER_ENABLED=true php artisan native:publish win x64
+```
+
+Do not fix this by adding `repository` to `vendor/nativephp/desktop/resources/electron/package.json`. Files inside `vendor` are dependency internals and any local change will be lost on the next Composer installation or update.
+
+The upstream fix is for NativePHP's `BuildCommand::getEnvironmentVariables()` to pass the effective updater state to Electron Builder:
+
+```php
+'NATIVEPHP_UPDATER_ENABLED' => config('nativephp.updater.enabled') ? 'true' : 'false',
+```
+
+## Release Documentation
+
+See [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md) for the complete guide to signing, building, publishing, automatic updates, updater events, and migrations.
