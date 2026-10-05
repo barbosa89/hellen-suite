@@ -20,6 +20,7 @@ class CashMovementTest extends TestCase
     public function it_records_manual_entries_and_withdrawals(): void
     {
         $hotel = Hotel::factory()->create();
+        $this->openShift($hotel, '100.00');
 
         $this->post(route('hotels.cash.store', $hotel), [
             'type' => CashMovementType::ManualEntry->value,
@@ -41,7 +42,7 @@ class CashMovementTest extends TestCase
     public function withdrawal_cannot_exceed_available_cash(): void
     {
         $hotel = Hotel::factory()->create();
-        CashMovement::factory()->for($hotel)->create(['amount_minor' => 10000]);
+        $this->openShift($hotel, '100.00');
 
         $this->post(route('hotels.cash.store', $hotel), [
             'type' => CashMovementType::Withdrawal->value,
@@ -49,13 +50,14 @@ class CashMovementTest extends TestCase
             'comment' => 'Too much',
         ])->assertSessionHasErrors('amount');
 
-        $this->assertSame(1, $hotel->cashMovements()->count());
+        $this->assertSame(0, $hotel->cashMovements()->count());
     }
 
     #[Test]
     public function withdrawal_ignores_cash_recorded_in_another_currency(): void
     {
         $hotel = Hotel::factory()->create();
+        $this->openShift($hotel, '0.00');
         CashMovement::factory()->for($hotel)->create([
             'amount_minor' => 10000,
             'currency' => 'USD',
@@ -68,5 +70,12 @@ class CashMovementTest extends TestCase
         ])->assertSessionHasErrors('amount');
 
         $this->assertSame(1, $hotel->cashMovements()->count());
+    }
+
+    private function openShift(Hotel $hotel, string $amount): void
+    {
+        $this->post(route('hotels.cash.shifts.store', $hotel), [
+            'opening_amount' => $amount,
+        ])->assertSessionHasNoErrors();
     }
 }

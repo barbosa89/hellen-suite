@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Actions\Cash\GetOpenCashShift;
 use App\Actions\Financial\ConvertAmountToMinor;
 use App\Actions\Stays\SummarizeStayFolio;
 use App\Constants\CashMovementDirection;
@@ -22,6 +23,7 @@ final class RecordPayment
     public function __construct(
         private ConvertAmountToMinor $convertAmountToMinor,
         private SummarizeStayFolio $summarizeStayFolio,
+        private GetOpenCashShift $getOpenCashShift,
     ) {}
 
     public function execute(StayFolio $folio, string $amount, PaymentMethod $method, null|string $comment, null|string $supportPath, null|int $userId): Payment
@@ -29,6 +31,7 @@ final class RecordPayment
         return DB::transaction(function () use ($folio, $amount, $method, $comment, $supportPath, $userId): Payment {
             $folio = StayFolio::query()->with('stay')->lockForUpdate()->findOrFail($folio->id);
             $hotel = Hotel::query()->lockForUpdate()->findOrFail($folio->hotel_id);
+            $shift = $this->getOpenCashShift->execute($hotel, lock: true);
 
             if ($folio->closed_at !== null) {
                 throw ValidationException::withMessages(['payment' => trans('payments.validation.folio_closed')]);
@@ -52,6 +55,7 @@ final class RecordPayment
                 'paid_at' => now(),
                 'idempotency_key' => (string) Str::uuid(),
                 'recorded_by_user_id' => $userId,
+                'cash_shift_id' => $shift->id,
             ]);
 
             $payment->voucher()->create([
@@ -70,6 +74,7 @@ final class RecordPayment
                     'idempotency_key' => (string) Str::uuid(),
                     'payment_id' => $payment->id,
                     'recorded_by_user_id' => $userId,
+                    'cash_shift_id' => $shift->id,
                 ]);
             }
 
