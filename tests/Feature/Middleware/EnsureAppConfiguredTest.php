@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Feature\Middleware;
 
 use App\Settings\GeneralSettings;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EnsureAppConfiguredTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_redirects_web_routes_when_a_required_setting_is_missing(): void
     {

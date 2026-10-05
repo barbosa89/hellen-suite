@@ -30,7 +30,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['type', 'direction', 'amount_minor', 'currency', 'comment', 'occurred_at', 'idempotency_key', 'payment_id', 'recorded_by_user_id'])]
+#[Fillable(['type', 'direction', 'amount_minor', 'currency', 'comment', 'occurred_at', 'idempotency_key', 'payment_id', 'cash_shift_id', 'recorded_by_user_id'])]
 class CashMovement extends Model
 {
     /** @use HasFactory<CashMovementFactory> */
@@ -46,6 +46,11 @@ class CashMovement extends Model
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function cashShift(): BelongsTo
+    {
+        return $this->belongsTo(CashShift::class);
     }
 
     protected function casts(): array

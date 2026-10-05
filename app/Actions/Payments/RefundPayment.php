@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Actions\Cash\GetOpenCashShift;
 use App\Actions\Financial\ConvertAmountToMinor;
 use App\Constants\CashMovementDirection;
 use App\Constants\CashMovementType;
@@ -17,13 +18,17 @@ use Illuminate\Validation\ValidationException;
 
 final class RefundPayment
 {
-    public function __construct(private ConvertAmountToMinor $convertAmountToMinor) {}
+    public function __construct(
+        private ConvertAmountToMinor $convertAmountToMinor,
+        private GetOpenCashShift $getOpenCashShift,
+    ) {}
 
     public function execute(Payment $payment, string $amount, string $reason, null|int $userId): Payment
     {
         return DB::transaction(function () use ($payment, $amount, $reason, $userId): Payment {
             $payment = Payment::query()->with('refunds')->lockForUpdate()->findOrFail($payment->id);
             $folio = StayFolio::query()->with('hotel')->lockForUpdate()->findOrFail($payment->stay_folio_id);
+            $shift = $this->getOpenCashShift->execute($folio->hotel, lock: true);
 
             if ($folio->closed_at !== null) {
                 throw ValidationException::withMessages(['payment' => trans('payments.validation.folio_closed')]);
@@ -37,12 +42,16 @@ final class RefundPayment
             }
 
             if ($payment->method === PaymentMethod::Cash) {
-                $cashBalanceMinor = (int) $folio->hotel->cashMovements()
+                $openingMinor = (int) $shift->reconciliations()
+                    ->where('payment_method', PaymentMethod::Cash)
+                    ->where('currency', $payment->currency)
+                    ->value('opening_minor');
+                $activityMinor = (int) $shift->cashMovements()
                     ->where('currency', $payment->currency)
                     ->selectRaw("COALESCE(SUM(CASE WHEN direction = 'in' THEN amount_minor ELSE -amount_minor END), 0) AS balance")
                     ->value('balance');
 
-                if ($amountMinor > $cashBalanceMinor) {
+                if ($amountMinor > $openingMinor + $activityMinor) {
                     throw ValidationException::withMessages(['amount' => trans('cash.validation.insufficient_balance')]);
                 }
             }
@@ -57,6 +66,7 @@ final class RefundPayment
                 'idempotency_key' => (string) Str::uuid(),
                 'parent_payment_id' => $payment->id,
                 'recorded_by_user_id' => $userId,
+                'cash_shift_id' => $shift->id,
             ]);
 
             if ($payment->method === PaymentMethod::Cash) {
@@ -70,6 +80,7 @@ final class RefundPayment
                     'idempotency_key' => (string) Str::uuid(),
                     'payment_id' => $refund->id,
                     'recorded_by_user_id' => $userId,
+                    'cash_shift_id' => $shift->id,
                 ]);
             }
 

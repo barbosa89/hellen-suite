@@ -149,6 +149,12 @@ class PaymentVoucherTest extends TestCase
     private function folio(null|Hotel $hotel = null): array
     {
         $hotel ??= Hotel::factory()->create(['image' => null]);
+
+        if (! $hotel->cashShifts()->whereNull('closed_at')->exists()) {
+            $this->post(route('hotels.cash.shifts.store', $hotel), ['opening_amount' => '0.00'])
+                ->assertSessionHasNoErrors();
+        }
+
         $guest = Guest::factory()->for($hotel)->create();
         $stay = Stay::factory()->for($hotel)->create([
             'responsible_guest_id' => $guest->id,

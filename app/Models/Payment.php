@@ -34,7 +34,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['type', 'method', 'amount_minor', 'currency', 'comment', 'support_path', 'paid_at', 'idempotency_key', 'parent_payment_id', 'recorded_by_user_id'])]
+#[Fillable(['type', 'method', 'amount_minor', 'currency', 'comment', 'support_path', 'paid_at', 'idempotency_key', 'parent_payment_id', 'cash_shift_id', 'recorded_by_user_id'])]
 class Payment extends Model
 {
     /** @use HasFactory<PaymentFactory> */
@@ -68,6 +68,11 @@ class Payment extends Model
     public function voucher(): HasOne
     {
         return $this->hasOne(PaymentVoucher::class);
+    }
+
+    public function cashShift(): BelongsTo
+    {
+        return $this->belongsTo(CashShift::class);
     }
 
     protected function supportPath(): Attribute

@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CancelReservationController;
 use App\Http\Controllers\CashController;
+use App\Http\Controllers\CashShiftController;
+use App\Http\Controllers\CashShiftReportController;
 use App\Http\Controllers\CheckInReservationController;
 use App\Http\Controllers\CheckOutRoomOccupancyController;
 use App\Http\Controllers\CheckOutStayController;
+use App\Http\Controllers\CloseCashShiftController;
 use App\Http\Controllers\ConfirmReservationController;
 use App\Http\Controllers\FolioAdjustmentController;
 use App\Http\Controllers\FolioChargeController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GuestLookupController;
+use App\Http\Controllers\HandOverCashShiftController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelImageController;
 use App\Http\Controllers\HotelManagementController;
@@ -136,6 +140,11 @@ Route::get('/hotels/{hotel}/stays/{stay}/payments/{payment}/voucher/{format}', P
 
 Route::get('/hotels/{hotel}/cash', [CashController::class, 'index'])->name('hotels.cash.index');
 Route::post('/hotels/{hotel}/cash', [CashController::class, 'store'])->name('hotels.cash.store');
+Route::post('/hotels/{hotel}/cash/shifts', [CashShiftController::class, 'store'])->name('hotels.cash.shifts.store');
+Route::get('/hotels/{hotel}/cash/shifts/{cashShift}', [CashShiftController::class, 'show'])->name('hotels.cash.shifts.show');
+Route::post('/hotels/{hotel}/cash/shifts/{cashShift}/close', CloseCashShiftController::class)->name('hotels.cash.shifts.close');
+Route::post('/hotels/{hotel}/cash/shifts/{cashShift}/handover', HandOverCashShiftController::class)->name('hotels.cash.shifts.handover');
+Route::get('/hotels/{hotel}/cash/shifts/{cashShift}/report/{format}', CashShiftReportController::class)->name('hotels.cash.shifts.report');
 
 Route::patch('/hotels/{hotel}/rooms/{room}/toggle', [RoomController::class, 'toggle'])
     ->scopeBindings()

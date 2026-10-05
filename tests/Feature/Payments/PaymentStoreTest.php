@@ -123,6 +123,7 @@ class PaymentStoreTest extends TestCase
             'comment' => 'Cash removed',
             'occurred_at' => now(),
             'idempotency_key' => fake()->uuid(),
+            'cash_shift_id' => $hotel->cashShifts()->whereNull('closed_at')->value('id'),
         ]);
 
         $this->post(route('hotels.stays.payments.refund', [$hotel, $stay, $payment]), [
@@ -137,7 +138,11 @@ class PaymentStoreTest extends TestCase
     private function folio(): array
     {
         $hotel = Hotel::factory()->create();
-        $guest = Guest::factory()->for($hotel)->create();
+
+        $this->post(route('hotels.cash.shifts.store', $hotel), ['opening_amount' => '0.00'])
+            ->assertSessionHasNoErrors();
+
+            $guest = Guest::factory()->for($hotel)->create();
         $stay = Stay::factory()->for($hotel)->create(['responsible_guest_id' => $guest->id]);
         $roomType = RoomType::factory()->for($hotel)->create();
         $room = Room::factory()->for($hotel)->for($roomType)->create();

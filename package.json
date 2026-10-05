@@ -17,6 +17,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vue/eslint-config-prettier": "^9.0.0",
+        "chart.js": "^4.5.1",
         "chokidar": "^5.0.0",
         "concurrently": "^10.0.3",
         "eslint": "^8.57.0",
