@@ -10,6 +10,8 @@ class GeneralSettings extends Settings
 {
     public null|string $currency = null;
 
+    public null|string $language = null;
+
     public static function group(): string
     {
         return 'general';
