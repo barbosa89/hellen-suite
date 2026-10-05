@@ -15,6 +15,7 @@ abstract class TestCase extends BaseTestCase
 
         GeneralSettings::fake([
             'currency' => 'COP',
+            'language' => config('app.locale'),
         ]);
     }
 }
