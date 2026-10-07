@@ -41,6 +41,21 @@ return [
         'image' => [
             'label' => 'Image',
         ],
+        'country_code' => [
+            'label' => 'Country',
+        ],
+        'timezone' => [
+            'label' => 'Time zone',
+        ],
+        'establishment_code' => [
+            'label' => 'Establishment code',
+        ],
+        'credential' => [
+            'label' => 'Credential',
+        ],
+        'compliance_enabled' => [
+            'label' => 'Enable compliance reporting',
+        ],
     ],
 
     'pages' => [
@@ -83,6 +98,25 @@ return [
             'title' => 'Property image',
             'description' => 'Use a recognizable photo to find the hotel quickly in the directory.',
         ],
+        'compliance' => [
+            'title' => 'Jurisdiction and compliance',
+            'description' => 'The hotel country determines which legal reports apply. Currency does not define jurisdiction.',
+            'country_hint' => 'Used to activate the country compliance pack, e.g. TRA in Colombia.',
+            'timezone_hint' => 'Used to date legal reports in local time.',
+            'co_tra_title' => 'Accommodation Registration Card (Colombia)',
+            'co_tra_description' => 'Reports primary guests and companions to MinCIT. Requires an active RNT and PMS token.',
+            'co_tra_token_hint' => 'Generated in the MinCIT portal and sent to the email registered with the RNT. Leave blank to keep the current one.',
+            'co_tra_configured' => 'Token on file.',
+            'co_tra_not_configured' => 'No token on file.',
+            'generic_title' => 'Guest registration',
+            'generic_description' => 'No specific legal pack for this country. The internal guest registry is used.',
+        ],
+    ],
+
+    'validation' => [
+        'compliance_requires_co' => 'TRA reporting only applies to hotels in Colombia.',
+        'establishment_code_required' => 'The establishment code is required when compliance is enabled.',
+        'credential_required' => 'The credential is required when compliance is enabled.',
     ],
 
     'management' => [

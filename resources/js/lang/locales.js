@@ -277,6 +277,21 @@ export default {
                 image: {
                     label: 'Image',
                 },
+                country_code: {
+                    label: 'Country',
+                },
+                timezone: {
+                    label: 'Time zone',
+                },
+                establishment_code: {
+                    label: 'Establishment code',
+                },
+                credential: {
+                    label: 'Credential',
+                },
+                compliance_enabled: {
+                    label: 'Enable compliance reporting',
+                },
             },
             pages: {
                 index: {
@@ -325,6 +340,32 @@ export default {
                     description:
                         'Use a recognizable photo to find the hotel quickly in the directory.',
                 },
+                compliance: {
+                    title: 'Jurisdiction and compliance',
+                    description:
+                        'The hotel country determines which legal reports apply. Currency does not define jurisdiction.',
+                    country_hint:
+                        'Used to activate the country compliance pack, e.g. TRA in Colombia.',
+                    timezone_hint: 'Used to date legal reports in local time.',
+                    co_tra_title: 'Accommodation Registration Card (Colombia)',
+                    co_tra_description:
+                        'Reports primary guests and companions to MinCIT. Requires an active RNT and PMS token.',
+                    co_tra_token_hint:
+                        'Generated in the MinCIT portal and sent to the email registered with the RNT. Leave blank to keep the current one.',
+                    co_tra_configured: 'Token on file.',
+                    co_tra_not_configured: 'No token on file.',
+                    generic_title: 'Guest registration',
+                    generic_description:
+                        'No specific legal pack for this country. The internal guest registry is used.',
+                },
+            },
+            validation: {
+                compliance_requires_co:
+                    'TRA reporting only applies to hotels in Colombia.',
+                establishment_code_required:
+                    'The establishment code is required when compliance is enabled.',
+                credential_required:
+                    'The credential is required when compliance is enabled.',
             },
             management: {
                 heading: 'Hotel overview',
@@ -1616,6 +1657,21 @@ export default {
                 image: {
                     label: 'Imagen',
                 },
+                country_code: {
+                    label: 'País',
+                },
+                timezone: {
+                    label: 'Zona horaria',
+                },
+                establishment_code: {
+                    label: 'Código del establecimiento',
+                },
+                credential: {
+                    label: 'Credencial',
+                },
+                compliance_enabled: {
+                    label: 'Habilitar reporte de cumplimiento',
+                },
             },
             pages: {
                 index: {
@@ -1665,6 +1721,34 @@ export default {
                     description:
                         'Usa una fotografía reconocible para encontrar el hotel rápidamente en el directorio.',
                 },
+                compliance: {
+                    title: 'Jurisdicción y cumplimiento',
+                    description:
+                        'El país del hotel determina qué reportes legales aplican. La moneda no define la jurisdicción.',
+                    country_hint:
+                        'Se usa para activar el paquete de cumplimiento del país, por ejemplo TRA en Colombia.',
+                    timezone_hint:
+                        'Se usa para fechar los reportes legales en hora local.',
+                    co_tra_title:
+                        'Tarjeta de Registro de Alojamiento (Colombia)',
+                    co_tra_description:
+                        'Reporta huéspedes principales y acompañantes al MinCIT. Requiere RNT activo y token del PMS.',
+                    co_tra_token_hint:
+                        'Se genera en el portal del MinCIT y llega al correo registrado en el RNT. Déjalo en blanco para conservar el actual.',
+                    co_tra_configured: 'Token registrado.',
+                    co_tra_not_configured: 'Sin token registrado.',
+                    generic_title: 'Registro de huéspedes',
+                    generic_description:
+                        'Sin paquete legal específico para este país. Se usa el registro interno de huéspedes.',
+                },
+            },
+            validation: {
+                compliance_requires_co:
+                    'El reporte TRA solo aplica para hoteles en Colombia.',
+                establishment_code_required:
+                    'El código del establecimiento es obligatorio cuando el cumplimiento está habilitado.',
+                credential_required:
+                    'La credencial es obligatoria cuando el cumplimiento está habilitado.',
             },
             management: {
                 heading: 'Resumen del hotel',

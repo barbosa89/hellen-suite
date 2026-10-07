@@ -23,7 +23,11 @@ class CreateHotel
             $this->data['image'] = $this->storeImage($this->data['image']);
         }
 
-        return Hotel::create($this->data);
+        $hotel = Hotel::create(Arr::except($this->data, ['establishment_code', 'credential', 'compliance_enabled']));
+
+        new SyncHotelComplianceProfile()->execute($hotel, Arr::only($this->data, ['establishment_code', 'credential', 'compliance_enabled']));
+
+        return $hotel;
     }
 
     protected function storeImage(UploadedFile $upload): string

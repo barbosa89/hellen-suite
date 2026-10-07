@@ -1,5 +1,10 @@
 <script setup>
 import ActionLink from '@/Components/ActionLink.vue';
+import ComplianceSettings from '@/Components/Compliance/ComplianceSettings.vue';
+import {
+    COMPLIANCE_COUNTRIES,
+    COMPLIANCE_TIMEZONES,
+} from '@/Components/Compliance/strategies.js';
 import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -34,7 +39,21 @@ const form = useForm({
     mobile: props.hotel?.mobile ?? '',
     email: props.hotel?.email ?? '',
     image: null,
+    country_code: props.hotel?.country_code ?? '',
+    timezone: props.hotel?.timezone ?? '',
+    establishment_code:
+        props.hotel?.current_compliance_profile?.establishment_code ?? '',
+    credential: '',
+    compliance_enabled:
+        props.hotel?.current_compliance_profile?.enabled ?? false,
 });
+
+const complianceConfigured = computed(
+    () => props.hotel?.current_compliance_profile?.configured ?? false,
+);
+
+const selectClasses =
+    'min-h-11 w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm transition-[border-color,box-shadow] duration-150 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-hidden dark:bg-neutral-950 dark:text-neutral-100';
 
 const cancelHref = computed(() =>
     isEditing.value
@@ -237,6 +256,112 @@ function submit() {
                             <InputError
                                 id="email-error"
                                 :message="form.errors.email"
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                <section class="p-5 sm:p-7 lg:p-8">
+                    <div class="mb-6">
+                        <h2
+                            class="text-lg font-semibold text-neutral-950 dark:text-white"
+                        >
+                            {{ t('hotels.form.compliance.title') }}
+                        </h2>
+                        <p
+                            class="mt-1 max-w-2xl text-sm leading-6 text-neutral-600 dark:text-neutral-400"
+                        >
+                            {{ t('hotels.form.compliance.description') }}
+                        </p>
+                    </div>
+
+                    <div class="grid gap-5 md:grid-cols-2">
+                        <div class="grid content-start gap-2">
+                            <InputLabel
+                                for="country_code"
+                                :value="t('hotels.fields.country_code.label')"
+                            />
+                            <select
+                                id="country_code"
+                                v-model="form.country_code"
+                                name="country_code"
+                                :class="selectClasses"
+                                :aria-invalid="
+                                    Boolean(form.errors.country_code)
+                                "
+                                aria-describedby="country-code-error country-code-help"
+                            >
+                                <option value="">
+                                    {{ t('app.not_provided') }}
+                                </option>
+                                <option
+                                    v-for="country in COMPLIANCE_COUNTRIES"
+                                    :key="country.code"
+                                    :value="country.code"
+                                >
+                                    {{ country.code }} — {{ country.name }}
+                                </option>
+                            </select>
+                            <p
+                                id="country-code-help"
+                                class="text-xs leading-5 text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ t('hotels.form.compliance.country_hint') }}
+                            </p>
+                            <InputError
+                                id="country-code-error"
+                                :message="form.errors.country_code"
+                            />
+                        </div>
+
+                        <div class="grid content-start gap-2">
+                            <InputLabel
+                                for="timezone"
+                                :value="t('hotels.fields.timezone.label')"
+                            />
+                            <select
+                                id="timezone"
+                                v-model="form.timezone"
+                                name="timezone"
+                                :class="selectClasses"
+                                :aria-invalid="Boolean(form.errors.timezone)"
+                                aria-describedby="timezone-error timezone-help"
+                            >
+                                <option value="">
+                                    {{ t('app.not_provided') }}
+                                </option>
+                                <option
+                                    v-for="tz in COMPLIANCE_TIMEZONES"
+                                    :key="tz"
+                                    :value="tz"
+                                >
+                                    {{ tz }}
+                                </option>
+                            </select>
+                            <p
+                                id="timezone-help"
+                                class="text-xs leading-5 text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{ t('hotels.form.compliance.timezone_hint') }}
+                            </p>
+                            <InputError
+                                id="timezone-error"
+                                :message="form.errors.timezone"
+                            />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <ComplianceSettings
+                                v-model:compliance-enabled="
+                                    form.compliance_enabled
+                                "
+                                v-model:establishment-code="
+                                    form.establishment_code
+                                "
+                                v-model:credential="form.credential"
+                                :country-code="form.country_code"
+                                :errors="form.errors"
+                                :configured="complianceConfigured"
                             />
                         </div>
                     </div>

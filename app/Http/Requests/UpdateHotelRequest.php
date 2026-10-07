@@ -8,20 +8,23 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Validator;
 
 class UpdateHotelRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    use Concerns\HasHotelComplianceRules;
+
     public function authorize(): bool
     {
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->normalizeCompliance();
+    }
+
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -38,6 +41,12 @@ class UpdateHotelRequest extends FormRequest
                 File::image()->max('1mb'),
                 'mimes:jpg,jpeg,png,webp',
             ],
+            ...$this->complianceRules($this->hotel),
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $this->validateCompliance($validator, $this->route('hotel'));
     }
 }
