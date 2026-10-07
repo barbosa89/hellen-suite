@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             IdentificationTypeSeeder::class,
+            JurisdictionSubdivisionSeeder::class,
         ]);
 
         if (app()->environment('local')) {
