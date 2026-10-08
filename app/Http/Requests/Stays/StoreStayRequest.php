@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Stays;
 
+use App\Http\Requests\Concerns\HasTraGuestRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -15,6 +16,8 @@ use function in_array;
 
 class StoreStayRequest extends FormRequest
 {
+    use HasTraGuestRules;
+
     public function authorize(): bool
     {
         return true;
@@ -37,6 +40,8 @@ class StoreStayRequest extends FormRequest
             'guests.*.identification_number' => ['required_without:guests.*.guest_id', 'nullable', 'string', 'max:50'],
             'guests.*.mobile' => ['nullable', 'string', 'max:30'],
             'guests.*.email' => ['nullable', 'email', 'max:255'],
+            ...$this->guestIdentityRules('guests.*'),
+            ...$this->travelSnapshotRules('guests.*'),
             'room_occupancies' => ['required', 'array', 'min:1'],
             'room_occupancies.*.room_id' => [
                 'required',
@@ -47,6 +52,7 @@ class StoreStayRequest extends FormRequest
             'room_occupancies.*.nightly_rate' => ['required', 'decimal:0,2', 'gt:0', 'max:9999999999.99'],
             'room_occupancies.*.guest_keys' => ['required', 'array', 'min:1'],
             'room_occupancies.*.guest_keys.*' => ['required', 'string', 'max:100'],
+            'room_occupancies.*.principal_guest_key' => ['nullable', 'string', 'max:100'],
         ];
     }
 
@@ -74,6 +80,8 @@ class StoreStayRequest extends FormRequest
             }
 
             $this->validateEachGuestAssignedOnce($validator, $guestKeys, $assignedGuestKeys);
+            $this->validateTraGuests($validator, $this->route('hotel'), $this->input('guests', []));
+            $this->validateTraPrincipals($validator, $this->route('hotel'), $this->input('room_occupancies', []), $guestKeys, 'room_occupancies');
         }];
     }
 

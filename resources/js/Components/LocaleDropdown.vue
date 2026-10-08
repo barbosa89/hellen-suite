@@ -33,7 +33,7 @@ function changeLocale(code) {
         <template #trigger>
             <button
                 type="button"
-                class="focus:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-neutral-600 transition duration-150 ease-in-out hover:bg-neutral-100 hover:text-neutral-900 focus:ring-2 focus:ring-offset-2 focus:outline-hidden motion-reduce:transition-none sm:h-9 sm:w-9 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:focus:ring-offset-neutral-900"
+                class="focus-visible:ring-primary-500 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-950 focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none sm:h-9 sm:w-9 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-white"
                 :aria-label="t('app.language')"
             >
                 <LanguageIcon class="h-5 w-5" />

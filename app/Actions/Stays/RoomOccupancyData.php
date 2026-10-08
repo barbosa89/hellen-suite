@@ -11,6 +11,7 @@ final readonly class RoomOccupancyData
         public int $roomId,
         public string $nightlyRate,
         public array $guestKeys,
+        public null|string $principalGuestKey,
     ) {}
 
     /** @param array<string, mixed> $data */
@@ -20,6 +21,7 @@ final readonly class RoomOccupancyData
             roomId: (int) $data['room_id'],
             nightlyRate: $data['nightly_rate'],
             guestKeys: $data['guest_keys'],
+            principalGuestKey: $data['principal_guest_key'] ?? null,
         );
     }
 }

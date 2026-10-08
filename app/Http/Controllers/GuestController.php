@@ -9,6 +9,7 @@ use App\Http\Requests\Guests\UpdateGuestRequest;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\IdentificationType;
+use App\Support\Countries;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -48,6 +49,7 @@ class GuestController extends Controller
         return Inertia::render('Hotels/Guests/Create', [
             'hotel' => $hotel,
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
+            'countries' => Countries::alpha3(),
         ]);
     }
 
@@ -81,6 +83,7 @@ class GuestController extends Controller
             'hotel' => $hotel,
             'guest' => $guest,
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
+            'countries' => Countries::alpha3(),
         ]);
     }
 

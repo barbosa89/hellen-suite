@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Reservations;
 
+use App\Http\Requests\Concerns\HasTraGuestRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -15,6 +16,8 @@ use function in_array;
 
 class UpsertReservationRequest extends FormRequest
 {
+    use HasTraGuestRules;
+
     public function authorize(): bool
     {
         return true;
@@ -36,11 +39,14 @@ class UpsertReservationRequest extends FormRequest
             'guests.*.identification_number' => ['required_without:guests.*.guest_id', 'nullable', 'string', 'max:50'],
             'guests.*.mobile' => ['nullable', 'string', 'max:30'],
             'guests.*.email' => ['nullable', 'email', 'max:255'],
+            ...$this->guestIdentityRules('guests.*'),
+            ...$this->travelSnapshotRules('guests.*'),
             'reserved_rooms' => ['required', 'array', 'min:1'],
             'reserved_rooms.*.room_id' => ['required', 'integer', 'distinct', Rule::exists('rooms', 'id')->where('hotel_id', $this->route('hotel')->getKey())],
             'reserved_rooms.*.nightly_rate' => ['required', 'decimal:0,2', 'gt:0', 'max:9999999999.99'],
             'reserved_rooms.*.guest_keys' => ['required', 'array', 'min:1'],
             'reserved_rooms.*.guest_keys.*' => ['required', 'string', 'max:100'],
+            'reserved_rooms.*.principal_guest_key' => ['nullable', 'string', 'max:100'],
         ];
     }
 
@@ -68,6 +74,8 @@ class UpsertReservationRequest extends FormRequest
             }
 
             $this->validateEachGuestAssignedOnce($validator, $guestKeys, $assignedGuestKeys);
+            $this->validateTraGuests($validator, $this->route('hotel'), $this->input('guests', []), 'guests', 'reservations.validation');
+            $this->validateTraPrincipals($validator, $this->route('hotel'), $this->input('reserved_rooms', []), $guestKeys, 'reserved_rooms', 'reservations.validation');
         }];
     }
 

@@ -497,7 +497,7 @@ function destroy() {
                                     {{ t('rooms.fields.availability.label') }}
                                 </p>
                                 <span
-                                    class="inline-flex w-fit items-center gap-1.5 rounded-md px-2 py-1 text-xs font-semibold"
+                                    class="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
                                     :class="availabilityBadgeClass(room)"
                                 >
                                     <CalendarDaysIcon

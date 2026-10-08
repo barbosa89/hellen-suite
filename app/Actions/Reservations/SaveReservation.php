@@ -72,6 +72,7 @@ final class SaveReservation
                 'role' => $key === $data->responsibleGuestKey
                     ? StayGuestRole::Responsible
                     : StayGuestRole::Companion,
+                ...$this->travelSnapshot($data, $key),
             ]);
         }
 
@@ -86,6 +87,9 @@ final class SaveReservation
 
             $reservedRoom = $reservation->reservedRooms()->create([
                 'room_id' => $room->id,
+                'principal_guest_id' => isset($reservationGuestsByKey[$roomData->principalGuestKey ?? ''])
+                    ? $reservationGuestsByKey[$roomData->principalGuestKey]->guest_id
+                    : null,
                 'nightly_rate' => $roomData->nightlyRate,
                 'planned_check_in_on' => $data->plannedCheckInOn,
                 'planned_check_out_on' => $data->plannedCheckOutOn,
@@ -116,6 +120,18 @@ final class SaveReservation
         }
     }
 
+    /** @return array<string, string|null> */
+    private function travelSnapshot(ReservationData $data, string $key): array
+    {
+        foreach ($data->guests as $guestData) {
+            if ($guestData->key === $key) {
+                return $guestData->travel->toAttributes();
+            }
+        }
+
+        return [];
+    }
+
     /** @return array<string, Guest> */
     private function resolveGuests(Hotel $hotel, ReservationData $data): array
     {
@@ -139,8 +155,14 @@ final class SaveReservation
                 $guest = $hotel->guests()->create([
                     'identification_type_id' => $guestData->identificationTypeId,
                     'first_name' => $guestData->firstName,
+                    'second_first_name' => $guestData->secondFirstName,
                     'last_name' => $guestData->lastName,
+                    'second_last_name' => $guestData->secondLastName,
                     'identification_number' => $guestData->identificationNumber,
+                    'birth_date' => $guestData->birthDate,
+                    'gender' => $guestData->gender,
+                    'nationality' => $guestData->nationality,
+                    'residence_country' => $guestData->travel->residenceCountry,
                     'mobile' => $guestData->mobile,
                     'email' => $guestData->email,
                 ]);

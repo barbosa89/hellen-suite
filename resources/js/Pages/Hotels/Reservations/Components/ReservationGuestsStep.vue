@@ -3,6 +3,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
 import GuestLookupField from '@/Pages/Hotels/Guests/Components/GuestLookupField.vue';
 import ReservationStepPanel from '@/Pages/Hotels/Reservations/Components/ReservationStepPanel.vue';
+import StayTravelFields from '@/Pages/Hotels/Stays/Components/StayTravelFields.vue';
 import { UserPlusIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useI18n } from 'vue-i18n';
 
@@ -11,6 +12,8 @@ defineProps({
     guests: { type: Array, required: true },
     responsibleGuestKey: { type: String, required: true },
     identificationTypes: { type: Array, required: true },
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
     errors: { type: Object, default: () => ({}) },
 });
 
@@ -73,11 +76,23 @@ const { t } = useI18n();
                 <GuestFields
                     :guest="entry"
                     :identification-types="identificationTypes"
+                    :countries="countries"
                     :errors="errors"
                     :prefix="`guests.${index}`"
                     :id-prefix="`reservation-${entry.key}`"
                     :disabled="Boolean(entry.guest_id)"
                     @update:guest="emit('update-guest', index, $event)"
+                />
+                <StayTravelFields
+                    class="mt-5"
+                    :entry="entry"
+                    :hotel-id="hotel.id"
+                    :countries="countries"
+                    :subdivisions="subdivisions"
+                    :errors="errors"
+                    :prefix="`guests.${index}`"
+                    :id-prefix="`reservation-travel-${entry.key}`"
+                    @update:entry="emit('update-guest', index, $event)"
                 />
             </article>
             <SecondaryButton

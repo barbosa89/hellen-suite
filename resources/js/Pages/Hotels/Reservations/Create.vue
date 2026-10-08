@@ -5,7 +5,13 @@ import ReservationForm from '@/Pages/Hotels/Reservations/Components/ReservationF
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 
-defineProps({ hotel: Object, identificationTypes: Array, currency: String });
+defineProps({
+    hotel: Object,
+    identificationTypes: Array,
+    currency: String,
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
+});
 const { t } = useI18n();
 </script>
 
@@ -22,6 +28,8 @@ const { t } = useI18n();
                     :hotel="hotel"
                     :identification-types="identificationTypes"
                     :currency="currency"
+                    :countries="countries"
+                    :subdivisions="subdivisions"
                 />
             </div>
         </div>

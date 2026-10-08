@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Stays;
 
 use App\Actions\Rooms\RoomAvailability;
+use App\Actions\Tra\QueueTraSubmissions;
 use App\Constants\StayGuestRole;
 use App\Constants\StayStatus;
 use App\Models\Guest;
@@ -27,6 +28,7 @@ final class CreateStay
         private RoomAvailability $roomAvailability,
         private CreateStayFolio $createStayFolio,
         private GeneralSettings $settings,
+        private QueueTraSubmissions $queueTraSubmissions,
     ) {}
 
     public function execute(Hotel $hotel, CreateStayData $data): Stay
@@ -59,10 +61,14 @@ final class CreateStay
                     'role' => $key === $data->responsibleGuestKey
                         ? StayGuestRole::Responsible
                         : StayGuestRole::Companion,
+                    'checked_in_at' => $checkedInAt,
+                    ...$this->travelSnapshot($data, $key),
                 ]);
             }
 
             $this->createRoomOccupancies($hotel, $stay, $data, $stayGuestsByKey, $checkedInAt);
+
+            $this->queueTraSubmissions->execute($hotel, $stay);
 
             return $stay;
         }));
@@ -82,6 +88,9 @@ final class CreateStay
 
             $occupancy = $stay->roomOccupancies()->create([
                 'room_id' => $room->id,
+                'principal_guest_id' => isset($stayGuestsByKey[$occupancyData->principalGuestKey ?? ''])
+                    ? $stayGuestsByKey[$occupancyData->principalGuestKey]->guest_id
+                    : null,
                 'nightly_rate' => $occupancyData->nightlyRate,
                 'checked_in_at' => $checkedInAt,
                 'expected_check_out_on' => $data->expectedCheckOutOn,
@@ -129,8 +138,14 @@ final class CreateStay
                 $guest = $hotel->guests()->create([
                     'identification_type_id' => $guestData->identificationTypeId,
                     'first_name' => $guestData->firstName,
+                    'second_first_name' => $guestData->secondFirstName,
                     'last_name' => $guestData->lastName,
+                    'second_last_name' => $guestData->secondLastName,
                     'identification_number' => $guestData->identificationNumber,
+                    'birth_date' => $guestData->birthDate,
+                    'gender' => $guestData->gender,
+                    'nationality' => $guestData->nationality,
+                    'residence_country' => $guestData->travel->residenceCountry,
                     'mobile' => $guestData->mobile,
                     'email' => $guestData->email,
                 ]);
@@ -140,6 +155,18 @@ final class CreateStay
         }
 
         return $guestsByKey;
+    }
+
+    /** @return array<string, string|null> */
+    private function travelSnapshot(CreateStayData $data, string $key): array
+    {
+        foreach ($data->guests as $guestData) {
+            if ($guestData->key === $key) {
+                return $guestData->travel->toAttributes();
+            }
+        }
+
+        return [];
     }
 
     private function availableRoom(Hotel $hotel, CarbonImmutable $expectedCheckOutOn, int $roomId, int $occupancyIndex): Room

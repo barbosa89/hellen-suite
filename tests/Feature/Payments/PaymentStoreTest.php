@@ -142,7 +142,7 @@ class PaymentStoreTest extends TestCase
         $this->post(route('hotels.cash.shifts.store', $hotel), ['opening_amount' => '0.00'])
             ->assertSessionHasNoErrors();
 
-            $guest = Guest::factory()->for($hotel)->create();
+        $guest = Guest::factory()->for($hotel)->create();
         $stay = Stay::factory()->for($hotel)->create(['responsible_guest_id' => $guest->id]);
         $roomType = RoomType::factory()->for($hotel)->create();
         $room = Room::factory()->for($hotel)->for($roomType)->create();

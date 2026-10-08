@@ -100,6 +100,12 @@ class Hotel extends Model
         return $this->hasMany(PaymentVoucher::class);
     }
 
+    /** @return HasMany<TraSubmission, $this> */
+    public function traSubmissions(): HasMany
+    {
+        return $this->hasMany(TraSubmission::class);
+    }
+
     /** @return HasMany<HotelComplianceProfile, $this> */
     public function complianceProfiles(): HasMany
     {

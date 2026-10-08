@@ -6,6 +6,7 @@ namespace App\Actions\Reservations;
 
 use App\Actions\Rooms\RoomAvailability;
 use App\Actions\Stays\CreateStayFolio;
+use App\Actions\Tra\QueueTraSubmissions;
 use App\Constants\ReservationEventType;
 use App\Constants\ReservationStatus;
 use App\Constants\StayStatus;
@@ -24,6 +25,7 @@ final class CheckInReservation
         private ReservationSnapshot $reservationSnapshot,
         private CreateStayFolio $createStayFolio,
         private GeneralSettings $settings,
+        private QueueTraSubmissions $queueTraSubmissions,
     ) {}
 
     public function execute(Hotel $hotel, Reservation $reservation): Stay
@@ -70,12 +72,25 @@ final class CheckInReservation
                 $stay->stayGuests()->create([
                     'guest_id' => $reservationGuest->guest_id,
                     'role' => $reservationGuest->role,
+                    'checked_in_at' => $checkedInAt,
+                    'residence_country' => $reservationGuest->residence_country,
+                    'residence_subdivision' => $reservationGuest->residence_subdivision,
+                    'residence_locality' => $reservationGuest->residence_locality,
+                    'origin_country' => $reservationGuest->origin_country,
+                    'origin_subdivision' => $reservationGuest->origin_subdivision,
+                    'origin_locality' => $reservationGuest->origin_locality,
+                    'destination_country' => $reservationGuest->destination_country,
+                    'destination_subdivision' => $reservationGuest->destination_subdivision,
+                    'destination_locality' => $reservationGuest->destination_locality,
+                    'travel_purpose' => $reservationGuest->travel_purpose,
+                    'transport_means' => $reservationGuest->transport_means,
                 ]);
             }
 
             foreach ($reservation->reservedRooms as $reservedRoom) {
                 $occupancy = $stay->roomOccupancies()->create([
                     'room_id' => $reservedRoom->room_id,
+                    'principal_guest_id' => $reservedRoom->principal_guest_id,
                     'nightly_rate' => $reservedRoom->nightly_rate,
                     'checked_in_at' => $checkedInAt,
                     'expected_check_out_on' => $reservation->planned_check_out_on,
@@ -99,6 +114,8 @@ final class CheckInReservation
                 'before_data' => $before,
                 'after_data' => $this->reservationSnapshot->execute($reservation->refresh()),
             ]);
+
+            $this->queueTraSubmissions->execute($hotel, $stay);
 
             return $stay;
         }));

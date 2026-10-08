@@ -9,11 +9,13 @@ use App\Actions\Stays\CreateStay;
 use App\Actions\Stays\CreateStayData;
 use App\Actions\Stays\SummarizeStayCosts;
 use App\Actions\Stays\SummarizeStayFolio;
+use App\Actions\Tra\DispatchTraSubmissions;
 use App\Http\Requests\Stays\StoreStayRequest;
 use App\Models\Hotel;
 use App\Models\IdentificationType;
 use App\Models\Stay;
 use App\Settings\GeneralSettings;
+use App\Support\Countries;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -50,12 +52,15 @@ class StayController extends Controller
             'rooms' => $rooms,
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
             'currency' => $settings->currency,
+            'countries' => Countries::alpha3(),
+            'subdivisions' => Countries::subdivisions($hotel->country_code ?? 'CO'),
         ]);
     }
 
-    public function store(StoreStayRequest $request, Hotel $hotel, CreateStay $createStay): RedirectResponse
+    public function store(StoreStayRequest $request, Hotel $hotel, CreateStay $createStay, DispatchTraSubmissions $dispatchTraSubmissions): RedirectResponse
     {
         $stay = $createStay->execute($hotel, CreateStayData::fromValidated($request->validated()));
+        $dispatchTraSubmissions->execute($stay);
 
         return redirect()->route('hotels.stays.show', [$hotel, $stay])
             ->with('success', trans('stays.messages.checked_in'));
@@ -87,6 +92,8 @@ class StayController extends Controller
                 ->orderBy('number')
                 ->get(),
             'currency' => $stay->currency,
+            'countries' => Countries::alpha3(),
+            'subdivisions' => Countries::subdivisions($hotel->country_code ?? 'CO'),
         ]);
     }
 }

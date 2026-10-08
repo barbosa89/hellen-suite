@@ -93,6 +93,8 @@ final class CheckOutStay
                 'checked_out_at' => $checkedOutAt,
             ]);
 
+            $stay->stayGuests()->whereNull('checked_out_at')->update(['checked_out_at' => $checkedOutAt]);
+
             return $stay;
         });
     }

@@ -95,7 +95,7 @@ const submit = () => {
             <div class="mt-4 flex items-center justify-end">
                 <Link
                     :href="route('login')"
-                    class="focus:ring-primary-500 rounded-md text-sm text-neutral-600 underline hover:text-neutral-900 focus:ring-2 focus:ring-offset-2 focus:outline-hidden dark:text-neutral-400 dark:hover:text-neutral-100 dark:focus:ring-offset-neutral-800"
+                    class="focus-visible:ring-primary-500 rounded-lg text-sm text-neutral-600 underline hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden dark:text-neutral-400 dark:hover:text-neutral-100 dark:focus-visible:ring-offset-neutral-950"
                 >
                     Already registered?
                 </Link>

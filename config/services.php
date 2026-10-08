@@ -37,4 +37,12 @@ return [
         ],
     ],
 
+    'tra' => [
+        'base_url' => env('TRA_BASE_URL', 'https://pms.mincit.gov.co'),
+        'connect_timeout' => (int) env('TRA_CONNECT_TIMEOUT', 3),
+        'timeout' => (int) env('TRA_TIMEOUT', 10),
+        'retries' => (int) env('TRA_RETRIES', 2),
+        'retry_sleep_ms' => (int) env('TRA_RETRY_SLEEP_MS', 500),
+    ],
+
 ];

@@ -48,6 +48,20 @@ class HotelComplianceProfile extends Model
         return ComplianceScheme::forJurisdiction($jurisdiction);
     }
 
+    public static function enabledFor(Hotel $hotel): bool
+    {
+        if ($hotel->country_code !== 'CO') {
+            return false;
+        }
+
+        $profile = $hotel->complianceProfiles()
+            ->where('jurisdiction', 'CO')
+            ->where('scheme', ComplianceScheme::Tra)
+            ->first();
+
+        return $profile instanceof self && $profile->enabled;
+    }
+
     /** @return BelongsTo<Hotel, $this> */
     public function hotel(): BelongsTo
     {

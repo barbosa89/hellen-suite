@@ -11,15 +11,22 @@ const props = defineProps({
     hotel: { type: Object, required: true },
     guest: { type: Object, default: null },
     identificationTypes: { type: Array, required: true },
+    countries: { type: Array, default: () => [] },
 });
 
 const { t } = useI18n();
 const isEditing = computed(() => props.guest !== null);
 const form = useForm({
     first_name: props.guest?.first_name ?? '',
+    second_first_name: props.guest?.second_first_name ?? '',
     last_name: props.guest?.last_name ?? '',
+    second_last_name: props.guest?.second_last_name ?? '',
     identification_type_id: props.guest?.identification_type_id ?? '',
     identification_number: props.guest?.identification_number ?? '',
+    birth_date: props.guest?.birth_date ?? '',
+    gender: props.guest?.gender ?? '',
+    nationality: props.guest?.nationality ?? '',
+    residence_country: props.guest?.residence_country ?? '',
     mobile: props.guest?.mobile ?? '',
     email: props.guest?.email ?? '',
 });
@@ -58,6 +65,7 @@ function submit() {
                 <GuestFields
                     :guest="form"
                     :identification-types="identificationTypes"
+                    :countries="countries"
                     :errors="form.errors"
                     @update:guest="Object.assign(form, $event)"
                 />
