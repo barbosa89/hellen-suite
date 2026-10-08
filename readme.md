@@ -37,7 +37,7 @@ This command installs the Composer and npm dependencies, creates `.env` from `.e
 Prepare the NativePHP and Electron dependencies:
 
 ```bash
-php artisan app:native:install --no-interaction
+php artisan native:install --no-interaction
 ```
 
 ### Web development
