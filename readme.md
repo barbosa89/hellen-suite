@@ -37,7 +37,7 @@ This command installs the Composer and npm dependencies, creates `.env` from `.e
 Prepare the NativePHP and Electron dependencies:
 
 ```bash
-php artisan app:native:install --no-interaction
+php artisan native:install --no-interaction
 ```
 
 ### Web development
@@ -277,3 +277,11 @@ Building and publishing from a Windows machine or Windows CI runner is the alter
 ## Release Documentation
 
 See [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md) for the complete guide to signing, building, publishing, automatic updates, updater events, and migrations.
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Phenix, please send an e-mail to Omar Barbosa via [contacto@omarbarbosa.com](mailto:contacto@omarbarbosa.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Phenix framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
