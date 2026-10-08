@@ -8,7 +8,6 @@ use App\Constants\ReservationEventType;
 use App\Constants\ReservationStatus;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Models\IdentificationType;
 use App\Models\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -23,7 +22,7 @@ class ReservationStoreTest extends TestCase
     public function it_creates_a_draft_with_guests_rooms_rates_assignments_and_history(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $guest = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         $room = $this->room($hotel);
 

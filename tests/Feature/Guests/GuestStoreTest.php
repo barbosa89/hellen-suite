@@ -19,7 +19,7 @@ class GuestStoreTest extends TestCase
     public function it_creates_a_guest_for_its_hotel(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
 
         $this->post(route('hotels.guests.store', $hotel), $this->payload($identificationType))
             ->assertRedirect();
@@ -33,7 +33,7 @@ class GuestStoreTest extends TestCase
     public function it_rejects_a_duplicate_identification_in_the_same_hotel(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         Guest::factory()->for($hotel)->create([
             'identification_type_id' => $identificationType->id,
             'identification_number' => '123456789',
@@ -46,7 +46,7 @@ class GuestStoreTest extends TestCase
     #[Test]
     public function it_allows_the_same_identification_at_another_hotel(): void
     {
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $otherHotel = Hotel::factory()->create();
         Guest::factory()->for($otherHotel)->create([
             'identification_type_id' => $identificationType->id,

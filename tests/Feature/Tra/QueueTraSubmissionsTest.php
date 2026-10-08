@@ -11,7 +11,6 @@ use App\Jobs\SendTraSubmission;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\HotelComplianceProfile;
-use App\Models\IdentificationType;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Stay;
@@ -82,7 +81,7 @@ class QueueTraSubmissionsTest extends TestCase
         Queue::fake();
 
         [$hotel, $room] = $this->traHotelWithRoom();
-        $dni = IdentificationType::factory()->create(['code' => IdentificationTypeCode::ForeignNationalId]);
+        $dni = $this->identificationType(IdentificationTypeCode::ForeignNationalId);
 
         $payload = $this->payload($hotel, $room);
         $payload['guests'][0]['identification_type_id'] = $dni->id;
@@ -117,7 +116,7 @@ class QueueTraSubmissionsTest extends TestCase
     /** @return array<string, mixed> */
     private function payload(Hotel $hotel, Room $room): array
     {
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
 
         $travel = [
             'residence_country' => 'COL',

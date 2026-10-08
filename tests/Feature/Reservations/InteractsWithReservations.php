@@ -8,7 +8,6 @@ use App\Constants\ReservationStatus;
 use App\Constants\StayGuestRole;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Models\IdentificationType;
 use App\Models\Reservation;
 use App\Models\ReservationGuest;
 use App\Models\ReservedRoom;
@@ -47,7 +46,7 @@ trait InteractsWithReservations
         null|string $checkOutOn = null,
     ): array {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $guest = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         $room = $this->room($hotel);
         $reservation = Reservation::factory()->for($hotel)->create([
