@@ -25,6 +25,8 @@ class HotelFactory extends Factory
             'mobile' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'image' => fake()->imageUrl(),
+            'country_code' => null,
+            'timezone' => null,
         ];
     }
 }

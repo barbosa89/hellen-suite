@@ -41,6 +41,7 @@ final class CheckOutRoomOccupancy
             $this->closeSettledFolio($roomOccupancy, $checkedOutAt, $userId);
             $roomOccupancy->room->update(['housekeeping_status' => HousekeepingStatus::Dirty]);
             $this->recordCheckedOutEvent($roomOccupancy, $before, $userId);
+            $this->closeDepartedStayGuests($stay, $roomOccupancy, $checkedOutAt);
             $this->closeStayIfFullyCheckedOut($stay, $checkedOutAt);
 
             return $roomOccupancy;
@@ -110,6 +111,21 @@ final class CheckOutRoomOccupancy
                 'lodging_charge_policy' => LodgingChargePolicy::ConsumedNights->value,
             ],
         ]);
+    }
+
+    private function closeDepartedStayGuests(Stay $stay, RoomOccupancy $roomOccupancy, CarbonImmutable $checkedOutAt): void
+    {
+        $departedGuestIds = $roomOccupancy->guests()->pluck('guests.id');
+
+        $stillInsideGuestIds = DB::table('guest_room_occupancy')
+            ->whereIn('room_occupancy_id', $stay->roomOccupancies()->whereNull('checked_out_at')->pluck('id'))
+            ->pluck('guest_id');
+
+        $stay->stayGuests()
+            ->whereIn('guest_id', $departedGuestIds)
+            ->whereNotIn('guest_id', $stillInsideGuestIds)
+            ->whereNull('checked_out_at')
+            ->update(['checked_out_at' => $checkedOutAt]);
     }
 
     private function closeStayIfFullyCheckedOut(Stay $stay, CarbonImmutable $checkedOutAt): void

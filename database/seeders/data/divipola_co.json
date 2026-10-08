@@ -1,0 +1,6971 @@
+{
+    "source": "datos.gov.co DIVIPOLA (deptos vcjz-niiq, munis gdxc-w37w)",
+    "retrieved_at": "2026-10-07",
+    "subdivisions": [
+        {
+            "country_code": "CO",
+            "code": "05",
+            "name": "ANTIOQUIA",
+            "type": "department",
+            "iso_reference": "CO-ANT"
+        },
+        {
+            "country_code": "CO",
+            "code": "08",
+            "name": "ATLÁNTICO",
+            "type": "department",
+            "iso_reference": "CO-ATL"
+        },
+        {
+            "country_code": "CO",
+            "code": "11",
+            "name": "BOGOTÁ, D.C.",
+            "type": "capital_district",
+            "iso_reference": "CO-DC"
+        },
+        {
+            "country_code": "CO",
+            "code": "13",
+            "name": "BOLÍVAR",
+            "type": "department",
+            "iso_reference": "CO-BOL"
+        },
+        {
+            "country_code": "CO",
+            "code": "15",
+            "name": "BOYACÁ",
+            "type": "department",
+            "iso_reference": "CO-BOY"
+        },
+        {
+            "country_code": "CO",
+            "code": "17",
+            "name": "CALDAS",
+            "type": "department",
+            "iso_reference": "CO-CAL"
+        },
+        {
+            "country_code": "CO",
+            "code": "18",
+            "name": "CAQUETÁ",
+            "type": "department",
+            "iso_reference": "CO-CAQ"
+        },
+        {
+            "country_code": "CO",
+            "code": "19",
+            "name": "CAUCA",
+            "type": "department",
+            "iso_reference": "CO-CAU"
+        },
+        {
+            "country_code": "CO",
+            "code": "20",
+            "name": "CESAR",
+            "type": "department",
+            "iso_reference": "CO-CES"
+        },
+        {
+            "country_code": "CO",
+            "code": "23",
+            "name": "CÓRDOBA",
+            "type": "department",
+            "iso_reference": "CO-COR"
+        },
+        {
+            "country_code": "CO",
+            "code": "25",
+            "name": "CUNDINAMARCA",
+            "type": "department",
+            "iso_reference": "CO-CUN"
+        },
+        {
+            "country_code": "CO",
+            "code": "27",
+            "name": "CHOCÓ",
+            "type": "department",
+            "iso_reference": "CO-CHO"
+        },
+        {
+            "country_code": "CO",
+            "code": "41",
+            "name": "HUILA",
+            "type": "department",
+            "iso_reference": "CO-HUI"
+        },
+        {
+            "country_code": "CO",
+            "code": "44",
+            "name": "LA GUAJIRA",
+            "type": "department",
+            "iso_reference": "CO-LAG"
+        },
+        {
+            "country_code": "CO",
+            "code": "47",
+            "name": "MAGDALENA",
+            "type": "department",
+            "iso_reference": "CO-MAG"
+        },
+        {
+            "country_code": "CO",
+            "code": "50",
+            "name": "META",
+            "type": "department",
+            "iso_reference": "CO-MET"
+        },
+        {
+            "country_code": "CO",
+            "code": "52",
+            "name": "NARIÑO",
+            "type": "department",
+            "iso_reference": "CO-NAR"
+        },
+        {
+            "country_code": "CO",
+            "code": "54",
+            "name": "NORTE DE SANTANDER",
+            "type": "department",
+            "iso_reference": "CO-NSA"
+        },
+        {
+            "country_code": "CO",
+            "code": "63",
+            "name": "QUINDÍO",
+            "type": "department",
+            "iso_reference": "CO-QUI"
+        },
+        {
+            "country_code": "CO",
+            "code": "66",
+            "name": "RISARALDA",
+            "type": "department",
+            "iso_reference": "CO-RIS"
+        },
+        {
+            "country_code": "CO",
+            "code": "68",
+            "name": "SANTANDER",
+            "type": "department",
+            "iso_reference": "CO-SAN"
+        },
+        {
+            "country_code": "CO",
+            "code": "70",
+            "name": "SUCRE",
+            "type": "department",
+            "iso_reference": "CO-SUC"
+        },
+        {
+            "country_code": "CO",
+            "code": "73",
+            "name": "TOLIMA",
+            "type": "department",
+            "iso_reference": "CO-TOL"
+        },
+        {
+            "country_code": "CO",
+            "code": "76",
+            "name": "VALLE DEL CAUCA",
+            "type": "department",
+            "iso_reference": "CO-VAC"
+        },
+        {
+            "country_code": "CO",
+            "code": "81",
+            "name": "ARAUCA",
+            "type": "department",
+            "iso_reference": "CO-ARA"
+        },
+        {
+            "country_code": "CO",
+            "code": "85",
+            "name": "CASANARE",
+            "type": "department",
+            "iso_reference": "CO-CAS"
+        },
+        {
+            "country_code": "CO",
+            "code": "86",
+            "name": "PUTUMAYO",
+            "type": "department",
+            "iso_reference": "CO-PUT"
+        },
+        {
+            "country_code": "CO",
+            "code": "88",
+            "name": "ARCHIPIÉLAGO DE SAN ANDRÉS, PROVIDENCIA Y SANTA CATALINA",
+            "type": "department",
+            "iso_reference": "CO-SAP"
+        },
+        {
+            "country_code": "CO",
+            "code": "91",
+            "name": "AMAZONAS",
+            "type": "department",
+            "iso_reference": "CO-AMA"
+        },
+        {
+            "country_code": "CO",
+            "code": "94",
+            "name": "GUAINÍA",
+            "type": "department",
+            "iso_reference": "CO-GUA"
+        },
+        {
+            "country_code": "CO",
+            "code": "95",
+            "name": "GUAVIARE",
+            "type": "department",
+            "iso_reference": "CO-GUV"
+        },
+        {
+            "country_code": "CO",
+            "code": "97",
+            "name": "VAUPÉS",
+            "type": "department",
+            "iso_reference": "CO-VAU"
+        },
+        {
+            "country_code": "CO",
+            "code": "99",
+            "name": "VICHADA",
+            "type": "department",
+            "iso_reference": "CO-VID"
+        }
+    ],
+    "localities": [
+        {
+            "subdivision_code": "05",
+            "code": "05001",
+            "name": "MEDELLÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05002",
+            "name": "ABEJORRAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05004",
+            "name": "ABRIAQUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05021",
+            "name": "ALEJANDRÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05030",
+            "name": "AMAGÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05031",
+            "name": "AMALFI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05034",
+            "name": "ANDES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05036",
+            "name": "ANGELÓPOLIS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05038",
+            "name": "ANGOSTURA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05040",
+            "name": "ANORÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05042",
+            "name": "SANTA FÉ DE ANTIOQUIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05044",
+            "name": "ANZÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05045",
+            "name": "APARTADÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05051",
+            "name": "ARBOLETES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05055",
+            "name": "ARGELIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05059",
+            "name": "ARMENIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05079",
+            "name": "BARBOSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05086",
+            "name": "BELMIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05088",
+            "name": "BELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05091",
+            "name": "BETANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05093",
+            "name": "BETULIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05101",
+            "name": "CIUDAD BOLÍVAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05107",
+            "name": "BRICEÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05113",
+            "name": "BURITICÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05120",
+            "name": "CÁCERES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05125",
+            "name": "CAICEDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05129",
+            "name": "CALDAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05134",
+            "name": "CAMPAMENTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05138",
+            "name": "CAÑASGORDAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05142",
+            "name": "CARACOLÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05145",
+            "name": "CARAMANTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05147",
+            "name": "CAREPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05148",
+            "name": "EL CARMEN DE VIBORAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05150",
+            "name": "CAROLINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05154",
+            "name": "CAUCASIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05172",
+            "name": "CHIGORODÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05190",
+            "name": "CISNEROS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05197",
+            "name": "COCORNÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05206",
+            "name": "CONCEPCIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05209",
+            "name": "CONCORDIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05212",
+            "name": "COPACABANA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05234",
+            "name": "DABEIBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05237",
+            "name": "DONMATÍAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05240",
+            "name": "EBÉJICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05250",
+            "name": "EL BAGRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05264",
+            "name": "ENTRERRÍOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05266",
+            "name": "ENVIGADO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05282",
+            "name": "FREDONIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05284",
+            "name": "FRONTINO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05306",
+            "name": "GIRALDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05308",
+            "name": "GIRARDOTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05310",
+            "name": "GÓMEZ PLATA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05313",
+            "name": "GRANADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05315",
+            "name": "GUADALUPE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05318",
+            "name": "GUARNE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05321",
+            "name": "GUATAPÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05347",
+            "name": "HELICONIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05353",
+            "name": "HISPANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05360",
+            "name": "ITAGÜÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05361",
+            "name": "ITUANGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05364",
+            "name": "JARDÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05368",
+            "name": "JERICÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05376",
+            "name": "LA CEJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05380",
+            "name": "LA ESTRELLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05390",
+            "name": "LA PINTADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05400",
+            "name": "LA UNIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05411",
+            "name": "LIBORINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05425",
+            "name": "MACEO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05440",
+            "name": "MARINILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05467",
+            "name": "MONTEBELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05475",
+            "name": "MURINDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05480",
+            "name": "MUTATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05483",
+            "name": "NARIÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05490",
+            "name": "NECOCLÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05495",
+            "name": "NECHÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05501",
+            "name": "OLAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05541",
+            "name": "PEÑOL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05543",
+            "name": "PEQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05576",
+            "name": "PUEBLORRICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05579",
+            "name": "PUERTO BERRÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05585",
+            "name": "PUERTO NARE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05591",
+            "name": "PUERTO TRIUNFO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05604",
+            "name": "REMEDIOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05607",
+            "name": "RETIRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05615",
+            "name": "RIONEGRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05628",
+            "name": "SABANALARGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05631",
+            "name": "SABANETA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05642",
+            "name": "SALGAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05647",
+            "name": "SAN ANDRÉS DE CUERQUÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05649",
+            "name": "SAN CARLOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05652",
+            "name": "SAN FRANCISCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05656",
+            "name": "SAN JERÓNIMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05658",
+            "name": "SAN JOSÉ DE LA MONTAÑA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05659",
+            "name": "SAN JUAN DE URABÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05660",
+            "name": "SAN LUIS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05664",
+            "name": "SAN PEDRO DE LOS MILAGROS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05665",
+            "name": "SAN PEDRO DE URABÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05667",
+            "name": "SAN RAFAEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05670",
+            "name": "SAN ROQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05674",
+            "name": "SAN VICENTE FERRER",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05679",
+            "name": "SANTA BÁRBARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05686",
+            "name": "SANTA ROSA DE OSOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05690",
+            "name": "SANTO DOMINGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05697",
+            "name": "EL SANTUARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05736",
+            "name": "SEGOVIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05756",
+            "name": "SONSÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05761",
+            "name": "SOPETRÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05789",
+            "name": "TÁMESIS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05790",
+            "name": "TARAZÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05792",
+            "name": "TARSO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05809",
+            "name": "TITIRIBÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05819",
+            "name": "TOLEDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05837",
+            "name": "TURBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05842",
+            "name": "URAMITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05847",
+            "name": "URRAO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05854",
+            "name": "VALDIVIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05856",
+            "name": "VALPARAÍSO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05858",
+            "name": "VEGACHÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05861",
+            "name": "VENECIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05873",
+            "name": "VIGÍA DEL FUERTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05885",
+            "name": "YALÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05887",
+            "name": "YARUMAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05890",
+            "name": "YOLOMBÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05893",
+            "name": "YONDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "05",
+            "code": "05895",
+            "name": "ZARAGOZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08001",
+            "name": "BARRANQUILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08078",
+            "name": "BARANOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08137",
+            "name": "CAMPO DE LA CRUZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08141",
+            "name": "CANDELARIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08296",
+            "name": "GALAPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08372",
+            "name": "JUAN DE ACOSTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08421",
+            "name": "LURUACO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08433",
+            "name": "MALAMBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08436",
+            "name": "MANATÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08520",
+            "name": "PALMAR DE VARELA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08549",
+            "name": "PIOJÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08558",
+            "name": "POLONUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08560",
+            "name": "PONEDERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08573",
+            "name": "PUERTO COLOMBIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08606",
+            "name": "REPELÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08634",
+            "name": "SABANAGRANDE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08638",
+            "name": "SABANALARGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08675",
+            "name": "SANTA LUCÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08685",
+            "name": "SANTO TOMÁS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08758",
+            "name": "SOLEDAD",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08770",
+            "name": "SUAN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08832",
+            "name": "TUBARÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "08",
+            "code": "08849",
+            "name": "USIACURÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "11",
+            "code": "11001",
+            "name": "BOGOTÁ, D.C.",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13001",
+            "name": "CARTAGENA DE INDIAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13006",
+            "name": "ACHÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13030",
+            "name": "ALTOS DEL ROSARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13042",
+            "name": "ARENAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13052",
+            "name": "ARJONA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13062",
+            "name": "ARROYOHONDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13074",
+            "name": "BARRANCO DE LOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13140",
+            "name": "CALAMAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13160",
+            "name": "CANTAGALLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13188",
+            "name": "CICUCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13212",
+            "name": "CÓRDOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13222",
+            "name": "CLEMENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13244",
+            "name": "EL CARMEN DE BOLÍVAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13248",
+            "name": "EL GUAMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13268",
+            "name": "EL PEÑÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13300",
+            "name": "HATILLO DE LOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13430",
+            "name": "MAGANGUÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13433",
+            "name": "MAHATES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13440",
+            "name": "MARGARITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13442",
+            "name": "MARÍA LA BAJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13458",
+            "name": "MONTECRISTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13468",
+            "name": "SANTA CRUZ DE MOMPOX",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13473",
+            "name": "MORALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13490",
+            "name": "NOROSÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13549",
+            "name": "PINILLOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13580",
+            "name": "REGIDOR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13600",
+            "name": "RÍO VIEJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13620",
+            "name": "SAN CRISTÓBAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13647",
+            "name": "SAN ESTANISLAO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13650",
+            "name": "SAN FERNANDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13654",
+            "name": "SAN JACINTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13655",
+            "name": "SAN JACINTO DEL CAUCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13657",
+            "name": "SAN JUAN NEPOMUCENO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13667",
+            "name": "SAN MARTÍN DE LOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13670",
+            "name": "SAN PABLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13673",
+            "name": "SANTA CATALINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13683",
+            "name": "SANTA ROSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13688",
+            "name": "SANTA ROSA DEL SUR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13744",
+            "name": "SIMITÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13760",
+            "name": "SOPLAVIENTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13780",
+            "name": "TALAIGUA NUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13810",
+            "name": "TIQUISIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13836",
+            "name": "TURBACO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13838",
+            "name": "TURBANÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13873",
+            "name": "VILLANUEVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "13",
+            "code": "13894",
+            "name": "ZAMBRANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15001",
+            "name": "TUNJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15022",
+            "name": "ALMEIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15047",
+            "name": "AQUITANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15051",
+            "name": "ARCABUCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15087",
+            "name": "BELÉN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15090",
+            "name": "BERBEO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15092",
+            "name": "BETÉITIVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15097",
+            "name": "BOAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15104",
+            "name": "BOYACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15106",
+            "name": "BRICEÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15109",
+            "name": "BUENAVISTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15114",
+            "name": "BUSBANZÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15131",
+            "name": "CALDAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15135",
+            "name": "CAMPOHERMOSO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15162",
+            "name": "CERINZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15172",
+            "name": "CHINAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15176",
+            "name": "CHIQUINQUIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15180",
+            "name": "CHISCAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15183",
+            "name": "CHITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15185",
+            "name": "CHITARAQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15187",
+            "name": "CHIVATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15189",
+            "name": "CIÉNEGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15204",
+            "name": "CÓMBITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15212",
+            "name": "COPER",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15215",
+            "name": "CORRALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15218",
+            "name": "COVARACHÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15223",
+            "name": "CUBARÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15224",
+            "name": "CUCAITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15226",
+            "name": "CUÍTIVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15232",
+            "name": "CHÍQUIZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15236",
+            "name": "CHIVOR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15238",
+            "name": "DUITAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15244",
+            "name": "EL COCUY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15248",
+            "name": "EL ESPINO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15272",
+            "name": "FIRAVITOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15276",
+            "name": "FLORESTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15293",
+            "name": "GACHANTIVÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15296",
+            "name": "GÁMEZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15299",
+            "name": "GARAGOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15317",
+            "name": "GUACAMAYAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15322",
+            "name": "GUATEQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15325",
+            "name": "GUAYATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15332",
+            "name": "GÜICÁN DE LA SIERRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15362",
+            "name": "IZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15367",
+            "name": "JENESANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15368",
+            "name": "JERICÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15377",
+            "name": "LABRANZAGRANDE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15380",
+            "name": "LA CAPILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15401",
+            "name": "LA VICTORIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15403",
+            "name": "LA UVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15407",
+            "name": "VILLA DE LEYVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15425",
+            "name": "MACANAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15442",
+            "name": "MARIPÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15455",
+            "name": "MIRAFLORES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15464",
+            "name": "MONGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15466",
+            "name": "MONGUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15469",
+            "name": "MONIQUIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15476",
+            "name": "MOTAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15480",
+            "name": "MUZO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15491",
+            "name": "NOBSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15494",
+            "name": "NUEVO COLÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15500",
+            "name": "OICATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15507",
+            "name": "OTANCHE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15511",
+            "name": "PACHAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15514",
+            "name": "PÁEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15516",
+            "name": "PAIPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15518",
+            "name": "PAJARITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15522",
+            "name": "PANQUEBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15531",
+            "name": "PAUNA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15533",
+            "name": "PAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15537",
+            "name": "PAZ DE RÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15542",
+            "name": "PESCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15550",
+            "name": "PISBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15572",
+            "name": "PUERTO BOYACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15580",
+            "name": "QUÍPAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15599",
+            "name": "RAMIRIQUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15600",
+            "name": "RÁQUIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15621",
+            "name": "RONDÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15632",
+            "name": "SABOYÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15638",
+            "name": "SÁCHICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15646",
+            "name": "SAMACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15660",
+            "name": "SAN EDUARDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15664",
+            "name": "SAN JOSÉ DE PARE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15667",
+            "name": "SAN LUIS DE GACENO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15673",
+            "name": "SAN MATEO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15676",
+            "name": "SAN MIGUEL DE SEMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15681",
+            "name": "SAN PABLO DE BORBUR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15686",
+            "name": "SANTANA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15690",
+            "name": "SANTA MARÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15693",
+            "name": "SANTA ROSA DE VITERBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15696",
+            "name": "SANTA SOFÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15720",
+            "name": "SATIVANORTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15723",
+            "name": "SATIVASUR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15740",
+            "name": "SIACHOQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15753",
+            "name": "SOATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15755",
+            "name": "SOCOTÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15757",
+            "name": "SOCHA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15759",
+            "name": "SOGAMOSO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15761",
+            "name": "SOMONDOCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15762",
+            "name": "SORA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15763",
+            "name": "SOTAQUIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15764",
+            "name": "SORACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15774",
+            "name": "SUSACÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15776",
+            "name": "SUTAMARCHÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15778",
+            "name": "SUTATENZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15790",
+            "name": "TASCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15798",
+            "name": "TENZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15804",
+            "name": "TIBANÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15806",
+            "name": "TIBASOSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15808",
+            "name": "TINJACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15810",
+            "name": "TIPACOQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15814",
+            "name": "TOCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15816",
+            "name": "TOGÜÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15820",
+            "name": "TÓPAGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15822",
+            "name": "TOTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15832",
+            "name": "TUNUNGUÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15835",
+            "name": "TURMEQUÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15837",
+            "name": "TUTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15839",
+            "name": "TUTAZÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15842",
+            "name": "ÚMBITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15861",
+            "name": "VENTAQUEMADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15879",
+            "name": "VIRACACHÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "15",
+            "code": "15897",
+            "name": "ZETAQUIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17001",
+            "name": "MANIZALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17013",
+            "name": "AGUADAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17042",
+            "name": "ANSERMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17050",
+            "name": "ARANZAZU",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17088",
+            "name": "BELALCÁZAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17174",
+            "name": "CHINCHINÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17272",
+            "name": "FILADELFIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17380",
+            "name": "LA DORADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17388",
+            "name": "LA MERCED",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17433",
+            "name": "MANZANARES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17442",
+            "name": "MARMATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17444",
+            "name": "MARQUETALIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17446",
+            "name": "MARULANDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17486",
+            "name": "NEIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17495",
+            "name": "NORCASIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17513",
+            "name": "PÁCORA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17524",
+            "name": "PALESTINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17541",
+            "name": "PENSILVANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17614",
+            "name": "RIOSUCIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17616",
+            "name": "RISARALDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17653",
+            "name": "SALAMINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17662",
+            "name": "SAMANÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17665",
+            "name": "SAN JOSÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17777",
+            "name": "SUPÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17867",
+            "name": "VICTORIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17873",
+            "name": "VILLAMARÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "17",
+            "code": "17877",
+            "name": "VITERBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18001",
+            "name": "FLORENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18029",
+            "name": "ALBANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18094",
+            "name": "BELÉN DE LOS ANDAQUÍES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18150",
+            "name": "CARTAGENA DEL CHAIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18205",
+            "name": "CURILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18247",
+            "name": "EL DONCELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18256",
+            "name": "EL PAUJÍL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18410",
+            "name": "LA MONTAÑITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18460",
+            "name": "MILÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18479",
+            "name": "MORELIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18592",
+            "name": "PUERTO RICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18610",
+            "name": "SAN JOSÉ DEL FRAGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18753",
+            "name": "SAN VICENTE DEL CAGUÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18756",
+            "name": "SOLANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18785",
+            "name": "SOLITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "18",
+            "code": "18860",
+            "name": "VALPARAÍSO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19001",
+            "name": "POPAYÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19022",
+            "name": "ALMAGUER",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19050",
+            "name": "ARGELIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19075",
+            "name": "BALBOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19100",
+            "name": "BOLÍVAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19110",
+            "name": "BUENOS AIRES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19130",
+            "name": "CAJIBÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19137",
+            "name": "CALDONO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19142",
+            "name": "CALOTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19212",
+            "name": "CORINTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19256",
+            "name": "EL TAMBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19290",
+            "name": "FLORENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19300",
+            "name": "GUACHENÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19318",
+            "name": "GUAPI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19355",
+            "name": "INZÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19364",
+            "name": "JAMBALÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19392",
+            "name": "LA SIERRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19397",
+            "name": "LA VEGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19418",
+            "name": "LÓPEZ DE MICAY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19450",
+            "name": "MERCADERES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19455",
+            "name": "MIRANDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19473",
+            "name": "MORALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19513",
+            "name": "PADILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19517",
+            "name": "PÁEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19532",
+            "name": "PATÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19533",
+            "name": "PIAMONTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19548",
+            "name": "PIENDAMÓ - TUNÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19573",
+            "name": "PUERTO TEJADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19585",
+            "name": "PURACÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19622",
+            "name": "ROSAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19693",
+            "name": "SAN SEBASTIÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19698",
+            "name": "SANTANDER DE QUILICHAO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19701",
+            "name": "SANTA ROSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19743",
+            "name": "SILVIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19760",
+            "name": "SOTARÁ - PAISPAMBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19780",
+            "name": "SUÁREZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19785",
+            "name": "SUCRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19807",
+            "name": "TIMBÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19809",
+            "name": "TIMBIQUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19821",
+            "name": "TORIBÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19824",
+            "name": "TOTORÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "19",
+            "code": "19845",
+            "name": "VILLA RICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20001",
+            "name": "VALLEDUPAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20011",
+            "name": "AGUACHICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20013",
+            "name": "AGUSTÍN CODAZZI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20032",
+            "name": "ASTREA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20045",
+            "name": "BECERRIL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20060",
+            "name": "BOSCONIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20175",
+            "name": "CHIMICHAGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20178",
+            "name": "CHIRIGUANÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20228",
+            "name": "CURUMANÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20238",
+            "name": "EL COPEY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20250",
+            "name": "EL PASO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20295",
+            "name": "GAMARRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20310",
+            "name": "GONZÁLEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20383",
+            "name": "LA GLORIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20400",
+            "name": "LA JAGUA DE IBIRICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20443",
+            "name": "MANAURE BALCÓN DEL CESAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20517",
+            "name": "PAILITAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20550",
+            "name": "PELAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20570",
+            "name": "PUEBLO BELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20614",
+            "name": "RÍO DE ORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20621",
+            "name": "LA PAZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20710",
+            "name": "SAN ALBERTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20750",
+            "name": "SAN DIEGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20770",
+            "name": "SAN MARTÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "20",
+            "code": "20787",
+            "name": "TAMALAMEQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23001",
+            "name": "MONTERÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23068",
+            "name": "AYAPEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23079",
+            "name": "BUENAVISTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23090",
+            "name": "CANALETE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23162",
+            "name": "CERETÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23168",
+            "name": "CHIMÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23182",
+            "name": "CHINÚ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23189",
+            "name": "CIÉNAGA DE ORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23300",
+            "name": "COTORRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23350",
+            "name": "LA APARTADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23417",
+            "name": "LORICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23419",
+            "name": "LOS CÓRDOBAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23464",
+            "name": "MOMIL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23466",
+            "name": "MONTELÍBANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23500",
+            "name": "MOÑITOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23555",
+            "name": "PLANETA RICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23570",
+            "name": "PUEBLO NUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23574",
+            "name": "PUERTO ESCONDIDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23580",
+            "name": "PUERTO LIBERTADOR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23586",
+            "name": "PURÍSIMA DE LA CONCEPCIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23660",
+            "name": "SAHAGÚN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23670",
+            "name": "SAN ANDRÉS DE SOTAVENTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23672",
+            "name": "SAN ANTERO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23675",
+            "name": "SAN BERNARDO DEL VIENTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23678",
+            "name": "SAN CARLOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23682",
+            "name": "SAN JOSÉ DE URÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23686",
+            "name": "SAN PELAYO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23807",
+            "name": "TIERRALTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23815",
+            "name": "TUCHÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "23",
+            "code": "23855",
+            "name": "VALENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25001",
+            "name": "AGUA DE DIOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25019",
+            "name": "ALBÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25035",
+            "name": "ANAPOIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25040",
+            "name": "ANOLAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25053",
+            "name": "ARBELÁEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25086",
+            "name": "BELTRÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25095",
+            "name": "BITUIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25099",
+            "name": "BOJACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25120",
+            "name": "CABRERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25123",
+            "name": "CACHIPAY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25126",
+            "name": "CAJICÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25148",
+            "name": "CAPARRAPÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25151",
+            "name": "CÁQUEZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25154",
+            "name": "CARMEN DE CARUPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25168",
+            "name": "CHAGUANÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25175",
+            "name": "CHÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25178",
+            "name": "CHIPAQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25181",
+            "name": "CHOACHÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25183",
+            "name": "CHOCONTÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25200",
+            "name": "COGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25214",
+            "name": "COTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25224",
+            "name": "CUCUNUBÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25245",
+            "name": "EL COLEGIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25258",
+            "name": "EL PEÑÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25260",
+            "name": "EL ROSAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25269",
+            "name": "FACATATIVÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25279",
+            "name": "FÓMEQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25281",
+            "name": "FOSCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25286",
+            "name": "FUNZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25288",
+            "name": "FÚQUENE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25290",
+            "name": "FUSAGASUGÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25293",
+            "name": "GACHALÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25295",
+            "name": "GACHANCIPÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25297",
+            "name": "GACHETÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25299",
+            "name": "GAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25307",
+            "name": "GIRARDOT",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25312",
+            "name": "GRANADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25317",
+            "name": "GUACHETÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25320",
+            "name": "GUADUAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25322",
+            "name": "GUASCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25324",
+            "name": "GUATAQUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25326",
+            "name": "GUATAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25328",
+            "name": "GUAYABAL DE SÍQUIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25335",
+            "name": "GUAYABETAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25339",
+            "name": "GUTIÉRREZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25368",
+            "name": "JERUSALÉN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25372",
+            "name": "JUNÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25377",
+            "name": "LA CALERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25386",
+            "name": "LA MESA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25394",
+            "name": "LA PALMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25398",
+            "name": "LA PEÑA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25402",
+            "name": "LA VEGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25407",
+            "name": "LENGUAZAQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25426",
+            "name": "MACHETÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25430",
+            "name": "MADRID",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25436",
+            "name": "MANTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25438",
+            "name": "MEDINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25473",
+            "name": "MOSQUERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25483",
+            "name": "NARIÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25486",
+            "name": "NEMOCÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25488",
+            "name": "NILO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25489",
+            "name": "NIMAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25491",
+            "name": "NOCAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25506",
+            "name": "VENECIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25513",
+            "name": "PACHO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25518",
+            "name": "PAIME",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25524",
+            "name": "PANDI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25530",
+            "name": "PARATEBUENO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25535",
+            "name": "PASCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25572",
+            "name": "PUERTO SALGAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25580",
+            "name": "PULÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25592",
+            "name": "QUEBRADANEGRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25594",
+            "name": "QUETAME",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25596",
+            "name": "QUIPILE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25599",
+            "name": "APULO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25612",
+            "name": "RICAURTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25645",
+            "name": "SAN ANTONIO DEL TEQUENDAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25649",
+            "name": "SAN BERNARDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25653",
+            "name": "SAN CAYETANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25658",
+            "name": "SAN FRANCISCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25662",
+            "name": "SAN JUAN DE RIOSECO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25718",
+            "name": "SASAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25736",
+            "name": "SESQUILÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25740",
+            "name": "SIBATÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25743",
+            "name": "SILVANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25745",
+            "name": "SIMIJACA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25754",
+            "name": "SOACHA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25758",
+            "name": "SOPÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25769",
+            "name": "SUBACHOQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25772",
+            "name": "SUESCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25777",
+            "name": "SUPATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25779",
+            "name": "SUSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25781",
+            "name": "SUTATAUSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25785",
+            "name": "TABIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25793",
+            "name": "TAUSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25797",
+            "name": "TENA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25799",
+            "name": "TENJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25805",
+            "name": "TIBACUY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25807",
+            "name": "TIBIRITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25815",
+            "name": "TOCAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25817",
+            "name": "TOCANCIPÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25823",
+            "name": "TOPAIPÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25839",
+            "name": "UBALÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25841",
+            "name": "UBAQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25843",
+            "name": "VILLA DE SAN DIEGO DE UBATÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25845",
+            "name": "UNE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25851",
+            "name": "ÚTICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25862",
+            "name": "VERGARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25867",
+            "name": "VIANÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25871",
+            "name": "VILLAGÓMEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25873",
+            "name": "VILLAPINZÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25875",
+            "name": "VILLETA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25878",
+            "name": "VIOTÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25885",
+            "name": "YACOPÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25898",
+            "name": "ZIPACÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "25",
+            "code": "25899",
+            "name": "ZIPAQUIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27001",
+            "name": "QUIBDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27006",
+            "name": "ACANDÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27025",
+            "name": "ALTO BAUDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27050",
+            "name": "ATRATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27073",
+            "name": "BAGADÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27075",
+            "name": "BAHÍA SOLANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27077",
+            "name": "BAJO BAUDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27099",
+            "name": "BOJAYÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27135",
+            "name": "EL CANTÓN DEL SAN PABLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27150",
+            "name": "CARMEN DEL DARIÉN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27160",
+            "name": "CÉRTEGUI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27205",
+            "name": "CONDOTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27245",
+            "name": "EL CARMEN DE ATRATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27250",
+            "name": "EL LITORAL DEL SAN JUAN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27361",
+            "name": "ISTMINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27372",
+            "name": "JURADÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27413",
+            "name": "LLORÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27425",
+            "name": "MEDIO ATRATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27430",
+            "name": "MEDIO BAUDÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27450",
+            "name": "MEDIO SAN JUAN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27491",
+            "name": "NÓVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27493",
+            "name": "NUEVO BELÉN DE BAJIRÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27495",
+            "name": "NUQUÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27580",
+            "name": "RÍO IRÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27600",
+            "name": "RÍO QUITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27615",
+            "name": "RIOSUCIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27660",
+            "name": "SAN JOSÉ DEL PALMAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27745",
+            "name": "SIPÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27787",
+            "name": "TADÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27800",
+            "name": "UNGUÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "27",
+            "code": "27810",
+            "name": "UNIÓN PANAMERICANA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41001",
+            "name": "NEIVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41006",
+            "name": "ACEVEDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41013",
+            "name": "AGRADO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41016",
+            "name": "AIPE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41020",
+            "name": "ALGECIRAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41026",
+            "name": "ALTAMIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41078",
+            "name": "BARAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41132",
+            "name": "CAMPOALEGRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41206",
+            "name": "COLOMBIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41244",
+            "name": "ELÍAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41298",
+            "name": "GARZÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41306",
+            "name": "GIGANTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41319",
+            "name": "GUADALUPE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41349",
+            "name": "HOBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41357",
+            "name": "ÍQUIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41359",
+            "name": "ISNOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41378",
+            "name": "LA ARGENTINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41396",
+            "name": "LA PLATA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41483",
+            "name": "NÁTAGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41503",
+            "name": "OPORAPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41518",
+            "name": "PAICOL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41524",
+            "name": "PALERMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41530",
+            "name": "PALESTINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41548",
+            "name": "PITAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41551",
+            "name": "PITALITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41615",
+            "name": "RIVERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41660",
+            "name": "SALADOBLANCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41668",
+            "name": "SAN AGUSTÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41676",
+            "name": "SANTA MARÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41770",
+            "name": "SUAZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41791",
+            "name": "TARQUI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41797",
+            "name": "TESALIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41799",
+            "name": "TELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41801",
+            "name": "TERUEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41807",
+            "name": "TIMANÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41872",
+            "name": "VILLAVIEJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "41",
+            "code": "41885",
+            "name": "YAGUARÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44001",
+            "name": "RIOHACHA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44035",
+            "name": "ALBANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44078",
+            "name": "BARRANCAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44090",
+            "name": "DIBULLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44098",
+            "name": "DISTRACCIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44110",
+            "name": "EL MOLINO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44279",
+            "name": "FONSECA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44378",
+            "name": "HATONUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44420",
+            "name": "LA JAGUA DEL PILAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44430",
+            "name": "MAICAO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44560",
+            "name": "MANAURE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44650",
+            "name": "SAN JUAN DEL CESAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44847",
+            "name": "URIBIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44855",
+            "name": "URUMITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "44",
+            "code": "44874",
+            "name": "VILLANUEVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47001",
+            "name": "SANTA MARTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47030",
+            "name": "ALGARROBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47053",
+            "name": "ARACATACA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47058",
+            "name": "ARIGUANÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47161",
+            "name": "CERRO DE SAN ANTONIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47170",
+            "name": "CHIVOLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47189",
+            "name": "CIÉNAGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47205",
+            "name": "CONCORDIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47245",
+            "name": "EL BANCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47258",
+            "name": "EL PIÑÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47268",
+            "name": "EL RETÉN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47288",
+            "name": "FUNDACIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47318",
+            "name": "GUAMAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47460",
+            "name": "NUEVA GRANADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47541",
+            "name": "PEDRAZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47545",
+            "name": "PIJIÑO DEL CARMEN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47551",
+            "name": "PIVIJAY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47555",
+            "name": "PLATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47570",
+            "name": "PUEBLOVIEJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47605",
+            "name": "REMOLINO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47660",
+            "name": "SABANAS DE SAN ÁNGEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47675",
+            "name": "SALAMINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47692",
+            "name": "SAN SEBASTIÁN DE BUENAVISTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47703",
+            "name": "SAN ZENÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47707",
+            "name": "SANTA ANA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47720",
+            "name": "SANTA BÁRBARA DE PINTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47745",
+            "name": "SITIONUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47798",
+            "name": "TENERIFE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47960",
+            "name": "ZAPAYÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "47",
+            "code": "47980",
+            "name": "ZONA BANANERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50001",
+            "name": "VILLAVICENCIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50006",
+            "name": "ACACÍAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50110",
+            "name": "BARRANCA DE UPÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50124",
+            "name": "CABUYARO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50150",
+            "name": "CASTILLA LA NUEVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50223",
+            "name": "CUBARRAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50226",
+            "name": "CUMARAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50245",
+            "name": "EL CALVARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50251",
+            "name": "EL CASTILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50270",
+            "name": "EL DORADO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50287",
+            "name": "FUENTE DE ORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50313",
+            "name": "GRANADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50318",
+            "name": "GUAMAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50325",
+            "name": "MAPIRIPÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50330",
+            "name": "MESETAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50350",
+            "name": "LA MACARENA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50370",
+            "name": "URIBE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50400",
+            "name": "LEJANÍAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50450",
+            "name": "PUERTO CONCORDIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50568",
+            "name": "PUERTO GAITÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50573",
+            "name": "PUERTO LÓPEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50577",
+            "name": "PUERTO LLERAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50590",
+            "name": "PUERTO RICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50606",
+            "name": "RESTREPO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50680",
+            "name": "SAN CARLOS DE GUAROA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50683",
+            "name": "SAN JUAN DE ARAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50686",
+            "name": "SAN JUANITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50689",
+            "name": "SAN MARTÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "50",
+            "code": "50711",
+            "name": "VISTAHERMOSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52001",
+            "name": "PASTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52019",
+            "name": "ALBÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52022",
+            "name": "ALDANA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52036",
+            "name": "ANCUYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52051",
+            "name": "ARBOLEDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52079",
+            "name": "BARBACOAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52083",
+            "name": "BELÉN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52110",
+            "name": "BUESACO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52203",
+            "name": "COLÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52207",
+            "name": "CONSACÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52210",
+            "name": "CONTADERO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52215",
+            "name": "CÓRDOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52224",
+            "name": "CUASPUD CARLOSAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52227",
+            "name": "CUMBAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52233",
+            "name": "CUMBITARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52240",
+            "name": "CHACHAGÜÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52250",
+            "name": "EL CHARCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52254",
+            "name": "EL PEÑOL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52256",
+            "name": "EL ROSARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52258",
+            "name": "EL TABLÓN DE GÓMEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52260",
+            "name": "EL TAMBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52287",
+            "name": "FUNES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52317",
+            "name": "GUACHUCAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52320",
+            "name": "GUAITARILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52323",
+            "name": "GUALMATÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52352",
+            "name": "ILES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52354",
+            "name": "IMUÉS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52356",
+            "name": "IPIALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52378",
+            "name": "LA CRUZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52381",
+            "name": "LA FLORIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52385",
+            "name": "LA LLANADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52390",
+            "name": "LA TOLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52399",
+            "name": "LA UNIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52405",
+            "name": "LEIVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52411",
+            "name": "LINARES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52418",
+            "name": "LOS ANDES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52427",
+            "name": "MAGÜÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52435",
+            "name": "MALLAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52473",
+            "name": "MOSQUERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52480",
+            "name": "NARIÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52490",
+            "name": "OLAYA HERRERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52506",
+            "name": "OSPINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52520",
+            "name": "FRANCISCO PIZARRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52540",
+            "name": "POLICARPA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52560",
+            "name": "POTOSÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52565",
+            "name": "PROVIDENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52573",
+            "name": "PUERRES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52585",
+            "name": "PUPIALES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52612",
+            "name": "RICAURTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52621",
+            "name": "ROBERTO PAYÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52678",
+            "name": "SAMANIEGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52683",
+            "name": "SANDONÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52685",
+            "name": "SAN BERNARDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52687",
+            "name": "SAN LORENZO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52693",
+            "name": "SAN PABLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52694",
+            "name": "SAN PEDRO DE CARTAGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52696",
+            "name": "SANTA BÁRBARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52699",
+            "name": "SANTACRUZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52720",
+            "name": "SAPUYES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52786",
+            "name": "TAMINANGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52788",
+            "name": "TANGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52835",
+            "name": "SAN ANDRÉS DE TUMACO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52838",
+            "name": "TÚQUERRES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "52",
+            "code": "52885",
+            "name": "YACUANQUER",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54001",
+            "name": "SAN JOSÉ DE CÚCUTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54003",
+            "name": "ÁBREGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54051",
+            "name": "ARBOLEDAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54099",
+            "name": "BOCHALEMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54109",
+            "name": "BUCARASICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54125",
+            "name": "CÁCOTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54128",
+            "name": "CÁCHIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54172",
+            "name": "CHINÁCOTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54174",
+            "name": "CHITAGÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54206",
+            "name": "CONVENCIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54223",
+            "name": "CUCUTILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54239",
+            "name": "DURANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54245",
+            "name": "EL CARMEN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54250",
+            "name": "EL TARRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54261",
+            "name": "EL ZULIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54313",
+            "name": "GRAMALOTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54344",
+            "name": "HACARÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54347",
+            "name": "HERRÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54377",
+            "name": "LABATECA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54385",
+            "name": "LA ESPERANZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54398",
+            "name": "LA PLAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54405",
+            "name": "LOS PATIOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54418",
+            "name": "LOURDES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54480",
+            "name": "MUTISCUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54498",
+            "name": "OCAÑA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54518",
+            "name": "PAMPLONA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54520",
+            "name": "PAMPLONITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54553",
+            "name": "PUERTO SANTANDER",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54599",
+            "name": "RAGONVALIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54660",
+            "name": "SALAZAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54670",
+            "name": "SAN CALIXTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54673",
+            "name": "SAN CAYETANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54680",
+            "name": "SANTIAGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54720",
+            "name": "SARDINATA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54743",
+            "name": "SILOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54800",
+            "name": "TEORAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54810",
+            "name": "TIBÚ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54820",
+            "name": "TOLEDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54871",
+            "name": "VILLA CARO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "54",
+            "code": "54874",
+            "name": "VILLA DEL ROSARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63001",
+            "name": "ARMENIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63111",
+            "name": "BUENAVISTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63130",
+            "name": "CALARCÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63190",
+            "name": "CIRCASIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63212",
+            "name": "CÓRDOBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63272",
+            "name": "FILANDIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63302",
+            "name": "GÉNOVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63401",
+            "name": "LA TEBAIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63470",
+            "name": "MONTENEGRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63548",
+            "name": "PIJAO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63594",
+            "name": "QUIMBAYA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "63",
+            "code": "63690",
+            "name": "SALENTO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66001",
+            "name": "PEREIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66045",
+            "name": "APÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66075",
+            "name": "BALBOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66088",
+            "name": "BELÉN DE UMBRÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66170",
+            "name": "DOSQUEBRADAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66318",
+            "name": "GUÁTICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66383",
+            "name": "LA CELIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66400",
+            "name": "LA VIRGINIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66440",
+            "name": "MARSELLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66456",
+            "name": "MISTRATÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66572",
+            "name": "PUEBLO RICO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66594",
+            "name": "QUINCHÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66682",
+            "name": "SANTA ROSA DE CABAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "66",
+            "code": "66687",
+            "name": "SANTUARIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68001",
+            "name": "BUCARAMANGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68013",
+            "name": "AGUADA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68020",
+            "name": "ALBANIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68051",
+            "name": "ARATOCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68077",
+            "name": "BARBOSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68079",
+            "name": "BARICHARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68081",
+            "name": "BARRANCABERMEJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68092",
+            "name": "BETULIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68101",
+            "name": "BOLÍVAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68121",
+            "name": "CABRERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68132",
+            "name": "CALIFORNIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68147",
+            "name": "CAPITANEJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68152",
+            "name": "CARCASÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68160",
+            "name": "CEPITÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68162",
+            "name": "CERRITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68167",
+            "name": "CHARALÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68169",
+            "name": "CHARTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68176",
+            "name": "CHIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68179",
+            "name": "CHIPATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68190",
+            "name": "CIMITARRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68207",
+            "name": "CONCEPCIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68209",
+            "name": "CONFINES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68211",
+            "name": "CONTRATACIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68217",
+            "name": "COROMORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68229",
+            "name": "CURITÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68235",
+            "name": "EL CARMEN DE CHUCURÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68245",
+            "name": "EL GUACAMAYO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68250",
+            "name": "EL PEÑÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68255",
+            "name": "EL PLAYÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68264",
+            "name": "ENCINO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68266",
+            "name": "ENCISO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68271",
+            "name": "FLORIÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68276",
+            "name": "FLORIDABLANCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68296",
+            "name": "GALÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68298",
+            "name": "GÁMBITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68307",
+            "name": "GIRÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68318",
+            "name": "GUACA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68320",
+            "name": "GUADALUPE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68322",
+            "name": "GUAPOTÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68324",
+            "name": "GUAVATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68327",
+            "name": "GÜEPSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68344",
+            "name": "HATO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68368",
+            "name": "JESÚS MARÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68370",
+            "name": "JORDÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68377",
+            "name": "LA BELLEZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68385",
+            "name": "LANDÁZURI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68397",
+            "name": "LA PAZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68406",
+            "name": "LEBRIJA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68418",
+            "name": "LOS SANTOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68425",
+            "name": "MACARAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68432",
+            "name": "MÁLAGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68444",
+            "name": "MATANZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68464",
+            "name": "MOGOTES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68468",
+            "name": "MOLAGAVITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68498",
+            "name": "OCAMONTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68500",
+            "name": "OIBA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68502",
+            "name": "ONZAGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68522",
+            "name": "PALMAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68524",
+            "name": "PALMAS DEL SOCORRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68533",
+            "name": "PÁRAMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68547",
+            "name": "PIEDECUESTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68549",
+            "name": "PINCHOTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68572",
+            "name": "PUENTE NACIONAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68573",
+            "name": "PUERTO PARRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68575",
+            "name": "PUERTO WILCHES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68615",
+            "name": "RIONEGRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68655",
+            "name": "SABANA DE TORRES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68669",
+            "name": "SAN ANDRÉS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68673",
+            "name": "SAN BENITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68679",
+            "name": "SAN GIL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68682",
+            "name": "SAN JOAQUÍN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68684",
+            "name": "SAN JOSÉ DE MIRANDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68686",
+            "name": "SAN MIGUEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68689",
+            "name": "SAN VICENTE DE CHUCURÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68705",
+            "name": "SANTA BÁRBARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68720",
+            "name": "SANTA HELENA DEL OPÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68745",
+            "name": "SIMACOTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68755",
+            "name": "SOCORRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68770",
+            "name": "SUAITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68773",
+            "name": "SUCRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68780",
+            "name": "SURATÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68820",
+            "name": "TONA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68855",
+            "name": "VALLE DE SAN JOSÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68861",
+            "name": "VÉLEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68867",
+            "name": "VETAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68872",
+            "name": "VILLANUEVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "68",
+            "code": "68895",
+            "name": "ZAPATOCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70001",
+            "name": "SINCELEJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70110",
+            "name": "BUENAVISTA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70124",
+            "name": "CAIMITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70204",
+            "name": "COLOSÓ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70215",
+            "name": "COROZAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70221",
+            "name": "COVEÑAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70230",
+            "name": "CHALÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70233",
+            "name": "EL ROBLE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70235",
+            "name": "GALERAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70265",
+            "name": "GUARANDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70400",
+            "name": "LA UNIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70418",
+            "name": "LOS PALMITOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70429",
+            "name": "MAJAGUAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70473",
+            "name": "MORROA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70508",
+            "name": "OVEJAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70523",
+            "name": "PALMITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70670",
+            "name": "SAMPUÉS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70678",
+            "name": "SAN BENITO ABAD",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70702",
+            "name": "SAN JUAN DE BETULIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70708",
+            "name": "SAN MARCOS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70713",
+            "name": "SAN ONOFRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70717",
+            "name": "SAN PEDRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70742",
+            "name": "SAN LUIS DE SINCÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70771",
+            "name": "SUCRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70820",
+            "name": "SANTIAGO DE TOLÚ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "70",
+            "code": "70823",
+            "name": "SAN JOSÉ DE TOLUVIEJO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73001",
+            "name": "IBAGUÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73024",
+            "name": "ALPUJARRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73026",
+            "name": "ALVARADO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73030",
+            "name": "AMBALEMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73043",
+            "name": "ANZOÁTEGUI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73055",
+            "name": "ARMERO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73067",
+            "name": "ATACO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73124",
+            "name": "CAJAMARCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73148",
+            "name": "CARMEN DE APICALÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73152",
+            "name": "CASABIANCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73168",
+            "name": "CHAPARRAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73200",
+            "name": "COELLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73217",
+            "name": "COYAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73226",
+            "name": "CUNDAY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73236",
+            "name": "DOLORES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73268",
+            "name": "ESPINAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73270",
+            "name": "FALAN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73275",
+            "name": "FLANDES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73283",
+            "name": "FRESNO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73319",
+            "name": "GUAMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73347",
+            "name": "HERVEO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73349",
+            "name": "HONDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73352",
+            "name": "ICONONZO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73408",
+            "name": "LÉRIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73411",
+            "name": "LÍBANO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73443",
+            "name": "SAN SEBASTIÁN DE MARIQUITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73449",
+            "name": "MELGAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73461",
+            "name": "MURILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73483",
+            "name": "NATAGAIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73504",
+            "name": "ORTEGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73520",
+            "name": "PALOCABILDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73547",
+            "name": "PIEDRAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73555",
+            "name": "PLANADAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73563",
+            "name": "PRADO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73585",
+            "name": "PURIFICACIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73616",
+            "name": "RIOBLANCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73622",
+            "name": "RONCESVALLES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73624",
+            "name": "ROVIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73671",
+            "name": "SALDAÑA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73675",
+            "name": "SAN ANTONIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73678",
+            "name": "SAN LUIS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73686",
+            "name": "SANTA ISABEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73770",
+            "name": "SUÁREZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73854",
+            "name": "VALLE DE SAN JUAN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73861",
+            "name": "VENADILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73870",
+            "name": "VILLAHERMOSA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "73",
+            "code": "73873",
+            "name": "VILLARRICA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76001",
+            "name": "SANTIAGO DE CALI",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76020",
+            "name": "ALCALÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76036",
+            "name": "ANDALUCÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76041",
+            "name": "ANSERMANUEVO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76054",
+            "name": "ARGELIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76100",
+            "name": "BOLÍVAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76109",
+            "name": "BUENAVENTURA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76111",
+            "name": "GUADALAJARA DE BUGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76113",
+            "name": "BUGALAGRANDE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76122",
+            "name": "CAICEDONIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76126",
+            "name": "CALIMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76130",
+            "name": "CANDELARIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76147",
+            "name": "CARTAGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76233",
+            "name": "DAGUA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76243",
+            "name": "EL ÁGUILA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76246",
+            "name": "EL CAIRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76248",
+            "name": "EL CERRITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76250",
+            "name": "EL DOVIO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76275",
+            "name": "FLORIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76306",
+            "name": "GINEBRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76318",
+            "name": "GUACARÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76364",
+            "name": "JAMUNDÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76377",
+            "name": "LA CUMBRE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76400",
+            "name": "LA UNIÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76403",
+            "name": "LA VICTORIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76497",
+            "name": "OBANDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76520",
+            "name": "PALMIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76563",
+            "name": "PRADERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76606",
+            "name": "RESTREPO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76616",
+            "name": "RIOFRÍO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76622",
+            "name": "ROLDANILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76670",
+            "name": "SAN PEDRO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76736",
+            "name": "SEVILLA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76823",
+            "name": "TORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76828",
+            "name": "TRUJILLO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76834",
+            "name": "TULUÁ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76845",
+            "name": "ULLOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76863",
+            "name": "VERSALLES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76869",
+            "name": "VIJES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76890",
+            "name": "YOTOCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76892",
+            "name": "YUMBO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "76",
+            "code": "76895",
+            "name": "ZARZAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81001",
+            "name": "ARAUCA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81065",
+            "name": "ARAUQUITA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81220",
+            "name": "CRAVO NORTE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81300",
+            "name": "FORTUL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81591",
+            "name": "PUERTO RONDÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81736",
+            "name": "SARAVENA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "81",
+            "code": "81794",
+            "name": "TAME",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85001",
+            "name": "YOPAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85010",
+            "name": "AGUAZUL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85015",
+            "name": "CHÁMEZA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85125",
+            "name": "HATO COROZAL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85136",
+            "name": "LA SALINA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85139",
+            "name": "MANÍ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85162",
+            "name": "MONTERREY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85225",
+            "name": "NUNCHÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85230",
+            "name": "OROCUÉ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85250",
+            "name": "PAZ DE ARIPORO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85263",
+            "name": "PORE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85279",
+            "name": "RECETOR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85300",
+            "name": "SABANALARGA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85315",
+            "name": "SÁCAMA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85325",
+            "name": "SAN LUIS DE PALENQUE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85400",
+            "name": "TÁMARA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85410",
+            "name": "TAURAMENA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85430",
+            "name": "TRINIDAD",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "85",
+            "code": "85440",
+            "name": "VILLANUEVA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86001",
+            "name": "MOCOA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86219",
+            "name": "COLÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86320",
+            "name": "ORITO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86568",
+            "name": "PUERTO ASÍS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86569",
+            "name": "PUERTO CAICEDO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86571",
+            "name": "PUERTO GUZMÁN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86573",
+            "name": "PUERTO LEGUÍZAMO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86749",
+            "name": "SIBUNDOY",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86755",
+            "name": "SAN FRANCISCO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86757",
+            "name": "SAN MIGUEL",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86760",
+            "name": "SANTIAGO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86865",
+            "name": "VALLE DEL GUAMUEZ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "86",
+            "code": "86885",
+            "name": "VILLAGARZÓN",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "88",
+            "code": "88001",
+            "name": "SAN ANDRÉS",
+            "type": "Isla"
+        },
+        {
+            "subdivision_code": "88",
+            "code": "88564",
+            "name": "PROVIDENCIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91001",
+            "name": "LETICIA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91263",
+            "name": "EL ENCANTO",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91405",
+            "name": "LA CHORRERA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91407",
+            "name": "LA PEDRERA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91430",
+            "name": "LA VICTORIA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91460",
+            "name": "MIRITÍ - PARANÁ",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91530",
+            "name": "PUERTO ALEGRÍA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91536",
+            "name": "PUERTO ARICA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91540",
+            "name": "PUERTO NARIÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91669",
+            "name": "PUERTO SANTANDER",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "91",
+            "code": "91798",
+            "name": "TARAPACÁ",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94001",
+            "name": "INÍRIDA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94343",
+            "name": "BARRANCOMINAS",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94883",
+            "name": "SAN FELIPE",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94884",
+            "name": "PUERTO COLOMBIA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94885",
+            "name": "LA GUADALUPE",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94886",
+            "name": "CACAHUAL",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94887",
+            "name": "PANA PANA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "94",
+            "code": "94888",
+            "name": "MORICHAL",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "95",
+            "code": "95001",
+            "name": "SAN JOSÉ DEL GUAVIARE",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "95",
+            "code": "95015",
+            "name": "CALAMAR",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "95",
+            "code": "95025",
+            "name": "EL RETORNO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "95",
+            "code": "95200",
+            "name": "MIRAFLORES",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97001",
+            "name": "MITÚ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97161",
+            "name": "CARURÚ",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97511",
+            "name": "PACOA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97666",
+            "name": "TARAIRA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97777",
+            "name": "PAPUNAHUA",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "97",
+            "code": "97889",
+            "name": "YAVARATÉ",
+            "type": "Área no municipalizada"
+        },
+        {
+            "subdivision_code": "99",
+            "code": "99001",
+            "name": "PUERTO CARREÑO",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "99",
+            "code": "99524",
+            "name": "LA PRIMAVERA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "99",
+            "code": "99624",
+            "name": "SANTA ROSALÍA",
+            "type": "Municipio"
+        },
+        {
+            "subdivision_code": "99",
+            "code": "99773",
+            "name": "CUMARIBO",
+            "type": "Municipio"
+        }
+    ]
+}

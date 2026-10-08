@@ -15,9 +15,17 @@ const props = defineProps({
     reservation: { type: Object, default: null },
     identificationTypes: { type: Array, required: true },
     currency: { type: String, required: true },
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
 });
 
 const { t } = useI18n();
+
+const traEnabled = computed(
+    () =>
+        props.hotel?.country_code === 'CO' &&
+        Boolean(props.hotel?.current_compliance_profile?.enabled),
+);
 const currentStep = ref(1);
 const flowError = ref('');
 const rooms = ref(
@@ -40,9 +48,25 @@ function blankGuest(
         key,
         guest_id: null,
         first_name: '',
+        second_first_name: '',
         last_name: '',
+        second_last_name: '',
         identification_type_id: '',
         identification_number: '',
+        birth_date: '',
+        gender: '',
+        nationality: '',
+        residence_country: '',
+        residence_subdivision: '',
+        residence_locality: '',
+        origin_country: '',
+        origin_subdivision: '',
+        origin_locality: '',
+        destination_country: '',
+        destination_subdivision: '',
+        destination_locality: '',
+        travel_purpose: '',
+        transport_means: '',
         mobile: '',
         email: '',
     };
@@ -57,9 +81,26 @@ function initialGuests() {
         key: `reservation-guest-${entry.id}`,
         guest_id: entry.guest.id,
         first_name: entry.guest.first_name,
+        second_first_name: entry.guest.second_first_name ?? '',
         last_name: entry.guest.last_name,
+        second_last_name: entry.guest.second_last_name ?? '',
         identification_type_id: entry.guest.identification_type_id,
         identification_number: entry.guest.identification_number,
+        birth_date: entry.guest.birth_date ?? '',
+        gender: entry.guest.gender ?? '',
+        nationality: entry.guest.nationality ?? '',
+        residence_country:
+            entry.residence_country ?? entry.guest.residence_country ?? '',
+        residence_subdivision: entry.residence_subdivision ?? '',
+        residence_locality: entry.residence_locality ?? '',
+        origin_country: entry.origin_country ?? '',
+        origin_subdivision: entry.origin_subdivision ?? '',
+        origin_locality: entry.origin_locality ?? '',
+        destination_country: entry.destination_country ?? '',
+        destination_subdivision: entry.destination_subdivision ?? '',
+        destination_locality: entry.destination_locality ?? '',
+        travel_purpose: entry.travel_purpose ?? '',
+        transport_means: entry.transport_means ?? '',
         mobile: entry.guest.mobile ?? '',
         email: entry.guest.email ?? '',
     }));
@@ -76,6 +117,9 @@ function initialReservedRooms() {
         guest_keys: reservedRoom.reservation_guests.map(
             (reservationGuest) => `reservation-guest-${reservationGuest.id}`,
         ),
+        principal_guest_key: reservedRoom.principal_guest_id
+            ? `reservation-guest-${props.reservation.reservation_guests.find((entry) => entry.guest_id === reservedRoom.principal_guest_id)?.id ?? ''}`
+            : '',
     }));
 }
 
@@ -178,6 +222,10 @@ function removeGuest(index) {
 
     form.reserved_rooms.forEach((room) => {
         room.guest_keys = room.guest_keys.filter((key) => key !== removed.key);
+
+        if (room.principal_guest_key === removed.key) {
+            room.principal_guest_key = '';
+        }
     });
 }
 
@@ -188,9 +236,15 @@ function selectGuest(index, guest) {
         key: entry.key,
         guest_id: guest.id,
         first_name: guest.first_name,
+        second_first_name: guest.second_first_name ?? '',
         last_name: guest.last_name,
+        second_last_name: guest.second_last_name ?? '',
         identification_type_id: guest.identification_type_id,
         identification_number: guest.identification_number,
+        birth_date: guest.birth_date ?? '',
+        gender: guest.gender ?? '',
+        nationality: guest.nationality ?? '',
+        residence_country: guest.residence_country ?? '',
         mobile: guest.mobile ?? '',
         email: guest.email ?? '',
     });
@@ -219,6 +273,7 @@ function toggleRoom(room) {
         room_id: room.id,
         nightly_rate: room.reference_price,
         guest_keys: [],
+        principal_guest_key: '',
     });
 }
 
@@ -233,8 +288,20 @@ function updateRoomRate(roomId, nightlyRate) {
 function assignGuest(guestKey, roomId) {
     form.reserved_rooms.forEach((room) => {
         room.guest_keys = room.guest_keys.filter((key) => key !== guestKey);
+
+        if (room.principal_guest_key === guestKey) {
+            room.principal_guest_key = '';
+        }
     });
     roomSelection(roomId)?.guest_keys.push(guestKey);
+}
+
+function selectPrincipal(roomId, guestKey) {
+    const selection = roomSelection(roomId);
+
+    if (selection) {
+        selection.principal_guest_key = guestKey;
+    }
 }
 
 function validateDates() {
@@ -277,6 +344,15 @@ function validateRooms() {
 
     if (!form.reserved_rooms.length || hasUnassignedGuest) {
         flowError.value = t('reservations.form.errors.rooms');
+
+        return false;
+    }
+
+    if (
+        traEnabled.value &&
+        form.reserved_rooms.some((room) => !room.principal_guest_key)
+    ) {
+        flowError.value = t('reservations.form.errors.principal');
 
         return false;
     }
@@ -379,6 +455,8 @@ onUnmounted(() => availabilityRequest?.abort());
                     :guests="form.guests"
                     :responsible-guest-key="form.responsible_guest_key"
                     :identification-types="identificationTypes"
+                    :countries="countries"
+                    :subdivisions="subdivisions"
                     :errors="form.errors"
                     @add-guest="addCompanion"
                     @remove-guest="removeGuest"
@@ -394,9 +472,11 @@ onUnmounted(() => availabilityRequest?.abort());
                     :errors="form.errors"
                     :loading="loadingRooms"
                     :currency="currency"
+                    :tra-enabled="traEnabled"
                     @toggle-room="toggleRoom"
                     @update-room-rate="updateRoomRate"
                     @assign-guest="assignGuest"
+                    @select-principal="selectPrincipal"
                 />
                 <ReservationReviewStep
                     v-else

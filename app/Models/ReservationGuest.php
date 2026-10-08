@@ -18,12 +18,37 @@ use Illuminate\Support\Carbon;
  * @property int $reservation_id
  * @property int $guest_id
  * @property StayGuestRole $role
+ * @property string|null $residence_country
+ * @property string|null $residence_subdivision
+ * @property string|null $residence_locality
+ * @property string|null $origin_country
+ * @property string|null $origin_subdivision
+ * @property string|null $origin_locality
+ * @property string|null $destination_country
+ * @property string|null $destination_subdivision
+ * @property string|null $destination_locality
+ * @property string|null $travel_purpose
+ * @property string|null $transport_means
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
  * @mixin \Eloquent
  */
-#[Fillable(['guest_id', 'role'])]
+#[Fillable([
+    'guest_id',
+    'role',
+    'residence_country',
+    'residence_subdivision',
+    'residence_locality',
+    'origin_country',
+    'origin_subdivision',
+    'origin_locality',
+    'destination_country',
+    'destination_subdivision',
+    'destination_locality',
+    'travel_purpose',
+    'transport_means',
+])]
 class ReservationGuest extends Model
 {
     /** @use HasFactory<ReservationGuestFactory> */

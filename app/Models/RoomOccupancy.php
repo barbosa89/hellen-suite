@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property int $stay_id
  * @property int|null $stay_folio_id
  * @property int $room_id
+ * @property int|null $principal_guest_id
  * @property string $nightly_rate
  * @property Carbon $checked_in_at
  * @property Carbon $expected_check_out_on
@@ -33,6 +34,7 @@ use Illuminate\Support\Carbon;
     'stay_id',
     'stay_folio_id',
     'room_id',
+    'principal_guest_id',
     'nightly_rate',
     'checked_in_at',
     'expected_check_out_on',
@@ -60,6 +62,12 @@ class RoomOccupancy extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    /** @return BelongsTo<Guest, $this> */
+    public function principalGuest(): BelongsTo
+    {
+        return $this->belongsTo(Guest::class, 'principal_guest_id');
     }
 
     /** @return BelongsToMany<Guest, $this> */

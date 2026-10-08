@@ -41,6 +41,21 @@ return [
         'image' => [
             'label' => 'Imagen',
         ],
+        'country_code' => [
+            'label' => 'País',
+        ],
+        'timezone' => [
+            'label' => 'Zona horaria',
+        ],
+        'establishment_code' => [
+            'label' => 'Código del establecimiento',
+        ],
+        'credential' => [
+            'label' => 'Credencial',
+        ],
+        'compliance_enabled' => [
+            'label' => 'Habilitar reporte de cumplimiento',
+        ],
     ],
 
     'pages' => [
@@ -83,6 +98,25 @@ return [
             'title' => 'Imagen de la propiedad',
             'description' => 'Usa una fotografía reconocible para encontrar el hotel rápidamente en el directorio.',
         ],
+        'compliance' => [
+            'title' => 'Jurisdicción y cumplimiento',
+            'description' => 'El país del hotel determina qué reportes legales aplican. La moneda no define la jurisdicción.',
+            'country_hint' => 'Se usa para activar el paquete de cumplimiento del país, por ejemplo TRA en Colombia.',
+            'timezone_hint' => 'Se usa para fechar los reportes legales en hora local.',
+            'co_tra_title' => 'Tarjeta de Registro de Alojamiento (Colombia)',
+            'co_tra_description' => 'Reporta huéspedes principales y acompañantes al MinCIT. Requiere RNT activo y token del PMS.',
+            'co_tra_token_hint' => 'Se genera en el portal del MinCIT y llega al correo registrado en el RNT. Déjalo en blanco para conservar el actual.',
+            'co_tra_configured' => 'Token registrado.',
+            'co_tra_not_configured' => 'Sin token registrado.',
+            'generic_title' => 'Registro de huéspedes',
+            'generic_description' => 'Sin paquete legal específico para este país. Se usa el registro interno de huéspedes.',
+        ],
+    ],
+
+    'validation' => [
+        'compliance_requires_co' => 'El reporte TRA solo aplica para hoteles en Colombia.',
+        'establishment_code_required' => 'El código del establecimiento es obligatorio cuando el cumplimiento está habilitado.',
+        'credential_required' => 'La credencial es obligatoria cuando el cumplimiento está habilitado.',
     ],
 
     'management' => [

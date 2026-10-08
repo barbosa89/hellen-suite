@@ -3,6 +3,7 @@ import ActionLink from '@/Components/ActionLink.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import FlashMessage from '@/Components/FlashMessage.vue';
 import Modal from '@/Components/Modal.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination.vue';
@@ -12,7 +13,6 @@ import HotelAvatar from '@/Pages/Hotels/Components/HotelAvatar.vue';
 import {
     ArrowTopRightOnSquareIcon,
     BuildingOffice2Icon,
-    CheckCircleIcon,
     EllipsisVerticalIcon,
     EnvelopeIcon,
     EyeIcon,
@@ -111,14 +111,10 @@ function destroy() {
                     </template>
                 </PageHeader>
 
-                <div
+                <FlashMessage
                     v-if="props.flash.success"
-                    class="bg-success-50 text-success-800 ring-success-200 dark:bg-success-900/25 dark:text-success-300 dark:ring-success-800 flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium ring-1"
-                    role="status"
-                >
-                    <CheckCircleIcon class="mt-0.5 h-5 w-5 shrink-0" />
-                    {{ props.flash.success }}
-                </div>
+                    :message="props.flash.success"
+                />
 
                 <section
                     class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"

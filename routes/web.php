@@ -19,6 +19,7 @@ use App\Http\Controllers\HandOverCashShiftController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelImageController;
 use App\Http\Controllers\HotelManagementController;
+use App\Http\Controllers\JurisdictionLocalityController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MarkReservationNoShowController;
 use App\Http\Controllers\PaymentController;
@@ -67,6 +68,9 @@ Route::resource('hotels.rooms', RoomController::class)
 
 Route::get('/hotels/{hotel}/guests/lookup', GuestLookupController::class)
     ->name('hotels.guests.lookup');
+
+Route::get('/hotels/{hotel}/jurisdiction-localities', JurisdictionLocalityController::class)
+    ->name('hotels.jurisdiction-localities.index');
 
 Route::resource('hotels.guests', GuestController::class)
     ->except('destroy')

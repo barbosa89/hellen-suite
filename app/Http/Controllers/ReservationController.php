@@ -13,6 +13,7 @@ use App\Models\Hotel;
 use App\Models\IdentificationType;
 use App\Models\Reservation;
 use App\Settings\GeneralSettings;
+use App\Support\Countries;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -56,6 +57,8 @@ class ReservationController extends Controller
             'hotel' => $hotel,
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
             'currency' => $settings->currency,
+            'countries' => Countries::alpha3(),
+            'subdivisions' => Countries::subdivisions($hotel->country_code ?? 'CO'),
         ]);
     }
 
@@ -103,6 +106,8 @@ class ReservationController extends Controller
             'reservation' => $reservation,
             'identificationTypes' => IdentificationType::query()->orderBy('code')->get(['id', 'code']),
             'currency' => $settings->currency,
+            'countries' => Countries::alpha3(),
+            'subdivisions' => Countries::subdivisions($hotel->country_code ?? 'CO'),
         ]);
     }
 

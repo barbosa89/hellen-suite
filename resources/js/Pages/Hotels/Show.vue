@@ -16,6 +16,7 @@ import {
     PhotoIcon,
 } from '@heroicons/vue/24/outline';
 import { Head } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -34,7 +35,33 @@ const details = [
     { key: 'phone', icon: PhoneIcon, tabular: true },
     { key: 'mobile', icon: DevicePhoneMobileIcon, tabular: true },
     { key: 'email', icon: EnvelopeIcon },
+    { key: 'country_code', icon: MapPinIcon },
+    { key: 'timezone', icon: MapPinIcon },
+    {
+        key: 'establishment_code',
+        icon: IdentificationIcon,
+        tabular: true,
+        value: props.hotel.current_compliance_profile?.establishment_code,
+    },
 ];
+
+const traStatus = computed(() => {
+    if (props.hotel.country_code !== 'CO') {
+        return null;
+    }
+
+    const profile = props.hotel.current_compliance_profile;
+
+    if (profile?.enabled && profile?.configured) {
+        return 'active';
+    }
+
+    if (profile?.enabled) {
+        return 'pending';
+    }
+
+    return 'inactive';
+});
 </script>
 
 <template>
@@ -137,12 +164,51 @@ const details = [
                                         "
                                     >
                                         {{
+                                            detail.value ??
                                             props.hotel[detail.key] ??
                                             t('app.not_provided')
                                         }}
                                     </dd>
                                 </div>
                             </dl>
+
+                            <div
+                                v-if="traStatus"
+                                class="mt-5 rounded-xl bg-neutral-50 p-4 text-sm leading-6 dark:bg-neutral-950/60"
+                            >
+                                <p
+                                    class="font-semibold text-neutral-950 dark:text-white"
+                                >
+                                    {{
+                                        t('hotels.form.compliance.co_tra_title')
+                                    }}
+                                </p>
+                                <p
+                                    class="mt-1 text-neutral-600 dark:text-neutral-400"
+                                >
+                                    <span v-if="traStatus === 'active'">
+                                        {{
+                                            t(
+                                                'hotels.form.compliance.co_tra_configured',
+                                            )
+                                        }}
+                                    </span>
+                                    <span v-else-if="traStatus === 'pending'">
+                                        {{
+                                            t(
+                                                'hotels.form.compliance.co_tra_not_configured',
+                                            )
+                                        }}
+                                    </span>
+                                    <span v-else>
+                                        {{
+                                            t(
+                                                'hotels.form.compliance.generic_description',
+                                            )
+                                        }}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
 
                         <figure

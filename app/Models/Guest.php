@@ -18,8 +18,14 @@ use Illuminate\Support\Carbon;
  * @property int $hotel_id
  * @property int $identification_type_id
  * @property string $first_name
+ * @property string|null $second_first_name
  * @property string $last_name
+ * @property string|null $second_last_name
  * @property string $identification_number
+ * @property Carbon|null $birth_date
+ * @property string|null $gender
+ * @property string|null $nationality
+ * @property string|null $residence_country
  * @property string|null $mobile
  * @property string|null $email
  * @property Carbon|null $created_at
@@ -30,8 +36,14 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'identification_type_id',
     'first_name',
+    'second_first_name',
     'last_name',
+    'second_last_name',
     'identification_number',
+    'birth_date',
+    'gender',
+    'nationality',
+    'residence_country',
     'mobile',
     'email',
 ])]
@@ -80,5 +92,13 @@ class Guest extends Model
     public function responsibleReservations(): HasMany
     {
         return $this->hasMany(Reservation::class, 'responsible_guest_id');
+    }
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'birth_date' => 'date:Y-m-d',
+        ];
     }
 }

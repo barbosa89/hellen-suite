@@ -10,6 +10,8 @@ defineProps({
     reservation: Object,
     identificationTypes: Array,
     currency: String,
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
 });
 const { t } = useI18n();
 </script>
@@ -28,6 +30,8 @@ const { t } = useI18n();
                     :reservation="reservation"
                     :identification-types="identificationTypes"
                     :currency="currency"
+                    :countries="countries"
+                    :subdivisions="subdivisions"
                 />
             </div>
         </div>

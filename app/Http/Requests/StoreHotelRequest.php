@@ -8,12 +8,20 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Validator;
 
 class StoreHotelRequest extends FormRequest
 {
+    use Concerns\HasHotelComplianceRules;
+
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->normalizeCompliance();
     }
 
     /**
@@ -33,6 +41,12 @@ class StoreHotelRequest extends FormRequest
                 File::image()->max('1mb'),
                 'mimes:jpg,jpeg,png,webp',
             ],
+            ...$this->complianceRules(),
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $this->validateCompliance($validator);
     }
 }

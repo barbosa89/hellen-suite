@@ -112,7 +112,7 @@ function dateTime(value) {
                         :href="payment.support_url"
                         target="_blank"
                         rel="noopener"
-                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-neutral-300 px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:bg-neutral-50 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus-visible:ring-offset-neutral-900"
+                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 shadow-sm transition-[background-color,border-color,color,box-shadow] duration-150 ease-out hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden motion-reduce:transition-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-white dark:focus-visible:ring-offset-neutral-950"
                     >
                         <PaperClipIcon class="h-4 w-4" />
                         {{ t('payments.actions.view_support') }}
@@ -122,7 +122,7 @@ function dateTime(value) {
                         :href="payment.voucher_a4_url"
                         target="_blank"
                         rel="noopener"
-                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-neutral-300 px-3 py-2 text-xs font-semibold text-neutral-700 transition hover:bg-neutral-50 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus-visible:ring-offset-neutral-900"
+                        class="focus-visible:ring-primary-500 inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 shadow-sm transition-[background-color,border-color,color,box-shadow] duration-150 ease-out hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden motion-reduce:transition-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-white dark:focus-visible:ring-offset-neutral-950"
                     >
                         <PrinterIcon class="h-4 w-4" />
                         {{ t('payments.actions.print_a4') }}
@@ -132,7 +132,7 @@ function dateTime(value) {
                         :href="payment.voucher_thermal_url"
                         target="_blank"
                         rel="noopener"
-                        class="bg-primary-700 hover:bg-primary-800 focus-visible:ring-primary-500 dark:bg-primary-400 dark:hover:bg-primary-300 inline-flex min-h-9 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:text-neutral-950 dark:focus-visible:ring-offset-neutral-900"
+                        class="border-primary-800 bg-primary-800 hover:border-primary-900 hover:bg-primary-900 active:border-primary-900 active:bg-primary-900 dark:border-primary-400 dark:bg-primary-400 dark:hover:border-primary-300 dark:hover:bg-primary-300 dark:active:border-primary-300 dark:active:bg-primary-300 focus-visible:ring-primary-500 inline-flex min-h-9 items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold text-white shadow-sm transition-[background-color,border-color,color,box-shadow] duration-150 ease-out focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden motion-reduce:transition-none dark:text-neutral-950 dark:focus-visible:ring-offset-neutral-950"
                     >
                         <PrinterIcon class="h-4 w-4" />
                         {{ t('payments.actions.print_thermal') }}

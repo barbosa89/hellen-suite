@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Hotels;
 
 use App\Models\Hotel;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateHotel extends CreateHotel
@@ -24,7 +25,12 @@ class UpdateHotel extends CreateHotel
             }
         }
 
-        $this->hotel->update($this->data);
+        $this->hotel->update(Arr::except($this->data, ['establishment_code', 'credential', 'compliance_enabled']));
+
+        new SyncHotelComplianceProfile()->execute(
+            $this->hotel->refresh(),
+            Arr::only($this->data, ['establishment_code', 'credential', 'compliance_enabled']),
+        );
 
         return $this->hotel;
     }

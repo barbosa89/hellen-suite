@@ -34,6 +34,12 @@ class StoreGuestRequest extends FormRequest
             ],
             'mobile' => ['nullable', 'string', 'max:30'],
             'email' => ['nullable', 'email', 'max:255'],
+            'second_first_name' => ['nullable', 'string', 'max:100'],
+            'second_last_name' => ['nullable', 'string', 'max:100'],
+            'birth_date' => ['nullable', 'date', 'before:today'],
+            'gender' => ['nullable', 'string', Rule::in(['M', 'F'])],
+            'nationality' => ['nullable', 'string', 'size:3'],
+            'residence_country' => ['nullable', 'string', 'size:3'],
         ];
     }
 }

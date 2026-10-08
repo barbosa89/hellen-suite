@@ -156,7 +156,7 @@ function onDrop(event) {
                 <span class="min-w-0 truncate">{{ file.name }}</span>
                 <button
                     type="button"
-                    class="hover:text-danger-600 focus-visible:ring-primary-500 dark:hover:text-danger-400 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-neutral-600 transition-colors hover:bg-white focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none sm:h-9 sm:w-9 dark:text-neutral-400 dark:hover:bg-neutral-800"
+                    class="hover:text-danger-600 focus-visible:ring-primary-500 dark:hover:text-danger-400 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-white focus-visible:ring-2 focus-visible:outline-hidden motion-reduce:transition-none sm:h-9 sm:w-9 dark:text-neutral-400 dark:hover:bg-neutral-800"
                     :aria-label="t('app.upload.remove', { name: file.name })"
                     @click="removeFile(index)"
                 >

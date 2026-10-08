@@ -4,7 +4,12 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import GuestForm from '@/Pages/Hotels/Guests/Components/GuestForm.vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
-defineProps({ hotel: Object, guest: Object, identificationTypes: Array });
+defineProps({
+    hotel: Object,
+    guest: Object,
+    identificationTypes: Array,
+    countries: { type: Array, default: () => [] },
+});
 const { t } = useI18n();
 </script>
 <template>
@@ -19,6 +24,7 @@ const { t } = useI18n();
                     :hotel="hotel"
                     :guest="guest"
                     :identification-types="identificationTypes"
+                    :countries="countries"
                 />
             </div></div
     ></DefaultLayout>

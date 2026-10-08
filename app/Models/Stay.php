@@ -78,6 +78,12 @@ class Stay extends Model
         return $this->hasMany(StayFolio::class);
     }
 
+    /** @return HasMany<TraSubmission, $this> */
+    public function traSubmissions(): HasMany
+    {
+        return $this->hasMany(TraSubmission::class);
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

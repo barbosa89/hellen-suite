@@ -15,7 +15,7 @@ class GuestLookupController extends Controller
         $search = $request->query('search', '');
 
         $guests = $hotel->guests()
-            ->select(['id', 'identification_type_id', 'first_name', 'last_name', 'identification_number', 'mobile', 'email'])
+            ->select(['id', 'identification_type_id', 'first_name', 'second_first_name', 'last_name', 'second_last_name', 'identification_number', 'birth_date', 'gender', 'nationality', 'residence_country', 'mobile', 'email'])
             ->with('identificationType:id,code')
             ->when(! blank($search), function ($query) use ($search): void {
                 $query->where(function ($query) use ($search): void {

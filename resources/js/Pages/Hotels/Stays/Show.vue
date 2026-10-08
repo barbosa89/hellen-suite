@@ -11,6 +11,7 @@ import GuestFields from '@/Pages/Hotels/Guests/Components/GuestFields.vue';
 import GuestLookupField from '@/Pages/Hotels/Guests/Components/GuestLookupField.vue';
 import FinancialActionModal from '@/Pages/Hotels/Stays/Components/FinancialActionModal.vue';
 import StayFinancialSummary from '@/Pages/Hotels/Stays/Components/StayFinancialSummary.vue';
+import StayTravelFields from '@/Pages/Hotels/Stays/Components/StayTravelFields.vue';
 import {
     ArrowPathIcon,
     ArrowsRightLeftIcon,
@@ -29,6 +30,8 @@ const props = defineProps({
     rooms: Array,
     identificationTypes: Array,
     currency: String,
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
 });
 const { t, locale } = useI18n();
 const isTransferOpen = ref(false);
@@ -49,9 +52,25 @@ const guestForm = useForm({
     room_occupancy_id: '',
     guest_id: null,
     first_name: '',
+    second_first_name: '',
     last_name: '',
+    second_last_name: '',
     identification_type_id: '',
     identification_number: '',
+    birth_date: '',
+    gender: '',
+    nationality: '',
+    residence_country: '',
+    residence_subdivision: '',
+    residence_locality: '',
+    origin_country: '',
+    origin_subdivision: '',
+    origin_locality: '',
+    destination_country: '',
+    destination_subdivision: '',
+    destination_locality: '',
+    travel_purpose: '',
+    transport_means: '',
     mobile: '',
     email: '',
 });
@@ -233,9 +252,15 @@ function selectGuest(guest) {
     Object.assign(guestForm, {
         guest_id: guest.id,
         first_name: guest.first_name,
+        second_first_name: guest.second_first_name ?? '',
         last_name: guest.last_name,
+        second_last_name: guest.second_last_name ?? '',
         identification_type_id: guest.identification_type_id,
         identification_number: guest.identification_number,
+        birth_date: guest.birth_date ?? '',
+        gender: guest.gender ?? '',
+        nationality: guest.nationality ?? '',
+        residence_country: guest.residence_country ?? '',
         mobile: guest.mobile ?? '',
         email: guest.email ?? '',
     });
@@ -923,10 +948,21 @@ function addGuest() {
                 <GuestFields
                     :guest="guestForm"
                     :identification-types="identificationTypes"
+                    :countries="countries"
                     :errors="guestForm.errors"
                     id-prefix="stay-guest"
                     :disabled="Boolean(guestForm.guest_id)"
                     @update:guest="Object.assign(guestForm, $event)"
+                />
+
+                <StayTravelFields
+                    :entry="guestForm"
+                    :hotel-id="hotel.id"
+                    :countries="countries"
+                    :subdivisions="subdivisions"
+                    :errors="guestForm.errors"
+                    id-prefix="stay-guest-travel"
+                    @update:entry="Object.assign(guestForm, $event)"
                 />
 
                 <div

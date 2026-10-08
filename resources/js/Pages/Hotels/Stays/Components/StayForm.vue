@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import StayTravelFields from '@/Pages/Hotels/Stays/Components/StayTravelFields.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {
     BuildingOffice2Icon,
@@ -26,8 +27,16 @@ const props = defineProps({
     rooms: Array,
     identificationTypes: Array,
     currency: String,
+    countries: { type: Array, default: () => [] },
+    subdivisions: { type: Array, default: () => [] },
 });
 const { t } = useI18n();
+
+const traEnabled = computed(
+    () =>
+        props.hotel?.country_code === 'CO' &&
+        Boolean(props.hotel?.current_compliance_profile?.enabled),
+);
 const currentStep = ref(1);
 const flowError = ref('');
 const availableRooms = ref(props.rooms);
@@ -46,9 +55,25 @@ function guest(
         key,
         guest_id: null,
         first_name: '',
+        second_first_name: '',
         last_name: '',
+        second_last_name: '',
         identification_type_id: '',
         identification_number: '',
+        birth_date: '',
+        gender: '',
+        nationality: '',
+        residence_country: '',
+        residence_subdivision: '',
+        residence_locality: '',
+        origin_country: '',
+        origin_subdivision: '',
+        origin_locality: '',
+        destination_country: '',
+        destination_subdivision: '',
+        destination_locality: '',
+        travel_purpose: '',
+        transport_means: '',
         mobile: '',
         email: '',
     };
@@ -116,6 +141,9 @@ function removeGuest(index) {
         occupancy.guest_keys = occupancy.guest_keys.filter(
             (key) => key !== removed.key,
         );
+        if (occupancy.principal_guest_key === removed.key) {
+            occupancy.principal_guest_key = '';
+        }
     });
 }
 function toggleRoom(room) {
@@ -130,6 +158,7 @@ function toggleRoom(room) {
         room_id: room.id,
         nightly_rate: room.reference_price,
         guest_keys: [],
+        principal_guest_key: '',
     });
 }
 function assignGuest(entry, roomId) {
@@ -137,6 +166,9 @@ function assignGuest(entry, roomId) {
         occupancy.guest_keys = occupancy.guest_keys.filter(
             (key) => key !== entry.key,
         );
+        if (occupancy.principal_guest_key === entry.key) {
+            occupancy.principal_guest_key = '';
+        }
     });
     const occupancy = occupancyForRoom(roomId);
     if (occupancy) {
@@ -155,9 +187,15 @@ function selectGuest(entry, selectedGuest) {
         key: entry.key,
         guest_id: selectedGuest.id,
         first_name: selectedGuest.first_name,
+        second_first_name: selectedGuest.second_first_name ?? '',
         last_name: selectedGuest.last_name,
+        second_last_name: selectedGuest.second_last_name ?? '',
         identification_type_id: selectedGuest.identification_type_id,
         identification_number: selectedGuest.identification_number,
+        birth_date: selectedGuest.birth_date ?? '',
+        gender: selectedGuest.gender ?? '',
+        nationality: selectedGuest.nationality ?? '',
+        residence_country: selectedGuest.residence_country ?? '',
         mobile: selectedGuest.mobile ?? '',
         email: selectedGuest.email ?? '',
     });
@@ -188,6 +226,11 @@ function validateRooms() {
     const overCapacity = selectedRooms.value.some(
         ({ room }) => roomGuestCount(room.id) > room.room_type.capacity,
     );
+    const missingPrincipal =
+        traEnabled.value &&
+        form.room_occupancies.some(
+            (occupancy) => !occupancy.principal_guest_key,
+        );
     if (!form.expected_check_out_on) {
         flowError.value = t('stays.form.messages.select_check_out');
         return false;
@@ -198,6 +241,10 @@ function validateRooms() {
     }
     if (!allGuestsAssigned || overCapacity) {
         flowError.value = t('stays.form.messages.assign_guests');
+        return false;
+    }
+    if (missingPrincipal) {
+        flowError.value = t('stays.form.messages.select_principal');
         return false;
     }
     return true;
@@ -408,11 +455,23 @@ watch(() => form.expected_check_out_on, refreshAvailableRooms);
                             <GuestFields
                                 :guest="entry"
                                 :identification-types="identificationTypes"
+                                :countries="countries"
                                 :errors="form.errors"
                                 :prefix="`guests.${index}`"
                                 :id-prefix="`stay-${entry.key}`"
                                 :disabled="Boolean(entry.guest_id)"
                                 @update:guest="Object.assign(entry, $event)"
+                            />
+                            <StayTravelFields
+                                class="mt-5"
+                                :entry="entry"
+                                :hotel-id="hotel.id"
+                                :countries="countries"
+                                :subdivisions="subdivisions"
+                                :errors="form.errors"
+                                :prefix="`guests.${index}`"
+                                :id-prefix="`stay-travel-${entry.key}`"
+                                @update:entry="Object.assign(entry, $event)"
                             />
                         </article>
                         <SecondaryButton
@@ -639,6 +698,56 @@ watch(() => form.expected_check_out_on, refreshAvailableRooms);
                                             }}
                                             {{ t('stays.form.rooms.assigned') }}
                                         </p>
+                                        <fieldset
+                                            v-if="traEnabled"
+                                            class="mt-3 grid gap-2"
+                                        >
+                                            <legend
+                                                class="text-xs font-semibold text-neutral-600 dark:text-neutral-400"
+                                            >
+                                                {{
+                                                    t(
+                                                        'stays.form.rooms.principal_label',
+                                                    )
+                                                }}
+                                            </legend>
+                                            <label
+                                                v-for="guestKey in occupancy.guest_keys"
+                                                :key="guestKey"
+                                                class="flex cursor-pointer items-center gap-2 text-sm text-neutral-950 dark:text-neutral-100"
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    :name="`principal-${index}`"
+                                                    :value="guestKey"
+                                                    v-model="
+                                                        occupancy.principal_guest_key
+                                                    "
+                                                    class="text-primary-600 focus:ring-primary-500 h-4 w-4 border-neutral-300"
+                                                />
+                                                {{
+                                                    guestName(
+                                                        form.guests.find(
+                                                            (entry) =>
+                                                                entry.key ===
+                                                                guestKey,
+                                                        ) ?? {},
+                                                        form.guests.findIndex(
+                                                            (entry) =>
+                                                                entry.key ===
+                                                                guestKey,
+                                                        ),
+                                                    )
+                                                }}
+                                            </label>
+                                            <InputError
+                                                :message="
+                                                    form.errors[
+                                                        `room_occupancies.${index}.principal_guest_key`
+                                                    ]
+                                                "
+                                            />
+                                        </fieldset>
                                     </div>
                                     <div class="grid gap-2">
                                         <InputLabel

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Constants\ComplianceScheme;
 use App\Observers\HotelObserver;
 use Database\Factories\HotelFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -23,17 +24,23 @@ use Illuminate\Support\Carbon;
  * @property string|null $mobile
  * @property string|null $email
  * @property string|null $image
+ * @property string|null $country_code
+ * @property string|null $timezone
+ * @property HotelComplianceProfile|null $current_compliance_profile
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
  * @mixin \Eloquent
  */
 #[ObservedBy([HotelObserver::class])]
-#[Fillable(['business_name', 'tin', 'address', 'phone', 'mobile', 'email', 'image'])]
+#[Fillable(['business_name', 'tin', 'address', 'phone', 'mobile', 'email', 'image', 'country_code', 'timezone'])]
 class Hotel extends Model
 {
     /** @use HasFactory<HotelFactory> */
     use HasFactory;
+
+    /** @var list<string> */
+    protected $appends = ['current_compliance_profile'];
 
     /**
      * @return HasMany<Room, $this>
@@ -91,6 +98,46 @@ class Hotel extends Model
     public function paymentVouchers(): HasMany
     {
         return $this->hasMany(PaymentVoucher::class);
+    }
+
+    /** @return HasMany<TraSubmission, $this> */
+    public function traSubmissions(): HasMany
+    {
+        return $this->hasMany(TraSubmission::class);
+    }
+
+    /** @return HasMany<HotelComplianceProfile, $this> */
+    public function complianceProfiles(): HasMany
+    {
+        return $this->hasMany(HotelComplianceProfile::class);
+    }
+
+    public function complianceStrategy(): string
+    {
+        if ($this->country_code === 'CO') {
+            return 'co-tra';
+        }
+
+        return ComplianceScheme::Generic->value;
+    }
+
+    public function resolveCurrentComplianceProfile(): null|HotelComplianceProfile
+    {
+        if (blank($this->country_code)) {
+            return null;
+        }
+
+        return $this->complianceProfiles()
+            ->where('jurisdiction', $this->country_code)
+            ->where('scheme', HotelComplianceProfile::schemeForJurisdiction($this->country_code))
+            ->first();
+    }
+
+    protected function currentComplianceProfile(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): null|HotelComplianceProfile => $this->resolveCurrentComplianceProfile(),
+        );
     }
 
     protected function image(): Attribute

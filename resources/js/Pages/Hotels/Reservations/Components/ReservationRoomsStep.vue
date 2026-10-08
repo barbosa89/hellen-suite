@@ -17,9 +17,15 @@ const props = defineProps({
     errors: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: false },
     currency: { type: String, required: true },
+    traEnabled: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['toggle-room', 'update-room-rate', 'assign-guest']);
+const emit = defineEmits([
+    'toggle-room',
+    'update-room-rate',
+    'assign-guest',
+    'select-principal',
+]);
 const { t, locale } = useI18n();
 
 const selectedRoomIds = computed(() =>
@@ -50,6 +56,19 @@ function assignedRoomId(guest) {
 }
 
 function guestName(guest) {
+    return (
+        `${guest.first_name} ${guest.last_name}`.trim() ||
+        t('reservations.form.guests.unnamed')
+    );
+}
+
+function guestNameFor(guestKey) {
+    const guest = props.guests.find((entry) => entry.key === guestKey);
+
+    if (!guest) {
+        return guestKey;
+    }
+
     return (
         `${guest.first_name} ${guest.last_name}`.trim() ||
         t('reservations.form.guests.unnamed')
@@ -157,6 +176,46 @@ function formatMoney(value) {
                             }}
                             {{ t('reservations.form.rooms.assigned') }}
                         </p>
+                        <fieldset v-if="traEnabled" class="mt-3 grid gap-2">
+                            <legend
+                                class="text-xs font-semibold text-neutral-600 dark:text-neutral-400"
+                            >
+                                {{
+                                    t('reservations.form.rooms.principal_label')
+                                }}
+                            </legend>
+                            <label
+                                v-for="guestKey in selection.guest_keys"
+                                :key="guestKey"
+                                class="flex cursor-pointer items-center gap-2 text-sm text-neutral-950 dark:text-neutral-100"
+                            >
+                                <input
+                                    type="radio"
+                                    :name="`principal-${index}`"
+                                    :value="guestKey"
+                                    :checked="
+                                        selection.principal_guest_key ===
+                                        guestKey
+                                    "
+                                    class="text-primary-600 focus:ring-primary-500 h-4 w-4 border-neutral-300"
+                                    @change="
+                                        emit(
+                                            'select-principal',
+                                            room.id,
+                                            guestKey,
+                                        )
+                                    "
+                                />
+                                {{ guestNameFor(guestKey) }}
+                            </label>
+                            <InputError
+                                :message="
+                                    errors[
+                                        `reserved_rooms.${index}.principal_guest_key`
+                                    ]
+                                "
+                            />
+                        </fieldset>
                     </div>
                     <div class="grid gap-2">
                         <InputLabel

@@ -7,20 +7,14 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <HotelLayout>
-        <template #header>
-            <h2
-                class="text-xl leading-tight font-semibold text-neutral-800 dark:text-neutral-200"
-            >
-                Dashboard
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8 2xl:px-10">
+            <div class="grid gap-7">
                 <div
-                    class="overflow-hidden bg-white shadow-xs sm:rounded-lg dark:bg-neutral-800"
+                    class="overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900"
                 >
-                    <div class="p-6 text-neutral-900 dark:text-neutral-100">
+                    <div
+                        class="p-6 text-neutral-900 sm:p-7 dark:text-neutral-100"
+                    >
                         You're logged in!
                     </div>
                 </div>

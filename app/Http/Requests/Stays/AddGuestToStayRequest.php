@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Stays;
 
+use App\Http\Requests\Concerns\HasTraGuestRules;
 use App\Models\Hotel;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -12,6 +13,8 @@ use Illuminate\Validation\Validator;
 
 class AddGuestToStayRequest extends FormRequest
 {
+    use HasTraGuestRules;
+
     public function authorize(): bool
     {
         return true;
@@ -35,6 +38,8 @@ class AddGuestToStayRequest extends FormRequest
             'identification_number' => ['required_without:guest_id', 'nullable', 'string', 'max:50'],
             'mobile' => ['nullable', 'string', 'max:30'],
             'email' => ['nullable', 'email', 'max:255'],
+            ...$this->guestIdentityRules(''),
+            ...$this->travelSnapshotRules(''),
         ];
     }
 
@@ -42,24 +47,24 @@ class AddGuestToStayRequest extends FormRequest
     public function after(): array
     {
         return [function (Validator $validator): void {
-            if ($this->filled('guest_id') || $validator->errors()->hasAny([
-                'identification_type_id',
-                'identification_number',
-            ])) {
-                return;
-            }
-
             /** @var Hotel $hotel */
             $hotel = $this->route('hotel');
 
-            $guestExists = $hotel->guests()
-                ->where('identification_type_id', $this->integer('identification_type_id'))
-                ->where('identification_number', $this->string('identification_number')->toString())
-                ->exists();
+            if (! $this->filled('guest_id') && ! $validator->errors()->hasAny([
+                'identification_type_id',
+                'identification_number',
+            ])) {
+                $guestExists = $hotel->guests()
+                    ->where('identification_type_id', $this->integer('identification_type_id'))
+                    ->where('identification_number', $this->string('identification_number')->toString())
+                    ->exists();
 
-            if ($guestExists) {
-                $validator->errors()->add('identification_number', trans('stays.validation.duplicate_guest'));
+                if ($guestExists) {
+                    $validator->errors()->add('identification_number', trans('stays.validation.duplicate_guest'));
+                }
             }
+
+            $this->validateTraGuests($validator, $hotel, [$this->input()], '');
         }];
     }
 }
