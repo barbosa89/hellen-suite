@@ -10,7 +10,6 @@ use App\Constants\StayGuestRole;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\HotelComplianceProfile;
-use App\Models\IdentificationType;
 use App\Models\Room;
 use App\Models\RoomOccupancy;
 use App\Models\RoomType;
@@ -33,8 +32,8 @@ trait InteractsWithTra
             'enabled' => true,
         ]);
 
-        $cc = IdentificationType::factory()->create(['code' => IdentificationTypeCode::CitizenshipId]);
-        $ce = IdentificationType::factory()->create(['code' => IdentificationTypeCode::ForeignerId]);
+        $cc = $this->identificationType(IdentificationTypeCode::CitizenshipId);
+        $ce = $this->identificationType(IdentificationTypeCode::ForeignerId);
 
         $juan = Guest::factory()->for($hotel)->create([
             'identification_type_id' => $cc->id,

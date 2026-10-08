@@ -7,7 +7,6 @@ namespace Tests\Feature\Tra;
 use App\Models\Guest;
 use App\Models\Hotel;
 use App\Models\HotelComplianceProfile;
-use App\Models\IdentificationType;
 use App\Models\Room;
 use App\Models\RoomType;
 use Database\Seeders\JurisdictionSubdivisionSeeder;
@@ -72,7 +71,7 @@ class TraCheckInValidationTest extends TestCase
 
         $roomType = RoomType::factory()->for($hotel)->create(['capacity' => 2]);
         $room = Room::factory()->for($hotel)->for($roomType)->create(['number' => '301']);
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
 
         $payload = [
             'expected_check_out_on' => now()->addDay()->toDateString(),

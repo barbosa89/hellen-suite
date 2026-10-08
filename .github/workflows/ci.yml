@@ -1,0 +1,99 @@
+name: run-tests
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: ubuntu-latest
+            php: '8.4'
+            laravel: '13.*'
+            stability: prefer-stable
+          - os: ubuntu-latest
+            php: '8.5'
+            laravel: '13.*'
+            stability: prefer-stable
+            coverage: true
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, sqlite3, bcmath, intl, gd, fileinfo
+          coverage: xdebug
+
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v6
+        with:
+          path: |
+            vendor
+            ~/.cache/composer
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            dependencies-php-${{ matrix.php }}-composer-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
+
+      - name: Setup application
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+          php artisan key:generate
+
+      - name: Build frontend assets
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Execute tests
+        if: matrix.coverage != true
+        run: vendor/bin/phpunit --testdox
+
+      - name: Execute tests with coverage
+        if: matrix.coverage == true
+        run: |
+          mkdir -p tests/coverage/php/logs
+          vendor/bin/phpunit --testdox \
+            --coverage-clover tests/coverage/php/logs/clover.xml \
+            --log-junit tests/coverage/php/report.junit.xml
+
+      - name: Run SonarQube analysis
+        if: matrix.coverage == true && env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v8

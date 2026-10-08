@@ -9,7 +9,6 @@ use App\Constants\StayGuestRole;
 use App\Constants\StayStatus;
 use App\Models\Guest;
 use App\Models\Hotel;
-use App\Models\IdentificationType;
 use App\Models\Room;
 use App\Models\RoomOccupancy;
 use App\Models\RoomType;
@@ -26,7 +25,7 @@ class StayStoreTest extends TestCase
     public function it_checks_in_a_group_with_existing_and_new_guests(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         [$firstRoom, $secondRoom] = $this->rooms($hotel);
 
@@ -66,7 +65,7 @@ class StayStoreTest extends TestCase
     public function it_rejects_a_dirty_or_occupied_room(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $guest = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         [$room] = $this->rooms($hotel);
         $room->update(['housekeeping_status' => HousekeepingStatus::Dirty]);
@@ -79,7 +78,7 @@ class StayStoreTest extends TestCase
     public function it_rejects_an_assignment_over_room_capacity(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         $roomType = RoomType::factory()->for($hotel)->create(['capacity' => 1]);
         $room = Room::factory()->for($hotel)->for($roomType)->create();
@@ -139,7 +138,7 @@ class StayStoreTest extends TestCase
     public function it_rejects_a_duplicate_new_guest_and_an_invalid_check_out_date(): void
     {
         $hotel = Hotel::factory()->create();
-        $identificationType = IdentificationType::factory()->create();
+        $identificationType = $this->identificationType();
         $responsible = Guest::factory()->for($hotel)->create(['identification_type_id' => $identificationType->id]);
         Guest::factory()->for($hotel)->create([
             'identification_type_id' => $identificationType->id,

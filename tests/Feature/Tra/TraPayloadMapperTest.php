@@ -6,7 +6,6 @@ namespace Tests\Feature\Tra;
 
 use App\Constants\IdentificationTypeCode;
 use App\Constants\TraSubmissionKind;
-use App\Models\IdentificationType;
 use App\Services\Tra\TraPayloadMapper;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -102,7 +101,7 @@ class TraPayloadMapperTest extends TestCase
         $principal->guest->update(['birth_date' => null]);
         $principal->update(['origin_locality' => null]);
 
-        $dni = IdentificationType::factory()->create(['code' => IdentificationTypeCode::ForeignNationalId]);
+        $dni = $this->identificationType(IdentificationTypeCode::ForeignNationalId);
         $principal->guest->update(['identification_type_id' => $dni->id]);
 
         $missing = (new TraPayloadMapper())->missingData($hotel, $stay, $occupancy, $principal->refresh(), TraSubmissionKind::Principal);
