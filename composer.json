@@ -88,6 +88,16 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -k -c \"#93c5fd,#c4b5fd\" \"php artisan native:run --no-interaction\" \"npm run dev\" --names=app,vite"
         ],
+        "native:build": [
+            "Composer\\Config::disableProcessTimeout @no_additional_args",
+            "@putenv NATIVEPHP_UPDATER_ENABLED=true @no_additional_args",
+            "@php artisan native:build"
+        ],
+        "native:publish": [
+            "Composer\\Config::disableProcessTimeout @no_additional_args",
+            "@putenv NATIVEPHP_UPDATER_ENABLED=true @no_additional_args",
+            "@php artisan native:publish"
+        ],
         "format": "vendor/bin/pint"
     },
     "extra": {
