@@ -3,8 +3,9 @@ require("@rushstack/eslint-patch/modern-module-resolution")
 
 module.exports = {
     root: true,
+    ignorePatterns: ["resources/js/lang/locales.js"],
     extends: [
-        "plugin:vue/vue3-essential",
+        "plugin:vue/essential",
         "eslint:recommended",
         "@vue/eslint-config-prettier"
     ],
