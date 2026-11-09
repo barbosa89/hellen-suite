@@ -1,0 +1,113 @@
+name: Release Windows
+
+on:
+  push:
+    tags:
+      - '[0-9]*'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag and master ancestry
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+        run: |
+          [[ "$RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/master
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, sqlite3, bcmath, intl, gd, fileinfo
+          coverage: none
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies and prepare application
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+          cp .env.example .env
+          touch database/database.sqlite
+          php artisan key:generate --no-interaction
+          npm ci --ignore-scripts
+          npm run build
+
+      - name: Validate NativePHP version
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+        run: |
+          version=$(php -r '$app = require "bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); echo config("nativephp.version");')
+          test "$version" = "$RELEASE_VERSION" || { echo "Tag $RELEASE_VERSION does not match NativePHP version $version"; exit 1; }
+
+      - name: Run tests
+        run: php artisan test --compact
+
+  publish:
+    needs: test
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      RELEASE_VERSION: ${{ github.ref_name }}
+      NATIVEPHP_UPDATER_ENABLED: 'true'
+      GITHUB_V_PREFIXED_TAG_NAME: 'false'
+      GITHUB_RELEASE_TYPE: draft
+      APP_ENV: production
+      APP_DEBUG: 'false'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pdo, pdo_sqlite, sqlite3, bcmath, intl, gd, fileinfo
+          coverage: none
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies and prepare application
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+          cp .env.example .env
+          sed -i 's/^APP_ENV=.*/APP_ENV=production/; s/^APP_DEBUG=.*/APP_DEBUG=false/' .env
+          php artisan key:generate --force --no-interaction
+          npm ci --ignore-scripts
+          php artisan app:native:install --no-interaction
+          # Do not cache the publication token in the packaged Laravel configuration.
+          sed -i "/'php artisan optimize',/d" config/nativephp.php
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$RELEASE_VERSION" --draft --title "v$RELEASE_VERSION" --generate-notes
+
+      - name: Build and upload Windows artifacts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: php artisan native:publish win x64 --no-interaction
+
+      - name: Verify artifacts and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_VERSION" --json assets --jq '.assets[].name' > "$RUNNER_TEMP/release-assets.txt"
+          grep -Eiq '\.exe$' "$RUNNER_TEMP/release-assets.txt"
+          grep -Fxq 'latest.yml' "$RUNNER_TEMP/release-assets.txt"
+          gh release edit "$RELEASE_VERSION" --draft=false
