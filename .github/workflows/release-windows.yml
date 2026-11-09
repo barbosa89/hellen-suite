@@ -47,7 +47,7 @@ jobs:
         env:
           RELEASE_VERSION: ${{ github.ref_name }}
         run: |
-          version=$(php -r '$app = require "bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); echo config("nativephp.version");')
+          version=$(php artisan app:native-app-version --no-ansi --no-interaction)
           test "$version" = "$RELEASE_VERSION" || { echo "Tag $RELEASE_VERSION does not match NativePHP version $version"; exit 1; }
 
       - name: Run tests
