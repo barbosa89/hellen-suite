@@ -274,10 +274,6 @@ rm -rf "$HOME/Library/Caches/electron-builder/nsis-3.0.4.1"
 
 Building and publishing from a Windows machine or Windows CI runner is the alternative that avoids cross-compilation and Rosetta entirely.
 
-## Release Documentation
-
-See [NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md](NATIVEPHP_BUILD_PUBLICACION_ACTUALIZACIONES.md) for the complete guide to signing, building, publishing, automatic updates, updater events, and migrations.
-
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Phenix, please send an e-mail to Omar Barbosa via [contacto@omarbarbosa.com](mailto:contacto@omarbarbosa.com). All security vulnerabilities will be promptly addressed.
