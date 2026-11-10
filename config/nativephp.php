@@ -63,6 +63,8 @@ return [
      * You may use wildcards to match multiple keys.
      */
     'cleanup_env_keys' => [
+        'APP_KEY',
+        'APP_PREVIOUS_KEYS',
         'AWS_*',
         'AZURE_*',
         'GITHUB_*',
@@ -168,7 +170,7 @@ return [
      */
     'prebuild' => [
         'npm run build',
-        'php artisan optimize',
+        'php artisan optimize:clear',
     ],
 
     'postbuild' => [
