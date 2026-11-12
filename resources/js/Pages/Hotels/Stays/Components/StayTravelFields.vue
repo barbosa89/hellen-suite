@@ -96,7 +96,7 @@ groups.forEach((kind) => {
 });
 
 const selectClasses =
-    'focus:border-primary-500 focus:ring-primary-500/20 min-h-11 rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm transition-[border-color,box-shadow] focus:ring-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-100';
+    'focus:border-primary-500 focus:ring-primary-500/20 min-h-11 min-w-0 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm transition-[border-color,box-shadow] focus:ring-2 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-60 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-100';
 </script>
 
 <template>
@@ -111,7 +111,7 @@ const selectClasses =
             >
                 {{ t(`stays.form.travel.${kind}.title`) }}
             </p>
-            <div class="grid content-start gap-2">
+            <div class="grid min-w-0 content-start gap-2">
                 <InputLabel
                     :for="`${idPrefix}-${kind}-country`"
                     :value="t('stays.form.travel.country.label')"
@@ -143,7 +143,7 @@ const selectClasses =
                 </select>
                 <InputError :message="error(`${kind}_country`).value" />
             </div>
-            <div class="grid content-start gap-2">
+            <div class="grid min-w-0 content-start gap-2">
                 <InputLabel
                     :for="`${idPrefix}-${kind}-subdivision`"
                     :value="t('stays.form.travel.subdivision.label')"
@@ -179,7 +179,7 @@ const selectClasses =
                 </select>
                 <InputError :message="error(`${kind}_subdivision`).value" />
             </div>
-            <div class="grid content-start gap-2">
+            <div class="grid min-w-0 content-start gap-2">
                 <InputLabel
                     :for="`${idPrefix}-${kind}-locality`"
                     :value="t('stays.form.travel.locality.label')"
