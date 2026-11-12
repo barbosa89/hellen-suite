@@ -2,7 +2,7 @@
 
 Hellen Suite is an application for managing hotels and similar businesses. It simplifies operational controls and administrative and management tasks.
 
-The application is available as both a web application and a desktop application powered by [NativePHP Desktop](https://nativephp.com/docs/desktop/2). It is currently under development and is not yet ready for production.
+The application is available as both a web application and a desktop application powered by [NativePHP Desktop](https://nativephp.com/docs/desktop/2).
 
 Website: [hellensuite.com](https://hellensuite.com)
 
