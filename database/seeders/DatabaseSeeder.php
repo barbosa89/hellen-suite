@@ -35,11 +35,11 @@ class DatabaseSeeder extends Seeder
             $hotel = Hotel::query()->updateOrCreate(
                 ['tin' => '900123456-7'],
                 [
-                    'business_name' => 'Hotel Hellen',
+                    'business_name' => 'Hellen Hotel',
                     'address' => '100 Main Street',
                     'phone' => '+1 555 0100',
                     'mobile' => '+1 555 0101',
-                    'email' => 'hotel@hellen.test',
+                    'email' => 'reservations@hellenhotel.com',
                     'image' => null,
                 ],
             );
