@@ -28,6 +28,7 @@ Homestead.yaml
 Thumbs.db
 backup
 !/app/Support/Backup/
+!/app/Actions/Backup/
 !/tests/Feature/Backup/
 .agents
 .atl
