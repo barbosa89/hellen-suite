@@ -8,6 +8,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import HotelLayout from '@/Layouts/HotelLayout.vue';
 import {
     ArrowLeftIcon,
+    ArrowUpTrayIcon,
     CheckIcon,
     CurrencyDollarIcon,
 } from '@heroicons/vue/24/outline';
@@ -21,6 +22,7 @@ const props = defineProps({
     currencies: { type: Array, required: true },
     flash: { type: Object, default: () => ({}) },
     missingSettings: { type: Array, required: true },
+    isDesktop: { type: Boolean, default: false },
 });
 
 const { t } = useI18n();
@@ -49,6 +51,14 @@ function currencyLabel(currency) {
                     :description="t('settings.pages.edit.description')"
                 >
                     <template #actions>
+                        <ActionLink
+                            v-if="isDesktop"
+                            :href="route('settings.backup.edit')"
+                            variant="ghost"
+                        >
+                            <ArrowUpTrayIcon class="h-4 w-4" />
+                            {{ t('backup.title') }}
+                        </ActionLink>
                         <ActionLink
                             :href="route('hotels.index')"
                             variant="ghost"

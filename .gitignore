@@ -27,6 +27,8 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 backup
+!/app/Support/Backup/
+!/tests/Feature/Backup/
 .agents
 .atl
 .opencode
