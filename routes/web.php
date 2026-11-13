@@ -11,6 +11,7 @@ use App\Http\Controllers\CheckOutRoomOccupancyController;
 use App\Http\Controllers\CheckOutStayController;
 use App\Http\Controllers\CloseCashShiftController;
 use App\Http\Controllers\ConfirmReservationController;
+use App\Http\Controllers\DesktopBackupController;
 use App\Http\Controllers\FolioAdjustmentController;
 use App\Http\Controllers\FolioChargeController;
 use App\Http\Controllers\GuestController;
@@ -37,6 +38,7 @@ use App\Http\Controllers\TransferRoomOccupancyController;
 use App\Http\Controllers\UpdateRoomHousekeepingStatusController;
 use App\Http\Controllers\UpdateStayExpectedCheckOutController;
 use App\Http\Middleware\EnsureAppConfigured;
+use App\Http\Middleware\EnsureDesktopApplication;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/locale', [LocaleController::class, 'update'])
@@ -55,6 +57,24 @@ Route::get('settings', [SettingsController::class, 'edit'])
 Route::put('settings', [SettingsController::class, 'update'])
     ->withoutMiddleware(EnsureAppConfigured::class)
     ->name('settings.update');
+
+Route::middleware(EnsureDesktopApplication::class)->group(function (): void {
+    Route::get('settings/backup', [DesktopBackupController::class, 'edit'])
+        ->withoutMiddleware(EnsureAppConfigured::class)
+        ->name('settings.backup.edit');
+    Route::post('settings/backup/export', [DesktopBackupController::class, 'store'])
+        ->withoutMiddleware(EnsureAppConfigured::class)
+        ->name('settings.backup.export');
+    Route::post('settings/backup/restore/select', [DesktopBackupController::class, 'select'])
+        ->withoutMiddleware(EnsureAppConfigured::class)
+        ->name('settings.backup.restore.select');
+    Route::post('settings/backup/restore/confirm', [DesktopBackupController::class, 'confirm'])
+        ->withoutMiddleware(EnsureAppConfigured::class)
+        ->name('settings.backup.restore.confirm');
+    Route::post('settings/backup/restore/cancel', [DesktopBackupController::class, 'cancel'])
+        ->withoutMiddleware(EnsureAppConfigured::class)
+        ->name('settings.backup.restore.cancel');
+});
 
 Route::get('/hotels/{hotel}/management', [HotelManagementController::class, 'index'])->name('hotels.management.index');
 Route::get('/hotels/{hotel}/image', [HotelImageController::class, 'show'])->name('hotels.image');

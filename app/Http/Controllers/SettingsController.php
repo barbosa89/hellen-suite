@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'currency' => $settings->currency,
             'currencies' => $currencies,
             'missingSettings' => $configuration->missingSettings(),
+            'isDesktop' => (bool) config('nativephp-internal.running', false),
         ]);
     }
 

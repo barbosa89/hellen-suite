@@ -49,6 +49,66 @@ export default {
             "password": "The provided password is incorrect.",
             "throttle": "Too many login attempts. Please try again in {seconds} seconds."
         },
+        "backup": {
+            "title": "Backup and restore",
+            "description": "Export a complete copy of the local data or restore one you saved earlier.",
+            "maintenance_unavailable": "The desktop application is temporarily unavailable. Wait for maintenance to finish and try again.",
+            "sections": {
+                "export": {
+                    "heading": "Create a backup",
+                    "description": "Save a single file with the local database, hotel images and payment support documents.",
+                    "action": "Create backup",
+                    "working": "Creating the backup…",
+                    "hint": "The application pauses briefly while the copy is prepared so the database and its attachments match.",
+                    "overwrite_action": "Replace the existing file",
+                    "overwrite_warning": "A file already exists at {path}. Replacing it removes the backup that is stored there."
+                },
+                "restore": {
+                    "heading": "Restore a backup",
+                    "description": "Replace everything stored on this computer with the contents of a backup file.",
+                    "action": "Choose backup file",
+                    "working": "Reading the backup…",
+                    "confirm_heading": "Replace the local data?",
+                    "confirm_description": "The current records, hotel images and payment documents on this computer will be replaced by the selected backup.",
+                    "confirm_action": "Restore now",
+                    "cancel": "Cancel",
+                    "hint": "Restoring replaces the local data entirely. It cannot be undone."
+                }
+            },
+            "warnings": {
+                "plain": "Backup files are not encrypted. Anyone with access to the file can read the guest and payment information it contains.",
+                "storage": "Store the file somewhere safe and separate from this computer.",
+                "keys": "Encrypted credentials can only be read again if the encryption key of this installation is available."
+            },
+            "details": {
+                "file": "File",
+                "created_at": "Created",
+                "application_version": "Hellen Suite version",
+                "files": "Included files",
+                "size": "Size"
+            },
+            "dialogs": {
+                "export": {
+                    "title": "Save the backup file",
+                    "button": "Save backup"
+                },
+                "restore": {
+                    "title": "Select a backup file",
+                    "button": "Select backup"
+                }
+            },
+            "messages": {
+                "export_completed": "The backup was saved to {path}.",
+                "export_cancelled": "The backup was cancelled and nothing was changed.",
+                "export_exists": "A file already exists at {path}. Choose a different name to keep it safe.",
+                "export_failed": "The backup could not be created: {reason}",
+                "restore_invalid": "The selected file is not a usable backup: {reason}",
+                "restore_cancelled": "No backup file was selected and nothing was changed.",
+                "restore_missing": "The selected backup is no longer available. Choose the file again.",
+                "restore_failed": "The backup could not be restored: {reason}",
+                "restore_completed": "The backup was restored. The application was reloaded with the restored data."
+            }
+        },
         "cash": {
             "title": "Cash and shifts",
             "description": "Control cash and reconcile each operating period at {hotel}.",
@@ -1318,6 +1378,66 @@ export default {
             "failed": "Estas credenciales no coinciden con nuestros registros.",
             "password": "La contraseña proporcionada es incorrecta.",
             "throttle": "Demasiados intentos de acceso. Por favor, intente nuevamente en {seconds} segundos."
+        },
+        "backup": {
+            "title": "Copias de seguridad",
+            "description": "Exporta una copia completa de los datos locales o restaura una guardada anteriormente.",
+            "maintenance_unavailable": "La aplicación de escritorio no está disponible temporalmente. Espera a que termine el mantenimiento e inténtalo de nuevo.",
+            "sections": {
+                "export": {
+                    "heading": "Crear una copia de seguridad",
+                    "description": "Guarda un único archivo con la base de datos local, las imágenes de hoteles y los soportes de pago.",
+                    "action": "Crear copia de seguridad",
+                    "working": "Creando la copia de seguridad…",
+                    "hint": "La aplicación se pausa un momento mientras prepara la copia para que la base de datos y sus adjuntos coincidan.",
+                    "overwrite_action": "Reemplazar el archivo existente",
+                    "overwrite_warning": "Ya existe un archivo en {path}. Reemplazarlo elimina la copia de seguridad guardada allí."
+                },
+                "restore": {
+                    "heading": "Restaurar una copia de seguridad",
+                    "description": "Reemplaza todo lo almacenado en este equipo por el contenido de un archivo de copia de seguridad.",
+                    "action": "Elegir archivo de copia",
+                    "working": "Leyendo la copia de seguridad…",
+                    "confirm_heading": "¿Reemplazar los datos locales?",
+                    "confirm_description": "Los registros, las imágenes de hoteles y los soportes de pago actuales de este equipo serán reemplazados por la copia de seguridad seleccionada.",
+                    "confirm_action": "Restaurar ahora",
+                    "cancel": "Cancelar",
+                    "hint": "Restaurar reemplaza por completo los datos locales. No se puede deshacer."
+                }
+            },
+            "warnings": {
+                "plain": "Los archivos de copia de seguridad no están cifrados. Cualquiera que tenga acceso al archivo puede leer la información de huéspedes y pagos que contiene.",
+                "storage": "Guarda el archivo en un lugar seguro y separado de este equipo.",
+                "keys": "Las credenciales cifradas solo pueden volver a leerse si la clave de cifrado de esta instalación está disponible."
+            },
+            "details": {
+                "file": "Archivo",
+                "created_at": "Creada",
+                "application_version": "Versión de Hellen Suite",
+                "files": "Archivos incluidos",
+                "size": "Tamaño"
+            },
+            "dialogs": {
+                "export": {
+                    "title": "Guardar el archivo de copia de seguridad",
+                    "button": "Guardar copia"
+                },
+                "restore": {
+                    "title": "Seleccionar un archivo de copia de seguridad",
+                    "button": "Seleccionar copia"
+                }
+            },
+            "messages": {
+                "export_completed": "La copia de seguridad se guardó en {path}.",
+                "export_cancelled": "Se canceló la copia de seguridad y no se modificó nada.",
+                "export_exists": "Ya existe un archivo en {path}. Elige otro nombre para conservarlo a salvo.",
+                "export_failed": "No se pudo crear la copia de seguridad: {reason}",
+                "restore_invalid": "El archivo seleccionado no es una copia de seguridad utilizable: {reason}",
+                "restore_cancelled": "No se seleccionó ningún archivo y no se modificó nada.",
+                "restore_missing": "La copia de seguridad seleccionada ya no está disponible. Vuelve a elegir el archivo.",
+                "restore_failed": "No se pudo restaurar la copia de seguridad: {reason}",
+                "restore_completed": "La copia de seguridad se restauró. La aplicación se recargó con los datos restaurados."
+            }
         },
         "cash": {
             "title": "Caja y turnos",
